@@ -20,7 +20,7 @@ namespace Assets.Scripts.Canvas
 
         [Header("Layout")]
         [Tooltip("Percent of canvas width used for the timeline length (match TimerBar).")]
-        [SerializeField] private float canvasPercent = 0.97f;
+        [SerializeField] private float canvasPercent = 0.96f;
 
         [Header("Tuning")]
         [Tooltip("Baseline normalized units per second for a tag with Speed=1 (1.0 crosses full bar in1s).")]
