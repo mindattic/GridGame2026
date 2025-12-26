@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 :: Define source and destination folders
-set "SOURCE=D:\Projects\Unity\GridGame2025"
+set "SOURCE=D:\Projects\Unity\GridGame2026"
 set "BACKUP_BASE=R:\Backup\SnowCrash"
 
 :: Get current date in YYYY-MM-DD format
@@ -42,5 +42,5 @@ if /i not "%CHOICE%"=="Y" (
 mkdir "%BACKUP_FOLDER%"
 
 :: Copy the project folder
-xcopy "%SOURCE%" "%BACKUP_FOLDER%\GridGame2025\" /E /I /Y
+xcopy "%SOURCE%" "%BACKUP_FOLDER%\GridGame2026\" /E /I /Y
 

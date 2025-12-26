@@ -24,9 +24,9 @@ namespace Assets.Scripts.Canvas
 
         [Header("Tuning")]
         [Tooltip("Baseline normalized units per second for a tag with Speed=1 (1.0 crosses full bar in1s).")]
-        [SerializeField] private float baseUnitsPerSec = 0.08f;
-        [Tooltip("Additional normalized units/sec added per Speed point.")]
-        [SerializeField] private float perSpeedUnitsPerSec = 0.02f;
+        [SerializeField] private float baseUnitsPerSec = 1f;
+        [Tooltip("Global multiplier applied to timeline movement speed. Lower = slower countdown/approach to trigger.")]
+        [SerializeField] private float timelineSpeedMultiplier = 0.66f;
         [Tooltip("Vertical spacing between duplicate tags (same enemy) in local pixels.")]
         [SerializeField] private float tagRowHeight = 14f;
         [SerializeField] private bool debugLogs = false;
@@ -131,7 +131,10 @@ namespace Assets.Scripts.Canvas
 
         private float UnitsPerSecFromSpeed(int speed)
         {
-            return Mathf.Max(0.001f, baseUnitsPerSec + perSpeedUnitsPerSec * Mathf.Max(0, speed));
+            // Consolidate base speed and per-speed into a base value then apply a global multiplier
+            float baseSpeed = baseUnitsPerSec * Mathf.Max(0, speed);
+            float mult = Mathf.Max(0.0001f, timelineSpeedMultiplier);
+            return Mathf.Max(0.001f, baseSpeed * mult);
         }
 
         private System.Collections.Generic.IEnumerable<ActorInstance> SortedEnemiesBySpeedDesc()
