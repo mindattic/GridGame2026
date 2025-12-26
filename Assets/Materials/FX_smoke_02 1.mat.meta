@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5b334e947863fd438da382b595152e9
+timeCreated: 1450410509
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_WeaponEffect/Textures/Materials/FX_smoke_02.mat
+  uploadId: 671947

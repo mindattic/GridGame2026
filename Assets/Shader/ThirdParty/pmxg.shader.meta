@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1dc34ed37f1aa7647a9db732ac147d94
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/pmxg.shader
+  uploadId: 681449

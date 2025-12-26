@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28a9cb65d150346379968d26eb5a431e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/M_2D_Explode_03.mat
+  uploadId: 676589

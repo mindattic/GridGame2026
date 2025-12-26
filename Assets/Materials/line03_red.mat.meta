@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4c81d3a2a18e6e24d95b026b55a3e1c8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/line03_red.mat
+  uploadId: 676589

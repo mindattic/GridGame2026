@@ -1,0 +1,27 @@
+{
+  "friendlyName": "iPad Pro 11-inch (2024)",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1668,
+      "height": 2420,
+      "dpi": 264,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1668,
+            "height": 2420
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "iPadOS 18",
+    "deviceModel": "iPad Pro 11-inch (2024)",
+    "supportsGyroscope": true
+  }
+}

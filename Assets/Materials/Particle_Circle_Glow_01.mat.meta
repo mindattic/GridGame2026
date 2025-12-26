@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 49dc812de74f4c34eb529e55e31f83c9
+timeCreated: 1533905128
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Particle_Circle_Glow_01.mat
+  uploadId: 679549

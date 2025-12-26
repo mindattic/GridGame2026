@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 94555132b60992b4bb2d287cbdd7113d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_particle_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/slash_01_purple.mat
+  uploadId: 676589

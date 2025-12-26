@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4a9ab250a000eeb4c816dd9e8fb8d0fb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Materials/flare06_yellow.mat
+  uploadId: 674228

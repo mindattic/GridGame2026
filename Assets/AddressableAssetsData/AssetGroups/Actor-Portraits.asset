@@ -1,0 +1,881 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Actor-Portraits
+  m_EditorClassIdentifier: 
+  m_GroupName: Actor-Portraits
+  m_GUID: 3e03276e0d1cefe4c9254557565a9d9f
+  m_SerializeEntries:
+  - m_GUID: 0014197a5e42314429e95ab5507bfcf8
+    m_Address: Courier
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0091b06a36d28314e8a8097dea058ccd
+    m_Address: GoblinThug00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 012254e0f2008db4db9006d401bcd3ed
+    m_Address: CyberZombie00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0251a78b56c0a0f4f8b6f75ef07571c3
+    m_Address: Myrmidon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02dfc347d05d0bd4a8faf9936bbd49d5
+    m_Address: TreeGolem00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02e239245fa74cf4d9959460a91e58cd
+    m_Address: Ganger02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0344ccd989f3e1c4d963c8b7a2a471c4
+    m_Address: NightHunter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0651fe5df9e061b479db0f0db6deb8f5
+    m_Address: Paladin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06cb1203e0f062847bd9dc1e1ed3e3eb
+    m_Address: PandaGirl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 083fbbe249752b2449fb2c79914912af
+    m_Address: Ripper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 09279c42bb0256b4397d7b062cfac0a5
+    m_Address: TreeGolem04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e72edbbb10f9184b8361896f0d83055
+    m_Address: Dervish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10363c21faed9834ba5f245fcdf59c66
+    m_Address: Slime00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1109e0450f08ba04187607ccf3450294
+    m_Address: Vampire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11ed3301d503c4e4e938d6fc8d855235
+    m_Address: Lurker02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13fb54c22afaad447ba4f152864e608c
+    m_Address: Sister
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 155d36fd68efdf045829faace0d66a46
+    m_Address: WarChief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16099d311b4706d49bf2391baa1d2100
+    m_Address: BlueNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 165800477b9424943bff79932a3d53d6
+    m_Address: Frog01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16e326b65c397f246ae2e350baec7dfe
+    m_Address: DarkTemplar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17477ba70bbddad4a8e35eed76468bae
+    m_Address: Technician
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ce61d19ba8b0c44491022c570912df2
+    m_Address: Phantom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d3585346d230254bb3da9638f2742dc
+    m_Address: Templar03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fbd62ea04cf0ad44b6460b4509a47da
+    m_Address: TechGremlin02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ff1d3580ae0daf4bab302f8d818da0c
+    m_Address: Cleric
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 201aeda1d34b71144b6537e1b203dbeb
+    m_Address: Bat01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 204c40a22a260d443abfb31d6ca6b1dd
+    m_Address: Slasher
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21e1c8f30cdf7484ebf1e4f59e8a717e
+    m_Address: Lurker00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 220dbaebda93ef54f97ef6abc2f9da48
+    m_Address: Undead02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23b08ec5bb7666e4e941da216cd85c1c
+    m_Address: Frog00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2465f45958f3cc441a0352ff3c2b03ea
+    m_Address: Templar01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24c3515e985c3034faca70af0a1812a7
+    m_Address: Soldier01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27b945fcdf5911b4093f986178c4b995
+    m_Address: Yeti
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27ef9f99da2012e43a5591c4f27a6e08
+    m_Address: Cyclops06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2be0f7ef87c22674ba17e394bdf3151f
+    m_Address: Ganger01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2dd770488e9d07144b4a23ec946a8861
+    m_Address: Oni00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e928e89073241d40b1e911f74301e4b
+    m_Address: BlackWitch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30e0896e8d4a3ba43a64c6ced308837f
+    m_Address: Cyclops04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 312fe40fc95e6ba4e8b9bc204d6f6b15
+    m_Address: CeramicKnight02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3254f1a14b41b69489d31e26344d8016
+    m_Address: Captain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32cb69683def00e488a74466a13f5cb8
+    m_Address: Monk
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35215e8ad5dbaa747b1efff8a7f90dcf
+    m_Address: Bat00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 352ce82be08eb3045bf697fbcb0b04a1
+    m_Address: Odachi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3818b34473ce4c245bc3f0c82e75b3ab
+    m_Address: Ganger05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 388fc641f09e87641bbe22efa9e0cd9e
+    m_Address: Ghost
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3aa99907f630d964088e1639de3413ca
+    m_Address: Bat02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3eb1ace197e3e55449917de4001b6299
+    m_Address: Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4560c0fd434ee6243b6e31347f7a9e76
+    m_Address: Soldier00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47c28ba45b56e0d4c99e3b56da9074b2
+    m_Address: Slime02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b6ae2998b2304446b08168c6cb8e75a
+    m_Address: Ganger06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cbff7d2d1e709e4a959a1726bcdd250
+    m_Address: Fencer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e7d1157ce147ce49b6ae4cdc9c53e53
+    m_Address: MarshShambler03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5028cf563b6c16c44909095387ce8bed
+    m_Address: TreeGolem03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52a4dcfa1a4f08d438901430a6117cf2
+    m_Address: ShieldMaiden
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 536943cbb712b304e8fab33faf1abddd
+    m_Address: Ritualist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55b7cadb709c8484aa25cd11e7e788c9
+    m_Address: DemonLord
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56b08ac261f969d45ba82a61909bbc5e
+    m_Address: Bruiser
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5720882a0e529b94fb881e8ec34ddacf
+    m_Address: MarshShambler00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5acc714066fcdcd489c1450c04ba1403
+    m_Address: GreenNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b56915745b034342b3df752a3c88b61
+    m_Address: Pugilist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c17928f3e5be8842a977d793720632b
+    m_Address: Scorpion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d9c31ae13a3f0e4895520df80271803
+    m_Address: Sellsword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e134c412d27a624090eb07db33f510b
+    m_Address: PurplePrototype00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e5e4c74409a8a44e933d784aee70fc6
+    m_Address: Cyclops01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60854ad26c8671f4eb41d32573c442b7
+    m_Address: MechaArmor01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 620238ba270f09f4e991f28682decdc6
+    m_Address: BlueLion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62169cf211d29564dad2396b8f68eb95
+    m_Address: Engineer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62f279b3c2503894fb878c58dc50d1e4
+    m_Address: CeramicKnight05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 638061a09d305ad42b5b3b59806f2aec
+    m_Address: Speedster
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64cd3b68c25c89c4796e2b7180a62b6b
+    m_Address: Hag02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65852dfa6bc3bfb47aa4c77608dfc993
+    m_Address: Vulture
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65ba8ceb2db7a864fae5abf31d461f5c
+    m_Address: CeramicKnight06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 661278a63a26acc4d9f03249c03f9318
+    m_Address: FlyingMonkey
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6895a8cc98e7e334897d44f67697fd6a
+    m_Address: Soldier03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a08a619c9429fe4ba2ade95b6f5cb06
+    m_Address: Slime01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6abf684d9701e2b4c967aa68cda0a2e4
+    m_Address: Ganger04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e2be5d62877b7142a1446f5e31635c0
+    m_Address: PurplePrototype04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70daf228913dc394a8df08f1eaaa41cc
+    m_Address: Undead00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 760377fd7e908404bb56781bf4961007
+    m_Address: Reaper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a29d580e9a268e48ba7239bb01fe28a
+    m_Address: Toad00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd6fa9091a2ada49b3431f6854c00fc
+    m_Address: Wolf01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7be5cd13bb9359c41890a518f53df683
+    m_Address: SteppinRazor05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d22a2c8208e0c84287aa05f0d0789ef
+    m_Address: SwampMistress00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d9bf3a2285c0dd40a7626286837a625
+    m_Address: Ronin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f46379d95dc1cd40a8ad9e0dabeaa7d
+    m_Address: Raider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8033d3c05bf91d4469b17d89dd1610d1
+    m_Address: PurplePrototype01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 826b88fe53a09bf41b5d9845f788e44c
+    m_Address: Frog02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8328b4d4f3f7c6a49be228e3a1234079
+    m_Address: Hag00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8606a8330e1d09d499c1371abe8d9217
+    m_Address: PurplePrototype03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86d445f6934bedd47ac8dd1f559d6c33
+    m_Address: ChromaNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 874feb3f59142cf42ba60faf8df95c2f
+    m_Address: Oni02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88415fba884dfba458259eff44ffd51e
+    m_Address: Hag03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 885f46b1883d19f4da295c418870f489
+    m_Address: Tinkerer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b2cf1e395da8c94cbbe71f11c7f001c
+    m_Address: Oni01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c4874b4e45efd84eb977a63c328fde9
+    m_Address: MartialArtist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c8deff3db5291242a3d259980295e64
+    m_Address: CeramicKnight00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9269238740f94b24f96fad657016cabe
+    m_Address: WhiteWitch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9503900c090f01e4e98e9cd5832f05bc
+    m_Address: Cyclops03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 964fc65d7adf3d245ac12379661b03b1
+    m_Address: Harbinger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99021fed4cdb0cc4ca20657636188bd6
+    m_Address: Drifter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9966fb95220f18540a3fcdc7c7550497
+    m_Address: CyberZombie01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a484f0ee59f5854ba611d5ce3dec70a
+    m_Address: Duelist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b97e3dde827b6945874bca23901ff71
+    m_Address: Ganger03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e3cd1bed5f1dee4481c333c10494b48
+    m_Address: PrizeFighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fabf28c5b5755840ab6840a34012615
+    m_Address: Doctor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a06c429d2d0fd78439405fd8ec28eb29
+    m_Address: MarshShambler01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a095135ea4efe9d4ba009751d7705c08
+    m_Address: Frog03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a195cfa839e40b94584e13ca214fa5df
+    m_Address: Alchemist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1d83b6a8c95f474093a3965af1b1824
+    m_Address: CeramicKnight01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a514eb4fab727e144bfd058bb10f86c5
+    m_Address: CyberZombie03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a78aa7373eee7294b9ca2a2538c00427
+    m_Address: Templar05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a79634dbf31bf6f41bd8e904b29696dd
+    m_Address: TreeGolem01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8ffd1bd7287602408d42fc7baa72b00
+    m_Address: SteppinRazor01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad2e94a46cf303449a302877d89fcf5a
+    m_Address: Wolf00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad518856ce2654d40a5d92e12b025573
+    m_Address: TechGremlin00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad9039daec395134cbfbbcda3070982d
+    m_Address: Lancer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae06c8fec76e6ca40bba2193317667b2
+    m_Address: Undead01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af38aba6bf0e928418a6176c54d7820b
+    m_Address: SandMaw
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afdfa55b1401afb458df7c6d56fa3cc8
+    m_Address: Templar02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0ac77ee4981d344fbe6ca95958657a7
+    m_Address: Hag01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b374acad88e1eeb4a8a739b1d36e8856
+    m_Address: Cyclops02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b860603a39fdd6c478f9d86cd16bdd8c
+    m_Address: Wolf02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b88bc843a54a272468828bc0ce3a7d38
+    m_Address: Templar04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b899e8450b615ef41b4267ee5b459b96
+    m_Address: Knight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc0281fac79db4e46bbe66677f284d99
+    m_Address: SwordMaster
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc2d8cb96d94fbf448140fc68fa45f6a
+    m_Address: Ganger00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc588456be989fc4c8daf6cffb3a4b0d
+    m_Address: Sage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdb49062979d5f14ca582fbe450c22c7
+    m_Address: SteppinRazor02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdcc922b173276e49b3ff73224259277
+    m_Address: Skelepede00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bde9388ee37bbb6419ce1c0d75453f60
+    m_Address: Templar00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c11b2d2935a18fa408d8bf450cc33707
+    m_Address: Machinist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c13345275465d5f44a4535dfa19ccd61
+    m_Address: TechGremlin01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c22cb3b5e901fec4f80d3910ea5fda00
+    m_Address: CeramicKnight04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3f273b408c1a664baa6677659855123
+    m_Address: SteppinRazor04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4313f495ac76b44bb016f9d2a91c904
+    m_Address: Lurker01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6044cb644562a2429672285b9648a2f
+    m_Address: WhiteNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7d57550becb1ff44a737a0cf6ed9788
+    m_Address: TreeGolem06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb414eb2320b07e4fb8f2f49e949b196
+    m_Address: MountainTroll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb47971b27b60c2419cd79d5a2613fb4
+    m_Address: MechaArmor02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd0bad8f8a09f84429ded45a5e3bd44d
+    m_Address: Wolf03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cda202c95ac4f5d4eac40c7278b37776
+    m_Address: Skelepede02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cdba2ce0250a7204aa869c7c3df6422b
+    m_Address: CeramicKnight03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce518bbfc21781a4696b2c46a2b4984e
+    m_Address: Cyclops00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf5dbfda36c618b47a9e6fb8d2ee088d
+    m_Address: Operative
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfb38ba6ec47e124fbf4d04622c413fe
+    m_Address: Defender
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfe7dabc68fc4e944a3f43be7e2479c6
+    m_Address: Soldier02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1d2d55555e53344faceb9f7d11899ee
+    m_Address: SteppinRazor00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d59cff1210639a743901d71c67865f5b
+    m_Address: RedNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dadc522990db9d44aba7e34d506fe280
+    m_Address: BlackNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc0e2c64c40fd5c4d8684e13d714d350
+    m_Address: Striker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2d8d7e39b14fb64e86789fb059bbd70
+    m_Address: MechaArmor00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2ee8ba64349b2b4393e23994f84dc06
+    m_Address: RedMage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e332bfbd6a88bee4794e0c0e6960aff1
+    m_Address: Basher
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e41ad6102273ead4fa02d24cfdfc43c7
+    m_Address: Assassain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e52ead1d7ba64504b875e508acf97f9a
+    m_Address: Barbarian
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e56393a665317ab4eb2d45ad8ff72ff9
+    m_Address: Werewolf00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e61841d3e59f89d4caf454e7b2b324ee
+    m_Address: Fighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7ef06797a1ec2d40b94fb354e5e6bc6
+    m_Address: StreetFighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9b9cf17913042c4098a4a73fd7c89d7
+    m_Address: YellowNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea2e3201b658ca3408b4719fa79eb419
+    m_Address: JadeKnight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea911e63f86e2974aadcb769a6ff00a5
+    m_Address: Skelepede01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebd816cbb6682e24c8d2d7b08f564beb
+    m_Address: CyberZombie02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eda777dccd3d21242af730c27c5c827e
+    m_Address: Mannequin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edc0ebe39b874d246a24e56767c2d9bb
+    m_Address: Tank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ede4e09c272c88e4898a26ca21ac84a0
+    m_Address: Naga00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efbbf86e313aba742a12d276cffeb658
+    m_Address: PurplePrototype02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f05ca2690fa2be845857f2d763c7c6a6
+    m_Address: IceMauler
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f37ed818f85ffba458f280788d9ff707
+    m_Address: Slime03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f52410c86a8da354eaf30e449022ae14
+    m_Address: Undead04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f750e4142fffc7d4ea1cf58fa42b06eb
+    m_Address: WildChild
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdccb45ba5bd3c443bda56bcbfb0150a
+    m_Address: TreeGolem02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe0ab6ba96c0d134bb9b0ef3893b04a1
+    m_Address: CyberZombie04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

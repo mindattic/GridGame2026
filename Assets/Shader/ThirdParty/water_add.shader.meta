@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0c88bfad66e6d5542904aee8d0c00825
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_UI_Waterball/Shader/water_add.shader
+  uploadId: 671947

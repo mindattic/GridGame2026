@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7b69a29340d37e947a8fcc0eec1bb85a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/Prefabs/FX_Buff.prefab
+  uploadId: 671947

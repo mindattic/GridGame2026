@@ -1,0 +1,186 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: VisualEffects
+  m_EditorClassIdentifier: 
+  m_GroupName: VisualEffects
+  m_GUID: cf862a3e4f6ed704dae7494d495c0245
+  m_SerializeEntries:
+  - m_GUID: 01f27eb87f0fb214e8418e55d2428f41
+    m_Address: VisualEffects/OrangeSlash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02736e0cc51a28d45b76c57135951d77
+    m_Address: VisualEffects/PuffyExplosion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a22fbdf671c2a746ae4e4a5cfb4cd2b
+    m_Address: VisualEffects/MoonFeather
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 18b66ea9d48de574eb658217b305257c
+    m_Address: VisualEffects/RedSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fdb7cd1f83ebe84eb282cdbc602489f
+    m_Address: VisualEffects/GodRays
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21cbb046e8ccc3d499fc78488fcb0dff
+    m_Address: VisualEffects/LightningStrike
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c432fcb68c98ad4c94e58c819927de2
+    m_Address: VisualEffects/GreenBuff
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c1ede3908543dc4b94584babde68921
+    m_Address: VisualEffects/TechSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5747dc98406759e4ab515bea5b6572d6
+    m_Address: VisualEffects/BlueYellowSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 59ea766e421127d4e9be13914ab69a42
+    m_Address: VisualEffects/BlueSlash1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a29be4b80b9626459f6a82b1afd3fcd
+    m_Address: VisualEffects/LevelUp
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5eb649ddc4489a449bc8dceb03e0b999
+    m_Address: VisualEffects/ToxicCloud
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f3601c19e437ef47abfc0f2004d21cb
+    m_Address: VisualEffects/BlueSlash4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e0be8351479eda44bf898242ef51602
+    m_Address: VisualEffects/RayBlast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71c34a5ab15ff00468c6dfc609bcbfb5
+    m_Address: VisualEffects/BuffLife
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7db4ec41b2d147642af9eab9ea02a087
+    m_Address: VisualEffects/BlueSlash3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 852626fe97a6a204aa6d96fb8c79804d
+    m_Address: VisualEffects/BlueYellowSword3X
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8602632b1a66410438810a692c7b16d1
+    m_Address: VisualEffects/BlueSlash2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90048088c3ac2664f947d102cfa8a373
+    m_Address: VisualEffects/BlueSword4X
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9290ea2587b80594b9570be9868a780b
+    m_Address: VisualEffects/DoubleClaw
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94838868a28adb848bb0243309fcb49b
+    m_Address: VisualEffects/FireRain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b76c3f6a723716428891e8fa8aa6881
+    m_Address: VisualEffects/PinkSpark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7753132ff71f784cbb9fa8f294de5b8
+    m_Address: VisualEffects/AcidSplash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: adc8b05849acbcb4db958419bfc77438
+    m_Address: VisualEffects/HexShield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5bea402ed5540b4aabe1df9da5c1b49
+    m_Address: VisualEffects/Shuriken
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba8a3b693b384c247bc5d9908969afc7
+    m_Address: VisualEffects/YellowHit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bcb44ed878601234bb60041a0a8f4e7a
+    m_Address: VisualEffects/BloodClaw
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c02c4b6d5a9ee6940b44fdcfd029ec3b
+    m_Address: VisualEffects/LightningExplosion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8132ad252c62b14ca1cf8b2c8052417
+    m_Address: VisualEffects/RedSlash2X
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c99a44ecba0e13847a8a48f1810b6d8a
+    m_Address: VisualEffects/RotaryKnife
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4220f5b0adfc0346a85a86698010cdc
+    m_Address: VisualEffects/GoldBuff
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df658a8f5659e3845aa38812182dbac1
+    m_Address: VisualEffects/BlueSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3a60acceacf0e6448f67888743fe0fd
+    m_Address: VisualEffects/AirSlash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

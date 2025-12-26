@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d1e2851b13025f0409ae220be28ff4db
+timeCreated: 1543507480
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/Add_DisUV.shader
+  uploadId: 668264

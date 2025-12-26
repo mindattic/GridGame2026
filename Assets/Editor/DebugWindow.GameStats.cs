@@ -1,0 +1,30 @@
+﻿using Assets.Helper;
+using Assets.Helpers;
+using UnityEngine;
+using g = Assets.Helpers.GameHelper;
+
+public partial class DebugWindow
+{
+    // Draws focused actor, input mode, current turn, and sequence details.
+    // Safe during scene switches: avoids HasFocusedActor and null-guards all managers.
+    private void RenderGameStats()
+    {
+        GUILayout.BeginHorizontal();
+
+        var selected = (g.ActorManager != null && g.Actors.SelectedActor != null) ? g.Actors.SelectedActor.characterClass : CharacterClass.None;
+        GUILayout.Label($"Focused Actor: {selected}", GUILayout.Width(Screen.width *0.25f));
+
+        var mode = g.InputManager != null ? g.InputManager.InputMode : InputMode.None;
+        GUILayout.Label($"Input Mode: {mode}", GUILayout.Width(Screen.width *0.25f));
+
+        var turnText = g.TurnManager != null ? (g.TurnManager.IsHeroTurn ? "Player" : "Opponent") : "-";
+        GUILayout.Label($"Current Turn: {turnText}", GUILayout.Width(Screen.width *0.25f));
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
+        //GUILayout.BeginHorizontal();
+        //var sequenceDetails = g.SequenceManager.GetDetails() ?? "-";
+        //GUILayout.Label(sequenceDetails, GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.EndHorizontal();
+    }
+}

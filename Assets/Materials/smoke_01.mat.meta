@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e7f825f93df1cb640b74c7eb002d9cd7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkDoor/Textures/Materials/smoke_01.mat
+  uploadId: 671947

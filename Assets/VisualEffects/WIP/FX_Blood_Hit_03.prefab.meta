@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 221a07be4cdcbb24cbcb07599d20cedf
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_Blood_Hit_03.prefab
+  uploadId: 674228

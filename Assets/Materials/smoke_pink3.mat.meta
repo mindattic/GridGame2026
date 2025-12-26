@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3150f9a7426c74649b4667a67b420ea2
+timeCreated: 1531135659
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_LootDrop/Materials/smoke_pink3.mat
+  uploadId: 673592

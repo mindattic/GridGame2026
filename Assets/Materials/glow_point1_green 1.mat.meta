@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5776695da6d11a940ae74d38a6cac844
+timeCreated: 1514470997
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/glow_point1_green 1.mat
+  uploadId: 679549

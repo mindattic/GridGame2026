@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 264adf4dfd0ecd648bf5b9f2661d6629
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 257146
+  packageName: URP VFX Ultra Bundle
+  packageVersion: 1.1.2023.09
+  assetPath: Assets/Vefects/Smoke Bombs VFX URP/Shared/Materials/GlobalSmokes/M_VFX_Fresnel_Smoke_Edge_02.mat
+  uploadId: 781953

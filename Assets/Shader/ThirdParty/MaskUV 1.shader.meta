@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 16973c2faba79a1438ae920c4e887db2
+timeCreated: 1567672366
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Starfall/Shader/MaskUV.shader
+  uploadId: 671947

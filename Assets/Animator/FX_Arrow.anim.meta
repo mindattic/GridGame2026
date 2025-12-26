@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9b31120b20a35c04f8e2bc281be36fde
+timeCreated: 1551434169
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Arrow/Animator/FX_Arrow.anim
+  uploadId: 671947

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: aa187056c58f4e94389e3a0b5d9263d7
+timeCreated: 1467842835
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Smoke 4.mat
+  uploadId: 679549

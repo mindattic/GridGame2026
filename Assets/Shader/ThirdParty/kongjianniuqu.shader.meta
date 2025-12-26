@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 773028feba18bb541b3d4523aa81fc22
+timeCreated: 1530170990
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/kongjianniuqu.shader
+  uploadId: 679549

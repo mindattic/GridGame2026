@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a4a03c0ecad38544f9264ca1370749c4
+timeCreated: 1441677312
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/lb_20f 2.mat
+  uploadId: 676589

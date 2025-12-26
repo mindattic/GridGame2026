@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 15cb215a20ab14e45868dbb79e1eb363
+timeCreated: 1518162225
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_slash_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/slash_pur 1.mat
+  uploadId: 768429

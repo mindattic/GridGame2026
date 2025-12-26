@@ -1,0 +1,571 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sprites
+  m_EditorClassIdentifier: 
+  m_GroupName: Sprites
+  m_GUID: 5399e47a23a1a8948ba2de9bda8e0bfa
+  m_SerializeEntries:
+  - m_GUID: 001ce54d7d155d9468688f787ced41e8
+    m_Address: Sprites/Backgrounds/CyberNecropolis/09
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 014efbe6c64d33d4199aa5ac4c996dc8
+    m_Address: Sprites/Logos/Mindattic.256x256
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 03e927c2624e6b648bb31a83f951f5b8
+    m_Address: Sprites/TutorialPages/Tutorial.1-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06abdf2b7a22b484ba3b2d123cbb3128
+    m_Address: Sprites/GUI/Button.512x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e5b52c15665dfa429567653007579b3
+    m_Address: Sprites/Backgrounds/RedThorns/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1352dc0ad19aee0419020f6a45351a21
+    m_Address: Sprites/Seamless/Background.Menu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 170482c518ea30d4ea3acb519978c357
+    m_Address: Assets/Sprites/target-indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ab6fc6396a111c46bdaefbcdcc388bc
+    m_Address: Sprites/Logos/Mindattic.1024x1024
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bc676a5bc7e5f94998afc8e2970a363
+    m_Address: Sprites/WeaponTypes/Potion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c6e9ab36b3c07c48a4a729a475b59f6
+    m_Address: Sprites/DottedLine
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1cbcbf2795bc96441952b0a623beaeac
+    m_Address: Sprites/TutorialPages/Tutorial.1-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 210503921c15f9647893f137236a6b7e
+    m_Address: Sprites/Seamless/WhiteFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2173ccf42f76c8348ba503544c48876d
+    m_Address: Sprites/GUI/PortraitMask
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 220b3b17154498d4fbbb9b3afd501028
+    m_Address: Sprites/Seamless/Background.LightBlue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24139eefbfe09f749b543d1055acc7bc
+    m_Address: Sprites/Pause
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29f60d0067842244e84aa3807c626e23
+    m_Address: Sprites/Backgrounds/ElectricWasteland/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fc8e4e9f7189c049a580cafd1e4b37f
+    m_Address: Sprites/Seamless/BlackFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32567222831a1e342a40f4a1e8301fa8
+    m_Address: Sprites/Logos/Mindattic.512x512
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35c347616d83dc94985be8e63c15c7ed
+    m_Address: Sprites/GUI/TeamIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 362ea71bb513df34ea4c121c30d55fdd
+    m_Address: Sprites/Backgrounds/CyberNecropolis/08
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38046f430cc691342aaaab1202d2de9e
+    m_Address: Sprites/WeaponTypes/Sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39005a360618d6f43b13954739818ba2
+    m_Address: Sprites/DottedLineTurn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39e9c1e34bd792640a78fe18b498ec06
+    m_Address: Sprites/Backgrounds/CyberNecropolis/07
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a126e79cbb37a94bbb8d5fbfc4247e5
+    m_Address: Sprites/Backgrounds/Moors/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ab6f42876f744d4e94691fd9b1721d9
+    m_Address: Sprites/Seamless/Fire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b2b351515a84c144aee0f5fa50a0826
+    m_Address: Sprites/Backgrounds/RedThorns/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e16de365aa680b469f9945c3dd96d2c
+    m_Address: Sprites/WeaponTypes/Staff
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e9430e6c7b5df14b869ee49ad9c5adf
+    m_Address: Sprites/Backgrounds/ElectricWasteland/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f3d2278569a15e4fa7543570bff6a11
+    m_Address: Sprites/WeaponTypes/Shield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43036b4f7295ec447a8091ee2d3012c5
+    m_Address: Sprites/Backgrounds/CyberNecropolis/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4808e864b93a90b47ad6c86204ac174a
+    m_Address: Sprites/Seamless/BlackFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cdb83b0d902c374686fa49f9741451e
+    m_Address: Sprites/Backgrounds/UnderTheBridge/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d0c4234de2d46049a85ddb2b89ef944
+    m_Address: Sprites/WeaponTypes/Hammer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51264a35d9ce6cc46b79a18b9d12166c
+    m_Address: Sprites/Backgrounds/CyberNecropolis/11
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 545afea768629e241988d7b2ead023f5
+    m_Address: Sprites/AbilityButtons/Heal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 556091e6bd2e8d7499cc3f80e8479d37
+    m_Address: Sprites/WeaponTypes/Bow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56e1a25be80e0f14d953e335b9d18ee6
+    m_Address: Sprites/White32x32
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 596a0c093539bb54b8d15e3b1f3c7097
+    m_Address: Sprites/Backgrounds/CyberNecropolis/06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5af4e1269789491489bf38714723ba46
+    m_Address: Sprites/AbilityButtons/Trap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d12baf801de08e48b1c7305ad8655c8
+    m_Address: Sprites/WeaponTypes/Katana
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5dd9b999e36555e41949077f5c13e3cf
+    m_Address: Sprites/GUI/Button.128x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e6921fa47753ea46b3f6437d5f476ab
+    m_Address: Sprites/Backgrounds/RedThorns/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 689440e14c4f7a1438b5682c0ecb66ea
+    m_Address: Sprites/GUI/BackButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f192de73303222458a541d786cbeaf8
+    m_Address: Sprites/GUI/Camera00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f27d800d92dc01458cc0c90ccb3c652
+    m_Address: Sprites/Forest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f37be176d63e8d4fb3a83b7021d59f0
+    m_Address: Sprites/Leaves/MapleLeaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f7ce7872d7738f498b073b76f336190
+    m_Address: Sprites/Backgrounds/RedThorns/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7188e9a019e6bdb40aadb43e75fb62f2
+    m_Address: Sprites/GUI/Button.256x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79ee61618e9f4a846be932ad9a857450
+    m_Address: Sprites/GUI/TimelineDivider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b8647357d607cd4eba22bb28a7f370e
+    m_Address: Sprites/DottedLineArrow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d138ee776549614f96c88c0457703d0
+    m_Address: Sprites/WeaponTypes/Crossbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 804d6e62b88be2043a437a193965b1ba
+    m_Address: Sprites/GUI/DestinationMarker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80b84c47eb036d94c9e351e9532f0a19
+    m_Address: Sprites/Backgrounds/Moors/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80dce75ed53c6a34382d60a8bc72f9b2
+    m_Address: Sprites/Backgrounds/CyberNecropolis/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8260f792c71131a4cae9180dee5cf69c
+    m_Address: Sprites/AbilityButtons/Smite
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85b00e2c9a932d84f9982c115f97e6a7
+    m_Address: Sprites/Leaves/Leaf2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8835a6000aa9d124db4d980461277199
+    m_Address: Sprites/WeaponTypes/Wand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c2a44c355e0c4c4a8b26de5df0aed2e
+    m_Address: Sprites/Backgrounds/CyberNecropolis/12
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d223d4b225639f469ef46e58fa96ffa
+    m_Address: Sprites/Seamless/WhiteFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d84dfdba620a0145829a4855d50b252
+    m_Address: Sprites/Black32x32
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94dbeb1c77a0a494fa7cbfad79352f28
+    m_Address: Sprites/GUI/Joystick00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96a963b79ecbeda4a8ddcd843268c79f
+    m_Address: Sprites/Leaves/MapleLeaf2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98745ca6abc132544813043cf430e256
+    m_Address: Sprites/GUI/Button.1024x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d0a35509febc8b4ba704ea28f64eb43
+    m_Address: Sprites/Backgrounds/RedThorns/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f0f639a249386446aff26158e7b7fb0
+    m_Address: Sprites/Seamless/Background.DarkBlue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f26d6f1e4284eb44ae224bc2ef7abd6
+    m_Address: Assets/Sprites/focus-indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a25374bd16283344d99e20c2b6cfd1ab
+    m_Address: Sprites/WeaponTypes/Dagger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a383516d04697454587aa9f044f09f7b
+    m_Address: Sprites/GUI/Button.64x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a473a22dc5aadbd45bb94323875960c3
+    m_Address: Sprites/Backgrounds/UnderTheBridge/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5eb8ff48f1d64849aacb60a01d80021
+    m_Address: Sprites/WeaponTypes/Spear
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa206f6bf08484c459dac22687c29209
+    m_Address: Sprites/Paused
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5393b208835cd649b137cfa74eb31e9
+    m_Address: Sprites/WeaponTypes/Shuriken
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b60e42908dfdb994299dacf1a2104e0a
+    m_Address: Sprites/GUI/Joystick01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7550198cfd5e9b44a8ddbca3e064252
+    m_Address: Sprites/Backgrounds/UnderTheBridge/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7594be46d6d2844aabce305ea160329
+    m_Address: Sprites/Transparent32x32
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7a0627510abd3041926697c69156fd7
+    m_Address: Sprites/Seamless/Swords1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7b85153065fffa44a5a02f725000401
+    m_Address: Sprites/Backgrounds/Moors/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba7c9382ba4099044b632cc01b6e50f3
+    m_Address: Sprites/Leaves/Leaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c036617c0127f45439cb49d4638c3ae9
+    m_Address: Sprites/Backgrounds/CyberNecropolis/14
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c58c2cfe4cd204f4e9bacee1a0685ec3
+    m_Address: Sprites/WeaponTypes/Mace
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c608b84a82ea0e24595d29fe1d51eb29
+    m_Address: Sprites/Footstep
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c71a45c529c9d774e9ced105fadb71a1
+    m_Address: Sprites/GUI/Indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8601886ebfbc264181191d0dd25b4ea
+    m_Address: Sprites/Backgrounds/Moors/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c873a695795e7ce4598717431aef3ef7
+    m_Address: Sprites/Backgrounds/Moors/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caf5b8d17a41b8848b1dc7374fda429e
+    m_Address: Sprites/AbilityButtons/ShieldBash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf6684cf85acbe4db9eb17c4a446fd8
+    m_Address: Sprites/Backgrounds/CyberNecropolis/05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cefb2d09d790403479355ab9e84a01d9
+    m_Address: Sprites/Backgrounds/ElectricWasteland/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d02c13fdf13f0c5469b00faad95d0474
+    m_Address: Sprites/SynergySpark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d07afbf831712b34e9dc7689a931acf6
+    m_Address: Sprites/WeaponTypes/Scythe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1361732497ed0e40882683c2f94fb7e
+    m_Address: Sprites/Backgrounds/ElectricWasteland/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3c448bb595bb884b982655060b20427
+    m_Address: Sprites/Backgrounds/ElectricWasteland/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4797be892b2a074fa3973edf70300cb
+    m_Address: Sprites/Backgrounds/CyberNecropolis/13
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d47af17ff7dccc24480d708d5a0bcd5e
+    m_Address: Sprites/Backgrounds/UnderTheBridge/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d494bec28e68e8d4a966f4ded22a613f
+    m_Address: Sprites/TutorialPages/Tutorial.1-3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4a70c7dc6d224448b5ddbbf711df8ea
+    m_Address: Sprites/Backgrounds/CyberNecropolis/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d540a5242f11c0f44a94c0331f2f345d
+    m_Address: Sprites/Backgrounds/CyberNecropolis/10
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5625f17c8b64674fa077f1339346b70
+    m_Address: Sprites/Backgrounds/CyberNecropolis/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de426a64ce259e642a7ea939d801deff
+    m_Address: Sprites/GUI/Camera01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de7fd390674c2b645be754a415fd3628
+    m_Address: Sprites/Logos/Mindattic.128x128
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df4655efe1d38e540a82ca488e15895d
+    m_Address: Sprites/GUI/TimelineBlock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e14487b72508eb54d8e4233c81df6813
+    m_Address: Sprites/WeaponTypes/Claw
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6445dce8ae655e4598f47e5f6eef956
+    m_Address: Sprites/Seamless/Swords2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e68c9548b3393f24a828fd51075d85f3
+    m_Address: Sprites/GUI/Joystick02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9a768e7cc448e64c893a1d3a069f20d
+    m_Address: Sprites/WeaponTypes/Grenade
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea450473e902002409e974d13a430738
+    m_Address: Sprites/Backgrounds/CyberNecropolis/15
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec90b83af9bd6a946a01cffd9f5dce36
+    m_Address: Sprites/Seamless/RedFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee9fb49490ac79c4cb717edf322fa379
+    m_Address: Sprites/WeaponTypes/Polearm
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f61ad0ebb0999354785fb74215bedf61
+    m_Address: Sprites/Logos/Mindattic.64x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f62841f7f7ba9ee479c76a5f1f723698
+    m_Address: Sprites/Backgrounds/CyberNecropolis/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fedb31964b6f37b45b3abf945fd97637
+    m_Address: Sprites/WeaponTypes/Pistol
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

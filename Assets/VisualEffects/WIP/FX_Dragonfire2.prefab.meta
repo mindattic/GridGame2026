@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 140718befc135224598e6163efccc20e
+timeCreated: 1561457510
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/Prefabs/FX_Dragonfire.prefab
+  uploadId: 671947

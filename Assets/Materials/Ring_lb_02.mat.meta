@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 421db89124a7d7b4983116c0a3502b87
+timeCreated: 1509532882
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Blood_Effect/Materials/Ring_lb_02.mat
+  uploadId: 673592

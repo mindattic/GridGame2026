@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 45222a2eb58e3fb43a1a6595f04de47a
+timeCreated: 1522131278
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_aura_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/sheet_blue_bright.mat
+  uploadId: 768429

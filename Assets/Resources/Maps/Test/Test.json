@@ -1,0 +1,134 @@
+{
+    "roots": [
+        {
+            "id": "cd250bcee0194288a685098ea14bd07b",
+            "name": "CloudShadows",
+            "prefab": "PropsLibrary/_Baked/CloudShadows_f75548aa016a45be975be36c4a6cccf0",
+            "active": true,
+            "layer": 0,
+            "tag": "Untagged",
+            "localPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "overrides": [],
+            "children": []
+        },
+        {
+            "id": "c7168cd620bb49e9ab6c4ddfd261b4d5",
+            "name": "Clouds",
+            "prefab": "PropsLibrary/_Baked/Clouds_11e1f235c9ba4226ba9d2729013806e7",
+            "active": false,
+            "layer": 0,
+            "tag": "Untagged",
+            "localPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "overrides": [],
+            "children": []
+        },
+        {
+            "id": "63309efa191644c6b3583180f1a20c44",
+            "name": "Trees",
+            "prefab": "PropsLibrary/_Baked/Trees_d93a7dc51667484892931e00348b9236",
+            "active": true,
+            "layer": 0,
+            "tag": "Untagged",
+            "localPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "overrides": [],
+            "children": []
+        },
+        {
+            "id": "e1825f2e5f674ffab6837a2ba6d99a77",
+            "name": "Bushes",
+            "prefab": "PropsLibrary/_Baked/Bushes_ea536600a6e44679b96dbbbb79f1a947",
+            "active": true,
+            "layer": 0,
+            "tag": "Untagged",
+            "localPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "overrides": [],
+            "children": []
+        },
+        {
+            "id": "5cb62027cbab4cc794e45030ece923a1",
+            "name": "Bushes",
+            "prefab": "PropsLibrary/_Baked/Bushes_2ae73eba7eaf4d7db4663ba29ae296a3",
+            "active": true,
+            "layer": 0,
+            "tag": "Untagged",
+            "localPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "overrides": [],
+            "children": []
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 388105c6fe97a2443adae1e78452013d
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _CookieCutter: {fileID: 2800000, guid: 69106e0177378514bbc0797d4de122a3, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 257146
+  packageName: URP VFX Ultra Bundle
+  packageVersion: 1.1.2023.09
+  assetPath: Assets/Vefects/Level Up VFX URP/VFX/Shaders/SH_Vefects_VFX_URP_LVL_Up_Custom_Move.shader
+  uploadId: 781953

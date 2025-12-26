@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4139f2bc48a853d46b9d293017623fd6
+timeCreated: 1531137683
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/light01_y.mat
+  uploadId: 668264

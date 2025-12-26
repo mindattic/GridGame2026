@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a79c28547bdd29f48a5aa96d821d7c91
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_Bloodclaw_Ground.prefab
+  uploadId: 674228

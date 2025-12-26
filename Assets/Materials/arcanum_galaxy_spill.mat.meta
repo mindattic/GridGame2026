@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5e322256a81452f49a3e1b05b0decd10
+timeCreated: 1519268065
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/arcanum_galaxy_spill.mat
+  uploadId: 668264

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 90df8757c3c2a8442af9b3cd20c1b645
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_Spurting blood.prefab
+  uploadId: 674228

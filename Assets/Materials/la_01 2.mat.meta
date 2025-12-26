@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f9de6040cca47a64cb2c578707db29d7
+timeCreated: 1465192549
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Arrow/Textures/Materials/la_01.mat
+  uploadId: 671947

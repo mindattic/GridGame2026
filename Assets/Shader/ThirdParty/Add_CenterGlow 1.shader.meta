@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4e96b61fd1ad27d44b47603cc629b903
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/Add_CenterGlow.shader
+  uploadId: 681449

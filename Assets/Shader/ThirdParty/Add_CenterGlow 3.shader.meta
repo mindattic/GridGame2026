@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9d6d521fc2480f24e869bc2b9026233c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Shaders/Add_CenterGlow.shader
+  uploadId: 678419

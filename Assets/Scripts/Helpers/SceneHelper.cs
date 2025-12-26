@@ -1,0 +1,189 @@
+using Assets.Helper;
+using Assets.Helpers;
+using Assets.Scripts;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace Assets.Helpers
+{
+    /// <summary>
+    /// Centralized scene changes with fade out, scene change, async load, and fade in.
+    /// Usage:
+    ///   using scene = Assets.Helpers.SceneHelper;
+    ///   scene.Change.ToSettings();
+    ///   scene.FadeIn();
+    /// </summary>
+    public static class SceneHelper
+    {
+        // Scene name constants
+        public const string Credits = "Credits";
+        public const string Game = "Game";
+        public const string LoadingScreen = "LoadingScreen";
+        public const string Overworld = "Overworld";
+        public const string PartyManager = "PartyManager";
+        public const string ProfileCreate = "ProfileCreate";
+        public const string ProfileSelect = "ProfileSelect";
+        public const string SaveFileSelect = "SaveFileSelect";
+        public const string SplashScreen = "SplashScreen";
+        public const string Settings = "Settings";
+        public const string StageSelect = "StageSelect";
+        public const string TitleScreen = "TitleScreen";
+        public const string PostBattleScreen = "PostBattleScreen";
+        public const string Hub = "Hub"; 
+     
+        /// <summary>
+        /// Returns true if the active scene matches the provided name.
+        /// </summary>
+        public static bool IsCurrentScene(string sceneName) =>
+            SceneManager.GetActiveScene().name == sceneName;
+
+        /// <summary>
+        /// True if the current scene is the main game scene.
+        /// </summary>
+        public static bool IsGameScene => IsCurrentScene(Game);
+
+        /// <summary>
+        /// Calls FadeIn on the active FadeOverlay if it exists.
+        /// </summary>
+        public static void FadeIn(IEnumerator routine = null)
+        {
+
+            var overlay = FadeOverlayHelper.Overlay;
+            if (overlay != null)
+            {
+                overlay.FadeIn(routine);
+            }
+            else
+            {
+                Debug.LogWarning("SceneHelper.FadeIn called but no FadeOverlay found in scene.");
+            }
+        }
+
+        /// <summary>
+        /// Calls FadeOut with a provided IEnumerator or Animation.
+        /// </summary>
+        public static void FadeOut(IEnumerator routine)
+        {
+            var overlay = FadeOverlayHelper.Overlay;
+            if (overlay != null)
+            {
+                overlay.FadeOut(routine);
+            }
+            else
+            {
+                Debug.LogWarning("SceneHelper.FadeOut called but no FadeOverlay found in scene.");
+            }
+        }
+
+        public static void SetAlpha(float alpha)
+        {
+            var overlay = FadeOverlayHelper.Overlay;
+            var image = overlay.GetComponent<UnityEngine.UI.Image>();
+            var color = image.color;
+            color.a = Mathf.Clamp01(alpha);
+            image.color = color;
+        }
+
+        /// <summary>
+        /// Fluent scene change API that encapsulates fade and loading flow.
+        /// </summary>
+        public static class Fade
+        {
+            public static void To(string sceneName)
+            {
+                if (string.IsNullOrWhiteSpace(sceneName))
+                {
+                    Debug.LogError("SceneHelper.Change.To received an empty scene name.");
+                    return;
+                }
+
+                IEnumerator afterFade()
+                {
+                    //Always save before changing scenes
+                    ProfileHelper.Save(overwrite: false);
+                    ProfileHelper.Save(overwrite: true);
+                    SceneLoader.Load(sceneName);
+                    yield break;
+                }
+
+                FadeOut(afterFade());
+            }
+
+            public static void ToPreviousScene(string defaultScene = Game)
+            {
+                IEnumerator afterFade()
+                {
+                    //Always save before changing scenes
+                    ProfileHelper.Save(overwrite: false);
+                    ProfileHelper.Save(overwrite: true);
+                    SceneLoader.LoadPreviousScene(defaultScene);
+                    yield break;
+                }
+
+                FadeOut(afterFade());
+            }
+
+            // Strongly typed helpers
+            public static void ToCredits() => To(Credits);
+            public static void ToGame() => To(Game);
+            public static void ToOverworld() => To(Overworld);
+            public static void ToPartyManager() => To(PartyManager);
+            public static void ToProfileCreate() => To(ProfileCreate);
+            public static void ToProfileSelect() => To(ProfileSelect);
+            public static void ToSaveFileSelect() => To(SaveFileSelect);
+            public static void ToSplashScreen() => To(SplashScreen);
+            public static void ToSettings() => To(Settings);
+            public static void ToStageSelect() => To(StageSelect);
+            public static void ToTitleScreen() => To(TitleScreen);
+            public static void ToPostBattleScreen() => To(PostBattleScreen);
+            public static void ToHub() => To(Hub); // new helper
+        }
+
+        /// <summary>
+        /// Fluent scene change API that encapsulates fade and loading flow.
+        /// </summary>
+        public static class Switch
+        {
+            public static void To(string sceneName)
+            {
+                if (string.IsNullOrWhiteSpace(sceneName))
+                {
+                    Debug.LogError("SceneHelper.Change.To received an empty scene name.");
+                    return;
+                }
+
+                SetAlpha(0f);
+
+                //Always save before changing scenes
+                ProfileHelper.Save(overwrite: false);
+                ProfileHelper.Save(overwrite: true);
+                SceneLoader.Load(sceneName);
+            }
+
+            public static void ToPreviousScene(string defaultScene = Game)
+            {
+                SetAlpha(0f);
+                ProfileHelper.Save(overwrite: false);
+                ProfileHelper.Save(overwrite: true);
+                SceneLoader.LoadPreviousScene(defaultScene);
+            }
+
+            // Strongly typed helpers
+            public static void ToCredits() => To(Credits);
+            public static void ToGame() => To(Game);
+            public static void ToOverworld() => To(Overworld);
+            public static void ToPartyManager() => To(PartyManager);
+            public static void ToProfileCreate() => To(ProfileCreate);
+            public static void ToProfileSelect() => To(ProfileSelect);
+            public static void ToSaveFileSelect() => To(SaveFileSelect);
+            public static void ToSplashScreen() => To(SplashScreen);
+            public static void ToSettings() => To(Settings);
+            public static void ToStageSelect() => To(StageSelect);
+            public static void ToTitleScreen() => To(TitleScreen);
+            public static void ToPostBattleScreen() => To(PostBattleScreen);
+            public static void ToHub() => To(Hub); 
+        }
+
+    }
+}

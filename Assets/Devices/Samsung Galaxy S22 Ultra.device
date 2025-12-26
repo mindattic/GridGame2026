@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S22 Ultra",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1440,
+      "height": 3088,
+      "dpi": 500,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 3088
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 14",
+    "deviceModel": "Samsung Galaxy S22 Ultra",
+    "supportsGyroscope": true
+  }
+}

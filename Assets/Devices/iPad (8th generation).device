@@ -1,0 +1,27 @@
+{
+  "friendlyName": "iPad (8th generation)",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1620,
+      "height": 2160,
+      "dpi": 264,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1620,
+            "height": 2160
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "iPadOS 14",
+    "deviceModel": "iPad (8th generation)",
+    "supportsGyroscope": true
+  }
+}

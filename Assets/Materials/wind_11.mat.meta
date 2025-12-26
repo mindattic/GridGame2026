@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 664077ee1a159a84ebe94cea4a564aad
+timeCreated: 1543827592
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/wind_11.mat
+  uploadId: 676589

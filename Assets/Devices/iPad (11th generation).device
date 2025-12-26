@@ -1,0 +1,27 @@
+{
+  "friendlyName": "iPad (11th generation)",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1640,
+      "height": 2360,
+      "dpi": 264,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1640,
+            "height": 2360
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "iPadOS 18",
+    "deviceModel": "iPad (11th generation)",
+    "supportsGyroscope": true
+  }
+}

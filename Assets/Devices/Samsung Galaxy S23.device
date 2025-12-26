@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S23",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1080,
+      "height": 2340,
+      "dpi": 425,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1080,
+            "height": 2340
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 14",
+    "deviceModel": "Samsung Galaxy S23",
+    "supportsGyroscope": true
+  }
+}

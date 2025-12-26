@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: cdfa26b4e3d031441bd41dd83f44bedf
+timeCreated: 1525696578
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/other_ryan_110.mat
+  uploadId: 679549

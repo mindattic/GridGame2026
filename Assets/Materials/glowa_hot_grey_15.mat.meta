@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: be63ffef123c9284c9d1c7fc68b11913
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkDoor/Textures/Materials/glowa_hot_grey_15.mat
+  uploadId: 671947

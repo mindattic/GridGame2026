@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bcbe44de208ef7d46b62dfb6f8e8e08d
+timeCreated: 1522228985
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Summon healing rain/Materials/FX_Summon
+    rain.mat
+  uploadId: 673592

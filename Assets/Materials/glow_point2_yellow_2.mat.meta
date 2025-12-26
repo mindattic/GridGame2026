@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 863ef9176443e5444b0c024e9fe8b9e4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/glow_point2_yellow_2.mat
+  uploadId: 679549

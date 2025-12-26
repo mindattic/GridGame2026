@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: cd7f4ea03f83ad644bd4d7c293597a7d
+timeCreated: 1465192549
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/la_01.mat
+  uploadId: 768429

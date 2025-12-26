@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a8d176eb0acaa1f47b749f14d32a97e9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_BloodSlash.prefab
+  uploadId: 674228

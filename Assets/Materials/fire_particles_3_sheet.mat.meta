@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 94bab79deb6fe1547805887fb99877cc
+timeCreated: 1528376844
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 283604
+  packageName: Untitled
+  packageVersion: 1.0
+  assetPath: Assets/FX_FireSkill/Materials/fire_particles_3_sheet.mat
+  uploadId: 660306

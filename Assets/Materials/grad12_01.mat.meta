@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dd55a7ff4b838aa419bce82af976de33
+timeCreated: 1435130655
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Arrow/Textures/Materials/grad12_01.mat
+  uploadId: 671947

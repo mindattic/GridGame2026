@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 45dac01b87e649841b101cf8554b3fd5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkShock/Textures/Materials/StartWave_Electro
+    4.mat
+  uploadId: 671947

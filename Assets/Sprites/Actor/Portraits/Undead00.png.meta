@@ -1,0 +1,1963 @@
+fileFormatVersion: 2
+guid: 70daf228913dc394a8df08f1eaaa41cc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6093538505964146426
+    second: Undead00_0
+  - first:
+      213: 3461452873576273820
+    second: Undead00_1
+  - first:
+      213: 5155640615782053491
+    second: Undead00_2
+  - first:
+      213: 391906490660555775
+    second: Undead00_3
+  - first:
+      213: 9213720047181429038
+    second: Undead00_4
+  - first:
+      213: -6130956137131330719
+    second: Undead00_5
+  - first:
+      213: -3913007074319416819
+    second: Undead00_6
+  - first:
+      213: 9191253973243158231
+    second: Undead00_7
+  - first:
+      213: 61122053897150539
+    second: Undead00_8
+  - first:
+      213: 2482190733577688152
+    second: Undead00_9
+  - first:
+      213: -8686301660741710113
+    second: Undead00_10
+  - first:
+      213: -6893916515505865056
+    second: Undead00_11
+  - first:
+      213: 2620140333430699548
+    second: Undead00_12
+  - first:
+      213: -3012720059825016219
+    second: Undead00_13
+  - first:
+      213: -3086911167794437487
+    second: Undead00_14
+  - first:
+      213: 6085906302537476324
+    second: Undead00_15
+  - first:
+      213: 3220685543827062698
+    second: Undead00_16
+  - first:
+      213: 1505338035084590446
+    second: Undead00_17
+  - first:
+      213: 6357413666003108312
+    second: Undead00_18
+  - first:
+      213: -592384954079385503
+    second: Undead00_19
+  - first:
+      213: 7963374281218347515
+    second: Undead00_20
+  - first:
+      213: -3373887844982722599
+    second: Undead00_21
+  - first:
+      213: -5882624719615945024
+    second: Undead00_22
+  - first:
+      213: 3664470541234306881
+    second: Undead00_23
+  - first:
+      213: -3937675351599711900
+    second: Undead00_24
+  - first:
+      213: 3481063786194291828
+    second: Undead00_25
+  - first:
+      213: -2018266342357116612
+    second: Undead00_26
+  - first:
+      213: -5413793250011893995
+    second: Undead00_27
+  - first:
+      213: -4099703669356956626
+    second: Undead00_28
+  - first:
+      213: 5155581832476824348
+    second: Undead00_29
+  - first:
+      213: -6026109649519247529
+    second: Undead00_30
+  - first:
+      213: 9164908041772571176
+    second: Undead00_31
+  - first:
+      213: 7830615799195871293
+    second: Undead00_32
+  - first:
+      213: 4949430893628738633
+    second: Undead00_33
+  - first:
+      213: -6945444646728129102
+    second: Undead00_34
+  - first:
+      213: 5865953273633351158
+    second: Undead00_35
+  - first:
+      213: -6380600708685365058
+    second: Undead00_36
+  - first:
+      213: 6396812960107466919
+    second: Undead00_37
+  - first:
+      213: -4996230337724598983
+    second: Undead00_38
+  - first:
+      213: -6414723162385128893
+    second: Undead00_39
+  - first:
+      213: -6549099556794914473
+    second: Undead00_40
+  - first:
+      213: 6455475686570483758
+    second: Undead00_41
+  - first:
+      213: -3158630203325199777
+    second: Undead00_42
+  - first:
+      213: -6898201538248679742
+    second: Undead00_43
+  - first:
+      213: 1252733663195205632
+    second: Undead00_44
+  - first:
+      213: -2451739741806351427
+    second: Undead00_45
+  - first:
+      213: 473523644988092281
+    second: Undead00_46
+  - first:
+      213: 2224904575730585423
+    second: Undead00_47
+  - first:
+      213: -960204518041335187
+    second: Undead00_48
+  - first:
+      213: 8925542619870666816
+    second: Undead00_49
+  - first:
+      213: 9202029690143136292
+    second: Undead00_50
+  - first:
+      213: 4091951204610145172
+    second: Undead00_51
+  - first:
+      213: 8677764598634497629
+    second: Undead00_52
+  - first:
+      213: -868273039670947699
+    second: Undead00_53
+  - first:
+      213: 6695559611590989008
+    second: Undead00_54
+  - first:
+      213: 3583394547196257101
+    second: Undead00_55
+  - first:
+      213: -6211593110577021394
+    second: Undead00_56
+  - first:
+      213: 2992089196596484380
+    second: Undead00_57
+  - first:
+      213: -2927850899352359224
+    second: Undead00_58
+  - first:
+      213: 4310753532471452788
+    second: Undead00_59
+  - first:
+      213: 6580234848788861262
+    second: Undead00_60
+  - first:
+      213: 2516510854758996337
+    second: Undead00_61
+  - first:
+      213: -4137322754107049282
+    second: Undead00_62
+  - first:
+      213: -5500304121614786210
+    second: Undead00_63
+  - first:
+      213: -8333116123298302655
+    second: Undead00_64
+  - first:
+      213: 599379351791077383
+    second: Undead00_65
+  - first:
+      213: 4665162542412378529
+    second: Undead00_66
+  - first:
+      213: 1485596972022338696
+    second: Undead00_67
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Undead00_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 1010
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 601b7d683076f6ba0800000000000000
+      internalID: -6093538505964146426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_1
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 0
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c97d4488c0d890030800000000000000
+      internalID: 3461452873576273820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 0
+        width: 68
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 376f34503d38c8740800000000000000
+      internalID: 5155640615782053491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_3
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 69
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffb0ef870e4507500800000000000000
+      internalID: 391906490660555775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_4
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 14
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e29f4280195bddf70800000000000000
+      internalID: 9213720047181429038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_5
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 12
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16339c060e77aeaa0800000000000000
+      internalID: -6130956137131330719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 5
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d02c9934cc432b9c0800000000000000
+      internalID: -3913007074319416819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_7
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 0
+        width: 11
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7de5e839ac4ed8f70800000000000000
+      internalID: 9191253973243158231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_8
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 0
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b406b762f2629d000800000000000000
+      internalID: 61122053897150539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_9
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 0
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8541aab2253827220800000000000000
+      internalID: 2482190733577688152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_10
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 0
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdeca9b59ae047780800000000000000
+      internalID: -8686301660741710113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_11
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 2
+        width: 19
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aef2166473e350a0800000000000000
+      internalID: -6893916515505865056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_12
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 0
+        width: 17
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c167fcb40cb9c5420800000000000000
+      internalID: 2620140333430699548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_13
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 0
+        width: 17
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 562bf62511ba036d0800000000000000
+      internalID: -3012720059825016219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_14
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 0
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1922d66e5a61925d0800000000000000
+      internalID: -3086911167794437487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_15
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 0
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e8ae03a98b757450800000000000000
+      internalID: 6085906302537476324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_16
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 0
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aaf3c0d207c22bc20800000000000000
+      internalID: 3220685543827062698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_17
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 0
+        width: 18
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6df910a7f804e410800000000000000
+      internalID: 1505338035084590446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_18
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 0
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d14454db021a3850800000000000000
+      internalID: 6357413666003108312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_19
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 12
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 168efc9d50d67c7f0800000000000000
+      internalID: -592384954079385503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_20
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 0
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf1508d87b6938e60800000000000000
+      internalID: 7963374281218347515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_21
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 0
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dfebcf61ea8d21d0800000000000000
+      internalID: -3373887844982722599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_22
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 0
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c61c582cf7bc5ea0800000000000000
+      internalID: -5882624719615945024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_23
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 0
+        width: 20
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14f7724ca80dad230800000000000000
+      internalID: 3664470541234306881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_24
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 1
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 469761361219a59c0800000000000000
+      internalID: -3937675351599711900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_25
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 6
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47c4690f1193f4030800000000000000
+      internalID: 3481063786194291828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_26
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c395da1747dadf3e0800000000000000
+      internalID: -2018266342357116612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_27
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 71
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51f22adf8b75ed4b0800000000000000
+      internalID: -5413793250011893995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_28
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e24fc9fdb3dea17c0800000000000000
+      internalID: -4099703669356956626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_29
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 0
+        width: 44
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c131d377c5e4c8740800000000000000
+      internalID: 5155581832476824348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_30
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 10
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75ff9d29335fe5ca0800000000000000
+      internalID: -6026109649519247529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_31
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 0
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82a99f46e4b403f70800000000000000
+      internalID: 9164908041772571176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_32
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d38a1abb49febac60800000000000000
+      internalID: 7830615799195871293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_33
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 0
+        width: 8
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94cc51fac29efa440800000000000000
+      internalID: 4949430893628738633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_34
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 0
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b5a1a074e2dc9f90800000000000000
+      internalID: -6945444646728129102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_35
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 0
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f5a4f75c6d086150800000000000000
+      internalID: 5865953273633351158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_36
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 0
+        width: 31
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb00439167d8377a0800000000000000
+      internalID: -6380600708685365058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_37
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 7
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a012d5de7b06c850800000000000000
+      internalID: 6396812960107466919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_38
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 0
+        width: 24
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93535ef9af2d9aab0800000000000000
+      internalID: -4996230337724598983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_39
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 0
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 342609d35435af6a0800000000000000
+      internalID: -6414723162385128893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_40
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 0
+        width: 7
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7592296d6acec15a0800000000000000
+      internalID: -6549099556794914473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_41
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 2
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2064323fe4769950800000000000000
+      internalID: 6455475686570483758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_42
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 0
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5a4bf1b09a4a24d0800000000000000
+      internalID: -3158630203325199777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_43
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 4
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ce52abcf3aa440a0800000000000000
+      internalID: -6898201538248679742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_44
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 0
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0009ce021aa926110800000000000000
+      internalID: 1252733663195205632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_45
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 3
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbbace7d1bba9fdd0800000000000000
+      internalID: -2451739741806351427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_46
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 9
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97f634c0f3b429600800000000000000
+      internalID: 473523644988092281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_47
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 0
+        width: 23
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4f009f6ce270ee10800000000000000
+      internalID: 2224904575730585423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_48
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 0
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6acb66041baca2f0800000000000000
+      internalID: -960204518041335187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_49
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 0
+        width: 12
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 040200529b5eddb70800000000000000
+      internalID: 8925542619870666816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_50
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 0
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42a549daf3d24bf70800000000000000
+      internalID: 9202029690143136292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_51
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 0
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49bf405c0f789c830800000000000000
+      internalID: 4091951204610145172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_52
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 3
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56c11afcec9d6870800000000000000
+      internalID: 8677764598634497629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_53
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 0
+        width: 11
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d805d5e454643f3f0800000000000000
+      internalID: -868273039670947699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_54
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 5
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4555dfdf76bec50800000000000000
+      internalID: 6695559611590989008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_55
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 0
+        width: 25
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4364b3ea56cab130800000000000000
+      internalID: 3583394547196257101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_56
+      rect:
+        serializedVersion: 2
+        x: 827
+        y: 0
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2efac2f9fcfbc9a0800000000000000
+      internalID: -6211593110577021394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_57
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 0
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19da638549068920800000000000000
+      internalID: 2992089196596484380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_58
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 0
+        width: 30
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ce6bc49e1f2e57d0800000000000000
+      internalID: -2927850899352359224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_59
+      rect:
+        serializedVersion: 2
+        x: 892
+        y: 6
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 474a8399f7fd2db30800000000000000
+      internalID: 4310753532471452788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_60
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 10
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e41d4bc3bb0b15b50800000000000000
+      internalID: 6580234848788861262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_61
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 4
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17913531a417ce220800000000000000
+      internalID: 2516510854758996337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_62
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 21
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebafe4820e64596c0800000000000000
+      internalID: -4137322754107049282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_63
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 0
+        width: 22
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51a8821b8efaa3b0800000000000000
+      internalID: -5500304121614786210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_64
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 0
+        width: 13
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14579be5903da5c80800000000000000
+      internalID: -8333116123298302655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_65
+      rect:
+        serializedVersion: 2
+        x: 982
+        y: 0
+        width: 7
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7080635485c615800800000000000000
+      internalID: 599379351791077383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_66
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 0
+        width: 33
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a1b2ff7d9cfdb040800000000000000
+      internalID: 4665162542412378529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Undead00_67
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 5
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88499c43396ed9410800000000000000
+      internalID: 1485596972022338696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Undead00_0: -6093538505964146426
+      Undead00_1: 3461452873576273820
+      Undead00_10: -8686301660741710113
+      Undead00_11: -6893916515505865056
+      Undead00_12: 2620140333430699548
+      Undead00_13: -3012720059825016219
+      Undead00_14: -3086911167794437487
+      Undead00_15: 6085906302537476324
+      Undead00_16: 3220685543827062698
+      Undead00_17: 1505338035084590446
+      Undead00_18: 6357413666003108312
+      Undead00_19: -592384954079385503
+      Undead00_2: 5155640615782053491
+      Undead00_20: 7963374281218347515
+      Undead00_21: -3373887844982722599
+      Undead00_22: -5882624719615945024
+      Undead00_23: 3664470541234306881
+      Undead00_24: -3937675351599711900
+      Undead00_25: 3481063786194291828
+      Undead00_26: -2018266342357116612
+      Undead00_27: -5413793250011893995
+      Undead00_28: -4099703669356956626
+      Undead00_29: 5155581832476824348
+      Undead00_3: 391906490660555775
+      Undead00_30: -6026109649519247529
+      Undead00_31: 9164908041772571176
+      Undead00_32: 7830615799195871293
+      Undead00_33: 4949430893628738633
+      Undead00_34: -6945444646728129102
+      Undead00_35: 5865953273633351158
+      Undead00_36: -6380600708685365058
+      Undead00_37: 6396812960107466919
+      Undead00_38: -4996230337724598983
+      Undead00_39: -6414723162385128893
+      Undead00_4: 9213720047181429038
+      Undead00_40: -6549099556794914473
+      Undead00_41: 6455475686570483758
+      Undead00_42: -3158630203325199777
+      Undead00_43: -6898201538248679742
+      Undead00_44: 1252733663195205632
+      Undead00_45: -2451739741806351427
+      Undead00_46: 473523644988092281
+      Undead00_47: 2224904575730585423
+      Undead00_48: -960204518041335187
+      Undead00_49: 8925542619870666816
+      Undead00_5: -6130956137131330719
+      Undead00_50: 9202029690143136292
+      Undead00_51: 4091951204610145172
+      Undead00_52: 8677764598634497629
+      Undead00_53: -868273039670947699
+      Undead00_54: 6695559611590989008
+      Undead00_55: 3583394547196257101
+      Undead00_56: -6211593110577021394
+      Undead00_57: 2992089196596484380
+      Undead00_58: -2927850899352359224
+      Undead00_59: 4310753532471452788
+      Undead00_6: -3913007074319416819
+      Undead00_60: 6580234848788861262
+      Undead00_61: 2516510854758996337
+      Undead00_62: -4137322754107049282
+      Undead00_63: -5500304121614786210
+      Undead00_64: -8333116123298302655
+      Undead00_65: 599379351791077383
+      Undead00_66: 4665162542412378529
+      Undead00_67: 1485596972022338696
+      Undead00_7: 9191253973243158231
+      Undead00_8: 61122053897150539
+      Undead00_9: 2482190733577688152
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

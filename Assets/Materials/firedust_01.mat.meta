@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1db85c7f47754e5488ddf6cc91ae0898
+timeCreated: 1441666645
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Groundexplosion/Textures/Materials/firedust_01.mat
+  uploadId: 671947

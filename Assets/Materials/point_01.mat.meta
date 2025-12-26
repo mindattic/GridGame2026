@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2cd98a2ae293bd54b97534507fdf7d12
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Groundexplosion/Textures/Materials/point_01.mat
+  uploadId: 671947

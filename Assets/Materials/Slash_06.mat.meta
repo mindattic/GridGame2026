@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e41ec82574bf06c49ba2deafffc4d002
+timeCreated: 1501818001
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/Slash_06.mat
+  uploadId: 768429

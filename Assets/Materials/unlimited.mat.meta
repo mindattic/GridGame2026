@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d88f55a7c075dae409dd71d5bd505a5a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Materials/unlimited.mat
+  uploadId: 678419

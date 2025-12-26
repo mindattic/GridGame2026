@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 74fa7eab1c1f8e941823878ef8949eed
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Animator/FX_Galaxy Vortex.controller
+  uploadId: 668264

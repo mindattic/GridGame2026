@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9e15a3a231a7345479b2b98875328ca8
+timeCreated: 1565354460
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/Prefabs/FX_Starfall.prefab
+  uploadId: 671947

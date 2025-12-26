@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c2adb2b18581b9a4ea5c3418e80c2682
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_Spurblood_Loop.prefab
+  uploadId: 674228

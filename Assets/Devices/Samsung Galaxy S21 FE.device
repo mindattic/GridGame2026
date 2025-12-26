@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S21 FE",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1080,
+      "height": 2400,
+      "dpi": 401,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1080,
+            "height": 2400
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 14",
+    "deviceModel": "Samsung Galaxy S21 FE",
+    "supportsGyroscope": true
+  }
+}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 960bb50aa437d894780cc8369b447e0a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Thunder/Textures/materials/Electric_Splat_Hit_02.mat
+  uploadId: 671947

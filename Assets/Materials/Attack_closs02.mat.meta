@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 10123979097ee2e49a3976a2b51a6a1f
+timeCreated: 1533026094
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/Attack_closs02.mat
+  uploadId: 681449

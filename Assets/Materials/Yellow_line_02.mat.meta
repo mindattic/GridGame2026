@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a641b6b7b11c13641a7e89dcab4d1df6
+timeCreated: 1557216327
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_line_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Yellow_line_02.mat
+  uploadId: 679549

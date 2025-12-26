@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: adbc82fedb9c7da40aebceacdc72d4d6
+timeCreated: 1441666645
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Thunder/Textures/materials/particle_sprite.mat
+  uploadId: 671947

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e3b55d4c5449e55428ad5b58da318a84
+timeCreated: 1439064635
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/vfx_twinkle-blurred-add-[1.0]
+    1.mat
+  uploadId: 673592

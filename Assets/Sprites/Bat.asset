@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445e33c595b51d243b26605ee3545525, type: 3}
+  m_Name: Bat
+  m_EditorClassIdentifier: 
+  id: Bat
+  idle: {fileID: 21300000, guid: 10a93c8b5a32a2c4a8fab06eba7f9d55, type: 3}
+  attack: {fileID: 21300000, guid: 41ec0ece32cb7a941ba03346baae2682, type: 3}
+  portrait: {fileID: 21300000, guid: 4dfa6d2b70446fc4cb7dadfbfd2df3f9, type: 3}

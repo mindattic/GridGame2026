@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 35f5247c3e79ad64eb26a18861dd855d
+timeCreated: 1485226416
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_rune_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Rune24.mat
+  uploadId: 679549

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 00d5a40a6db65fa45914680e41a81028
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/Add_CenterGlow.shader
+  uploadId: 679549

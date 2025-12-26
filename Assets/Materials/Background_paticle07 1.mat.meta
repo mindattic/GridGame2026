@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c20e670d32179d14cabe90a85850e2fb
+timeCreated: 1545465075
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/Background_paticle07.mat
+  uploadId: 676589

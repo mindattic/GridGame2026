@@ -1,0 +1,405 @@
+using Assets.Helper;
+using Assets.Helpers;
+using Assets.Scripts.GUI;
+using Assets.Scripts.Models;
+using Game.Manager;
+using System;
+using System.Collections;
+using System.Linq;
+using UnityEngine;
+using g = Assets.Helpers.GameHelper;
+using scene = Assets.Helpers.SceneHelper;
+using Assets.Scripts.Managers; // added
+using Assets.Scripts.Sequences;
+using Assets.Scripts.Libraries; // NEW
+using System.Collections.Generic; // added
+
+public class StageManager : MonoBehaviour
+{
+    // Internal property:
+    public int enemyCount => g.Actors.All.FindAll(x => x.IsEnemy).Count;
+
+    // Fields:
+    private GameObject actorPrefab;
+    public Stage currentStage;
+    private int currentWave = 0; // Track the current wave
+
+    // Endless state
+    private bool IsEndless => GameModeHelper.IsEndless;
+
+    public void Awake()
+    {
+        actorPrefab = PrefabLibrary.Prefabs["ActorPrefab"];
+    }
+
+    /// <summary>
+    /// Initializes the StageManager by retrieving the stage name from the hero's profile,
+    /// loading the corresponding Stage, and then loading the stage.
+    /// </summary>
+    public void Initialize()
+    {
+        var latestSave = ProfileHelper.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        if (latestSave == null)
+        {
+            Debug.LogError("No saved game state found.");
+            return;
+        }
+
+        // Begin a new XP session with current party participants (shared flow)
+        var participants = ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Select(m => m.CharacterClass);
+        ExperienceTracker.StartSession(participants);
+
+        if (IsEndless)
+        {
+            InitializeEndless();
+            return;
+        }
+
+        currentStage = StageLibrary.Get(latestSave.Stage.CurrentStage);
+        RestartStage();
+    }
+
+    private void InitializeEndless()
+    {
+        // Reset
+        currentWave = 0;
+        g.ActorManager.Clear();
+        g.DottedLineManager.Clear();
+        g.SynergyLineManager.Clear();
+        g.CoinCounter.Refresh();
+        g.TileManager.Reset();
+        
+        // Build a nominal stage placeholder
+        currentStage = new Stage
+        {
+            Name = "Endless",
+            Description = "Endless",
+            CompletionCondition = "Endless",
+            CompletionValue = 0,
+            Waves = new System.Collections.Generic.List<StageWave>()
+        };
+
+        // Spawn party heroes from the save directly (no PartyManager / no level overrides)
+        foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
+        {
+            var hero = ActorLibrary.Get(partyMember.CharacterClass);
+            if (hero == null) { Debug.LogWarning($"Skipping party member with invalid class: {partyMember.CharacterClass}"); continue; }
+            var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
+            int level = Mathf.Max(1, derived.level);
+            var stageActor = new StageActor(partyMember.CharacterClass, Team.Hero, level, location: RNG.UnoccupiedLocation);
+            SpawnActor(stageActor, rebuildTimeline: false);
+        }
+
+        // Generate and load wave 1
+        LoadEndlessWave(0);
+
+        // After spawns, seed timeline tags for current enemies
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+
+        scene.FadeIn();
+    }
+
+    private void LoadEndlessWave(int waveIndex)
+    {
+        int nextWaveNumber = waveIndex + 1;
+        var wave = Assets.Scripts.Managers.EndlessWaveGenerator.Generate(nextWaveNumber, GameModeHelper.Tags);
+
+        // Track current index
+        currentWave = waveIndex;
+
+        // Pre-spawn actors; those with SpawnTurn > current will stay inactive until turn threshold
+        foreach (var stageActor in wave.Actors)
+        {
+            SpawnActor(stageActor, rebuildTimeline: false);
+        }
+
+        // Announcement (total unknown/infinite)
+        g.WaveAnnouncement?.ShowEndless(nextWaveNumber);
+
+        // Refresh timeline tags
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+    }
+
+    /// <summary>
+    /// Loads the selected stage and initializes the first wave.
+    /// </summary>
+    public void RestartStage()
+    {
+        // Reset everything for a new stage.
+        currentWave = ProfileHelper.CurrentProfile.CurrentSave.Stage.CurrentWave;
+        g.ActorManager.Clear();
+        g.DottedLineManager.Clear();
+        g.SynergyLineManager.Clear();
+        g.CoinCounter.Refresh();
+        g.TileManager.Reset();
+        //g.TurnManager.Initialize();
+
+        // Show persistent hero actors from ProfileHelper
+        foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
+        {
+            // Derive level from TotalXP in save
+            var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
+            int level = Mathf.Max(1, derived.level);
+            var stageActor = new StageActor(partyMember.CharacterClass, Team.Hero, level, location: RNG.UnoccupiedLocation);
+            // Defer timeline rebuild during bulk spawns
+            SpawnActor(stageActor, rebuildTimeline: false);
+        }
+
+        // Load the wave based on currentWave.
+        if (currentStage.Waves != null && currentStage.Waves.Count > 0)
+        {
+            LoadWave(currentWave);
+        }
+        else
+        {
+            Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
+        }
+
+        // Ensure timeline tags exist
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+
+        scene.FadeIn();
+    }
+
+    /// <summary>
+    /// Loads the given wave index.
+    /// </summary>
+    private void LoadWave(int waveIndex)
+    {
+        if (currentStage == null || currentStage.Waves == null)
+        {
+            Debug.LogError("LoadWave: currentStage or Waves is null.");
+            return;
+        }
+
+        if (waveIndex >= currentStage.Waves.Count)
+        {
+            Debug.LogError($"Wave index {waveIndex} is out of bounds for stage {currentStage.Name}.");
+            return;
+        }
+
+        StageWave wave = currentStage.Waves[waveIndex];
+
+        // Show actors for this wave
+        var actors = wave?.Actors;
+        if (actors != null)
+        {
+            foreach (var stageActor in actors)
+            {
+                // Defer timeline rebuild until all spawns are finished
+                SpawnActor(stageActor, rebuildTimeline: false);
+            }
+        }
+
+        // Show dotted supportLines' for this wave
+        var dottedLines = wave?.DottedLines;
+        if (dottedLines != null)
+        {
+            foreach (var stageDottedLine in dottedLines)
+            {
+                var segment = stageDottedLine.Segment;
+                var location = stageDottedLine.Location;
+                g.DottedLineManager.Spawn(segment, location);
+            }
+        }
+
+        // Refresh tags for currently spawned enemies
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+
+        g.WaveAnnouncement?.Show(waveIndex + 1, currentStage.Waves.Count);
+    }
+
+
+    /// <summary>
+    /// Spawns a new actor on a guaranteed free tile.
+    /// Always assigns a fresh unoccupied location to the StageActor.
+    /// </summary>
+    public ActorInstance SpawnActor(StageActor stageActor, bool rebuildTimeline = true)
+    {
+        if (stageActor == null || stageActor.CharacterClass == CharacterClass.None)
+        {
+            Debug.LogWarning("SpawnActor called with null or None CharacterClass. Skipping spawn.");
+            return null;
+        }
+
+        var data = ActorLibrary.Get(stageActor.CharacterClass);
+        if (data == null)
+        {
+            Debug.LogWarning($"Actor data not found for CharacterClass {stageActor.CharacterClass}. Skipping spawn.");
+            return null;
+        }
+
+        // Instantiate and parent under the board
+        var go = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<ActorInstance>();
+        instance.transform.SetParent(g.Board.transform, false);
+        instance.name = $"{stageActor.CharacterClass}_{Guid.NewGuid():N}";
+        instance.characterClass = stageActor.CharacterClass;
+        instance.team = stageActor.Team;
+
+        // Stats and metadata
+        instance.Stats = data.GetStats(stageActor.Level);
+
+        // Seed hero progress from save: derive Level/CurrentXP from TotalXP
+        if (stageActor.Team == Team.Hero)
+        {
+            var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+            if (party != null)
+            {
+                var entry = party.FirstOrDefault(m => m != null && m.CharacterClass == stageActor.CharacterClass);
+                if (entry != null)
+                {
+                    var (lvl, cur) = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, entry.TotalXP));
+                    // Ensure consistency
+                    instance.Stats.Level = Mathf.Max(1, lvl);
+                    instance.Stats.CurrentXP = Mathf.Max(0, cur);
+                    instance.Stats.TotalXP = Mathf.Max(0, entry.TotalXP);
+                }
+            }
+        }
+
+        instance.transform.localScale = GameManager.instance.tileScale;
+        instance.spawnTurn = stageActor.SpawnTurn;
+
+        // Pick and assign location, then spawn
+        var location = RNG.UnoccupiedLocation;
+
+        // This ensures that the game's stage data "knows" where this actor is starting.
+        // Used for saving, AI planning, and any systems that read StageActor info.
+        stageActor.Location = location;
+
+        // This physically places the GameObject in the scene and updates the tile's occupancy.
+        instance.Spawn(location);
+
+        // Register the new actor
+        g.Actors.All.Add(instance);
+
+        // If requested, seed timeline tags immediately (useful for single off-cycle spawns)
+        if (rebuildTimeline)
+        {
+            g.TimelineBar?.EnsureTagsForAllEnemies(false);
+        }
+
+        return instance;
+    }
+
+    /// <summary>
+    /// Called once per turn advance (from TurnManager) to activate any actors whose spawnTurn has arrived.
+    /// </summary>
+    public void OnTurnAdvanced()
+    {
+        foreach (var a in g.Actors.All)
+        {
+            if (a == null) continue;
+            a.ActivateIfSpawnable();
+        }
+    }
+
+    /// <summary>
+    /// When an actor dies we may need to: pull-forward pending spawns to avoid empty enemy turns,
+    /// advance waves, or trigger win/lose states.
+    /// </summary>
+    public void OnActorDeath()
+    {
+        // Immediately refresh timeline so dead enemies' tags are removed
+        g.TimelineBar?.EnsureTagsForAllEnemies(false);
+
+        // 1) If there are no enemies currently playing but there are pending (not yet spawned)
+        //    enemies scheduled for future turns, pull the next batch forward to the current turn
+        //    so the board is never empty of enemies.
+        var enemiesPlaying = g.Actors.Enemies.Any(e => e != null && e.IsPlaying);
+        var pending = g.Actors.Enemies.Where(e => e != null && !e.Flags.HasSpawned).ToList();
+        if (!enemiesPlaying && pending.Count > 0)
+        {
+            int currentTurn = g.TurnManager.CurrentTurn;
+            int nextSpawnTurn = pending.Min(e => e.spawnTurn);
+            var nextBatch = pending.Where(e => e.spawnTurn == nextSpawnTurn).ToList();
+            foreach (var e in nextBatch)
+                e.spawnTurn = currentTurn;
+
+            // Activate immediately and refresh timeline
+            OnTurnAdvanced();
+            g.TimelineBar?.EnsureTagsForAllEnemies(false);
+            return; // do not advance wave/stage; we just filled the gap
+        }
+
+        // 2) Otherwise continue with standard flow
+        CheckBattleLost();
+        if (IsEndless) CheckEndlessWaveComplete(); else CheckWaveComplete();
+    }
+
+    /// <summary>
+    /// Endless flow: when all enemies are dead, generate and load the next wave.
+    /// </summary>
+    private void CheckEndlessWaveComplete()
+    {
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allEnemiesDead)
+            return;
+
+        currentWave++;
+        LoadEndlessWave(currentWave);
+    }
+
+    /// <summary>
+    /// Checks if the current wave is complete and moves to the next wave or completes the stage.
+    /// </summary>
+    private void CheckWaveComplete()
+    {
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allEnemiesDead)
+            return;
+
+        currentWave++;
+
+        if (currentWave < currentStage.Waves.Count)
+        {
+            Debug.Log($"All enemies defeated. Loading next wave: {currentWave + 1}");
+            LoadWave(currentWave);
+        }
+        else
+        {
+            CheckBattleWon();
+        }
+    }
+
+    /// <summary>
+    /// Handles what happens when all waves of a stage are completed.
+    /// </summary>
+    private void CheckBattleWon()
+    {
+        if (currentWave < currentStage.Waves.Count)
+            return;
+
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allEnemiesDead)
+            return;
+
+        g.SequenceManager.Add(new BattleWonSequence());
+        g.SequenceManager.Execute();
+    }
+
+    /// <summary>
+    /// Checks whether the game is over.
+    /// </summary>
+    private void CheckBattleLost()
+    {
+        bool allHeroesDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allHeroesDead)
+            return;
+
+        g.SequenceManager.Add(new BattleLostSequence());
+        g.SequenceManager.Execute();
+    }
+
+    /// <summary>
+    /// Convenience method for adding a new attacker actor.
+    /// </summary>
+    /// <param name="characterClass">characterName type for the attacker.</param>
+    public ActorInstance AddEnemy(CharacterClass characterClass)
+    {
+        var stageActor = new StageActor(characterClass, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
+        return SpawnActor(stageActor);
+    }
+
+}

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: bac63d726da40ae4c9cd1c6550fca3c4
+timeCreated: 1528376844
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_fire_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Fireball/Textures/Materials/fire_particles_sheet.mat
+  uploadId: 671947

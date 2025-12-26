@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b84aa919c49ac494eac6bfc0c791a24c
+timeCreated: 18446744011573954816
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_ring_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/CFXM3_HollowCircle
+    ADD.mat
+  uploadId: 671947

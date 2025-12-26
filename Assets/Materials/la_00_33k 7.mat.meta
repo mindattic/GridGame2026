@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d0e80700123b6484aad09bb3fb470217
+timeCreated: 1465192549
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_gradient_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Starfall/Textures/Materials/la_00_33k
+    7.mat
+  uploadId: 671947

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a743ca9672fa9ae438816aaa3cd59441
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Animator/Trail.anim
+  uploadId: 678419

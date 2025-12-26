@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S25 Ultra",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1440,
+      "height": 3120,
+      "dpi": 498,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 3120
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 15",
+    "deviceModel": "Samsung Galaxy S25 Ultra",
+    "supportsGyroscope": true
+  }
+}

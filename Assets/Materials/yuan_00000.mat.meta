@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 01f7d121b6751f748ac6e3ff20b09bd5
+timeCreated: 1531105510
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/yuan_00000.mat
+  uploadId: 668264

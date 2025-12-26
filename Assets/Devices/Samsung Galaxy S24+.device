@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S24+",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1440,
+      "height": 3120,
+      "dpi": 513,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 3120
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 14",
+    "deviceModel": "Samsung Galaxy S24+",
+    "supportsGyroscope": true
+  }
+}

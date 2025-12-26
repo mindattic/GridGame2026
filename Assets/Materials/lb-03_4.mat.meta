@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7e10c173ea218d34fb77f583622641be
+timeCreated: 1521613432
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/lb-03_4.mat
+  uploadId: 679549

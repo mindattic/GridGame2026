@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1e40e3a792fdfda498da18241c09998c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 257146
+  packageName: URP VFX Ultra Bundle
+  packageVersion: 1.1.2023.09
+  assetPath: Assets/Vefects/Level Up VFX URP/VFX/Shaders/SH_Vefects_VFX_URP_LVL_Up_Test.shader
+  uploadId: 781953

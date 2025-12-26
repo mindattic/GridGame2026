@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dfe362598ac5f6347977977df957de8b
+timeCreated: 1534815036
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_ring_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Common_ImpactRingDirectional.mat
+  uploadId: 679549

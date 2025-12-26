@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: StartWave_Electro_red
+  m_Shader: {fileID: 4800000, guid: e64f5fb47c44b9e4291f7b3528f90819, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _USERAMP_ON
+  - _USE_GRADIENT_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortionNoise:
+        m_Texture: {fileID: 2800000, guid: 1f256e8a66ea42c4ea6aa1c16a11c9e7, type: 3}
+        m_Scale: {x: 3, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Flow:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Gradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GradientMask:
+        m_Texture: {fileID: 2800000, guid: 69c4a6898925c474c847db66695e96e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GradientMask02:
+        m_Texture: {fileID: 2800000, guid: 69c4a6898925c474c847db66695e96e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 1}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSmooth:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise01:
+        m_Texture: {fileID: 2800000, guid: cfe985002915cc14d9f8a13a2f98f53f, type: 3}
+        m_Scale: {x: 4, y: 0.75}
+        m_Offset: {x: 0, y: 0}
+    - _Noise02:
+        m_Texture: {fileID: 2800000, guid: 1746d72c8cbcebf4ebe6ab93898e2f61, type: 3}
+        m_Scale: {x: 1, y: 0.75}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: b51ee46f15552054686c64a0c57efb62, type: 3}
+        m_Scale: {x: 1.5, y: 1}
+        m_Offset: {x: 0.1, y: 0}
+    - _TEX:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _dissolve:
+        m_Texture: {fileID: 2800000, guid: e01e4acd3521d2b449a08d960b5f1bfa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend2: 1
+    - _CullMode: 0
+    - _Cutoff: 0.5
+    - _Depthpower: 1
+    - _DisplaceAmount: 1.5
+    - _DistortionPower: 0.08
+    - _EdgeSize: 0.2
+    - _Emission: 2
+    - _FinalPower: 3.1
+    - _Glossiness: 0.5
+    - _MaskPower: 0.71
+    - _Metallic: 0
+    - _NoiseStrength: 0.4
+    - _OpacityBoost: 1.5
+    - _UseRamp: 1
+    - _Use_Gradient: 1
+    - _Usecenterglow: 0
+    - _Usecustomrandom: 0
+    - _Usedepth: 0
+    - _X_Speed_copy_copy: 2
+    - _cutoff: 0
+    - _dis_light: 1
+    - _dissolve_Slider: 0
+    - _node_817: 0
+    - _range: 0.04314768
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
+    - _EdgeColor1: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission: {r: 0, g: 0, b: 0, a: 0}
+    - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
+    - _TintColor: {r: 0.8867924, g: 0.29024196, b: 0.06274474, a: 1}
+    - _dis_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

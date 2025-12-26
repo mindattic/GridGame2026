@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e1187d0fe8f525b41a316d661ba18738
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Starfall/Textures/Materials/fm-g01-02_1.mat
+  uploadId: 671947

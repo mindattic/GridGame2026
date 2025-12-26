@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e9b84af98fd76fe4dbd18ab4432e9ad4
+timeCreated: 1540807246
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/henshuuv.shader
+  uploadId: 673592

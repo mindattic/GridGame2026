@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: bdeb220805c45ee4081d69c799ac246e
+timeCreated: 1557317906
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: animation_effectfx_lightningball 1.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/Prefabs/FX_Lightningball.prefab
+  uploadId: 671947

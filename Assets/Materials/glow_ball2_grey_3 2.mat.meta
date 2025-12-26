@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 373c00ee36984bc4ab433e5548dd067a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/glow_ball2_grey_3.mat
+  uploadId: 676589

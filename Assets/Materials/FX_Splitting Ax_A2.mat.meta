@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4e302e4597cdddb43afbacc9ebeb75b4
+timeCreated: 1517388056
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Splitting Ax/Materials/FX_Splitting
+    Ax_A2.mat
+  uploadId: 673592

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d71131fa769c311499216e3b38296a14
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_shock_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Summon healing rain/Materials/Pulse_Smoke.mat
+  uploadId: 674228

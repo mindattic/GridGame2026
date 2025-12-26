@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 289719d165f28f941ad994d5dad7013c
+timeCreated: 1551344501
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_WeaponEffect/Animator/FX_Weapon Effect.anim
+  uploadId: 671947

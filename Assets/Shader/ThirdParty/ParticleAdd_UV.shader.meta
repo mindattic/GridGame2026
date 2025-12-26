@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0e96f87b0547a574987e206cda7dc6eb
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/ParticleAdd_UV.shader
+  uploadId: 679549

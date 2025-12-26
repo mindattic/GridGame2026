@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ce30efd0734ca874999619e9d64c83f4
+timeCreated: 1520494992
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Summon healing rain/Animator/FX_Summon_rain.controller
+  uploadId: 673592

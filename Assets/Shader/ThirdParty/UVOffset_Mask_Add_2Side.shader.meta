@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4abfad88a83a5054d8ba5b6dc4d95896
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/UVOffset_Mask_Add_2Side.shader
+  uploadId: 676589

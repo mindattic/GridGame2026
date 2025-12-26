@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8ec5ffe0c4108974eb51b956b2e08c2d
+timeCreated: 1535535929
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/glow_yk_04.mat
+  uploadId: 681449

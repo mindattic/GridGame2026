@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 715ddd6741cbb464ea8182996df08850
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 251914
+  packageName: Speedlines Particle Effects
+  packageVersion: 1.0
+  assetPath: Assets/Speedline Particles/Materials/Warp Drive Particle Effect/WarpDrive_Mat.mat
+  uploadId: 587905

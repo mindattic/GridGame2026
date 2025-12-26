@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: TrailEffects
+  m_EditorClassIdentifier: 
+  m_GroupName: TrailEffects
+  m_GUID: 2578757ce0d8eb247bce42c4c4b04967
+  m_SerializeEntries:
+  - m_GUID: 09cc03906436b5a49849abb66d159478
+    m_Address: VisualEffects/IceSparkle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cc61da64e192f146b38f812cc5645b4
+    m_Address: VisualEffects/PinkDust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49e6d9236fcf78646931ecf0ec5682d8
+    m_Address: VisualEffects/Feather
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71b664a2d9932a344b8563c3a00b15ab
+    m_Address: VisualEffects/Fireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 770299b675d80ee4fb7bccf1bc8cc6ba
+    m_Address: VisualEffects/StarSparkle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bf713e99ad076343b773221b19799a2
+    m_Address: VisualEffects/BlueGlow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 805f43fefa2159d459e0ab55a868ae06
+    m_Address: VisualEffects/Bubble
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9263c45164b34c845ba8a1cadf40ac86
+    m_Address: VisualEffects/GoldSparkle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9810767d7a151584ba06e8d0fed68584
+    m_Address: VisualEffects/Flame
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2e72b420d967db47b029c1e6c7f608e
+    m_Address: VisualEffects/RosePetal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8fc602f1dd633547be1cd437c18d647
+    m_Address: VisualEffects/GreenSparkle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

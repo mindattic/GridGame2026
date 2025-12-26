@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c0151fa8b9be19f4c9dc8071d027bd28
+timeCreated: 1557315445
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_light_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/lightning_p.mat
+  uploadId: 681449

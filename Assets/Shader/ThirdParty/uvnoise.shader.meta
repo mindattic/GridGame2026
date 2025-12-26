@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 895a57bfcfc97594c8b5267b157c902b
+timeCreated: 1558925961
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/uvnoise.shader
+  uploadId: 674228

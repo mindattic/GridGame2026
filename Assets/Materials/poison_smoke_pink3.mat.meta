@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: af561954bc1cc9f45a34fae494ed6f9b
+timeCreated: 1531135659
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/poison_smoke_pink3.mat
+  uploadId: 668264

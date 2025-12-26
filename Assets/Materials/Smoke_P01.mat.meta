@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 94fb93336f03a62408c9037dddfce0a5
+timeCreated: 1530849178
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/Smoke_P01.mat
+  uploadId: 668264

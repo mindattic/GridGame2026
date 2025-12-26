@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6f7cee636abf59049a446828debd1d8c
+timeCreated: 1448935356
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_icon_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/tk-46.mat
+  uploadId: 679549

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d196eb42889cc464fb17499dbfa6c9b6
+timeCreated: 1535107718
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/No Name.mat
+  uploadId: 679549

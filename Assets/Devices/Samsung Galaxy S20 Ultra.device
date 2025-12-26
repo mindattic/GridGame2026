@@ -1,0 +1,27 @@
+{
+  "friendlyName": "Samsung Galaxy S20 Ultra",
+  "version": 1,
+  "screens": [
+    {
+      "width": 1440,
+      "height": 3200,
+      "dpi": 511,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 3200
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "Android 14",
+    "deviceModel": "Samsung Galaxy S20 Ultra",
+    "supportsGyroscope": true
+  }
+}

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 62c5f4489440d6f42b1f4f287e4785b1
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 257146
+  packageName: URP VFX Ultra Bundle
+  packageVersion: 1.1.2023.09
+  assetPath: Assets/Vefects/Smoke Bombs VFX URP/Demo/Resources/Character/Shaders/SH_Vefects_URP_VFX_Character_Showoff.shader
+  uploadId: 781953

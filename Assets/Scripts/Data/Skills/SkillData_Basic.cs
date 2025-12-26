@@ -1,0 +1,26 @@
+/// <summary>
+/// Static skill definitions for initial hub features.
+/// </summary>
+public static class SkillData_Basic
+{
+    public static readonly SkillDefinition BasicHeal = new SkillDefinition
+    {
+   Id = "skill_basic_heal",
+  DisplayName = "Heal",
+    Description = "Restore moderate HP to an ally.",
+    Type = SkillType.Active,
+   ManaCost = 10,
+        MaxUsesPerBattle = 3,
+    RequiredTags = { ActorTag.Healer }
+    };
+
+    public static readonly SkillDefinition BasicStrike = new SkillDefinition
+    {
+    Id = "skill_basic_strike",
+  DisplayName = "Strike",
+    Description = "A simple offensive attack.",
+  Type = SkillType.Active,
+    ManaCost = 5,
+        MaxUsesPerBattle = 0 // 0 means unlimited
+    };
+}

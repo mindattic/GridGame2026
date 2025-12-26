@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c7ef2dfd0ea73d648a412352ca871226
+timeCreated: 1440568938
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkDoor/Textures/Materials/glow_purple_01.mat
+  uploadId: 671947

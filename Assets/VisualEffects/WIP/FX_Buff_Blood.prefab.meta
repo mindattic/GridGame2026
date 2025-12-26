@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ca6445bc992464a4a923abe985d78d65
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Prefabs/FX_Buff_Blood.prefab
+  uploadId: 674228

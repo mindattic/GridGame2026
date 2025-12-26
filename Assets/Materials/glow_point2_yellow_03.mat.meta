@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 11f539182ee3b03439f2ce34a013db3d
+timeCreated: 1528979677
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_glow_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: "Assets/GameVFX Collection(URP)/FX_Dissolution\uFF06Explosion/Textures/materials/glow_point2_yellow_03.mat"
+  uploadId: 671947

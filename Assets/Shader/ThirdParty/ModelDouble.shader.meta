@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3fb3154feca9a7b4a8fa58839ff5feb4
+timeCreated: 1523193385
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/ModelDouble.shader
+  uploadId: 679549

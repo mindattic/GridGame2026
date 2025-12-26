@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 58b1de36f94bcc447a9240f48b2d9ff9
+timeCreated: 18446744011573954816
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_icon_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/CFXM2_GhostStretch Add.mat
+  uploadId: 671947

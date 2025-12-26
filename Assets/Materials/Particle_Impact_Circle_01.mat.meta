@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: daf4af2b63d506140901ec8403f1adb2
+timeCreated: 1553050596
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_slash_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/Particle_Impact_Circle_01.mat
+  uploadId: 768429

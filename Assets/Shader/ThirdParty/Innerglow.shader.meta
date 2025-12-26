@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f600c62afc0a0a54fa72e030aefb03f8
+timeCreated: 1558925642
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/Innerglow.shader
+  uploadId: 679549

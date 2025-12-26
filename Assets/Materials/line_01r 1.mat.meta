@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 23fea5fc0f2818c48806719f65c0c637
+timeCreated: 1454492145
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Materials/line_01r.mat
+  uploadId: 674228

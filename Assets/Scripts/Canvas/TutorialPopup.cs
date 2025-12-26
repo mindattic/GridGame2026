@@ -1,0 +1,120 @@
+﻿using Assets.Helper;
+using Assets.Scripts.Libraries;
+using Assets.Scripts.Models;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using g = Assets.Helpers.GameHelper;
+
+namespace Assets.Scripts.GUI
+{
+    public class TutorialPopup : MonoBehaviour
+    {
+        //Components
+        private GameObject panel;
+        private Image image;
+        private TextMeshProUGUI title;
+        private TextMeshProUGUI content;
+        private Button previousButton;
+        private Button nextButton;
+        private Button closeButton;
+
+        //Fields
+        private List<TutorialPage> pages = new List<TutorialPage>();
+        private int currentPage = 0;
+
+        //Properties
+        bool hasPages => pages != null && pages.Count > 0;
+        int lastPage => pages != null && pages.Count > 0 ? pages.Count - 1 : 0;
+
+        private bool initialized;
+
+        // Awake intentionally empty; initialization driven by GameManager.Start via Initialize().
+        private void Awake() { }
+
+        public void Initialize()
+        {
+            if (initialized) return;
+
+            panel = GameObjectHelper.Game.TutorialPopup.Panel;
+            image = GameObjectHelper.Game.TutorialPopup.Image;
+            title = GameObjectHelper.Game.TutorialPopup.TitleTextX;
+            content = GameObjectHelper.Game.TutorialPopup.ContentTextX;
+            previousButton = GameObjectHelper.Game.TutorialPopup.PreviousButton;
+            nextButton = GameObjectHelper.Game.TutorialPopup.NextButton;
+            closeButton = GameObjectHelper.Game.TutorialPopup.CloseButton;
+
+            initialized = true;
+        }
+
+        private void Start()
+        {
+            if (!initialized) Initialize();
+            bool show = g.DebugManager != null && g.DebugManager.showTutorials;
+            if (panel != null) panel.SetActive(show);
+        }
+
+        public void Load(Tutorial tutorial, bool show = true)
+        {
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (tutorial == null || tutorial.Pages == null || tutorial.Pages.Count < 1) return;
+
+            pages = tutorial.Pages;
+            currentPage = 0;
+
+            if (show)
+                Show();
+        }
+
+        public void Show(int currentPage = 0)
+        {
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (!hasPages) return;
+            if (panel != null) panel.SetActive(true);
+            this.currentPage = Mathf.Clamp(currentPage, 0, lastPage);
+            Navigate();
+        }
+
+        private void Navigate()
+        {
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (!hasPages) return;
+            var page = pages[currentPage];
+            if (image != null && page != null && SpriteLibrary.TutorialPages != null && SpriteLibrary.TutorialPages.ContainsKey(page.TextureKey))
+                image.sprite = SpriteLibrary.TutorialPages[page.TextureKey];
+            if (title != null) title.text = page.Title ?? string.Empty;
+            if (content != null) content.text = page.Content ?? string.Empty;
+            if (previousButton != null) previousButton.gameObject.SetActive(currentPage > 0);
+            if (nextButton != null) nextButton.gameObject.SetActive(currentPage < lastPage);
+            if (closeButton != null) closeButton.gameObject.SetActive(currentPage == lastPage);
+        }
+
+        public void PreviousPage()
+        {
+            if (currentPage > 0)
+            {
+                currentPage--;
+                Navigate();
+            }
+        }
+
+        public void NextPage()
+        {
+            if (currentPage < lastPage)
+            {
+                currentPage++;
+                Navigate();
+            }
+        }
+
+
+
+        public void Close()
+        {
+            if (panel != null) panel.SetActive(false);
+        }
+
+    }
+
+}

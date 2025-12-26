@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c4114377c54b335489e87876d7d6570e
+timeCreated: 1536575408
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 283604
+  packageName: Untitled
+  packageVersion: 1.0
+  assetPath: Assets/FX_FireSkill/Materials/fireball_yellow_1.mat
+  uploadId: 660306

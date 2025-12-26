@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 21f2f124d5d95874ba7007288eae6c61
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_particle_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/slash_1_Yellow.mat
+  uploadId: 676589

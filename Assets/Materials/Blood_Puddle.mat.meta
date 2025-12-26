@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 44f83950ca0786f41a5ee79b3bf9e591
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Materials/Blood_Puddle.mat
+  uploadId: 674228

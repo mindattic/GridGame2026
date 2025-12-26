@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 386d4674570c5504b8124a6fa99bb7fd
+timeCreated: 1516957413
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/guangzhu.mat
+  uploadId: 679549

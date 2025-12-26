@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 299f527c492eb444cb01970f71a6dbf9
+timeCreated: 1541581160
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/piaodaiAlpha_orange.mat
+  uploadId: 679549

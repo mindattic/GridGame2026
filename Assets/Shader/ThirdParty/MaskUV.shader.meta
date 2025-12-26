@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e26db7730803f194db3caf674e23bcb5
+timeCreated: 1561431838
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Dragonfire/Shader/MaskUV.shader
+  uploadId: 671947

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 857681f30e2a1dd40a78182c2cd2eb35
+timeCreated: 1439067399
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290657
+  packageName: Game VFX - Particle Trails Collection
+  packageVersion: 1.0
+  assetPath: Assets/VFX_Particle Trails/Materials/vfx-ult_particle_sprite_point.mat
+  uploadId: 678419

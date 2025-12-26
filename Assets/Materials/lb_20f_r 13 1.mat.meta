@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8d2a47689f024f443a6d81110a8d60ea
+timeCreated: 1435135139
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_line_rotate_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/lb_20f_r 13.mat
+  uploadId: 679549

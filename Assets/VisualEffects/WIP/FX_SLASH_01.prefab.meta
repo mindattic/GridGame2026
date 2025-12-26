@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dd5451b393a4ee548bfcde49931b7085
+timeCreated: 1550050928
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: animation_effectfx_slash01.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection/Prefabs/FX_SLASH_01.prefab
+  uploadId: 671947

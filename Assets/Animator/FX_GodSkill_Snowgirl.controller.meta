@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8db479eaca1475340a8527cdaffde1d2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: fx_animator.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Animator/FX_GodSkill_Snowgirl.controller
+  uploadId: 679549

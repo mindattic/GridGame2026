@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 930ffdf33f792784b8cafd62c80f570f
+timeCreated: 1531201404
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_fire_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/FireSheet_01.mat
+  uploadId: 679549

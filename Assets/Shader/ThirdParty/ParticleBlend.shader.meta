@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e64f5fb47c44b9e4291f7b3528f90819
+timeCreated: 1547119325
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/ParticleBlend.shader
+  uploadId: 676589

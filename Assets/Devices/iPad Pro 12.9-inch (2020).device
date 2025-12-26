@@ -1,0 +1,27 @@
+{
+  "friendlyName": "iPad Pro 12.9-inch (2020)",
+  "version": 1,
+  "screens": [
+    {
+      "width": 2048,
+      "height": 2732,
+      "dpi": 264,
+      "orientations": [
+        {
+          "orientation": 1,
+          "safeArea": {
+            "x": 0,
+            "y": 0,
+            "width": 2048,
+            "height": 2732
+          }
+        }
+      ]
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "iPadOS 13",
+    "deviceModel": "iPad Pro 12.9-inch (2020)",
+    "supportsGyroscope": true
+  }
+}

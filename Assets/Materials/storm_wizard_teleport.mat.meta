@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2c6da4fffbb214d4ca9582aeabf59caf
+timeCreated: 1524647957
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_ring_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/storm_wizard_teleport.mat
+  uploadId: 679549

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4bf7220e79da1d24ca6a5f3c83445d6e
+timeCreated: 1441666645
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 283604
+  packageName: Untitled
+  packageVersion: 1.0
+  assetPath: Assets/FX_FireSkill/Materials/particle_sprite.mat
+  uploadId: 660306

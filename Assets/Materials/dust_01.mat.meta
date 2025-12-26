@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 20a964ea08959f841ae6c9f41794fff0
+timeCreated: 1440120317
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkDoor/Textures/Materials/dust_01.mat
+  uploadId: 671947

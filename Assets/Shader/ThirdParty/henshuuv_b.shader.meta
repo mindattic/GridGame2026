@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 305df0cb73f6cdf4da4d520e4143fd24
+timeCreated: 1558925819
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/henshuuv_b.shader
+  uploadId: 679549

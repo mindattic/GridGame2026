@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bb15325b1117f8d4ebac20a93b4f551b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Shaders/Add_CenterGlow.shader
+  uploadId: 676589

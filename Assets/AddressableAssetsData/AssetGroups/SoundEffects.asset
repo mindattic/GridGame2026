@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SoundEffects
+  m_EditorClassIdentifier: 
+  m_GroupName: SoundEffects
+  m_GUID: 98d49d6865ffeb54095cdd925028937d
+  m_SerializeEntries:
+  - m_GUID: 0717c388e689c0c478891f3462e9e266
+    m_Address: SoundEffects/Portrait
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23ed0b75854ec2443ac83dfe524cd1aa
+    m_Address: SoundEffects/Heal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b698d0a70244194baf325314c6b855e
+    m_Address: SoundEffects/Slash06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3444a5bf4b39c6c4d9435eb34496fd8e
+    m_Address: SoundEffects/Move04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 399ad94a0473980449a31be84f318918
+    m_Address: SoundEffects/Slash02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44eba7ca8fbbd3340b0be1ed9622d0c7
+    m_Address: SoundEffects/Move05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58a047619b7c41845a8aeaa47cee56bd
+    m_Address: SoundEffects/Move00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b8b38e976406184d84cc11541835e7b
+    m_Address: SoundEffects/Move02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64f5bf581e632ee40a4b43308fa486f1
+    m_Address: SoundEffects/NextTurn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70ce488998a1eec47b5865002f84dccc
+    m_Address: SoundEffects/Move03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 758339350a68d5a4fbfbd7206376f55d
+    m_Address: SoundEffects/Slash04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76079cc78fbdb4a4897133aa64ced989
+    m_Address: SoundEffects/Select
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79153e85b25004b4aa25ffc54829db31
+    m_Address: SoundEffects/Slash00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 828b641198d9cdb4aa8becf1db8d4037
+    m_Address: SoundEffects/Slash01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c0f40d9d2aac9242bf5b7f70cb431f2
+    m_Address: SoundEffects/Move01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa54b23a22ae34a489ba5c76969f76ff
+    m_Address: SoundEffects/Defeat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4997f33c1896274c984f48cb0e1b22d
+    m_Address: SoundEffects/Click
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ffdc07e1e3ed845838454d2fde076e
+    m_Address: SoundEffects/Rumble
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd1aa738dcc809748ba263497b163462
+    m_Address: SoundEffects/Slide
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5da21e1dd73c1d45a39d5b9b91575d8
+    m_Address: SoundEffects/Slash03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e730c3c03091a2e49a3cce227adb89dc
+    m_Address: SoundEffects/Death
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6dcf327a82f0614d8028a2deb096ade
+    m_Address: SoundEffects/Slash05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe79495325781994f99af02eac97381e
+    m_Address: SoundEffects/Victory
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

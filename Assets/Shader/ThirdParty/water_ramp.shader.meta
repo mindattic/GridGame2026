@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 560bbf8595baf5c41ae5e95f845416c3
+timeCreated: 1554381943
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_UI_Waterball/Shader/water_ramp.shader
+  uploadId: 671947

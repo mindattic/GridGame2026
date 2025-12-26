@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0baf8dc97db8b65469e368d79e6a7f62
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_Dissolve/Animator/Dissolve_Sphere.controller
+  uploadId: 673592

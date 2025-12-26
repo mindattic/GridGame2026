@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: df00602cf2b78b74d8d9d10851c63b42
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: base/shader/shader.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/MobileParticleAddMultiColor.shader
+  uploadId: 676589

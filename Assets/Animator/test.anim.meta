@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 92029ab4efc93f147851dbd9d27e2717
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Arrow/Animator/test.anim
+  uploadId: 671947

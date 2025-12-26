@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6d2cc1cc6d5d621428c39a6ff26f87da
+timeCreated: 1531121783
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_LootDrop/Materials/Trail_01.mat
+  uploadId: 673592

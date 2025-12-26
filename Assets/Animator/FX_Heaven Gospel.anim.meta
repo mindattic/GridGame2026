@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 14629e80930359a4c80678429a1f910f
+timeCreated: 1521600265
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Animator/FX_Heaven Gospel.anim
+  uploadId: 679549

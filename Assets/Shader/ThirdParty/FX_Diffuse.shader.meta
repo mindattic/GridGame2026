@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ca73e00c52035f542a3c903f9bbef48b
+timeCreated: 1558925480
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/FX_Diffuse.shader
+  uploadId: 679549

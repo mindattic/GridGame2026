@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9e877417c188b7d49a4a2d70ff94c247
+timeCreated: 1533289196
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_ground_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Materials/storm_wispyglow02.mat
+  uploadId: 676589

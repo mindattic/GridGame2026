@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4a24c1fe483276a4a9ae24d08e7913bd
+timeCreated: 1513319284
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 283604
+  packageName: Untitled
+  packageVersion: 1.0
+  assetPath: Assets/FX_FireSkill/Materials/ring02_00_3.mat
+  uploadId: 660306

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9767bd4c4f6f16145b585a970a649354
+timeCreated: 1479210751
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_slash_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Slash01/Textures/Materials/slash_L01.mat
+  uploadId: 671947

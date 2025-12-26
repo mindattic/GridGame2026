@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6f0663f97207dd04bbca0d7bf36f75bc
+timeCreated: 1535181694
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/Particle_Impact13.mat
+  uploadId: 679549

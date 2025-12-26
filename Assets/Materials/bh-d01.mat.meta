@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 66e6ccf5799a88646bbbe74855c98e32
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Materials/bh-d01.mat
+  uploadId: 674228

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a771581906bf8ed41a999022e25db126
+timeCreated: 1528272254
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 283604
+  packageName: Untitled
+  packageVersion: 1.0
+  assetPath: Assets/FX_FireSkill/Materials/fire_glow.mat
+  uploadId: 660306

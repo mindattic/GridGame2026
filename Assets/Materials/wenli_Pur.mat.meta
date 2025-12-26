@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 32f89462f5408594ead798c4391c89e5
+timeCreated: 1531201404
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_gradient_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/wenli_Pur.mat
+  uploadId: 679549

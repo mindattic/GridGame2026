@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75c9a9d970519ec42bb4eea148dae6a7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_CartoonSkill Collection/Animator/Laser cannon.controller
+  uploadId: 676589

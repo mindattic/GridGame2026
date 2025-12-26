@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 986ada87bcdd6024c817595d5381ab67
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: fx_animator.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Animator/FX_GodSkill_Time.anim
+  uploadId: 679549

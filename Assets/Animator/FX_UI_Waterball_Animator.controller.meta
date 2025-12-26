@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e1430ae75afb5d1438f08410d5109490
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_UI_Waterball/Animator/FX_UI_Waterball_Animator.controller
+  uploadId: 671947

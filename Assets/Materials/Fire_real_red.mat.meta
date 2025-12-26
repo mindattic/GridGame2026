@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: db34c031080cb2f428a7296842b842b8
+timeCreated: 1463388114
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_fire_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Dragonfire/Textures/Materials/Fire_real_red.mat
+  uploadId: 671947

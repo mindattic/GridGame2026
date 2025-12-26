@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ceb714a40a697b04db03fa7354f2c7ae
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293042
+  packageName: RPG_Game VFX Collection - URP
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/Shaders/Alpha Blended.shader
+  uploadId: 684455

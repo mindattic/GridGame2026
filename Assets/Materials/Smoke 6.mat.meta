@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8fc6d782cf4919c4c8d6381ebf15a2e6
+timeCreated: 1467842835
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_BloodSkill/Materials/Smoke 6.mat
+  uploadId: 674228

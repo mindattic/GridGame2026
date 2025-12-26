@@ -1,0 +1,171 @@
+using Assets.Scripts.Libraries;
+using Game.Models;
+using UnityEngine;
+using g = Assets.Helpers.GameHelper;
+using Assets.Helpers; // for UnitConversionHelper
+
+public class BoardInstance : MonoBehaviour
+{
+    // Fields
+    [HideInInspector] public int columnCount = 6;   // Total number of columns on the board.
+    [HideInInspector] public int rowCount = 8;      // Total number of rows on the board.
+    [HideInInspector] public Vector2 offset;        // Board origin in world space.
+    [HideInInspector] public RectFloat bounds;      // World-space rectangle enclosing the board.
+    [HideInInspector] public Vector2 center;        // Center point of the board in world space.
+    [HideInInspector] public RectVector3 worldEdges; // Holds top, right, bottom, left midpoints
+    [HideInInspector] public RectVector3 screenEdges; // Screen-space edge midpoints
+
+    /// <summary>
+    /// Sets up the board by assigning position, computing bounds, and generating tiles.
+    /// </summary>
+    public void Initialize()
+    {
+        // Guard against being invoked on a destroyed instance (can happen on scene reloads)
+        if (this == null) return;
+
+        AssignPosition();
+        AssignBounds();
+        GenerateTiles();
+    }
+
+    /// <summary>
+    /// Calculates and applies the board's world-space origin offset so the board is centered horizontally
+    /// and vertically within the usable band (after reserving top/bottom UI space).
+    /// </summary>
+    private void AssignPosition()
+    {
+        if (this == null) return;
+
+        // Visible world rect and GameManager layout reserves
+        Rect vr = UnitConversionHelper.World.VisibleRect();
+        var gm = GameManager.instance;
+        float topReserve = 0f;
+        float bottomReserve = 0f;
+        if (gm != null)
+        {
+            topReserve = vr.height * Mathf.Clamp01(gm.topReservePercent);
+            bottomReserve = vr.height * Mathf.Clamp01(gm.bottomReservePercent);
+        }
+
+        // Compute usable band and its vertical center
+        float usableMinY = vr.yMin + bottomReserve;
+        float usableMaxY = vr.yMax - topReserve;
+        float usableCenterY = (usableMinY + usableMaxY) * 0.5f;
+        float usableCenterX = vr.center.x;
+
+        float t = g.TileSize;
+
+        // Solve for offset so board center == usable center
+        // CenterX = offset.x + (cols*t)/2 + t/2 => offset.x = usableCenterX - (cols*t)/2 - t/2
+        float x = usableCenterX - (columnCount * t) * 0.5f - t * 0.5f;
+        // CenterY = offset.y - (rows*t)/2 - t/2 => offset.y = usableCenterY + (rows*t)/2 + t/2
+        float y = usableCenterY + (rowCount * t) * 0.5f + t * 0.5f;
+
+        offset = new Vector2(x, y);
+
+        // Move this transform to match the computed offset.
+        transform.position = offset;
+    }
+
+    /// <summary>
+    /// Computes world-space bounds from the offset, tile size, and board dimensions, and caches the center.
+    /// </summary>
+    private void AssignBounds()
+    {
+        if (this == null) return;
+
+        bounds = new RectFloat();
+
+        bounds.Top = offset.y - g.TileSize * 0.5f;
+        bounds.Right = offset.x + (g.TileSize * columnCount) + g.TileSize * 0.5f;
+        bounds.Bottom = offset.y - (g.TileSize * rowCount) - g.TileSize * 0.5f;
+        bounds.Left = offset.x + g.TileSize * 0.5f;
+
+        center = new Vector2(
+            (bounds.Left + bounds.Right) * 0.5f,
+            (bounds.Top + bounds.Bottom) * 0.5f
+        );
+
+        // Store all four edge midpoints in RectVector3
+        worldEdges = new RectVector3(
+            new Vector3(center.x, bounds.Top, 0f),    // Top
+            new Vector3(bounds.Right, center.y, 0f),  // Right
+            new Vector3(center.x, bounds.Bottom, 0f), // Bottom
+            new Vector3(bounds.Left, center.y, 0f)    // Left
+        );
+
+        // Convert world-space worldEdges to screen-space worldEdges
+        var cam = Camera.main;
+        if (cam != null)
+        {
+            screenEdges = new RectVector3(
+                cam.WorldToScreenPoint(worldEdges.Top),
+                cam.WorldToScreenPoint(worldEdges.Right),
+                cam.WorldToScreenPoint(worldEdges.Bottom),
+                cam.WorldToScreenPoint(worldEdges.Left)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Instantiates tile prefabs for each grid position, initializes them, and registers them in global maps.
+    /// </summary>
+    private void GenerateTiles()
+    {
+        if (this == null) return;
+
+        var tilePrefab = PrefabLibrary.Prefabs["TilePrefab"];
+
+        // Create tiles for each grid cell.
+        for (int col = 1; col <= columnCount; col++)
+        {
+            for (int row = 1; row <= rowCount; row++)
+            {
+                var go = Instantiate(tilePrefab, Vector2.zero, Quaternion.identity);
+
+                var instance = go.GetComponent<TileInstance>();
+                instance.parent = transform;
+                instance.name = $"Tile_{col}x{row}";
+                instance.Initialize(col, row);
+
+                g.TileMap.Add(instance);
+            }
+        }
+
+        // Set grid origin and tile sizing for the TileMap.
+        g.TileMap.gridOrigin = g.TileMap.GetTile(new Vector2Int(1, 1)).position;
+        g.TileMap.tileSize = g.TileSize;
+
+        // Cache all tiles from the scene into the global list.
+        var tileObjects = GameObject.FindObjectsByType<TileInstance>(FindObjectsSortMode.None);
+        foreach (var obj in tileObjects)
+        {
+            var tile = obj.GetComponent<TileInstance>();
+            if (tile != null)
+            {
+                g.Tiles.Add(tile);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns true if a grid location is within board bounds.
+    /// </summary>
+    public bool InBounds(Vector2Int location)
+    {
+        return location.x >= 1 && location.x <= columnCount
+            && location.y >= 1 && location.y <= rowCount;
+    }
+
+    /// <summary>
+    /// Returns true if the given world position is within the board’s world-space bounds.
+    /// </summary>
+    public bool IsInsideBoard(Vector3 worldPosition)
+    {
+        return worldPosition.x >= bounds.Left &&
+               worldPosition.x <= bounds.Right &&
+               worldPosition.y <= bounds.Top &&
+               worldPosition.y >= bounds.Bottom;
+    }
+
+}

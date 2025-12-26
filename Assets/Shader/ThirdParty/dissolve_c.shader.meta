@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c027d521ec056624fb87fa4829710a92
+timeCreated: 1558925755
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: shaders.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289915
+  packageName: Game VFX - Cartoon Skill Collection
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Shaders/dissolve_c.shader
+  uploadId: 676589

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 40106a0d6fb0a324dbfff28ed27aec58
+timeCreated: 1439064635
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_flare_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289811
+  packageName: RPG_GameVFX Collection Vol.3
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Materials/vfx_twinkle-01.mat
+  uploadId: 679549

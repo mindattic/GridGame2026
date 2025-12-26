@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f1d7d6a7e65fc4249a742a6e63c192de
+timeCreated: 1532414115
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: "Assets/GameVFX Collection(URP)/FX_Dissolution\uFF06Explosion/Textures/materials/monk_waveofLight_trailDiff_damage
+    7.mat"
+  uploadId: 671947

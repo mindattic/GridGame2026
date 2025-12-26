@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c7d0577eadabf2d4e9d1a74b94b581ca
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Prefab/FX_DarkSkill_Hit01.prefab
+  uploadId: 668264

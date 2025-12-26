@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1368b201ff7268743bf08804ca5d7551
+timeCreated: 1520567960
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262822
+  packageName: RPG_GameVFX Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX Collection Vol 2(URP)/FX_MagicDoor/Animator/Magicdoor.controller
+  uploadId: 673592

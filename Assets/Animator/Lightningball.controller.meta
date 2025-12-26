@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 77c60f3d1aee3b446a971b3cb9d0fb61
+timeCreated: 1557316062
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: fx_textures_light.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Lightningball/Animator/Lightningball.controller
+  uploadId: 671947

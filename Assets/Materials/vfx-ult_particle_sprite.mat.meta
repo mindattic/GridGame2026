@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d1ea811d935be00419ede1a7d0be1b8e
+timeCreated: 1468835801
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286542
+  packageName: Game VFX - DarkSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/FX_DarkSkill/Materials/vfx-ult_particle_sprite.mat
+  uploadId: 668264

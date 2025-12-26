@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3370460e33226ee4fb97ba224b46e9c4
+timeCreated: 1528880745
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: fx_textures_ground_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_Thunder/Textures/materials/decal_fire3.mat
+  uploadId: 671947

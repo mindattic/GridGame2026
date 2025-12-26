@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ce1920d5a62d4114b99c7a74d804ce09
+timeCreated: 1450410509
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_dust_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291813
+  packageName: Unity Game VFX - Cartoon Skill Collection Vol.2
+  packageVersion: 1.0
+  assetPath: Assets/Game VFX - Cartoon Skill Collection Vol2/Materials/FX_smoke_02b.mat
+  uploadId: 681449

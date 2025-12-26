@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e9ba3ceebe66b6e4697410c4eea6e467
+timeCreated: 1468540008
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: fx_textures_particle_materials.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293636
+  packageName: Game VFX - Slash Collection(URP)
+  packageVersion: 1.01
+  assetPath: Assets/Materials/particle_capsule.mat
+  uploadId: 768429

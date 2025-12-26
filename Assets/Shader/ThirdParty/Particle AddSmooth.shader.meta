@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 63e4939bd74ea564aae534ea0bcf5acb
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: builtin_builtin_shader.unity3d
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 289069
+  packageName: Game VFX - BloodSkill Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection Vol3/Shaders/Particle AddSmooth.shader
+  uploadId: 674228

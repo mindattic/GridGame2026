@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ecf7861ec29f1f94c9a5f5add42f1740
+timeCreated: 1441854324
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 286708
+  packageName: RPG_GameVFX Collection
+  packageVersion: 1.0
+  assetPath: Assets/GameVFX Collection(URP)/FX_DarkDoor/Textures/Materials/sd_21a_10.mat
+  uploadId: 671947
