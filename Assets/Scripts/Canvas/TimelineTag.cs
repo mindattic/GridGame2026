@@ -2,6 +2,8 @@ using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using g = Assets.Helpers.GameHelper;
 using TMPro;
 using Assets.Scripts.Libraries; // for ActorLibrary
 
@@ -9,7 +11,7 @@ namespace Assets.Scripts.Canvas
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    public sealed class TimelineTag : MonoBehaviour
+    public sealed class TimelineTag : MonoBehaviour, IPointerClickHandler
     {
         [Header("Parts")]
         [SerializeField] private Image Tag;
@@ -83,8 +85,8 @@ namespace Assets.Scripts.Canvas
                     Debug.LogWarning("TimelineTag: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `Label`.", this);
             }
 
-            // Optional: do not intercept clicks
-            if (Tag != null) Tag.raycastTarget = false;
+            // Enable clicks on the tag so taps select the associated actor
+            if (Tag != null) Tag.raycastTarget = true;
             if (Icon != null) Icon.raycastTarget = false;
             if (Label != null) Label.raycastTarget = false;
 
@@ -120,9 +122,17 @@ namespace Assets.Scripts.Canvas
                 var iconTransform = transform.Find("Icon");
                 Icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null;
             }
-            if (Tag != null) Tag.raycastTarget = false;
+            if (Tag != null) Tag.raycastTarget = true;
             if (Icon != null) Icon.raycastTarget = false;
             if (Label != null) Label.raycastTarget = false;
+        }
+
+        // Handle pointer clicks on the tag to select the owner actor and show their card
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (Owner == null) 
+                return;
+            g.SelectionManager.Select(Owner);
         }
 
         // Initialize using normalized coordinates and speed

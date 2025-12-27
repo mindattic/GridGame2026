@@ -29,7 +29,7 @@ if exist "%BACKUP_FOLDER%" (
 echo.
 echo You are about to back up:
 echo   From: %SOURCE%
-echo   To:   %BACKUP_FOLDER%\GridGame2025
+echo   To:   %BACKUP_FOLDER%\GridGame2026
 echo.
 set /p "CHOICE=Proceed with backup? (y/n): "
 if /i not "%CHOICE%"=="Y" (
