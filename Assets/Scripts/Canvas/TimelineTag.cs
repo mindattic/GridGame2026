@@ -56,15 +56,24 @@ namespace Assets.Scripts.Canvas
                 Icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null;
                 if (Icon == null)
                 {
-                    // Try to find by name among all Images as a last resort
+                    // Try to find by name among all Images as a last resort (for nested or renamed children)
                     var images = GetComponentsInChildren<Image>(true);
                     foreach (var img in images)
                     {
-                        if (img != null && img.name == "Icon") { Icon = img; break; }
+                        if (img == null) continue;
+                        if (img.name == "Icon") { Icon = img; break; }
+                        var n = img.name.ToLowerInvariant();
+                        if (n.Contains("icon") || n.Contains("_icon") || n.Contains("-icon")) { Icon = img; break; }
                     }
                 }
                 if (Icon == null)
+                {
                     Debug.LogWarning("TimelineTag: Child Icon Image not found. Add an Icon child or assign `Icon`.", this);
+                }
+                else
+                {
+                    Debug.Log($"TimelineTag: Icon Image found on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
+                }
             }
             if (Label == null)
             {
@@ -134,10 +143,31 @@ namespace Assets.Scripts.Canvas
             if (Icon != null && Owner != null)
             {
                 var data = ActorLibrary.Get(Owner.characterClass);
-                var sprite = data != null ? data.Portrait : null;
+                Sprite sprite = null;
+                if (data != null)
+                {
+                    // First try to get an icon that matches the actor's tags
+                    try
+                    {
+                        sprite = SpriteLibrary.GetIconForActorTags(data.Tags);
+                    }
+                    catch { sprite = null; }
+
+                    // Fallback to portrait if no tag icon found
+                    if (sprite == null) sprite = data.Portrait;
+                }
+
+                // Final fallback: transparent 32x32 from sprite library
+                if (sprite == null)
+                {
+                    var fallback = SpriteLibrary.Sprites != null && SpriteLibrary.Sprites.TryGetValue("Transparent32x32", out var s) ? s : null;
+                    sprite = fallback;
+                }
+
                 Icon.sprite = sprite;
-                Icon.enabled = sprite != null; // hide if no sprite
+                Icon.enabled = sprite != null;
                 Icon.preserveAspect = true;
+                Debug.Log($"TimelineTag: Assigned icon '{(sprite != null ? sprite.name : "<null>")}' for actor '{Owner?.characterClass}' tags='{(data != null ? data.Tags.ToString() : "<no data>")}' on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
             }
 
             ApplyPosition();
@@ -237,6 +267,21 @@ namespace Assets.Scripts.Canvas
                 fired = true;
                 onReached?.Invoke(this);
             }
+        }
+
+        // Helper for debugging: return a path for a transform (useful in logs)
+        private string GetTransformPath(Transform t)
+        {
+            if (t == null) return "<null>";
+            var parts = new System.Collections.Generic.List<string>();
+            var cur = t;
+            while (cur != null)
+            {
+                parts.Add(cur.name);
+                cur = cur.parent;
+            }
+            parts.Reverse();
+            return string.Join("/", parts);
         }
 
         private void UpdateLabel()

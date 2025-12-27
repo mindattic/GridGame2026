@@ -95,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fb55f0e2c92d7e4a8e5d837d260714a
+    m_Address: Sprites/Timeline/TagIcons/Enemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fc8e4e9f7189c049a580cafd1e4b37f
     m_Address: Sprites/Seamless/BlackFire2
     m_ReadOnly: 0
@@ -165,6 +170,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44aa1e62626b7a1479e81fc47e2a19dd
+    m_Address: Sprites/Timeline/TagIcons/Soldier
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4808e864b93a90b47ad6c86204ac174a
     m_Address: Sprites/Seamless/BlackFire1
     m_ReadOnly: 0
@@ -225,6 +235,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 628f4f26b05019c4495e4212d4654f89
+    m_Address: Sprites/Timeline/TagIcons//Insect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 689440e14c4f7a1438b5682c0ecb66ea
     m_Address: Sprites/GUI/BackButton
     m_ReadOnly: 0
@@ -267,6 +282,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d138ee776549614f96c88c0457703d0
     m_Address: Sprites/WeaponTypes/Crossbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d863db3d4a88d74eb46a13f7eb66e8d
+    m_Address: Sprites/Timeline/TagIcons/Goblin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7df1fe6dbc19a434196d098ae6c79a5e
+    m_Address: Sprites/Timeline/TagIcons//Undead
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -410,6 +435,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c20bef3d5d6e8264a9bd495332d8c66c
+    m_Address: Sprites/Timeline/TagIcons/Beast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c58c2cfe4cd204f4e9bacee1a0685ec3
     m_Address: Sprites/WeaponTypes/Mace
     m_ReadOnly: 0
@@ -432,6 +462,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c873a695795e7ce4598717431aef3ef7
     m_Address: Sprites/Backgrounds/Moors/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca9c3965e48db6b4084631d9a738dd9d
+    m_Address: Sprites/Timeline/TagIcons//Hero
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -500,6 +535,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcc55dcdce02beb4db9771fa75de31f0
+    m_Address: Sprites/Timeline/TagIcons/Flying
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: de426a64ce259e642a7ea939d801deff
     m_Address: Sprites/GUI/Camera01
     m_ReadOnly: 0
@@ -562,6 +602,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fedb31964b6f37b45b3abf945fd97637
     m_Address: Sprites/WeaponTypes/Pistol
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff7a7b31cdf8f334d98b178b2076d6ae
+    m_Address: Sprites/Timeline/TagIcons/Unknown
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
