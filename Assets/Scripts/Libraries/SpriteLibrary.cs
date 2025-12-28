@@ -18,7 +18,7 @@ namespace Assets.Scripts.Libraries
         private static Dictionary<string, Sprite> leaves;
         private static Dictionary<string, Sprite> tutorialPages;
         private static Dictionary<string, Sprite> logos;
-        private static Dictionary<string, Sprite> tagIcons;
+        private static Dictionary<string, Sprite> actorTagIcon;
         private static Dictionary<string, Sprite> abilityButtons;
         private static bool isLoaded = false;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Libraries
         public static Dictionary<string, Sprite> Leaves { get { if (!isLoaded) Load(); return leaves; } }
         public static Dictionary<string, Sprite> TutorialPages { get { if (!isLoaded) Load(); return tutorialPages; } }
         public static Dictionary<string, Sprite> Logos { get { if (!isLoaded) Load(); return logos; } }
-        public static Dictionary<string, Sprite> TagIcons { get { if (!isLoaded) Load(); return tagIcons; } }
+        public static Dictionary<string, Sprite> TagIcons { get { if (!isLoaded) Load(); return actorTagIcon; } }
         public static Dictionary<string, Sprite> AbilityButtons { get { if (!isLoaded) Load(); return abilityButtons; } }
 
         private static void Load()
@@ -155,17 +155,17 @@ namespace Assets.Scripts.Libraries
                 { "Tutorial.1-3", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-3") },
             };
 
-            tagIcons = new Dictionary<string, Sprite>
+            actorTagIcon = new Dictionary<string, Sprite>
             {
-                { "Beast", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Beast") },
-                { "Enemy", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Enemy") },
-                { "Flying", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Flying") },
-                { "Goblin", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Goblin") },
-                { "Hero", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Hero") },
-                { "Insect", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Insect") },
-                { "Soldier", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Soldier") },
-                { "Undead", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Undead") },
-                { "Unknown", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/TagIcons/Unknown") },
+                { "Beast", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Beast") },
+                { "Enemy", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Enemy") },
+                { "Flying", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Flying") },
+                { "Goblin", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Goblin") },
+                { "Hero", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Hero") },
+                { "Insect", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Insect") },
+                { "Soldier", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Soldier") },
+                { "Undead", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Undead") },
+                { "Unknown", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Unknown") },
             };
 
 
@@ -174,11 +174,11 @@ namespace Assets.Scripts.Libraries
         }
 
         // Returns the best-matching tag icon for a given ActorTag mask based on a priority list.
-        public static Sprite GetIconForActorTags(ActorTag tags)
+        public static Sprite GetActorTagIcon(ActorTag tags)
         {
             if (!isLoaded) Load();
 
-            if (tagIcons == null) return null;
+            if (actorTagIcon == null) return null;
 
             // Ordered priority from most-specific / desirable to least
             var priority = new ActorTag[] {
@@ -210,15 +210,11 @@ namespace Assets.Scripts.Libraries
                 if ((tags & tag) == tag)
                 {
                     var key = tag.ToString();
-                    if (tagIcons.TryGetValue(key, out var s) && s != null) return s;
+                    if (actorTagIcon.TryGetValue(key, out var s) && s != null) return s;
                 }
             }
 
-            // Fallbacks: try generic entries
-            if (tagIcons.TryGetValue("Unknown", out var unknown) && unknown != null) return unknown;
-            // As a last resort, return a transparent/generic sprite from Sprites dictionary
-            if (sprites != null && sprites.TryGetValue("Transparent32x32", out var trans) && trans != null) return trans;
-            return null;
+            return actorTagIcon["Unknown"];
         }
     }
 }

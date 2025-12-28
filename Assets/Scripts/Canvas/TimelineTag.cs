@@ -159,7 +159,7 @@ namespace Assets.Scripts.Canvas
                     // First try to get an icon that matches the actor's tags
                     try
                     {
-                        sprite = SpriteLibrary.GetIconForActorTags(data.Tags);
+                        sprite = SpriteLibrary.GetActorTagIcon(data.Tags);
                     }
                     catch { sprite = null; }
 

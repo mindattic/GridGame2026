@@ -96,7 +96,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fb55f0e2c92d7e4a8e5d837d260714a
-    m_Address: Sprites/Timeline/TagIcons/Enemy
+    m_Address: Sprites/Timeline/ActorTagIcons/Enemy
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44aa1e62626b7a1479e81fc47e2a19dd
-    m_Address: Sprites/Timeline/TagIcons/Soldier
+    m_Address: Sprites/Timeline/ActorTagIcons/Soldier
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 628f4f26b05019c4495e4212d4654f89
-    m_Address: Sprites/Timeline/TagIcons//Insect
+    m_Address: Sprites/Timeline/ActorTagIcons/Insect
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -286,12 +286,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d863db3d4a88d74eb46a13f7eb66e8d
-    m_Address: Sprites/Timeline/TagIcons/Goblin
+    m_Address: Sprites/Timeline/ActorTagIcons/Goblin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7df1fe6dbc19a434196d098ae6c79a5e
-    m_Address: Sprites/Timeline/TagIcons//Undead
+    m_Address: Sprites/Timeline/ActorTagIcons/Undead
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -436,7 +436,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c20bef3d5d6e8264a9bd495332d8c66c
-    m_Address: Sprites/Timeline/TagIcons/Beast
+    m_Address: Sprites/Timeline/ActorTagIcons/Beast
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -466,7 +466,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca9c3965e48db6b4084631d9a738dd9d
-    m_Address: Sprites/Timeline/TagIcons//Hero
+    m_Address: Sprites/Timeline/ActorTagIcons/Hero
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dcc55dcdce02beb4db9771fa75de31f0
-    m_Address: Sprites/Timeline/TagIcons/Flying
+    m_Address: Sprites/Timeline/ActorTagIcons/Flying
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ff7a7b31cdf8f334d98b178b2076d6ae
-    m_Address: Sprites/Timeline/TagIcons/Unknown
+    m_Address: Sprites/Timeline/ActorTagIcons/Unknown
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
