@@ -50,7 +50,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
-    [HideInInspector] public TitleBarInstance titleBar;
+        [HideInInspector] public AbilityCastConfirm abilityCastConfirm;
+
     // NEW: Victory/Defeat Announcement references
     [HideInInspector] public VictoryAnnouncement victoryAnnouncement;
     [HideInInspector] public DefeatAnnouncement defeatAnnouncement;
@@ -210,7 +211,6 @@ public class GameManager : Singleton<GameManager>
         card = GameObjectHelper.Game.Card.Instance;
         canvas3D = GameObjectHelper.Game.Canvas3D;
         portraitsRect = GameObjectHelper.Game.Portraits;
-        titleBar = GameObjectHelper.Game.TitleBar.Instance;
 
         var coinCounterGO = GameObject.Find(GameObjectHelper.Game.CoinCounter);
         if (coinCounterGO != null)
@@ -294,6 +294,11 @@ public class GameManager : Singleton<GameManager>
         var timelineBarGO = GameObject.Find("Canvas/TimelineBar");
         if (timelineBarGO != null)
             timelineBar = timelineBarGO.GetComponent<TimelineBarInstance>();
+        
+        // Find AbilityCastConfirm UI
+        var abilityCastConfirmGO = GameObject.Find("Canvas/AbilityCastConfirm");
+        if (abilityCastConfirmGO != null)
+            abilityCastConfirm = abilityCastConfirmGO.GetComponent<AbilityCastConfirm>();
 
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN

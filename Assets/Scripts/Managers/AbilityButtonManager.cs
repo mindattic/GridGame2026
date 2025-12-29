@@ -139,7 +139,7 @@ public class AbilityButtonManager : MonoBehaviour
         if (title != null) title.text = ability.name;
         if (desc != null) desc.text = ability.Description ?? string.Empty;
 
-        g.TitleBar.Show(ability.name);
+        // Do not set title yet for abilities that require a target; AbilityManager will set title when a target is selected
 
         if (ability.TargetingMode == AbilityTargetingMode.Linear)
         {

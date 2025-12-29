@@ -182,12 +182,47 @@ namespace Assets.Helper
 
             }
 
+           
 
-            public static class TitleBar
+            // New: AbilityCastConfirm helpers (mirror for renamed UI object)
+            public static class AbilityCastConfirm
             {
-                public static RectTransform Rect => GameObject.Find("Canvas/Card/TitleBar").GetComponent<RectTransform>();
-                public static TitleBarInstance Instance => GameObject.Find("Canvas/Card/TitleBar").GetComponent<TitleBarInstance>();
-                public static TextMeshProUGUI Label => GameObject.Find("Canvas/Card/TitleBar/Label").GetComponent<TextMeshProUGUI>();
+                private static Transform FindUnderCanvas(string path)
+                {
+                    var canvas = GameObject.Find("Canvas");
+                    if (canvas == null) return null;
+                    return canvas.transform.Find(path);
+                }
+
+                public static RectTransform Root
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm"); return t != null ? t.GetComponent<RectTransform>() : null; }
+                }
+
+                public static CanvasGroup CanvasGroup
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm"); return t != null ? t.GetComponent<CanvasGroup>() : null; }
+                }
+
+                public static Image TargetImage
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm/TargetImage"); return t != null ? t.GetComponent<Image>() : null; }
+                }
+
+                public static TextMeshProUGUI TitleLabel
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm/TitleBar/Label"); return t != null ? t.GetComponent<TextMeshProUGUI>() : null; }
+                }
+
+                public static Button CancelButton
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm/CancelButton"); return t != null ? t.GetComponent<Button>() : null; }
+                }
+
+                public static Button CastButton
+                {
+                    get { var t = FindUnderCanvas("AbilityCastConfirm/CastButton"); return t != null ? t.GetComponent<Button>() : null; }
+                }
             }
 
             public static class Timeline

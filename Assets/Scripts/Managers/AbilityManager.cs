@@ -22,6 +22,7 @@ namespace Assets.Scripts.Managers
         // Cancel/Cast buttons (optional)
         private GameObject cancelButton;
         private GameObject castButton;
+        // abilityCastInstance intentionally not cached here; use g.AbilityCast
 
         // Ability user cache for targeting flows (e.g., Shield Bash owner)
         private ActorInstance pendingAbilityUser;
@@ -30,17 +31,22 @@ namespace Assets.Scripts.Managers
         private void Awake()
         {
             // Cache CancelButton/CastButton if present and start hidden
-            var cancelObj = GameObject.Find("CancelButton");
+            var cancelObj = GameObject.Find("Canvas/AbilityCast/CancelButton");
             if (cancelObj != null)
             {
                 cancelButton = cancelObj;
-                cancelButton.SetActive(false);
             }
-            var castObj = GameObject.Find("CastButton");
+            var castObj = GameObject.Find("Canvas/AbilityCast/CastButton");
             if (castObj != null)
             {
                 castButton = castObj;
-                castButton.SetActive(false);
+            }
+            var ac = g.AbilityCastConfirm;
+            if (ac != null)
+            {
+                ac.CanvasGroup.alpha = 0f;
+                ac.CanvasGroup.interactable = false;
+                ac.CanvasGroup.blocksRaycasts = false;
             }
         }
 
@@ -61,10 +67,12 @@ namespace Assets.Scripts.Managers
             currentUser = user;
             currentAbility = ability;
 
+            // Clear any previous title until we have a selected target
+            g.AbilityCastConfirm?.ClearTitle();
+
             // Any-actor flow by default; linear flow will still call this to set state
             g.InputManager.InputMode = ability.TargetingMode == AbilityTargetingMode.Linear ? InputMode.LinearTarget : InputMode.AnyTarget;
-            ShowCancelButton();
-            ShowCastButton();
+            // Note: do not show AbilityCast UI yet; it should remain hidden until a target is selected
             g.InputManager.RequireTouchRelease();
         }
 
@@ -100,6 +108,9 @@ namespace Assets.Scripts.Managers
             {
                 targetList.Remove(actor);
                 actor.Render.SetTargetIndicatorEnabled(false);
+                // if no more targets selected, hide AbilityCast
+                if (targetList.Count == 0) g.AbilityCastConfirm?.FadeOut();
+                OnSelectionChanged(false);
                 return;
             }
 
@@ -111,6 +122,10 @@ namespace Assets.Scripts.Managers
                 ClearAllIndicators();
                 targetList.Clear();
                 Select(actor);
+                // Set title and show AbilityCast UI for single-target abilities
+                g.AbilityCastConfirm?.SetTitle(currentAbility?.name);
+                g.AbilityCastConfirm?.Toggle();
+                OnSelectionChanged(true);
                 return;
             }
 
@@ -118,6 +133,10 @@ namespace Assets.Scripts.Managers
             if (targetList.Count < capacity)
             {
                 Select(actor);
+                // When a target is selected, set title and show AbilityCast UI
+                g.AbilityCastConfirm?.SetTitle(currentAbility?.name);
+                g.AbilityCastConfirm?.Toggle();
+                OnSelectionChanged(true);
             }
             else
             {
@@ -127,6 +146,9 @@ namespace Assets.Scripts.Managers
                     oldest.Render.SetTargetIndicatorEnabled(false);
                 targetList.RemoveAt(0);
                 Select(actor);
+                g.AbilityCastConfirm?.SetTitle(currentAbility?.name);
+                g.AbilityCastConfirm?.Toggle();
+                OnSelectionChanged(true);
             }
         }
 
@@ -147,7 +169,7 @@ namespace Assets.Scripts.Managers
             if (IsInteractionLocked() || touch.phase != TouchPhase.Began) return;
             var hero = pendingAbilityUser; var target = TouchHelper.GetActorAtTouchPosition();
             if (hero == null || target == null || !target.IsPlaying) return; if (!IsValidLinearTarget(hero, target)) return;
-            ClearAllIndicators(); targetList.Clear(); Select(target);
+            ClearAllIndicators(); targetList.Clear(); Select(target); g.AbilityCastConfirm?.Toggle(); OnSelectionChanged(true);
         }
 
         // Spend MP to cast, gate against enemy turn / sequences, and end the hero turn after a cast.
@@ -228,8 +250,8 @@ namespace Assets.Scripts.Managers
             ClearAllIndicators(); targetList.Clear(); currentAbility = null; currentUser = null;
             HideCastButton(); HideCancelButton();
             ClearPendingUser();
-            // Explicitly hide the TitleBar when leaving targeting/casting
-            g.TitleBar?.Hide();
+            // Clear title text from AbilityCast when leaving targeting/casting
+            g.AbilityCastConfirm?.ClearTitle();
         }
 
         /// <summary>
@@ -264,7 +286,28 @@ namespace Assets.Scripts.Managers
         public void HideCastButton() { if (castButton != null) castButton.SetActive(false); }
 
         private void Select(ActorInstance actor) { targetList.Add(actor); actor.Render.SetTargetIndicatorEnabled(true); }
-        private void ClearAllIndicators() { foreach (var a in targetList) if (a != null) a.Render.SetTargetIndicatorEnabled(false); }
+        private void ClearAllIndicators()
+        {
+            foreach (var a in targetList) if (a != null) a.Render.SetTargetIndicatorEnabled(false);
+            var acInst = Assets.Scripts.Canvas.AbilityCastConfirm.instance;
+            if (acInst != null) acInst.FadeOut();
+            var ac = g.AbilityCastConfirm;
+            if (ac != null)
+            {
+                ac.CanvasGroup.alpha = 0f;
+                ac.CanvasGroup.interactable = false;
+                ac.CanvasGroup.blocksRaycasts = false;
+            }
+            // Additional logic to reset any other indicators can be added here
+        }
+
+        // Notify AbilityCast UI to flash when selection changes
+        private void OnSelectionChanged(bool added)
+        {
+            var ac = Assets.Scripts.Canvas.AbilityCastConfirm.instance;
+            if (ac == null) return;
+            if (added) ac.Toggle(); else ac.FadeOut();
+        }
 
         private static bool IsValidTargetForAbility(Ability ability, ActorInstance user, ActorInstance target)
         {

@@ -97,7 +97,7 @@ public class InputManager : MonoBehaviour
     public void OnCancelButtonClickedEvent()
     {
         // Also hide the TitleBar explicitly
-        g.TitleBar?.Hide();
+        g.AbilityCastConfirm?.ClearTitle();
         g.AbilityManager?.OnCancelButtonClickedEvent();
     }
 

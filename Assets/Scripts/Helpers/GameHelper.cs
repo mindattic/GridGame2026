@@ -77,7 +77,7 @@ namespace Assets.Helpers
         public static ActorCard Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
         public static TimelineBarInstance TimelineBar => gm != null ? gm.timelineBar : null; // new accessor
-        public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;
+        public static Assets.Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
       
 
 
