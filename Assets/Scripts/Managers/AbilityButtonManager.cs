@@ -116,7 +116,7 @@ public class AbilityButtonManager : MonoBehaviour
         }
 
         if (list == null) return;
-        foreach (var btn in list) if (btn != null) btn.gameObject.SetActive(true);
+        foreach (var btn in list) if (btn != null) { btn.gameObject.SetActive(true); btn.UpdateInteractable(g.ManaPoolManager != null ? g.ManaPoolManager.heroMana : 0f); }
     }
 
     public void Hide()
@@ -127,6 +127,12 @@ public class AbilityButtonManager : MonoBehaviour
     private void HideAll()
     {
         foreach (var btn in allButtons) if (btn != null) btn.gameObject.SetActive(false);
+    }
+
+    // Update interactable state for all known buttons based on current hero mana
+    public void UpdateAllInteractables(float currentMana)
+    {
+        foreach (var btn in allButtons) if (btn != null) btn.UpdateInteractable(currentMana);
     }
 
     private void OnAbilityButtonClicked(ActorInstance actor, Ability ability)
@@ -156,7 +162,15 @@ public class AbilityButtonManager : MonoBehaviour
         }
         else
         {
-            ability.Activate(actor, null);
+            // Ensure enough mana before activating
+            if (g.ManaPoolManager == null || g.ManaPoolManager.Spend(Team.Hero, ability.ManaCost))
+            {
+                ability.Activate(actor, null);
+            }
+            else
+            {
+                // Optionally: show feedback for insufficient mana
+            }
         }
     }
 }

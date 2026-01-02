@@ -163,9 +163,18 @@ namespace Assets.Helper
             public static class ManaPool
             {
                 public static ManaPoolManager Instance => GameObject.Find("ManaPoolManager").GetComponent<ManaPoolManager>();
+
+                public static RectTransform Root => GameObject.Find("Canvas/ManaPool").GetComponent<RectTransform>();
                 public static Button BankButton => GameObject.Find("Canvas/ManaPool/BankButton").GetComponent<Button>();
-                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/ManaPool/HeroMana").GetComponent<TextMeshProUGUI>();
-                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/ManaPool/EnemyMana").GetComponent<TextMeshProUGUI>();
+
+                // Hero bar uses an Image set to Filled (Horizontal, Left).
+                // Back is a static background image that never changes.
+                public static Image HeroBack => GameObject.Find("Canvas/ManaPool/HeroBar/Back").GetComponent<Image>();
+                public static Image HeroFill => GameObject.Find("Canvas/ManaPool/HeroBar/Fill").GetComponent<Image>();
+
+                // Enemy bar is optional (toggle from ManaPoolManager.showEnemyMana).
+                public static Image EnemyBack => GameObject.Find("Canvas/ManaPool/EnemyBar/Back").GetComponent<Image>();
+                public static Image EnemyFill => GameObject.Find("Canvas/ManaPool/EnemyBar/Fill").GetComponent<Image>();
             }
 
             public static class Card

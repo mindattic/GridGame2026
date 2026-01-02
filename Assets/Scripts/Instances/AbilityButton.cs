@@ -9,6 +9,7 @@ public class AbilityButton : MonoBehaviour
 {
     public Button button;                         // Show in Inspector or dynamically
     public TMP_Text label;                        // Show in Inspector or dynamically
+    private Ability ability;
 
     private void Awake()
     {
@@ -27,6 +28,9 @@ public class AbilityButton : MonoBehaviour
         else
             Debug.LogError("AbilityButton.label is null");
 
+        // store ability for later use (cost checks, etc.)
+        this.ability = ability;
+
         if (button != null)
         {
             button.onClick.RemoveAllListeners();
@@ -36,6 +40,12 @@ public class AbilityButton : MonoBehaviour
         {
             Debug.LogError("AbilityButton.button is null");
         }
+    }
+
+    public void UpdateInteractable(float currentMana)
+    {
+        if (ability == null || button == null) return;
+        button.interactable = currentMana >= ability.ManaCost;
     }
 
 

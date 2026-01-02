@@ -26,7 +26,7 @@ namespace Assets.Scripts.Canvas
         [Tooltip("Baseline normalized units per second for a tag with Speed=1 (1.0 crosses full bar in1s).")]
         [SerializeField] private float baseUnitsPerSec = 1f;
         [Tooltip("Global multiplier applied to timeline movement speed. Lower = slower countdown/approach to trigger.")]
-        [SerializeField] private float timelineSpeedMultiplier = 0.66f;
+        [SerializeField] private float timelineSpeedMultiplier = 0.1f;
         [Tooltip("Vertical spacing between duplicate tags (same enemy) in local pixels.")]
         [SerializeField] private float tagRowHeight = 14f;
         [SerializeField] private bool debugLogs = false;
@@ -287,31 +287,70 @@ namespace Assets.Scripts.Canvas
             return anyReached;
         }
 
-        // NEW: Bank directly to next arriving tag, queue its owner immediately and return it.
+        // NEW: Bank directly to next arriving tag, advance timeline visually, and return the arriving enemy.
+        // Does not queue the enemy - caller is responsible for starting the enemy turn.
         public ActorInstance BankToNextTrigger(out float secondsUsed)
         {
             secondsUsed = 0f;
-            if (activeTags.Count == 0) return null;
+            if (activeTags.Count == 0)
+            {
+                Debug.Log("[TimelineBar] BankToNextTrigger: No active tags");
+                return null;
+            }
 
-            // Find earliest tag by seconds remaining
+            // Find earliest tag by seconds remaining (next enemy to arrive)
             TimelineTag earliest = null;
             float minSec = float.PositiveInfinity;
             foreach (var t in activeTags)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
+                // Only consider enemy tags
+                if (!t.Owner.IsEnemy) continue;
                 float sec = t.GetSecondsRemaining();
+                Debug.Log($"[TimelineBar] Tag '{t.Owner.name}': u={t.GetU():F3}, uPerSec={t.GetUPerSec():F4}, secondsRemaining={sec:F2}");
                 if (sec < minSec)
                 {
                     minSec = sec; earliest = t;
                 }
             }
-            if (earliest == null || float.IsInfinity(minSec) || minSec <= 0f) return null;
+            
+            if (earliest == null)
+            {
+                Debug.Log("[TimelineBar] BankToNextTrigger: No valid earliest tag found");
+                return null;
+            }
+            
+            if (float.IsInfinity(minSec))
+            {
+                Debug.Log("[TimelineBar] BankToNextTrigger: minSec is infinity");
+                return null;
+            }
+            
+            // Allow banking even if minSec is very small (but not zero)
+            if (minSec <= 0.001f)
+            {
+                Debug.Log($"[TimelineBar] BankToNextTrigger: minSec too small ({minSec:F4}), tag already at trigger");
+                // Still proceed but with minimal mana gain
+                minSec = 0.001f;
+            }
 
             secondsUsed = Mathf.Max(0f, minSec);
-            // Advance everyone by minSec
+            Debug.Log($"[TimelineBar] BankToNextTrigger: Banking {secondsUsed:F2} seconds to enemy '{earliest.Owner.name}'");
+            
+            // Advance all tags by the time skipped (visual movement)
             AdvanceBySeconds(secondsUsed);
-            // Explicitly queue arrival for the earliest tag now
-            OnTagReachedLeft(earliest);
+            
+            // Lock the arriving tag at the trigger point
+            earliest.SetU(0f);
+            earliest.Pause();
+            
+            // Pause all tags and set timeline state
+            PauseAll();
+            
+            // Disable input during transition
+            g.InputManager.InputMode = InputMode.None;
+            g.SelectionManager.Drop();
+            
             return earliest.Owner;
         }
 
