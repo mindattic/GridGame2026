@@ -14,7 +14,7 @@ namespace Assets.Data.Actor
             return new ActorData
             {
                 CharacterName = "Scorpion",
-                CharacterClass = CharacterClass.Scorpion, // If this enum does not exist, replace accordingly.
+                CharacterClass = CharacterClass.Scorpion,
                 Tags = Tag.Hero | Tag.Humanoid,
 
                 Description = "A close-quarters specialist that thrives in direct engagements.",
@@ -25,13 +25,10 @@ namespace Assets.Data.Actor
                 BaseStats = new ActorStats
                 {
                     Level = 1,
-
                     Strength = 16f,
                     Vitality = 14f,
                     Agility = 13f,
-
                     Speed = 13f,
-
                     Stamina = 15f,
                     Intelligence = 9f,
                     Wisdom = 9f,
@@ -43,9 +40,7 @@ namespace Assets.Data.Actor
                     Strength = 0.95f,
                     Vitality = 0.80f,
                     Agility = 0.70f,
-
                     Speed = 0.70f,
-
                     Stamina = 0.85f,
                     Intelligence = 0.45f,
                     Wisdom = 0.45f,
@@ -64,10 +59,13 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings(new Vector2Int(316, 345), new Vector2(4f, 4f), 1024),
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Scorpion}"),
 
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Scorpion}")
+                Abilities = new List<Ability>
+                {
+                    AbilityLibrary.CounterAttack()
+                }
             };
         }
     }
-
 }

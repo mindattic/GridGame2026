@@ -14,7 +14,7 @@ namespace Assets.Data.Actor
             return new ActorData
             {
                 CharacterName = "Bat02",
-                CharacterClass = CharacterClass.Bat02, // If this enum does not exist, replace accordingly.
+                CharacterClass = CharacterClass.Bat02,
                 Tags = Tag.Beast | Tag.Flying,
 
                 Description = "A feral threat that overwhelms foes with instinct and power.",
@@ -25,13 +25,10 @@ namespace Assets.Data.Actor
                 BaseStats = new ActorStats
                 {
                     Level = 1,
-
                     Strength = 15f,
                     Vitality = 12f,
                     Agility = 15f,
-
                     Speed = 14f,
-
                     Stamina = 14f,
                     Intelligence = 8f,
                     Wisdom = 8f,
@@ -43,9 +40,7 @@ namespace Assets.Data.Actor
                     Strength = 0.95f,
                     Vitality = 0.75f,
                     Agility = 0.90f,
-
                     Speed = 0.85f,
-
                     Stamina = 0.85f,
                     Intelligence = 0.40f,
                     Wisdom = 0.40f,
@@ -69,10 +64,13 @@ namespace Assets.Data.Actor
                 },
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Bat02}"),
 
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Bat02}")
+                Abilities = new List<Ability>
+                {
+                    AbilityLibrary.DoubleAttack()
+                }
             };
         }
     }
-
 }

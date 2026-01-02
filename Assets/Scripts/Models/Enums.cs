@@ -1,5 +1,13 @@
 ﻿using System;
 
+// Category of ability: when/how it triggers
+public enum AbilityCategory
+{
+    Active,     // Player manually activates (Heal, Smite, etc.)
+    Passive,    // Always active, modifies behavior (DoubleAttack, TripleAttack)
+    Reactive    // Triggers automatically in response to events (CounterAttack)
+}
+
 public enum AbilityType
 {
     Passive,

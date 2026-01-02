@@ -61,7 +61,12 @@ public enum AbilityEffect
     Heal,
     ShieldRush,
     Trap,
-    Smite
+    Smite,
+    // Passive effects
+    DoubleAttack,
+    TripleAttack,
+    // Reactive effects
+    CounterAttack
 }
 
 public enum AbilityTargetingMode
@@ -74,6 +79,7 @@ public class Ability
 {
     public string name;
     public AbilityType type;
+    public AbilityCategory category = AbilityCategory.Active; // Default to active
     public Sprite button;
 
     // New: how many distinct targets this ability can select (default 1)
@@ -89,12 +95,18 @@ public class Ability
     // New: description to display on the card when selected
     public string Description;
 
+    // For passive abilities: number of extra attacks (DoubleAttack = 1, TripleAttack = 2)
+    public int ExtraAttacks = 0;
+
+    public bool IsActive => category == AbilityCategory.Active;
+    public bool IsPassive => category == AbilityCategory.Passive;
+    public bool IsReactive => category == AbilityCategory.Reactive;
+
     public bool requiresTarget =>
         type == AbilityType.TargetAlly || type == AbilityType.TargetOpponent || type == AbilityType.TargetAny;
 
     public void Activate(ActorInstance user, ActorInstance target)
     {
-        // Implement actual ability logic
         Debug.Log($"{user.name} used {name} on {(target ? target.name : "no target")}");
     }
 }

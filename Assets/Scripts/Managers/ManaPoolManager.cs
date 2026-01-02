@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
-using Assets.Scripts.Canvas;
 
 /// <summary>
 /// Manages hero and enemy mana pools.
@@ -18,18 +17,10 @@ public class ManaPoolManager : MonoBehaviour
     [SerializeField] private float _heroMana = 0f;
     public float enemyMana = 0f;
     
-    // Property to track heroMana changes
     public float heroMana
     {
         get => _heroMana;
-        set
-        {
-            if (!Mathf.Approximately(_heroMana, value))
-            {
-                // Debug.Log($"[ManaPool] heroMana changed: {_heroMana:F2} -> {value:F2}");
-            }
-            _heroMana = value;
-        }
+        set => _heroMana = value;
     }
 
     [Header("Passive Gain")]
@@ -53,36 +44,25 @@ public class ManaPoolManager : MonoBehaviour
         HeroFill = GameObjectHelper.Game.ManaPool.HeroFill;
         EnemyFill = GameObjectHelper.Game.ManaPool.EnemyFill;
 
+        BankButton.onClick.AddListener(OnBankButtonClicked);
+
         ApplyBloomColor();
         RefreshUI();
     }
 
     private void OnDestroy()
     {
-
+        BankButton.onClick.RemoveListener(OnBankButtonClicked);
     }
 
     private void Update()
     {
         // Accumulate mana at a constant rate while the timeline is advancing
-        var timeline = g.TimelineBar;
-        if (timeline != null && timeline.IsAdvancing)
+        if (g.TimelineBar.IsAdvancing)
         {
             float gain = manaPerSecond * Time.deltaTime;
             heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
             RefreshUI();
-        }
-        
-        // Debug: detect if fillAmount was changed externally
-        if (HeroFill != null)
-        {
-            float expectedFill = maxMana <= 0f ? 0f : Mathf.Clamp01(heroMana / maxMana);
-            if (!Mathf.Approximately(HeroFill.fillAmount, expectedFill))
-            {
-                Debug.LogWarning($"[ManaPool] Fill mismatch detected! fillAmount={HeroFill.fillAmount:F3}, expected={expectedFill:F3}, heroMana={heroMana:F2}");
-                // Force correction
-                HeroFill.fillAmount = expectedFill;
-            }
         }
     }
 
@@ -92,65 +72,35 @@ public class ManaPoolManager : MonoBehaviour
     /// </summary>
     public void OnBankButtonClicked()
     {
-        Debug.Log("[ManaPool] Bank button clicked");
-        
-        if (g.TurnManager == null || !g.TurnManager.IsHeroTurn)
-        {
-            Debug.Log("[ManaPool] Bank rejected: not hero turn");
+        if (!g.TurnManager.IsHeroTurn)
             return;
-        }
-
-        var timeline = g.TimelineBar;
-        if (timeline == null)
-        {
-            Debug.Log("[ManaPool] Bank rejected: no timeline");
-            return;
-        }
 
         float secondsSkipped;
-        var arrivingEnemy = timeline.BankToNextTrigger(out secondsSkipped);
+        var arrivingEnemy = g.TimelineBar.BankToNextTrigger(out secondsSkipped);
 
         if (arrivingEnemy == null)
-        {
-            Debug.Log("[ManaPool] Bank rejected: no arriving enemy returned");
             return;
-        }
 
-        // Store the mana before adding for debug
-        float manaBefore = heroMana;
-        
-        // Grant mana for the time skipped (even if small, give at least something)
+        // Grant mana for the time skipped
         float gain = secondsSkipped * manaPerSecond;
         heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
         
-        Debug.Log($"[ManaPool] Bank SUCCESS: secondsSkipped={secondsSkipped:F2}, gain={gain:F2}, manaBefore={manaBefore:F2}, manaAfter={heroMana:F2}");
-        
         RefreshUI();
-
-        // Update ability buttons with new mana amount
-        g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
+        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
 
         // Begin the enemy turn after a brief delay to allow UI to update
         StartCoroutine(BeginEnemyTurnAfterBank(arrivingEnemy));
     }
 
-    /// <summary>
-    /// Begin the enemy turn after banking. Waits a frame for UI updates.
-    /// </summary>
     private IEnumerator BeginEnemyTurnAfterBank(ActorInstance enemy)
     {
-        // Disable input during transition
         g.InputManager.InputMode = InputMode.None;
         g.SelectionManager.Drop();
 
-        // Wait a frame for visual updates to settle
         yield return null;
 
-        // Start the enemy turn - ForceBeginEnemyTurn handles everything
-        if (enemy != null && enemy.IsPlaying && g.TurnManager != null)
-        {
+        if (enemy.IsPlaying)
             g.TurnManager.ForceBeginEnemyTurn(enemy);
-        }
     }
 
     /// <summary>
@@ -174,7 +124,7 @@ public class ManaPoolManager : MonoBehaviour
         }
 
         RefreshUI();
-        g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
+        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
         return true;
     }
 
@@ -191,7 +141,7 @@ public class ManaPoolManager : MonoBehaviour
             enemyMana = Mathf.Clamp(enemyMana + amount, 0f, maxMana);
 
         RefreshUI();
-        g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
+        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
     }
 
     /// <summary>
@@ -199,50 +149,28 @@ public class ManaPoolManager : MonoBehaviour
     /// </summary>
     public void RefreshUI()
     {
-        // Re-fetch HeroFill if null (might have been destroyed/recreated)
-        if (HeroFill == null)
-            HeroFill = GameObjectHelper.Game.ManaPool.HeroFill;
-            
-        if (HeroFill != null)
-        {
-            float heroT = maxMana <= 0f ? 0f : Mathf.Clamp01(heroMana / maxMana);
-            HeroFill.fillAmount = heroT;
-        }
+        float heroT = Mathf.Clamp01(heroMana / maxMana);
+        HeroFill.fillAmount = heroT;
 
-        // Re-fetch EnemyFill if null
-        if (EnemyFill == null)
-            EnemyFill = GameObjectHelper.Game.ManaPool.EnemyFill;
-            
-        if (EnemyFill != null)
+        EnemyFill.gameObject.SetActive(showEnemyMana);
+        if (showEnemyMana)
         {
-            EnemyFill.gameObject.SetActive(showEnemyMana);
-            if (showEnemyMana)
-            {
-                float enemyT = maxMana <= 0f ? 0f : Mathf.Clamp01(enemyMana / maxMana);
-                EnemyFill.fillAmount = enemyT;
-            }
+            float enemyT = Mathf.Clamp01(enemyMana / maxMana);
+            EnemyFill.fillAmount = enemyT;
         }
     }
 
-    /// <summary>
-    /// Apply HDR color to fill images for bloom effect.
-    /// </summary>
     private void ApplyBloomColor()
     {
-        if (HeroFill != null)
-            HeroFill.color = manaHdrColor;
-
-        if (EnemyFill != null)
-            EnemyFill.color = manaHdrColor;
+        HeroFill.color = manaHdrColor;
+        EnemyFill.color = manaHdrColor;
     }
 
     /// <summary>
     /// Legacy hook called by TurnManager at turn start. 
-    /// No longer needed since mana now accumulates continuously while timeline moves.
     /// </summary>
     public void OnTurnStarted(Team team)
     {
-        // No-op: mana is now gained continuously in Update() while timeline.IsAdvancing
         RefreshUI();
     }
 }
