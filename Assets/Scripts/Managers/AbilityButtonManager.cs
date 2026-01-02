@@ -12,6 +12,7 @@ public class AbilityButtonManager : MonoBehaviour
 {
     private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
+    private HorizontalLayoutGroup layoutGroup;
 
     private readonly Dictionary<CharacterClass, List<AbilityButton>> buttonsByHero = new();
     private readonly List<AbilityButton> allButtons = new();
@@ -22,6 +23,21 @@ public class AbilityButtonManager : MonoBehaviour
         if (!PrefabLibrary.Prefabs.TryGetValue("AbilityButtonPrefab", out abilityButtonPrefab) || abilityButtonPrefab == null)
         {
             Debug.LogError("AbilityButtonManager: AbilityButtonPrefab not found in PrefabLibrary.");
+        }
+
+        // Configure HorizontalLayoutGroup for left-aligned buttons (like books on a shelf)
+        if (abilityButtonContainer != null)
+        {
+            layoutGroup = abilityButtonContainer.GetComponent<HorizontalLayoutGroup>();
+            if (layoutGroup == null)
+                layoutGroup = abilityButtonContainer.gameObject.AddComponent<HorizontalLayoutGroup>();
+            
+            layoutGroup.childAlignment = TextAnchor.MiddleLeft;
+            layoutGroup.childControlWidth = false;
+            layoutGroup.childControlHeight = false;
+            layoutGroup.childForceExpandWidth = false;
+            layoutGroup.childForceExpandHeight = false;
+            layoutGroup.spacing = 8f;
         }
     }
 

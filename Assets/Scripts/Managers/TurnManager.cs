@@ -95,6 +95,8 @@ namespace Assets.Scripts.Managers
  public void BeginEnemyTurn(ActorInstance enemy)
  {
  if (enemy == null || !enemy.IsPlaying) return;
+ // Prevent starting another enemy turn if already in an enemy turn
+ if (IsEnemyTurn && ActiveActor == enemy) return;
  IsHeroTurn = false; ActiveActor = enemy; lastEnemy = enemy;
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Enemy);
  g.InputManager.InputMode = InputMode.EnemyTurn;

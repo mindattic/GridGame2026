@@ -121,19 +121,25 @@ public class SelectionManager : MonoBehaviour
  }
  }
 
- public void Drop()
- {
- var actor = g.Actors.SelectedActor;
+  public void Drop()
+  {
+  var actor = g.Actors.SelectedActor;
 
- // Always pause TimelineBar tag movement on any drop (manual or auto)
- g.TimelineBar?.OnHeroStopMove();
+  // Always pause TimelineBar tag movement on any drop (manual or auto)
+  g.TimelineBar?.OnHeroStopMove();
 
- // Only drop if we have a selected hero in Moving state during hero turn
- bool canDrop =
- g.TurnManager.IsHeroTurn &&
- actor != null &&
- actor.IsHero &&
- selectedState == SelectedActorState.Moving;
+  // Reset all tile colors on any drop
+  g.TileManager?.Reset();
+
+  // Refresh mana UI to ensure accumulated mana is reflected
+  g.ManaPoolManager?.RefreshUI();
+
+  // Only drop if we have a selected hero in Moving state during hero turn
+  bool canDrop =
+  g.TurnManager.IsHeroTurn &&
+  actor != null &&
+  actor.IsHero &&
+  selectedState == SelectedActorState.Moving;
 
  if (!canDrop)
  {

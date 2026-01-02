@@ -243,6 +243,8 @@ namespace Assets.Scripts.Canvas
         private void OnTagReachedLeft(TimelineTag tag)
         {
             if (tag == null) return;
+            // Prevent processing if an enemy turn is already in progress
+            if (g.TurnManager != null && g.TurnManager.IsEnemyTurn) return;
             // Tag arrival at TriggerPoint drives turn queue & selection drop
             g.InputManager.InputMode = InputMode.None;
             g.TurnManager.QueueEnemyAfterHero(tag.Owner);

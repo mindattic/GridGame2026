@@ -166,6 +166,9 @@ namespace Assets.Scripts.Managers
                     break;
             }
 
+            // Hide ability cast confirm UI immediately when cast begins
+            g.AbilityCastConfirm.FadeOut();
+
             g.SequenceManager.Add(new SequenceCallback(() => { CancelTargetingInternal(); ClearFocusAndUI(); }));
             g.SequenceManager.Add(new EndTurnSequence());
             g.SequenceManager.Execute();
@@ -188,6 +191,7 @@ namespace Assets.Scripts.Managers
             currentUser = null;
             ClearPendingUser();
             g.AbilityCastConfirm.ClearTitle();
+            g.TileManager?.Reset();
         }
 
         public void CancelTargeting()
