@@ -34,14 +34,6 @@ namespace Assets.Scripts.Managers
  if (enemy != null && enemy.IsEnemy) queuedEnemyAfterHero = enemy;
  }
 
- // NEW: force start an enemy turn immediately, clearing any queued reference
- public void ForceBeginEnemyTurn(ActorInstance enemy)
- {
- if (enemy == null || !enemy.IsPlaying) return;
- queuedEnemyAfterHero = null;
- BeginEnemyTurn(enemy);
- }
-
  private void SelectActiveOrFallback()
  {
  if (ActiveActor != null) { g.SelectionManager.Select(ActiveActor); return; }
@@ -85,6 +77,14 @@ namespace Assets.Scripts.Managers
  g.TimelineBar?.EnsureTagsForAllEnemies(true);
  // Timeline movement is player-driven; keep it paused until the hero starts moving
  g.TimelineBar?.OnHeroStopMove();
+
+ // Auto-bank if remaining time until next enemy is too short for player to act
+ float remainingTime = g.TimelineBar?.GetSecondsUntilNextEnemyReachesLeft() ?? float.MaxValue;
+ if (remainingTime < 0.1f)
+ {
+ g.ManaPoolManager?.OnBankButtonClicked();
+ return; // Bank will handle starting the enemy turn
+ }
 
  SelectActiveOrFallback();
  UpdateActiveIndicators();

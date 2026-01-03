@@ -37,6 +37,10 @@ namespace Assets.Scripts.Managers
             currentUser = user;
             currentAbility = ability;
 
+            // Clear any movement state from PlayerTurn mode to prevent contamination
+            // The user (caster) should remain at their current position
+            ClearMovementState();
+
             g.AbilityCastConfirm.ClearTitle();
             g.InputManager.InputMode = ability.TargetingMode == AbilityTargetingMode.Linear ? InputMode.LinearTarget : InputMode.AnyTarget;
             g.InputManager.RequireTouchRelease();
@@ -176,11 +180,31 @@ namespace Assets.Scripts.Managers
 
         private void ClearFocusAndUI()
         {
+            ClearMovementState();
             g.Actors.SelectedActor = null;
             foreach (var a in g.Actors.All)
                 a.Render.SetFocusIndicatorEnabled(false);
             g.AbilityButtonManager.Hide();
             g.Card.Clear();
+        }
+
+        /// <summary>
+        /// Clears any movement-related state to prevent position contamination
+        /// between input modes (e.g., ability targeting vs player turn).
+        /// </summary>
+        private void ClearMovementState()
+        {
+            // Clear the MovingHero reference
+            g.Actors.MovingHero = null;
+
+            // Clear TouchOffset to prevent position calculation issues
+            g.TouchOffset = Vector3.zero;
+
+            // Ensure no actors think they are still being dragged
+            if (currentUser != null && currentUser.Flags != null)
+            {
+                currentUser.Flags.IsMoving = false;
+            }
         }
 
         private void CancelTargetingInternal()

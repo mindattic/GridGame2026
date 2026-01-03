@@ -245,13 +245,23 @@ namespace Assets.Scripts.Canvas
             if (tag == null) return;
             // Prevent processing if an enemy turn is already in progress
             if (g.TurnManager != null && g.TurnManager.IsEnemyTurn) return;
-            // Tag arrival at TriggerPoint drives turn queue & selection drop
-            g.InputManager.InputMode = InputMode.None;
-            g.TurnManager.QueueEnemyAfterHero(tag.Owner);
-            g.SelectionManager.Drop();
-            // Lock the arriving tag exactly at the trigger
+            
+            var triggeringEnemy = tag.Owner;
+            if (triggeringEnemy == null || !triggeringEnemy.IsPlaying) return;
+            
+            // Lock the arriving tag exactly at the trigger and pause all
             tag.SetU(0f);
             PauseAll();
+            
+            // Disable input during transition
+            g.InputManager.InputMode = InputMode.None;
+            
+            // Queue the timeline trigger sequence which handles:
+            // 1. Force drop any moving hero
+            // 2. Resolve hero pincer attacks (if any)
+            // 3. Begin the enemy turn
+            g.SequenceManager.Add(new Assets.Scripts.Sequences.TimelineTriggerSequence(triggeringEnemy));
+            g.SequenceManager.Execute();
         }
 
         public float GetSecondsUntilNextEnemyReachesLeft()
@@ -289,16 +299,14 @@ namespace Assets.Scripts.Canvas
             return anyReached;
         }
 
-        // NEW: Bank directly to next arriving tag, advance timeline visually, and return the arriving enemy.
-        // Does not queue the enemy - caller is responsible for starting the enemy turn.
-        public ActorInstance BankToNextTrigger(out float secondsUsed)
+        /// <summary>
+        /// Bank directly to next arriving tag. Returns the seconds that would be skipped
+        /// and the enemy that would trigger. Does NOT start the sequence - caller does that.
+        /// </summary>
+        public (ActorInstance enemy, float secondsUsed) GetNextBankTarget()
         {
-            secondsUsed = 0f;
             if (activeTags.Count == 0)
-            {
-                Debug.Log("[TimelineBar] BankToNextTrigger: No active tags");
-                return null;
-            }
+                return (null, 0f);
 
             // Find earliest tag by seconds remaining (next enemy to arrive)
             TimelineTag earliest = null;
@@ -306,54 +314,39 @@ namespace Assets.Scripts.Canvas
             foreach (var t in activeTags)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
-                // Only consider enemy tags
                 if (!t.Owner.IsEnemy) continue;
                 float sec = t.GetSecondsRemaining();
-                Debug.Log($"[TimelineBar] Tag '{t.Owner.name}': u={t.GetU():F3}, uPerSec={t.GetUPerSec():F4}, secondsRemaining={sec:F2}");
                 if (sec < minSec)
                 {
                     minSec = sec; earliest = t;
                 }
             }
             
-            if (earliest == null)
-            {
-                Debug.Log("[TimelineBar] BankToNextTrigger: No valid earliest tag found");
-                return null;
-            }
-            
-            if (float.IsInfinity(minSec))
-            {
-                Debug.Log("[TimelineBar] BankToNextTrigger: minSec is infinity");
-                return null;
-            }
+            if (earliest == null || float.IsInfinity(minSec))
+                return (null, 0f);
             
             // Allow banking even if minSec is very small (but not zero)
-            if (minSec <= 0.001f)
-            {
-                Debug.Log($"[TimelineBar] BankToNextTrigger: minSec too small ({minSec:F4}), tag already at trigger");
-                // Still proceed but with minimal mana gain
-                minSec = 0.001f;
-            }
+            float secondsUsed = Mathf.Max(0.001f, minSec);
+            return (earliest.Owner, secondsUsed);
+        }
 
-            secondsUsed = Mathf.Max(0f, minSec);
-            Debug.Log($"[TimelineBar] BankToNextTrigger: Banking {secondsUsed:F2} seconds to enemy '{earliest.Owner.name}'");
-            
+        /// <summary>
+        /// Advance timeline to next trigger point visually. Called before TimelineTriggerSequence.
+        /// </summary>
+        public void AdvanceToNextTrigger(ActorInstance enemy, float seconds)
+        {
             // Advance all tags by the time skipped (visual movement)
-            AdvanceBySeconds(secondsUsed);
+            AdvanceBySeconds(seconds);
             
             // Lock the arriving tag at the trigger point
-            earliest.SetU(0f);
-            earliest.Pause();
+            var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
+            if (tag != null)
+            {
+                tag.SetU(0f);
+                tag.Pause();
+            }
             
-            // Pause all tags and set timeline state
             PauseAll();
-            
-            // Disable input during transition
-            g.InputManager.InputMode = InputMode.None;
-            g.SelectionManager.Drop();
-            
-            return earliest.Owner;
         }
 
         private void SpawnTag(ActorInstance enemy, float startU)

@@ -24,6 +24,12 @@ public class SelectionManager : MonoBehaviour
 
  public void Select(ActorInstance actor = null)
  {
+ // Guard: During ability targeting modes, don't change SelectedActor
+ // Targeting uses a separate system (AbilityManager.targetList)
+ var mode = g.InputManager?.InputMode ?? InputMode.PlayerTurn;
+ if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget)
+ return;
+
  var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
  // Do not unselect when clicking outside of an actor anymore.
@@ -68,11 +74,15 @@ public class SelectionManager : MonoBehaviour
 #endif
  }
 
- public void Drag()
- {
- // Only allow dragging during hero turn and when selected actor is a hero
- if (!g.TurnManager.IsHeroTurn || g.Actors.SelectedActor == null || g.Actors.SelectedActor.IsEnemy)
- return;
+  public void Drag()
+  {
+  // Guard: Only allow dragging during PlayerTurn mode (not during ability targeting)
+  if (g.InputManager?.InputMode != InputMode.PlayerTurn)
+  return;
+
+  // Only allow dragging during hero turn and when selected actor is a hero
+  if (!g.TurnManager.IsHeroTurn || g.Actors.SelectedActor == null || g.Actors.SelectedActor.IsEnemy)
+  return;
 
  var mode = g.TurnSelectionMode;
  bool restrictToActive = mode == Assets.Scripts.Models.TurnSelectionMode.ActiveOnly;
@@ -123,6 +133,11 @@ public class SelectionManager : MonoBehaviour
 
   public void Drop()
   {
+  // Guard: Only process drops during PlayerTurn mode to prevent state contamination
+  // from ability targeting or other input modes
+  if (g.InputManager?.InputMode != InputMode.PlayerTurn)
+  return;
+
   var actor = g.Actors.SelectedActor;
 
   // Always pause TimelineBar tag movement on any drop (manual or auto)
@@ -223,5 +238,21 @@ public class SelectionManager : MonoBehaviour
  };
  g.PincerAttackManager.OnResolved += onResolved;
  }
+ }
+
+ /// <summary>
+ /// Returns true if a hero is currently being moved (PickedUp or Moving state).
+ /// Used by TimelineTriggerSequence to determine if a ForceHeroDropSequence is needed.
+ /// </summary>
+ public bool IsHeroBeingMoved => 
+ selectedState == SelectedActorState.PickedUp || 
+ selectedState == SelectedActorState.Moving;
+
+ /// <summary>
+ /// Resets the selection state to Idle. Called by ForceHeroDropSequence after dropping.
+ /// </summary>
+ public void ResetState()
+ {
+ selectedState = SelectedActorState.Idle;
  }
 }

@@ -75,32 +75,27 @@ public class ManaPoolManager : MonoBehaviour
         if (!g.TurnManager.IsHeroTurn)
             return;
 
-        float secondsSkipped;
-        var arrivingEnemy = g.TimelineBar.BankToNextTrigger(out secondsSkipped);
-
+        // Get the next bank target
+        var (arrivingEnemy, secondsSkipped) = g.TimelineBar.GetNextBankTarget();
         if (arrivingEnemy == null)
             return;
+
+        // Advance the timeline visually
+        g.TimelineBar.AdvanceToNextTrigger(arrivingEnemy, secondsSkipped);
 
         // Grant mana for the time skipped
         float gain = secondsSkipped * manaPerSecond;
         heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
         
         RefreshUI();
-        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
+        g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
 
-        // Begin the enemy turn after a brief delay to allow UI to update
-        StartCoroutine(BeginEnemyTurnAfterBank(arrivingEnemy));
-    }
-
-    private IEnumerator BeginEnemyTurnAfterBank(ActorInstance enemy)
-    {
+        // Disable input during transition
         g.InputManager.InputMode = InputMode.None;
-        g.SelectionManager.Drop();
 
-        yield return null;
-
-        if (enemy.IsPlaying)
-            g.TurnManager.ForceBeginEnemyTurn(enemy);
+        // Queue the timeline trigger sequence which handles drop, pincer, and enemy turn
+        g.SequenceManager.Add(new Assets.Scripts.Sequences.TimelineTriggerSequence(arrivingEnemy));
+        g.SequenceManager.Execute();
     }
 
     /// <summary>
