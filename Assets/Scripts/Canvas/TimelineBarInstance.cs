@@ -23,27 +23,35 @@ namespace Assets.Scripts.Canvas
         [SerializeField] private float canvasPercent = 0.96f;
 
         [Header("Tuning")]
-        [Tooltip("Baseline normalized units per second for a tag with Speed=1 (1.0 crosses full bar in1s).")]
-        [SerializeField] private float baseUnitsPerSec = 1f;
-        [Tooltip("Global multiplier applied to timeline movement speed. Lower = slower countdown/approach to trigger.")]
-        [SerializeField] private float timelineSpeedMultiplier = 0.1f;
+        [Tooltip("Time in seconds for a tag to cross the full bar (constant for all enemies).")]
+        [SerializeField] private float crossingTimeSeconds = 5f;
+        [Tooltip("Maximum release delay in seconds for slowest enemies (fastest enemies release immediately).")]
+        [SerializeField] private float maxReleaseDelay = 3f;
         [Tooltip("Vertical spacing between duplicate tags (same enemy) in local pixels.")]
         [SerializeField] private float tagRowHeight = 14f;
         [SerializeField] private bool debugLogs = false;
+
+        [Header("Pushback on Attack")]
+        [Tooltip("Minimum pushback (normalized 0-1) when enemy is at the far right.")]
+        [SerializeField] private float pushbackBase = 0.05f;
+        [Tooltip("Maximum pushback (normalized 0-1) when enemy is at the trigger point (far left).")]
+        [SerializeField] private float pushbackMax = 0.4f;
+        [Tooltip("Base stun duration in seconds after pushback (at Agility 10).")]
+        [SerializeField] private float baseStunDuration = 1f;
 
         private readonly List<TimelineTag> activeTags = new List<TimelineTag>();
         private bool advancing;
         public bool IsAdvancing => advancing;
 
-        private float cachedTriggerX;
-        private float cachedSpawnX;
+        private float cachedLeftX;
+        private float cachedRightX;
         private bool layoutReady;
         private float halfWidth; // runtime half-length of bar
 
-        // Exposed endpoints (center is0). Tags move from SpawnX (right) toward TriggerX (left).
-        private float TriggerX => -halfWidth;
-        private float SpawnX => halfWidth;
-        private float Width => Mathf.Max(1f, SpawnX - TriggerX);
+        // Exposed endpoints (center is 0). Tags move from RightX toward LeftX.
+        private float LeftX => -halfWidth;
+        private float RightX => halfWidth;
+        private float Width => Mathf.Max(1f, RightX - LeftX);
 
         private void Awake()
         {
@@ -77,7 +85,7 @@ namespace Assets.Scripts.Canvas
                 tagsRoot.anchorMin = tagsRoot.anchorMax = new Vector2(0.5f, 0.5f); // center reference frame
                 tagsRoot.pivot = new Vector2(0.5f, 0.5f);
             }
-            cachedTriggerX = float.NaN; cachedSpawnX = float.NaN;
+            cachedLeftX = float.NaN; cachedRightX = float.NaN;
         }
 
         private void Start()
@@ -94,7 +102,7 @@ namespace Assets.Scripts.Canvas
             layoutReady = true;
             UpdateAllEndpoints();
             Recalculate();
-            if (debugLogs) Debug.Log($"[TimelineBar] LayoutReady trigger={TriggerX:F1} spawn={SpawnX:F1} width={Width:F1}");
+            if (debugLogs) Debug.Log($"[TimelineBar] LayoutReady left={LeftX:F1} right={RightX:F1} width={Width:F1}");
         }
 
         private void OnRectTransformDimensionsChange()
@@ -119,22 +127,30 @@ namespace Assets.Scripts.Canvas
             {
                 triggerPointRect.anchorMin = triggerPointRect.anchorMax = new Vector2(0.5f, 0.5f);
                 triggerPointRect.pivot = new Vector2(0.5f, 0.5f);
-                triggerPointRect.anchoredPosition = new Vector2(TriggerX, 0f);
+                triggerPointRect.anchoredPosition = new Vector2(LeftX, 0f);
             }
             if (spawnPointRect != null)
             {
                 spawnPointRect.anchorMin = spawnPointRect.anchorMax = new Vector2(0.5f, 0.5f);
                 spawnPointRect.pivot = new Vector2(0.5f, 0.5f);
-                spawnPointRect.anchoredPosition = new Vector2(SpawnX, 0f);
+                spawnPointRect.anchoredPosition = new Vector2(RightX, 0f);
             }
         }
 
         private float UnitsPerSecFromSpeed(int speed)
         {
-            // Consolidate base speed and per-speed into a base value then apply a global multiplier
-            float baseSpeed = baseUnitsPerSec * Mathf.Max(0, speed);
-            float mult = Mathf.Max(0.0001f, timelineSpeedMultiplier);
-            return Mathf.Max(0.001f, baseSpeed * mult);
+            // All enemies move at the same constant speed: 1.0 normalized units over crossingTimeSeconds
+            float crossing = Mathf.Max(0.1f, crossingTimeSeconds);
+            return 1f / crossing;
+        }
+
+        private float GetReleaseDelay(int speed, int maxSpeed, int minSpeed)
+        {
+            // Fastest enemies (maxSpeed) release immediately (delay = 0)
+            // Slowest enemies (minSpeed) release after maxReleaseDelay seconds
+            if (maxSpeed <= minSpeed) return 0f;
+            float t = (float)(maxSpeed - speed) / (maxSpeed - minSpeed);
+            return t * maxReleaseDelay;
         }
 
         private System.Collections.Generic.IEnumerable<ActorInstance> SortedEnemiesBySpeedDesc()
@@ -178,22 +194,24 @@ namespace Assets.Scripts.Canvas
 
             if (activeTags.Count == 0 && redistributeIfNone)
             {
-                // Distribute along [0.1..1.0] by speed ordering (right=fastest)
-                var ordered = playing.OrderByDescending(e => e.Stats.Speed.ToInt()).ToList();
-                int n = ordered.Count;
-                for (int i = 0; i < n; i++)
+                // All enemies start at far right (u=1.0) with staggered release delays based on speed
+                int maxSpd = playing.Max(e => e.Stats.Speed.ToInt());
+                int minSpd = playing.Min(e => e.Stats.Speed.ToInt());
+                foreach (var enemy in playing)
                 {
-                    var enemy = ordered[i];
-                    float startU = n > 1 ? Mathf.Lerp(1f, 0.1f, i / Mathf.Max(1f, n - 1f)) : 1f;
-                    SpawnTag(enemy, startU);
+                    float delay = GetReleaseDelay(enemy.Stats.Speed.ToInt(), maxSpd, minSpd);
+                    SpawnTag(enemy, 1f, delay);
                 }
             }
             else
             {
-                // Only add new ones at the far right
+                // Only add new ones at the far right with appropriate release delay
+                int maxSpd = playing.Max(e => e.Stats.Speed.ToInt());
+                int minSpd = playing.Min(e => e.Stats.Speed.ToInt());
                 foreach (var enemy in missing)
                 {
-                    SpawnTag(enemy, 1f);
+                    float delay = GetReleaseDelay(enemy.Stats.Speed.ToInt(), maxSpd, minSpd);
+                    SpawnTag(enemy, 1f, delay);
                 }
             }
 
@@ -215,15 +233,15 @@ namespace Assets.Scripts.Canvas
         public void OnHeroStopMove() { PauseAll(); }
         public void OnEnemyTurnStarted(ActorInstance enemy) { 
             PauseAll(); 
-            // Lock any tags that are already at/past the trigger to the exact trigger position
+            // Lock any tags that are already at/past the left to the exact left position
             UpdateAllEndpoints();
-            float left = TriggerX;
+            float left = LeftX;
             foreach (var t in activeTags)
             {
                 if (t == null || t.Rect == null) continue;
                 if (t.Rect.anchoredPosition.x <= left + 0.25f)
                 {
-                    t.SetU(0f); // snaps exactly to leftX via ApplyPosition clamp
+                    t.SetU(0f); // snaps exactly to LeftX via ApplyPosition clamp
                     t.Pause();
                 }
             }
@@ -234,9 +252,33 @@ namespace Assets.Scripts.Canvas
             if (tag != null)
             {
                 UpdateAllEndpoints();
-                tag.SetU(1f); // Snap back to right
-                tag.ResetForNextCycle(); // allow it to trigger again next pass
-                tag.Pause();
+                // Animate the tag back to spawn point, then it enters Queued mode
+                tag.ResetToSpawn();
+            }
+        }
+
+
+        /// <summary>
+        /// Pushes the enemy's timeline tag to the right when attacked.
+        /// The closer the enemy is to the left (trigger point), the stronger the pushback.
+        /// Pushback scales with attacker's Strength, and stun recovery depends on enemy's Agility.
+        /// </summary>
+        public void PushbackOnAttack(ActorInstance enemy, int attackerStrength = 10)
+        {
+            if (enemy == null) return;
+            var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
+            if (tag != null)
+            {
+                // Strength of 10 = 1.0x multiplier (baseline)
+                float strengthMultiplier = attackerStrength / 10f;
+                
+                // Get enemy's agility for stun recovery calculation
+                int enemyAgility = enemy.Stats != null 
+                    ? enemy.Stats.Agility.ToInt() 
+                    : 10;
+                
+                tag.Pushback(pushbackBase, pushbackMax, strengthMultiplier, enemyAgility, baseStunDuration);
+                if (debugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
             }
         }
 
@@ -349,7 +391,7 @@ namespace Assets.Scripts.Canvas
             PauseAll();
         }
 
-        private void SpawnTag(ActorInstance enemy, float startU)
+        private void SpawnTag(ActorInstance enemy, float startU, float releaseDelay = 0f)
         {
             if (enemy == null || !enemy.IsEnemy) return;
             if (tagPrefab == null) { Debug.LogError("TimelineBarInstance: tagPrefab not set."); return; }
@@ -361,31 +403,31 @@ namespace Assets.Scripts.Canvas
             // Tag rect: left-edge pivot, anchored at center for symmetric X
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
             tr.pivot = new Vector2(0f, 0.5f);
-            tr.anchoredPosition = new Vector2(Mathf.Lerp(TriggerX, SpawnX, startU), -dup * tagRowHeight);
+            tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * tagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
-            tag.InitializeNormalized(enemy, TriggerX, SpawnX, startU, uSpeed, OnTagReachedLeft);
+            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, releaseDelay);
             activeTags.Add(tag);
         }
 
         private void UpdateAllEndpoints()
         {
-            float left = TriggerX; float spawn = SpawnX;
-            foreach (var t in activeTags) t?.UpdateEndpoints(left, spawn);
+            float left = LeftX; float right = RightX;
+            foreach (var t in activeTags) t?.UpdateEndpoints(left, right);
         }
 
         private void Recalculate()
         {
-            float left = TriggerX; float spawn = SpawnX;
-            if (float.IsNaN(cachedTriggerX) || float.IsNaN(cachedSpawnX) || !Mathf.Approximately(left, cachedTriggerX) || !Mathf.Approximately(spawn, cachedSpawnX))
+            float left = LeftX; float right = RightX;
+            if (float.IsNaN(cachedLeftX) || float.IsNaN(cachedRightX) || !Mathf.Approximately(left, cachedLeftX) || !Mathf.Approximately(right, cachedRightX))
             {
-                cachedTriggerX = left; cachedSpawnX = spawn;
+                cachedLeftX = left; cachedRightX = right;
                 foreach (var t in activeTags)
                 {
                     if (t == null || t.Rect == null) continue;
-                    t.UpdateEndpoints(left, spawn);
+                    t.UpdateEndpoints(left, right);
                     var p = t.Rect.anchoredPosition;
                     // Only auto-loop tags that slipped past the left edge during HERO turns.
-                    // During enemy turns, keep the tag at TriggerX until OnEnemyTurnFinished resets it.
+                    // During enemy turns, keep the tag at LeftX until OnEnemyTurnFinished resets it.
                     bool isHeroTurn = g.TurnManager == null || g.TurnManager.IsHeroTurn;
                     if (isHeroTurn && p.x <= left) t.SetU(1f);
                 }

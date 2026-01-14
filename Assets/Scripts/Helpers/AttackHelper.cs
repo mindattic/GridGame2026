@@ -43,6 +43,13 @@ namespace Assets.Helpers
                         // Wait until the slash reaches apex, then apply damage
                         yield return inst.WaitUntilTrigger(vfx);
                         opp.Damage(attackResult);
+                        
+                        // Push the enemy's timeline tag back (stronger effect when closer to trigger and based on attacker's Strength)
+                        int attackerStrength = attackResult.Attacker?.Stats != null 
+                            ? attackResult.Attacker.Stats.Strength.ToInt() 
+                            : 10;
+                        g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
+                        
                         // Optional: let VFX continue; do not block on full duration
                         yield return Wait.None();
                         yield break;
@@ -52,6 +59,15 @@ namespace Assets.Helpers
 
             // Fallback: apply damage immediately
             opp.Damage(attackResult);
+            
+            // Push the enemy's timeline tag back if it's an enemy
+            if (opp.IsEnemy)
+            {
+                int attackerStrength = attackResult.Attacker?.Stats != null 
+                    ? attackResult.Attacker.Stats.Strength.ToInt() 
+                    : 10;
+                g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
+            }
 
             // Preserve original yield
             yield return Wait.None();
