@@ -44,11 +44,15 @@ namespace Assets.Helpers
                         yield return inst.WaitUntilTrigger(vfx);
                         opp.Damage(attackResult);
                         
-                        // Push the enemy's timeline tag back (stronger effect when closer to trigger and based on attacker's Strength)
-                        int attackerStrength = attackResult.Attacker?.Stats != null 
-                            ? attackResult.Attacker.Stats.Strength.ToInt() 
-                            : 10;
-                        g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
+                        // Only push the enemy's timeline tag back if:
+                        // 1. The attacker is a Hero
+                        // 2. It's currently the hero's turn (not during enemy turn/counter-attacks)
+                        bool isHeroTurn = g.TurnManager == null || g.TurnManager.IsHeroTurn;
+                        if (isHeroTurn && attackResult.Attacker != null && attackResult.Attacker.IsHero)
+                        {
+                            int attackerStrength = attackResult.Attacker.Stats?.Strength.ToInt() ?? 10;
+                            g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
+                        }
                         
                         // Optional: let VFX continue; do not block on full duration
                         yield return Wait.None();
@@ -60,12 +64,11 @@ namespace Assets.Helpers
             // Fallback: apply damage immediately
             opp.Damage(attackResult);
             
-            // Push the enemy's timeline tag back if it's an enemy
-            if (opp.IsEnemy)
+            // Only push the enemy's timeline tag back if attacker is a Hero AND it's hero turn
+            bool isHeroTurnFallback = g.TurnManager == null || g.TurnManager.IsHeroTurn;
+            if (opp.IsEnemy && isHeroTurnFallback && attackResult.Attacker != null && attackResult.Attacker.IsHero)
             {
-                int attackerStrength = attackResult.Attacker?.Stats != null 
-                    ? attackResult.Attacker.Stats.Strength.ToInt() 
-                    : 10;
+                int attackerStrength = attackResult.Attacker.Stats?.Strength.ToInt() ?? 10;
                 g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
             }
 

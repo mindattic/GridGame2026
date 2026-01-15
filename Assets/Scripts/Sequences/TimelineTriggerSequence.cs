@@ -6,8 +6,7 @@ namespace Assets.Scripts.Sequences
     /// <summary>
     /// Handles the full flow when an enemy timeline tag reaches the trigger point:
     /// 1. Force drop any moving hero
-    /// 2. Resolve hero pincer attacks (if any)
-    /// 3. Begin the enemy turn
+    /// 2. Begin the enemy turn
     /// </summary>
     public sealed class TimelineTriggerSequence : SequenceEvent
     {
@@ -31,15 +30,7 @@ namespace Assets.Scripts.Sequences
                 yield return g.SequenceManager.ExecuteRoutine();
             }
 
-            // Step 2: Check and resolve hero pincer attacks
-            var participants = g.PincerAttackManager.GetParticipants(Team.Hero, hero);
-            if (participants.pair.Count > 0)
-            {
-                g.SequenceManager.Add(new HeroPincerSequence(participants, hero));
-                yield return g.SequenceManager.ExecuteRoutine();
-            }
-
-            // Step 3: Begin the enemy turn
+            // Step 2: Begin the enemy turn
             g.TurnManager.BeginEnemyTurn(triggeringEnemy);
         }
     }

@@ -139,18 +139,31 @@ namespace Assets.Scripts.Canvas
 
         private float UnitsPerSecFromSpeed(int speed)
         {
-            // All enemies move at the same constant speed: 1.0 normalized units over crossingTimeSeconds
+            // Speed stat affects movement speed: higher speed = faster movement
+            // Speed 10 = crosses bar in crossingTimeSeconds (baseline)
+            // Speed 20 = crosses bar in half the time, Speed 5 = takes twice as long
             float crossing = Mathf.Max(0.1f, crossingTimeSeconds);
-            return 1f / crossing;
+            float speedMultiplier = speed / 10f;
+            return Mathf.Max(0.01f, speedMultiplier / crossing);
         }
 
-        private float GetReleaseDelay(int speed, int maxSpeed, int minSpeed)
+        private float GetQueueDelayFromSpeed(int speed)
         {
-            // Fastest enemies (maxSpeed) release immediately (delay = 0)
-            // Slowest enemies (minSpeed) release after maxReleaseDelay seconds
-            if (maxSpeed <= minSpeed) return 0f;
+            // Queue delay based on speed: faster enemies wait less
+            // Speed 20 = ~1 second wait, Speed 5 = ~6 seconds wait
+            // Formula: 6 - (speed / 20) * 5, clamped to [1, 6]
+            float delay = 6f - (speed / 20f) * 5f;
+            return Mathf.Clamp(delay, 1f, 6f);
+        }
+
+        private float GetInitialPositionFromSpeed(int speed, int maxSpeed, int minSpeed)
+        {
+            // Scatter enemies across timeline based on speed
+            // Fastest enemies start closer to left (lower u), slowest start at right (higher u)
+            if (maxSpeed <= minSpeed) return 0.5f;
             float t = (float)(maxSpeed - speed) / (maxSpeed - minSpeed);
-            return t * maxReleaseDelay;
+            // t=0 for fastest (start at u=0.2), t=1 for slowest (start at u=0.9)
+            return Mathf.Lerp(0.2f, 0.9f, t);
         }
 
         private System.Collections.Generic.IEnumerable<ActorInstance> SortedEnemiesBySpeedDesc()
@@ -166,7 +179,7 @@ namespace Assets.Scripts.Canvas
 
         /// <summary>
         /// Ensure all currently playing enemies have a tag.
-        /// If there are no tags yet, distribute initial positions by speed (right=fastest).
+        /// If there are no tags yet, scatter across timeline by speed (fastest near left).
         /// Otherwise, only add missing ones at the far right.
         /// Also prunes tags whose owners are gone/inactive.
         /// </summary>
@@ -194,23 +207,24 @@ namespace Assets.Scripts.Canvas
 
             if (activeTags.Count == 0 && redistributeIfNone)
             {
-                // All enemies start at far right (u=1.0) with staggered release delays based on speed
+                // Scatter enemies across timeline based on speed (fastest near left)
                 int maxSpd = playing.Max(e => e.Stats.Speed.ToInt());
                 int minSpd = playing.Min(e => e.Stats.Speed.ToInt());
                 foreach (var enemy in playing)
                 {
-                    float delay = GetReleaseDelay(enemy.Stats.Speed.ToInt(), maxSpd, minSpd);
-                    SpawnTag(enemy, 1f, delay);
+                    int spd = enemy.Stats.Speed.ToInt();
+                    float startU = GetInitialPositionFromSpeed(spd, maxSpd, minSpd);
+                    // No queue delay on initial spawn - they start already on the timeline
+                    SpawnTag(enemy, startU, 0f);
                 }
             }
             else
             {
-                // Only add new ones at the far right with appropriate release delay
-                int maxSpd = playing.Max(e => e.Stats.Speed.ToInt());
-                int minSpd = playing.Min(e => e.Stats.Speed.ToInt());
+                // New enemies spawn at far right with speed-based queue delay
                 foreach (var enemy in missing)
                 {
-                    float delay = GetReleaseDelay(enemy.Stats.Speed.ToInt(), maxSpd, minSpd);
+                    int spd = enemy.Stats.Speed.ToInt();
+                    float delay = GetQueueDelayFromSpeed(spd);
                     SpawnTag(enemy, 1f, delay);
                 }
             }
@@ -282,14 +296,30 @@ namespace Assets.Scripts.Canvas
             }
         }
 
+        // Track if we're currently processing a trigger to prevent double-triggers
+        private bool isProcessingTrigger = false;
+
+        /// <summary>
+        /// Called when hero turn starts - reset the trigger flag to allow future enemy triggers
+        /// </summary>
+        public void ResetTriggerFlag()
+        {
+            isProcessingTrigger = false;
+        }
+
         private void OnTagReachedLeft(TimelineTag tag)
         {
             if (tag == null) return;
-            // Prevent processing if an enemy turn is already in progress
+            
+            // Prevent processing if already processing a trigger OR if enemy turn in progress
+            if (isProcessingTrigger) return;
             if (g.TurnManager != null && g.TurnManager.IsEnemyTurn) return;
             
             var triggeringEnemy = tag.Owner;
             if (triggeringEnemy == null || !triggeringEnemy.IsPlaying) return;
+            
+            // SET FLAG IMMEDIATELY - don't reset until hero turn starts
+            isProcessingTrigger = true;
             
             // Lock the arriving tag exactly at the trigger and pause all
             tag.SetU(0f);
@@ -298,10 +328,7 @@ namespace Assets.Scripts.Canvas
             // Disable input during transition
             g.InputManager.InputMode = InputMode.None;
             
-            // Queue the timeline trigger sequence which handles:
-            // 1. Force drop any moving hero
-            // 2. Resolve hero pincer attacks (if any)
-            // 3. Begin the enemy turn
+            // Queue the timeline trigger sequence
             g.SequenceManager.Add(new Assets.Scripts.Sequences.TimelineTriggerSequence(triggeringEnemy));
             g.SequenceManager.Execute();
         }

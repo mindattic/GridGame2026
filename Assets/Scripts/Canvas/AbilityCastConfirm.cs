@@ -10,7 +10,7 @@ namespace Assets.Scripts.Canvas
     public class AbilityCastConfirm : MonoBehaviour
     {
         public static AbilityCastConfirm instance;
-        public TextMeshProUGUI titleLabel;
+        public TextMeshProUGUI label;
         private CanvasGroup canvasGroup;
         private Button cancelBtn;
         private Button castBtn;
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Canvas
             // Resolve references directly from scene (hardcoded path)
             var root = GameObject.Find("Canvas/AbilityCastConfirm");
             canvasGroup = root.GetComponent<CanvasGroup>();
-            titleLabel = root.transform.Find("TitleBar/Label").GetComponent<TextMeshProUGUI>();
+            label = root.transform.Find("Label").GetComponent<TextMeshProUGUI>();
             cancelBtn = root.transform.Find("CancelButton").GetComponent<Button>();
             castBtn = root.transform.Find("CastButton").GetComponent<Button>();
 
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Canvas
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            titleLabel.text = string.Empty;
+            label.text = string.Empty;
 
             cancelBtn.gameObject.SetActive(false);
             castBtn.gameObject.SetActive(false);
@@ -47,12 +47,12 @@ namespace Assets.Scripts.Canvas
 
         public void SetTitle(string text)
         {
-            titleLabel.text = text ?? string.Empty;
+            label.text = text ?? string.Empty;
         }
 
         public void ClearTitle()
         {
-            titleLabel.text = string.Empty;
+            label.text = string.Empty;
         }
 
         public void Toggle(bool isActive = true)

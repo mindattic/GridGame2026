@@ -76,7 +76,8 @@ namespace Assets.Helpers
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
         public static ActorCard Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
-        public static TimelineBarInstance TimelineBar => gm != null ? gm.timelineBar : null; // new accessor
+        public static TimelineBarInstance TimelineBar => gm != null ? gm.timelineBar : null;
+        public static AbilityBar AbilityBar => gm != null ? gm.abilityBar : null;
         public static Assets.Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
       
 

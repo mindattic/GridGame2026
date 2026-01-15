@@ -59,12 +59,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings(new Vector2Int(235, 796), new Vector2(2f, 2f), 1024),
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Bat00}"),
-
-                Abilities = new List<Ability>
-                {
-                    AbilityLibrary.DoubleAttack()
-                }
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Bat00}")
             };
         }
     }

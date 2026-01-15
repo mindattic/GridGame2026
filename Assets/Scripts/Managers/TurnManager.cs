@@ -63,6 +63,7 @@ namespace Assets.Scripts.Managers
  NotifyEnemyTurnFinished();
  }
 
+
  BeginHeroWindow();
  }
 
@@ -73,6 +74,9 @@ namespace Assets.Scripts.Managers
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Hero);
  g.InputManager.InputMode = InputMode.PlayerTurn;
 
+ // Reset the trigger flag so new enemy triggers can happen
+ g.TimelineBar?.ResetTriggerFlag();
+ 
  // Make sure the timeline shows all enemies for the upcoming planning window
  g.TimelineBar?.EnsureTagsForAllEnemies(true);
  // Timeline movement is player-driven; keep it paused until the hero starts moving
@@ -95,8 +99,9 @@ namespace Assets.Scripts.Managers
  public void BeginEnemyTurn(ActorInstance enemy)
  {
  if (enemy == null || !enemy.IsPlaying) return;
- // Prevent starting another enemy turn if already in an enemy turn
- if (IsEnemyTurn && ActiveActor == enemy) return;
+ // Prevent starting another enemy turn if already in an enemy turn (any enemy)
+ if (IsEnemyTurn) return;
+ 
  IsHeroTurn = false; ActiveActor = enemy; lastEnemy = enemy;
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Enemy);
  g.InputManager.InputMode = InputMode.EnemyTurn;

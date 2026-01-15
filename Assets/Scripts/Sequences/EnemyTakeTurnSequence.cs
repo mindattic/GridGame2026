@@ -29,6 +29,7 @@ namespace Assets.Scripts.Sequences
             // Small pacing
             yield return Wait.None();
 
+            // Queue sequences: move once, attack once
             g.SequenceManager.Add(new EnemyMoveSequence(enemy));
             g.SequenceManager.Add(new EnemyPreAttackSequence(enemy));
             g.SequenceManager.Add(new EnemyAttackSequence(enemy));

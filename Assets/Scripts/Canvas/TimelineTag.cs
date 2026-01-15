@@ -248,7 +248,7 @@ namespace Assets.Scripts.Canvas
 
         /// <summary>
         /// Animates the tag back to the far right and enters Queued mode.
-        /// Called when an enemy's turn finishes.
+        /// Called when an enemy's turn finishes. Assigns queue delay based on speed.
         /// </summary>
         public void ResetToSpawn()
         {
@@ -258,6 +258,11 @@ namespace Assets.Scripts.Canvas
             pushVelocity = 2f; // initial velocity for reset animation
             Mode = TimelineTagMode.PushedBack;
             stunDuration = 0f; // no stun after enemy turn reset, go straight to Queued
+            
+            // Assign queue delay based on speed: faster enemies wait less (1-6 seconds)
+            int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
+            queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
+            
             UpdateLabel();
         }
 
@@ -269,6 +274,9 @@ namespace Assets.Scripts.Canvas
             fired = false;
             u = 1f;
             ApplyPosition();
+            // Assign queue delay based on speed (1-6 seconds)
+            int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
+            queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
             queueTimer = queueDelay;
             Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
             pushVelocity = 0f;

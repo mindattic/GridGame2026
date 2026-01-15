@@ -213,14 +213,9 @@ namespace Assets.Helper
                     get { var t = FindUnderCanvas("AbilityCastConfirm"); return t != null ? t.GetComponent<CanvasGroup>() : null; }
                 }
 
-                public static Image TargetImage
+                public static TextMeshProUGUI Label
                 {
-                    get { var t = FindUnderCanvas("AbilityCastConfirm/TargetImage"); return t != null ? t.GetComponent<Image>() : null; }
-                }
-
-                public static TextMeshProUGUI TitleLabel
-                {
-                    get { var t = FindUnderCanvas("AbilityCastConfirm/TitleBar/Label"); return t != null ? t.GetComponent<TextMeshProUGUI>() : null; }
+                    get { var t = FindUnderCanvas("AbilityCastConfirm/Label"); return t != null ? t.GetComponent<TextMeshProUGUI>() : null; }
                 }
 
                 public static Button CancelButton
@@ -239,6 +234,12 @@ namespace Assets.Helper
                 public static RectTransform Root => GameObject.Find("Canvas/Timeline").GetComponent<RectTransform>();
                 public static RectTransform Viewport => GameObject.Find("Canvas/Timeline/Viewport").GetComponent<RectTransform>();
                 public static RectTransform Content => GameObject.Find("Canvas/Timeline/Viewport/Content").GetComponent<RectTransform>();
+            }
+
+            public static class AbilityBar
+            {
+                public static RectTransform Root => GameObject.Find("Canvas/AbilityBar").GetComponent<RectTransform>();
+                public static TextMeshProUGUI Label => GameObject.Find("Canvas/AbilityBar/Label").GetComponent<TextMeshProUGUI>();
             }
 
             // NEW: CutoutOverlay helpers

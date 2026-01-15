@@ -103,6 +103,9 @@ public class GameManager : Singleton<GameManager>
     // New timeline bar (replaces old block timeline)
     [HideInInspector] public TimelineBarInstance timelineBar;
 
+    // Ability bar for displaying ability names when executed
+    [HideInInspector] public AbilityBar abilityBar;
+
     [HideInInspector] public BackgroundInstance background;
 
     // Board
@@ -294,6 +297,11 @@ public class GameManager : Singleton<GameManager>
         var timelineBarGO = GameObject.Find("Canvas/TimelineBar");
         if (timelineBarGO != null)
             timelineBar = timelineBarGO.GetComponent<TimelineBarInstance>();
+        
+        // Find AbilityBar in Canvas
+        var abilityBarGO = GameObject.Find("Canvas/AbilityBar");
+        if (abilityBarGO != null)
+            abilityBar = abilityBarGO.GetComponent<AbilityBar>();
         
         // Find AbilityCastConfirm UI
         var abilityCastConfirmGO = GameObject.Find("Canvas/AbilityCastConfirm");

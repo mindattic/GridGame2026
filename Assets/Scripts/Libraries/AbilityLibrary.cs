@@ -83,6 +83,28 @@ namespace Assets.Scripts.Libraries
             Description = "Attacks three times per turn against each adjacent target."
         };
 
+        public static Ability DoubleMove() => new Ability
+        {
+            name = "Double Move",
+            category = AbilityCategory.Passive,
+            type = AbilityType.Passive,
+            Effect = AbilityEffect.DoubleMove,
+            ExtraMoves = 1,
+            ManaCost = 0,
+            Description = "Moves twice per turn instead of once."
+        };
+
+        public static Ability TripleMove() => new Ability
+        {
+            name = "Triple Move",
+            category = AbilityCategory.Passive,
+            type = AbilityType.Passive,
+            Effect = AbilityEffect.TripleMove,
+            ExtraMoves = 2,
+            ManaCost = 0,
+            Description = "Moves three times per turn instead of once."
+        };
+
         // ============== REACTIVE ABILITIES ==============
         
         public static Ability CounterAttack() => new Ability

@@ -62,9 +62,12 @@ public enum AbilityEffect
     ShieldRush,
     Trap,
     Smite,
-    // Passive effects
+    // Passive effects - Attack
     DoubleAttack,
     TripleAttack,
+    // Passive effects - Movement
+    DoubleMove,
+    TripleMove,
     // Reactive effects
     CounterAttack
 }
@@ -97,6 +100,9 @@ public class Ability
 
     // For passive abilities: number of extra attacks (DoubleAttack = 1, TripleAttack = 2)
     public int ExtraAttacks = 0;
+    
+    // For passive abilities: number of extra moves (DoubleMove = 1, TripleMove = 2)
+    public int ExtraMoves = 0;
 
     public bool IsActive => category == AbilityCategory.Active;
     public bool IsPassive => category == AbilityCategory.Passive;
