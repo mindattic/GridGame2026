@@ -247,21 +247,30 @@ namespace Assets.Scripts.Canvas
         public void SetAlpha(float a) { if (CanvasGroup != null) CanvasGroup.alpha = Mathf.Clamp01(a); }
 
         /// <summary>
-        /// Animates the tag back to the far right and enters Queued mode.
+        /// Resets the tag to the spawn point (far right) and enters Queued mode.
         /// Called when an enemy's turn finishes. Assigns queue delay based on speed.
         /// </summary>
         public void ResetToSpawn()
         {
             fired = false;
-            // Animate push all the way to far right, then enter Queued (no stun)
-            pushTargetU = 1f;
-            pushVelocity = 2f; // initial velocity for reset animation
-            Mode = TimelineTagMode.PushedBack;
-            stunDuration = 0f; // no stun after enemy turn reset, go straight to Queued
+            
+            // IMPORTANT: Immediately snap u to 1.0 to prevent re-triggering while at left edge
+            // This fixes the double-trigger bug where the tag could fire again before animation completes
+            u = 1f;
+            ApplyPosition();
             
             // Assign queue delay based on speed: faster enemies wait less (1-6 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
             queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
+            queueTimer = queueDelay;
+            
+            // Enter Queued mode (or Approaching if no delay)
+            Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+            
+            // Reset pushback/stun state
+            pushVelocity = 0f;
+            stunTimer = 0f;
+            stunDuration = 0f;
             
             UpdateLabel();
         }

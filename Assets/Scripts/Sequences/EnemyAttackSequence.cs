@@ -26,6 +26,8 @@ namespace Assets.Scripts.Sequences
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
+            UnityEngine.Debug.Log($"[EnemyAttackSequence] ProcessRoutine started for {attacker?.name ?? "null"}");
+            
             if (attacker == null || !attacker.IsPlaying)
                 yield break;
 
@@ -38,12 +40,12 @@ namespace Assets.Scripts.Sequences
             if (defendingHeroes.Count == 0)
                 yield break;
 
-            // Attack each adjacent hero once
-            foreach (var opponent in defendingHeroes)
+            // Attack only the first adjacent hero, then end attack phase
+            var opponent = defendingHeroes.First();
+            
+            if (opponent.IsPlaying && !opponent.IsDying && !opponent.IsDead)
             {
-                if (!opponent.IsPlaying || opponent.IsDying || opponent.IsDead)
-                    continue;
-
+                UnityEngine.Debug.Log($"[EnemyAttackSequence] {attacker.name} attacking {opponent.name} NOW");
                 var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
 
                 if (attackResult != null && attackResult.Opponent != null && 

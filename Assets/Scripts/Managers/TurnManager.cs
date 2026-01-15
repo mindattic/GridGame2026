@@ -98,6 +98,7 @@ namespace Assets.Scripts.Managers
 
  public void BeginEnemyTurn(ActorInstance enemy)
  {
+ UnityEngine.Debug.Log($"[TurnManager] BeginEnemyTurn called for {enemy?.name ?? "null"}, IsEnemyTurn={IsEnemyTurn}");
  if (enemy == null || !enemy.IsPlaying) return;
  // Prevent starting another enemy turn if already in an enemy turn (any enemy)
  if (IsEnemyTurn) return;

@@ -32,6 +32,10 @@ public class SequenceManager : MonoBehaviour
         if (e == null)
             return;
 
+        // Debug: track when EnemyAttackSequence is added
+        if (e.GetType().Name == "EnemyAttackSequence")
+            UnityEngine.Debug.Log($"[SequenceManager] ADD EnemyAttackSequence - queue count before: {queue.Count}, stack: {UnityEngine.StackTraceUtility.ExtractStackTrace()}");
+
         queue.Add(e);
     }
 
