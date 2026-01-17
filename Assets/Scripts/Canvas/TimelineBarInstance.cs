@@ -39,6 +39,10 @@ namespace Assets.Scripts.Canvas
         [Tooltip("Base stun duration in seconds after pushback (at Agility 10).")]
         [SerializeField] private float baseStunDuration = 1f;
 
+        [Header("Queue Coordination")]
+        [Tooltip("Minimum time gap (seconds) between enemy releases from queue to prevent stacking.")]
+        [SerializeField] private float minimumReleaseGap = 1.5f;
+
         private readonly List<TimelineTag> activeTags = new List<TimelineTag>();
         private bool advancing;
         public bool IsAdvancing => advancing;
@@ -112,6 +116,15 @@ namespace Assets.Scripts.Canvas
             Recalculate();
         }
 
+        private void Update()
+        {
+            // Periodically enforce queue spacing to prevent overlap
+            if (advancing && activeTags.Count > 1)
+            {
+                EnforceQueueSpacing();
+            }
+        }
+
         private void RebuildLayout()
         {
             if (c.CanvasRect == null || barRect == null) return;
@@ -154,6 +167,134 @@ namespace Assets.Scripts.Canvas
             // Formula: 6 - (speed / 20) * 5, clamped to [1, 6]
             float delay = 6f - (speed / 20f) * 5f;
             return Mathf.Clamp(delay, 1f, 6f);
+        }
+
+        /// <summary>
+        /// Calculate the earliest safe release time that won't cause overlap with other tags.
+        /// Returns the queue delay needed to maintain minimum spacing.
+        /// </summary>
+        private float GetCoordinatedQueueDelay(float baseDelay)
+        {
+            if (activeTags.Count == 0) return baseDelay;
+            
+            // Collect all tags that are queued or approaching, sorted by when they'll reach the trigger
+            var releaseInfo = new List<(float releaseTime, float arrivalTime)>();
+            
+            foreach (var t in activeTags)
+            {
+                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
+                
+                float queueTime = t.Mode == TimelineTagMode.Queued ? t.GetQueueTimer() : 0f;
+                float moveTime = t.GetUPerSec() > 0f ? t.GetU() / t.GetUPerSec() : 0f;
+                
+                // Add stun time if applicable
+                if (t.Mode == TimelineTagMode.Stunned)
+                {
+                    queueTime = t.GetSecondsRemaining() - moveTime;
+                }
+                
+                float arrivalTime = queueTime + moveTime;
+                releaseInfo.Add((queueTime, arrivalTime));
+            }
+            
+            if (releaseInfo.Count == 0) return baseDelay;
+            
+            // New tag starts at u=1.0, so we need to check when it would arrive
+            // and ensure it doesn't release within minimumReleaseGap of others
+            float myMoveTime = crossingTimeSeconds; // Time to cross full bar
+            float myReleaseTime = baseDelay;
+            float myArrivalTime = myReleaseTime + myMoveTime;
+            
+            // Sort existing tags by arrival time
+            releaseInfo.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
+            
+            // Check each existing tag and ensure our release doesn't conflict
+            foreach (var (releaseTime, arrivalTime) in releaseInfo)
+            {
+                // If our arrival would be within gap of theirs, delay our release
+                if (Mathf.Abs(myArrivalTime - arrivalTime) < minimumReleaseGap)
+                {
+                    // Push our arrival to be minimumReleaseGap after theirs
+                    myArrivalTime = arrivalTime + minimumReleaseGap;
+                    myReleaseTime = myArrivalTime - myMoveTime;
+                }
+            }
+            
+            return Mathf.Max(baseDelay, myReleaseTime);
+        }
+
+        /// <summary>
+        /// Adjusts queue timers for all queued tags to prevent releases within minimumReleaseGap.
+        /// Called periodically and after state changes.
+        /// </summary>
+        private void EnforceQueueSpacing()
+        {
+            // Get all queued tags with their projected arrival times
+            var queuedTags = new List<(TimelineTag tag, float arrivalTime)>();
+            var approachingTags = new List<(TimelineTag tag, float arrivalTime)>();
+            
+            foreach (var t in activeTags)
+            {
+                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
+                
+                if (t.Mode == TimelineTagMode.Queued)
+                {
+                    float moveTime = t.GetUPerSec() > 0f ? t.GetU() / t.GetUPerSec() : 0f;
+                    float arrivalTime = t.GetQueueTimer() + moveTime;
+                    queuedTags.Add((t, arrivalTime));
+                }
+                else if (t.Mode == TimelineTagMode.Approaching)
+                {
+                    float arrivalTime = t.GetSecondsRemaining();
+                    approachingTags.Add((t, arrivalTime));
+                }
+            }
+            
+            if (queuedTags.Count == 0) return;
+            
+            // Sort queued tags by arrival time (earliest first)
+            queuedTags.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
+            
+            // Get the earliest arrival time among approaching tags (these can't be adjusted)
+            float earliestApproachingArrival = float.MaxValue;
+            foreach (var (_, arrival) in approachingTags)
+            {
+                if (arrival < earliestApproachingArrival)
+                    earliestApproachingArrival = arrival;
+            }
+            
+            // Process queued tags to ensure spacing
+            float lastArrivalTime = 0f;
+            
+            // If there are approaching tags, use the earliest as our baseline
+            if (approachingTags.Count > 0)
+            {
+                approachingTags.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
+                lastArrivalTime = approachingTags[approachingTags.Count - 1].arrivalTime;
+            }
+            
+            foreach (var (tag, originalArrival) in queuedTags)
+            {
+                float requiredArrival = lastArrivalTime + minimumReleaseGap;
+                
+                if (originalArrival < requiredArrival)
+                {
+                    // Need to delay this tag
+                    float moveTime = tag.GetUPerSec() > 0f ? tag.GetU() / tag.GetUPerSec() : 0f;
+                    float newQueueTime = requiredArrival - moveTime;
+                    
+                    if (newQueueTime > tag.GetQueueTimer())
+                    {
+                        tag.SetQueueTimer(newQueueTime);
+                        if (debugLogs) Debug.Log($"[TimelineBar] Adjusted {tag.Owner?.name} queue timer to {newQueueTime:F2}s to prevent overlap");
+                    }
+                    lastArrivalTime = requiredArrival;
+                }
+                else
+                {
+                    lastArrivalTime = originalArrival;
+                }
+            }
         }
 
         private float GetInitialPositionFromSpeed(int speed, int maxSpeed, int minSpeed)
@@ -229,7 +370,7 @@ namespace Assets.Scripts.Canvas
                 }
             }
 
-            if (!layoutReady) StartCoroutine(EnsureLayoutThenReposition()); else { UpdateAllEndpoints(); Recalculate(); }
+            if (!layoutReady) StartCoroutine(EnsureLayoutThenReposition()); else { UpdateAllEndpoints(); Recalculate(); EnforceQueueSpacing(); }
             PauseAll(); // Start paused until hero moves
         }
 
@@ -243,7 +384,7 @@ namespace Assets.Scripts.Canvas
         private void ResumeAll()
         { foreach (var t in activeTags) t?.Resume(); advancing = true; }
 
-        public void OnHeroStartMove() { Recalculate(); ResumeAll(); }
+        public void OnHeroStartMove() { Recalculate(); EnforceQueueSpacing(); ResumeAll(); }
         public void OnHeroStopMove() { PauseAll(); }
         public void OnEnemyTurnStarted(ActorInstance enemy) { 
             PauseAll(); 
@@ -266,8 +407,17 @@ namespace Assets.Scripts.Canvas
             if (tag != null)
             {
                 UpdateAllEndpoints();
-                // Animate the tag back to spawn point, then it enters Queued mode
+                // Reset the tag to spawn position
                 tag.ResetToSpawn();
+                
+                // Coordinate the queue timer to prevent overlap with other tags
+                int speed = enemy.Stats?.Speed.ToInt() ?? 10;
+                float baseDelay = GetQueueDelayFromSpeed(speed);
+                float coordinatedDelay = GetCoordinatedQueueDelay(baseDelay);
+                tag.SetQueueTimer(coordinatedDelay);
+                
+                if (debugLogs)
+                    Debug.Log($"[TimelineBar] {enemy.name} requeued with coordinated delay {coordinatedDelay:F2}s");
             }
         }
 
@@ -422,6 +572,10 @@ namespace Assets.Scripts.Canvas
         {
             if (enemy == null || !enemy.IsEnemy) return;
             if (tagPrefab == null) { Debug.LogError("TimelineBarInstance: tagPrefab not set."); return; }
+            
+            // Coordinate the release delay to prevent overlap with existing tags
+            float coordinatedDelay = GetCoordinatedQueueDelay(releaseDelay);
+            
             var parent = tagsRoot != null ? tagsRoot : barRect;
             var tag = Instantiate(tagPrefab, parent, false);
             tag.name = $"TimelineTag_{enemy.name}";
@@ -432,8 +586,11 @@ namespace Assets.Scripts.Canvas
             tr.pivot = new Vector2(0f, 0.5f);
             tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * tagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
-            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, releaseDelay);
+            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, coordinatedDelay);
             activeTags.Add(tag);
+            
+            if (debugLogs && coordinatedDelay != releaseDelay)
+                Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
         }
 
         private void UpdateAllEndpoints()

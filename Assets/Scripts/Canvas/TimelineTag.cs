@@ -62,6 +62,11 @@ namespace Assets.Scripts.Canvas
         private bool paused;
         private bool fired;
 
+        // Label fade-in state (hidden in queue, fades in when approaching)
+        private const float LabelFadeDuration = 0.4f;
+        private Coroutine labelFadeCoroutine;
+        private float labelAlpha;
+
         // Tolerance for deciding a tag reached the left edge (in local pixels)
         private const float ReachTolerance =0.25f;
 
@@ -178,6 +183,10 @@ namespace Assets.Scripts.Canvas
             // Start in Queued mode if there's a delay, otherwise go straight to Approaching
             Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
             
+            // Label is hidden in queue, visible when approaching
+            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            ApplyLabelAlpha();
+            
             if (CanvasGroup != null) CanvasGroup.alpha =1f;
             isFading = false;
             paused = true; // start paused; TimelineBar controls advance
@@ -267,6 +276,10 @@ namespace Assets.Scripts.Canvas
             // Enter Queued mode (or Approaching if no delay)
             Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
             
+            // Hide label in queue, show if immediately approaching
+            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            ApplyLabelAlpha();
+            
             // Reset pushback/stun state
             pushVelocity = 0f;
             stunTimer = 0f;
@@ -288,6 +301,11 @@ namespace Assets.Scripts.Canvas
             queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
             queueTimer = queueDelay;
             Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+            
+            // Hide label in queue, show if immediately approaching
+            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            ApplyLabelAlpha();
+            
             pushVelocity = 0f;
             stunTimer = 0f;
             UpdateLabel();
@@ -332,6 +350,22 @@ namespace Assets.Scripts.Canvas
 
         public float GetU() => u;
         public float GetUPerSec() => uPerSec;
+        public float GetQueueTimer() => queueTimer;
+        
+        /// <summary>
+        /// Sets the queue timer to a new value. Used by TimelineBar to coordinate release spacing.
+        /// </summary>
+        public void SetQueueTimer(float time)
+        {
+            queueTimer = Mathf.Max(0f, time);
+            if (Mode == TimelineTagMode.Queued && queueTimer <= 0f)
+            {
+                Mode = TimelineTagMode.Approaching;
+                StartLabelFadeIn();
+            }
+            UpdateLabel();
+        }
+        
         public float GetSecondsRemaining()
         {
             float moveTime = uPerSec <= 0f ? 0f : Mathf.Max(0f, u / uPerSec);
@@ -438,6 +472,7 @@ namespace Assets.Scripts.Canvas
             {
                 queueTimer = 0f;
                 Mode = TimelineTagMode.Approaching;
+                StartLabelFadeIn();
             }
         }
 
@@ -474,6 +509,13 @@ namespace Assets.Scripts.Canvas
                     ApplyPosition();
                     queueTimer = queueDelay;
                     Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+                    
+                    // Hide label when entering queue
+                    if (Mode == TimelineTagMode.Queued)
+                    {
+                        labelAlpha = 0f;
+                        ApplyLabelAlpha();
+                    }
                 }
                 // Otherwise go to Stunned (from attack pushback)
                 else if (stunDuration > 0f)
@@ -520,6 +562,38 @@ namespace Assets.Scripts.Canvas
             if (Label == null) return;
             float sec = GetSecondsRemaining();
             Label.text = sec.ToString("0.0");
+        }
+
+        private void ApplyLabelAlpha()
+        {
+            if (Label == null) return;
+            var c = Label.color;
+            Label.color = new Color(c.r, c.g, c.b, labelAlpha);
+        }
+
+        private void StartLabelFadeIn()
+        {
+            if (labelFadeCoroutine != null)
+                StopCoroutine(labelFadeCoroutine);
+            labelFadeCoroutine = StartCoroutine(LabelFadeInRoutine());
+        }
+
+        private IEnumerator LabelFadeInRoutine()
+        {
+            float startAlpha = labelAlpha;
+            float elapsed = 0f;
+
+            while (elapsed < LabelFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                labelAlpha = Mathf.Lerp(startAlpha, 1f, elapsed / LabelFadeDuration);
+                ApplyLabelAlpha();
+                yield return null;
+            }
+
+            labelAlpha = 1f;
+            ApplyLabelAlpha();
+            labelFadeCoroutine = null;
         }
 
         public void FadeAndDestroy(float duration =0.25f)
