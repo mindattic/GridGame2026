@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Assets.Helpers;
 
 
@@ -13,15 +13,8 @@ using Assets.Helpers;
 /// </summary>
 public class SynergyLineManager : MonoBehaviour
 {
-    private GameObject synergyLinePrefab;
-
     // Active lines keyed by an order-independent pair key
     private readonly Dictionary<string, SynergyLineInstance> collection = new Dictionary<string, SynergyLineInstance>();
-
-    private void Awake()
-    {
-        synergyLinePrefab = PrefabLibrary.Prefabs["SynergyLinePrefab"];
-    }
 
     /// <summary>
     /// Spawns a synergy instance between the two actors if one does not already exist.
@@ -39,7 +32,8 @@ public class SynergyLineManager : MonoBehaviour
             else return; // already active
         }
 
-        var go = Instantiate(synergyLinePrefab, transform);
+        // Use factory instead of Instantiate(prefab)
+        var go = SynergyLineFactory.Create(transform);
         go.name = key;
 
         var instance = go.GetComponent<SynergyLineInstance>();

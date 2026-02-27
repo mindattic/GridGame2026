@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using Game.Behaviors.Actor;
 using System;
@@ -9,9 +10,6 @@ using g = Assets.Helpers.GameHelper;
 
 public class FootstepManager : MonoBehaviour
 {
-    // Fields
-    private GameObject FootstepPrefab;
-
     [SerializeField] Transform target;
     Vector3 previousPosition;
     bool isRightFoot = false;
@@ -19,7 +17,6 @@ public class FootstepManager : MonoBehaviour
 
     public void Awake()
     {
-        FootstepPrefab = PrefabLibrary.Prefabs["FootstepPrefab"];
         threshold = 0.01f;
     }
 
@@ -62,8 +59,11 @@ public class FootstepManager : MonoBehaviour
     /// </summary>
     private void Spawn()
     {
-        GameObject prefab = Instantiate(FootstepPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<FootstepInstance>();
+        // Use factory instead of Instantiate(prefab)
+        GameObject go = FootstepFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
+        var instance = go.GetComponent<FootstepInstance>();
         instance.sprite = SpriteLibrary.Sprites["Footstep"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
         instance.parent = target.parent;

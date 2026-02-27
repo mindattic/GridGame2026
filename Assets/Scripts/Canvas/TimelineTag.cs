@@ -268,9 +268,9 @@ namespace Assets.Scripts.Canvas
             u = 1f;
             ApplyPosition();
             
-            // Assign queue delay based on speed: faster enemies wait less (1-6 seconds)
+            // Assign queue delay based on speed: faster enemies wait less (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
-            queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
+            queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
             queueTimer = queueDelay;
             
             // Enter Queued mode (or Approaching if no delay)
@@ -296,9 +296,9 @@ namespace Assets.Scripts.Canvas
             fired = false;
             u = 1f;
             ApplyPosition();
-            // Assign queue delay based on speed (1-6 seconds)
+            // Assign queue delay based on speed (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
-            queueDelay = Mathf.Clamp(6f - (speed / 20f) * 5f, 1f, 6f);
+            queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
             queueTimer = queueDelay;
             Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
             

@@ -1,6 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Game.Models.Profile;
 using TMPro;
 using UnityEngine;
@@ -11,9 +11,6 @@ using scene = Assets.Helpers.SceneHelper;
 
 public class ProfileSelectManager : MonoBehaviour
 {
-    // Prefab used to build each row button.
-    private GameObject buttonPrefab;
-
     // Header label at the top of the screen.
     private TextMeshProUGUI header;
 
@@ -26,16 +23,6 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Awake()
     {
-        // Validate prefab library before using it.
-        if (PrefabLibrary.Prefabs == null || !PrefabLibrary.Prefabs.ContainsKey("ScreenWidthButtonPrefab"))
-        {
-            Debug.LogError("ScreenWidthButtonPrefab not found in PrefabLibrary.Prefabs.");
-            return;
-        }
-
-        // Cache the prefab reference.
-        buttonPrefab = PrefabLibrary.Prefabs["ScreenWidthButtonPrefab"];
-
         // Find the header object and validate the label component.
         GameObject headerGO = GameObject.Find(GameObjectHelper.StageSelect.Title);
         if (headerGO == null)
@@ -176,14 +163,14 @@ public class ProfileSelectManager : MonoBehaviour
     public void AddCreateNewProfileButton()
     {
         // Validate required references.
-        if (buttonPrefab == null || content == null)
+        if (content == null)
         {
-            Debug.LogError("Cannot add Create New Profile button. Missing prefab or content.");
+            Debug.LogError("Cannot add Create New Profile button. Missing content.");
             return;
         }
 
-        // Instantiate the row.
-        GameObject instance = Instantiate(buttonPrefab, content);
+        // Use factory instead of Instantiate(prefab)
+        GameObject instance = ScreenWidthButtonFactory.Create(content);
         instance.name = "CreateNewProfile";
 
         // Optional explicit sizing if your prefab does not size itself.
@@ -222,14 +209,14 @@ public class ProfileSelectManager : MonoBehaviour
             return;
         }
 
-        if (buttonPrefab == null || content == null)
+        if (content == null)
         {
-            Debug.LogError("Cannot add profile button. Missing prefab or content.");
+            Debug.LogError("Cannot add profile button. Missing content.");
             return;
         }
 
-        // Instantiate the row for this profile.
-        GameObject instance = Instantiate(buttonPrefab, content);
+        // Use factory instead of Instantiate(prefab)
+        GameObject instance = ScreenWidthButtonFactory.Create(content);
         instance.name = $"Profile_{item.Key}";
 
         // Optional explicit sizing if your prefab does not size itself.

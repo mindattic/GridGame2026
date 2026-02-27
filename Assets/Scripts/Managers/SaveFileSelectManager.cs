@@ -1,6 +1,6 @@
 ﻿using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
@@ -14,9 +14,6 @@ using scene = Assets.Helpers.SceneHelper;
 
 public class SaveFileSelectManager : MonoBehaviour
 {
-    // Prefab reference used to spawn a save-file button.
-    private GameObject buttonPrefab;
-
     // Parent container that will hold instantiated buttons.
     private Transform content;
 
@@ -26,16 +23,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Awake()
     {
-        // Load the button prefab from a central library.
-        // Validate the prefab exists before proceeding.
-        if (PrefabLibrary.Prefabs == null || !PrefabLibrary.Prefabs.ContainsKey("SaveFileButtonPrefab"))
-        {
-            Debug.LogError("SaveFileButtonPrefab not found in PrefabLibrary.Prefabs.");
-            return;
-        }
-
-        buttonPrefab = PrefabLibrary.Prefabs["SaveFileButtonPrefab"];
-
         // Find the content container in the scene and validate it.
         GameObject contentGO = GameObject.Find(GameObjectHelper.StageSelect.Content);
         if (contentGO == null)
@@ -148,12 +135,6 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
-        if (buttonPrefab == null)
-        {
-            Debug.LogError("Button prefab is null. Cannot create save file button.");
-            return;
-        }
-
         if (content == null)
         {
             Debug.LogError("Content transform is null. Cannot parent save file button.");
@@ -175,8 +156,8 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
-        // Instantiate the prefab as a child of the content container.
-        GameObject instance = Instantiate(buttonPrefab, content);
+        // Use factory instead of Instantiate(prefab)
+        GameObject instance = SaveFileButtonFactory.Create(content);
         instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName ?? "Unknown")}";
 
         // Wire up the click event to load the save.

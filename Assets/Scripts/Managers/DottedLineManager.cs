@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +6,7 @@ using g = Assets.Helpers.GameHelper;
 
 public class DottedLineManager : MonoBehaviour
 {
-    // Fields
-    private GameObject DottedLinePrefab;
-
     public List<DottedLineInstance> dottedLines = new List<DottedLineInstance>();
-
-    private void Awake()
-    {
-        DottedLinePrefab = PrefabLibrary.Prefabs["DottedLinePrefab"];
-    }
 
     /// <summary>
     /// Resets the color of all dotted lines.
@@ -32,8 +24,11 @@ public class DottedLineManager : MonoBehaviour
     /// </summary>
     public void Spawn(DottedLineSegment segment, Vector2Int location)
     {
-        GameObject prefab = Instantiate(DottedLinePrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<DottedLineInstance>();
+        // Use factory instead of Instantiate(prefab)
+        GameObject go = DottedLineFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
+        var instance = go.GetComponent<DottedLineInstance>();
         instance.name = $"DottedLine_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.Spawn(segment, location);

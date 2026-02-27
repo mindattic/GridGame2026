@@ -15,8 +15,6 @@ public class PauseMenu : MonoBehaviour
     private Sprite pauseIcon;
     private Sprite resumeIcon;
 
-    private GameObject pauseMenuRoot;
-
     private Button pauseButtonRoot;
     private Button resumeButton;
     private TextMeshProUGUI resumeButtonLabel;
@@ -36,6 +34,7 @@ public class PauseMenu : MonoBehaviour
         pauseIcon = SpriteLibrary.Sprites["Pause"];
         resumeIcon = SpriteLibrary.Sprites["Paused"];
 
+        // PauseButton is in the main game UI (always active)
         pauseButtonRoot = GameObjectHelper.Game.PauseButton.Root;
         pauseButtonRoot.onClick.RemoveAllListeners();
         pauseButtonRoot.onClick.AddListener(OnPauseButtonClicked);
@@ -45,28 +44,54 @@ public class PauseMenu : MonoBehaviour
         pauseButtonImage.preserveAspect = true;
         pauseButtonImage.color = Color.white;
 
-        resumeButton = GameObjectHelper.Game.PauseMenu.ResumeButton;
-        resumeButtonLabel = GameObjectHelper.Game.PauseMenu.ResumeButtonLabel;
-        resumeButton.onClick.RemoveAllListeners();
-        resumeButton.onClick.AddListener(OnResumeButtonClicked);
+        // Use local references (transform.Find works on inactive children)
+        var inner = transform.Find("Inner");
 
-        settingsButton = GameObjectHelper.Game.PauseMenu.SettingsButton;
-        settingsButtonLabel = GameObjectHelper.Game.PauseMenu.SettingsButtonLabel;
-        settingsButton.onClick.RemoveAllListeners();
-        settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        var resumeGO = inner?.Find("ResumeButton");
+        if (resumeGO != null)
+        {
+            resumeButton = resumeGO.GetComponent<Button>();
+            resumeButtonLabel = resumeGO.Find("Label")?.GetComponent<TextMeshProUGUI>();
+            resumeButton.onClick.RemoveAllListeners();
+            resumeButton.onClick.AddListener(OnResumeButtonClicked);
+        }
 
-        quitButton = GameObjectHelper.Game.PauseMenu.QuitButton;
-        quitButtonLabel = GameObjectHelper.Game.PauseMenu.QuitButtonLabel;
-        quitButton.onClick.RemoveAllListeners();
-        quitButton.onClick.AddListener(OnQuitButtonClicked);
+        var settingsGO = inner?.Find("SettingsButton");
+        if (settingsGO != null)
+        {
+            settingsButton = settingsGO.GetComponent<Button>();
+            settingsButtonLabel = settingsGO.Find("Label")?.GetComponent<TextMeshProUGUI>();
+            settingsButton.onClick.RemoveAllListeners();
+            settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        }
 
-        pauseMenuRoot = GameObjectHelper.Game.PauseMenu.Root;
-        pauseMenuRoot.SetActive(false);
+        var quitGO = inner?.Find("QuitButton");
+        if (quitGO != null)
+        {
+            quitButton = quitGO.GetComponent<Button>();
+            quitButtonLabel = quitGO.Find("Label")?.GetComponent<TextMeshProUGUI>();
+            quitButton.onClick.RemoveAllListeners();
+            quitButton.onClick.AddListener(OnQuitButtonClicked);
+        }
+
+        // Ensure PauseMenu covers full screen
+        var rt = GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero; // Left, Bottom = 0
+            rt.offsetMax = Vector2.zero; // Right, Top = 0
+            rt.pivot = new Vector2(0.5f, 0.5f);
+        }
+
+        // Ensure we start inactive
+        gameObject.SetActive(false);
 
         isInitalized = true;
     }
 
-  
+
     public void Toggle()
     {
         if (IsPaused) 
@@ -80,7 +105,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         pauseButtonImage.sprite = resumeIcon;
         pauseButtonImage.preserveAspect = true;
-        pauseMenuRoot.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     private void Resume()
@@ -88,7 +113,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         pauseButtonImage.sprite = pauseIcon;
         pauseButtonImage.preserveAspect = true;
-        pauseMenuRoot.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     private void Runaway()

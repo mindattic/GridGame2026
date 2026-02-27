@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ using g = Assets.Helpers.GameHelper;
 
 public class AbilityButtonManager : MonoBehaviour
 {
-    private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
     private HorizontalLayoutGroup layoutGroup;
 
@@ -20,10 +20,6 @@ public class AbilityButtonManager : MonoBehaviour
     public void Awake()
     {
         abilityButtonContainer = GameObjectHelper.Game.Card.AbilityButtonContainer;
-        if (!PrefabLibrary.Prefabs.TryGetValue("AbilityButtonPrefab", out abilityButtonPrefab) || abilityButtonPrefab == null)
-        {
-            Debug.LogError("AbilityButtonManager: AbilityButtonPrefab not found in PrefabLibrary.");
-        }
 
         // Configure HorizontalLayoutGroup for left-aligned buttons (like books on a shelf)
         if (abilityButtonContainer != null)
@@ -94,7 +90,8 @@ public class AbilityButtonManager : MonoBehaviour
         var list = new List<AbilityButton>();
         foreach (var ability in abilities)
         {
-            var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
+            // Use factory instead of Instantiate(prefab)
+            var go = AbilityButtonFactory.Create(abilityButtonContainer);
             var layout = go.GetComponent<LayoutElement>();
             if (layout == null) layout = go.AddComponent<LayoutElement>();
             layout.preferredWidth = 96f;

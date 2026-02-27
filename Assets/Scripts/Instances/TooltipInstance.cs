@@ -7,7 +7,7 @@ using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 
 public class TooltipInstance : MonoBehaviour
 {
@@ -341,8 +341,8 @@ public static class Tooltip
 {
     public static TooltipInstance Show(TooltipSettings settings)
     {
-        var prefab = PrefabLibrary.Prefabs["TooltipPrefab"];
-        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
+        // Use factory instead of Instantiate(prefab)
+        GameObject go = TooltipFactory.Create(c.CanvasRect);
         go.name = $"Tooltip_{System.Guid.NewGuid():N}";
 
         var instance = go.GetComponent<TooltipInstance>();

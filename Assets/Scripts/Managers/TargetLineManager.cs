@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +7,6 @@ using g = Assets.Helpers.GameHelper;
 public class TargetLineManager : MonoBehaviour
 {
     private Camera mainCamera;
-    private TargetLineInstance targetLinePrefab;
     private float lockRadius;
 
     private ActorInstance hoveredTarget;
@@ -20,11 +19,6 @@ public class TargetLineManager : MonoBehaviour
     {
         mainCamera = Camera.main;
         lockRadius = g.TileSize / 2f;
-
-        if (!PrefabLibrary.Prefabs.TryGetValue("TargetLinePrefab", out var prefabGO))
-            Debug.LogError("TargetLinePrefab not found in PrefabRepo.");
-        else if ((targetLinePrefab = prefabGO.GetComponent<TargetLineInstance>()) == null)
-            Debug.LogError("TargetLinePrefab is missing TargetLineInstance.");
     }
 
     /// <summary>
@@ -41,8 +35,10 @@ public class TargetLineManager : MonoBehaviour
         onTargetConfirmed = onConfirmed;
         lastClicked = null;
 
-        // 3) instantiate line
-        var go = Instantiate(targetLinePrefab.gameObject, Vector3.zero, Quaternion.identity);
+        // 3) use factory instead of Instantiate(prefab)
+        var go = TargetLineFactory.Create();
+        go.transform.position = Vector3.zero;
+        go.transform.rotation = Quaternion.identity;
         instance = go.GetComponent<TargetLineInstance>();
         instance.name = $"TargetLine_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;

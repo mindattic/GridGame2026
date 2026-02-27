@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,25 +14,12 @@ public class SupportLineManager : MonoBehaviour
     // Fields
     // ------------------------------------------------------------
 
-    [SerializeField] public GameObject supportLinePrefab; // Prefab reference resolved in Awake
     public Dictionary<(ActorInstance, ActorInstance), SupportLineInstance> supportLines =
         new Dictionary<(ActorInstance, ActorInstance), SupportLineInstance>();
 
     // Line width used by SupportLineInstance (startWidth/endWidth = g.TileSize * 0.25f)
     private float LineWidth => g.TileSize * 0.25f;
     private float HalfLineWidth => LineWidth * 0.5f;
-
-    // ------------------------------------------------------------
-    // Unity lifecycle
-    // ------------------------------------------------------------
-
-    /// <summary>
-    /// Resolve the support line go from the central PrefabRepo.
-    /// </summary>
-    public void Awake()
-    {
-        supportLinePrefab = PrefabLibrary.Prefabs["SupportLinePrefab"];
-    }
 
     // ------------------------------------------------------------
     // Public API
@@ -58,7 +45,10 @@ public class SupportLineManager : MonoBehaviour
         if (Exists(supporter, attacker))
             return null;
 
-        var go = Instantiate(supportLinePrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = SupportLineFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<SupportLineInstance>();
 
         supportLines.Add(key, instance);

@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,6 @@ using scene = Assets.Helpers.SceneHelper;
 public class StageSelectManager : MonoBehaviour
 {
     //Fields
-    private GameObject buttonPrefab;
     private TextMeshProUGUI header;
     private RectTransform scrollView;
     private Transform content;
@@ -24,8 +24,6 @@ public class StageSelectManager : MonoBehaviour
 
     private void Awake()
     {
-
-        buttonPrefab = PrefabLibrary.Prefabs["ScreenWidthButtonPrefab"];
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
 
         //startX = canvas.rect.width;
@@ -53,8 +51,8 @@ public class StageSelectManager : MonoBehaviour
 
     public void AddButton(string stageName)
     {
-        //Instantiate the prefab as a child of the content
-        GameObject instance = Instantiate(buttonPrefab, content);
+        // Use factory instead of Instantiate(prefab)
+        GameObject instance = ScreenWidthButtonFactory.Create(content);
         instance.name = $"Button_{stageName}";
 
         //Show the button size

@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System;
@@ -12,10 +13,7 @@ using scene = Assets.Helpers.SceneHelper;
 
 public class SettingsManager : MonoBehaviour
 {
-    // Prefab references
-    private GameObject sliderPrefab;
-    private GameObject togglePrefab;
-    private GameObject dropdownPrefab;
+    // Prefab references (none - using factories)
 
     // UI roots
     private RectTransform contentRoot;
@@ -87,13 +85,9 @@ public class SettingsManager : MonoBehaviour
         if (!ProfileHelper.HasProfiles())
             return;
 
-        sliderPrefab = PrefabLibrary.Prefabs.GetValueOrDefault("SettingSlider");
-        togglePrefab = PrefabLibrary.Prefabs.GetValueOrDefault("SettingToggle");
-        dropdownPrefab = PrefabLibrary.Prefabs.GetValueOrDefault("SettingDropdown");
-
         contentRoot = GameObjectHelper.Settings.ContentRect;
 
-        ReloadUI();
+                ReloadUI();
     }
 
     /// <summary>
@@ -165,8 +159,9 @@ public class SettingsManager : MonoBehaviour
         Action<float> onChanged,
         bool asInt)
     {
-        var go = Instantiate(sliderPrefab, contentRoot);
-        go.name = $"{sliderPrefab.name}_{label.ToPascalCase()}";
+        // Use factory instead of Instantiate(prefab)
+        var go = SettingSliderFactory.Create(contentRoot);
+        go.name = $"SettingSlider_{label.ToPascalCase()}";
 
         // Label
         var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
@@ -280,8 +275,9 @@ public class SettingsManager : MonoBehaviour
         bool current,
         Action<bool> onChanged)
     {
-        var go = Instantiate(togglePrefab, contentRoot);
-        go.name = $"{togglePrefab.name}_{label.ToPascalCase()}";
+        // Use factory instead of Instantiate(prefab)
+        var go = SettingToggleFactory.Create(contentRoot);
+        go.name = $"SettingToggle_{label.ToPascalCase()}";
 
         var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
         if (labelText != null) labelText.text = label;
@@ -301,8 +297,9 @@ public class SettingsManager : MonoBehaviour
         object current,
         Action<object> onChanged)
     {
-        var go = Instantiate(dropdownPrefab, contentRoot);
-        go.name = $"{dropdownPrefab.name}_{label.ToPascalCase()}";
+        // Use factory instead of Instantiate(prefab)
+        var go = SettingDropdownFactory.Create(contentRoot);
+        go.name = $"SettingDropdown_{label.ToPascalCase()}";
 
         var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
         if (labelText != null) labelText.text = label;

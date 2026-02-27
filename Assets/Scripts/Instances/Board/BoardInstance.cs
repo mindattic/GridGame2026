@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Game.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -114,14 +114,14 @@ public class BoardInstance : MonoBehaviour
     {
         if (this == null) return;
 
-        var tilePrefab = PrefabLibrary.Prefabs["TilePrefab"];
-
-        // Create tiles for each grid cell.
+        // Create tiles for each grid cell using factory
         for (int col = 1; col <= columnCount; col++)
         {
             for (int row = 1; row <= rowCount; row++)
             {
-                var go = Instantiate(tilePrefab, Vector2.zero, Quaternion.identity);
+                var go = TileFactory.Create();
+                go.transform.position = Vector2.zero;
+                go.transform.rotation = Quaternion.identity;
 
                 var instance = go.GetComponent<TileInstance>();
                 instance.parent = transform;

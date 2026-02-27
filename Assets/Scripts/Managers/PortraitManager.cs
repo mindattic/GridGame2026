@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using System;
 using System.Collections;
@@ -13,18 +14,8 @@ using g = Assets.Helpers.GameHelper;
 /// </summary>
 public class PortraitManager : MonoBehaviour
 {
-    private GameObject portrait2DPrefab;
-    private GameObject portrait3DPrefab;
-
     // Track all spawned portraits
     private readonly List<PortraitInstance> portraits = new List<PortraitInstance>();
-
-    private void Awake()
-    {
-        // Prefabs must exist in PrefabLibrary
-        portrait2DPrefab = PrefabLibrary.Prefabs["Portrait2DPrefab"]; // UI
-        portrait3DPrefab = PrefabLibrary.Prefabs["Portrait3DPrefab"]; // World
-    }
 
     // ========================= UI (Image) =========================
 
@@ -35,7 +26,10 @@ public class PortraitManager : MonoBehaviour
 
     public IEnumerator SlideIn2DRoutine(ActorInstance actor, Direction direction, float? fixedX = null, float? fixedY = null)
     {
-        var go = Instantiate(portrait2DPrefab, Vector3.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = Portrait2DFactory.Create();
+        go.transform.position = Vector3.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<PortraitInstance>();
         instance.actor = actor;
         instance.direction = direction;
@@ -97,7 +91,10 @@ public class PortraitManager : MonoBehaviour
 
     public IEnumerator SlideIn3DRoutine(ActorInstance actor, Direction direction)
     {
-        var go = Instantiate(portrait3DPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = Portrait3DFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<PortraitInstance>();
         instance.actor = actor;
         instance.direction = direction;
@@ -120,7 +117,10 @@ public class PortraitManager : MonoBehaviour
 
     public IEnumerator PopInOutRoutine(ActorInstance actor, float scale = 0.1666f)
     {
-        var go = Instantiate(portrait3DPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = Portrait3DFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<PortraitInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
@@ -145,7 +145,10 @@ public class PortraitManager : MonoBehaviour
             portraits.Remove(existing);
         }
 
-        var go = Instantiate(portrait3DPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = Portrait3DFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<PortraitInstance>();
         instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
@@ -172,7 +175,10 @@ public class PortraitManager : MonoBehaviour
 
     public void Dissolve(ActorInstance actor, IEnumerator routine = null)
     {
-        var go = Instantiate(portrait3DPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = Portrait3DFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<PortraitInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";

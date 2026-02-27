@@ -26,9 +26,19 @@ namespace Assets.Scripts.Libraries
 
             fonts = new Dictionary<string, TMP_FontAsset>
             {
+                // CombatText fonts
                 { "Damage", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
                 { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
                 { "GainExperience", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+
+                // UI fonts
+                { "Attic", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
+                { "Arial", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+                { "Avenir", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Avenir") },
+                { "Chicago", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Chicago") },
+                { "Consolas", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Consolas") },
+                { "Roboto", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Roboto") },
+                { "Segoe", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Segoe") },
             };
 
             isLoaded = true;

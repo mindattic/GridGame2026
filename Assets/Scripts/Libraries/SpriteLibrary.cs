@@ -113,6 +113,7 @@ namespace Assets.Scripts.Libraries
 
             sprites = new Dictionary<string, Sprite>
             {
+                { "Coin", AssetHelper.LoadAsset<Sprite>("Textures/coin") },
                 { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
                 { "DottedLineArrow", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineArrow") },
                 { "DottedLineTurn", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineTurn") },
@@ -124,6 +125,7 @@ namespace Assets.Scripts.Libraries
                 { "SynergySpark", AssetHelper.LoadAsset<Sprite>("Sprites/SynergySpark") },
                 { "White32x32", AssetHelper.LoadAsset<Sprite>("Sprites/White32x32") },
                 { "Transparent32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Transparent32x32") },
+                { "Tile", AssetHelper.LoadAsset<Sprite>("Sprites/Tiles/tile3") },
             };
 
             weaponTypes = new Dictionary<string, Sprite>

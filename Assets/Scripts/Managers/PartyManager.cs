@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ using scene = Assets.Helpers.SceneHelper;
 
 public class PartyManager : MonoBehaviour
 {
-    private GameObject slidePrefab;
-
     private RectTransform title;
     private RectTransform rosterPanel;
     private float spacing = 0f;
@@ -79,8 +78,6 @@ public class PartyManager : MonoBehaviour
             scene.Fade.ToSaveFileSelect();
             return;
         }
-
-        slidePrefab = PrefabLibrary.Prefabs["RosterSlidePrefab"];
 
         title = GameObject.Find(GameObjectHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(GameObjectHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
@@ -159,8 +156,8 @@ public class PartyManager : MonoBehaviour
                 continue;
             }
 
-            // Instantiate the slide prefab and retrieve the RosterSlideInstance script
-            GameObject slide = Instantiate(slidePrefab, rosterPanel);
+            // Use factory instead of Instantiate(prefab)
+            GameObject slide = RosterSlideFactory.Create(rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
 
             // Show the slide name

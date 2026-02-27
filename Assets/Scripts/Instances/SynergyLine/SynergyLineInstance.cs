@@ -2,7 +2,7 @@
 // Wispy multi-strand line between two actors.
 // Each instance keeps its own tunables. Per-strand behavior lives in SynergyLineStrand.
 
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,9 +26,6 @@ public class SynergyLineInstance : MonoBehaviour
 
     // Geometry resolution for each strand line
     [SerializeField] private int strandSegmentCount = 32;
-
-    // Prefab cache
-    private GameObject synergyStrandPrefab;
 
     // Runtime
     private readonly List<SynergyLineStrand> strands = new List<SynergyLineStrand>(8);
@@ -55,8 +52,6 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        synergyStrandPrefab = PrefabLibrary.Get("SynergyStrandPrefab");
-
         var aGo = new GameObject("SynergyAnchor_A");
         var bGo = new GameObject("SynergyAnchor_B");
         aGo.transform.SetParent(transform, false);
@@ -313,18 +308,10 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     private void EnsureStrands(int count)
     {
-        if (synergyStrandPrefab == null)
-        {
-            var fallback = new GameObject("SynergyLineStrand_Fallback");
-            fallback.SetActive(false);
-            fallback.AddComponent<LineRenderer>();
-            fallback.AddComponent<SynergyLineStrand>();
-            synergyStrandPrefab = fallback;
-        }
-
         while (strands.Count < count)
         {
-            var instGO = Instantiate(synergyStrandPrefab, transform);
+            // Use factory instead of Instantiate(prefab)
+            var instGO = SynergyStrandFactory.Create(transform);
             instGO.name = "Waveform_" + strands.Count;
             instGO.SetActive(true);
 

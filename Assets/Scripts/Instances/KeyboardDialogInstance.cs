@@ -6,6 +6,7 @@ using System;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 
 public class KeyboardDialogInstance : MonoBehaviour
@@ -439,25 +440,21 @@ public static class KeyboardDialog
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        var prefab = PrefabLibrary.Prefabs["KeyboardDialog"];
-        if (prefab == null)
-            throw new UnityException($"Prefab not found");
-
-        //Instantiate prefab
-        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
+        // Use factory instead of prefab
+        GameObject go = KeyboardDialogFactory.Create(c.CanvasRect);
         if (go == null)
-            throw new UnityException("Failed to instantiate prefab");
-        go.name = $"Keyboard";
+            throw new UnityException("Failed to create KeyboardDialog");
+        go.name = "Keyboard";
 
-        //Get the Virtual Keyboard instance
+        // Get the Virtual Keyboard instance
         KeyboardDialogInstance instance = go.GetComponent<KeyboardDialogInstance>();
         if (instance == null)
             throw new UnityException("KeyboardDialogInstance component not found on the game object");
 
-        //Show properties
+        // Show properties
         instance.Assign(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
 
-        //Return the instance
+        // Return the instance
         return instance;
     }
 }

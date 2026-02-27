@@ -1,9 +1,9 @@
 using Assets.Helper;
+using Assets.Scripts.Factories;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System;
-using Assets.Scripts.Libraries;
 
 
 
@@ -100,7 +100,7 @@ public partial class OverworldHero : MonoBehaviour
     [SerializeField, Min(1)] private int forwardCoverageSamples = 16;
 
     // Destination marker prefab to spawn on click
-    private GameObject destinationMarkerPrefab;
+    // Note: Now using DestinationMarkerFactory instead of prefab
 
     // 2D physics-based cast-and-slide (optional)
     [Header("Physics Collision (optional)")]
@@ -159,9 +159,7 @@ public partial class OverworldHero : MonoBehaviour
         // Initialize animator with default idle facing
         ApplyAnimatorParameters(lastLook, 0f);
 
-        // Cache destination marker prefab
-        if (PrefabLibrary.Prefabs.TryGetValue("DestinationMarkerPrefab", out var prefab))
-            destinationMarkerPrefab = prefab;
+        // Note: Destination markers are now created via DestinationMarkerFactory.Create()
 
         CacheSelfColliders();
     }

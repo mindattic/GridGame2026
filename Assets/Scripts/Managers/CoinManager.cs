@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -7,16 +7,12 @@ namespace Assets.Scripts.Managers
 {
     public class CoinManager : MonoBehaviour
     {
-        private GameObject CoinPrefab;
-
-        public void Awake()
-        {
-            CoinPrefab = PrefabLibrary.Prefabs["CoinPrefab"];
-        }
-
         public void Spawn(Vector3 position)
         {
-            var go = Instantiate(CoinPrefab, Vector2.zero, Quaternion.identity);
+            // Use factory instead of Instantiate(prefab)
+            var go = CoinFactory.Create();
+            go.transform.position = Vector2.zero;
+            go.transform.rotation = Quaternion.identity;
             var instance = go.GetComponent<CoinInstance>();
             instance.name = $"Coin_{Guid.NewGuid():N}";
             instance.Spawn(position);

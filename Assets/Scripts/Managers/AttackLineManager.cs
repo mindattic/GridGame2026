@@ -1,10 +1,7 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Models;
 using Game.Instances;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Game.Behaviors
@@ -12,14 +9,7 @@ namespace Game.Behaviors
     public class AttackLineManager : MonoBehaviour
     {
         //Variables
-        private GameObject AttackLinePrefab;
         public Dictionary<(Vector2Int, Vector2Int), AttackLineInstance> attackLines = new Dictionary<(Vector2Int, Vector2Int), AttackLineInstance>();
-
-
-        public void Awake()
-        {
-            AttackLinePrefab = PrefabLibrary.Prefabs["AttackLinePrefab"];
-        }
 
         public bool Exists(ActorPair actorPair)
         {
@@ -34,7 +24,10 @@ namespace Game.Behaviors
             if (Exists(actorPair))
                 return;
 
-            var go = Instantiate(AttackLinePrefab, Vector2.zero, Quaternion.identity);
+            // Use factory instead of Instantiate(prefab)
+            var go = AttackLineFactory.Create();
+            go.transform.position = Vector2.zero;
+            go.transform.rotation = Quaternion.identity;
             var instance = go.GetComponent<AttackLineInstance>();
             attackLines[key] = instance;
             instance.Spawn(actorPair);

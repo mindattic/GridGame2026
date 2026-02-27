@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Libraries;
 using Assets.Scripts.Managers;
@@ -167,11 +168,25 @@ public class GameManager : Singleton<GameManager>
 
         var canvasRoot = GameObject.Find("Canvas");
 
-        var go = Instantiate(PrefabLibrary.Get("PauseMenu"), canvasRoot?.transform);
-        go.name = "PauseMenu";
-        pauseMenu = go.GetComponent<PauseMenu>();
+                // PauseMenu is now a scene object - find it (must be active initially, then we deactivate it)
+                // transform.Find works on inactive children, but we need the Canvas first
+                if (canvasRoot != null)
+                {
+                    // transform.Find searches children including inactive ones
+                    var pauseMenuTransform = canvasRoot.transform.Find("PauseMenu");
+                    if (pauseMenuTransform != null)
+                    {
+                        pauseMenu = pauseMenuTransform.GetComponent<PauseMenu>();
+                        // Don't deactivate here - let Initialize() handle it after wiring buttons
+                    }
+                    else
+                    {
+                        Debug.LogWarning("PauseMenu not found under Canvas. Make sure it exists in the scene.");
+                    }
+                }
 
-        go = Instantiate(PrefabLibrary.Get("TutorialPopup"), canvasRoot?.transform);
+        // Use factory for TutorialPopup
+        var go = TutorialPopupFactory.Create(canvasRoot?.transform);
         go.name = "TutorialPopup";
         tutorialPopup = go.GetComponent<TutorialPopup>();
 

@@ -1,5 +1,5 @@
 using Assets.Helper;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using Game.Behaviors.Actor;
 using System;
 using System.Collections;
@@ -9,15 +9,9 @@ using g = Assets.Helpers.GameHelper;
 public class GhostManager : MonoBehaviour
 {
     // Fields
-    private GameObject ghostPrefab;
     ActorInstance actor;
     float threshold;
     Vector3 previousPosition;
-
-    public void Awake()
-    {
-        ghostPrefab = PrefabLibrary.Prefabs["GhostPrefab"];
-    }
 
     private void Start()
     {
@@ -65,7 +59,10 @@ public class GhostManager : MonoBehaviour
     /// </summary>
     private void Spawn()
     {
-        var go = Instantiate(ghostPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = GhostFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<GhostInstance>();
         instance.name = $"Ghost_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;

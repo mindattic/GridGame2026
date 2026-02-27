@@ -1,5 +1,5 @@
 using Assets.Helper;
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System;
 using TMPro;
 using UnityEngine;
@@ -101,19 +101,16 @@ public static class ConfirmationDialog
         string text = "Are you sure?",
         Action<bool> onSubmit = null)
     {
-        var prefab = PrefabLibrary.Prefabs["ConfirmationDialogPrefab"];
-        if (prefab == null)
-            throw new UnityException("Prefab not found: ConfirmationDialog");
-
-        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
+        // Use factory instead of Instantiate(prefab)
+        GameObject go = ConfirmationDialogFactory.Create(c.CanvasRect);
         if (go == null)
-            throw new UnityException("Failed to instantiate ConfirmationDialog prefab");
+            throw new UnityException("Failed to create ConfirmationDialog");
 
         go.name = "ConfirmationDialog";
 
         var instance = go.GetComponent<ConfirmationDialogInstance>();
         if (instance == null)
-            throw new UnityException("ConfirmationDialogInstance component not found on the prefab");
+            throw new UnityException("ConfirmationDialogInstance component not found");
 
         instance.Assign(text, onSubmit);
         return instance;

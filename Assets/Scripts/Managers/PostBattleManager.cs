@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Assets.Helpers;
+using Assets.Scripts.Factories;
 using Assets.Scripts.Managers;
 using scene = Assets.Helpers.SceneHelper;
 using Assets.Helper;
@@ -18,9 +19,6 @@ public class PostBattleManager : MonoBehaviour
     // Scene wired references (resolved in Awake via GameObjectHelper)
     private RectTransform _scrollContent;          // Canvas/ScrollView/Viewport/Content
     private Button _nextButton;                    // Canvas/BottomBar/NextButton
-
-    // Prefab (fetched from PrefabLibrary at runtime)
-    private GameObject _heroExperiencePanePrefab;
 
     // Destination scene decided at runtime (defaults to tracker hint, fallback to Hub)
     private string nextSceneName;
@@ -81,10 +79,6 @@ public class PostBattleManager : MonoBehaviour
 
     private void ResolvePrefabsAndConfig()
     {
-        _heroExperiencePanePrefab = PrefabLibrary.Get("HeroExperiencePane");
-        if (_heroExperiencePanePrefab == null)
-            Debug.LogError("PostBattleManager: HeroExperiencePane prefab not found in PrefabLibrary.");
-
         nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
         if (string.IsNullOrEmpty(nextSceneName))
             nextSceneName = SceneHelper.Hub; // go to Hub by default
@@ -128,7 +122,7 @@ public class PostBattleManager : MonoBehaviour
 
     private void BuildPanes()
     {
-        if (_scrollContent == null || _heroExperiencePanePrefab == null) return;
+        if (_scrollContent == null) return;
 
         // Clear existing children
         for (int i = _scrollContent.childCount - 1; i >= 0; i--)
@@ -152,8 +146,9 @@ public class PostBattleManager : MonoBehaviour
 
     private void CreatePane(CharacterClass character, bool inParty, int xpGained)
     {
-        if (_heroExperiencePanePrefab == null || _scrollContent == null) return;
-        var go = Instantiate(_heroExperiencePanePrefab, _scrollContent);
+        if (_scrollContent == null) return;
+        // Use factory instead of Instantiate(prefab)
+        var go = HeroExperiencePaneFactory.Create(_scrollContent);
         go.name = $"Pane_{character}";
         var rt = go.GetComponent<RectTransform>();
         if (rt != null)

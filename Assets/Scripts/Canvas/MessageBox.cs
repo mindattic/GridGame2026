@@ -2,8 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Assets.Helper;
+using Assets.Scripts.Factories;
 using c = Assets.Helpers.CanvasHelper;
-using Assets.Scripts.Libraries;
 using TMPro;
 
 /// <summary>
@@ -96,19 +96,16 @@ public static class MessageBox
         string text = "Message",
         Action onOk = null)
     {
-        var prefab = PrefabLibrary.Prefabs["MessageBoxPrefab"];
-        if (prefab == null)
-            throw new UnityException("Prefab not found: MessageBoxPrefab");
-
-        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
+        // Use factory instead of Instantiate(prefab)
+        GameObject go = MessageBoxFactory.Create(c.CanvasRect);
         if (go == null)
-            throw new UnityException("Failed to instantiate MessageBox prefab");
+            throw new UnityException("Failed to create MessageBox");
 
-        go.name = "MessageBoxPrefab";
+        go.name = "MessageBox";
 
         var instance = go.GetComponent<MessageBoxInstance>();
         if (instance == null)
-            throw new UnityException("MessageBoxInstance component not found on the prefab");
+            throw new UnityException("MessageBoxInstance component not found");
 
         instance.Assign(text, onOk);
         return instance;

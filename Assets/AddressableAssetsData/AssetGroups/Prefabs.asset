@@ -15,48 +15,13 @@ MonoBehaviour:
   m_GroupName: Prefabs
   m_GUID: 764698fc62482f24687b22443d200806
   m_SerializeEntries:
-  - m_GUID: 0c2284c3ff453ec468d1bd87e98ca545
-    m_Address: Prefabs/TimelineTagPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0dc55c1e3bb517c4da449a8973b4f7fb
-    m_Address: Prefabs/FootstepPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1142d6dcbdc122341acb5617b377a888
-    m_Address: Prefabs/MessageBoxPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b2a90b6d99a569488879ad4a0ac551f
     m_Address: Prefabs/AbilityButtonPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1b96e40a88c8fba41b23a5717b9099cc
-    m_Address: Prefabs/SaveFileButtonPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 220ff14787355a447a5244ab644fa536
-    m_Address: Prefabs/Portrait3DPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 272c21994119e6f46be8d6131b08c15d
-    m_Address: Prefabs/ScreenWidthButtonPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 28b0f612de861a8449d2fb291eade4f3
     m_Address: Prefabs/PauseMenu
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2e72c33cf0bfdfd4996f76ddc0140c31
-    m_Address: Prefabs/SupportLinePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -75,28 +40,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 43bfb143a307d2140af86d654b010829
-    m_Address: Prefabs/Portrait2DPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 44ecf220cc3e53049ba0e1ff93f1dfbd
-    m_Address: Prefabs/RosterSlidePrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f922b47447b0d245acc44d2545257a3
     m_Address: Prefabs/ActorPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 526e3799f58cd824ea4aa7e143bdf827
-    m_Address: Prefabs/SynergyStrandPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5de8a0642b078da4a854fcb2ec314857
-    m_Address: Prefabs/OverworldEncounterInstancePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -115,33 +60,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8c4d3c548186c264784e976fff9b1d21
-    m_Address: Prefabs/ProjectilePrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8dcbe09a25d23aa468bbcf1da143f0c6
-    m_Address: Prefabs/TooltipPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9dc5e49375431a24395a0c1426490e38
     m_Address: Prefabs/SettingDropdown
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b4205160c1515cf44961d1e65bee47aa
-    m_Address: Prefabs/StatRow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bedc8e4184d38a244aea9f2b68f9d98e
     m_Address: Prefabs/DestinationMarkerPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c20c54f089a20c94ea7d832de372f35f
-    m_Address: Prefabs/GhostPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -155,33 +80,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dcd92126d8247e749a49508f9e424e1c
-    m_Address: Prefabs/DottedLinePrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dfd66e3027064c74080a03cf0a5ac39f
     m_Address: Prefabs/CanvasParticlePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e19fd25619f95274b89af87599d386e9
-    m_Address: Prefabs/SynergyLinePrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e72e7b2857c8fa3468c2b3c4f0ad300d
     m_Address: Prefabs/CoinPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f06f80ee23f708849b4100801e343391
-    m_Address: Prefabs/TargetLinePrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f420fe272613c294eb4bc531748a437e
-    m_Address: Prefabs/TilePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

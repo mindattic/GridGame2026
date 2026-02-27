@@ -90,11 +90,8 @@ public class StageManager : MonoBehaviour
             SpawnActor(stageActor, rebuildTimeline: false);
         }
 
-        // Generate and load wave 1
+        // Generate and load wave 1 (this handles timeline rebuild)
         LoadEndlessWave(0);
-
-        // After spawns, seed timeline tags for current enemies
-        g.TimelineBar?.EnsureTagsForAllEnemies(true);
 
         scene.FadeIn();
     }
@@ -116,8 +113,8 @@ public class StageManager : MonoBehaviour
         // Announcement (total unknown/infinite)
         g.WaveAnnouncement?.ShowEndless(nextWaveNumber);
 
-        // Refresh timeline tags
-        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+        // Clear old tags and rebuild timeline for new wave enemies
+        g.TimelineBar?.RebuildForNewWave();
     }
 
     /// <summary>
@@ -154,9 +151,6 @@ public class StageManager : MonoBehaviour
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
-
-        // Ensure timeline tags exist
-        g.TimelineBar?.EnsureTagsForAllEnemies(true);
 
         scene.FadeIn();
     }
@@ -203,8 +197,8 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        // Refresh tags for currently spawned enemies
-        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+        // Clear old tags and rebuild timeline for new wave enemies
+        g.TimelineBar?.RebuildForNewWave();
 
         g.WaveAnnouncement?.Show(waveIndex + 1, currentStage.Waves.Count);
     }

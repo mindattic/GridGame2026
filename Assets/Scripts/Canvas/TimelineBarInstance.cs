@@ -1,4 +1,4 @@
-using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,10 +23,10 @@ namespace Assets.Scripts.Canvas
         [SerializeField] private float canvasPercent = 0.96f;
 
         [Header("Tuning")]
-        [Tooltip("Time in seconds for a tag to cross the full bar (constant for all enemies).")]
-        [SerializeField] private float crossingTimeSeconds = 5f;
+        [Tooltip("Base time in seconds for an enemy with Speed 10 to cross the full bar.")]
+        [SerializeField] private float crossingTimeSeconds = 8f;
         [Tooltip("Maximum release delay in seconds for slowest enemies (fastest enemies release immediately).")]
-        [SerializeField] private float maxReleaseDelay = 3f;
+        [SerializeField] private float maxReleaseDelay = 4f;
         [Tooltip("Vertical spacing between duplicate tags (same enemy) in local pixels.")]
         [SerializeField] private float tagRowHeight = 14f;
         [SerializeField] private bool debugLogs = false;
@@ -59,10 +59,6 @@ namespace Assets.Scripts.Canvas
 
         private void Awake()
         {
-            var tagPrefabGO = PrefabLibrary.Get("TimelineTagPrefab");
-            if (tagPrefabGO != null)
-                tagPrefab = tagPrefabGO.GetComponent<TimelineTag>();
-
             if (barRect == null) barRect = GetComponent<RectTransform>();
             if (barRect != null)
             {
@@ -152,21 +148,24 @@ namespace Assets.Scripts.Canvas
 
         private float UnitsPerSecFromSpeed(int speed)
         {
-            // Speed stat affects movement speed: higher speed = faster movement
-            // Speed 10 = crosses bar in crossingTimeSeconds (baseline)
-            // Speed 20 = crosses bar in half the time, Speed 5 = takes twice as long
+            // Speed stat affects movement speed with gentler scaling for strategic play
+            // Speed 10 = baseline (crosses in crossingTimeSeconds = 8s)
+            // Speed 5  = 0.75x speed (crosses in ~10.7s) 
+            // Speed 15 = 1.25x speed (crosses in ~6.4s)
+            // Speed 20 = 1.5x speed (crosses in ~5.3s)
+            // Formula: 0.5 + (speed / 20) gives range of 0.75x to 1.5x
             float crossing = Mathf.Max(0.1f, crossingTimeSeconds);
-            float speedMultiplier = speed / 10f;
+            float speedMultiplier = 0.5f + (speed / 20f);
             return Mathf.Max(0.01f, speedMultiplier / crossing);
         }
 
         private float GetQueueDelayFromSpeed(int speed)
         {
-            // Queue delay based on speed: faster enemies wait less
-            // Speed 20 = ~1 second wait, Speed 5 = ~6 seconds wait
-            // Formula: 6 - (speed / 20) * 5, clamped to [1, 6]
-            float delay = 6f - (speed / 20f) * 5f;
-            return Mathf.Clamp(delay, 1f, 6f);
+            // Queue delay based on speed: faster enemies wait less before starting approach
+            // Speed 20 = ~1.5 second wait, Speed 5 = ~4 seconds wait
+            // Gives player time to set up pincer attacks
+            float delay = 4f - (speed / 20f) * 2.5f;
+            return Mathf.Clamp(delay, 1.5f, 4f);
         }
 
         /// <summary>
@@ -316,6 +315,18 @@ namespace Assets.Scripts.Canvas
         {
             for (int i = activeTags.Count - 1; i >= 0; i--) if (activeTags[i] != null) Destroy(activeTags[i].gameObject);
             activeTags.Clear();
+            isProcessingTrigger = false;
+        }
+
+        /// <summary>
+        /// Clears all existing tags and rebuilds for a new wave.
+        /// Call this when transitioning between waves to ensure clean slate.
+        /// </summary>
+        public void RebuildForNewWave()
+        {
+            Clear();
+            EnsureTagsForAllEnemies(true);
+            PauseAll();
         }
 
         /// <summary>
@@ -571,13 +582,14 @@ namespace Assets.Scripts.Canvas
         private void SpawnTag(ActorInstance enemy, float startU, float releaseDelay = 0f)
         {
             if (enemy == null || !enemy.IsEnemy) return;
-            if (tagPrefab == null) { Debug.LogError("TimelineBarInstance: tagPrefab not set."); return; }
-            
+
             // Coordinate the release delay to prevent overlap with existing tags
             float coordinatedDelay = GetCoordinatedQueueDelay(releaseDelay);
-            
+
             var parent = tagsRoot != null ? tagsRoot : barRect;
-            var tag = Instantiate(tagPrefab, parent, false);
+            // Use factory instead of Instantiate(tagPrefab)
+            var tagGO = TimelineTagFactory.Create(parent);
+            var tag = tagGO.GetComponent<TimelineTag>();
             tag.name = $"TimelineTag_{enemy.name}";
             int dup = activeTags.Count(a => a != null && a.Owner == enemy);
             var tr = tag.GetComponent<RectTransform>();
@@ -588,7 +600,7 @@ namespace Assets.Scripts.Canvas
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
             tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, coordinatedDelay);
             activeTags.Add(tag);
-            
+
             if (debugLogs && coordinatedDelay != releaseDelay)
                 Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
         }

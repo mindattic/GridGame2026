@@ -1,3 +1,4 @@
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using System.Collections;
 using UnityEngine;
@@ -6,8 +7,6 @@ using c = Assets.Helpers.CanvasHelper;
 
 public class CanvasParticleEmitter : MonoBehaviour
 {
-    private GameObject canvasParticlePrefab;
-
     private float spawnIntervalMin; // Time between spawns
     private float spawnIntervalMax; // Time between spawns
     private float speedMin;
@@ -27,8 +26,6 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void Awake()
     {
-        canvasParticlePrefab = PrefabLibrary.Prefabs["CanvasParticlePrefab"];
-
         xMin = -Screen.width;
         xMax = Screen.width;
         yMin = -200;
@@ -83,7 +80,8 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void SpawnImage(bool preheat = false)
     {
-        GameObject newImage = Instantiate(canvasParticlePrefab, c.CanvasRect);
+        // Use factory instead of Instantiate(prefab)
+        GameObject newImage = CanvasParticleFactory.Create(c.CanvasRect);
         RectTransform rect = newImage.GetComponent<RectTransform>();
         Image image = newImage.GetComponent<Image>();
         if (rect == null || image == null)

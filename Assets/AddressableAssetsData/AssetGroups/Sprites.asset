@@ -30,8 +30,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0530ee7a32e21054eb9b1b1c6bf97e4d
+    m_Address: Sprites/Tiles/tile1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 06abdf2b7a22b484ba3b2d123cbb3128
     m_Address: Sprites/GUI/Button.512x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0874a95718586e04788e2891a1533c52
+    m_Address: Sprites/Tiles/tile3_dst
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -82,6 +92,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 220b3b17154498d4fbbb9b3afd501028
     m_Address: Sprites/Seamless/Background.LightBlue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23ed72e3730976d4ba98ec25bd8495eb
+    m_Address: Sprites/Tiles/tile-x
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -192,6 +207,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 51264a35d9ce6cc46b79a18b9d12166c
     m_Address: Sprites/Backgrounds/CyberNecropolis/11
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51ff28320e661674dbdd341df3bd2435
+    m_Address: Sprites/Tiles/tile3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -500,6 +520,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d29d3055de0855147bb599d72e742979
+    m_Address: Sprites/Tiles/tile2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3c448bb595bb884b982655060b20427
     m_Address: Sprites/Backgrounds/ElectricWasteland/04
     m_ReadOnly: 0
@@ -537,6 +562,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dcc55dcdce02beb4db9771fa75de31f0
     m_Address: Sprites/Timeline/ActorTagIcons/Flying
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcf4b412ceea4dc4e8758f87ed402e04
+    m_Address: Sprites/Tiles/Tile
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,21 +1,11 @@
+using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 public class CombatTextManager : MonoBehaviour
 {
-    // Fields
-    private GameObject CombatTextPrefab;
-
-    public void Awake()
-    {
-        CombatTextPrefab = PrefabLibrary.Prefabs["CombatTextPrefab"];
-    }
-
     /// <summary>
     /// Spawns a floating text using a profile key (e.g., "Damage", "Healing", etc.)
     /// </summary>
@@ -29,7 +19,10 @@ public class CombatTextManager : MonoBehaviour
             if (textStyle == null) return;
         }
 
-        var go = Instantiate(CombatTextPrefab, Vector2.zero, Quaternion.identity);
+        // Use factory instead of Instantiate(prefab)
+        var go = CombatTextFactory.Create();
+        go.transform.position = Vector2.zero;
+        go.transform.rotation = Quaternion.identity;
         var instance = go.GetComponent<CombatTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
         instance.parent = g.Canvas3D.transform;
