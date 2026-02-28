@@ -1,0 +1,484 @@
+=== PREFAB ANALYSIS ===
+Prefab Name: ActorPrefab
+Layer: 10 (Actor)
+Tag: Actor
+
+[ActorPrefab] Active=True, Layer=10
+  Transform:
+    localScale: new Vector3(1.5f, 1.5f, 1f)
+  SortingGroup:
+    sortingLayerName: "ActorBelow"
+    sortingOrder: 0
+  MonoBehaviour: ActorInstance
+    glowCurve: new AnimationCurve(new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0.25f, 0f, 0f))
+    previousLocation: [Vector2Int]
+    previousPosition: new Vector3(0f, 0f, 0f)
+    location: [Vector2Int]
+    team: [Enum]
+    spawnTurn: 0
+    characterClass: [Enum]
+    Stats: [Generic]
+    Thumbnail: null
+
+  [Front] Active=True, Layer=10
+
+    [Opaque] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: mask-4_0
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 1
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Quality] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: base-4
+        color: new Color(1f, 1f, 1f, 0f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 2
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Glow] Active=True, Layer=10
+      Transform:
+        localScale: new Vector3(2.56f, 2.56f, 1f)
+      SpriteRenderer:
+        sprite: thumbnail-fade
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 11
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Parallax] Active=False, Layer=10
+      SpriteRenderer:
+        sprite: null
+        color: new Color(1f, 1f, 1f, 0.5019608f)
+        material: PlayerParallax
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 4
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.VisibleInsideMask
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Thumbnail] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: Barbarian
+        color: new Color(1f, 1f, 1f, 1f)
+        material: SpritePan
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 5
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.VisibleInsideMask
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+      MonoBehaviour: ActorThumbnail
+        settings: [Generic]
+        rangeMultiplier: 0f
+        range: new Vector2(0f, 0f)
+        panFocus: 0f
+        wobbleAmplitudeFactorX: 0.5f
+        wobbleAmplitudeFactorY: 0.5f
+        nextPauseInterval: 5f
+        pauseDuration: 2f
+        pauseRampDuration: 0.5f
+
+    [Frame] Active=False, Layer=10
+      Transform:
+        localScale: new Vector3(0.390625f, 0.390625f, 1f)
+      SpriteRenderer:
+        sprite: frame-4
+        color: new Color(1f, 1f, 1f, 0.2509804f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 6
+        drawMode: SpriteDrawMode.Simple
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [StatusIcon] Active=False, Layer=10
+      SpriteRenderer:
+        sprite: status-none
+        color: new Color(1f, 1f, 1f, 0f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 7
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Gradient] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: Gradient
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprite-Unlit-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 6
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [HealthBar] Active=True, Layer=10
+      Transform:
+        localPosition: new Vector3(-0.25f, -0.4f, 0f)
+        localScale: new Vector3(1f, 0.1f, 1f)
+
+      [HealthBarBack] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: health-bar-5
+          color: new Color(0f, 0f, 0f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 8
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.5f, 0.5f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [HealthBarDrain] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: health-bar-5
+          color: new Color(0.9014806f, 0.9433962f, 0.07564971f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 9
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.5f, 0.5f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [HealthBarFill] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: health-bar-5
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 10
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.5f, 0.5f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [HealthBarText] Active=True, Layer=10
+        TextMeshPro:
+          font: Consolas
+          fontSize: 1f
+          color: new Color(1f, 1f, 1f, 0f)
+          alignment: TextAlignmentOptions.Left
+          text: "100
+"
+          sortingLayerID: -1900842943
+          sortingOrder: 11
+          enabled: false
+        RectTransform:
+          anchorMin: new Vector2(0f, 0f)
+          anchorMax: new Vector2(0f, 0f)
+          pivot: new Vector2(0f, 0f)
+          sizeDelta: new Vector2(0f, 0f)
+
+    [ActionBar] Active=False, Layer=10
+      Transform:
+        localPosition: new Vector3(-0.45f, -0.38f, 0f)
+        localScale: new Vector3(0.75f, 1f, 1f)
+
+      [ActionBarBack] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: health-bar-back-3
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 13
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.3333f, 0.03333f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [ActionBarDrain] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: health-bar-3
+          color: new Color(1f, 0f, 0f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 14
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.3333f, 0.03333f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [ActionBarFill] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: action-bar-2
+          color: new Color(0f, 0.7686275f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 15
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(0.3333f, 0.03333f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Pivot
+          flipX: false, flipY: false
+
+      [ActionBarText] Active=True, Layer=10
+        TextMeshPro:
+          font: Consolas
+          fontSize: 1f
+          color: new Color(1f, 1f, 1f, 0f)
+          alignment: TextAlignmentOptions.Left
+          text: "0%
+"
+          sortingLayerID: -1900842943
+          sortingOrder: 16
+          enabled: false
+        RectTransform:
+          anchorMin: new Vector2(0f, 0f)
+          anchorMax: new Vector2(0f, 0f)
+          pivot: new Vector2(0f, 0f)
+          sizeDelta: new Vector2(0f, 0f)
+
+    [Mask] Active=True, Layer=10
+      Transform:
+        localScale: new Vector3(0.38f, 0.38f, 1f)
+      SpriteMask:
+        sprite: mask-7
+        alphaCutoff: 0.1f
+        isCustomRangeActive: false
+        frontSortingLayerID: 1438895807
+        frontSortingOrder: 0
+        backSortingLayerID: 0
+        backSortingOrder: 0
+
+    [RadialBack] Active=False, Layer=10
+      Transform:
+        localPosition: new Vector3(-0.3333f, 0.3333f, 0f)
+        localScale: new Vector3(0.25f, 0.25f, 1f)
+      SpriteRenderer:
+        sprite: ring-back-1
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 17
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [RadialFill] Active=False, Layer=10
+      Transform:
+        localPosition: new Vector3(-0.3333f, 0.3333f, 0f)
+        localScale: new Vector3(0.25f, 0.25f, 1f)
+      SpriteRenderer:
+        sprite: ring-1
+        color: new Color(1f, 1f, 1f, 0.5019608f)
+        material: RadialFill
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 18
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [RadialText] Active=False, Layer=10
+      Transform:
+        localPosition: new Vector3(-0.3333f, 0.3333f, 0f)
+      TextMeshPro:
+        font: Roboto
+        fontSize: 1f
+        color: new Color(1f, 1f, 1f, 0f)
+        alignment: TextAlignmentOptions.Center
+        text: "29
+"
+        sortingLayerID: -1900842943
+        sortingOrder: 29
+        enabled: true
+      RectTransform:
+        anchorMin: new Vector2(0f, 0f)
+        anchorMax: new Vector2(0f, 0f)
+        pivot: new Vector2(0f, 0f)
+        sizeDelta: new Vector2(0f, 0f)
+
+    [TurnDelayText] Active=True, Layer=10
+      Transform:
+        localPosition: new Vector3(0.4f, 0.36f, 0f)
+      TextMeshPro:
+        font: Attic
+        fontSize: 3f
+        color: new Color(1f, 1f, 1f, 1f)
+        alignment: TextAlignmentOptions.Center
+        text: "3"
+        sortingLayerID: 1438895807
+        sortingOrder: 10
+        enabled: true
+      RectTransform:
+        anchorMin: new Vector2(0f, 0f)
+        anchorMax: new Vector2(0f, 0f)
+        pivot: new Vector2(0f, 0f)
+        sizeDelta: new Vector2(0f, 0f)
+
+    [NameTagText] Active=True, Layer=10
+      Transform:
+        localPosition: new Vector3(0f, 0.48f, 0f)
+      TextMeshPro:
+        font: Attic
+        fontSize: 1.5f
+        color: new Color(1f, 1f, 1f, 1f)
+        alignment: TextAlignmentOptions.Top
+        text: "Barbarian"
+        sortingLayerID: 1438895807
+        sortingOrder: 21
+        enabled: false
+      RectTransform:
+        anchorMin: new Vector2(0.5f, 0.5f)
+        anchorMax: new Vector2(0.5f, 0.5f)
+        pivot: new Vector2(0f, 0f)
+        sizeDelta: new Vector2(0f, 0f)
+
+    [WeaponIcon] Active=False, Layer=10
+      Transform:
+        localPosition: new Vector3(0.35f, 0.35f, 0f)
+        localRotation: Quaternion.Euler(0f, 0f, 315f)
+        localScale: new Vector3(0.1f, 0.1f, 1f)
+      SpriteRenderer:
+        sprite: null
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprites-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 22
+        drawMode: SpriteDrawMode.Simple
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [Armor] Active=False, Layer=10
+
+      [ArmorNorth] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: armor-north
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 23
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(1f, 1f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Center
+          flipX: false, flipY: false
+
+      [ArmorEast] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: armor-east
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 24
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(1f, 1f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Center
+          flipX: false, flipY: false
+
+      [ArmorSouth] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: armor-south
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 25
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(1f, 1f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Center
+          flipX: false, flipY: false
+
+      [ArmorWest] Active=True, Layer=10
+        SpriteRenderer:
+          sprite: armor-west
+          color: new Color(1f, 1f, 1f, 1f)
+          material: Sprites-Default
+          sortingLayerName: "ActorBelow"
+          sortingOrder: 26
+          drawMode: SpriteDrawMode.Sliced
+          size: new Vector2(1f, 1f)
+          maskInteraction: SpriteMaskInteraction.None
+          spriteSortPoint: SpriteSortPoint.Center
+          flipX: false, flipY: false
+
+    [ActiveIndicator] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: active-indicator
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprite-Unlit-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 27
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [FocusIndicator] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: focus-indicator
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprite-Unlit-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 28
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+    [TargetIndicator] Active=True, Layer=10
+      SpriteRenderer:
+        sprite: target-indicator
+        color: new Color(1f, 1f, 1f, 1f)
+        material: Sprite-Unlit-Default
+        sortingLayerName: "ActorBelow"
+        sortingOrder: 29
+        drawMode: SpriteDrawMode.Sliced
+        size: new Vector2(1f, 1f)
+        maskInteraction: SpriteMaskInteraction.None
+        spriteSortPoint: SpriteSortPoint.Center
+        flipX: false, flipY: false
+
+  [Back] Active=False, Layer=10
+    SpriteRenderer:
+      sprite: back-2
+      color: new Color(1f, 1f, 1f, 1f)
+      material: Sprites-Default
+      sortingLayerName: "ActorBelow"
+      sortingOrder: 0
+      drawMode: SpriteDrawMode.Sliced
+      size: new Vector2(1f, 1f)
+      maskInteraction: SpriteMaskInteraction.None
+      spriteSortPoint: SpriteSortPoint.Center
+      flipX: false, flipY: false
+

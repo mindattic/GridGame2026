@@ -20,26 +20,21 @@ namespace Assets.Scripts.Libraries
     /// - Third-party prefabs
     /// - Legacy prefabs not yet converted to factories
     /// 
-    /// CURRENT PREFABS:
-    /// - "ActorPrefab": Actor GameObject with all child components
-    ///   (Too complex to create via factory currently)
+    /// CONVERTED TO FACTORIES:
+    /// - ActorPrefab → ActorFactory.Create()
+    /// - TilePrefab → TileFactory.Create()
+    /// - CoinPrefab → CoinFactory.Create()
+    /// - etc.
     /// 
     /// USAGE:
     /// ```csharp
-    /// var prefab = PrefabLibrary.Prefabs["ActorPrefab"];
+    /// var prefab = PrefabLibrary.Prefabs["SomePrefab"];
     /// var instance = Instantiate(prefab, parent);
-    /// 
-    /// // Or use Get() method with error logging:
-    /// var prefab = PrefabLibrary.Get("ActorPrefab");
     /// ```
-    /// 
-    /// LOADING:
-    /// Uses AssetHelper.LoadAsset<GameObject>() to load from Resources.
-    /// Lazy-loaded on first access.
     /// 
     /// FACTORY PATTERN PREFERENCE:
     /// Prefer creating factories for new GameObject types.
-    /// See TileFactory.cs, CombatTextFactory.cs for examples.
+    /// See ActorFactory.cs, TileFactory.cs for examples.
     /// 
     /// RELATED FILES:
     /// - All *Factory.cs files: Code-driven GameObject creation

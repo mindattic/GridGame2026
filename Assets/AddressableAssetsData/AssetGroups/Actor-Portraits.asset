@@ -380,6 +380,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67da39125f7777140aba21125cdeed4a
+    m_Address: Sprites/ActionBar/ring-back-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6895a8cc98e7e334897d44f67697fd6a
     m_Address: Soldier03
     m_ReadOnly: 0
@@ -392,6 +397,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6abf684d9701e2b4c967aa68cda0a2e4
     m_Address: Ganger04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e1efe0b263d9c24aab1fb7a38e3d541
+    m_Address: Sprites/HealthBar/health-bar-3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -422,6 +432,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7be5cd13bb9359c41890a518f53df683
     m_Address: SteppinRazor05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ccbbab0a62eed44abd694c6b7ca28bf
+    m_Address: Sprites/ActionBar/ring-1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -467,6 +482,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 874feb3f59142cf42ba60faf8df95c2f
     m_Address: Oni02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 875b7af8b270d8249ad80d23a634d395
+    m_Address: Sprites/active-indicator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -537,6 +557,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9fabf28c5b5755840ab6840a34012615
     m_Address: Doctor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a06b5e28c95ac5d4b8c74f4cd5da667b
+    m_Address: Sprites/Actor/Gradient/Gradient
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -635,6 +660,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: baa7ec4fe6c12d04685a4fbdfa834943
+    m_Address: Sprites/Actor/Thumbnails/thumbnail-fade
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc0281fac79db4e46bbe66677f284d99
     m_Address: SwordMaster
     m_ReadOnly: 0
@@ -710,6 +740,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc4b52ca664d5bb4a8eeebabb3277b3e
+    m_Address: Sprites/Statuses/status-none
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd0bad8f8a09f84429ded45a5e3bd44d
     m_Address: Wolf03
     m_ReadOnly: 0
@@ -762,6 +797,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc0e2c64c40fd5c4d8684e13d714d350
     m_Address: Striker
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e102844aa2988194a8cda1e37e62a45c
+    m_Address: Sprites/HealthBar/health-bar-back-3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -855,8 +895,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3af790074342ad46b3deb1e410d7998
+    m_Address: Materials/RadialFill
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f52410c86a8da354eaf30e449022ae14
     m_Address: Undead04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5eeaa1cf894d084aafc95b6c2495982
+    m_Address: Sprites/ActionBar/action-bar-2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

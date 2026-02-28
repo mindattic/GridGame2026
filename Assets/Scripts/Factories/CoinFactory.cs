@@ -14,31 +14,31 @@ namespace Assets.Scripts.Factories
     /// 
     /// VISUAL EFFECT:
     /// ```
-    /// [Enemy dies] ? ?? (coin spawns)
-    ///                  ?
+    /// [Enemy dies] → 🪙 (coin spawns)
+    ///                  ↘
     ///                   [Coin Counter] (coin flies to UI)
     /// ```
     /// 
     /// CREATED HIERARCHY:
     /// ```
     /// Coin (root)
-    /// ??? SpriteRenderer (coin sprite)
-    /// ??? Animator (spin animation)
-    /// ??? ParticleSystem (sparkle effects)
-    /// ??? SortingGroup (render order)
-    /// ??? CoinInstance (behavior/animation)
+    /// ├── SpriteRenderer (coin sprite)
+    /// ├── ParticleSystem (sparkle effects)
+    /// ├── SortingGroup (render order)
+    /// └── CoinInstance (behavior/animation)
     /// ```
     /// 
     /// CONFIGURATION:
     /// - Tag: "Powerup"
     /// - Color: Gold (1, 0.87, 0, 1)
     /// - SortingLayer: Props
-    /// - Animation: Animator with CoinPrefab controller
     /// 
     /// ANIMATION CURVES:
     /// - linearCurve: Constant speed movement
     /// - slopeCurve: Ease-out movement
     /// - sineCurve: Bounce/wave motion
+    /// 
+    /// NOTE: Animator removed - CoinInstance handles motion via curves.
     /// 
     /// CALLED BY:
     /// - CoinManager.Spawn()
@@ -73,10 +73,11 @@ namespace Assets.Scripts.Factories
             spriteRenderer.sortingOrder = 800;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
-            // Animator
-            var animator = root.AddComponent<Animator>();
-            animator.runtimeAnimatorController = AssetHelper.LoadAsset<RuntimeAnimatorController>("Animations/Coin-01/CoinPrefab");
-            animator.enabled = false;
+            // NOTE: Animator removed - CoinInstance handles animation via curves
+            // If you need a spinning coin animation, add an AnimatorController to
+            // Resources/Animations/Coin.controller and uncomment below:
+            // var animator = root.AddComponent<Animator>();
+            // animator.runtimeAnimatorController = AssetHelper.LoadAsset<RuntimeAnimatorController>("Animations/Coin");
 
             // CoinInstance with animation curves
             var coinInstance = root.AddComponent<CoinInstance>();
@@ -84,8 +85,9 @@ namespace Assets.Scripts.Factories
             coinInstance.slopeCurve = CreateSlopeCurve();
             coinInstance.sineCurve = CreateSineCurve();
 
-            // ParticleSystem
+            // ParticleSystem - configure BEFORE it starts playing
             var particleSystem = root.AddComponent<ParticleSystem>();
+            particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             ConfigureParticleSystem(particleSystem);
 
             // ParticleSystemRenderer

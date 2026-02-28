@@ -61,7 +61,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 170482c518ea30d4ea3acb519978c357
-    m_Address: Assets/Sprites/target-indicator
+    m_Address: Sprites/target-indicator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -185,6 +185,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 403a98a439a23cf4a9ff7e72a9573a3f
+    m_Address: Sprites/Actor/Armor/armor-east
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42ad7926ac1b0514185774b0d81b3f19
+    m_Address: Sprites/Actor/Back/back-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 43036b4f7295ec447a8091ee2d3012c5
     m_Address: Sprites/Backgrounds/CyberNecropolis/00
     m_ReadOnly: 0
@@ -207,6 +217,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4d0c4234de2d46049a85ddb2b89ef944
     m_Address: Sprites/WeaponTypes/Hammer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50adc835488ffc34f95c33446b46ee24
+    m_Address: Sprites/Actor/Armor/armor-south
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -260,6 +275,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61cea83a564e99c478a4af0344cf0eab
+    m_Address: Sprites/HealthBar/health-bar-5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 628f4f26b05019c4495e4212d4654f89
     m_Address: Sprites/Timeline/ActorTagIcons/Insect
     m_ReadOnly: 0
@@ -267,6 +287,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 689440e14c4f7a1438b5682c0ecb66ea
     m_Address: Sprites/GUI/BackButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e007a39361c46e4f955323b8a72ff3a
+    m_Address: Sprites/Actor/Masks/mask-4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -297,6 +322,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 79ee61618e9f4a846be932ad9a857450
     m_Address: Sprites/GUI/TimelineDivider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a4f78a80b83e784f90750fd1a857065
+    m_Address: Sprites/Actor/Frames/frame-4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -345,8 +375,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86d906f7ea9d7124ca36dfcde1a81e64
+    m_Address: Sprites/Actor/Armor/armor-north
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8835a6000aa9d124db4d980461277199
     m_Address: Sprites/WeaponTypes/Wand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 895bac81fb934b1488a156eefe33d9d2
+    m_Address: Sprites/Actor/Masks/mask-7
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -396,7 +436,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f26d6f1e4284eb44ae224bc2ef7abd6
-    m_Address: Assets/Sprites/focus-indicator
+    m_Address: Sprites/focus-indicator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -422,6 +462,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aa206f6bf08484c459dac22687c29209
     m_Address: Sprites/Paused
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ade360f1887cc1044915420d02ee3e65
+    m_Address: Sprites/Actor/Base/base-4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -452,6 +497,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7b85153065fffa44a5a02f725000401
     m_Address: Sprites/Backgrounds/Moors/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba711bfcf9fe2834fa6eaba0b8ab9aa5
+    m_Address: Sprites/Actor/Armor/armor-west
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

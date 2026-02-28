@@ -12,6 +12,7 @@ using scene = Assets.Helpers.SceneHelper;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Sequences;
 using Assets.Scripts.Libraries;
+using Assets.Scripts.Factories;
 using System.Collections.Generic;
 
 /// <summary>
@@ -280,8 +281,8 @@ public class StageManager : MonoBehaviour
             return null;
         }
 
-        // Instantiate and parent under the board
-        var go = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
+        // Instantiate from prefab and parent under the board
+        var go = UnityEngine.Object.Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = go.GetComponent<ActorInstance>();
         instance.transform.SetParent(g.Board.transform, false);
         instance.name = $"{stageActor.CharacterClass}_{Guid.NewGuid():N}";

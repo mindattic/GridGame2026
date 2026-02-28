@@ -46,6 +46,7 @@ namespace Assets.Scripts.Libraries
     {
         #region Dictionaries
 
+        private static Dictionary<string, Sprite> actor;
         private static Dictionary<string, Sprite> backgrounds;
         private static Dictionary<string, Sprite> gui;
         private static Dictionary<string, Sprite> seamless;
@@ -61,6 +62,9 @@ namespace Assets.Scripts.Libraries
         #endregion
 
         #region Public Accessors
+
+        /// <summary>Actor-related sprites (masks, frames, health bars, etc.).</summary>
+        public static Dictionary<string, Sprite> Actor { get { if (!isLoaded) Load(); return actor; } }
 
         /// <summary>Background sprites for parallax layers.</summary>
         public static Dictionary<string, Sprite> Backgrounds { get { if (!isLoaded) Load(); return backgrounds; } }
@@ -83,6 +87,7 @@ namespace Assets.Scripts.Libraries
         /// <summary>Tutorial page images.</summary>
         public static Dictionary<string, Sprite> TutorialPages { get { if (!isLoaded) Load(); return tutorialPages; } }
 
+
         /// <summary>Logo/brand images.</summary>
         public static Dictionary<string, Sprite> Logos { get { if (!isLoaded) Load(); return logos; } }
 
@@ -102,6 +107,44 @@ namespace Assets.Scripts.Libraries
         private static void Load()
         {
             if (isLoaded) return;
+
+            // Actor sprites (used by ActorFactory)
+            actor = new Dictionary<string, Sprite>
+            {
+                // Masks
+                { "Mask4", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Masks/mask-4") },
+                { "Mask7", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Masks/mask-7") },
+                // Base (quality layer)
+                { "Base4", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Base/base-4") },
+                // Back layer
+                { "Back2", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Back/back-2") },
+                // Frame
+                { "Frame4", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Frames/frame-4") },
+                // Glow (thumbnail-fade is in Thumbnails folder)
+                { "ThumbnailFade", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Thumbnails/thumbnail-fade") },
+                // Gradient
+                { "Gradient", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Gradient/Gradient") },
+                // Status
+                { "StatusNone", AssetHelper.LoadAsset<Sprite>("Sprites/Statuses/status-none") },
+                // Health bars
+                { "HealthBar5", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-5") },
+                { "HealthBarBack3", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-back-3") },
+                { "HealthBar3", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-3") },
+                { "ActionBar2", AssetHelper.LoadAsset<Sprite>("Sprites/ActionBar/action-bar-2") },
+                // Radial (in ActionBar folder)
+                { "RingBack1", AssetHelper.LoadAsset<Sprite>("Sprites/ActionBar/ring-back-1") },
+                { "Ring1", AssetHelper.LoadAsset<Sprite>("Sprites/ActionBar/ring-1") },
+                // Armor (all four directions)
+                { "ArmorNorth", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Armor/armor-north") },
+                { "ArmorEast", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Armor/armor-east") },
+                { "ArmorSouth", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Armor/armor-south") },
+                { "ArmorWest", AssetHelper.LoadAsset<Sprite>("Sprites/Actor/Armor/armor-west") },
+                // Indicators (in root Sprites folder)
+                { "ActiveIndicator", AssetHelper.LoadAsset<Sprite>("Sprites/active-indicator") },
+                { "FocusIndicator", AssetHelper.LoadAsset<Sprite>("Sprites/focus-indicator") },
+                { "TargetIndicator", AssetHelper.LoadAsset<Sprite>("Sprites/target-indicator") },
+                // NOTE: Thumbnail sprites are loaded dynamically from Portraits based on CharacterClass
+            };
 
             abilityButtons = new Dictionary<string, Sprite>
             {
