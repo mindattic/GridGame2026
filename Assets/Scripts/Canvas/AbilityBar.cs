@@ -5,12 +5,50 @@ using UnityEngine;
 namespace Assets.Scripts.Canvas
 {
     /// <summary>
-    /// Displays ability names when executed, then fades out automatically.
+    /// ABILITYBAR - Displays ability names when executed.
+    /// 
+    /// PURPOSE:
+    /// Shows a text notification when an ability is used, then automatically
+    /// fades out after a duration. Provides visual feedback for ability activation.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────┐
+    /// │  "Paladin uses Heal"        │  ← Text fades in
+    /// └─────────────────────────────┘
+    ///           ↓ (after displayDuration)
+    ///       fades out
+    /// ```
+    /// 
+    /// SETTINGS:
+    /// - displayDuration: Time to show before fade (default 2s)
+    /// - fadeDuration: Time to fade out (default 0.5s)
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// g.AbilityBar.Show("Heal");
+    /// g.AbilityBar.Show(hero, healAbility);
+    /// g.AbilityBar.Hide();
+    /// ```
+    /// 
+    /// LIFECYCLE:
+    /// 1. Show() displays text with alpha = 1
+    /// 2. AutoHideRoutine() waits displayDuration
+    /// 3. Fades alpha to 0 over fadeDuration
+    /// 4. Deactivates GameObject
+    /// 
+    /// RELATED FILES:
+    /// - AbilityManager.cs: Calls Show() when ability cast
+    /// - Ability.cs: Ability data definition
+    /// 
+    /// ACCESS: g.AbilityBar
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CanvasGroup))]
     public class AbilityBar : MonoBehaviour
     {
+        #region Inspector Fields
+
         [Header("References")]
         [SerializeField] private TextMeshProUGUI label;
         [SerializeField] private CanvasGroup canvasGroup;
@@ -19,7 +57,15 @@ namespace Assets.Scripts.Canvas
         [SerializeField] private float displayDuration = 2f;
         [SerializeField] private float fadeDuration = 0.5f;
 
+        #endregion
+
+        #region Runtime State
+
         private Coroutine hideCoroutine;
+
+        #endregion
+
+        #region Initialization
 
         private void Awake()
         {
@@ -27,9 +73,13 @@ namespace Assets.Scripts.Canvas
                 canvasGroup = GetComponent<CanvasGroup>();
             if (label == null)
                 label = GetComponentInChildren<TextMeshProUGUI>();
-            
+
             Hide();
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Shows the ability bar with the specified text. Auto-hides after displayDuration.
@@ -48,6 +98,7 @@ namespace Assets.Scripts.Canvas
 
         /// <summary>
         /// Shows the ability bar for an actor using an ability.
+        /// Format: "{CharacterClass} uses {AbilityName}"
         /// </summary>
         public void Show(ActorInstance user, Ability ability)
         {
@@ -109,5 +160,7 @@ namespace Assets.Scripts.Canvas
             canvasGroup.alpha = 0f;
             hideCoroutine = null;
         }
+
+        #endregion
     }
 }

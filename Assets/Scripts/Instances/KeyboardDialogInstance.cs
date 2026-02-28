@@ -9,15 +9,59 @@ using Assets.Helper;
 using Assets.Scripts.Factories;
 using Assets.Scripts.Libraries;
 
+/// <summary>
+/// KEYBOARDDIALOGINSTANCE - On-screen virtual keyboard for text input.
+/// 
+/// PURPOSE:
+/// Provides a touch-friendly virtual keyboard for entering text
+/// on devices without physical keyboards (mobile, console, etc).
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ???????????????????????????????????????
+/// ?          Enter your name:           ?
+/// ?  ???????????????????????????????    ?
+/// ?  ? Player1                     ?    ?
+/// ?  ???????????????????????????????    ?
+/// ?  [1][2][3][4][5][6][7][8][9][0]     ?
+/// ?  [Q][W][E][R][T][Y][U][I][O][P]     ?
+/// ?   [A][S][D][F][G][H][J][K][L]       ?
+/// ?  [?][Z][X][C][V][B][N][M][?]       ?
+/// ?       [        SPACE        ]       ?
+/// ?        [ OK ]    [ Cancel ]         ?
+/// ???????????????????????????????????????
+/// ```
+/// 
+/// KEY ROWS:
+/// - Row 1: Numbers 1-0
+/// - Row 2: QWERTYUIOP
+/// - Row 3: ASDFGHJKL
+/// - Row 4: CapsLock, ZXCVBNM, Backspace
+/// - Row 5: Space bar
+/// - Row 6: OK / Cancel buttons
+/// 
+/// FEATURES:
+/// - Caps lock toggle for uppercase
+/// - Backspace to delete
+/// - Character limit support
+/// - Submit/cancel callbacks
+/// 
+/// RELATED FILES:
+/// - KeyboardDialogFactory.cs: Creates dialog
+/// - KeyButtonFactory.cs: Creates individual keys
+/// - ProfileSelectManager.cs: Uses for profile naming
+/// </summary>
 public class KeyboardDialogInstance : MonoBehaviour
 {
+    #region UI References
+
     private RectTransform panel;
     private RectTransform prompt;
     private RectTransform inputBackdrop;
     private RectTransform inputLabel;
     private RectTransform keysContainer;
 
-    // Row 1
+    // Row 1: Numbers
     private RectTransform row1;
     private RectTransform key1;
     private RectTransform key2;
@@ -30,7 +74,7 @@ public class KeyboardDialogInstance : MonoBehaviour
     private RectTransform key9;
     private RectTransform key0;
 
-    // Row 2
+    // Row 2: QWERTYUIOP
     private RectTransform row2;
     private RectTransform keyQ;
     private RectTransform keyW;
@@ -43,7 +87,7 @@ public class KeyboardDialogInstance : MonoBehaviour
     private RectTransform keyO;
     private RectTransform keyP;
 
-    // Row 3
+    // Row 3: ASDFGHJKL
     private RectTransform row3;
     private RectTransform keyA;
     private RectTransform keyS;
@@ -55,9 +99,11 @@ public class KeyboardDialogInstance : MonoBehaviour
     private RectTransform keyK;
     private RectTransform keyL;
 
-    // Row 4
+    // Row 4: CapsLock, ZXCVBNM, Backspace
     private RectTransform row4;
     private RectTransform keyCapsLock;
+
+    #endregion
     private RectTransform keyZ;
     private RectTransform keyX;
     private RectTransform keyC;

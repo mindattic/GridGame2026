@@ -14,16 +14,58 @@ using UnityEngine.Rendering;
 using static Assets.Helper.GameObjectHelper;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
-using Assets.Scripts.Managers; // added for EndlessModeRuntime
+using Assets.Scripts.Managers;
 
 /// <summary>
-/// Runtime actor instance for both heroes and enemies.
-/// All turn order is controlled by Timeline. This class does not track TurnDelay or readiness.
-/// Timeline may call SetTurnDelayText to display a countdown, but no gameplay logic depends on it.
+/// ACTORINSTANCE - Runtime character on the battlefield (hero or enemy).
+/// 
+/// PURPOSE:
+/// Represents a single character during combat. Both player-controlled heroes
+/// and AI-controlled enemies use this same class, differentiated by the team field.
+/// 
+/// TEAM IDENTIFICATION:
+/// - team == Team.Hero: Player-controlled character
+/// - team == Team.Enemy: AI-controlled opponent
+/// - Use IsHero/IsEnemy properties for checks
+/// 
+/// GRID POSITION:
+/// - location: Vector2Int(column, row) on the board
+/// - previousLocation: Location before last move (for undo/animation)
+/// - currentTile: TileInstance at current location
+/// 
+/// STATE PROPERTIES:
+/// - IsAlive: HP > 0
+/// - IsPlaying: Active and alive (can participate in combat)
+/// - IsDying: Active but HP <= 0 (death animation pending)
+/// - IsDead: Inactive and dead
+/// - IsSpawnable: Ready to spawn (turn reached, not yet spawned)
+/// 
+/// COMPONENT MODULES (composition pattern):
+/// - Stats: HP, AP, Strength, Vitality, etc. (ActorStats)
+/// - Flags: HasSpawned, HasActed, etc. (ActorFlags)
+/// - Render: SpriteRenderer references (ActorRenderers)
+/// - Animation: Animation state machine (ActorAnimation)
+/// - Move: Position lerping (ActorMovement)
+/// - HealthBar: HP bar UI (ActorHealthBar)
+/// - ActionBar: AP bar UI (ActorActionBar)
+/// - Glow: Selection glow effect (ActorGlow)
+/// - Weapon: Weapon sprite/type (ActorWeapon)
+/// - Vfx: Particle effects (ActorVFX)
+/// - Thumbnail: Portrait display (ActorThumbnail)
+/// - Abilities: List of special moves
+/// 
+/// SORTING/LAYERING:
+/// Uses SortingGroup for z-ordering during combat (pincer attacks, focus, etc.).
+/// Subscribes to SortingManager.OnSortRequested for global sort events.
+/// 
+/// LLM CONTEXT:
+/// This is the core character class. Access actors via g.Actors.All,
+/// g.Actors.Heroes, or g.Actors.Enemies. Filter with .IsPlaying for
+/// combat-active characters. Location is always a Vector2Int on the grid.
 /// </summary>
 public partial class ActorInstance : MonoBehaviour
 {
-    // Track the last attacker that reduced this actor to 0 HP
+    /// <summary>Tracks the last attacker that reduced this actor to 0 HP (for kill credit).</summary>
     private ActorInstance _lastAttacker;
 
     #region Instance Properties

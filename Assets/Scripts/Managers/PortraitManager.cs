@@ -9,24 +9,62 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Unified manager for spawning and controlling portraits in UI (Image) and World (SpriteRenderer).
-/// Uses PortraitInstance for behavior.
+/// PORTRAITMANAGER - Spawns actor portraits for combat feedback.
+/// 
+/// PURPOSE:
+/// Displays large actor portraits during combat sequences to show
+/// who is attacking. Supports both 2D (UI Image) and 3D (SpriteRenderer)
+/// portrait modes.
+/// 
+/// PORTRAIT TYPES:
+/// - 2D Portraits: UI Images in Canvas (for UI overlays)
+/// - 3D Portraits: World-space sprites (for in-game display)
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌─────────────────────────────────┐
+/// │ [Hero A]          [Hero B]      │ ← Portraits slide in
+/// │    ↘                 ↙          │
+/// │       [Combat Area]             │
+/// └─────────────────────────────────┘
+/// ```
+/// 
+/// ANIMATION:
+/// - SlideIn: Portraits slide from off-screen
+/// - SlideOut: Portraits exit after combat
+/// - SpawnPair: Two portraits for pincer attackers
+/// 
+/// USAGE:
+/// ```csharp
+/// yield return g.PortraitManager.SpawnPair3DRoutine(actorPair);
+/// yield return g.PortraitManager.SlideIn2DRoutine(hero, Direction.Left);
+/// ```
+/// 
+/// RELATED FILES:
+/// - Portrait2DFactory.cs: Creates UI portraits
+/// - Portrait3DFactory.cs: Creates world portraits
+/// - PortraitInstance.cs: Portrait behavior component
+/// - PincerAttackSequence.cs: Uses portraits during attacks
+/// - ActorLibrary.cs: Provides portrait sprites
+/// 
+/// ACCESS: g.PortraitManager
 /// </summary>
 public class PortraitManager : MonoBehaviour
 {
-    // Track all spawned portraits
+    /// <summary>All spawned portrait instances.</summary>
     private readonly List<PortraitInstance> portraits = new List<PortraitInstance>();
 
-    // ========================= UI (Image) =========================
+    #region 2D Portraits (UI Image)
 
+    /// <summary>Slides in a 2D portrait from the specified direction.</summary>
     public void SlideIn2D(ActorInstance actor, Direction direction, float? fixedX = null, float? fixedY = null)
     {
         StartCoroutine(SlideIn2DRoutine(actor, direction, fixedX, fixedY));
     }
 
+    /// <summary>Coroutine to slide in a 2D portrait.</summary>
     public IEnumerator SlideIn2DRoutine(ActorInstance actor, Direction direction, float? fixedX = null, float? fixedY = null)
     {
-        // Use factory instead of Instantiate(prefab)
         var go = Portrait2DFactory.Create();
         go.transform.position = Vector3.zero;
         go.transform.rotation = Quaternion.identity;
@@ -47,6 +85,7 @@ public class PortraitManager : MonoBehaviour
         yield return instance.SlideInRoutine();
     }
 
+    /// <summary>Spawns a pair of 2D portraits for pincer attackers.</summary>
     public IEnumerator SpawnPair2DRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
@@ -82,16 +121,19 @@ public class PortraitManager : MonoBehaviour
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
     }
 
-    // ======================= World (Sprite) =======================
+    #endregion
 
+    #region 3D Portraits (World Sprite)
+
+    /// <summary>Slides in a 3D world-space portrait.</summary>
     public void SlideIn3D(ActorInstance actor, Direction direction)
     {
         StartCoroutine(SlideIn3DRoutine(actor, direction));
     }
 
+    /// <summary>Coroutine to slide in a 3D portrait.</summary>
     public IEnumerator SlideIn3DRoutine(ActorInstance actor, Direction direction)
     {
-        // Use factory instead of Instantiate(prefab)
         var go = Portrait3DFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
@@ -235,6 +277,7 @@ public class PortraitManager : MonoBehaviour
         return (-lane, lane);
     }
 
+    /// <summary>Removes and destroys a portrait instance.</summary>
     public void Despawn(PortraitInstance portrait)
     {
         if (portrait != null && portraits.Contains(portrait))
@@ -243,4 +286,6 @@ public class PortraitManager : MonoBehaviour
             Destroy(portrait.gameObject);
         }
     }
+
+    #endregion
 }

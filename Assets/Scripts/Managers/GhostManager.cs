@@ -6,17 +6,72 @@ using System.Collections;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// GHOSTMANAGER - Creates ghost trail effects during hero movement.
+/// 
+/// PURPOSE:
+/// When a hero is being dragged, spawns semi-transparent "ghost" copies
+/// of the actor sprite that fade out, creating a motion trail effect.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///        [Hero]  ← Current position
+///      👻        ← Ghost (50% opacity)
+///    👻          ← Ghost (30% opacity)
+///  👻            ← Ghost (10% opacity, fading)
+/// ```
+/// 
+/// SPAWN LOGIC:
+/// - Tracks actor position each frame
+/// - When distance > threshold (TileSize/12), spawns ghost
+/// - Ghost fades out over time and self-destructs
+/// 
+/// USAGE:
+/// ```csharp
+/// g.GhostManager.Play(hero);   // Start trail
+/// // ... player drags hero ...
+/// g.GhostManager.Stop();       // Stop trail
+/// ```
+/// 
+/// LIFECYCLE:
+/// 1. Play(actor) starts the spawn coroutine
+/// 2. CheckSpawnRoutine() monitors movement
+/// 3. Spawn() creates ghost via GhostFactory
+/// 4. Stop() ends the coroutine
+/// 
+/// RELATED FILES:
+/// - GhostFactory.cs: Creates ghost GameObjects
+/// - GhostInstance.cs: Ghost animation component
+/// - InputManager.cs: Calls Play/Stop during drag
+/// - SelectionManager.cs: Manages drag state
+/// 
+/// ACCESS: g.GhostManager
+/// </summary>
 public class GhostManager : MonoBehaviour
 {
-    // Fields
+    #region Fields
+
+    /// <summary>Actor being tracked for ghost spawning.</summary>
     ActorInstance actor;
+
+    /// <summary>Minimum distance to travel before spawning ghost.</summary>
     float threshold;
+
+    /// <summary>Last position where ghost was spawned.</summary>
     Vector3 previousPosition;
+
+    #endregion
+
+    #region Initialization
 
     private void Start()
     {
         threshold = g.TileSize / 12;
     }
+
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// Starts spawning ghost trail effects for the given actor.
@@ -36,8 +91,12 @@ public class GhostManager : MonoBehaviour
         actor = null;
     }
 
+    #endregion
+
+    #region Spawn Logic
+
     /// <summary>
-    /// Checks the actor's movement to determine when to spawn ghost effects.
+    /// Monitors actor movement and spawns ghosts when threshold exceeded.
     /// </summary>
     private IEnumerator CheckSpawnRoutine()
     {
@@ -55,7 +114,7 @@ public class GhostManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a ghost trail instance at the actor's current position.
+    /// Creates a ghost trail instance at the actor's current position.
     /// </summary>
     private void Spawn()
     {
@@ -80,4 +139,6 @@ public class GhostManager : MonoBehaviour
             Destroy(instance.gameObject);
         }
     }
+
+    #endregion
 }

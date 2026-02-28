@@ -4,18 +4,53 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for SupportLine - replaces SupportLinePrefab.prefab
+    /// SUPPORTLINEFACTORY - Creates support connection line GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates visual lines connecting a supporter to an attacker during
+    /// pincer attacks. Shows which allies are providing support bonus damage.
+    /// 
+    /// SUPPORT MECHANIC:
+    /// ```
+    /// [Supporter] ??????? [Attacker]
+    ///      ?                  ?
+    ///  provides bonus    executing attack
+    /// ```
+    /// 
+    /// Adjacent heroes to pincer attackers become supporters and add
+    /// bonus damage. This line visualizes that connection.
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// SupportLine (root)
+    /// ??? LineRenderer (line visual)
+    /// ??? SupportLineInstance (behavior)
+    /// ??? SortingGroup (render order)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "SupportLine"
+    /// - SortingLayer: Lines
+    /// - Material: Sprites/Default
+    /// - Width: 0.515 constant
+    /// 
+    /// CALLED BY:
+    /// - SupportLineManager.Spawn()
+    /// 
+    /// RELATED FILES:
+    /// - SupportLineInstance.cs: Line behavior
+    /// - SupportLineManager.cs: Manages support lines
+    /// - PincerAttackManager.cs: FindSupporters() method
     /// </summary>
     public static class SupportLineFactory
     {
+        /// <summary>Creates a new support line GameObject.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("SupportLine");
-            root.layer = 0; // Default layer
+            root.layer = 0;
             root.tag = "SupportLine";
 
-            // Transform
             var transform = root.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
@@ -28,31 +63,25 @@ namespace Assets.Scripts.Factories
             lineRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
             lineRenderer.lightProbeUsage = LightProbeUsage.Off;
             lineRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
-            lineRenderer.sortingLayerName = "Lines"; // SortingLayer 4
+            lineRenderer.sortingLayerName = "Lines";
             lineRenderer.sortingOrder = 0;
 
-            // Material - use default Line material
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
-            // Line settings
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, Vector3.zero);
             lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
             lineRenderer.widthMultiplier = 1f;
             lineRenderer.useWorldSpace = true;
 
-            // Width curve (constant width)
             lineRenderer.widthCurve = AnimationCurve.Constant(0f, 1f, 0.515152f);
 
-            // SupportLineInstance (custom component)
             root.AddComponent<SupportLineInstance>();
 
-            // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();
             sortingGroup.sortingLayerName = "Lines";
             sortingGroup.sortingOrder = 0;
 
-            // Parent if specified
             if (parent != null)
             {
                 transform.SetParent(parent, false);

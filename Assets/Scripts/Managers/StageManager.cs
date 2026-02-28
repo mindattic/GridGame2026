@@ -9,43 +9,93 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using scene = Assets.Helpers.SceneHelper;
-using Assets.Scripts.Managers; // added
+using Assets.Scripts.Managers;
 using Assets.Scripts.Sequences;
-using Assets.Scripts.Libraries; // NEW
-using System.Collections.Generic; // added
+using Assets.Scripts.Libraries;
+using System.Collections.Generic;
 
+/// <summary>
+/// STAGEMANAGER - Controls stage loading, wave spawning, and victory conditions.
+/// 
+/// PURPOSE:
+/// Manages the lifecycle of a battle stage - loading definitions, spawning
+/// heroes and enemies, tracking waves, and detecting victory/defeat.
+/// 
+/// STAGE STRUCTURE:
+/// - Stage: Contains metadata and list of Waves
+/// - Wave: Contains list of enemies to spawn on specific turn
+/// - Victory: All waves cleared and all enemies defeated
+/// - Defeat: All heroes killed
+/// 
+/// INITIALIZATION FLOW:
+/// 1. Initialize() - Load stage from profile, setup heroes
+/// 2. RestartStage() - Reset state, spawn first wave
+/// 3. OnTurnAdvanced() - Check for wave spawns each turn
+/// 4. CheckVictory() - Test if stage complete
+/// 
+/// HERO SPAWNING:
+/// Heroes are loaded from the player's saved party (ProfileHelper.CurrentProfile).
+/// Positions come from party member data or default spawn locations.
+/// 
+/// ENEMY SPAWNING:
+/// Enemies spawn according to wave definitions. Each wave has a spawnTurn
+/// that triggers when TurnManager.CurrentTurn reaches that value.
+/// 
+/// ENDLESS MODE:
+/// When GameModeHelper.IsEndless is true, waves generate procedurally
+/// with increasing difficulty instead of using stage definitions.
+/// 
+/// LLM CONTEXT:
+/// Access via g.StageManager. Called by GameManager during scene setup.
+/// Works closely with TurnManager (turn advancement) and ActorManager (spawning).
+/// </summary>
 public class StageManager : MonoBehaviour
 {
-    // Internal property:
+    #region Properties
+
+    /// <summary>Count of living enemies on the board.</summary>
     public int enemyCount => g.Actors.All.FindAll(x => x.IsEnemy).Count;
 
-    // Fields:
-    private GameObject actorPrefab;
-    public Stage currentStage;
-    private int currentWave = 0; // Track the current wave
+    #endregion
 
-    // Endless state
+    #region Fields
+
+    /// <summary>Prefab used to instantiate actors.</summary>
+    private GameObject actorPrefab;
+
+    /// <summary>Currently loaded stage definition.</summary>
+    public Stage currentStage;
+
+    /// <summary>Current wave index (0-based).</summary>
+    private int currentWave = 0;
+
+    /// <summary>True if playing endless mode (procedural waves).</summary>
     private bool IsEndless => GameModeHelper.IsEndless;
 
+    #endregion
+
+    #region Initialization
+
+    /// <summary>Loads actor prefab on awake.</summary>
     public void Awake()
     {
         actorPrefab = PrefabLibrary.Prefabs["ActorPrefab"];
     }
 
     /// <summary>
-    /// Initializes the StageManager by retrieving the stage name from the hero's profile,
-    /// loading the corresponding Stage, and then loading the stage.
+    /// Initializes the stage from the player's profile.
+    /// Loads stage definition and spawns initial actors.
     /// </summary>
     public void Initialize()
     {
-        var latestSave = ProfileHelper.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        var latestSave = ProfileHelper.CurrentProfile.LatestSave;
         if (latestSave == null)
         {
             Debug.LogError("No saved game state found.");
             return;
         }
 
-        // Begin a new XP session with current party participants (shared flow)
+        // Begin a new XP session with current party participants
         var participants = ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Select(m => m.CharacterClass);
         ExperienceTracker.StartSession(participants);
 
@@ -59,6 +109,13 @@ public class StageManager : MonoBehaviour
         RestartStage();
     }
 
+    #endregion
+
+    #region Endless Mode
+
+    /// <summary>
+    /// Initializes endless mode with procedural wave generation.
+    /// </summary>
     private void InitializeEndless()
     {
         // Reset
@@ -68,7 +125,7 @@ public class StageManager : MonoBehaviour
         g.SynergyLineManager.Clear();
         g.CoinCounter.Refresh();
         g.TileManager.Reset();
-        
+
         // Build a nominal stage placeholder
         currentStage = new Stage
         {
@@ -395,5 +452,7 @@ public class StageManager : MonoBehaviour
         var stageActor = new StageActor(characterClass, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
         return SpawnActor(stageActor);
     }
+
+    #endregion
 
 }

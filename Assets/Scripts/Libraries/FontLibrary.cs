@@ -5,11 +5,58 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// FONTLIBRARY - Static registry for TextMeshPro font assets.
+    /// 
+    /// PURPOSE:
+    /// Centralized font loading and caching. Fonts are loaded once on first
+    /// access and cached for reuse across all UI components.
+    /// 
+    /// AVAILABLE FONTS:
+    /// - Damage/Heal: Combat text fonts (Attic)
+    /// - GainExperience: Experience gain text (Arial)
+    /// - Attic: Stylized display font
+    /// - Arial: Standard sans-serif
+    /// - Avenir: Modern sans-serif (timeline)
+    /// - Chicago: Retro pixel font (tooltips)
+    /// - Consolas: Monospace (debug/console)
+    /// - Roboto: Clean sans-serif
+    /// - Segoe: Windows-style font
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// // Via dictionary access
+    /// var font = FontLibrary.Fonts["Attic"];
+    /// textMesh.font = font;
+    /// 
+    /// // Via Get method (with error logging)
+    /// var font = FontLibrary.Get("Chicago");
+    /// ```
+    /// 
+    /// FONT ASSIGNMENTS BY FACTORY:
+    /// - CombatTextFactory: Attic
+    /// - TimelineTagFactory: Avenir
+    /// - TooltipFactory: Chicago
+    /// - MessageBoxFactory: Attic
+    /// 
+    /// LLM CONTEXT:
+    /// Use FontLibrary.Fonts["FontName"] in factories when creating
+    /// TextMeshProUGUI components. Fonts are TMP_FontAsset objects.
+    /// </summary>
     public static class FontLibrary
     {
+        #region Fields
+
         private static Dictionary<string, TMP_FontAsset> fonts;
         private static bool isLoaded = false;
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Dictionary of all loaded font assets. Lazy-loads on first access.
+        /// </summary>
         public static Dictionary<string, TMP_FontAsset> Fonts
         {
             get
@@ -20,18 +67,25 @@ namespace Assets.Scripts.Libraries
             }
         }
 
+        #endregion
+
+        #region Loading
+
+        /// <summary>
+        /// Loads all font assets from Resources. Called lazily on first access.
+        /// </summary>
         private static void Load()
         {
             if (isLoaded) return;
 
             fonts = new Dictionary<string, TMP_FontAsset>
             {
-                // CombatText fonts
+                // Combat text fonts (floating damage/heal numbers)
                 { "Damage", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
                 { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
                 { "GainExperience", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
 
-                // UI fonts
+                // UI fonts (for factories and components)
                 { "Attic", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
                 { "Arial", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
                 { "Avenir", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Avenir") },
@@ -44,17 +98,25 @@ namespace Assets.Scripts.Libraries
             isLoaded = true;
         }
 
+        #endregion
+
+        #region Access Methods
+
         /// <summary>
-        /// Retrieves a font asset by key.
+        /// Retrieves a font asset by key with error logging if not found.
         /// </summary>
+        /// <param name="key">Font name key (e.g., "Attic", "Chicago")</param>
+        /// <returns>TMP_FontAsset or null if not found</returns>
         public static TMP_FontAsset Get(string key)
         {
             if (!isLoaded) Load();
             if (fonts.TryGetValue(key, out var font))
                 return font;
 
-            Debug.LogError($"Font '{key}' not found in FontRepo.");
+            Debug.LogError($"Font '{key}' not found in FontLibrary.");
             return null;
         }
+
+        #endregion
     }
 }

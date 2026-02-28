@@ -8,9 +8,46 @@ using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// STAGESELECTMANAGER - Manages the stage/level selection screen.
+/// 
+/// PURPOSE:
+/// Displays available stages and allows the player to select which
+/// stage to play. Shows unlocked stages based on profile progress.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │         Select Stage                │
+/// ├─────────────────────────────────────┤
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Stage 1 - Forest          │   │ ← Unlocked
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Stage 2 - Castle          │   │ ← Unlocked
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Stage 3 - 🔒 Locked       │   │ ← Locked
+/// │  └─────────────────────────────┘   │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// STAGE LOADING:
+/// Stages loaded from StageLibrary. Each button triggers
+/// scene transition to the selected stage.
+/// 
+/// RELATED FILES:
+/// - ScreenWidthButtonFactory.cs: Creates stage buttons
+/// - StageLibrary.cs: Stage definitions
+/// - StageManager.cs: Stage gameplay logic
+/// - ProfileManager.cs: Progress tracking
+/// 
+/// ACCESS: Scene-based manager (StageSelect scene)
+/// </summary>
 public class StageSelectManager : MonoBehaviour
 {
-    //Fields
+    #region UI References
+
     private TextMeshProUGUI header;
     private RectTransform scrollView;
     private Transform content;
@@ -21,23 +58,15 @@ public class StageSelectManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
 
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
 
-        //startX = canvas.rect.width;
-        //startY = canvas.rect.height;
-
-        //buttonWidth = 0.9f * startX;
-        //buttonHeight = startY / 16f;
-
-        //header.fontSize = buttonHeight / 2;
-        //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
-
-        //spacing = 0.01f * startY;
-        //verticalLayoutGroup.spacing = spacing;
-
+        // Create button for each stage
         foreach (var stage in StageLibrary.Stages)
         {
             AddButton(stage.Value.Name);
@@ -49,15 +78,15 @@ public class StageSelectManager : MonoBehaviour
         scene.FadeIn();
     }
 
+    #endregion
+
+    #region Button Creation
+
+    /// <summary>Creates a stage selection button.</summary>
     public void AddButton(string stageName)
     {
-        // Use factory instead of Instantiate(prefab)
         GameObject instance = ScreenWidthButtonFactory.Create(content);
         instance.name = $"Button_{stageName}";
-
-        //Show the button size
-        //RectTransform buttonRect = instance.GetComponent<RectTransform>();
-        //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         //Show the button's click event
         Button button = instance.GetComponent<Button>();
@@ -79,4 +108,5 @@ public class StageSelectManager : MonoBehaviour
         scene.Fade.ToPreviousScene();
     }
 
+    #endregion
 }

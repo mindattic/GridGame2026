@@ -4,60 +4,125 @@ using Assets.Scripts.Sequences;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// SELECTIONMANAGER - Tracks and manages the currently selected hero.
+/// 
+/// PURPOSE:
+/// Manages hero selection state during player turns. When a hero is selected,
+/// shows their info card, enables ability buttons, and prepares for drag input.
+/// 
+/// SELECTION FLOW:
+/// 1. Player taps hero → Select(actor) called
+/// 2. g.Actors.SelectedActor updated
+/// 3. ActorCard.Assign() shows hero info
+/// 4. AbilityButtonManager.Show() displays abilities
+/// 5. SortingManager.OnActorFocus() brings hero to front
+/// 
+/// SELECTED ACTOR STATES (SelectedActorState):
+/// - Idle: Selected but not being moved
+/// - PickedUp: Player started dragging
+/// - Moving: Hero being dragged to new position
+/// - Dropped: Hero released, awaiting pincer check
+/// 
+/// KEY METHODS:
+/// - Select(actor): Sets the selected actor
+/// - Pickup(): Begins dragging the selected hero
+/// - Drop(): Releases the hero at current position
+/// - CancelPick(): Cancels drag, returns to original position
+/// 
+/// GUARD CONDITIONS:
+/// - Won't change selection during ability targeting modes
+/// - Won't select dead/inactive actors
+/// - During forced turn mode, may restrict which heroes can be selected
+/// 
+/// RELATED FILES:
+/// - InputManager.cs: Calls Select() on tap
+/// - ActorCard.cs: Displays selected hero info
+/// - AbilityButtonManager.cs: Shows hero abilities
+/// - GhostManager.cs: Shows drag preview
+/// - SortingManager.cs: Brings selected actor to front
+/// 
+/// ACCESS: g.SelectionManager
+/// SELECTED ACTOR: g.Actors.SelectedActor
+/// </summary>
 public class SelectionManager : MonoBehaviour
 {
- public enum SelectedActorState
- {
- Idle,
- PickedUp,
- Moving,
- Dropped
- }
+    #region State Machine
 
- private float dragThreshold;
- private SelectedActorState selectedState = SelectedActorState.Idle;
+    /// <summary>
+    /// Tracks the state of the currently selected actor during drag operations.
+    /// </summary>
+    public enum SelectedActorState
+    {
+        /// <summary>Selected but not being moved.</summary>
+        Idle,
+        /// <summary>Player started dragging.</summary>
+        PickedUp,
+        /// <summary>Hero being dragged to new position.</summary>
+        Moving,
+        /// <summary>Hero released, awaiting pincer check.</summary>
+        Dropped
+    }
 
- public void Awake()
- {
- dragThreshold = g.TileSize *0.25f;
- }
+    #endregion
 
- public void Select(ActorInstance actor = null)
- {
- // Guard: During ability targeting modes, don't change SelectedActor
- // Targeting uses a separate system (AbilityManager.targetList)
- var mode = g.InputManager?.InputMode ?? InputMode.PlayerTurn;
- if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget)
- return;
+    #region Fields
 
- var target = actor ?? TouchHelper.GetActorAtTouchPosition();
+    private float dragThreshold;
+    private SelectedActorState selectedState = SelectedActorState.Idle;
 
- // Do not unselect when clicking outside of an actor anymore.
- if (target == null || !target.IsPlaying)
- {
- return;
- }
+    #endregion
 
- // If unchanged, just refresh visuals and make sure card shows
- if (g.Actors.SelectedActor == target)
- {
- g.Card.Assign();
+    #region Initialization
+
+    public void Awake()
+    {
+        dragThreshold = g.TileSize * 0.25f;
+    }
+
+    #endregion
+
+    #region Selection
+
+    /// <summary>
+    /// Selects an actor (or the actor at touch position if null).
+    /// Updates UI, shows card and abilities.
+    /// </summary>
+    public void Select(ActorInstance actor = null)
+    {
+        // Guard: During ability targeting modes, don't change selection
+        var mode = g.InputManager?.InputMode ?? InputMode.PlayerTurn;
+        if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget)
+            return;
+
+        var target = actor ?? TouchHelper.GetActorAtTouchPosition();
+
+        // Don't unselect when clicking outside of an actor
+        if (target == null || !target.IsPlaying)
+        {
+            return;
+        }
+
+        // If unchanged, just refresh visuals
+        if (g.Actors.SelectedActor == target)
+        {
+            g.Card.Assign();
 #if UNITY_EDITOR
- GameManager.instance.reloadThumbnailSettings = true;
+            GameManager.instance.reloadThumbnailSettings = true;
 #endif
- return;
- }
+            return;
+        }
 
- g.Actors.SelectedActor = target;
- g.SortingManager.OnActorFocus();
+        g.Actors.SelectedActor = target;
+        g.SortingManager.OnActorFocus();
 
- // Show abilities only when a hero is focused
- if (g.Actors.SelectedActor.IsHero)
- g.AbilityButtonManager.Show(g.Actors.SelectedActor);
- else
- g.AbilityButtonManager.Hide();
+        // Show abilities only when a hero is focused
+        if (g.Actors.SelectedActor.IsHero)
+            g.AbilityButtonManager.Show(g.Actors.SelectedActor);
+        else
+            g.AbilityButtonManager.Hide();
 
- g.TouchOffset = g.Actors.SelectedActor.Position - g.TouchPosition3D;
+        g.TouchOffset = g.Actors.SelectedActor.Position - g.TouchPosition3D;
 
  // Reset unified state and compatibility fields
  selectedState = SelectedActorState.Idle;
@@ -255,4 +320,6 @@ public class SelectionManager : MonoBehaviour
  {
  selectedState = SelectedActorState.Idle;
  }
+
+ #endregion
 }

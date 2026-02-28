@@ -2,21 +2,77 @@ using Assets.Scripts.Factories;
 using Game.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
-using Assets.Helpers; // for UnitConversionHelper
+using Assets.Helpers;
 
+/// <summary>
+/// BOARDINSTANCE - The tactical grid where combat takes place.
+/// 
+/// PURPOSE:
+/// Represents the game board as a grid of tiles. Handles board positioning,
+/// bounds calculation, and tile generation.
+/// 
+/// DEFAULT SIZE: 6 columns x 8 rows
+/// 
+/// COORDINATE SYSTEM:
+/// - Column 0 = leftmost, Column 5 = rightmost
+/// - Row 0 = topmost, Row 7 = bottommost
+/// - Tiles addressed as Vector2Int(column, row)
+/// 
+/// KEY PROPERTIES:
+/// - columnCount/rowCount: Grid dimensions
+/// - offset: World-space origin (top-left corner)
+/// - bounds: World-space rectangle enclosing the board
+/// - center: Center point in world space
+/// - worldEdges: Edge midpoints in world space
+/// - screenEdges: Edge midpoints in screen space
+/// 
+/// INITIALIZATION FLOW:
+/// 1. Initialize() called by BoardManager
+/// 2. AssignPosition(): Centers board in playable area
+/// 3. AssignBounds(): Computes world-space bounds
+/// 4. GenerateTiles(): Creates TileInstance grid via TileFactory
+/// 
+/// LAYOUT CALCULATION:
+/// The board is centered between top UI (timeline, coins) and bottom UI (card).
+/// Uses GameManager.topReservePercent and bottomReservePercent to calculate
+/// the usable play area.
+/// 
+/// LLM CONTEXT:
+/// Access board via g.BoardManager.board. Tiles are stored in g.TileMap.
+/// Use Geometry class to convert between grid locations and world positions.
+/// </summary>
 public class BoardInstance : MonoBehaviour
 {
-    // Fields
-    [HideInInspector] public int columnCount = 6;   // Total number of columns on the board.
-    [HideInInspector] public int rowCount = 8;      // Total number of rows on the board.
-    [HideInInspector] public Vector2 offset;        // Board origin in world space.
-    [HideInInspector] public RectFloat bounds;      // World-space rectangle enclosing the board.
-    [HideInInspector] public Vector2 center;        // Center point of the board in world space.
-    [HideInInspector] public RectVector3 worldEdges; // Holds top, right, bottom, left midpoints
-    [HideInInspector] public RectVector3 screenEdges; // Screen-space edge midpoints
+    #region Fields
+
+    /// <summary>Number of columns (horizontal tiles). Default 6.</summary>
+    [HideInInspector] public int columnCount = 6;
+
+    /// <summary>Number of rows (vertical tiles). Default 8.</summary>
+    [HideInInspector] public int rowCount = 8;
+
+    /// <summary>Board origin in world space (top-left corner offset).</summary>
+    [HideInInspector] public Vector2 offset;
+
+    /// <summary>World-space rectangle enclosing the entire board.</summary>
+    [HideInInspector] public RectFloat bounds;
+
+    /// <summary>Center point of the board in world space.</summary>
+    [HideInInspector] public Vector2 center;
+
+    /// <summary>Edge midpoints in world space (top, right, bottom, left).</summary>
+    [HideInInspector] public RectVector3 worldEdges;
+
+    /// <summary>Edge midpoints in screen space (top, right, bottom, left).</summary>
+    [HideInInspector] public RectVector3 screenEdges;
+
+    #endregion
+
+    #region Initialization
 
     /// <summary>
-    /// Sets up the board by assigning position, computing bounds, and generating tiles.
+    /// Initializes the board by positioning it, computing bounds, and generating tiles.
+    /// Called by BoardManager during scene setup.
     /// </summary>
     public void Initialize()
     {
@@ -28,9 +84,14 @@ public class BoardInstance : MonoBehaviour
         GenerateTiles();
     }
 
+    #endregion
+
+    #region Position Calculation
+
     /// <summary>
-    /// Calculates and applies the board's world-space origin offset so the board is centered horizontally
-    /// and vertically within the usable band (after reserving top/bottom UI space).
+    /// Calculates and applies the board's world-space origin offset.
+    /// Centers the board horizontally and vertically within the usable band
+    /// (after reserving top/bottom UI space).
     /// </summary>
     private void AssignPosition()
     {
@@ -67,8 +128,13 @@ public class BoardInstance : MonoBehaviour
         transform.position = offset;
     }
 
+    #endregion
+
+    #region Bounds Calculation
+
     /// <summary>
-    /// Computes world-space bounds from the offset, tile size, and board dimensions, and caches the center.
+    /// Computes world-space bounds from the offset, tile size, and board dimensions.
+    /// Also caches center point and edge midpoints.
     /// </summary>
     private void AssignBounds()
     {
@@ -167,5 +233,7 @@ public class BoardInstance : MonoBehaviour
                worldPosition.y <= bounds.Top &&
                worldPosition.y >= bounds.Bottom;
     }
+
+    #endregion
 
 }

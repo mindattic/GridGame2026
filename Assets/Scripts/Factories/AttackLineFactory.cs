@@ -5,15 +5,55 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for AttackLine - replaces AttackLinePrefab.prefab
+    /// ATTACKLINEFACTORY - Creates attack indicator line GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates visual lines showing attack connections between attackers
+    /// and their targets during combat sequences.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// [Attacker] ????????????? [Target]
+    ///              ?
+    ///         attack line
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// AttackLine (GameObject)
+    /// ??? LineRenderer (line visual)
+    /// ??? AttackLineInstance (behavior)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "AttackLine"
+    /// - Color: Cyan (0.39, 0.76, 0.78)
+    /// - SortingOrder: 500 (above actors, below combat text)
+    /// - Material: Sprites/Default shader
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var line = AttackLineFactory.Create(parent);
+    /// var instance = line.GetComponent<AttackLineInstance>();
+    /// instance.Spawn(attacker, target);
+    /// ```
+    /// 
+    /// CALLED BY:
+    /// - AttackLineManager.Spawn()
+    /// 
+    /// RELATED FILES:
+    /// - AttackLineInstance.cs: Line behavior component
+    /// - AttackLineManager.cs: Manages attack lines
+    /// - PincerAttackSequence.cs: Uses attack lines
     /// </summary>
     public static class AttackLineFactory
     {
+        /// <summary>Creates a new attack line GameObject.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // Root GameObject
             var root = new GameObject("AttackLine");
-            root.layer = 0; // Default layer
+            root.layer = 0;
             root.tag = "AttackLine";
 
             // Transform
@@ -32,12 +72,12 @@ namespace Assets.Scripts.Factories
             lineRenderer.lightProbeUsage = LightProbeUsage.Off;
             lineRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
 
-            // Material - Unity's built-in Default-Line material
+            // Material
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
             // Sorting
-            lineRenderer.sortingLayerName = "Default"; // Use Default sorting layer
-            lineRenderer.sortingOrder = 500; // VFX layer (above Actors, below CombatText)
+            lineRenderer.sortingLayerName = "Default";
+            lineRenderer.sortingOrder = 500;
 
             // Positions
             lineRenderer.positionCount = 2;
@@ -49,7 +89,7 @@ namespace Assets.Scripts.Factories
                 new Keyframe(0f, 0.515152f)
             );
 
-            // Color gradient - cyan-ish with low alpha
+            // Color gradient - cyan with low alpha
             var gradient = new Gradient();
             gradient.SetKeys(
                 new GradientColorKey[]

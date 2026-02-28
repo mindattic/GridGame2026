@@ -7,15 +7,63 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// PINCERATTACKMANAGER - Core combat mechanic handler.
+/// 
+/// PURPOSE:
+/// Detects and resolves Pincer Attacks - the primary combat mechanic where
+/// two allied actors trap enemies between them in a straight line.
+/// 
+/// PINCER ATTACK RULES:
+/// 1. Two heroes must be in the SAME ROW or SAME COLUMN
+/// 2. One or more enemies must be BETWEEN them
+/// 3. All tiles between the two heroes must be occupied by enemies (no gaps)
+/// 4. Triggers automatically when a hero is dropped into valid position
+/// 
+/// VISUAL EXAMPLE:
+/// ```
+/// Horizontal Pincer:
+///   [Hero A] - [Enemy] - [Enemy] - [Hero B]
+///        ↑                             ↑
+///   attacker1      opponents     attacker2
+/// 
+/// Vertical Pincer:
+///   [Hero A]
+///      │
+///   [Enemy]  ← opponent
+///      │
+///   [Hero B]
+/// ```
+/// 
+/// SUPPORTERS:
+/// Adjacent allies to pincer attackers add bonus damage.
+/// FindSupporters(attacker) returns cardinally adjacent teammates.
+/// 
+/// FLOW:
+/// 1. Check(team) or Check(team, selectedHero) called after hero drop
+/// 2. GetParticipants() scans board for valid pincer configurations
+/// 3. If found, EnqueueRoutine() creates PincerAttackSequence
+/// 4. Sequence executes combat with VFX and damage
+/// 5. OnResolved fires when complete
+/// 
+/// CHAIN ATTACKS:
+/// Multiple pincers can chain when one attack creates new valid formations.
+/// OrderPairsByChainsThenNearest() orders pincers to maximize chaining.
+/// 
+/// LLM CONTEXT:
+/// This is THE core combat mechanic. Call g.PincerAttackManager.Check()
+/// after any hero position change. Returns true if pincers were found.
+/// PincerAttackPair contains attacker1, attacker2, opponents, supporters1/2.
+/// </summary>
 public class PincerAttackManager : MonoBehaviour
 {
-    // Fires once when a pincer resolution finishes (after sequences execute and cleanup).
+    /// <summary>Fired when pincer attack resolution completes (after all sequences).</summary>
     public event System.Action OnResolved;
 
     /// <summary>
     /// Entry point for resolving pincer attacks for a team.
-    /// Returns true if any pincer work was enqueued, false if none.
-    /// Does not advance the turn. Caller decides what to do when false.
+    /// Returns true if any pincer work was enqueued, false if none found.
+    /// Does not advance the turn - caller decides what to do when false.
     /// </summary>
     public bool Check(Team team)
     {
@@ -29,9 +77,8 @@ public class PincerAttackManager : MonoBehaviour
 
     /// <summary>
     /// Preferred entry point when a hero was just dropped.
-    /// Orders chains to start from selectedHero if possible.
-    /// Returns true if any pincer work was enqueued, false if none.
-    /// Does not advance the turn. Caller decides what to do when false.
+    /// Orders pincer chains to start from selectedHero if possible.
+    /// Returns true if any pincer work was enqueued, false if none found.
     /// </summary>
     public bool Check(Team team, ActorInstance selectedHero)
     {
@@ -44,9 +91,12 @@ public class PincerAttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Scans the board for valid pincer pairs for the team.
+    /// Scans the board for all valid pincer pairs for the given team.
     /// Aligns chains to begin from selectedHero when provided.
     /// </summary>
+    /// <param name="team">Team to check for (Team.Hero or Team.Enemy)</param>
+    /// <param name="selectedHero">Optional: Hero that was just dropped (for chain ordering)</param>
+    /// <returns>PincerAttackParticipants containing all valid pincer pairs</returns>
     public PincerAttackParticipants GetParticipants(Team team, ActorInstance selectedHero)
     {
         var participants = new PincerAttackParticipants();
@@ -95,6 +145,9 @@ public class PincerAttackManager : MonoBehaviour
         return participants;
     }
 
+    /// <summary>
+    /// Orders pincer pairs to maximize chain attacks, starting from preferredStartHero.
+    /// </summary>
     private List<PincerAttackPair> OrderPairsByChainsThenNearest(List<PincerAttackPair> pairs, ActorInstance preferredStartHero)
     {
         var ordered = new List<PincerAttackPair>();

@@ -8,54 +8,112 @@ using c = Assets.Helpers.CanvasHelper;
 
 namespace Assets.Scripts.Canvas
 {
+    /// <summary>
+    /// TIMELINEBARINSTANCE - Visual turn order timeline UI component.
+    /// 
+    /// PURPOSE:
+    /// Displays the turn order as a horizontal bar with actor tags that move
+    /// from right to left. When a tag reaches the trigger point, that actor
+    /// takes their turn.
+    /// 
+    /// VISUAL LAYOUT:
+    /// ```
+    /// [Trigger] ←←←← [Enemy Tags Moving Left] ←←←← [Spawn Point]
+    ///    ↑                                              ↑
+    ///  LeftX                                         RightX
+    /// (tag reaches here = take turn)          (tags spawn here)
+    /// ```
+    /// 
+    /// MOVEMENT SYSTEM:
+    /// - Tags move at speed based on actor's Speed stat
+    /// - Faster actors = tags move faster = act sooner
+    /// - When tag reaches LeftX (trigger point), that actor's turn begins
+    /// 
+    /// KEY PROPERTIES:
+    /// - activeTags: All TimelineTag instances currently on the bar
+    /// - advancing: True while timeline is actively moving tags
+    /// - crossingTimeSeconds: Base time for Speed 10 enemy to cross bar
+    /// 
+    /// PUSHBACK SYSTEM:
+    /// When enemies are hit, their tags are pushed back on the timeline.
+    /// - pushbackBase: Minimum pushback at far right
+    /// - pushbackMax: Maximum pushback at trigger point
+    /// 
+    /// INTEGRATION:
+    /// - TurnManager calls OnEnemyTurnFinished() after enemy acts
+    /// - PincerAttackManager triggers pushback via ApplyPushback()
+    /// - StageManager calls AddEnemy() when spawning enemies
+    /// 
+    /// RELATED FILES:
+    /// - TimelineTag.cs: Individual actor tag on the timeline
+    /// - TimelineTagFactory.cs: Creates TimelineTag instances
+    /// - TurnManager.cs: Turn flow control
+    /// - TimelineTriggerSequence.cs: Handles tag trigger events
+    /// 
+    /// ACCESS: g.TimelineBar
+    /// </summary>
     [DisallowMultipleComponent]
     public sealed class TimelineBarInstance : MonoBehaviour
     {
+        #region Inspector Fields
+
         [Header("Parts")]
-        [SerializeField] private RectTransform barRect; // visual line (center pivot)
-        [SerializeField] private RectTransform tagsRoot; // parent for tags
+        [SerializeField] private RectTransform barRect;
+        [SerializeField] private RectTransform tagsRoot;
         [SerializeField] private TimelineTag tagPrefab;
-        [SerializeField] private RectTransform triggerPointRect; // left-most trigger
-        [SerializeField] private RectTransform spawnPointRect; // right-most spawn
+        [SerializeField] private RectTransform triggerPointRect;
+        [SerializeField] private RectTransform spawnPointRect;
 
         [Header("Layout")]
-        [Tooltip("Percent of canvas width used for the timeline length (match TimerBar).")]
+        [Tooltip("Percent of canvas width used for the timeline length.")]
         [SerializeField] private float canvasPercent = 0.96f;
 
         [Header("Tuning")]
         [Tooltip("Base time in seconds for an enemy with Speed 10 to cross the full bar.")]
         [SerializeField] private float crossingTimeSeconds = 8f;
-        [Tooltip("Maximum release delay in seconds for slowest enemies (fastest enemies release immediately).")]
+        [Tooltip("Maximum release delay in seconds for slowest enemies.")]
         [SerializeField] private float maxReleaseDelay = 4f;
-        [Tooltip("Vertical spacing between duplicate tags (same enemy) in local pixels.")]
+        [Tooltip("Vertical spacing between duplicate tags.")]
         [SerializeField] private float tagRowHeight = 14f;
         [SerializeField] private bool debugLogs = false;
 
         [Header("Pushback on Attack")]
-        [Tooltip("Minimum pushback (normalized 0-1) when enemy is at the far right.")]
+        [Tooltip("Minimum pushback when enemy is at the far right.")]
         [SerializeField] private float pushbackBase = 0.05f;
-        [Tooltip("Maximum pushback (normalized 0-1) when enemy is at the trigger point (far left).")]
+        [Tooltip("Maximum pushback when enemy is at the trigger point.")]
         [SerializeField] private float pushbackMax = 0.4f;
-        [Tooltip("Base stun duration in seconds after pushback (at Agility 10).")]
+        [Tooltip("Base stun duration in seconds after pushback.")]
         [SerializeField] private float baseStunDuration = 1f;
 
         [Header("Queue Coordination")]
-        [Tooltip("Minimum time gap (seconds) between enemy releases from queue to prevent stacking.")]
+        [Tooltip("Minimum time gap between enemy releases.")]
         [SerializeField] private float minimumReleaseGap = 1.5f;
+
+        #endregion
+
+        #region Runtime State
 
         private readonly List<TimelineTag> activeTags = new List<TimelineTag>();
         private bool advancing;
+
+        /// <summary>True while timeline is actively moving tags.</summary>
         public bool IsAdvancing => advancing;
 
         private float cachedLeftX;
         private float cachedRightX;
         private bool layoutReady;
-        private float halfWidth; // runtime half-length of bar
+        private float halfWidth;
 
-        // Exposed endpoints (center is 0). Tags move from RightX toward LeftX.
+        /// <summary>Left edge X position (trigger point).</summary>
         private float LeftX => -halfWidth;
+
+        /// <summary>Right edge X position (spawn point).</summary>
         private float RightX => halfWidth;
+
+        /// <summary>Total width of the timeline bar.</summary>
         private float Width => Mathf.Max(1f, RightX - LeftX);
+
+        #endregion
 
         private void Awake()
         {

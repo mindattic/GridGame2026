@@ -8,56 +8,133 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Managers
 {
- public class TurnManager : MonoBehaviour
- {
- public bool IsHeroTurn { get; private set; }
- public bool IsEnemyTurn => !IsHeroTurn;
- public int CurrentTurn =0;
- public ActorInstance ActiveActor { get; private set; }
+    /// <summary>
+    /// TURNMANAGER - Controls turn order and turn flow in combat.
+    /// 
+    /// PURPOSE:
+    /// Manages the turn-based combat system, alternating between hero turns
+    /// (player input) and enemy turns (AI-controlled).
+    /// 
+    /// TURN STRUCTURE:
+    /// 1. Hero Window - Player can move any hero, triggers pincer attacks
+    /// 2. Enemy Turn - Individual enemy takes action via EnemyTakeTurnSequence
+    /// 3. Repeat until victory/defeat
+    /// 
+    /// KEY PROPERTIES:
+    /// - IsHeroTurn: True during hero input phase
+    /// - IsEnemyTurn: True during enemy action phase  
+    /// - CurrentTurn: Incremented each turn cycle
+    /// - ActiveActor: Currently acting character (for UI highlighting)
+    /// 
+    /// TIMELINE INTEGRATION:
+    /// Works with TimelineBarInstance to display turn order visually.
+    /// Timeline tags can trigger enemy turns when they reach trigger position.
+    /// QueueEnemyAfterHero() stores an enemy to act after current hero window.
+    /// 
+    /// TURN FLOW:
+    /// 1. Initialize() → BeginHeroWindow()
+    /// 2. Player drops hero → PincerAttackManager.Check()
+    /// 3. Combat resolves → NextTurn()
+    /// 4. If enemy queued → BeginEnemyTurn(enemy)
+    /// 5. Enemy acts → NextTurn() → BeginHeroWindow()
+    /// 
+    /// LLM CONTEXT:
+    /// Access via g.TurnManager. Check IsHeroTurn to know if player input
+    /// is expected. Call NextTurn() after combat sequences complete.
+    /// </summary>
+    public class TurnManager : MonoBehaviour
+    {
+        #region Turn State
 
- private ActorInstance queuedEnemyAfterHero;
- private ActorInstance lastEnemy;
+        /// <summary>True when it's the player's turn to move heroes.</summary>
+        public bool IsHeroTurn { get; private set; }
 
- // Expose whether an enemy is queued due to a timeline tag reaching TriggerX
- public bool HasQueuedEnemyAfterHero => queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying;
+        /// <summary>True when an enemy is taking their turn.</summary>
+        public bool IsEnemyTurn => !IsHeroTurn;
 
- private ManaPoolManager GetMana()
- {
- var go = GameObject.Find("Game");
- return go != null ? go.GetComponent<ManaPoolManager>() : null;
- }
+        /// <summary>Current turn number (increments each NextTurn call).</summary>
+        public int CurrentTurn = 0;
 
- public void Initialize() { BeginHeroWindow(); }
+        /// <summary>The actor currently taking their turn (for UI highlighting).</summary>
+        public ActorInstance ActiveActor { get; private set; }
 
- public void QueueEnemyAfterHero(ActorInstance enemy)
- {
- if (enemy != null && enemy.IsEnemy) queuedEnemyAfterHero = enemy;
- }
+        #endregion
 
- private void SelectActiveOrFallback()
- {
- if (ActiveActor != null) { g.SelectionManager.Select(ActiveActor); return; }
- var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying) ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
- if (any != null) g.SelectionManager.Select(any);
- }
+        #region Queued Enemy State
 
- public void NextTurn()
- {
- // end-of-window housekeeping
- bool endingEnemyTurn = !IsHeroTurn; // if we were in enemy turn before advancing
+        /// <summary>Enemy queued to act after current hero window (from timeline trigger).</summary>
+        private ActorInstance queuedEnemyAfterHero;
 
- CurrentTurn++;
- g.StageManager?.OnTurnAdvanced();
+        /// <summary>Last enemy that took a turn (for cleanup).</summary>
+        private ActorInstance lastEnemy;
 
- // If an enemy was queued (from timeline tag hit) take their turn now
- if (queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying)
- {
- var enemy = queuedEnemyAfterHero; queuedEnemyAfterHero = null;
- BeginEnemyTurn(enemy);
- return;
- }
+        /// <summary>True if an enemy is queued due to timeline tag reaching trigger position.</summary>
+        public bool HasQueuedEnemyAfterHero => queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying;
 
- // If we are finishing an enemy's turn, reset that enemy's timeline state before returning to hero
+        #endregion
+
+        #region Initialization
+
+        /// <summary>Gets ManaPoolManager reference.</summary>
+        private ManaPoolManager GetMana()
+        {
+            var go = GameObject.Find("Game");
+            return go != null ? go.GetComponent<ManaPoolManager>() : null;
+        }
+
+        /// <summary>Initializes turn manager and begins first hero window.</summary>
+        public void Initialize() { BeginHeroWindow(); }
+
+        #endregion
+
+        #region Enemy Queuing
+
+        /// <summary>
+        /// Queues an enemy to take their turn after the current hero window ends.
+        /// Called by timeline system when enemy tag reaches trigger position.
+        /// </summary>
+        public void QueueEnemyAfterHero(ActorInstance enemy)
+        {
+            if (enemy != null && enemy.IsEnemy) queuedEnemyAfterHero = enemy;
+        }
+
+        #endregion
+
+        #region Selection
+
+        /// <summary>Selects the active actor or falls back to any available hero/actor.</summary>
+        private void SelectActiveOrFallback()
+        {
+            if (ActiveActor != null) { g.SelectionManager.Select(ActiveActor); return; }
+            var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying) ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
+            if (any != null) g.SelectionManager.Select(any);
+        }
+
+        #endregion
+
+        #region Turn Advancement
+
+        /// <summary>
+        /// Advances to the next turn. Handles enemy queue, wave spawning, and turn cycling.
+        /// Called after combat sequences complete.
+        /// </summary>
+        public void NextTurn()
+        {
+            // end-of-window housekeeping
+            bool endingEnemyTurn = !IsHeroTurn; // if we were in enemy turn before advancing
+
+            CurrentTurn++;
+            g.StageManager?.OnTurnAdvanced();
+
+            // If an enemy was queued (from timeline tag hit) take their turn now
+            if (queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying)
+            {
+                var enemy = queuedEnemyAfterHero; queuedEnemyAfterHero = null;
+                BeginEnemyTurn(enemy);
+                return;
+            }
+
+            // If we are finishing an enemy's turn, reset that enemy's timeline state before returning to hero
  if (endingEnemyTurn)
  {
  NotifyEnemyTurnFinished();
@@ -132,5 +209,7 @@ namespace Assets.Scripts.Managers
  private void HandleHeroTurnFocus() { }
  public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
  public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
+
+ #endregion
  }
 }

@@ -6,10 +6,53 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for CombatText - replaces CombatTextPrefab.prefab
+    /// COMBATTEXTFACTORY - Creates floating combat text (damage numbers).
+    /// 
+    /// PURPOSE:
+    /// Replaces CombatTextPrefab.prefab with code-driven creation.
+    /// Creates floating text that rises and fades when damage/healing occurs.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    ///     -42   ? Damage number rises
+    ///      ?    ? Animated upward
+    ///   [Enemy] ? Spawns above target
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// CombatText (GameObject)
+    /// ??? RectTransform (positioning)
+    /// ??? TextMeshPro (3D text)
+    /// ??? MeshRenderer (rendering)
+    /// ??? CombatTextInstance (animation logic)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Font: FontLibrary.Fonts["Attic"]
+    /// - Scale: 0.1x (world-space sizing)
+    /// - SortingOrder: 1000 (renders above everything)
+    /// 
+    /// ANIMATION:
+    /// Uses AnimationCurve (riseCurve) to control:
+    /// - Upward movement
+    /// - Alpha fade
+    /// - Scale changes
+    /// 
+    /// CALLED BY:
+    /// - CombatTextManager.Spawn() during damage/heal events
+    /// 
+    /// RELATED FILES:
+    /// - CombatTextInstance.cs: Animation component
+    /// - CombatTextManager.cs: Spawns and manages text
+    /// - FontLibrary.cs: Provides Attic font
+    /// - PincerAttackSequence.cs: Triggers damage display
     /// </summary>
     public static class CombatTextFactory
     {
+        /// <summary>
+        /// Creates a new combat text GameObject.
+        /// </summary>
         public static GameObject Create(Transform parent = null)
         {
             // Root GameObject
@@ -24,9 +67,6 @@ namespace Assets.Scripts.Factories
             rectTransform.sizeDelta = Vector2.zero;
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
             rectTransform.localScale = new Vector3(0.1f, 0.1f, 1f);
-
-            // MeshRenderer (added automatically by TextMeshPro, but we configure it)
-            // TextMeshPro will add its own MeshRenderer
 
             // TextMeshPro (3D text component)
             var textMesh = root.AddComponent<TextMeshPro>();
@@ -49,14 +89,12 @@ namespace Assets.Scripts.Factories
                 meshRenderer.receiveShadows = false;
                 meshRenderer.lightProbeUsage = LightProbeUsage.Off;
                 meshRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
-                meshRenderer.sortingLayerName = "Default"; // Use Default sorting layer
-                meshRenderer.sortingOrder = 1000; // High value to render on top of everything
+                meshRenderer.sortingLayerName = "Default";
+                meshRenderer.sortingOrder = 1000; // Render above everything
             }
 
-            // CombatTextInstance (custom component)
+            // CombatTextInstance (animation component)
             var combatTextInstance = root.AddComponent<CombatTextInstance>();
-            // Note: textMesh is assigned in Awake(), speed is set there too
-            // riseCurve is serialized, so we set it here
             SetRiseCurve(combatTextInstance);
 
             // Parent if specified

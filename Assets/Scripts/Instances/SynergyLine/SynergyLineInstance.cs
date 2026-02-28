@@ -1,7 +1,4 @@
 ﻿// --- File: Assets/Scripts/Instances/SynergyLine/SynergyLineInstance.cs ---
-// Wispy multi-strand line between two actors.
-// Each instance keeps its own tunables. Per-strand behavior lives in SynergyLineStrand.
-
 using Assets.Scripts.Factories;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,28 +6,76 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// SYNERGYLINEINSTANCE - Animated multi-strand connection between allies.
+/// 
+/// PURPOSE:
+/// Creates an animated "wispy" line effect connecting two actors
+/// that have a synergy bonus. Multiple strands wave and pulse.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// [Hero A] ≈≈≈≈≈≈≈≈≈≈ [Hero B]
+///          ↑ ↑ ↑ ↑
+///     multiple animated strands
+/// ```
+/// 
+/// MULTI-STRAND SYSTEM:
+/// - waveformCount: Number of parallel strands (default 4)
+/// - Each strand has slightly different wave parameters
+/// - Creates ethereal, flowing appearance
+/// 
+/// CONFIGURATION:
+/// - baseRadius: Spread of strands from center line
+/// - baseWidth: Thickness of each strand
+/// - fadeInTime/fadeOutTime: Animation durations
+/// - strandSegmentCount: Resolution of each strand curve
+/// 
+/// ANCHOR SYSTEM:
+/// Uses separate anchor transforms that follow tile positions,
+/// not actor transforms. This keeps lines stable when actors animate.
+/// 
+/// LIFECYCLE:
+/// 1. Spawn() called with two actors
+/// 2. Strands created via SynergyStrandFactory
+/// 3. Fades in over fadeInTime
+/// 4. Animates continuously while active
+/// 5. Despawn() fades out and destroys
+/// 
+/// RELATED FILES:
+/// - SynergyLineFactory.cs: Creates this component
+/// - SynergyLineStrand.cs: Individual strand behavior
+/// - SynergyStrandFactory.cs: Creates strand GameObjects
+/// - SynergyLineManager.cs: Manages all synergy lines
+/// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
-    // Group
+    #region Configuration
+
     [SerializeField] private int waveformCount = 4;
     [SerializeField] private float baseRadius = 0.07f;
     [SerializeField] private float baseWidth = 0.012f;
 
-    // Fade
     [SerializeField] private float fadeInTime = 0.20f;
-    [SerializeField] private float fadeOutTime = 0.20f; // Shorter than BoardOverlay (0.25) so this finishes first
+    [SerializeField] private float fadeOutTime = 0.20f;
 
-    // Sorting bias for multi-wave ordering
     [SerializeField] private int orderOffsetPerWave = 1;
     [SerializeField] private int extraFrontBias = -2;
 
-    // Geometry resolution for each strand line
     [SerializeField] private int strandSegmentCount = 32;
 
-    // Runtime
+    #endregion
+
+    #region Runtime State
+
     private readonly List<SynergyLineStrand> strands = new List<SynergyLineStrand>(8);
+
+    /// <summary>First actor in the synergy pair.</summary>
     public ActorInstance supporter;
+
+    /// <summary>Second actor in the synergy pair.</summary>
     public ActorInstance attacker;
+
     private Renderer aRenderer;
     private Renderer bRenderer;
     private SortingGroup aGroup;
@@ -44,12 +89,13 @@ public class SynergyLineInstance : MonoBehaviour
     private bool despawnRequested;
     private Coroutine runningCoroutine;
 
-    // Cached per-strand weights for reconfigure
     private float[] wNormPerStrand;
 
-    /// <summary>
-    /// Create strand anchors and cache the strand prefab.
-    /// </summary>
+    #endregion
+
+    #region Initialization
+
+    /// <summary>Create strand anchors at startup.</summary>
     private void Awake()
     {
         var aGo = new GameObject("SynergyAnchor_A");
@@ -58,6 +104,8 @@ public class SynergyLineInstance : MonoBehaviour
         bGo.transform.SetParent(transform, false);
         aAnchor = aGo.transform;
         bAnchor = bGo.transform;
+
+    #endregion
     }
 
     /// <summary>

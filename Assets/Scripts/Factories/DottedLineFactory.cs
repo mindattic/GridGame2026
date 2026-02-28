@@ -4,18 +4,58 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for DottedLine - replaces DottedLinePrefab.prefab
+    /// DOTTEDLINEFACTORY - Creates movement path visualization segments.
+    /// 
+    /// PURPOSE:
+    /// Creates dotted line segments that show the path a hero will take
+    /// when being dragged to a new position.
+    /// 
+    /// PATH VISUALIZATION:
+    /// ```
+    /// [Hero] · · · · · · · · · [Destination]
+    ///        ? dotted segments ?
+    /// ```
+    /// 
+    /// SEGMENT TYPES (DottedLineSegment):
+    /// - Horizontal: Left-right segments (?)
+    /// - Vertical: Up-down segments (?)
+    /// - Corner: L-shaped turn segments (?, ?, ?, ?)
+    /// - Start/End: Path terminus markers
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// DottedLine (root)
+    /// ??? SpriteRenderer (segment sprite)
+    /// ??? DottedLineInstance (behavior)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "DottedLine"
+    /// - SortingLayer: Board
+    /// - Alpha: 77% (semi-transparent)
+    /// - DrawMode: Sliced (for resizing)
+    /// 
+    /// SPRITE ASSIGNMENT:
+    /// Sprite is set dynamically by DottedLineInstance.Spawn()
+    /// based on the segment type.
+    /// 
+    /// CALLED BY:
+    /// - DottedLineManager.Spawn()
+    /// 
+    /// RELATED FILES:
+    /// - DottedLineInstance.cs: Segment behavior
+    /// - DottedLineManager.cs: Manages path segments
+    /// - InputManager.cs: Triggers path creation
     /// </summary>
     public static class DottedLineFactory
     {
+        /// <summary>Creates a new dotted line segment.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("DottedLine");
-            root.layer = 0; // Default layer
+            root.layer = 0;
             root.tag = "DottedLine";
 
-            // Transform
             var transform = root.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
@@ -23,22 +63,20 @@ namespace Assets.Scripts.Factories
 
             // SpriteRenderer
             var spriteRenderer = root.AddComponent<SpriteRenderer>();
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0.76862746f); // White with ~77% alpha
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.76862746f);
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
-            spriteRenderer.sortingLayerName = "Board"; // SortingLayer 2
+            spriteRenderer.sortingLayerName = "Board";
             spriteRenderer.sortingOrder = 0;
             spriteRenderer.drawMode = SpriteDrawMode.Sliced;
             spriteRenderer.size = Vector2.one;
-            // Sprite is set dynamically by DottedLineInstance.Spawn()
 
-            // DottedLineInstance (custom component)
+            // DottedLineInstance
             var dottedLineInstance = root.AddComponent<DottedLineInstance>();
             dottedLineInstance.location = Vector2Int.zero;
             dottedLineInstance.segment = DottedLineSegment.Vertical;
             dottedLineInstance.connectedLocations.Clear();
 
-            // Parent if specified
             if (parent != null)
             {
                 transform.SetParent(parent, false);

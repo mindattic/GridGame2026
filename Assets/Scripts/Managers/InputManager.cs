@@ -7,45 +7,95 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// INPUTMANAGER - Handles all touch/mouse input for hero control.
+/// 
+/// PURPOSE:
+/// Central input handler for the Game scene. Processes touch/mouse events
+/// and translates them into hero selection, dragging, and placement.
+/// 
+/// INPUT MODES (InputMode enum):
+/// - PlayerTurn: Normal hero control (select, drag, drop)
+/// - EnemyTurn: Limited input (dodge/parry timing windows)
+/// - Paused: All input blocked
+/// - AbilityTargeting: Selecting ability targets
+/// 
+/// HERO DRAG FLOW:
+/// 1. Touch down on hero → Select hero, begin potential drag
+/// 2. Move beyond dragThreshold → Enter dragging state
+/// 3. Ghost preview shows potential drop location
+/// 4. Touch up → Drop hero, check for pincer attacks
+/// 
+/// DODGE/PARRY SYSTEM:
+/// During EnemyTurn, tapping a hero within timing windows triggers:
+/// - OnDodge: Tap within DodgeWindowSeconds of enemy attack
+/// - OnParry: Tap within ParryWindowSeconds (tighter window)
+/// 
+/// KEY PROPERTIES:
+/// - InputMode: Current input state (PlayerTurn, EnemyTurn, etc.)
+/// - isDragging: True if a hero is being dragged
+/// - dragThreshold: Minimum movement to trigger drag
+/// 
+/// EVENTS:
+/// - OnInputModeChanged: Fired when InputMode changes
+/// - OnDodge: Fired on successful dodge timing
+/// - OnParry: Fired on successful parry timing
+/// 
+/// INPUT GATING:
+/// - RequireTouchRelease(): Blocks input until touch released
+/// - Prevents accidental double-drops
+/// 
+/// RELATED FILES:
+/// - SelectionManager.cs: Tracks selected hero
+/// - GhostManager.cs: Drag preview visualization
+/// - PincerAttackManager.cs: Called after hero drop
+/// - TurnManager.cs: Determines if hero input allowed
+/// 
+/// ACCESS: g.InputManager
+/// </summary>
 public class InputManager : MonoBehaviour
 {
+    #region Fields
+
     private Vector3 initialTouchPosition;
+
+    /// <summary>Minimum drag distance to trigger hero movement.</summary>
     public float dragThreshold;
 
-    /// <summary>
-    /// Raised whenever the input mode changes.
-    /// </summary>
+    #endregion
+
+    #region Input Mode
+
+    /// <summary>Raised when input mode changes.</summary>
     public event Action<InputMode> OnInputModeChanged;
 
     private InputMode inputMode = InputMode.PlayerTurn;
 
-    // Ability user cache for targeting flows (do not reuse SelectedHero to avoid side-effects)
-    // Moved to AbilityManager. Keep only a pass-through accessor for compatibility if needed.
+    // Ability user cache (delegated to AbilityManager)
     private ActorInstance pendingAbilityUser => g.AbilityManager != null ? g.AbilityManager.PendingAbilityUser : null;
 
     /// <summary>
-    /// Current input mode for the screen.
+    /// Current input mode. Setting this fires OnInputModeChanged.
     /// </summary>
     public InputMode InputMode
     {
         get => inputMode;
         set
         {
-            // Allow mode changes even during sequences; Update() already blocks input while executing
             if (inputMode == value) return;
             inputMode = value;
             OnInputModeChanged?.Invoke(inputMode);
         }
     }
 
-    /// <summary>
-    /// Fired when a successful dodge timing occurs during EnemyTurn.
-    /// </summary>
+    #endregion
+
+    #region Dodge/Parry System
+
+    /// <summary>Fired on successful dodge timing during EnemyTurn.</summary>
     public event Action OnDodge;
 
-    /// <summary>
-    /// Fired when a successful parry timing occurs during EnemyTurn.
-    /// </summary>
+    /// <summary>Fired on successful parry timing during EnemyTurn.</summary>
     public event Action OnParry;
 
     private const float DodgeWindowSeconds = 0.20f;
@@ -54,20 +104,23 @@ public class InputManager : MonoBehaviour
     private float lastEnemyTurnTapTime = -999f;
     private ActorInstance lastEnemyTurnTappedHero = null;
 
-    /// <summary>
-    /// True if the selected hero is currently being dragged.
-    /// </summary>
+    #endregion
+
+    #region Drag State
+
+    /// <summary>True if the selected hero is currently being dragged.</summary>
     public bool isDragging => g.Actors.HasMovingHero && g.Actors.MovingHero.Flags.IsMoving;
 
-    // --------------------------------------------------------------------------------------------
-    // Gate input until current press is released (used when timer forces a Drop)
-    // --------------------------------------------------------------------------------------------
+    // Gate input until current press is released
     private bool requireTouchRelease;
 
     /// <summary>
-    /// Prevent any input from being processed until all touches/mouse buttons are released.
+    /// Blocks input until all touches/mouse buttons are released.
+    /// Used to prevent accidental double-drops.
     /// </summary>
     public void RequireTouchRelease() { requireTouchRelease = true; }
+
+    #endregion
 
     private static bool AnyPointerDown() => Input.touchCount > 0 || Input.GetMouseButton(0);
 

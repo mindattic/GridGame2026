@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 112ae6fe1c385984ea6541a5bc25e2ed
+    m_Address: Sprites/GUI/TimelineTag
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1352dc0ad19aee0419020f6a45351a21
     m_Address: Sprites/Seamless/Background.Menu
     m_ReadOnly: 0

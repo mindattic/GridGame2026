@@ -8,8 +8,44 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// SPRITELIBRARY - Static registry for all game sprites.
+    /// 
+    /// PURPOSE:
+    /// Centralized sprite loading and caching. All sprites are loaded once
+    /// on first access and cached for performance.
+    /// 
+    /// CATEGORIES:
+    /// - Backgrounds: Parallax background images
+    /// - GUI: UI element sprites (buttons, panels, etc.)
+    /// - Seamless: Tiling textures
+    /// - Sprites: General game sprites
+    /// - WeaponTypes: Weapon icon sprites
+    /// - Leaves: Decorative leaf sprites
+    /// - TutorialPages: Tutorial screen images
+    /// - Logos: Brand/logo images
+    /// - TagIcons: Timeline tag icons
+    /// - AbilityButtons: Ability button icons
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var sprite = SpriteLibrary.Sprites["Footstep"];
+    /// var bg = SpriteLibrary.Backgrounds["Moors_0"];
+    /// var icon = SpriteLibrary.GUI["DestinationMarker"];
+    /// ```
+    /// 
+    /// LOADING:
+    /// Uses AssetHelper.LoadAsset<Sprite>() to load from Resources.
+    /// Sprites are lazy-loaded on first access to any category.
+    /// 
+    /// LLM CONTEXT:
+    /// Use this instead of loading sprites directly. All factories and
+    /// managers should reference sprites through this library.
+    /// </summary>
     public static class SpriteLibrary
     {
+        #region Dictionaries
+
         private static Dictionary<string, Sprite> backgrounds;
         private static Dictionary<string, Sprite> gui;
         private static Dictionary<string, Sprite> seamless;
@@ -22,17 +58,47 @@ namespace Assets.Scripts.Libraries
         private static Dictionary<string, Sprite> abilityButtons;
         private static bool isLoaded = false;
 
+        #endregion
+
+        #region Public Accessors
+
+        /// <summary>Background sprites for parallax layers.</summary>
         public static Dictionary<string, Sprite> Backgrounds { get { if (!isLoaded) Load(); return backgrounds; } }
+
+        /// <summary>GUI element sprites (buttons, panels, icons).</summary>
         public static Dictionary<string, Sprite> GUI { get { if (!isLoaded) Load(); return gui; } }
+
+        /// <summary>Seamless tiling textures.</summary>
         public static Dictionary<string, Sprite> Seamless { get { if (!isLoaded) Load(); return seamless; } }
+
+        /// <summary>General game sprites (footsteps, tiles, etc.).</summary>
         public static Dictionary<string, Sprite> Sprites { get { if (!isLoaded) Load(); return sprites; } }
+
+        /// <summary>Weapon type icon sprites.</summary>
         public static Dictionary<string, Sprite> WeaponTypes { get { if (!isLoaded) Load(); return weaponTypes; } }
+
+        /// <summary>Decorative leaf sprites.</summary>
         public static Dictionary<string, Sprite> Leaves { get { if (!isLoaded) Load(); return leaves; } }
+
+        /// <summary>Tutorial page images.</summary>
         public static Dictionary<string, Sprite> TutorialPages { get { if (!isLoaded) Load(); return tutorialPages; } }
+
+        /// <summary>Logo/brand images.</summary>
         public static Dictionary<string, Sprite> Logos { get { if (!isLoaded) Load(); return logos; } }
+
+        /// <summary>Timeline tag actor icons.</summary>
         public static Dictionary<string, Sprite> TagIcons { get { if (!isLoaded) Load(); return actorTagIcon; } }
+
+        /// <summary>Ability button icon sprites.</summary>
         public static Dictionary<string, Sprite> AbilityButtons { get { if (!isLoaded) Load(); return abilityButtons; } }
 
+        #endregion
+
+        #region Loading
+
+        /// <summary>
+        /// Loads all sprite dictionaries. Called lazily on first access.
+        /// </summary>
         private static void Load()
         {
             if (isLoaded) return;
@@ -218,5 +284,7 @@ namespace Assets.Scripts.Libraries
 
             return actorTagIcon["Unknown"];
         }
+
+        #endregion
     }
 }

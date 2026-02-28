@@ -5,10 +5,55 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for Tile - replaces TilePrefab.prefab
+    /// TILEFACTORY - Programmatically creates Tile GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Replaces TilePrefab.prefab with code-driven creation.
+    /// Creates fully configured tile GameObjects at runtime.
+    /// 
+    /// FACTORY PATTERN:
+    /// All factories in this project follow the same pattern:
+    /// 1. Static class with Create(Transform parent) method
+    /// 2. Returns fully configured GameObject
+    /// 3. No prefab dependencies - everything built in code
+    /// 4. Uses Libraries for assets (SpriteLibrary, FontLibrary, etc.)
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// Tile (GameObject)
+    /// ??? SpriteRenderer (tile sprite)
+    /// ??? TileInstance (grid position data)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Sprite: SpriteLibrary.Sprites["Tile"]
+    /// - Layer: Default (0)
+    /// - Tag: "Tile"
+    /// - Sorting: Board layer, order 1
+    /// - Alpha: ~39% for semi-transparent grid
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var tileGO = TileFactory.Create(boardTransform);
+    /// var tile = tileGO.GetComponent<TileInstance>();
+    /// tile.Initialize(column, row);
+    /// ```
+    /// 
+    /// CALLED BY:
+    /// - BoardInstance.GenerateTiles() during board setup
+    /// 
+    /// RELATED FILES:
+    /// - TileInstance.cs: Component attached to tile
+    /// - BoardInstance.cs: Creates tile grid
+    /// - SpriteLibrary.cs: Provides tile sprite
     /// </summary>
     public static class TileFactory
     {
+        /// <summary>
+        /// Creates a new Tile GameObject with all components configured.
+        /// </summary>
+        /// <param name="parent">Optional parent transform (usually Board).</param>
+        /// <returns>Fully configured tile GameObject.</returns>
         public static GameObject Create(Transform parent = null)
         {
             // Root GameObject
@@ -24,11 +69,11 @@ namespace Assets.Scripts.Factories
 
             // SpriteRenderer
             var spriteRenderer = root.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = SpriteLibrary.Sprites["Tile"]; // Load the tile sprite
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0.39215687f); // White with ~39% alpha
+            spriteRenderer.sprite = SpriteLibrary.Sprites["Tile"];
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.39215687f); // ~39% alpha
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
-            spriteRenderer.sortingLayerName = "Board"; // Use Board sorting layer
+            spriteRenderer.sortingLayerName = "Board";
             spriteRenderer.sortingOrder = 1;
             spriteRenderer.drawMode = SpriteDrawMode.Sliced;
             spriteRenderer.size = Vector2.one;

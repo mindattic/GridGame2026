@@ -1,4 +1,4 @@
-﻿// Assets/Scripts/Instances/SynergyLineManager.cs
+﻿// Assets/Scripts/Managers/SynergyLineManager.cs
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
@@ -8,31 +8,62 @@ using Assets.Helpers;
 
 
 /// <summary>
-/// Spawns and tracks SynergyLine instances between two ActorInstances.
-/// Prevents duplicates, including reverse-order duplicates (A,B) vs (B,A).
+/// SYNERGYLINEMANAGER - Manages synergy connection lines between allies.
+/// 
+/// PURPOSE:
+/// Creates and tracks animated lines connecting allied actors that have
+/// synergy bonuses. Lines show team coordination visually.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// [Hero A] ≈≈≈≈≈≈≈≈≈≈ [Hero B]
+///              ↑
+///     synergy line (animated)
+/// ```
+/// 
+/// SYNERGY MECHANIC:
+/// When allies are adjacent or share class/element bonuses,
+/// synergy lines connect them to show the buff is active.
+/// 
+/// ORDER-INDEPENDENT KEYING:
+/// Lines keyed by actor pair in order-independent manner:
+/// (A, B) and (B, A) produce the same key to prevent duplicates.
+/// 
+/// LIFECYCLE:
+/// 1. SynergySystem detects synergy between actors
+/// 2. Spawn() creates animated line between them
+/// 3. Line animates with particle effects
+/// 4. Despawn() removes when synergy ends
+/// 
+/// RELATED FILES:
+/// - SynergyLineFactory.cs: Creates line GameObjects
+/// - SynergyLineInstance.cs: Line behavior/animation
+/// - SynergyStrandFactory.cs: Creates strand particles
+/// - SortingManager.cs: Handles line sorting
+/// 
+/// ACCESS: g.SynergyLineManager
 /// </summary>
 public class SynergyLineManager : MonoBehaviour
 {
-    // Active lines keyed by an order-independent pair key
+    /// <summary>Active synergy lines keyed by order-independent pair key.</summary>
     private readonly Dictionary<string, SynergyLineInstance> collection = new Dictionary<string, SynergyLineInstance>();
 
     /// <summary>
-    /// Spawns a synergy instance between the two actors if one does not already exist.
-    /// Order-independent: (supporter, attacker) is treated the same as (attacker, supporter).
+    /// Spawns a synergy line between two actors if not already exists.
+    /// Order-independent: (A, B) equals (B, A).
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
         string key = GenerateKey(supporter, attacker);
         if (key == null) return;
 
-        // Clean up stale entry (e.g., instance destroyed externally).
+        // Clean up stale entry
         if (collection.TryGetValue(key, out var existing))
         {
             if (existing == null) collection.Remove(key);
             else return; // already active
         }
 
-        // Use factory instead of Instantiate(prefab)
         var go = SynergyLineFactory.Create(transform);
         go.name = key;
 
@@ -42,6 +73,7 @@ public class SynergyLineManager : MonoBehaviour
         collection[key] = instance;
     }
 
+    /// <summary>Removes synergy line between two actors.</summary>
     public void Despawn(ActorInstance a, ActorInstance b)
     {
         string key = GenerateKey(a, b);
@@ -55,7 +87,7 @@ public class SynergyLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Waits until the instance is actually destroyed, then removes the key.
+    /// Waits until instance destroyed, then removes key.
     /// </summary>
     private IEnumerator DespawnRoutine(string key, SynergyLineInstance instance)
     {

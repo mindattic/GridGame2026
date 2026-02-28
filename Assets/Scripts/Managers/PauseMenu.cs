@@ -7,9 +7,51 @@ using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// PAUSEMENU - Handles game pause state and pause menu UI.
+/// 
+/// PURPOSE:
+/// Manages pausing/resuming the game and displays the pause menu
+/// with Resume, Settings, and Quit options.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌─────────────────────────┐
+/// │                         │
+/// │     [ Resume ]          │
+/// │     [ Settings ]        │
+/// │     [ Quit ]            │
+/// │                         │
+/// └─────────────────────────┘
+/// ```
+/// 
+/// PAUSE STATE:
+/// - IsPaused: True when Time.timeScale == 0
+/// - Pausing sets Time.timeScale = 0 (freezes game)
+/// - Resuming restores Time.timeScale = 1
+/// 
+/// BUTTONS:
+/// - Resume: Closes menu, resumes game
+/// - Settings: Opens settings panel
+/// - Quit: Shows confirmation, returns to menu
+/// 
+/// INITIALIZATION:
+/// Initialize() must be called after scene load to wire up buttons.
+/// 
+/// RELATED FILES:
+/// - SettingsManager.cs: Settings panel
+/// - ConfirmationDialogInstance.cs: Quit confirmation
+/// - GameManager.cs: Central game state
+/// - InputManager.cs: Checks IsPaused for input blocking
+/// 
+/// ACCESS: g.PauseMenu
+/// </summary>
 public class PauseMenu : MonoBehaviour
 {
+    /// <summary>True when game is paused (Time.timeScale == 0).</summary>
     public bool IsPaused => Time.timeScale == 0f;
+
+    #region UI References
 
     private Image pauseButtonImage;
     private Sprite pauseIcon;
@@ -25,8 +67,13 @@ public class PauseMenu : MonoBehaviour
 
     private bool isInitalized;
 
+    #endregion
+
+    #region Initialization
+
     private void Awake() { }
 
+    /// <summary>Wires up button events. Call after scene load.</summary>
     public void Initialize()
     {
         if (isInitalized) return;
@@ -34,7 +81,7 @@ public class PauseMenu : MonoBehaviour
         pauseIcon = SpriteLibrary.Sprites["Pause"];
         resumeIcon = SpriteLibrary.Sprites["Paused"];
 
-        // PauseButton is in the main game UI (always active)
+        // PauseButton in main game UI
         pauseButtonRoot = GameObjectHelper.Game.PauseButton.Root;
         pauseButtonRoot.onClick.RemoveAllListeners();
         pauseButtonRoot.onClick.AddListener(OnPauseButtonClicked);
@@ -167,4 +214,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         scene.Fade.ToTitleScreen();
     }
+
+    #endregion
 }

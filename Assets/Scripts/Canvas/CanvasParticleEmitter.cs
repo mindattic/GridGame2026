@@ -5,24 +5,66 @@ using UnityEngine;
 using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
 
+/// <summary>
+/// CANVASPARTICLEEMITTER - Spawns decorative UI particles (leaves, etc).
+/// 
+/// PURPOSE:
+/// Creates ambient floating particle effects on UI canvases.
+/// Used for menu backgrounds, victory screens, etc.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// 🍂  🍁    🍂
+///   🍁  🍂    🍁  ← Leaves drift across screen
+///     🍂   🍁
+/// ```
+/// 
+/// PARTICLE BEHAVIOR:
+/// - Spawns at random X positions
+/// - Drifts with rotation and fall speed
+/// - Uses sprites from SpriteLibrary.Leaves
+/// - Auto-destroys when off-screen
+/// 
+/// CONFIGURATION:
+/// - spawnIntervalMin/Max: Time between spawns
+/// - speedMin/Max: Horizontal drift speed
+/// - rotationFocusMin/Max: Rotation speed
+/// - fallFocusMin/Max: Downward speed
+/// - scaleMin/Max: Size range
+/// - prewarmCount: Initial particles at start
+/// 
+/// PREWARM:
+/// Spawns initial particles at Start() so screen isn't empty.
+/// 
+/// RELATED FILES:
+/// - CanvasParticleFactory.cs: Creates particle GameObjects
+/// - SpriteLibrary.cs: Provides leaf sprites
+/// - TitleScreenManager.cs: Uses for menu ambiance
+/// </summary>
 public class CanvasParticleEmitter : MonoBehaviour
 {
-    private float spawnIntervalMin; // Time between spawns
-    private float spawnIntervalMax; // Time between spawns
+    #region Configuration
+
+    private float spawnIntervalMin;
+    private float spawnIntervalMax;
     private float speedMin;
     private float speedMax;
-    private float rotationFocusMin; // Min rotation speed
-    private float rotationFocusMax; // Max rotation speed
-    private float fallFocusMin; // Minimum downward speed
-    private float fallFocusMax; // Maximum downward speed
-    private float scaleMin; // Minimum scale
-    private float scaleMax; // Maximum scale
-    private int prewarmCount; // Index of particles to spawn on start
-    private Sprite[] sprites; // Array of sprites from the sprite sheet
+    private float rotationFocusMin;
+    private float rotationFocusMax;
+    private float fallFocusMin;
+    private float fallFocusMax;
+    private float scaleMin;
+    private float scaleMax;
+    private int prewarmCount;
+    private Sprite[] sprites;
     private float xMin;
     private float xMax;
     private float yMin;
     private float yMax;
+
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
@@ -56,8 +98,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     void Start()
     {
-        PrewarmParticles();  // Show initial particles
+        PrewarmParticles();
         StartCoroutine(SpawnImagesRoutine());
+
+    #endregion
     }
 
     private void PrewarmParticles()

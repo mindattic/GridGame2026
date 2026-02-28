@@ -7,8 +7,44 @@ using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
 
 /// <summary>
-/// Runtime instance of the ConfirmationDialog prefab.
-/// Handles wiring, sizing, and callback invocation for Yes/No.
+/// CONFIRMATIONDIALOGINSTANCE - Yes/No confirmation dialog.
+/// 
+/// PURPOSE:
+/// Displays a prompt with Yes and No buttons for player confirmation.
+/// Used for important decisions like quitting, restarting, etc.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌────────────────────────────────┐
+/// │                                │
+/// │   Are you sure you want to     │
+/// │   restart the stage?           │
+/// │                                │
+/// │    [ Yes ]      [ No ]         │
+/// └────────────────────────────────┘
+/// ```
+/// 
+/// USAGE:
+/// ```csharp
+/// var dialog = ConfirmationDialogFactory.Create(canvas);
+/// var instance = dialog.GetComponent<ConfirmationDialogInstance>();
+/// instance.Assign("Restart stage?", (confirmed) => {
+///     if (confirmed) RestartStage();
+///     Destroy(dialog);
+/// });
+/// ```
+/// 
+/// CALLBACK:
+/// onSubmitClicked(bool):
+/// - true: Player pressed Yes
+/// - false: Player pressed No
+/// 
+/// RELATED FILES:
+/// - ConfirmationDialogFactory.cs: Creates dialog GameObjects
+/// - MessageBoxInstance.cs: OK-only variant
+/// - PauseMenu.cs: Uses confirmation for quit
+/// 
+/// ACCESS: Created via ConfirmationDialogFactory.Create()
 /// </summary>
 public class ConfirmationDialogInstance : MonoBehaviour
 {
@@ -17,14 +53,12 @@ public class ConfirmationDialogInstance : MonoBehaviour
     private RectTransform buttonYes;
     private RectTransform buttonNo;
 
-    // Exposed so callers can subscribe if needed after creation.
+    /// <summary>Callback with true for Yes, false for No.</summary>
     public Action<bool> onSubmitClicked;
 
     /// <summary>
-    /// Initializes the dialog, sizes the UI, binds button events, and sets the prompt text.
+    /// Initializes dialog with prompt text and callback.
     /// </summary>
-    /// <param name="text">Prompt text to display.</param>
-    /// <param name="onSubmit">Callback invoked with true for Yes and false for No.</param>
     public void Assign(string text, Action<bool> onSubmit = default)
     {
         Setup();
@@ -36,8 +70,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resolves required RectTransform references from the scene.
-    /// Call after the prefab has been instantiated.
+    /// Resolves required RectTransform references from hierarchy.
     /// </summary>
     private void Setup()
     {
@@ -48,8 +81,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resizes the dialog elements based on current canvas dimensions.
-    /// Matches the panel to the canvas and scales buttons proportionally.
+    /// Resizes dialog elements based on canvas dimensions.
     /// </summary>
     private void ResizeUI()
     {

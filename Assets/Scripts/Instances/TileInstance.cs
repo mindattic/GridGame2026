@@ -3,28 +3,63 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// TILEINSTANCE - Single cell on the game board grid.
+/// 
+/// PURPOSE: Represents one tile in the tactical grid where actors can stand.
+/// 
+/// COORDINATES: Vector2Int(column, row)
+/// - Column 0 = leftmost, Column 5 = rightmost (default 6 cols)
+/// - Row 0 = topmost, Row 7 = bottommost (default 8 rows)
+/// 
+/// KEY PROPERTIES:
+/// - location: Grid position as Vector2Int
+/// - IsOccupied: True if an actor currently stands on this tile
+/// - Occupier: The ActorInstance on this tile (null if empty)
+/// 
+/// SPATIAL HELPERS:
+/// - IsAdjacentTo(loc): True if this tile is cardinally adjacent to location
+/// - IsSameRow(loc): True if same Y coordinate
+/// - IsSameColumn(loc): True if same X coordinate
+/// - IsNorthOf/SouthOf/EastOf/WestOf: Directional checks
+/// 
+/// EVENTS:
+/// - onSelectedPlayerLeaveLocation: Fired when selected hero leaves this tile
+/// - onSelectedPlayerEnterLocation: Fired when selected hero enters this tile
+/// 
+/// LLM CONTEXT:
+/// Tiles form the board grid. Use g.TileMap.GetTile(location) to get a tile.
+/// Actors move between tiles by updating their location Vector2Int.
+/// </summary>
 public class TileInstance : MonoBehaviour
 {
-
+    /// <summary>True if any living actor's location matches this tile's location.</summary>
     public bool IsOccupied => g.Actors.All.Any(x => x.IsPlaying && x.location == location);
 
+    /// <summary>Returns the actor standing on this tile, or null if empty.</summary>
     public ActorInstance Occupier => g.Actors.All.FirstOrDefault(x => x.location == location);
 
-
+    /// <summary>Event fired when the selected player leaves this tile location.</summary>
     public System.Action<Vector2Int> onSelectedPlayerLeaveLocation;
+
+    /// <summary>Event fired when the selected player enters this tile location.</summary>
     public System.Action<Vector2Int> onSelectedPlayerEnterLocation;
 
-
+    /// <summary>Tile name (wrapper for GameObject.name).</summary>
     public string Name
     {
         get => name;
-        set => Name = value;
+        set => name = value;  // Fixed: was causing infinite recursion with "Name = value"
     }
+
+    /// <summary>Parent transform of this tile.</summary>
     public Transform parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
+
+    /// <summary>World position of this tile.</summary>
     public Vector3 position
     {
         get => gameObject.transform.position;

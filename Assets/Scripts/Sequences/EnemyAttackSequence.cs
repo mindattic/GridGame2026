@@ -1,4 +1,4 @@
-// --- File: Assets/Scripts/Events/Sequences/EnemyAttackSequence.cs ---
+// --- File: Assets/Scripts/Sequences/EnemyAttackSequence.cs ---
 using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections;
@@ -9,30 +9,70 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Executes a single enemy attack turn for one attacker.
+    /// ENEMYATTACKSEQUENCE - Executes a single enemy's attack against heroes.
+    /// 
+    /// PURPOSE:
+    /// Handles the attack phase of an enemy's turn. Finds adjacent heroes
+    /// and attacks the first one found.
+    /// 
+    /// ATTACK FLOW:
+    /// 1. Wait for attack intermission (visual pacing)
+    /// 2. Find all adjacent heroes (IsPlaying && adjacent)
+    /// 3. Select first adjacent hero as target
+    /// 4. Calculate attack result via Formulas.CalculateAttackResult()
+    /// 5. Execute bump animation with damage via BumpRoutine()
+    /// 6. Reset attacker's action bar
+    /// 
+    /// TARGET SELECTION:
+    /// - Only attacks heroes in adjacent tiles (not diagonal)
+    /// - Attacks first hero found (no priority system)
+    /// - If no adjacent heroes, exits early
+    /// 
+    /// DAMAGE APPLICATION:
+    /// Uses AttackHelper.SingleAttackRoutine() which:
+    /// - Plays VFX at target position
+    /// - Applies damage at VFX apex
+    /// - Shows combat text
+    /// 
+    /// SEQUENCE CHAIN POSITION:
+    /// Part of enemy turn chain:
+    /// - EnemyMoveSequence
+    /// - EnemyPreAttackSequence
+    /// - EnemyAttackSequence ← Here
+    /// - EnemyPostAttackSequence
+    /// - DeathSequence
+    /// - EndTurnSequence
+    /// 
+    /// RELATED FILES:
+    /// - EnemyTakeTurnSequence.cs: Orchestrates full enemy turn
+    /// - AttackHelper.cs: SingleAttackRoutine for damage
+    /// - Formulas.cs: CalculateAttackResult for damage math
+    /// - ActorAnimation.cs: BumpRoutine for attack animation
     /// </summary>
     public class EnemyAttackSequence : SequenceEvent
     {
         private readonly ActorInstance attacker;
 
+        /// <summary>Creates attack sequence for the specified enemy.</summary>
         public EnemyAttackSequence(ActorInstance enemy)
         {
             attacker = enemy;
         }
 
         /// <summary>
-        /// Orchestrates enemy attack against adjacent heroes.
-        /// Attacks each adjacent hero exactly once.
+        /// Finds adjacent heroes and attacks the first one.
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
             UnityEngine.Debug.Log($"[EnemyAttackSequence] ProcessRoutine started for {attacker?.name ?? "null"}");
-            
+
             if (attacker == null || !attacker.IsPlaying)
                 yield break;
 
+            // Pre-attack pause for visual pacing
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
+            // Find adjacent heroes
             var defendingHeroes = g.Actors.Heroes
                 .Where(x => x.IsPlaying && Geometry.IsAdjacentTo(x.location, attacker.location))
                 .ToList();
@@ -40,9 +80,9 @@ namespace Assets.Scripts.Sequences
             if (defendingHeroes.Count == 0)
                 yield break;
 
-            // Attack only the first adjacent hero, then end attack phase
+            // Attack only the first adjacent hero
             var opponent = defendingHeroes.First();
-            
+
             if (opponent.IsPlaying && !opponent.IsDying && !opponent.IsDead)
             {
                 UnityEngine.Debug.Log($"[EnemyAttackSequence] {attacker.name} attacking {opponent.name} NOW");
@@ -56,6 +96,7 @@ namespace Assets.Scripts.Sequences
                 }
             }
 
+            // Reset AP after attacking
             attacker.ActionBar.Reset();
         }
     }

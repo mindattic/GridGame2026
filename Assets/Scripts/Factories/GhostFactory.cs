@@ -4,19 +4,49 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for Ghost - replaces GhostPrefab.prefab
-    /// Hierarchy:
-    /// - Ghost (root)
-    ///   - Thumbnail (SpriteRenderer)
-    ///   - Frame (SpriteRenderer, inactive)
+    /// GHOSTFACTORY - Creates ghost trail effect GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates semi-transparent "ghost" copies of actors that fade out,
+    /// creating a motion trail effect during drag operations.
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    /// [Actor] ? Current position
+    ///   ??    ? Ghost (fading)
+    ///     ??  ? Ghost (more faded)
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// Ghost (root)
+    /// ??? GhostInstance (behavior)
+    /// ??? Thumbnail (SpriteRenderer - actor sprite)
+    /// ??? Frame (SpriteRenderer - optional border, inactive)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "Ghost"
+    /// - SortingLayer: Board
+    /// - Thumbnail copies actor sprite
+    /// - Fades out over time via GhostInstance
+    /// 
+    /// CALLED BY:
+    /// - GhostManager.Spawn()
+    /// 
+    /// RELATED FILES:
+    /// - GhostInstance.cs: Fade animation component
+    /// - GhostManager.cs: Spawns ghosts during drag
+    /// - InputManager.cs: Triggers ghost creation
     /// </summary>
     public static class GhostFactory
     {
+        /// <summary>Creates a new ghost trail GameObject.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: Ghost ===
             var root = new GameObject("Ghost");
-            root.layer = 0; // Default layer
+            root.layer = 0;
             root.tag = "Ghost";
 
             var rootTransform = root.transform;
@@ -24,10 +54,9 @@ namespace Assets.Scripts.Factories
             rootTransform.localRotation = Quaternion.identity;
             rootTransform.localScale = Vector3.one;
 
-            // GhostInstance (custom component)
             root.AddComponent<GhostInstance>();
 
-            // === CHILD 0: Thumbnail ===
+            // === CHILD: Thumbnail (actor sprite) ===
             var thumbnail = new GameObject("Thumbnail");
             thumbnail.layer = LayerMask.NameToLayer("Actors");
             thumbnail.tag = "Ghost";
@@ -38,22 +67,22 @@ namespace Assets.Scripts.Factories
             thumbnailTransform.localRotation = Quaternion.identity;
             thumbnailTransform.localScale = Vector3.one;
 
-            thumbnail.layer = 0; // Default layer
+            thumbnail.layer = 0;
 
             var thumbnailSR = thumbnail.AddComponent<SpriteRenderer>();
             thumbnailSR.color = Color.white;
             thumbnailSR.shadowCastingMode = ShadowCastingMode.Off;
             thumbnailSR.receiveShadows = false;
-            thumbnailSR.sortingLayerName = "Board"; // SortingLayer 2
+            thumbnailSR.sortingLayerName = "Board";
             thumbnailSR.sortingOrder = 0;
             thumbnailSR.drawMode = SpriteDrawMode.Sliced;
             thumbnailSR.size = Vector2.one;
 
-            // === CHILD 1: Frame ===
+            // === CHILD: Frame (optional border, inactive) ===
             var frame = new GameObject("Frame");
-            frame.layer = 0; // Default layer
+            frame.layer = 0;
             frame.tag = "Portrait";
-            frame.SetActive(false); // Inactive by default
+            frame.SetActive(false);
 
             var frameTransform = frame.transform;
             frameTransform.SetParent(rootTransform, false);

@@ -5,14 +5,50 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Ends the current turn and flips to the next side.
-    /// Timeline advancement is handled centrally by TurnManager.NextTurn().
+    /// ENDTURNSEQUENCE - Completes the current turn and advances to next.
+    /// 
+    /// PURPOSE:
+    /// Final sequence in a turn's sequence chain. Calls TurnManager.NextTurn()
+    /// to advance the game state to the next turn.
+    /// 
+    /// TURN TRANSITION:
+    /// - Yields one frame for pacing (visual smoothness)
+    /// - Calls g.TurnManager.NextTurn()
+    /// - TurnManager determines if next is hero or enemy turn
+    /// 
+    /// WHAT NEXTTURN() DOES:
+    /// 1. Increments CurrentTurn counter
+    /// 2. Notifies StageManager (wave spawning check)
+    /// 3. Checks for queued enemies (from timeline triggers)
+    /// 4. Returns to hero window or starts enemy turn
+    /// 
+    /// SEQUENCE CHAIN POSITION:
+    /// Always LAST in a sequence chain:
+    /// - PincerAttackSequence
+    /// - DeathSequence
+    /// - WaveCheckSequence
+    /// - EndTurnSequence ← Here
+    /// 
+    /// For enemy turns:
+    /// - EnemyTakeTurnSequence
+    /// - EnemyMoveSequence
+    /// - EnemyAttackSequence
+    /// - DeathSequence
+    /// - EndTurnSequence ← Here
+    /// 
+    /// IMPORTANT:
+    /// Does NOT touch timeline directly - TurnManager handles that
+    /// to avoid double-advancing the timeline bar.
+    /// 
+    /// RELATED FILES:
+    /// - TurnManager.cs: NextTurn() method
+    /// - StageManager.cs: OnTurnAdvanced() for wave checks
+    /// - TimelineBarInstance.cs: Timeline state management
     /// </summary>
     public class EndTurnSequence : SequenceEvent
     {
         /// <summary>
-        /// Yield a frame for pacing, then hand control to TurnManager.
-        /// Do not touch Timeline here to avoid double-advancing the belt.
+        /// Yields one frame then advances to next turn.
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {

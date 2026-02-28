@@ -8,24 +8,78 @@ using Assets.Scripts.Canvas;
 namespace Assets.Scripts.Managers
 {
     /// <summary>
-    /// Centralized ability targeting and casting controller.
-    /// Tracks current ability, selected targets (with indicator), and handles Cast/Cancel.
+    /// ABILITYMANAGER - Controls ability targeting and casting.
+    /// 
+    /// PURPOSE:
+    /// Centralized controller for the ability system. Handles target selection,
+    /// validation, casting, and ability effects.
+    /// 
+    /// ABILITY FLOW:
+    /// 1. Player taps ability button → AbilityButtonManager calls BeginTargeting()
+    /// 2. InputMode changes to AnyTarget or LinearTarget
+    /// 3. Player taps valid targets → ToggleTarget() adds/removes from targetList
+    /// 4. Player confirms → Cast() executes ability
+    /// 5. Cancel → CancelTargeting() returns to PlayerTurn mode
+    /// 
+    /// TARGETING MODES (AbilityTargetingMode):
+    /// - AnyTarget: Select any valid target(s)
+    /// - LinearTarget: Select targets in a line (for line attacks)
+    /// - Self: No target selection needed
+    /// 
+    /// TARGET VALIDATION:
+    /// Each ability defines valid targets via:
+    /// - TargetType: Ally, Enemy, Self, Any
+    /// - Range: Maximum distance from caster
+    /// - RequiresLOS: Line of sight check
+    /// 
+    /// KEY PROPERTIES:
+    /// - currentAbility: Ability being targeted/cast
+    /// - currentUser: Actor casting the ability
+    /// - targetList: Selected targets
+    /// - PendingAbilityUser: Cached user during targeting
+    /// 
+    /// INTERACTION LOCKS:
+    /// Abilities blocked when:
+    /// - IsEnemyTurn (not player's turn)
+    /// - IsSequenceExecuting (combat in progress)
+    /// - InputMode == None (input disabled)
+    /// 
+    /// RELATED FILES:
+    /// - Ability.cs: Ability data definition
+    /// - AbilityButtonManager.cs: UI buttons for abilities
+    /// - AbilityCastConfirm.cs: Confirmation dialog
+    /// - AbilityButtonFactory.cs: Creates ability button UI
+    /// - InputManager.cs: Handles targeting input mode
+    /// 
+    /// ACCESS: g.AbilityManager
     /// </summary>
     public class AbilityManager : MonoBehaviour
     {
+        #region Fields
+
         private Ability currentAbility;
         private ActorInstance currentUser;
         private readonly List<ActorInstance> targetList = new();
         private ActorInstance pendingAbilityUser;
-        
+
+        /// <summary>Cached user during ability targeting flow.</summary>
         public ActorInstance PendingAbilityUser => pendingAbilityUser;
+
+        #endregion
+
+        #region Interaction Guards
 
         private static bool IsEnemyTurn => g.TurnManager.IsEnemyTurn;
         private static bool IsSequenceExecuting => g.SequenceManager.IsExecuting;
         private static bool IsInteractionLocked() => IsEnemyTurn || IsSequenceExecuting || g.InputManager.InputMode == InputMode.None;
 
+        #endregion
+
+        #region Targeting
+
         /// <summary>
-        /// Begin selecting targets for an ability.
+        /// Begins target selection for an ability.
+        /// Changes InputMode to targeting state.
         /// </summary>
         public void BeginTargeting(ActorInstance user, Ability ability)
         {
@@ -37,8 +91,7 @@ namespace Assets.Scripts.Managers
             currentUser = user;
             currentAbility = ability;
 
-            // Clear any movement state from PlayerTurn mode to prevent contamination
-            // The user (caster) should remain at their current position
+            // Clear movement state to prevent contamination
             ClearMovementState();
 
             g.AbilityCastConfirm.ClearTitle();
@@ -46,16 +99,19 @@ namespace Assets.Scripts.Managers
             g.InputManager.RequireTouchRelease();
         }
 
+        /// <summary>Caches the pending ability user.</summary>
         public void BeginAbilityTargeting(ActorInstance user)
         {
             if (IsInteractionLocked()) return;
             pendingAbilityUser = user;
         }
 
+        /// <summary>Clears the pending ability user.</summary>
         public void ClearPendingUser() => pendingAbilityUser = null;
 
         /// <summary>
-        /// Toggle selection state for a clicked actor.
+        /// Toggles selection state for a clicked actor.
+        /// Adds/removes from targetList based on validity.
         /// </summary>
         public void ToggleTarget(ActorInstance actor)
         {
@@ -68,6 +124,8 @@ namespace Assets.Scripts.Managers
             if (targetList.Contains(actor))
             {
                 targetList.Remove(actor);
+
+        #endregion
                 actor.Render.SetTargetIndicatorEnabled(false);
                 if (targetList.Count == 0) g.AbilityCastConfirm.FadeOut();
                 OnSelectionChanged(false);

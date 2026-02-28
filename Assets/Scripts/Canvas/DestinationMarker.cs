@@ -3,40 +3,88 @@ using UnityEngine;
 namespace Assets.Scripts.Canvas
 {
     /// <summary>
-    /// Marks a destination point on the map.
-    /// Used to visualize where the player is moving to.
+    /// DESTINATIONMARKER - Visual indicator showing movement destination.
+    /// 
+    /// PURPOSE:
+    /// Displays a marker sprite at the location where a hero will move to.
+    /// Auto-destroys when the target arrives at the destination.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// [Hero] · · · · [X]
+    ///                 ↑
+    ///         destination marker
+    /// ```
+    /// 
+    /// ARRIVAL DETECTION:
+    /// - Tracks distance between marker and target transform
+    /// - When distance <= arriveDistance, destroys self
+    /// - Can be disabled via destroyAtZero = false
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var marker = DestinationMarkerFactory.Create();
+    /// marker.SetPosition(targetPosition);
+    /// marker.SetTarget(heroTransform);
+    /// // Marker auto-destroys when hero arrives
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - DestinationMarkerFactory.cs: Creates marker GameObjects
+    /// - InputManager.cs: May create markers during drag
+    /// - SpriteLibrary.cs: Provides marker sprite
     /// </summary>
     public class DestinationMarker : MonoBehaviour
     {
-        [Tooltip("Distance at which the marker is considered 'arrived' and can be destroyed.")]
+        #region Settings
+
+        [Tooltip("Distance at which the marker is considered 'arrived'.")]
         public float arriveDistance = 0.1f;
 
-        [Tooltip("If true, destroy this marker when countdown reaches zero.")]
+        [Tooltip("If true, destroy this marker when target arrives.")]
         public bool destroyAtZero = true;
+
+        #endregion
+
+        #region State
 
         private Transform target;
         private SpriteRenderer spriteRenderer;
+
+        #endregion
+
+        #region Initialization
 
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        /// <summary>
-        /// Sets the target transform to track arrival.
-        /// </summary>
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>Sets the target transform to track for arrival.</summary>
         public void SetTarget(Transform target)
         {
             this.target = target;
         }
 
-        /// <summary>
-        /// Sets the marker position.
-        /// </summary>
+        /// <summary>Sets the marker world position.</summary>
         public void SetPosition(Vector3 position)
         {
             transform.position = position;
         }
+
+        /// <summary>Immediately destroys this marker.</summary>
+        public void Remove()
+        {
+            Destroy(gameObject);
+        }
+
+        #endregion
+
+        #region Update Loop
 
         private void Update()
         {
@@ -49,12 +97,6 @@ namespace Assets.Scripts.Canvas
             }
         }
 
-        /// <summary>
-        /// Destroys this marker.
-        /// </summary>
-        public void Remove()
-        {
-            Destroy(gameObject);
-        }
+        #endregion
     }
 }

@@ -11,14 +11,58 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// SETTINGSMANAGER - Manages the game settings screen.
+/// 
+/// PURPOSE:
+/// Displays and manages all game settings including sliders, toggles,
+/// and dropdowns. Persists settings to player preferences.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │           Settings                  │
+/// ├─────────────────────────────────────┤
+/// │  Game Speed          [====■===]     │ ← Slider
+/// │  Music Volume        [=====■==]     │ ← Slider
+/// │  SFX Volume          [======■=]     │ ← Slider
+/// │  ─────────────────────────────────  │
+/// │  Fullscreen          [✓]            │ ← Toggle
+/// │  Show FPS            [ ]            │ ← Toggle
+/// │  ─────────────────────────────────  │
+/// │  Resolution          [1080p ▼]      │ ← Dropdown
+/// │                                     │
+/// │         [ Back ]                    │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// SETTING TYPES:
+/// - SliderSetting: Numeric range values
+/// - ToggleSetting: Boolean on/off values
+/// - DropdownSetting: Multiple choice options
+/// 
+/// PERSISTENCE:
+/// Settings saved to PlayerPrefs via SettingsModel.
+/// 
+/// RELATED FILES:
+/// - SettingSliderFactory.cs: Creates slider controls
+/// - SettingToggleFactory.cs: Creates toggle controls
+/// - SettingDropdownFactory.cs: Creates dropdown controls
+/// - SettingsModel.cs: Settings data structure
+/// 
+/// ACCESS: Scene-based manager (Settings scene)
+/// </summary>
 public class SettingsManager : MonoBehaviour
 {
-    // Prefab references (none - using factories)
+    #region UI References
 
-    // UI roots
     private RectTransform contentRoot;
 
-    // Slider settings
+    #endregion
+
+    #region Setting Definitions
+
+    /// <summary>Slider-based settings configuration.</summary>
     private static readonly List<SliderSetting> Sliders = new List<SliderSetting>
     {
         new SliderSetting(
@@ -50,7 +94,7 @@ public class SettingsManager : MonoBehaviour
             (s, v) => s.CoinCountMultiplier = v),
     };
 
-    // Toggle settings
+    /// <summary>Toggle-based settings configuration.</summary>
     private static readonly List<ToggleSetting> Toggles = new List<ToggleSetting>
     {
         new ToggleSetting(
@@ -58,6 +102,8 @@ public class SettingsManager : MonoBehaviour
             "Determines whether movement tilt effects are applied.",
             s => s.ApplyMovementTilt,
             (s, v) => s.ApplyMovementTilt = v),
+
+    #endregion
 
         new ToggleSetting(
             "Reload Thumbnail Settings",

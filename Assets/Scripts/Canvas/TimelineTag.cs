@@ -5,57 +5,121 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using g = Assets.Helpers.GameHelper;
 using TMPro;
-using Assets.Scripts.Libraries; // for ActorLibrary
+using Assets.Scripts.Libraries;
 
 namespace Assets.Scripts.Canvas
 {
     /// <summary>
-    /// Represents the current state of a timeline tag
+    /// TIMELINETAGMODE - State machine for timeline tag behavior.
+    /// 
+    /// States:
+    /// - Queued: At spawn point, waiting to be released (speed-based delay)
+    /// - Approaching: Moving left toward trigger point
+    /// - PushedBack: Being pushed right after taking damage (animated)
+    /// - Stunned: Stopped after pushback, recovering (agility-based duration)
     /// </summary>
     public enum TimelineTagMode
     {
-        /// <summary>Tag is at spawn point waiting to be released (based on enemy speed)</summary>
+        /// <summary>Tag is at spawn point waiting to be released.</summary>
         Queued,
-        /// <summary>Tag is moving left toward the trigger point</summary>
+        /// <summary>Tag is moving left toward the trigger point.</summary>
         Approaching,
-        /// <summary>Tag is being pushed back to the right (animated with deceleration)</summary>
+        /// <summary>Tag is being pushed back (animated with deceleration).</summary>
         PushedBack,
-        /// <summary>Tag has stopped after pushback, recovering based on Agility</summary>
+        /// <summary>Tag has stopped after pushback, recovering.</summary>
         Stunned
     }
 
+    /// <summary>
+    /// TIMELINETAG - Individual actor tag on the timeline bar.
+    /// 
+    /// PURPOSE:
+    /// Represents one actor on the timeline UI. Tags move from right to left
+    /// at a speed determined by the actor's Speed stat. When a tag reaches
+    /// the trigger point (left edge), that actor's turn begins.
+    /// 
+    /// MOVEMENT MODEL (Normalized Coordinates):
+    /// - u = 1.0: Right edge (spawn point)
+    /// - u = 0.0: Left edge (trigger point)
+    /// - uPerSec: Speed in u-units per second (based on actor Speed stat)
+    /// 
+    /// STATE MACHINE (TimelineTagMode):
+    /// 1. Queued → Waiting at spawn point (queueDelay countdown)
+    /// 2. Approaching → Moving left at uPerSec speed
+    /// 3. PushedBack → Animated pushback after taking damage
+    /// 4. Stunned → Recovery period after pushback (agilityBased)
+    /// 
+    /// PUSHBACK SYSTEM:
+    /// When enemy is hit by pincer attack:
+    /// - Tag pushed right based on position (closer to trigger = more pushback)
+    /// - Pushback animates with deceleration (PushDeceleration)
+    /// - After pushback, enters Stunned state
+    /// - Stun duration based on actor's Agility stat
+    /// 
+    /// KEY PROPERTIES:
+    /// - Owner: ActorInstance this tag represents
+    /// - Mode: Current TimelineTagMode state
+    /// - u: Normalized position (0=trigger, 1=spawn)
+    /// 
+    /// VISUAL ELEMENTS:
+    /// - Tag: Background image (team colored)
+    /// - Icon: Actor portrait/icon
+    /// - Label: Optional text (usually hidden)
+    /// - CanvasGroup: For fade-out animations
+    /// 
+    /// RELATED FILES:
+    /// - TimelineBarInstance.cs: Parent container managing all tags
+    /// - TimelineTagFactory.cs: Creates tag GameObjects
+    /// - TurnManager.cs: Receives trigger callbacks
+    /// - TimelineTriggerSequence.cs: Handles turn trigger
+    /// 
+    /// CREATED BY: TimelineTagFactory.Create()
+    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
     public sealed class TimelineTag : MonoBehaviour, IPointerClickHandler
     {
+        #region Visual Elements
+
         [Header("Parts")]
         [SerializeField] private Image Tag;
         [SerializeField] private Image Icon; 
         [SerializeField] private TextMeshProUGUI Label;
-        [SerializeField] private CanvasGroup CanvasGroup; // for fade-out
+        [SerializeField] private CanvasGroup CanvasGroup;
+
+        #endregion
+
+        #region Runtime State
 
         [Header("Runtime")]
-        public ActorInstance Owner; // enemy owning this tag
+        /// <summary>The enemy actor this tag represents.</summary>
+        public ActorInstance Owner;
+
+        /// <summary>RectTransform for positioning.</summary>
         public RectTransform Rect { get; private set; }
+
+        /// <summary>Current state machine mode.</summary>
         public TimelineTagMode Mode { get; private set; } = TimelineTagMode.Queued;
 
         // Normalized motion state (resolution-independent)
-        private float leftX; // bar-local x at u=0 (left edge)
-        private float rightX; // bar-local x at u=1 (right edge)
-        private float u; // normalized position in [0..1], 1 = right, 0 = left
-        private float uPerSec; // normalized speed per second (u units per sec)
-        private float queueDelay; // time in seconds to wait at right before moving (based on Speed)
-        private float queueTimer; // countdown timer for queue release
+        private float leftX;      // bar-local x at u=0 (left edge)
+        private float rightX;     // bar-local x at u=1 (right edge)
+        private float u;          // normalized position [0..1], 1=right, 0=left
+        private float uPerSec;    // normalized speed per second
+        private float queueDelay; // seconds to wait before moving
+        private float queueTimer; // countdown for queue release
 
         // Pushback animation state
-        private float pushTargetU; // target position for pushback animation
-        private float pushVelocity; // current velocity during pushback (decelerates)
-        private const float PushDeceleration = 2.5f; // how quickly pushback slows down
-        private const float PushMinVelocity = 0.01f; // velocity threshold to stop pushback
+        private float pushTargetU;   // target position for pushback
+        private float pushVelocity;  // current velocity during pushback
+        private const float PushDeceleration = 2.5f;
+        private const float PushMinVelocity = 0.01f;
 
         // Stun state
-        private float stunDuration; // how long to stay stunned (based on Agility)
-        private float stunTimer; // countdown for stun recovery
+        private float stunDuration; // agility-based stun time
+        private float stunTimer;    // countdown for recovery
+
+        #endregion
 
         private System.Action<TimelineTag> onReached;
         private bool isFading;

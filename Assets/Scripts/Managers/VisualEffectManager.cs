@@ -4,13 +4,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// VISUALEFFECTMANAGER - Spawns and manages visual effects (VFX).
+/// 
+/// PURPOSE:
+/// Central manager for spawning particle effects, impact effects, and other
+/// visual feedback during combat and gameplay.
+/// 
+/// VFX SPAWNING:
+/// - Spawn(): Fire-and-forget VFX at position
+/// - PlayRoutine(): Spawn and yield until complete
+/// - SpawnAt(): Spawn attached to an actor
+/// 
+/// VFX LIFECYCLE:
+/// 1. CreateInstance() creates wrapper GameObject
+/// 2. VisualEffectInstance component added
+/// 3. Asset prefab instantiated
+/// 4. Effect plays for asset.Duration
+/// 5. Auto-destroys on completion
+/// 
+/// ASSET TYPES (VisualEffectAsset):
+/// VFX defined in VisualEffectLibrary with:
+/// - Name: Unique identifier
+/// - Prefab: Particle system or effect prefab
+/// - Duration: Lifetime in seconds
+/// - Scale: Size multiplier
+/// 
+/// COMMON EFFECTS:
+/// - Impact_Physical: Melee hit effect
+/// - Impact_Magical: Spell hit effect
+/// - Heal: Healing sparkles
+/// - Death: Actor death effect
+/// - Spawn: Actor spawn effect
+/// 
+/// OPTIONAL ROUTINES:
+/// Spawn methods accept optional IEnumerator routines that run
+/// after the VFX starts, useful for chaining effects.
+/// 
+/// RELATED FILES:
+/// - VisualEffectLibrary.cs: Asset registry
+/// - VisualEffectAsset.cs: Effect definition
+/// - VisualEffectInstance.cs: Runtime effect component
+/// - CombatTextManager.cs: Floating damage numbers
+/// 
+/// ACCESS: g.VisualEffectManager
+/// </summary>
 public class VisualEffectManager : MonoBehaviour
 {
-    // Holds active VFX instances by unique name.
+    #region Collection
+
+    /// <summary>Active VFX instances keyed by unique name.</summary>
     private readonly Dictionary<string, VisualEffectInstance> collection = new Dictionary<string, VisualEffectInstance>();
 
+    #endregion
+
+    #region Instance Creation
+
     /// <summary>
-    /// Creates a wrapper GameObject that hosts a VFXInstance. The VFXInstance will instantiate the asset prefab itself.
+    /// Creates a wrapper GameObject for a VFX instance.
     /// </summary>
     private VisualEffectInstance CreateInstance(VisualEffectAsset asset, Vector3 position, Transform parentOverride = null)
     {
@@ -33,8 +84,13 @@ public class VisualEffectManager : MonoBehaviour
         return instance;
     }
 
+    #endregion
+
+    #region Spawn Methods
+
     /// <summary>
-    /// Fire-and-forget spawn at a world position. Optionally runs a routine after its own sequence.
+    /// Fire-and-forget spawn at a world position.
+    /// Optionally runs a routine after effect starts.
     /// </summary>
     public void Spawn(VisualEffectAsset asset, Vector3 position, IEnumerator routine = null)
     {
@@ -47,8 +103,8 @@ public class VisualEffectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a VFX and yields until its lifecycle finishes (including optional routine and duration).
-    /// Use this when subsequent gameplay should wait for the impact to complete.
+    /// Spawns VFX and yields until lifecycle finishes.
+    /// Use when gameplay should wait for effect completion.
     /// </summary>
     public IEnumerator PlayRoutine(VisualEffectAsset asset, Vector3 position, IEnumerator routine = null)
     {
@@ -58,6 +114,8 @@ public class VisualEffectManager : MonoBehaviour
 
         float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
         yield return instance.SpawnRoutine(asset, position, tileSize, routine);
+
+    #endregion
     }
 
     /// <summary>

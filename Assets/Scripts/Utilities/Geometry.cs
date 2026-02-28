@@ -5,10 +5,53 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// GEOMETRY - Spatial utilities for grid-to-world coordinate conversion.
+/// 
+/// PURPOSE:
+/// Provides helper methods for converting between grid coordinates (Vector2Int)
+/// and world positions (Vector3), calculating distances, finding adjacent tiles,
+/// and determining spatial relationships between actors.
+/// 
+/// COORDINATE SYSTEMS:
+/// - Grid: Vector2Int(column, row) - 0-indexed from top-left
+/// - World: Vector3(x, y, z) - Unity world space
+/// - Column 0 = leftmost, Row 0 = topmost
+/// 
+/// KEY METHODS:
+/// 
+/// POSITION CONVERSION:
+/// - CalculatePositionByLocation(loc): Grid → World position
+/// - GetPositionByLocation(loc): Grid → World (via TileMap)
+/// - GetLocationByPosition(pos): World → Grid location
+/// 
+/// TILE FINDING:
+/// - GetClosestTile(pos): Find nearest tile to world position
+/// - GetTileAtLocation(loc): Get tile at grid location
+/// - GetLocationsBetween(a, b): All grid locations between two points
+/// 
+/// SPATIAL CHECKS:
+/// - IsSameRow(a, b): True if same Y coordinate
+/// - IsSameColumn(a, b): True if same X coordinate
+/// - IsAdjacent(a, b): True if cardinally adjacent
+/// - GetDirection(from, to): Direction enum between locations
+/// - GetDistance(a, b): Manhattan distance between locations
+/// 
+/// PINCER DETECTION SUPPORT:
+/// - GetLocationsBetween() is key for pincer validation
+/// - Returns all tiles in a straight line between two locations
+/// 
+/// LLM CONTEXT:
+/// Use this class for any grid/world coordinate work. It's used heavily by
+/// PincerAttackManager for detecting valid pincers, by InputManager for
+/// drag-drop positioning, and by ActorMovement for pathfinding.
+/// </summary>
 public class Geometry
 {
     // Default constructor (not used but provided for completeness).
     public Geometry() { }
+
+    #region Position Conversion
 
     /// <summary>
     /// Calculates a world position from a given grid location using the board offset and tile size.
@@ -43,6 +86,10 @@ public class Geometry
     {
         return g.TileMap.GetLocation(position);
     }
+
+    #endregion
+
+    #region Tile Finding
 
     /// <summary>
     /// Finds the tile actors closest to a given world position.
@@ -418,4 +465,6 @@ public class Geometry
     /// Overload for Rotation that accepts a Vector3 of Euler angles.
     /// </summary>
     public static Quaternion Rotation(Vector3 v) => Rotation(v.x, v.y, v.z);
+
+    #endregion
 }

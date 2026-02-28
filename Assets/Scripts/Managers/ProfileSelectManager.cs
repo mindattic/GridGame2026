@@ -9,21 +9,60 @@ using Button = UnityEngine.UI.Button;
 using c = Assets.Helpers.CanvasHelper;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// PROFILESELECTMANAGER - Manages the profile/save file selection screen.
+/// 
+/// PURPOSE:
+/// Displays available player profiles (save files) and allows the player
+/// to select, create, or delete profiles.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │         Select Profile              │
+/// ├─────────────────────────────────────┤
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Profile 1 - "Player1"     │   │
+/// │  │  Progress: Stage 5         │   │
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Profile 2 - "Empty"       │   │
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Profile 3 - "Empty"       │   │
+/// │  └─────────────────────────────┘   │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// PROFILE OPERATIONS:
+/// - Select: Load existing profile
+/// - Create: Opens keyboard dialog for name
+/// - Delete: Confirmation dialog then remove
+/// 
+/// RELATED FILES:
+/// - SaveFileButtonFactory.cs: Creates profile buttons
+/// - KeyboardDialogInstance.cs: Profile naming
+/// - ProfileManager.cs: Profile data persistence
+/// - SaveSystem.cs: Save/load operations
+/// 
+/// ACCESS: Scene-based manager (ProfileSelect scene)
+/// </summary>
 public class ProfileSelectManager : MonoBehaviour
 {
-    // Header label at the top of the screen.
-    private TextMeshProUGUI header;
+    #region UI References
 
-    // ScrollView and Content containers for the list.
+    private TextMeshProUGUI header;
     private RectTransform scrollView;
     private RectTransform content;
-
-    // Vertical layout that spaces the rows.
     private VerticalLayoutGroup verticalLayoutGroup;
+
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
-        // Find the header object and validate the label component.
+        // Find the header object
         GameObject headerGO = GameObject.Find(GameObjectHelper.StageSelect.Title);
         if (headerGO == null)
         {
@@ -38,7 +77,7 @@ public class ProfileSelectManager : MonoBehaviour
             return;
         }
 
-        // Find the scroll view rect.
+        // Find the scroll view rect
         GameObject scrollGO = GameObject.Find(GameObjectHelper.StageSelect.ScrollView);
         if (scrollGO == null)
         {
@@ -53,7 +92,7 @@ public class ProfileSelectManager : MonoBehaviour
             return;
         }
 
-        // Find the content rect.
+        // Find the content rect
         GameObject contentGO = GameObject.Find(GameObjectHelper.StageSelect.Content);
         if (contentGO == null)
         {
@@ -101,19 +140,20 @@ public class ProfileSelectManager : MonoBehaviour
         verticalLayoutGroup.spacing = rowSpacing;
 
         // Note: Button width and height sizing is left to the prefab/layout.
-        // If you want explicit sizing, uncomment the lines in Add* methods where noted.
     }
 
     private void Start()
     {
-        // Populate the list and fade in the scene.
         Reload();
         scene.FadeIn();
     }
 
+    #endregion
+
+    #region Profile List
+
     private void Clear()
     {
-        // Remove previous children to avoid duplicates when reloading.
         if (content == null)
         {
             Debug.LogError("Cannot clear content. Content RectTransform is null.");
@@ -270,13 +310,13 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnCreateNewProfileButtonClicked()
     {
-        // Navigate to the profile creation screen.
         scene.Fade.ToProfileCreate();
     }
 
     public void OnBackButtonClicked()
     {
-        // Return to the previous scene in your navigation stack.
         scene.Fade.ToPreviousScene();
     }
+
+    #endregion
 }

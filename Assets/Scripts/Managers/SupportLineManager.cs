@@ -5,28 +5,60 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Manages lifecycle of SupportLineInstance objects keyed by (supporter, attacker).
-/// Provides spawn, despawn, destroy, and bulk clear operations.
+/// SUPPORTLINEMANAGER - Manages support connection lines between allies.
+/// 
+/// PURPOSE:
+/// Creates and manages visual lines showing support connections between
+/// adjacent allies during pincer attacks. Supporters add bonus damage.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// [Hero A] ═══════ [Hero B]
+///     ↑ support line ↑
+///   (adjacent allies connected)
+/// ```
+/// 
+/// SUPPORT MECHANIC:
+/// When a hero participates in a pincer attack, adjacent allied heroes
+/// become "supporters" and add bonus damage:
+/// - Support line drawn between supporter and attacker
+/// - Bonus damage = Supporter.Strength × SupportMultiplier
+/// 
+/// KEYING:
+/// Lines keyed by (supporter, attacker) tuple to prevent duplicates.
+/// 
+/// LIFECYCLE:
+/// 1. PincerAttackManager finds supporters
+/// 2. Spawn() creates line for each supporter-attacker pair
+/// 3. Lines animate during attack
+/// 4. Clear() removes all lines after attack
+/// 
+/// RELATED FILES:
+/// - SupportLineFactory.cs: Creates line GameObjects
+/// - SupportLineInstance.cs: Individual line component
+/// - PincerAttackManager.cs: FindSupporters() method
+/// - PincerAttackPair.cs: Contains supporters1/supporters2 lists
+/// 
+/// ACCESS: g.SupportLineManager
 /// </summary>
 public class SupportLineManager : MonoBehaviour
 {
-    // ------------------------------------------------------------
-    // Fields
-    // ------------------------------------------------------------
+    #region Fields
 
+    /// <summary>Active support lines keyed by (supporter, attacker) pair.</summary>
     public Dictionary<(ActorInstance, ActorInstance), SupportLineInstance> supportLines =
         new Dictionary<(ActorInstance, ActorInstance), SupportLineInstance>();
 
-    // Line width used by SupportLineInstance (startWidth/endWidth = g.TileSize * 0.25f)
+    /// <summary>Line width based on tile size.</summary>
     private float LineWidth => g.TileSize * 0.25f;
     private float HalfLineWidth => LineWidth * 0.5f;
 
-    // ------------------------------------------------------------
-    // Public API
-    // ------------------------------------------------------------
+    #endregion
+
+    #region Public API
 
     /// <summary>
-    /// Check if a support line already exists for the given pair.
+    /// Checks if a support line already exists for the given pair.
     /// </summary>
     public bool Exists(ActorInstance supporter, ActorInstance attacker)
     {
@@ -35,7 +67,7 @@ public class SupportLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Create and register a new support line instance for the given pair.
+    /// Creates and registers a new support line for the given pair.
     /// Returns null if one already exists.
     /// </summary>
     public SupportLineInstance Spawn(ActorInstance supporter, ActorInstance attacker)
@@ -45,7 +77,6 @@ public class SupportLineManager : MonoBehaviour
         if (Exists(supporter, attacker))
             return null;
 
-        // Use factory instead of Instantiate(prefab)
         var go = SupportLineFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
@@ -224,4 +255,6 @@ public class SupportLineManager : MonoBehaviour
             }
         }
     }
+
+    #endregion
 }

@@ -6,19 +6,58 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for Coin - replaces CoinPrefab.prefab
-    /// Note: ParticleSystem configuration is complex; key settings are replicated here.
+    /// COINFACTORY - Creates coin pickup GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates animated coin objects that spawn when enemies die.
+    /// Coins fly toward the coin counter UI and add to player currency.
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    /// [Enemy dies] ? ?? (coin spawns)
+    ///                  ?
+    ///                   [Coin Counter] (coin flies to UI)
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// Coin (root)
+    /// ??? SpriteRenderer (coin sprite)
+    /// ??? Animator (spin animation)
+    /// ??? ParticleSystem (sparkle effects)
+    /// ??? SortingGroup (render order)
+    /// ??? CoinInstance (behavior/animation)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "Powerup"
+    /// - Color: Gold (1, 0.87, 0, 1)
+    /// - SortingLayer: Props
+    /// - Animation: Animator with CoinPrefab controller
+    /// 
+    /// ANIMATION CURVES:
+    /// - linearCurve: Constant speed movement
+    /// - slopeCurve: Ease-out movement
+    /// - sineCurve: Bounce/wave motion
+    /// 
+    /// CALLED BY:
+    /// - CoinManager.Spawn()
+    /// 
+    /// RELATED FILES:
+    /// - CoinInstance.cs: Animation behavior
+    /// - CoinManager.cs: Spawns coins on enemy death
+    /// - CoinCounter.cs: UI displaying total
+    /// - DeathHelper.cs: Triggers coin spawn
     /// </summary>
     public static class CoinFactory
     {
+        /// <summary>Creates a new coin GameObject with full configuration.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("Coin");
-            root.layer = 0; // Default layer
+            root.layer = 0;
             root.tag = "Powerup";
 
-            // Transform
             var transform = root.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
@@ -27,19 +66,19 @@ namespace Assets.Scripts.Factories
             // SpriteRenderer
             var spriteRenderer = root.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = SpriteLibrary.Sprites["Coin"];
-            spriteRenderer.color = new Color(1f, 0.8745098f, 0.003921569f, 1f); // Gold color
+            spriteRenderer.color = new Color(1f, 0.8745098f, 0.003921569f, 1f);
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
-            spriteRenderer.sortingLayerName = "Props"; // SortingLayer 9
-            spriteRenderer.sortingOrder = 800; // Above most things, below CombatText
+            spriteRenderer.sortingLayerName = "Props";
+            spriteRenderer.sortingOrder = 800;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
-            // Animator (disabled by default)
+            // Animator
             var animator = root.AddComponent<Animator>();
             animator.runtimeAnimatorController = AssetHelper.LoadAsset<RuntimeAnimatorController>("Animations/Coin-01/CoinPrefab");
             animator.enabled = false;
 
-            // CoinInstance (custom component with animation curves)
+            // CoinInstance with animation curves
             var coinInstance = root.AddComponent<CoinInstance>();
             coinInstance.linearCurve = CreateLinearCurve();
             coinInstance.slopeCurve = CreateSlopeCurve();
@@ -49,13 +88,13 @@ namespace Assets.Scripts.Factories
             var particleSystem = root.AddComponent<ParticleSystem>();
             ConfigureParticleSystem(particleSystem);
 
-            // ParticleSystemRenderer is added automatically with ParticleSystem
+            // ParticleSystemRenderer
             var particleRenderer = root.GetComponent<ParticleSystemRenderer>();
             ConfigureParticleRenderer(particleRenderer);
 
             // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();
-            sortingGroup.sortingLayerName = "Props"; // SortingLayer 9
+            sortingGroup.sortingLayerName = "Props";
             sortingGroup.sortingOrder = 0;
 
             // Parent if specified

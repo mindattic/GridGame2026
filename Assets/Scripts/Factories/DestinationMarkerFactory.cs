@@ -7,15 +7,49 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for DestinationMarker - replaces DestinationMarkerPrefab.prefab
+    /// DESTINATIONMARKERFACTORY - Creates movement destination markers.
+    /// 
+    /// PURPOSE:
+    /// Creates visual markers showing where a hero will land when dropped.
+    /// Auto-destroys when the hero arrives at the destination.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// [Hero] · · · · [X]
+    ///                 ?
+    ///         destination marker
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// DestinationMarker (root)
+    /// ??? RectTransform (positioning)
+    /// ??? CanvasRenderer (UI rendering)
+    /// ??? SpriteRenderer (marker sprite)
+    /// ??? DestinationMarker (behavior)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Size: 24x24 pixels
+    /// - SortingOrder: 600 (above VFX, below combat text)
+    /// - arriveDistance: 0.1 units (auto-destroy threshold)
+    /// - destroyAtZero: true (self-destructs on arrival)
+    /// 
+    /// CALLED BY:
+    /// - InputManager during drag operations
+    /// 
+    /// RELATED FILES:
+    /// - DestinationMarker.cs: Marker behavior component
+    /// - SpriteLibrary.cs: Provides marker sprite
+    /// - InputManager.cs: Creates markers during drag
     /// </summary>
     public static class DestinationMarkerFactory
     {
+        /// <summary>Creates a new destination marker.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("DestinationMarker");
-            root.layer = LayerMask.NameToLayer("Default"); // Layer 0
+            root.layer = LayerMask.NameToLayer("Default");
 
             // RectTransform
             var rectTransform = root.AddComponent<RectTransform>();
@@ -25,7 +59,6 @@ namespace Assets.Scripts.Factories
             rectTransform.sizeDelta = new Vector2(24f, 24f);
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-            // CanvasRenderer
             root.AddComponent<CanvasRenderer>();
 
             // SpriteRenderer
@@ -35,15 +68,14 @@ namespace Assets.Scripts.Factories
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
             spriteRenderer.sortingLayerName = "Default";
-            spriteRenderer.sortingOrder = 600; // Above VFX, below CombatText
+            spriteRenderer.sortingOrder = 600;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
-            // DestinationMarker (custom component)
+            // DestinationMarker behavior
             var marker = root.AddComponent<DestinationMarker>();
             marker.arriveDistance = 0.1f;
             marker.destroyAtZero = true;
 
-            // Parent if specified
             if (parent != null)
             {
                 rectTransform.SetParent(parent, false);

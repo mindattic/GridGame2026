@@ -3,9 +3,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// SCALABLECONTROL - 9-slice scalable UI panel component.
+/// 
+/// PURPOSE:
+/// Automatically positions corner and edge pieces of a scalable UI panel.
+/// Allows panels to resize while maintaining crisp corners and edges.
+/// 
+/// 9-SLICE LAYOUT:
+/// ```
+/// ┌────────────────────────────┐
+/// │ TL │      Top        │ TR │
+/// ├────┼─────────────────┼────┤
+/// │    │                 │    │
+/// │Left│   Background    │Right
+/// │    │                 │    │
+/// ├────┼─────────────────┼────┤
+/// │ BL │     Bottom      │ BR │
+/// └────────────────────────────┘
+/// ```
+/// 
+/// CHILD ELEMENTS:
+/// - Top, Bottom, Left, Right: Edge pieces (stretch)
+/// - TopLeft, TopRight, BottomLeft, BottomRight: Corner pieces (fixed)
+/// - Background: Center fill area
+/// - Label: Optional text content
+/// 
+/// CONFIGURATION:
+/// - cornerSize: Fixed size of corner pieces (16px default)
+/// - edgeThickness: Thickness of edge pieces (16px default)
+/// 
+/// EDITOR SUPPORT:
+/// [ExecuteAlways] allows preview in editor mode.
+/// Continuously updates layout in editor for live preview.
+/// 
+/// RELATED FILES:
+/// - MessageBoxFactory.cs: Uses for dialog panels
+/// - ConfirmationDialogFactory.cs: Uses for dialogs
+/// - TooltipFactory.cs: Uses for tooltip backgrounds
+/// </summary>
 [ExecuteAlways]
 public class ScalableControl : MonoBehaviour
 {
+    #region Child References
+
     private RectTransform top;
     private RectTransform bottom;
     private RectTransform left;
@@ -19,9 +60,16 @@ public class ScalableControl : MonoBehaviour
     private RectTransform background;
     private RectTransform label;
 
+    #endregion
+
+    #region Settings
+
     private float cornerSize = 16f;
     private float edgeThickness = 16f;
 
+    #endregion
+
+    #region Initialization
 
     public void Awake()
     {
@@ -42,13 +90,17 @@ public class ScalableControl : MonoBehaviour
     void Start() => ApplyLayout();
     void OnValidate() => ApplyLayout();
 
+    #endregion
+
 #if UNITY_EDITOR
     void Update()
     {
-        // Continuously apply layout changes in SpawnPairRoutine & Edit mode (if in unity editor)
+        // Continuously apply layout changes in editor mode
         ApplyLayout();
     }
 #endif
+
+    #region Layout
 
     void ApplyLayout()
     {
@@ -180,4 +232,6 @@ public class ScalableControl : MonoBehaviour
         }
 
     }
+
+    #endregion
 }

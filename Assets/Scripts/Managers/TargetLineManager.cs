@@ -4,8 +4,44 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// TARGETLINEMANAGER - Manages ability targeting line UI.
+/// 
+/// PURPOSE:
+/// Creates and manages the targeting line shown when player is selecting
+/// a target for an ability. Line connects ability button to cursor/target.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// [Ability Button] ─────────────► [Target Hero]
+///                     ↑
+///              targeting line
+/// ```
+/// 
+/// TARGETING FLOW:
+/// 1. Player clicks ability button
+/// 2. BeginTargeting() switches to AnyTarget input mode
+/// 3. TargetLine renders from button to cursor
+/// 4. OnTargetTouch() snaps line to valid targets
+/// 5. OnTargetConfirmed() fires callback with selected target
+/// 6. EndTargeting() cleans up line
+/// 
+/// SNAP BEHAVIOR:
+/// - lockRadius: Distance for auto-snap to valid targets
+/// - SnapToTarget(): Moves line endpoint to actor position
+/// 
+/// RELATED FILES:
+/// - TargetLineFactory.cs: Creates line GameObjects
+/// - TargetLineInstance.cs: Line rendering component
+/// - AbilityManager.cs: Manages ability targeting state
+/// - AbilityButtonManager.cs: Triggers targeting mode
+/// 
+/// ACCESS: g.TargetLineManager
+/// </summary>
 public class TargetLineManager : MonoBehaviour
 {
+    #region Fields
+
     private Camera mainCamera;
     private float lockRadius;
 
@@ -15,15 +51,22 @@ public class TargetLineManager : MonoBehaviour
     private TargetLineInstance instance;
     private ActorInstance lastClicked;
 
+    #endregion
+
+    #region Initialization
+
     private void Awake()
     {
         mainCamera = Camera.main;
         lockRadius = g.TileSize / 2f;
     }
 
+    #endregion
+
+    #region Targeting Flow
+
     /// <summary>
-    /// Called when an ability button is clicked.
-    /// Switches into AbilityTarget mode, spawns the line, and snaps to a random actor.
+    /// Begins ability targeting mode. Spawns line from button position.
     /// </summary>
     public void BeginTargeting(Vector3 fromWorldPosition, Action<ActorInstance> onConfirmed)
     {
@@ -35,7 +78,7 @@ public class TargetLineManager : MonoBehaviour
         onTargetConfirmed = onConfirmed;
         lastClicked = null;
 
-        // 3) use factory instead of Instantiate(prefab)
+        // 3) create targeting line
         var go = TargetLineFactory.Create();
         go.transform.position = Vector3.zero;
         go.transform.rotation = Quaternion.identity;
@@ -54,7 +97,7 @@ public class TargetLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Call when the player taps a actor while in AbilityTarget mode.
+    /// Called when player taps an actor while in targeting mode.
     /// </summary>
     public void OnTargetTouch(ActorInstance hero)
     {
@@ -97,4 +140,6 @@ public class TargetLineManager : MonoBehaviour
         // restore normal input
         g.InputManager.InputMode = InputMode.PlayerTurn;
     }
+
+    #endregion
 }

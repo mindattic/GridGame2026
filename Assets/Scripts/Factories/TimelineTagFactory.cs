@@ -7,15 +7,52 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for TimelineTag - replaces TimelineTagPrefab.prefab
-    /// Hierarchy:
-    /// - TimelineTag (root)
-    ///   - Tag (Image - main background)
-    ///   - Icon (Image - actor icon)
-    ///   - Label (TextMeshProUGUI - time label)
+    /// TIMELINETAGFACTORY - Creates timeline tag UI elements.
+    /// 
+    /// PURPOSE:
+    /// Replaces TimelineTagPrefab.prefab with code-driven creation.
+    /// Creates actor representation tags for the timeline bar UI.
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// TimelineTag (root)
+    /// ??? RectTransform (positioning)
+    /// ??? CanvasGroup (fade animations)
+    /// ??? TimelineTag (component)
+    /// ?
+    /// ??? Tag (child)
+    /// ?   ??? Image (background - team colored)
+    /// ?
+    /// ??? Icon (child)
+    /// ?   ??? Image (actor portrait)
+    /// ?
+    /// ??? Label (child)
+    ///     ??? TextMeshProUGUI (optional text)
+    /// ```
+    /// 
+    /// VISUAL APPEARANCE:
+    /// Small actor icon that moves along the timeline bar.
+    /// Color indicates team (hero/enemy).
+    /// 
+    /// RUNTIME CONFIGURATION:
+    /// TimelineTag component sets:
+    /// - Owner: ActorInstance this represents
+    /// - Speed: Movement rate based on actor Speed stat
+    /// - Mode: Queued/Approaching/PushedBack/Stunned
+    /// 
+    /// CALLED BY:
+    /// - TimelineBarInstance when spawning enemy tags
+    /// 
+    /// RELATED FILES:
+    /// - TimelineTag.cs: Component attached to tag
+    /// - TimelineBarInstance.cs: Parent container
+    /// - SpriteLibrary.cs: Provides tag sprites
     /// </summary>
     public static class TimelineTagFactory
     {
+        /// <summary>
+        /// Creates a new timeline tag GameObject.
+        /// </summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: TimelineTag ===
@@ -31,7 +68,7 @@ namespace Assets.Scripts.Factories
 
             root.AddComponent<CanvasRenderer>();
 
-            // CanvasGroup (for fade-out)
+            // CanvasGroup (for fade-out animations)
             var canvasGroup = root.AddComponent<CanvasGroup>();
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
@@ -54,10 +91,10 @@ namespace Assets.Scripts.Factories
 
             tag.AddComponent<CanvasRenderer>();
 
-                        var tagImage = tag.AddComponent<Image>();
-                        // sprite left null - assigned at runtime or via TimelineTag component
-                        tagImage.color = Color.white;
-                        tagImage.raycastTarget = true;
+            var tagImage = tag.AddComponent<Image>();
+            // sprite assigned at runtime by TimelineTag component
+            tagImage.color = Color.white;
+            tagImage.raycastTarget = true;
                         tagImage.maskable = true;
                         tagImage.type = Image.Type.Simple;
 

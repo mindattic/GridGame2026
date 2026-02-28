@@ -9,25 +9,78 @@ using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// ABILITYBUTTONMANAGER - Manages ability button UI for heroes.
+/// 
+/// PURPOSE:
+/// Creates and manages the ability buttons shown when a hero is selected.
+/// Handles button visibility, interaction, and ability activation.
+/// 
+/// BUTTON LIFECYCLE:
+/// 1. BuildAllHeroButtons() at Start - creates buttons for all heroes
+/// 2. Show(hero) - displays buttons for selected hero
+/// 3. Hide() - hides all buttons when deselected
+/// 
+/// BUTTON ORGANIZATION:
+/// - Buttons stored by CharacterClass in buttonsByHero dictionary
+/// - Each hero has their own set of ability buttons
+/// - Buttons created via AbilityButtonFactory
+/// 
+/// UI LAYOUT:
+/// - Uses HorizontalLayoutGroup for left-aligned buttons
+/// - Buttons appear in ActorCard.AbilityButtonContainer
+/// - Spacing: 8 pixels between buttons
+/// 
+/// INTERACTION GUARDS:
+/// Buttons disabled when:
+/// - Enemy turn (InputMode.EnemyTurn)
+/// - Sequences executing (g.SequenceManager.IsExecuting)
+/// - Input disabled (InputMode.None)
+/// 
+/// BUTTON CLICK FLOW:
+/// 1. Player clicks ability button
+/// 2. AbilityManager.BeginTargeting() called
+/// 3. InputMode changes to targeting mode
+/// 4. Player selects targets
+/// 5. AbilityManager.Cast() executes ability
+/// 
+/// RELATED FILES:
+/// - AbilityButtonFactory.cs: Creates button GameObjects
+/// - AbilityButton.cs: Individual button component
+/// - AbilityManager.cs: Handles targeting/casting
+/// - ActorCard.cs: Contains AbilityButtonContainer
+/// - Ability.cs: Ability data definition
+/// 
+/// ACCESS: g.AbilityButtonManager
+/// </summary>
 public class AbilityButtonManager : MonoBehaviour
 {
+    #region Fields
+
     private Transform abilityButtonContainer;
     private HorizontalLayoutGroup layoutGroup;
 
+    /// <summary>Buttons organized by hero's CharacterClass.</summary>
     private readonly Dictionary<CharacterClass, List<AbilityButton>> buttonsByHero = new();
+
+    /// <summary>All ability buttons for quick iteration.</summary>
     private readonly List<AbilityButton> allButtons = new();
+
+    #endregion
+
+    #region Initialization
 
     public void Awake()
     {
         abilityButtonContainer = GameObjectHelper.Game.Card.AbilityButtonContainer;
 
-        // Configure HorizontalLayoutGroup for left-aligned buttons (like books on a shelf)
+        // Configure HorizontalLayoutGroup for left-aligned buttons
         if (abilityButtonContainer != null)
         {
             layoutGroup = abilityButtonContainer.GetComponent<HorizontalLayoutGroup>();
             if (layoutGroup == null)
                 layoutGroup = abilityButtonContainer.gameObject.AddComponent<HorizontalLayoutGroup>();
-            
+
             layoutGroup.childAlignment = TextAnchor.MiddleLeft;
             layoutGroup.childControlWidth = false;
             layoutGroup.childControlHeight = false;
@@ -43,12 +96,22 @@ public class AbilityButtonManager : MonoBehaviour
         HideAll();
     }
 
+    #endregion
+
+    #region Interaction Guards
+
+    /// <summary>Returns true if ability interactions should be blocked.</summary>
     private static bool IsInteractionLocked()
     {
         return g.InputManager == null || g.SequenceManager == null ||
                g.InputManager.InputMode == InputMode.EnemyTurn || g.SequenceManager.IsExecuting || g.InputManager.InputMode == InputMode.None;
     }
 
+    #endregion
+
+    #region Button Building
+
+    /// <summary>Creates ability buttons for all heroes at startup.</summary>
     private void BuildAllHeroButtons()
     {
         buttonsByHero.Clear();
@@ -185,5 +248,7 @@ public class AbilityButtonManager : MonoBehaviour
                 // Optionally: show feedback for insufficient mana
             }
         }
+
+        #endregion
     }
 }

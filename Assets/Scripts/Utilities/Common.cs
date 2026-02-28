@@ -198,25 +198,64 @@ public static class Rarities
 }
 
 /// <summary>
-/// Common WaitForSeconds helpers for coroutines.
+/// WAIT - Static helpers for coroutine yield timing.
+/// 
+/// PURPOSE:
+/// Provides convenient yield return values for sequence coroutines.
+/// Avoids creating new WaitForSeconds objects repeatedly.
+/// 
+/// COMMON USAGE:
+/// ```csharp
+/// yield return Wait.None();           // Complete immediately (one iteration)
+/// yield return Wait.OneTick();        // One game tick (Interval.OneTick)
+/// yield return Wait.Ticks(5);         // Multiple ticks
+/// yield return Wait.For(0.5f);        // Specific seconds
+/// yield return Wait.UntilEndOfFrame();// End of current frame
+/// yield return Wait.UntilNextFrame(); // Next frame (null yield)
+/// ```
+/// 
+/// WAIT.NONE() PATTERN:
+/// Used in sequences when you need to yield but have no actual wait.
+/// Returns an Immediate IEnumerator that completes instantly.
+/// 
+/// INTERVAL REFERENCE:
+/// - OneTick: Defined in Interval class (typically 1/60 second)
+/// 
+/// RELATED FILES:
+/// - SequenceEvent.cs: Base class using these helpers
+/// - SequenceManager.cs: Executes coroutines
+/// - Interval class: Defines tick duration
 /// </summary>
 public static class Wait
 {
+    /// <summary>Wait for one game tick.</summary>
     public static WaitForSeconds OneTick() => new WaitForSeconds(Interval.OneTick);
+
+    /// <summary>Wait for multiple ticks.</summary>
     public static WaitForSeconds Ticks(int amount) => new WaitForSeconds(Interval.OneTick * amount);
+
+    /// <summary>Wait for specific seconds.</summary>
     public static WaitForSeconds For(float seconds) => new WaitForSeconds(seconds);
 
-    //Immediate completion enumerator for coroutines that need to yield but have nothing to wait for.
+    /// <summary>
+    /// Immediate completion - yields once then completes.
+    /// Use when coroutine must yield but has nothing to wait for.
+    /// </summary>
     public static object None() => Immediate.Instance;
 
-    // Wait until end of frame
+    /// <summary>Cached WaitForEndOfFrame instance.</summary>
     public static readonly WaitForEndOfFrame EndOfFrame = new WaitForEndOfFrame();
+
+    /// <summary>Wait until end of current frame.</summary>
     public static object UntilEndOfFrame() => EndOfFrame;
 
-    // Wait until next frame (equivalent to yield return null)
+    /// <summary>Wait until next frame (equivalent to yield return null).</summary>
     public static object UntilNextFrame() => null;
 
-    // Singleton no-op IEnumerator (MoveNext returns false immediately).
+    /// <summary>
+    /// Singleton no-op IEnumerator that completes immediately.
+    /// MoveNext() returns false on first call.
+    /// </summary>
     private sealed class Immediate : IEnumerator
     {
         public static readonly Immediate Instance = new Immediate();

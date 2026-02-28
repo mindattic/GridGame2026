@@ -9,12 +9,56 @@ using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Factories;
 
+/// <summary>
+/// TOOLTIPINSTANCE - Floating tooltip UI component.
+/// 
+/// PURPOSE:
+/// Displays contextual tooltip text near UI elements or world objects.
+/// Supports typewriter effect, fading, and auto-positioning.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌─────────────────┐
+/// │ Tooltip message │
+/// │ with details    │
+/// └─────────────────┘
+///         ↑
+///    [Target Element]
+/// ```
+/// 
+/// FEATURES:
+/// - followPointer: Tooltip follows mouse/touch
+/// - useFade: Fade in/out animation
+/// - useTypewriter: Text appears character by character
+/// - autoDestroy: Self-destructs after delay
+/// 
+/// PLACEMENT:
+/// TooltipPlacement enum determines anchor position relative to target:
+/// - Above, Below, Left, Right
+/// 
+/// TEXT ALIGNMENT:
+/// TooltipTextAlignment controls text positioning within tooltip.
+/// 
+/// TYPEWRITER MODES:
+/// - CharacterByCharacter: One char at a time
+/// - WordByWord: One word at a time
+/// 
+/// RELATED FILES:
+/// - TooltipFactory.cs: Creates tooltip GameObjects
+/// - TooltipManager.cs: Manages tooltip lifecycle
+/// - CanvasHelper.cs: Canvas positioning utilities
+/// </summary>
 public class TooltipInstance : MonoBehaviour
 {
+    #region UI References
 
     private RectTransform background;
     private TextMeshProUGUI label;
     private CanvasGroup canvasGroup;
+
+    #endregion
+
+    #region Settings
 
     private Vector2 screenOffset;
     private bool followingPointer = false;
@@ -33,6 +77,13 @@ public class TooltipInstance : MonoBehaviour
     public TypewriterMode typewriterMode = TypewriterMode.CharacterByCharacter;
     public TooltipTextAlignment textAlignment = TooltipTextAlignment.TopLeft;
 
+    #endregion
+
+    #region Initialization
+
+    /// <summary>
+    /// Configures tooltip with message and positioning.
+    /// </summary>
     public void Assign(string message, RectTransform uiTarget, Transform worldTarget, TooltipPlacement placement)
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -58,6 +109,7 @@ public class TooltipInstance : MonoBehaviour
         string[] lines = wrappedMessage.Split('\n');
         float maxLineWidth = 0f;
 
+    #endregion
         foreach (var line in lines)
         {
             var size = label.GetPreferredValues(line, Mathf.Infinity, lineHeight);

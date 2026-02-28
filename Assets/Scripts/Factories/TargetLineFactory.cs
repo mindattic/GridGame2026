@@ -4,18 +4,50 @@ using UnityEngine.Rendering;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for TargetLine - replaces TargetLinePrefab.prefab
+    /// TARGETLINEFACTORY - Creates ability targeting line GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates a visual line connecting an ability button to the
+    /// cursor/target during ability targeting mode.
+    /// 
+    /// TARGETING FLOW:
+    /// ```
+    /// [Ability Button] ?????????????? [Cursor/Target]
+    ///                      ?
+    ///              targeting line
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// TargetLine (root)
+    /// ??? LineRenderer (line visual)
+    /// ??? TargetLineInstance (behavior)
+    /// ??? SortingGroup (render order)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Tag: "SupportLine" (shared tag)
+    /// - SortingLayer: Lines
+    /// - Width: 0.515 constant
+    /// - Material: Sprites/Default
+    /// 
+    /// CALLED BY:
+    /// - TargetLineManager.BeginTargeting()
+    /// 
+    /// RELATED FILES:
+    /// - TargetLineInstance.cs: Line behavior
+    /// - TargetLineManager.cs: Manages targeting lines
+    /// - AbilityManager.cs: Ability targeting flow
     /// </summary>
     public static class TargetLineFactory
     {
+        /// <summary>Creates a new targeting line.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("TargetLine");
-            root.layer = 0; // Default layer
-            root.tag = "SupportLine"; // Same tag as in prefab
+            root.layer = 0;
+            root.tag = "SupportLine";
 
-            // Transform
             var transform = root.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
@@ -28,31 +60,25 @@ namespace Assets.Scripts.Factories
             lineRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
             lineRenderer.lightProbeUsage = LightProbeUsage.Off;
             lineRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
-            lineRenderer.sortingLayerName = "Lines"; // SortingLayer 4
+            lineRenderer.sortingLayerName = "Lines";
             lineRenderer.sortingOrder = 0;
 
-            // Material - use default Line material
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
-            // Line settings
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, Vector3.zero);
             lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
             lineRenderer.widthMultiplier = 1f;
             lineRenderer.useWorldSpace = true;
 
-            // Width curve (constant width)
             lineRenderer.widthCurve = AnimationCurve.Constant(0f, 1f, 0.515152f);
 
-            // TargetLineInstance (custom component)
             root.AddComponent<TargetLineInstance>();
 
-            // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();
             sortingGroup.sortingLayerName = "Lines";
             sortingGroup.sortingOrder = 0;
 
-            // Parent if specified
             if (parent != null)
             {
                 transform.SetParent(parent, false);

@@ -8,12 +8,47 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// FOOTSTEPMANAGER - Spawns footstep effects during actor movement.
+/// 
+/// PURPOSE:
+/// Creates footstep dust/trail effects as characters move across the board.
+/// Alternates between left and right foot positions.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// [Actor moving right]
+///   👣    👣    👣
+///  left  right  left
+/// ```
+/// 
+/// SPAWN LOGIC:
+/// - Tracks target transform position each frame
+/// - When distance > threshold, spawns footstep
+/// - Alternates isRightFoot for left/right offset
+/// 
+/// THRESHOLD:
+/// Default 0.01 units - very sensitive to movement.
+/// 
+/// RELATED FILES:
+/// - FootstepFactory.cs: Creates footstep GameObjects
+/// - FootstepInstance.cs: Footstep fade/animation
+/// - ActorMovement.cs: Actor movement triggering footsteps
+/// 
+/// ACCESS: g.FootstepManager
+/// </summary>
 public class FootstepManager : MonoBehaviour
 {
+    #region Fields
+
     [SerializeField] Transform target;
     Vector3 previousPosition;
     bool isRightFoot = false;
     float threshold;
+
+    #endregion
+
+    #region Initialization
 
     public void Awake()
     {
@@ -29,18 +64,21 @@ public class FootstepManager : MonoBehaviour
         StartCoroutine(CheckSpawnRoutine());
     }
 
+    #endregion
 
-    /// <summary>
-    /// Stops playing footstep effects.
-    /// </summary>
+    #region Public Methods
+
+    /// <summary>Stops footstep spawning and resets foot alternation.</summary>
     public void Stop()
     {
         isRightFoot = false;
     }
 
-    /// <summary>
-    /// Checks the distance traveled by the actor to decide when to spawn footsteps.
-    /// </summary>
+    #endregion
+
+    #region Spawn Logic
+
+    /// <summary>Monitors movement and spawns footsteps when threshold exceeded.</summary>
     private IEnumerator CheckSpawnRoutine()
     {
 
@@ -54,9 +92,7 @@ public class FootstepManager : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Spawns a single footstep instance at the actor's position.
-    /// </summary>
+    /// <summary>Spawns a single footstep at the current position.</summary>
     private void Spawn()
     {
         // Use factory instead of Instantiate(prefab)
@@ -73,7 +109,7 @@ public class FootstepManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Clears all footstep objects from the scene without using tags.
+    /// Clears all footstep objects from the scene.
     /// </summary>
     public void Clear()
     {
@@ -83,4 +119,6 @@ public class FootstepManager : MonoBehaviour
             Destroy(instance.gameObject);
         }
     }
+
+    #endregion
 }

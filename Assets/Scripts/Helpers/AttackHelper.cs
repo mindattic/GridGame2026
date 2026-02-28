@@ -10,28 +10,64 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
+    /// <summary>
+    /// ATTACKHELPER - Static utilities for combat damage and attack VFX.
+    /// 
+    /// PURPOSE:
+    /// Provides reusable attack routines for applying damage, playing VFX,
+    /// and handling hit outcomes (damage, miss, critical).
+    /// 
+    /// KEY METHODS:
+    /// - SingleAttackRoutine(): Process one AttackResult with VFX
+    /// - MultiAttackRoutine(): Process multiple attacks in sequence
+    /// - ApplyDamage(): Apply damage to target with all side effects
+    /// 
+    /// ATTACK FLOW:
+    /// 1. Check for miss → Play dodge animation, exit
+    /// 2. Play VFX (e.g., BlueSlash4) at target position
+    /// 3. Wait until VFX apex (trigger point)
+    /// 4. Apply damage via opponent.Damage(result)
+    /// 5. Push enemy timeline tag back (if hero attacking)
+    /// 
+    /// HIT OUTCOMES (HitOutcome enum):
+    /// - Miss: Attack dodged, no damage
+    /// - Hit: Normal damage
+    /// - Critical: Bonus damage with extra VFX
+    /// 
+    /// TIMELINE PUSHBACK:
+    /// When heroes attack enemies, the enemy's timeline tag is pushed back:
+    /// - Only during hero turn
+    /// - Pushback amount based on attacker's Strength stat
+    /// - Delays enemy turn, giving player more time
+    /// 
+    /// RELATED FILES:
+    /// - AttackResult.cs: Data model for attack outcome
+    /// - PincerAttackSequence.cs: Uses MultiAttackRoutine
+    /// - EnemyAttackSequence.cs: Uses SingleAttackRoutine
+    /// - VisualEffectLibrary.cs: Provides attack VFX
+    /// - TimelineBarInstance.cs: PushbackOnAttack method
+    /// </summary>
     public static class AttackHelper
     {
         /// <summary>
-        /// Applies damage for a single attack result, then yields once.
-        /// If the opponent is an enemy, plays BlueSlash1 and triggers damage at the slash apex.
+        /// Applies damage for a single attack result with VFX.
+        /// If miss, plays dodge animation. Otherwise plays slash VFX and applies damage.
         /// </summary>
         public static IEnumerator SingleAttackRoutine(AttackResult attackResult)
         {
             var opp = attackResult?.Opponent;
-            if (opp == null || !opp.IsPlaying)           // guard: opponent might have died/deactivated earlier this frame
+            if (opp == null || !opp.IsPlaying)
                 yield break;
 
-            // New: handle clean Miss with dodge feedback
+            // Handle miss with dodge feedback
             if (attackResult.HitType == HitOutcome.Miss)
             {
                 yield return opp.AttackMissRoutine();
-                // Preserve original yield
                 yield return Wait.None();
                 yield break;
             }
 
-            // For attacks against enemies, play and apply damage at its apex
+            // For attacks against enemies, play VFX and apply damage at apex
             if (opp.IsEnemy)
             {
                 var vfx = VisualEffectLibrary.Get("BlueSlash4");
@@ -40,21 +76,18 @@ namespace Assets.Helpers
                     var inst = g.VisualEffectManager.SpawnInstance(vfx, opp.Position, null);
                     if (inst != null)
                     {
-                        // Wait until the slash reaches apex, then apply damage
+                        // Wait until slash reaches apex, then apply damage
                         yield return inst.WaitUntilTrigger(vfx);
                         opp.Damage(attackResult);
-                        
-                        // Only push the enemy's timeline tag back if:
-                        // 1. The attacker is a Hero
-                        // 2. It's currently the hero's turn (not during enemy turn/counter-attacks)
+
+                        // Push enemy timeline back if hero attacking during hero turn
                         bool isHeroTurn = g.TurnManager == null || g.TurnManager.IsHeroTurn;
                         if (isHeroTurn && attackResult.Attacker != null && attackResult.Attacker.IsHero)
                         {
                             int attackerStrength = attackResult.Attacker.Stats?.Strength.ToInt() ?? 10;
                             g.TimelineBar?.PushbackOnAttack(opp, attackerStrength);
                         }
-                        
-                        // Optional: let VFX continue; do not block on full duration
+
                         yield return Wait.None();
                         yield break;
                     }
@@ -63,8 +96,8 @@ namespace Assets.Helpers
 
             // Fallback: apply damage immediately
             opp.Damage(attackResult);
-            
-            // Only push the enemy's timeline tag back if attacker is a Hero AND it's hero turn
+
+            // Timeline pushback for hero attacks
             bool isHeroTurnFallback = g.TurnManager == null || g.TurnManager.IsHeroTurn;
             if (opp.IsEnemy && isHeroTurnFallback && attackResult.Attacker != null && attackResult.Attacker.IsHero)
             {

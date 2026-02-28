@@ -7,8 +7,42 @@ using c = Assets.Helpers.CanvasHelper;
 using TMPro;
 
 /// <summary>
-/// Runtime instance of the MessageBox prefab.
-/// Displays a single message with an OK button and invokes a callback when dismissed.
+/// MESSAGEBOXINSTANCE - Simple message dialog with OK button.
+/// 
+/// PURPOSE:
+/// Displays a message to the player with a single OK button to dismiss.
+/// Used for notifications, alerts, and simple confirmations.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌────────────────────────────┐
+/// │                            │
+/// │   Your message text here   │
+/// │                            │
+/// │         [ OK ]             │
+/// └────────────────────────────┘
+/// ```
+/// 
+/// USAGE:
+/// ```csharp
+/// var dialog = MessageBoxFactory.Create(canvas);
+/// var instance = dialog.GetComponent<MessageBoxInstance>();
+/// instance.Assign("Stage Complete!", () => {
+///     // Called when OK clicked
+///     LoadNextStage();
+/// });
+/// ```
+/// 
+/// CALLBACK:
+/// onOkClicked invoked when player presses OK button.
+/// Dialog auto-destroys after callback.
+/// 
+/// RELATED FILES:
+/// - MessageBoxFactory.cs: Creates dialog GameObjects
+/// - ConfirmationDialogInstance.cs: Yes/No variant
+/// - UIHelper.cs: UI sizing utilities
+/// 
+/// ACCESS: Created via MessageBoxFactory.Create()
 /// </summary>
 public class MessageBoxInstance : MonoBehaviour
 {
@@ -16,14 +50,12 @@ public class MessageBoxInstance : MonoBehaviour
     private RectTransform prompt;
     private RectTransform buttonOk;
 
-    // Optional callback invoked when OK is pressed.
+    /// <summary>Callback invoked when OK is pressed.</summary>
     public Action onOkClicked;
 
     /// <summary>
-    /// Initializes the dialog, sizes the UI, binds the OK event, and sets the message text.
+    /// Initializes the dialog with message text and optional callback.
     /// </summary>
-    /// <param name="text">Message text to display.</param>
-    /// <param name="onOk">Callback invoked when OK is pressed.</param>
     public void Assign(string text, Action onOk = default)
     {
         Setup();
@@ -35,8 +67,7 @@ public class MessageBoxInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resolves required RectTransform references from the scene.
-    /// Call after the prefab has been instantiated.
+    /// Resolves required RectTransform references from hierarchy.
     /// </summary>
     private void Setup()
     {
@@ -46,8 +77,7 @@ public class MessageBoxInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resizes the dialog elements based on current canvas dimensions.
-    /// Matches the panel to the canvas and scales the OK button proportionally.
+    /// Resizes dialog elements based on canvas dimensions.
     /// </summary>
     private void ResizeUI()
     {
