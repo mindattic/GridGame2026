@@ -7,6 +7,24 @@ using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
+    /// <summary>
+    /// PALADIN - Hero character data definition.
+    /// 
+    /// ROLE: Frontline Tank/Guardian
+    /// 
+    /// STAT FOCUS:
+    /// - High Vitality (tanky)
+    /// - High Stamina (sustain)
+    /// - Moderate Strength (damage)
+    /// - Low Speed (slow but steady)
+    /// 
+    /// PLAYSTYLE:
+    /// Anchors the frontline, absorbs damage, protects allies.
+    /// Uses guard, taunt, and disruption abilities.
+    /// 
+    /// NOTE: All Data/Actor/*.cs files follow this same pattern.
+    /// Each defines a single static Data() method returning ActorData.
+    /// </summary>
     public static class Paladin
     {
         public static ActorData Data()
@@ -14,7 +32,7 @@ namespace Assets.Data.Actor
             return new ActorData
             {
                 CharacterName = "Paladin",
-                CharacterClass = CharacterClass.Paladin, // If this enum does not exist, replace accordingly.
+                CharacterClass = CharacterClass.Paladin,
                 Tags = Tag.Hero | Tag.Humanoid,
 
                 Description = "A stalwart defender that anchors the line and absorbs pressure.",

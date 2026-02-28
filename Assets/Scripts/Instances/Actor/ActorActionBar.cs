@@ -5,9 +5,27 @@ using System.Collections;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-// ActorActionBar is responsible for managing and updating the visual representation 
-// of an actor's Animation points (AP) in the UI. It handles the fill and drain animations 
-// for the Animation fill based on the actor's CurrentProfile and maximum AP.
+/// <summary>
+/// ACTORACTIONBAR - Manages actor AP (action points) bar visualization.
+/// 
+/// PURPOSE:
+/// Controls the action bar UI element for an actor, handling
+/// fill levels, drain animations, and AP text display.
+/// 
+/// VISUAL COMPONENTS:
+/// - actionBarBack: Background bar (full size)
+/// - actionBarFill: Current AP (yellow)
+/// - actionBarDrain: AP spend animation
+/// - actionBarText: "AP/MaxAP" display
+/// 
+/// AP USAGE:
+/// AP is spent when actors take actions. Bar updates to reflect
+/// remaining action points for the turn.
+/// 
+/// RELATED FILES:
+/// - ActorRenderers.cs: Provides bar renderers
+/// - ActorStats.cs: AP/MaxAP values
+/// </summary>
 public class ActorActionBar
 {
     protected ActorFlags flags => instance.Flags;
@@ -15,18 +33,13 @@ public class ActorActionBar
     protected ActorStats stats => instance.Stats;
 
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
-
-    // Field to store the parent actor actors that this Animation fill is associated with.
     private ActorInstance instance;
 
-    // Show sets up the ActionBar by linking it to its parent ActorInstance.
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;
     }
 
-    // GetScale calculates the scaled width for the Animation fill elements based on a given AP value.
-    // It scales the s-component proportionally to the fraction of AP relative to MaxAP and clamps it between 0 and the initial width.
     private Vector3 GetScale(float value)
     {
         return new Vector3(
@@ -35,16 +48,11 @@ public class ActorActionBar
             initialScale.z);
     }
 
-    // Save refreshes the Animation fill UI to reflect the actor's CurrentProfile AP values.
-    // It adjusts the fill and drain fill scales, updates the textarea display, execute a Weapon wiggle Animation,
-    // and initiates the drain Animation.
     public void Update()
     {
         render.actionBarDrain.transform.localScale = GetScale(stats.PreviousAP);
         render.actionBarFill.transform.localScale = GetScale(stats.AP);
         render.actionBarText.text = $@"{stats.AP}/{stats.MaxAP}";
-
-        //instance.Animation.WeaponWiggle();
 
         Drain();
     }

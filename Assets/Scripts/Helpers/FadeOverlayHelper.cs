@@ -1,4 +1,4 @@
-﻿// --- File: Assets/Scripts/Helpers/FadeHelper.cs ---
+﻿// --- File: Assets/Scripts/Helpers/FadeOverlayHelper.cs ---
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using c = Assets.Helpers.CanvasHelper;
@@ -6,18 +6,51 @@ using c = Assets.Helpers.CanvasHelper;
 namespace Assets.Helpers
 {
     /// <summary>
-    /// Caches the current scene's FadeOverlayInstance so callers always get the correct reference.
-    /// Looks up the FadeRoutine GameObject by name using GameObjectHelper.Overworld.FadeRoutine once per scene load.
+    /// FADEOVERLAYHELPER - Cached access to scene fade overlay.
+    /// 
+    /// PURPOSE:
+    /// Provides fast, cached access to the FadeOverlayInstance component
+    /// used for scene transition fade effects.
+    /// 
+    /// CACHING STRATEGY:
+    /// - Caches overlay reference once per scene
+    /// - Auto-refreshes on scene change via sceneLoaded event
+    /// - Lazy initialization on first access
+    /// 
+    /// FADE TRANSITIONS:
+    /// ```
+    /// Scene A                    Scene B
+    ///   ↓                          ↓
+    /// [Visible] → FadeOut → [Black] → LoadScene → [Black] → FadeIn → [Visible]
+    /// ```
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// // Access the overlay
+    /// var overlay = FadeOverlayHelper.Overlay;
+    /// overlay.FadeOut(() => LoadNextScene());
+    /// overlay.FadeIn();
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - FadeOverlayInstance.cs: Fade animation behavior
+    /// - SceneHelper.cs: Uses for scene transitions
+    /// - FadeOverlayFactory.cs: Creates overlay prefab
     /// </summary>
     public static class FadeOverlayHelper
     {
-        // Cached references
+        #region Cached References
+
         private static FadeOverlayInstance overlay;
         private static RectTransform rect;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Fast access to the cached FadeOverlayInstance.
-        /// If the cache is empty, performs a one time lookup for the current scene.
+        /// Performs one-time lookup if cache is empty.
         /// </summary>
         public static FadeOverlayInstance Overlay
         {
@@ -28,8 +61,12 @@ namespace Assets.Helpers
             }
         }
 
+        #endregion
+
+        #region Initialization
+
         /// <summary>
-        /// Initialize on first scene after load and refresh cache when scenes change.
+        /// Initialize on first scene after load and refresh cache on scene changes.
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init()
@@ -39,9 +76,7 @@ namespace Assets.Helpers
             Cache();
         }
 
-        /// <summary>
-        /// Scene change callback that refreshes the cached reference.
-        /// </summary>
+        /// <summary>Scene change callback that refreshes the cached reference.</summary>
         private static void OnSceneLoaded(Scene _, LoadSceneMode __)
         {
             Cache();
@@ -70,5 +105,6 @@ namespace Assets.Helpers
             rect = go.GetComponent<RectTransform>();
         }
 
+        #endregion
     }
 }

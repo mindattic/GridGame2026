@@ -8,15 +8,47 @@ using UnityEngine.SceneManagement;
 namespace Assets.Helpers
 {
     /// <summary>
-    /// Centralized scene changes with fade out, scene change, async load, and fade in.
-    /// Usage:
-    ///   using scene = Assets.Helpers.SceneHelper;
-    ///   scene.Change.ToSettings();
-    ///   scene.FadeIn();
+    /// SCENEHELPER - Centralized scene navigation with transitions.
+    /// 
+    /// PURPOSE:
+    /// Provides unified scene change functionality with fade transitions,
+    /// async loading, and scene history tracking.
+    /// 
+    /// USAGE PATTERNS:
+    /// ```csharp
+    /// using scene = Assets.Helpers.SceneHelper;
+    /// 
+    /// // Fade out → load → fade in
+    /// scene.Fade.ToSettings();
+    /// scene.Fade.ToGame();
+    /// 
+    /// // Instant switch (no fade)
+    /// scene.Switch.ToTitleScreen();
+    /// 
+    /// // Manual fade in after scene loads
+    /// scene.FadeIn();
+    /// 
+    /// // Go back to previous scene
+    /// scene.Fade.ToPreviousScene();
+    /// ```
+    /// 
+    /// SCENE NAMES:
+    /// All scene name constants defined here to avoid typos.
+    /// 
+    /// TRANSITION FLOW:
+    /// 1. Fade out overlay
+    /// 2. Load new scene (async)
+    /// 3. Fade in overlay
+    /// 
+    /// RELATED FILES:
+    /// - FadeOverlay.cs: Fade animation component
+    /// - FadeOverlayHelper.cs: Overlay access
+    /// - LoadingScreen scene: Async loading display
     /// </summary>
     public static class SceneHelper
     {
-        // Scene name constants
+        #region Scene Name Constants
+
         public const string Credits = "Credits";
         public const string Game = "Game";
         public const string LoadingScreen = "LoadingScreen";
@@ -30,22 +62,24 @@ namespace Assets.Helpers
         public const string StageSelect = "StageSelect";
         public const string TitleScreen = "TitleScreen";
         public const string PostBattleScreen = "PostBattleScreen";
-        public const string Hub = "Hub"; 
-     
-        /// <summary>
-        /// Returns true if the active scene matches the provided name.
-        /// </summary>
+        public const string Hub = "Hub";
+
+        #endregion
+
+        #region Scene Queries
+
+        /// <summary>Returns true if the active scene matches the provided name.</summary>
         public static bool IsCurrentScene(string sceneName) =>
             SceneManager.GetActiveScene().name == sceneName;
 
-        /// <summary>
-        /// True if the current scene is the main game scene.
-        /// </summary>
+        /// <summary>True if the current scene is the main game scene.</summary>
         public static bool IsGameScene => IsCurrentScene(Game);
 
-        /// <summary>
-        /// Calls FadeIn on the active FadeOverlay if it exists.
-        /// </summary>
+        #endregion
+
+        #region Fade Transitions
+
+        /// <summary>Calls FadeIn on the active FadeOverlay if it exists.</summary>
         public static void FadeIn(IEnumerator routine = null)
         {
 
@@ -185,5 +219,6 @@ namespace Assets.Helpers
             public static void ToHub() => To(Hub); 
         }
 
+        #endregion
     }
 }

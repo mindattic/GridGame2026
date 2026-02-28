@@ -1,8 +1,26 @@
 ﻿using UnityEngine;
+
 /// <summary>
-/// A minimal class storing two actors (supporter, attacker) plus an axis (Vertical or Horizontal).
-/// Optionally retains startActor / endActor for convenience, as well as Matches().
-/// All older "in-between" logic and lists have been removed.
+/// ACTORPAIR - Two actors with axis relationship.
+/// 
+/// PURPOSE:
+/// Stores two actors (e.g., supporter + attacker) with their
+/// relative axis (horizontal or vertical alignment).
+/// 
+/// AXIS DETECTION:
+/// Automatically determines if actors are aligned
+/// horizontally or vertically based on position.
+/// 
+/// ACCESSORS:
+/// - startActor: Top (vertical) or right (horizontal) actor
+/// - endActor: Bottom (vertical) or left (horizontal) actor
+/// 
+/// USAGE:
+/// Used for support line calculations and pincer detection.
+/// 
+/// RELATED FILES:
+/// - SupportLineManager.cs: Creates support lines
+/// - PincerAttackManager.cs: Pincer detection
 /// </summary>
 public class ActorPair
 {
@@ -27,10 +45,7 @@ public class ActorPair
         this.axis = axis;
     }
 
-    /// <summary>
-    /// Returns whichever actor is "top" (if vertical) or "right" (if horizontal).
-    /// This logic is often used to figure out start->end in row/column order.
-    /// </summary>
+    /// <summary>Returns top (vertical) or right (horizontal) actor.</summary>
     public ActorInstance startActor
     {
         get
@@ -39,7 +54,7 @@ public class ActorPair
             {
                 return (actor1.location.y > actor2.location.y) ? actor1 : actor2;
             }
-            else // horizontal
+            else
             {
                 return (actor1.location.x > actor2.location.x) ? actor1 : actor2;
             }

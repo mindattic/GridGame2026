@@ -4,6 +4,27 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// TUTORIALLIBRARY - Registry of tutorial content.
+    /// 
+    /// PURPOSE:
+    /// Defines multi-page tutorials that teach players
+    /// game mechanics through text and images.
+    /// 
+    /// STRUCTURE:
+    /// - Key: Tutorial identifier
+    /// - Pages: List of TutorialPage (image + text)
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var tutorial = TutorialLibrary.Get("Tutorial1");
+    /// TutorialPopup.Show(tutorial);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - Tutorial.cs: Tutorial data structure
+    /// - TutorialPopup.cs: Tutorial display UI
+    /// </summary>
     public static class TutorialLibrary
     {
         private static Dictionary<string, Tutorial> tutorials;

@@ -3,9 +3,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// COINCOUNTER - UI display for player coins.
+/// 
+/// PURPOSE:
+/// Displays the current coin count with a pulsing glow
+/// effect and provides world position for coin collection.
+/// 
+/// VISUAL ELEMENTS:
+/// - Icon: Coin sprite
+/// - Glow: Pulsing halo effect
+/// - Value: Text showing coin count (7 digits)
+/// 
+/// FEATURES:
+/// - Animated glow pulse via AnimationCurve
+/// - World position for coin magnet effect
+/// - Auto-refresh on coin changes
+/// 
+/// ACCESS: g.CoinCounter
+/// 
+/// RELATED FILES:
+/// - CoinManager.cs: Coin spawning
+/// - CoinInstance.cs: Coin collection
+/// - GameHelper.cs: TotalCoins property
+/// </summary>
 public class CoinCounter : MonoBehaviour
 {
-    //Fields
+    #region Fields
+
     [SerializeField] public AnimationCurve glowCurve;
     [HideInInspector] public Image icon;
     [HideInInspector] public Image glow;
@@ -13,7 +38,10 @@ public class CoinCounter : MonoBehaviour
     private float maxGlowScale = 2f;
     private Camera mainCamera;
 
-    // Initialization tasks before the game starts
+    #endregion
+
+    #region Initialization
+
     void Awake()
     {
         icon = transform.GetChild("Icon").GetComponent<Image>();
@@ -22,19 +50,23 @@ public class CoinCounter : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    #endregion
+
+    #region Update
+
     void FixedUpdate()
     {
         UpdateGlow();
     }
 
+    /// <summary>Refresh displayed coin count.</summary>
     public void Refresh()
     {
-        value.text = g.TotalCoins.ToString("D7"); // Displays coin count with leading zeros
+        value.text = g.TotalCoins.ToString("D7");
     }
 
     private void UpdateGlow()
     {
-        // Make Glow pulse based on the Animation curve
         float glowScale = maxGlowScale * glowCurve.Evaluate(Time.time % glowCurve.length);
         glow.rectTransform.localScale = new Vector3(
             icon.rectTransform.localScale.x * glowScale,
@@ -42,18 +74,21 @@ public class CoinCounter : MonoBehaviour
             1.0f);
     }
 
-    /// <summary>
-    /// Converts the Icon Image's screen position to world coordinates.
-    /// </summary>
-    public Vector3 GetIconWorldPosition()
-    {
-        if (mainCamera == null)
-            return Vector3.zero;
+    #endregion
 
-        // Convert UI position to world position
-        Vector3 screenPosition = icon.rectTransform.position;
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, mainCamera.nearClipPlane));
+    #region Helpers
 
-        return worldPosition;
+        /// <summary>Converts the Icon Image's screen position to world coordinates.</summary>
+        public Vector3 GetIconWorldPosition()
+        {
+            if (mainCamera == null)
+                return Vector3.zero;
+
+            Vector3 screenPosition = icon.rectTransform.position;
+            Vector3 worldPosition = mainCamera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, mainCamera.nearClipPlane));
+
+            return worldPosition;
+        }
+
+        #endregion
     }
-}

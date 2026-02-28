@@ -5,10 +5,33 @@ using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
 
 /// <summary>
-/// Manages hero and enemy mana pools.
-/// - Mana accumulates at a constant rate while the timeline is advancing (hero is moving).
-/// - Bank button grants bonus mana equal to time skipped.
-/// - Abilities spend mana when cast.
+/// MANAPOOLMANAGER - Hero and enemy mana resource system.
+/// 
+/// PURPOSE:
+/// Manages mana pools for both teams, handling accumulation,
+/// spending, and UI display.
+/// 
+/// MANA ACCUMULATION:
+/// - Passive gain: Mana accumulates while timeline advances
+/// - Bank bonus: Grants bonus mana equal to time skipped
+/// - Rate: manaPerSecond (default 5/sec)
+/// 
+/// MANA USAGE:
+/// - Abilities spend mana when cast
+/// - Each ability has a ManaCost
+/// - Cannot cast if insufficient mana
+/// 
+/// UI ELEMENTS:
+/// - Hero mana fill bar (blue/cyan HDR)
+/// - Enemy mana fill bar (optional)
+/// - Bank button for time skip
+/// 
+/// RELATED FILES:
+/// - AbilityManager.cs: Spends mana on ability cast
+/// - TimelineBarInstance.cs: Triggers mana gain
+/// - AbilityButton.cs: Shows mana requirements
+/// 
+/// ACCESS: g.ManaPoolManager
 /// </summary>
 public class ManaPoolManager : MonoBehaviour
 {
@@ -16,7 +39,7 @@ public class ManaPoolManager : MonoBehaviour
     public float maxMana = 100f;
     [SerializeField] private float _heroMana = 0f;
     public float enemyMana = 0f;
-    
+
     public float heroMana
     {
         get => _heroMana;
@@ -24,7 +47,7 @@ public class ManaPoolManager : MonoBehaviour
     }
 
     [Header("Passive Gain")]
-    [Tooltip("Mana gained per second while the timeline is advancing.")]
+    [Tooltip("Mana gained per second while timeline advances.")]
     public float manaPerSecond = 5f;
 
     [Header("UI")]

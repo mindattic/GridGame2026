@@ -1,8 +1,9 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using UnityEngine;
-using Assets.Helpers; // for CombatLogHelper
+using Assets.Helpers;
 
+/// <summary>Elemental damage types for abilities and attacks.</summary>
 public enum ElementalDamageType
 {
     Physical,
@@ -20,6 +21,7 @@ public enum ElementalDamageType
     Arcane
 }
 
+/// <summary>Attack hit outcome types.</summary>
 public enum HitOutcome
 {
     Normal,
@@ -28,26 +30,43 @@ public enum HitOutcome
 }
 
 /// <summary>
-/// Simple, FF-like formulas using only: Speed (turn order), Luck (tilt), Attack, Defense,
-/// CritChance, HitChance. Clear caps, light level tilt, small variance, no evasion stat.
-/// All methods are pure utilities and must not mutate game state.
+/// FORMULAS - Combat calculation formulas.
+/// 
+/// PURPOSE:
+/// Pure utility class containing all combat math including
+/// damage calculation, hit/crit chance, and stat formulas.
+/// 
+/// KEY FORMULAS:
+/// - CalculateAttackResult: Full attack resolution
+/// - Offense/Defense: Damage dealing/mitigation
+/// - HitChance/CritChance: Probability calculations
+/// 
+/// DESIGN:
+/// FF-inspired formulas using Speed, Luck, Attack, Defense.
+/// Light level influence, capped ranges, small variance.
+/// All methods are pure - no game state mutation.
+/// 
+/// RELATED FILES:
+/// - AttackHelper.cs: Uses formulas for attacks
+/// - ActorStats.cs: Stat definitions
+/// - PincerAttackSequence.cs: Combat execution
 /// </summary>
 public static class Formulas
 {
-    // Small level influence: feels meaningful without runaway
-    private const float HitShiftPerLevel = 3f;        // +3% hit per level advantage
-    private const float DamageScalePerLevel = 1.07f;  // +7% damage per level advantage
+    // Level influence constants
+    private const float HitShiftPerLevel = 3f;
+    private const float DamageScalePerLevel = 1.07f;
 
     private static int LevelAdvantage(ActorStats atk, ActorStats def)
         => Mathf.RoundToInt(atk.Level - def.Level);
 
     // Outcome multipliers
-    private const float CritMultiplier = 1.60f;       // was 1.50f -> slightly spikier crits
+    private const float CritMultiplier = 1.60f;
 
-    //Knobs for tuning mitigation curve
-    private const float DefenseMitigation = 0.35f;    // was 0.50f -> less defense shaving
-    private const float PenetrationFromAttack = 0.25f; // Offense pierces a slice of Defense
-    private const float OffenseFloorFraction = 0.20f; // at least 20% of Offense gets through
+    // Defense tuning
+    private const float DefenseMitigation = 0.35f;
+    private const float PenetrationFromAttack = 0.25f;
+    private const float OffenseFloorFraction = 0.20f;
 
     // ---------------
     // Logging helpers

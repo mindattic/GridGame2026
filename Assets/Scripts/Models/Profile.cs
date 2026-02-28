@@ -4,7 +4,22 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Attribute definitions inlined to ensure availability during build
+/// <summary>
+/// PROFILE MODELS - Player profile and settings data structures.
+/// 
+/// PURPOSE:
+/// Defines data structures for player profiles, save data,
+/// and settings used by ProfileHelper.
+/// 
+/// CLASSES:
+/// - ProfileSettings: Player preferences (speed, sensitivity)
+/// - Profile: Container for settings + save slots
+/// - SaveState: Individual save file data
+/// - Various SaveData classes: Roster, Party, Stage, etc.
+/// </summary>
+
+#region Attributes
+
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
 public sealed class SettingDisplayNameAttribute : Attribute
 {
@@ -21,7 +36,9 @@ public sealed class SettingRangeAttribute : Attribute
     public SettingRangeAttribute(float min, float max, float increment = 0f) { Min = min; Max = max; Increment = increment; }
 }
 
-// Add this definition if ProfileSettings does not exist elsewhere
+#endregion
+
+/// <summary>Player preferences and game settings.</summary>
 [Serializable]
 public class ProfileSettings
 {
@@ -37,7 +54,6 @@ public class ProfileSettings
     [SettingDisplayName("Coin Count Multiplier"), SettingRange(0f, 5f, 0.05f)]
     public float CoinCountMultiplier;
 
-    // Bool settings
     [SettingDisplayName("Apply Movement Tilt")]
     public bool ApplyMovementTilt;
 

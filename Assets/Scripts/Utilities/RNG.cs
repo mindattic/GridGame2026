@@ -9,12 +9,50 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Centralized random helpers for gameplay.
-/// Provides random actors, tiles, locations, directions, colors, enums, and weighted choices.
+/// RNG - Centralized random number generation and selection utilities.
+/// 
+/// PURPOSE:
+/// Provides unified random helpers for gameplay including random
+/// actors, tiles, locations, directions, colors, and weighted choices.
+/// 
+/// RANDOM SELECTION:
+/// - Pick&lt;T&gt;(items): Random element from collection
+/// - Hero: Random playing hero actor
+/// - Enemy: Random playing enemy actor
+/// - Tile: Random tile on board
+/// - UnoccupiedTile: Random empty tile
+/// 
+/// NUMERIC RANGES:
+/// - Int(min, max): Random integer inclusive
+/// - Float(min, max): Random float inclusive
+/// - Percent: Random 0.0 to 1.0
+/// - Bool: Random true/false
+/// 
+/// GAME-SPECIFIC:
+/// - Location: Random board coordinate
+/// - Direction: Random cardinal direction
+/// - Stage(map): Random stage from map
+/// - CharacterClass: Random hero class
+/// 
+/// WEIGHTED SELECTION:
+/// - WeightedChoice: Select based on weight distribution
+/// 
+/// USAGE:
+/// ```csharp
+/// var enemy = RNG.Enemy;
+/// var damage = RNG.Int(10, 20);
+/// var crit = RNG.Percent &lt; 0.1f;
+/// var dir = RNG.Direction;
+/// ```
+/// 
+/// THREAD SAFETY:
+/// Uses [ThreadStatic] for thread-local random instances.
 /// </summary>
 static class RNG
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
+
+    #region Collection Selection
 
     /// <summary>
     /// Returns one uniformly random element from items.
@@ -26,74 +64,68 @@ static class RNG
         return items[Int(0, items.Count - 1)];
     }
 
-    /// <summary>
-    /// Random hero that is currently playing.
-    /// </summary>
+    #endregion
+
+    #region Actor Selection
+
+    /// <summary>Random hero that is currently playing.</summary>
     public static ActorInstance Hero => g.Actors.Heroes.Where(x => x.IsPlaying).Shuffle().First();
 
-    /// <summary>
-    /// Random enemy that is currently playing.
-    /// </summary>
+    /// <summary>Random enemy that is currently playing.</summary>
     public static ActorInstance Enemy => g.Actors.Enemies.Where(x => x.IsPlaying).Shuffle().First();
 
-    /// <summary>
-    /// Random tile from all tiles.
-    /// </summary>
+    #endregion
+
+    #region Tile/Location Selection
+
+    /// <summary>Random tile from all tiles.</summary>
     public static TileInstance Tile => g.Tiles.Shuffle().First();
 
-    /// <summary>
-    /// Random board location within inclusive 1..columnCount and 1..rowCount.
-    /// </summary>
+    /// <summary>Random board location within inclusive 1..columnCount and 1..rowCount.</summary>
     public static Vector2Int Location => new Vector2Int(Int(1, g.Board.columnCount), Int(1, g.Board.rowCount));
 
-    /// <summary>
-    /// Random unoccupied tile if available, otherwise null.
-    /// </summary>
-    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
+        /// <summary>Random unoccupied tile if available, otherwise null.</summary>
+        public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
-    /// <summary>
-    /// Random unoccupied location or Nowhere if none available.
-    /// </summary>
-    public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
+        /// <summary>Random unoccupied location or Nowhere if none available.</summary>
+        public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
-    /// <summary>
-    /// Random unoccupied interior location that is not on the border; Nowhere if none found.
-    /// </summary>
-    public static Vector2Int UnoccupiedInteriorLocation
-    {
-        get
+        /// <summary>
+        /// Random unoccupied interior location that is not on the border; Nowhere if none found.
+        /// </summary>
+        public static Vector2Int UnoccupiedInteriorLocation
         {
-            var tile = g.Tiles
-                .Where(t =>
-                    !t.IsOccupied &&
-                    t.location.x > 1 && t.location.x < g.Board.columnCount &&
-                    t.location.y > 1 && t.location.y < g.Board.rowCount
-                )
-                .Shuffle()
-                .FirstOrDefault();
+            get
+            {
+                var tile = g.Tiles
+                    .Where(t =>
+                        !t.IsOccupied &&
+                        t.location.x > 1 && t.location.x < g.Board.columnCount &&
+                        t.location.y > 1 && t.location.y < g.Board.rowCount
+                    )
+                    .Shuffle()
+                    .FirstOrDefault();
 
-            return tile == null ? LocationHelper.Nowhere : tile.location;
+                return tile == null ? LocationHelper.Nowhere : tile.location;
+            }
         }
-    }
 
-    /// <summary>
-    /// Random integer in inclusive range [min, max].
-    /// </summary>
-    public static int Int(int min, int max) => rng.Next(min, max + 1);
+        #endregion
 
-    /// <summary>
-    /// Random float in range [min, max).
-    /// </summary>
-    public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
+        #region Numeric Ranges
 
-    /// <summary>
-    /// Random percentage in [0, 1).
-    /// </summary>
-    public static float Percent => (float)rng.NextDouble();
+        /// <summary>Random integer in inclusive range [min, max].</summary>
+        public static int Int(int min, int max) => rng.Next(min, max + 1);
 
-    /// <summary>
-    /// Random offset in [-amount, +amount] using two independent draws.
-    /// </summary>
+        /// <summary>Random float in range [min, max).</summary>
+        public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
+
+        /// <summary>Random percentage in [0, 1).</summary>
+        public static float Percent => (float)rng.NextDouble();
+
+        /// <summary>
+        /// Random offset in [-amount, +amount] using two independent draws.
+        /// </summary>
     public static float Range(float amount) => (-amount * Percent) + (amount * Percent);
 
     /// <summary>
@@ -106,14 +138,14 @@ static class RNG
         return lower + upper;
     }
 
-    /// <summary>
-    /// Random boolean.
-    /// </summary>
+    /// <summary>Random boolean.</summary>
     public static bool Boolean => Int(1, 2) == 1;
 
-    /// <summary>
-    /// Random cardinal direction.
-    /// </summary>
+    #endregion
+
+    #region Direction Selection
+
+    /// <summary>Random cardinal direction.</summary>
     public static Direction AdjacentDirection
     {
         get
@@ -129,9 +161,7 @@ static class RNG
         }
     }
 
-    /// <summary>
-    /// Random 8-way direction.
-    /// </summary>
+    /// <summary>Random 8-way direction.</summary>
     public static Direction Direction
     {
         get
@@ -151,9 +181,11 @@ static class RNG
         }
     }
 
-    /// <summary>
-    /// Random opaque color.
-    /// </summary>
+    #endregion
+
+    #region Color and Misc
+
+    /// <summary>Random opaque color.</summary>
     public static Color Color => new Color(Float(), Float(), Float(), 1f);
 
     /// <summary>
@@ -277,22 +309,26 @@ static class RNG
         return SpriteLibrary.Backgrounds[key];
     }
 
-    /// <summary>
-    /// Random hit type.
-    /// </summary>
-    public static HitOutcome HitType()
-    {
-        return EnumValue<HitOutcome>();
-    }
+        /// <summary>Random hit type.</summary>
+        public static HitOutcome HitType()
+        {
+            return EnumValue<HitOutcome>();
+        }
 
-    public static string Stage(Map map)
-    {
-        return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
-    }
+        #endregion
 
-    public static string Stage(string mapName)
-    {
-        Map map = (Map)Enum.Parse(typeof(Map), mapName);
-        return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
+        #region Stage Selection
+
+        public static string Stage(Map map)
+        {
+            return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
+        }
+
+        public static string Stage(string mapName)
+        {
+            Map map = (Map)Enum.Parse(typeof(Map), mapName);
+            return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
+        }
+
+        #endregion
     }
-}

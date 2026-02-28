@@ -6,8 +6,22 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Instantly plays a holy explosion VFX on the target (no projectile), then applies damage or feedback.
-    /// Waits for the VFX impact duration before completing.
+    /// SMITESEQUENCE - Executes instant holy damage ability.
+    /// 
+    /// PURPOSE:
+    /// Plays a holy explosion VFX directly on target (no projectile)
+    /// and applies damage. Instant effect ability.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Validate target alive
+    /// 2. Play LightningExplosion VFX at target
+    /// 3. Wait for VFX completion
+    /// 4. Show "Smite" combat text
+    /// 5. Apply damage (placeholder)
+    /// 
+    /// RELATED FILES:
+    /// - VisualEffectManager.cs: VFX playback
+    /// - AbilityManager.cs: Ability execution
     /// </summary>
     public class SmiteSequence : SequenceEvent
     {

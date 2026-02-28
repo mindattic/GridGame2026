@@ -5,8 +5,26 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Moves one attacker toward its target.
-    /// Does not end the turn or schedule other enemies.
+    /// ENEMYMOVESEQUENCE - Handles enemy movement toward targets.
+    /// 
+    /// PURPOSE:
+    /// Executes the movement phase of an enemy's turn,
+    /// moving them toward their chosen target.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Validate enemy still in play
+    /// 2. Check root status (skip if rooted)
+    /// 3. Wait for movement intermission
+    /// 4. Calculate attack strategy/path
+    /// 5. Move toward destination
+    /// 
+    /// ROOT MECHANIC:
+    /// If rooted, decrements root counter and skips movement.
+    /// Despawns root VFX when effect expires.
+    /// 
+    /// RELATED FILES:
+    /// - EnemyTakeTurnSequence.cs: Orchestrates turn
+    /// - ActorMovement.cs: Movement logic
     /// </summary>
     public class EnemyMoveSequence : SequenceEvent
     {

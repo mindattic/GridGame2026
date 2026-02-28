@@ -6,10 +6,33 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Spawns and controls projectiles in a grid friendly way using coroutines.
-/// A spawn VFX may play first and gate the projectile launch at its TriggerAt apex.
-/// Then a single looping TrailEffect travels from start to target using a MotionStyle,
-/// then a single impact VFX plays, then an optional routine is yielded.
+/// PROJECTILEMANAGER - Spawns and controls projectiles.
+/// 
+/// PURPOSE:
+/// Central manager for spawning projectiles with various
+/// motion styles (straight, wiggle, lobbed, spiral).
+/// 
+/// SPAWN FLOW:
+/// 1. Optional spawn VFX plays at start position
+/// 2. Projectile created with trail VFX
+/// 3. Projectile travels using MotionStyle
+/// 4. Impact VFX plays on arrival
+/// 5. Optional callback routine runs
+/// 
+/// CONVENIENCE METHODS:
+/// - EnqueueHeal: Wiggle path healing projectile
+/// - EnqueueFireball: Lobbed arc fire projectile
+/// 
+/// USAGE:
+/// ```csharp
+/// g.ProjectileManager.Spawn(settings);
+/// yield return g.ProjectileManager.SpawnRoutine(settings);
+/// ```
+/// 
+/// RELATED FILES:
+/// - ProjectileSettings.cs: Configuration
+/// - ProjectileInstance.cs: Runtime behavior
+/// - FireProjectileSequence.cs: Sequence wrapper
 /// </summary>
 public class ProjectileManager : MonoBehaviour
 {

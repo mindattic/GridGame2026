@@ -6,8 +6,26 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Resolves hero pincer attacks as a sequence. This wraps the pincer attack flow
-    /// so it integrates cleanly with other sequences without requiring callbacks.
+    /// HEROPINCERSEQUENCE - Resolves hero pincer attacks.
+    /// 
+    /// PURPOSE:
+    /// Wraps the complete pincer attack flow including support
+    /// sequences, attack sequences, and visual effects.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Notify sorting for pincer visuals
+    /// 2. Fade in board overlay
+    /// 3. Spawn synergy lines for supporters
+    /// 4. Queue support sequences for each supporter
+    /// 5. Build attack results for each attacker pair
+    /// 6. Queue attack sequences
+    /// 7. Process death sequences
+    /// 8. Clean up visuals
+    /// 
+    /// RELATED FILES:
+    /// - PincerAttackManager.cs: Detects pincer setups
+    /// - PincerAttackSequence.cs: Individual attack execution
+    /// - PincerAttackSupportSequence.cs: Support animations
     /// </summary>
     public sealed class HeroPincerSequence : SequenceEvent
     {
@@ -25,13 +43,10 @@ namespace Assets.Scripts.Sequences
             if (participants == null || !participants.pair.Any())
                 yield break;
 
-            // Notify sorting for pincer visuals
             g.SortingManager?.OnPincerAttack(participants);
 
-            // Fade in board overlay
             yield return g.BoardOverlay?.FadeInRoutine();
 
-            // Enqueue support sequences for each pair
             foreach (var p in participants.pair)
             {
                 foreach (var supporter in p.supporters1)
@@ -46,8 +61,6 @@ namespace Assets.Scripts.Sequences
                     g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, supporter));
                 }
             }
-
-            // Build attack results and enqueue attack sequences for each pair
             foreach (var p in participants.pair)
             {
                 p.attackResults1.Clear();

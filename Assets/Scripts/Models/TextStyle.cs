@@ -1,6 +1,24 @@
 ﻿using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// TEXTSTYLE - Combat text visual configuration.
+/// 
+/// PURPOSE:
+/// Defines the visual style for floating combat text
+/// including font, size, color, and animation type.
+/// 
+/// PROPERTIES:
+/// - Name: Style identifier
+/// - Font: TextMeshPro font asset
+/// - Size: Font size
+/// - Color: Text color
+/// - Motion: Animation type (Float, Bounce, etc.)
+/// 
+/// RELATED FILES:
+/// - TextStyleLibrary.cs: Style registry
+/// - CombatTextInstance.cs: Text animation
+/// </summary>
 public class TextStyle
 {
     public string Name { get; }

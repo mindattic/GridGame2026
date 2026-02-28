@@ -2,8 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ShopSectionController manages Buy, Sell, and Craft operations for general items.
-/// Uses PlayerInventory for currency and item ownership. Crafting uses simple recipe stubs.
+/// SHOPSECTIONCONTROLLER - Hub shop/store section.
+/// 
+/// PURPOSE:
+/// Manages Buy, Sell, and Craft operations for items
+/// in the Hub shop screen.
+/// 
+/// SHOP MODES:
+/// - Buy: Purchase items from catalog
+/// - Sell: Sell inventory items for gold
+/// - Craft: Combine materials into items
+/// 
+/// TRANSACTIONS:
+/// Uses PlayerInventory for currency and item ownership.
+/// All purchases deduct gold, sales add gold.
+/// 
+/// RELATED FILES:
+/// - HubManager.cs: Hub scene controller
+/// - PlayerInventory.cs: Item storage
+/// - ItemDefinition.cs: Item data
+/// - ItemLibrary.cs: Item catalog
 /// </summary>
 public class ShopSectionController : MonoBehaviour
 {
@@ -14,36 +32,29 @@ public class ShopSectionController : MonoBehaviour
     public enum ShopMode { Buy, Sell, Craft }
     public ShopMode mode = ShopMode.Buy;
 
-    // Cached catalog (could be filtered by rarity or unlocked status later).
     private List<ItemDefinition> buyCatalog = new List<ItemDefinition>();
 
-    /// <summary>
-    /// Initializes with data references and loads basic catalog.
-    /// </summary>
+    /// <summary>Initializes with data references.</summary>
     public void Initialize(HubManager hubManager)
     {
-    hub = hubManager;
-  LoadCatalog();
+        hub = hubManager;
+        LoadCatalog();
     }
 
-    /// <summary>
-/// Called when activated. Refresh UI based on current mode.
-    /// </summary>
+    /// <summary>Called when activated.</summary>
     public void OnActivated()
     {
-   // TODO: Rebuild item list UI for current mode.
+        // TODO: Rebuild item list UI
     }
 
-    /// <summary>
-    /// Loads baseline shop inventory from static item data libraries.
-    /// </summary>
+    /// <summary>Loads shop catalog from item libraries.</summary>
     private void LoadCatalog()
     {
         buyCatalog.Clear();
-  buyCatalog.Add(ItemData_Healing.BasicHealingPotion);
-    buyCatalog.Add(ItemData_Healing.ManaPotion);
+        buyCatalog.Add(ItemData_Healing.BasicHealingPotion);
+        buyCatalog.Add(ItemData_Healing.ManaPotion);
         buyCatalog.Add(ItemData_Equipment.RustySword);
-   buyCatalog.Add(ItemData_Equipment.LeatherArmor);
+        buyCatalog.Add(ItemData_Equipment.LeatherArmor);
     }
 
     /// <summary>

@@ -12,18 +12,55 @@ using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// SAVEFILESELECTMANAGER - Manages the save slot selection screen.
+/// 
+/// PURPOSE:
+/// Displays available save slots for the current profile and allows
+/// the player to select, create, or delete save files.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │          Select Save File           │
+/// ├─────────────────────────────────────┤
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Save 1 - Stage 5           │   │ ← Existing save
+/// │  │  Last played: 2024-01-15    │   │
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Save 2 - Empty Slot        │   │ ← Empty slot
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │  Save 3 - Empty Slot        │   │
+/// │  └─────────────────────────────┘   │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// SAVE OPERATIONS:
+/// - Select: Load existing save and continue
+/// - Create: Start new game in empty slot
+/// - Delete: Remove save data (with confirmation)
+/// 
+/// RELATED FILES:
+/// - SaveFileButtonFactory.cs: Creates save slot buttons
+/// - ProfileHelper.cs: Profile/save persistence
+/// - SaveSystem.cs: File I/O operations
+/// 
+/// ACCESS: Scene-based manager (SaveFileSelect scene)
+/// </summary>
 public class SaveFileSelectManager : MonoBehaviour
 {
-    // Parent container that will hold instantiated buttons.
+    #region References
+
     private Transform content;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Unity Lifecycle
-    // ----------------------------------------------------------------------------------------------------
+    #endregion
+
+    #region Unity Lifecycle
 
     private void Awake()
     {
-        // Find the content container in the scene and validate it.
         GameObject contentGO = GameObject.Find(GameObjectHelper.StageSelect.Content);
         if (contentGO == null)
         {
@@ -40,7 +77,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        // Validate that a current profile exists. If not, send the user to create one.
+        // Validate that a current profile exists
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
@@ -48,14 +85,13 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
-        // Populate the list and fade in.
         Reload();
         scene.FadeIn();
     }
 
-    // ----------------------------------------------------------------------------------------------------
-    // UI Population
-    // ----------------------------------------------------------------------------------------------------
+    #endregion
+
+    #region UI Population
 
     private void Clear()
     {
@@ -260,7 +296,8 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        // Navigate back to the previous scene as defined by your scene helper.
         scene.Fade.ToPreviousScene();
     }
+
+    #endregion
 }

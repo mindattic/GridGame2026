@@ -4,9 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Drives a full-screen shatter transition by capturing the frame, rendering a shard grid, and animating a shader.
-/// Works with URP (uses "Universal Render Pipeline/Unlit/ScreenShatter") and falls back to Built-in ("Unlit/ScreenShatter").
-/// Note: If you use a Screen Space - Overlay Canvas, it will render on top of this effect. This script can temporarily disable such canvases.
+/// SCREENSHATTER - Full-screen shatter transition effect.
+/// 
+/// PURPOSE:
+/// Creates a dramatic screen shatter effect by capturing the
+/// current frame, splitting it into shards, and animating
+/// them exploding outward.
+/// 
+/// EFFECT FLOW:
+/// 1. Capture current screen as texture
+/// 2. Create shard grid mesh
+/// 3. Apply shatter material
+/// 4. Animate shards exploding from center
+/// 5. Clean up after animation
+/// 
+/// CONFIGURATION:
+/// - cols/rows: Shard grid density
+/// - duration: Animation length
+/// - explode: Explosion force
+/// - spin: Rotation speed
+/// - centerUV: Explosion origin
+/// 
+/// RELATED FILES:
+/// - ScreenGrabber.cs: Frame capture
+/// - ShardMeshBuilder.cs: Mesh generation
 /// </summary>
 [RequireComponent(typeof(ScreenGrabber))]
 public class ScreenShatter : MonoBehaviour

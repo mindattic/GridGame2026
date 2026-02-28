@@ -5,12 +5,32 @@ using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
 
 /// <summary>
-/// Draws a curved arc between a fixed button position and a dynamic cursor/hero position.
-/// Handles overlay in/out and updates on each physics step.
+/// TARGETLINEINSTANCE - Curved arc from button to cursor.
+/// 
+/// PURPOSE:
+/// Draws a curved targeting line from an ability button
+/// to the current cursor/target position.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///              ⌢
+///           ⌢   ⌢
+/// [Button]⌢       ⌢[Cursor]
+/// ```
+/// 
+/// FEATURES:
+/// - Bezier curve with configurable arc height
+/// - Fade in/out animations
+/// - Updates position each physics step
+/// - Semi-transparent blue color
+/// 
+/// RELATED FILES:
+/// - TargetLineFactory.cs: Creates this component
+/// - AbilityManager.cs: Shows during ability targeting
+/// - InputManager.cs: Provides cursor position
 /// </summary>
 public class TargetLineInstance : MonoBehaviour
 {
-
     public Transform parent
     {
         get => transform.parent;

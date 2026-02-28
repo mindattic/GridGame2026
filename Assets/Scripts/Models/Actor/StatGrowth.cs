@@ -1,15 +1,36 @@
 ﻿using System;
 
 /// <summary>
-/// Represents growth values for all Stats, inheriting from BaseStats.
-/// Supports construction from values, copy construction, and addition.
+/// STATGROWTH - Per-level stat increase values.
+/// 
+/// PURPOSE:
+/// Defines how much each stat increases per level.
+/// Inherits from BaseStats for consistent stat structure.
+/// 
+/// USAGE:
+/// Each level-up adds StatGrowth values to current stats.
+/// MilestoneStatGrowth provides bonus growth at key levels.
+/// 
+/// EXAMPLE:
+/// ```csharp
+/// StatGrowth growth = new StatGrowth
+/// {
+///     Strength = 1.05f,
+///     Vitality = 1.00f,
+///     Speed = 0.55f
+/// };
+/// ```
+/// 
+/// RELATED FILES:
+/// - BaseStats.cs: Base stat structure
+/// - ActorStats.cs: Full stat container
+/// - ActorData.cs: Contains growth definitions
+/// - ExperienceHelper.cs: Applies growth on level-up
 /// </summary>
 [Serializable]
 public class StatGrowth : BaseStats
 {
-    // ------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------
+    #region Constructors
 
     public StatGrowth() { }
 
@@ -47,7 +68,7 @@ public class StatGrowth : BaseStats
         Luck = other.Luck;
     }
 
-    // ------------------------------------------------------------
+    #endregion
     // Operators
     // ------------------------------------------------------------
 

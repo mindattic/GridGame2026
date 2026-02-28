@@ -11,13 +11,40 @@ using s = Assets.Helpers.SettingsHelper;
 namespace Assets.Scripts.Instances.Actor
 {
     /// <summary>
-    /// Handles movement and tilt effects for an ActorInstance.
-    /// Adds a watchdog to prevent infinite movement loops that can stall the sequence queue.
-    /// Applies TouchOffset when following the cursor to avoid snap on new grab points.
+    /// ACTORMOVEMENT - Movement and drag handling for actors.
+    /// 
+    /// PURPOSE:
+    /// Handles all movement-related operations for ActorInstance including
+    /// cursor following, tile-to-tile movement, and movement tilt effects.
+    /// 
+    /// MOVEMENT TYPES:
+    /// ```
+    /// Cursor Follow - Actor follows touch/mouse while dragging
+    /// Tile Movement - Animated move from tile A to tile B
+    /// Swap Movement - Exchange positions with another actor
+    /// ```
+    /// 
+    /// TOUCH OFFSET:
+    /// Maintains the grab point offset so actors don't snap to
+    /// cursor center when picked up.
+    /// 
+    /// TILT EFFECT:
+    /// Actors tilt in the direction of movement for visual feedback.
+    /// 
+    /// WATCHDOG:
+    /// Includes safety watchdog to prevent infinite movement loops
+    /// that could stall the sequence queue.
+    /// 
+    /// RELATED FILES:
+    /// - ActorInstance.cs: Owns the Movement component
+    /// - InputManager.cs: Triggers cursor-follow mode
+    /// - TileInstance.cs: Movement destinations
+    /// - ActorAnimation.cs: Visual animation effects
     /// </summary>
     public class ActorMovement
     {
-        // Shortcut accessors into the owning instance
+        #region References
+
         protected ActorFlags flags => instance.Flags;
         protected ActorRenderers render => instance.Render;
         protected ActorStats stats => instance.Stats;
@@ -32,16 +59,15 @@ namespace Assets.Scripts.Instances.Actor
 
         protected bool isSelectedHero => g.Actors.HasMovingHero && g.Actors.MovingHero == instance;
 
-        // The owning actor instance reference set during Initialize
         private ActorInstance instance;
 
-        // --------------------------------------------------------------------
-        // Lifecycle
-        // --------------------------------------------------------------------
+        #endregion
+
+        #region Lifecycle
 
         public void Start()
         {
-            // Movement is driven by explicit calls.
+            // Movement is driven by explicit calls
         }
 
         public void Initialize(ActorInstance parentInstance)
@@ -49,14 +75,13 @@ namespace Assets.Scripts.Instances.Actor
             this.instance = parentInstance;
         }
 
-        // --------------------------------------------------------------------
-        // Cursor-follow movement
-        // --------------------------------------------------------------------
+        #endregion
+
+        #region Cursor-Follow Movement
 
         /// <summary>
-        /// Moves the actor toward the cursor while the actor is focused or selected.
-        /// Uses g.TouchOffset so the actor maintains the grab point without snapping.
-        /// Exits early if a swap begins.
+        /// Moves the actor toward the cursor while selected.
+        /// Uses g.TouchOffset to maintain grab point without snapping.
         /// </summary>
         public IEnumerator MoveTowardCursorRoutine()
         {
@@ -322,5 +347,7 @@ namespace Assets.Scripts.Instances.Actor
                 );
             }
         }
+
+        #endregion
     }
 }

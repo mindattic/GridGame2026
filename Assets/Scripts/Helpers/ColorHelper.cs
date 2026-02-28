@@ -2,8 +2,38 @@ using UnityEngine;
 
 namespace Assets.Helper
 {
+    /// <summary>
+    /// COLORHELPER - Color palette and conversion utilities.
+    /// 
+    /// PURPOSE:
+    /// Provides a centralized color palette with named colors and
+    /// utility methods for creating colors from RGB/RGBA values.
+    /// 
+    /// UTILITY METHODS:
+    /// - RGB(r, g, b): Create color from 0-255 values
+    /// - RGBA(r, g, b, a): Create color with alpha from 0-255 values
+    /// 
+    /// COLOR CATEGORIES:
+    /// - Solid.*: Fully opaque general-purpose colors
+    /// - HealthBar.*: Health bar gradient colors
+    /// - ActionBar.*: Action point bar colors
+    /// - Quality.*: Item/character quality tiers
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// sprite.color = ColorHelper.Solid.Red;
+    /// bar.color = ColorHelper.HealthBar.Green;
+    /// var custom = ColorHelper.RGB(128, 64, 255);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - ActorRenderers.cs: Uses color constants
+    /// - HealthBarFactory.cs: Uses health bar colors
+    /// - CombatTextFactory.cs: Uses damage text colors
+    /// </summary>
     public static class ColorHelper
     {
+        /// <summary>Creates a Color from RGB values (0-255 range).</summary>
         public static Color RGB(float r, float g, float b)
         {
             return new Color(
@@ -13,6 +43,7 @@ namespace Assets.Helper
                 1f);
         }
 
+        /// <summary>Creates a Color from RGBA values (0-255 range).</summary>
         public static Color RGBA(float r, float g, float b, float a)
         {
             return new Color(
@@ -22,7 +53,9 @@ namespace Assets.Helper
                 Mathf.Clamp(a, 0, 255) / 255f);
         }
 
-        // Solid: fully opaque, general-purpose palette.
+        #region Solid Colors
+
+        /// <summary>Fully opaque general-purpose color palette.</summary>
         public static class Solid
         {
             // Neutrals
@@ -34,7 +67,7 @@ namespace Assets.Helper
             public static Color Silver = RGB(192, 192, 192);
             public static Color GunMetal = RGB(42, 52, 57);
             public static Color Gold = RGB(255, 223, 0);
-            
+
             // Primary
             public static Color Red = RGB(255, 0, 0);
             public static Color Green = RGB(0, 255, 0);
@@ -174,18 +207,20 @@ namespace Assets.Helper
             public static Color Gold = RGBA(255, 223, 0, 0);
         }
 
-        // Tile overlay palette (board highlights). Alpha ~96 for subtle overlays.
+        /// <summary>Tile overlay palette (board highlights). Alpha ~96 for subtle overlays.</summary>
         public static class Tile
         {
-            public static Color White = RGBA(255, 255, 255, 96);   // Generic/hover
-            public static Color Yellow = RGBA(255, 255, 0, 96);    // Select/confirm
-            public static Color Blue = RGBA(0, 122, 255, 96);      // Move/ally hint
-            public static Color Green = RGBA(0, 255, 0, 96);       // Valid/ok
-            public static Color Red = RGBA(255, 0, 0, 96);         // Invalid/danger
-            public static Color Orange = RGBA(255, 165, 0, 96);    // Target/attention
-            public static Color Cyan = RGBA(0, 255, 255, 96);      // Range/area
-            public static Color Magenta = RGBA(255, 0, 255, 96);   // Special/ability
-            public static Color GunMetal = RGBA(42, 52, 57, 96);   // Disabled/blocked
+            public static Color White = RGBA(255, 255, 255, 96);
+            public static Color Yellow = RGBA(255, 255, 0, 96);
+            public static Color Blue = RGBA(0, 122, 255, 96);
+            public static Color Green = RGBA(0, 255, 0, 96);
+            public static Color Red = RGBA(255, 0, 0, 96);
+            public static Color Orange = RGBA(255, 165, 0, 96);
+            public static Color Cyan = RGBA(0, 255, 255, 96);
+            public static Color Magenta = RGBA(255, 0, 255, 96);
+            public static Color GunMetal = RGBA(42, 52, 57, 96);
         }
+
+        #endregion
     }
 }

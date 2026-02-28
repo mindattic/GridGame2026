@@ -4,17 +4,57 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for CanvasParticle - replaces CanvasParticlePrefab.prefab
+    /// CANVASPARTICLEFACTORY - Creates UI canvas particle GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates individual particle objects for UI canvas effects like
+    /// falling leaves, snow, or other ambient particles.
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    /// ??      ??
+    ///   ??  ??    ??  ? Particles drift across UI
+    ///     ??   ??
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// CanvasParticle (root)
+    /// ??? RectTransform (positioning)
+    /// ??? CanvasRenderer (UI rendering)
+    /// ??? Image (particle sprite)
+    /// ??? CanvasParticleInstance (animation behavior)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Layer: UI
+    /// - Default size: 100x100
+    /// - Default scale: 0.3 (30%)
+    /// - Sprite set dynamically by emitter
+    /// 
+    /// PARTICLE BEHAVIOR:
+    /// CanvasParticleInstance handles:
+    /// - Drift movement
+    /// - Rotation
+    /// - Fade out
+    /// - Self-destruction when off-screen
+    /// 
+    /// CALLED BY:
+    /// - CanvasParticleEmitter.SpawnParticle()
+    /// 
+    /// RELATED FILES:
+    /// - CanvasParticleInstance.cs: Particle behavior
+    /// - CanvasParticleEmitter.cs: Spawns particles
+    /// - SpriteLibrary.cs: Particle sprites
     /// </summary>
     public static class CanvasParticleFactory
     {
+        /// <summary>Creates a new canvas particle.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("CanvasParticle");
             root.layer = LayerMask.NameToLayer("UI");
 
-            // RectTransform
             var rectTransform = root.AddComponent<RectTransform>();
             rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -23,23 +63,19 @@ namespace Assets.Scripts.Factories
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
             rectTransform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
-            // CanvasRenderer
             root.AddComponent<CanvasRenderer>();
 
-            // Image
             var image = root.AddComponent<Image>();
             image.color = Color.white;
             image.raycastTarget = true;
             image.maskable = true;
-            image.sprite = null; // Sprite is set dynamically by CanvasParticleEmitter
+            image.sprite = null; // Set dynamically by emitter
             image.type = Image.Type.Simple;
             image.preserveAspect = false;
             image.fillCenter = true;
 
-            // CanvasParticleInstance (custom component)
             root.AddComponent<CanvasParticleInstance>();
 
-            // Parent if specified
             if (parent != null)
             {
                 rectTransform.SetParent(parent, false);

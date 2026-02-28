@@ -6,8 +6,25 @@ using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Displays a centered "Defeat" banner that starts higher, floats down, and fades in.
-/// Uses the same Canvas child structure as WaveAnnouncement (Image, Back, Front).
+/// DEFEATANNOUNCEMENT - "Defeat" banner display.
+/// 
+/// PURPOSE:
+/// Shows a centered defeat banner that floats down and fades in
+/// when all heroes are defeated.
+/// 
+/// ANIMATION:
+/// - Starts above center, transparent
+/// - Floats downward while fading in
+/// - Settles at center position
+/// 
+/// USAGE:
+/// ```csharp
+/// g.DefeatAnnouncement.Show();
+/// ```
+/// 
+/// RELATED FILES:
+/// - BattleLostSequence.cs: Triggers display
+/// - VictoryAnnouncement.cs: Victory equivalent
 /// </summary>
 public class DefeatAnnouncement : MonoBehaviour
 {

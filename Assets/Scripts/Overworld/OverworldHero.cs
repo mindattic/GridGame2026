@@ -5,14 +5,36 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System;
 
-
-
-// OverworldHero (world-space only)
-// Movement types (mutually exclusive):
-// - VirtualJoystick: analog stick movement only
-// - ClickToMove: path or straight toward a click destination
-// - DirectionalPress: hold near a point to move in that direction
-// All three share the same collision and pathfinding helpers below.
+/// <summary>
+/// OVERWORLDHERO - Player-controlled hero in overworld.
+/// 
+/// PURPOSE:
+/// Controls hero movement, collision, and animation in the
+/// world map exploration scene.
+/// 
+/// MOVEMENT MODES (mutually exclusive):
+/// - VirtualJoystick: Analog stick movement
+/// - ClickToMove: Pathfind to clicked position
+/// - DirectionalPress: Hold to move in direction
+/// 
+/// PARTY SYSTEM:
+/// - IsLeader: Controlled by input
+/// - Followers: Follow the leader at distance
+/// 
+/// COLLISION:
+/// Uses collision helpers to avoid obstacles.
+/// Can be toggled via enableCollision.
+/// 
+/// PARTIAL CLASS FILES:
+/// - OverworldHero.cs: Core movement
+/// - OverworldHero.Animation.cs: Animation control
+/// - OverworldHero.Collision.cs: Collision detection
+/// - OverworldHero.FollowCursor.cs: Click-to-move
+/// 
+/// RELATED FILES:
+/// - OverworldManager.cs: Scene controller
+/// - Mode7CameraController.cs: Camera control
+/// </summary>
 [ExecuteAlways]
 public partial class OverworldHero : MonoBehaviour
 {

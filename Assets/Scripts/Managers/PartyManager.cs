@@ -11,15 +11,69 @@ using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using scene = Assets.Helpers.SceneHelper;
 
+/// <summary>
+/// PARTYMANAGER - Manages the party roster/selection screen.
+/// 
+/// PURPOSE:
+/// Displays available heroes and allows the player to add/remove
+/// them from their active party for battle.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │            Party Select             │
+/// ├─────────────────────────────────────┤
+/// │                                     │
+/// │  ◄ [Hero1] [Hero2] [Hero3] [Hero4] ►│ ← Horizontal scroll
+/// │                                     │
+/// │  ┌─────────────────────────────┐   │
+/// │  │ Paladin - Level 5           │   │ ← Selected hero stats
+/// │  │ HP: 120  STR: 45  VIT: 30   │   │
+/// │  │ AGI: 25  SPD: 20  STA: 35   │   │
+/// │  └─────────────────────────────┘   │
+/// │                                     │
+/// │  [ Add to Party ] (2/4 members)    │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// ROSTER CAROUSEL:
+/// - Horizontal scrolling with momentum
+/// - Touch/drag to scroll through heroes
+/// - Click to select hero for details
+/// 
+/// PARTY OPERATIONS:
+/// - Add hero to party (up to max)
+/// - Remove hero from party
+/// - View hero stats
+/// 
+/// RELATED FILES:
+/// - RosterSlideFactory.cs: Creates hero slides
+/// - RosterSlideInstance.cs: Slide behavior
+/// - ProfileHelper.cs: Party data persistence
+/// - ActorLibrary.cs: Hero data
+/// 
+/// ACCESS: Scene-based manager (Party scene)
+/// </summary>
 public class PartyManager : MonoBehaviour
 {
+    #region UI References
+
     private RectTransform title;
     private RectTransform rosterPanel;
+
+    #endregion
+
+    #region Scroll Settings
+
     private float spacing = 0f;
     private float deceleration = 1250;
     private float maxFocus = 3000f;
     private float dragThreshold = 15f;
     private float wrapThresholdMultiplier = 1.5f;
+
+    #endregion
+
+    #region Runtime State
 
     private Dictionary<CharacterClass, RosterSlideInstance> slides = new Dictionary<CharacterClass, RosterSlideInstance>();
 
@@ -30,12 +84,14 @@ public class PartyManager : MonoBehaviour
     private bool scrollingToCenter = false;
     private bool clickAllowed = true;
 
+    #endregion
+
+    #region Stats Display
 
     private RectTransform addRemovePartyMemberButton;
     private TextMeshProUGUI addRemovePartyMemberLabel;
     private TextMeshProUGUI partyMemberCountLabel;
 
-    //private StatsDisplay statsDisplay;
     private Dictionary<RectTransform, Coroutine> barAnimations = new();
     private RectTransform levelRow;
     private RectTransform hpRow;
@@ -49,15 +105,20 @@ public class PartyManager : MonoBehaviour
     private RectTransform lckRow;
     private float centeredX;
 
+    #endregion
+
+    #region Party Helpers
+
+    /// <summary>Checks if a hero is in the current party.</summary>
     private bool IsInParty(CharacterClass characterClass)
     {
         return ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Any(x => x.CharacterClass == characterClass);
     }
 
-    //Properties
+    /// <summary>Current party member count.</summary>
     private int partyMemberCount => ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Count;
 
-
+    #endregion
     private void Awake()
     {
         if (!ProfileHelper.HasProfiles())

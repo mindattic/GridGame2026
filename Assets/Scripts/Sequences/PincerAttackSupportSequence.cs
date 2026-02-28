@@ -3,12 +3,32 @@ using System.Collections;
 
 namespace Assets.Scripts.Sequences
 {
+    /// <summary>
+    /// PINCERATTACKSUPPORTSEQUENCE - Support action during pincer.
+    /// 
+    /// PURPOSE:
+    /// Executes support abilities from allies positioned to
+    /// assist during a pincer attack.
+    /// 
+    /// SUPPORT TYPES:
+    /// - Cleric: Heals the attacker
+    /// - (Future: Other support classes)
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Check supporter's class
+    /// 2. Execute appropriate support action
+    /// 3. (Cleric) Launch heal projectile to attacker
+    /// 
+    /// RELATED FILES:
+    /// - HeroPincerSequence.cs: Queues support sequences
+    /// - HealSupportSequence.cs: Heal execution
+    /// - SynergyLineManager.cs: Visual connection lines
+    /// </summary>
     public class PincerAttackSupportSequence : SequenceEvent
     {
         private ActorInstance attacker;
         private ActorInstance supporter;
 
-        // Single-constructor approach
         public PincerAttackSupportSequence(ActorInstance attacker, ActorInstance supporter)
         {
             this.attacker = attacker;

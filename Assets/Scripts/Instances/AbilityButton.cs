@@ -5,15 +5,37 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Intermission.Before;
 
+/// <summary>
+/// ABILITYBUTTON - UI button for casting abilities.
+/// 
+/// PURPOSE:
+/// Represents a single ability button in the ability bar.
+/// Handles display, interactability based on mana cost,
+/// and click callbacks.
+/// 
+/// USAGE:
+/// Created by AbilityButtonFactory for each ability.
+/// Disabled when insufficient mana.
+/// 
+/// RELATED FILES:
+/// - AbilityButtonFactory.cs: Creates buttons
+/// - AbilityButtonManager.cs: Manages button list
+/// - Ability.cs: Ability data
+/// </summary>
 public class AbilityButton : MonoBehaviour
 {
-    public Button button;                         // Show in Inspector or dynamically
-    public TMP_Text label;                        // Show in Inspector or dynamically
+    #region Components
+
+    public Button button;
+    public TMP_Text label;
     private Ability ability;
+
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
-        // Show missing references if not set in Inspector
         if (button == null)
             button = GetComponent<Button>();
 
@@ -28,7 +50,6 @@ public class AbilityButton : MonoBehaviour
         else
             Debug.LogError("AbilityButton.label is null");
 
-        // store ability for later use (cost checks, etc.)
         this.ability = ability;
 
         if (button != null)
@@ -42,19 +63,25 @@ public class AbilityButton : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region State
+
     public void UpdateInteractable(float currentMana)
     {
         if (ability == null || button == null) return;
         button.interactable = currentMana >= ability.ManaCost;
     }
 
-
     public Vector3 WorldPosition()
     {
         return UnitConversionHelper.Canvas.ToWorld(button.transform, button.transform.position.z);
     }
+
+    #endregion
 }
 
+/// <summary>Ability effect types.</summary>
 public enum AbilityEffect
 {
     None,

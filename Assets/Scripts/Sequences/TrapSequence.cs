@@ -6,8 +6,27 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Plays a trap effect: fires a straight projectile to the target, spawns an explosion,
-    /// and applies a looping status effect VFX on the target (rooted until after next turn).
+    /// TRAPSEQUENCE - Executes root/snare ability on target.
+    /// 
+    /// PURPOSE:
+    /// Fires a projectile that roots the target, preventing
+    /// movement for a number of turns.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Fire projectile to target (straight motion)
+    /// 2. Play impact explosion VFX
+    /// 3. Spawn looping status VFX on target
+    /// 4. Set RootedTurnsRemaining on target
+    /// 5. Store VFX instance name for cleanup
+    /// 
+    /// ROOT MECHANIC:
+    /// Rooted enemies skip their movement phase but can
+    /// still attack if adjacent to heroes.
+    /// 
+    /// RELATED FILES:
+    /// - FireProjectileSequence.cs: Projectile launch
+    /// - ActorFlags.cs: Root status tracking
+    /// - EnemyMoveSequence.cs: Checks root status
     /// </summary>
     public class TrapSequence : SequenceEvent
     {

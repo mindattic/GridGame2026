@@ -4,17 +4,54 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for Portrait2D (UI) - replaces Portrait2DPrefab.prefab
+    /// PORTRAIT2DFACTORY - Creates UI canvas portrait GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates large character portrait images for UI overlays during
+    /// combat sequences (pincer attacks, special abilities, etc).
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    /// ┌─────────────────────────────────┐
+    /// │ [Hero A]          [Hero B]      │ ← Portraits slide in
+    /// │    ↘                 ↙          │
+    /// │       [Combat Area]             │
+    /// └─────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// Portrait2D (root)
+    /// ├── RectTransform (1024x1024)
+    /// ├── CanvasRenderer (UI rendering)
+    /// ├── Image (portrait sprite)
+    /// └── PortraitInstance (animation behavior)
+    /// ```
+    /// 
+    /// VS PORTRAIT3D:
+    /// - Portrait2D: UI space (Image component)
+    /// - Portrait3D: World space (SpriteRenderer)
+    /// 
+    /// CONFIGURATION:
+    /// - Default size: 1024x1024
+    /// - speedMultiplier: 1.75x slide animation speed
+    /// 
+    /// CALLED BY:
+    /// - PortraitManager.SlideIn2DRoutine()
+    /// 
+    /// RELATED FILES:
+    /// - Portrait3DFactory.cs: World-space variant
+    /// - PortraitInstance.cs: Animation behavior
+    /// - PortraitManager.cs: Manages portraits
     /// </summary>
     public static class Portrait2DFactory
     {
+        /// <summary>Creates a new UI portrait.</summary>
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("Portrait2D");
-            root.layer = LayerMask.NameToLayer("Default"); // Layer 0
+            root.layer = LayerMask.NameToLayer("Default");
 
-            // RectTransform
             var rectTransform = root.AddComponent<RectTransform>();
             rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -22,10 +59,8 @@ namespace Assets.Scripts.Factories
             rectTransform.sizeDelta = new Vector2(1024f, 1024f);
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-            // CanvasRenderer
             root.AddComponent<CanvasRenderer>();
 
-            // Image
             var image = root.AddComponent<Image>();
             image.color = Color.white;
             image.raycastTarget = true;
@@ -33,14 +68,12 @@ namespace Assets.Scripts.Factories
             image.type = Image.Type.Simple;
             image.preserveAspect = false;
 
-            // PortraitInstance (custom component)
             var portraitInstance = root.AddComponent<PortraitInstance>();
             portraitInstance.direction = Direction.None;
             portraitInstance.speedMultiplier = 1.75f;
             portraitInstance.startTime = 0f;
             portraitInstance.startPosition = Vector2.zero;
 
-            // Parent if specified
             if (parent != null)
             {
                 rectTransform.SetParent(parent, false);

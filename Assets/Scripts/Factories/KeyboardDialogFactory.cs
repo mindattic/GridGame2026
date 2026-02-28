@@ -6,8 +6,52 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for KeyboardDialog - replaces KeyboardDialog.prefab
-    /// Creates a full virtual keyboard for text input
+    /// KEYBOARDDIALOGFACTORY - Creates virtual keyboard dialog GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates a full-screen virtual keyboard for text input on devices
+    /// without physical keyboards (mobile, console, etc).
+    /// 
+    /// VISUAL LAYOUT:
+    /// ```
+    /// ┌─────────────────────────────────────┐
+    /// │          Enter your name:           │
+    /// │  ┌─────────────────────────────┐    │
+    /// │  │ Player1                     │    │ ← Input field
+    /// │  └─────────────────────────────┘    │
+    /// │  [1][2][3][4][5][6][7][8][9][0]     │ ← Row 1: Numbers
+    /// │  [Q][W][E][R][T][Y][U][I][O][P]     │ ← Row 2: QWERTY
+    /// │   [A][S][D][F][G][H][J][K][L]       │ ← Row 3
+    /// │  [⇧][Z][X][C][V][B][N][M][⌫]       │ ← Row 4
+    /// │       [        SPACE        ]       │ ← Row 5
+    /// │        [ OK ]    [ Cancel ]         │ ← Row 6
+    /// └─────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// KeyboardDialog (root)
+    /// ├── KeyboardDialogInstance (behavior)
+    /// └── Panel (dark overlay)
+    ///     ├── Prompt (TMP)
+    ///     ├── InputBackdrop
+    ///     │   └── InputLabel (TMP)
+    ///     ├── KeysContainer
+    ///     │   ├── Row1 → Number keys
+    ///     │   ├── Row2 → QWERTY row
+    ///     │   ├── Row3 → ASDF row
+    ///     │   ├── Row4 → Shift + ZXCV + Backspace
+    ///     │   └── Row5 → Space bar
+    ///     └── ButtonRow (OK/Cancel)
+    /// ```
+    /// 
+    /// CALLED BY:
+    /// - ProfileCreateManager.ShowKeyboard()
+    /// 
+    /// RELATED FILES:
+    /// - KeyboardDialogInstance.cs: Keyboard behavior
+    /// - KeyButtonFactory.cs: Creates individual keys
+    /// - ProfileSelectManager.cs: Profile naming
     /// </summary>
     public static class KeyboardDialogFactory
     {
@@ -15,6 +59,7 @@ namespace Assets.Scripts.Factories
         private const float KeySpacing = 8f;
         private const float RowSpacing = 8f;
 
+        /// <summary>Creates a new virtual keyboard dialog.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: KeyboardDialog ===

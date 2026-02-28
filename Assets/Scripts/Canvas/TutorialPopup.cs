@@ -9,9 +9,33 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.GUI
 {
+    /// <summary>
+    /// TUTORIALPOPUP - Multi-page tutorial display.
+    /// 
+    /// PURPOSE:
+    /// Displays tutorial content with images and text,
+    /// supporting multi-page navigation.
+    /// 
+    /// FEATURES:
+    /// - Show/hide tutorial panel
+    /// - Navigate between pages
+    /// - Display title, content, and images
+    /// - Previous/Next/Close buttons
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// g.TutorialPopup.Show("Tutorial1");
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - TutorialLibrary.cs: Tutorial content
+    /// - TutorialModels.cs: Data structures
+    /// - TutorialPopupFactory.cs: UI creation
+    /// </summary>
     public class TutorialPopup : MonoBehaviour
     {
-        //Components
+        #region Components
+
         private GameObject panel;
         private Image image;
         private TextMeshProUGUI title;
@@ -20,17 +44,21 @@ namespace Assets.Scripts.GUI
         private Button nextButton;
         private Button closeButton;
 
-        //Fields
+        #endregion
+
+        #region State
+
         private List<TutorialPage> pages = new List<TutorialPage>();
         private int currentPage = 0;
+        private bool initialized;
 
-        //Properties
         bool hasPages => pages != null && pages.Count > 0;
         int lastPage => pages != null && pages.Count > 0 ? pages.Count - 1 : 0;
 
-        private bool initialized;
+        #endregion
 
-        // Awake intentionally empty; initialization driven by GameManager.Start via Initialize().
+        #region Initialization
+
         private void Awake() { }
 
         public void Initialize()
@@ -108,13 +136,12 @@ namespace Assets.Scripts.GUI
             }
         }
 
-
-
         public void Close()
         {
             if (panel != null) panel.SetActive(false);
         }
 
+        #endregion
     }
 
 }

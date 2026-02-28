@@ -5,12 +5,37 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// Map identifiers for stage grouping.
+    /// </summary>
     public enum Map
     {
         Test,
         GreenValley,
     }
 
+    /// <summary>
+    /// STAGELIBRARY - Registry of all game stages/levels.
+    /// 
+    /// PURPOSE:
+    /// Defines all stages with their enemy waves, completion
+    /// conditions, and difficulty scaling.
+    /// 
+    /// STAGE STRUCTURE:
+    /// - Name: "MapName-##" format
+    /// - Waves: List of enemy spawns per wave
+    /// - CompletionCondition: Win condition type
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var stage = StageLibrary.Stages["GreenValley-01"];
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - Stage.cs: Stage data structure
+    /// - StageManager.cs: Stage execution
+    /// - StageSelectManager.cs: Stage selection UI
+    /// </summary>
     public static class StageLibrary
     {
         private static Dictionary<string, Stage> stages;

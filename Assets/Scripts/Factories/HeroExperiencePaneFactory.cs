@@ -5,21 +5,52 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for HeroExperiencePane - replaces HeroExperiencePane.prefab
-    /// Hierarchy:
-    /// - HeroExperiencePane (root - Image, HeroExperiencePane)
-    ///   - Portrait (Image)
-    ///   - Name (TMP)
-    ///   - Level (TMP)
-    ///   - XPBar (Slider)
-    ///     - Background (Image)
-    ///     - Fill Area
-    ///       - Fill (Image)
-    ///   - XPText (TMP)
-    ///   - LevelUp (TMP)
+    /// HEROEXPERIENCEPANEFACTORY - Creates post-battle experience panes.
+    /// 
+    /// PURPOSE:
+    /// Creates UI panes showing hero experience progress after battle.
+    /// Each pane displays portrait, XP bar, and level up notifications.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────────────────┐
+    /// │ ┌────┐  Paladin           Level 5      │
+    /// │ │    │  [████████████░░░░░░] +150 XP   │
+    /// │ │ ⚔️ │  LEVEL UP!                      │
+    /// │ └────┘                                  │
+    /// └─────────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// HeroExperiencePane (root)
+    /// ├── Image (panel background)
+    /// ├── HeroExperiencePane (behavior)
+    /// ├── Portrait (hero image)
+    /// ├── Name (hero name text)
+    /// ├── Level (level text)
+    /// ├── XPBar (Slider)
+    /// │   ├── Background
+    /// │   └── Fill Area → Fill
+    /// ├── XPText (XP gained text)
+    /// └── LevelUp (level up notification)
+    /// ```
+    /// 
+    /// ANIMATION:
+    /// XP bar animates from old to new value, showing progress.
+    /// Level up text appears with animation when level threshold crossed.
+    /// 
+    /// CALLED BY:
+    /// - PostBattleManager.BuildPanes()
+    /// 
+    /// RELATED FILES:
+    /// - HeroExperiencePane.cs: Pane behavior/animation
+    /// - PostBattleManager.cs: Post-battle screen
+    /// - ExperienceTracker.cs: Tracks XP gains
     /// </summary>
     public static class HeroExperiencePaneFactory
     {
+        /// <summary>Creates a new hero experience pane.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: HeroExperiencePane ===

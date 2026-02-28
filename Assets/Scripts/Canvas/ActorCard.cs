@@ -12,30 +12,67 @@ using static Assets.Helper.GameObjectHelper;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// ACTORCARD - Hero detail card display.
+/// 
+/// PURPOSE:
+/// Displays a detailed card for the selected hero showing
+/// portrait, name, stats, and abilities.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌────────────────────────┐
+/// │  [Portrait]  Title     │
+/// │              ────────  │
+/// │              Details   │
+/// │              HP: 100   │
+/// │              ATK: 25   │
+/// └────────────────────────┘
+/// ```
+/// 
+/// FEATURES:
+/// - Slide-in/out animations
+/// - Portrait bounce effect
+/// - Fade transitions for elements
+/// - Dynamic stat display
+/// 
+/// ACCESS: g.Card
+/// 
+/// RELATED FILES:
+/// - ActorInstance.cs: Selected actor data
+/// - InputManager.cs: Selection events
+/// </summary>
 public class ActorCard : MonoBehaviour
 {
-    // ----- Cached RectTransforms -----
+    #region Cached Components
+
     private RectTransform card;
     private RectTransform backdrop;
     private RectTransform portrait;
     private RectTransform title;
     private RectTransform details;
 
-    // ----- CanvasGroups for fading -----
     private CanvasGroup backdropCG;
     private CanvasGroup titleCG;
     private CanvasGroup detailsCG;
     private CanvasGroup portraitCG;
 
-    // ----- Animation state -----
+    #endregion
+
+    #region Animation State
+
     private Vector3 offscreenPosition;
     private Vector3 destination;
     private AnimationCurve slideInCurve;
     private float slideDuration;
 
-    private const float FixedPortraitSize = 1024f; // pixels
+    private const float FixedPortraitSize = 1024f;
     private const float PortraitPosX = -128f;
     private const float PortraitPosY = -128f;
+
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
@@ -335,5 +372,5 @@ public class ActorCard : MonoBehaviour
         CycleHero(1);
     }
 
-
+    #endregion
 }

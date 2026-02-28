@@ -1,10 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Helpers; // CharacterClass
-using Assets.Scripts.Libraries; // ActorLibrary
+using Assets.Helpers;
+using Assets.Scripts.Libraries;
 
 /// <summary>
-/// MedicalSectionController provides healing and resurrection services for heroes.
+/// MEDICALSECTIONCONTROLLER - Hub healing/resurrection section.
+/// 
+/// PURPOSE:
+/// Provides healing and resurrection services for heroes
+/// in the Hub medical facility.
+/// 
+/// SERVICES:
+/// - HealHero: Restore single hero to full HP
+/// - HealAll: Restore all heroes to full HP
+/// - Resurrect: Revive fallen hero
+/// 
+/// RELATED FILES:
+/// - HubManager.cs: Hub scene controller
+/// - ActorLibrary.cs: Hero stat lookup
 /// </summary>
 public class MedicalSectionController : MonoBehaviour
 {
@@ -18,17 +31,20 @@ public class MedicalSectionController : MonoBehaviour
 
     public void OnActivated() { }
 
+    /// <summary>Restore hero to full HP.</summary>
     public void HealHero(CharacterClass hero)
     {
         heroHealth[hero] = GetMaxHP(hero);
     }
 
+    /// <summary>Restore all heroes to full HP.</summary>
     public void HealAll()
     {
         var keys = new List<CharacterClass>(heroHealth.Keys);
         foreach (var k in keys) heroHealth[k] = GetMaxHP(k);
     }
 
+    /// <summary>Revive fallen hero.</summary>
     public void Resurrect(CharacterClass hero)
     {
         if (!heroHealth.ContainsKey(hero)) return;

@@ -3,6 +3,27 @@ using g = Assets.Helpers.GameHelper;
 using System.Collections;
 using Assets.Scripts.Libraries;
 
+/// <summary>
+/// AUDIOMANAGER - Sound effect playback.
+/// 
+/// PURPOSE:
+/// Provides centralized sound effect playback with lookup
+/// from SoundEffectLibrary.
+/// 
+/// METHODS:
+/// - Play(sfx): Play sound immediately
+/// - PlayAndThen(sfx, routine): Play sound then run coroutine
+/// 
+/// USAGE:
+/// ```csharp
+/// g.AudioManager.Play("Click");
+/// g.AudioManager.PlayAndThen("Victory", LoadNextScene());
+/// ```
+/// 
+/// RELATED FILES:
+/// - SoundEffectLibrary.cs: Sound effect registry
+/// - GameHelper.cs: Provides SoundSource reference
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     public void Play(string sfx)

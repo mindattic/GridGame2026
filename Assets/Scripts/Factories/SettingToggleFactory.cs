@@ -5,15 +5,44 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for SettingToggle - replaces SettingToggle.prefab
-    /// Hierarchy:
-    /// - SettingToggle (root - ContentSizeFitter, VerticalLayoutGroup)
-    ///   - Label (TMP, LayoutElement)
-    ///   - Panel (container)
-    ///     - Toggle (Toggle component)
-    ///       - Background (Image - sliced)
-    ///         - Checkmark (Image)
-    ///       - Label (Text - inactive)
+    /// SETTINGTOGGLEFACTORY - Creates settings toggle (checkbox) GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates toggle/checkbox controls for boolean settings on the
+    /// settings screen.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────────────┐
+    /// │ Enable Fullscreen                   │ ← Label
+    /// │ [✓]                                 │ ← Toggle checkbox
+    /// └─────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// SettingToggle (root)
+    /// ├── ContentSizeFitter
+    /// ├── VerticalLayoutGroup
+    /// ├── Label (TMP - setting name)
+    /// └── Panel (toggle container)
+    ///     └── Toggle
+    ///         ├── Background (Image)
+    ///         │   └── Checkmark (Image)
+    ///         └── Label (legacy Text, inactive)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Default size: 512x100
+    /// - Vertical layout with label above toggle
+    /// - Uses Unity's Toggle component
+    /// 
+    /// CALLED BY:
+    /// - SettingsManager.CreateToggles()
+    /// 
+    /// RELATED FILES:
+    /// - SettingsManager.cs: Settings screen
+    /// - SettingsModel.cs: Boolean settings
     /// </summary>
     public static class SettingToggleFactory
     {
@@ -28,11 +57,12 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new settings toggle control.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: SettingToggle ===
             var root = new GameObject("SettingToggle");
-            root.layer = 0; // Default layer
+            root.layer = 0;
 
             var rootRT = root.AddComponent<RectTransform>();
             rootRT.anchorMin = new Vector2(0f, 1f);
@@ -55,7 +85,7 @@ namespace Assets.Scripts.Factories
             verticalLayout.childScaleWidth = false;
             verticalLayout.childScaleHeight = false;
 
-            // === CHILD: Label (main label at top) ===
+            // === CHILD: Label ===
             var label = new GameObject("Label");
             label.layer = 0;
 

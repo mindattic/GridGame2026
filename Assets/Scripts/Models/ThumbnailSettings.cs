@@ -2,22 +2,37 @@
 
 namespace Assets.Scripts.Models
 {
+    /// <summary>
+    /// THUMBNAILSETTINGS - Actor portrait cropping configuration.
+    /// 
+    /// PURPOSE:
+    /// Defines how to crop and position an actor's portrait
+    /// sprite within a display mask (e.g., timeline, card).
+    /// 
+    /// COORDINATES:
+    /// - PixelPosition: Focus point in source texture pixels
+    /// - Offset: Derived mask-space offset from center
+    /// - Scale: Zoom/scale factor
+    /// - TextureSize: Source texture dimensions (default 1024)
+    /// 
+    /// USAGE:
+    /// Set PixelPosition to the face/focus area of the portrait.
+    /// Offset is auto-calculated for mask positioning.
+    /// 
+    /// RELATED FILES:
+    /// - ActorData.cs: Contains thumbnail settings
+    /// - TimelineTag.cs: Uses for portrait display
+    /// - ActorCard.cs: Uses for card portrait
+    /// </summary>
     [System.Serializable]
     public class ThumbnailSettings
     {
-        // Offset is an offset from the center of the image, expressed in mask-size units
-        // and consumed by TimelineBlockInstance. It is derived from PixelPosition.
         [SerializeField]
         private Vector2 offset;
-        public Vector2 Offset => offset; // read-only, always computed from pixels
+        public Vector2 Offset => offset;
 
         public Vector2 Scale;
-
-        // Focus point in source texture pixels (easier to set by sampling the image)
-        // Example for 1024x1024 textures: (512,512) means centered.
         public Vector2Int PixelPosition;
-
-        // Source texture size in pixels (defaults to 1024 as portraits are 1024x1024)
         public int TextureSize = 1024;
 
         public ThumbnailSettings()
@@ -25,12 +40,10 @@ namespace Assets.Scripts.Models
             offset = Vector2.zero;
             Scale = Vector2.one;
             TextureSize = 1024;
-            // default to image center so offset becomes zero
             PixelPosition = new Vector2Int(TextureSize / 2, TextureSize / 2);
             OffsetFromPixels();
         }
 
-        // Legacy: construct from offset+scale. We compute PixelPosition and then derive offset.
         public ThumbnailSettings(Vector2 position, Vector2 scale)
         {
             Scale = scale;
@@ -39,7 +52,6 @@ namespace Assets.Scripts.Models
             OffsetFromPixels();
         }
 
-        // Preferred: construct from pixel focus position and scale
         public ThumbnailSettings(Vector2Int pixelPosition, Vector2 scale, int textureSize = 1024)
         {
             Scale = scale;

@@ -6,28 +6,47 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Models
 {
     /// <summary>
-    /// Each pair of attackers (e.g. A and B), plus the opponents they sandwich
-    /// and any supporters for each attacker.
+    /// PINCERATTACKPAIR - Data for a pincer attack.
+    /// 
+    /// PURPOSE:
+    /// Contains the two attackers forming a pincer, the enemies
+    /// caught between them, and supporting allies.
+    /// 
+    /// STRUCTURE:
+    /// ```
+    /// [Attacker1] ← supporters1
+    ///      ↓
+    /// [Opponent1]
+    /// [Opponent2]
+    ///      ↓
+    /// [Attacker2] ← supporters2
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - PincerAttackManager.cs: Detects pincer setups
+    /// - PincerAttackSequence.cs: Executes pincer attacks
     /// </summary>
     public class PincerAttackPair
     {
         public ActorInstance attacker1;
         public ActorInstance attacker2;
 
-        // Enemies (opponents) in between attacker1 and attacker2
+        /// <summary>Enemies sandwiched between attackers.</summary>
         public List<ActorInstance> opponents = new();
 
-        // Attack attackResult actors stored here, so PincerAttackAction can see it
+        /// <summary>Attack results for each attacker.</summary>
         public List<AttackResult> attackResults1 = new();
         public List<AttackResult> attackResults2 = new();
 
-        // Potential same-team supporters who have Hide line of sight to each attacker
+        /// <summary>Supporting allies for each attacker.</summary>
         public List<ActorInstance> supporters1 = new();
         public List<ActorInstance> supporters2 = new();
     }
 
     /// <summary>
-    /// A container with all of the "bookend pairs" found for s certain team.
+    /// PINCERATTACKPARTICIPANTS - Collection of pincer pairs.
+    /// 
+    /// Contains all detected pincer attack pairs for a team.
     /// </summary>
     public class PincerAttackParticipants
     {

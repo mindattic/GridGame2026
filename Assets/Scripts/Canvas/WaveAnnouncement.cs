@@ -6,8 +6,27 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 /// <summary>
-/// Displays "Wave X/Y" text with a rotate-in, hold, rotate-out animation.
-/// Supports multiple TextMeshPro - Text (UI) children under the WaveAnnouncement root.
+/// WAVEANNOUNCEMENT - "Wave X/Y" banner display.
+/// 
+/// PURPOSE:
+/// Shows wave number when a new enemy wave begins,
+/// using rotate-in/out animation.
+/// 
+/// ANIMATION:
+/// - Starts rotated off-axis (-90 degrees)
+/// - Rotates to face camera
+/// - Holds for holdDuration
+/// - Rotates back off-axis
+/// 
+/// USAGE:
+/// ```csharp
+/// g.WaveAnnouncement.Show(currentWave, totalWaves);
+/// ```
+/// 
+/// RELATED FILES:
+/// - StageManager.cs: Triggers on wave start
+/// - VictoryAnnouncement.cs: Victory display
+/// - DefeatAnnouncement.cs: Defeat display
 /// </summary>
 public class WaveAnnouncement : MonoBehaviour
 {

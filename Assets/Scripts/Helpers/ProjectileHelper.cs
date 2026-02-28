@@ -4,8 +4,27 @@ using Assets.Scripts.Models;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Convenience helpers that construct ProjectileSettings and start the coroutine.
-/// Uses the unified ProjectileSettings fields.
+/// PROJECTILEHELPER - Convenience methods for projectile spawning.
+/// 
+/// PURPOSE:
+/// Provides simple fire-and-forget methods for common projectile
+/// patterns without manually constructing ProjectileSettings.
+/// 
+/// METHODS:
+/// - FireStraight: Direct line to target
+/// - FireWiggle: Oscillating path
+/// - FireLobbed: Arc trajectory
+/// - FireSpiral: Circular motion
+/// 
+/// USAGE:
+/// ```csharp
+/// ProjectileHelper.FireStraight(startPos, target.transform, "Fireball", "Explosion");
+/// ```
+/// 
+/// RELATED FILES:
+/// - ProjectileManager.cs: Actual spawning
+/// - ProjectileSettings.cs: Full configuration
+/// - ProjectileInstance.cs: Projectile behavior
 /// </summary>
 public static class ProjectileHelper
 {

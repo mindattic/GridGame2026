@@ -2,6 +2,22 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
+    /// <summary>
+    /// CANVASTHUMBNAILSETTINGS - Canvas-specific portrait cropping.
+    /// 
+    /// PURPOSE:
+    /// Defines cropping/positioning for actor portraits in UI
+    /// canvas elements (e.g., timeline blocks, cards).
+    /// 
+    /// PROPERTIES:
+    /// - X, Y: Position offset within mask
+    /// - Width, Height: Crop dimensions
+    /// - Scale: UI scale multiplier
+    /// 
+    /// RELATED FILES:
+    /// - ActorData.cs: Contains canvas thumbnail settings
+    /// - TimelineTag.cs: Uses for timeline portraits
+    /// </summary>
     [System.Serializable]
     public class CanvasThumbnailSettings
     {
@@ -9,7 +25,7 @@ namespace Assets.Scripts.Models
         public float Y;
         public int Width;
         public int Height;
-        public Vector2 Scale; // new: UI scale for portrait in the mask
+        public Vector2 Scale;
 
         public CanvasThumbnailSettings() { }
 
@@ -31,7 +47,6 @@ namespace Assets.Scripts.Models
             Scale = scale;
         }
 
-        // Copy constructor
         public CanvasThumbnailSettings(CanvasThumbnailSettings other)
         {
             if (other == null) return;
@@ -42,7 +57,6 @@ namespace Assets.Scripts.Models
             Scale = other.Scale;
         }
 
-        // Defaults for timeline portrait crop
         public static CanvasThumbnailSettings Default => SetDefault();
 
         public static CanvasThumbnailSettings SetDefault()

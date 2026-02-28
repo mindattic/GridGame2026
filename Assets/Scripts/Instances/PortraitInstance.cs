@@ -7,27 +7,62 @@ using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Unified portrait instance that supports both UI Image (Canvas space) and SpriteRenderer (world space).
-/// Attach this to either kind of prefab; it will operate based on available components.
+/// PORTRAITINSTANCE - Character portrait slide-in effect.
+/// 
+/// PURPOSE:
+/// Controls character portrait images that slide in during combat
+/// sequences like pincer attacks. Supports both UI (Image) and
+/// world-space (SpriteRenderer) rendering modes.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Pincer Attack with Portraits:
+/// 
+/// ←──[Hero A]    [Enemy]    [Hero B]──→
+///     slides in  (target)   slides in
+/// ```
+/// 
+/// DUAL MODE:
+/// - UI Mode: Uses Image + RectTransform for canvas space
+/// - World Mode: Uses SpriteRenderer for world space
+/// Automatically detects which components are present.
+/// 
+/// ANIMATIONS:
+/// - SlideIn: Portrait enters from screen edge
+/// - SlideOut: Portrait exits off screen
+/// - PopIn/PopOut: 3D rotation effects
+/// 
+/// LANE LOCKING:
+/// fixedX/fixedY can lock portrait to specific screen positions
+/// for consistent layout during multi-portrait sequences.
+/// 
+/// RELATED FILES:
+/// - PortraitManager.cs: Orchestrates portrait display
+/// - Portrait2DFactory.cs: Creates UI portraits
+/// - Portrait3DFactory.cs: Creates world portraits
 /// </summary>
 public class PortraitInstance : MonoBehaviour
 {
-    // Common components (one or the other will be present per prefab)
+    #region Components
+
     public RectTransform rectTransform { get; private set; }
     public Image image { get; private set; }
     public SpriteRenderer spriteRenderer { get; private set; }
 
-    // Common state
+    #endregion
+
+    #region State
+
     public Direction direction;
     protected AnimationCurve slideCurve;
     public ActorInstance actor;
     protected bool isBeingDestroyed = false;
 
-    // UI-only options (lane locking)
+    // UI-only: lane locking
     public float? fixedX = null;
     public float? fixedY = null;
 
-    // Speed control for time-based animations
+    /// <summary>Animation speed multiplier.</summary>
     [Range(0.1f, 10f)]
     public float speedMultiplier = 1.75f;
 
@@ -38,16 +73,19 @@ public class PortraitInstance : MonoBehaviour
     private Quaternion lastPopInRot = Quaternion.identity;
     private Vector3 popOutFrontRestorePos;
 
-    // Properties
+    #endregion
+
+    #region Properties
+
     public Transform parent
     {
         get => transform.parent;
         set
         {
             if (rectTransform != null)
-                rectTransform.SetParent(value, false); // UI: keep local alignment
+                rectTransform.SetParent(value, false);
             else
-                transform.SetParent(value, true); // World: preserve world position
+                transform.SetParent(value, true);
         }
     }
 
@@ -413,4 +451,6 @@ public class PortraitInstance : MonoBehaviour
         isBeingDestroyed = true;
         Destroy(gameObject);
     }
+
+    #endregion
 }

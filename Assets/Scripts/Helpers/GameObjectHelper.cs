@@ -5,9 +5,43 @@ using UnityEngine.UI;
 
 namespace Assets.Helper
 {
+    /// <summary>
+    /// GAMEOBJECTHELPER - GameObject path constants for scene lookups.
+    /// 
+    /// PURPOSE:
+    /// Centralized string constants for GameObject.Find() paths,
+    /// avoiding hardcoded strings scattered throughout the codebase.
+    /// 
+    /// ORGANIZATION:
+    /// Nested classes mirror scene/prefab hierarchy:
+    /// - Actor.*: Actor prefab child paths
+    /// - Game.*: Game scene UI paths
+    /// - StageSelect.*: Stage selection scene paths
+    /// - etc.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// // Instead of: GameObject.Find("Canvas/Title")
+    /// var title = GameObject.Find(GameObjectHelper.StageSelect.Title);
+    /// 
+    /// // Actor child lookup
+    /// var healthBar = actor.transform.Find(GameObjectHelper.Actor.Front.HealthBar.Fill);
+    /// ```
+    /// 
+    /// PATH FORMAT:
+    /// - Absolute paths for scene objects: "Canvas/Title"
+    /// - Relative paths for prefab children: "Front/Thumbnail"
+    /// 
+    /// RELATED FILES:
+    /// - All scene managers use these paths
+    /// - ActorInstance.cs: Uses Actor.* paths
+    /// - Factory classes: Reference child paths
+    /// </summary>
     public static class GameObjectHelper
     {
+        #region Actor Paths
 
+        /// <summary>Actor prefab child object paths.</summary>
         public static class Actor
         {
             public static class Front
@@ -20,7 +54,6 @@ namespace Assets.Helper
                 public const string Thumbnail = Root + "/Thumbnail";
                 public const string Frame = Root + "/Frame";
                 public const string StatusIcon = Root + "/StatusIcon";
-                //public const string WeaponIcon = Root + "/WeaponIcon";
 
                 public static class HealthBar
                 {
@@ -42,11 +75,15 @@ namespace Assets.Helper
                 }
             }
 
-            // Sibling objects (not under Front)
             public const string Armor = "Armor";
             public const string Back = "Back";
         }
 
+        #endregion
+
+        #region Scene Paths
+
+        /// <summary>Credits scene paths.</summary>
         public static class Credits
         {
             public const string Title = "Canvas/Title";
@@ -56,7 +93,7 @@ namespace Assets.Helper
             public const string Textarea = "Canvas/ScrollView/Viewport/Content/Textarea";
         }
 
-
+        /// <summary>Game scene paths.</summary>
         public static class Game
         {
             public static Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<Canvas>();
@@ -477,7 +514,7 @@ namespace Assets.Helper
             public const string OverworldButton = "OverworldButton";
             public const string BattleButton = "BattleButton";
 
-            // Panels (root containers for each section)
+            // Panels
             public const string PartyPanel = "PartyPanel";
             public const string ShopPanel = "ShopPanel";
             public const string MedicalPanel = "MedicalPanel";
@@ -485,5 +522,6 @@ namespace Assets.Helper
             public const string BlacksmithPanel = "BlacksmithPanel";
         }
 
+        #endregion
     }
 }

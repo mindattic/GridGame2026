@@ -3,6 +3,23 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+/// <summary>
+/// STAGEWAVE - Enemy wave definition for a stage.
+/// 
+/// PURPOSE:
+/// Defines a single wave of enemies within a stage,
+/// including enemy placements and dotted line indicators.
+/// 
+/// PROPERTIES:
+/// - WaveID: Wave number (1-indexed)
+/// - Actors: List of enemy placements
+/// - DottedLines: Visual connections between actors
+/// 
+/// RELATED FILES:
+/// - Stage.cs: Contains list of waves
+/// - StageActor.cs: Individual enemy placement
+/// - StageManager.cs: Wave execution
+/// </summary>
 [Serializable]
 public class StageWave
 {
@@ -16,12 +33,10 @@ public class StageWave
     {
         WaveID = other.WaveID;
 
-        // Deep copy the Actors list
         Actors = other.Actors != null
             ? new List<StageActor>(other.Actors.Select(actor => new StageActor(actor)))
             : new List<StageActor>();
 
-        // Deep copy the DottedLines list
         DottedLines = other.DottedLines != null
             ? new List<StageDottedLine>(other.DottedLines.Select(line => new StageDottedLine(line)))
             : new List<StageDottedLine>();

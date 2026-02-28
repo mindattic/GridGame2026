@@ -11,14 +11,56 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
+    /// <summary>
+    /// PROFILEHELPER - Player profile and save data management.
+    /// 
+    /// PURPOSE:
+    /// Manages player profiles, save files, settings, and game progression.
+    /// Handles persistence to disk via JSON serialization.
+    /// 
+    /// DATA HIERARCHY:
+    /// ```
+    /// Profiles/
+    /// ├── Profile1/
+    /// │   ├── Settings.json     ← Player preferences
+    /// │   └── Saves/
+    /// │       ├── Save001.json  ← Save slot 1
+    /// │       ├── Save002.json  ← Save slot 2
+    /// │       └── Save003.json  ← Save slot 3
+    /// └── Profile2/
+    ///     └── ...
+    /// ```
+    /// 
+    /// KEY PROPERTIES:
+    /// - Profiles: All player profiles
+    /// - CurrentProfile: Active profile
+    /// - CurrentSave: Active save within profile
+    /// - Settings: Player preferences
+    /// 
+    /// KEY METHODS:
+    /// - SelectProfile(key): Sets active profile
+    /// - Save(force): Persists current state to disk
+    /// - Load(): Loads profile from disk
+    /// - HasProfiles(): Checks if any profiles exist
+    /// 
+    /// DEFAULT DATA:
+    /// Provides default values for new profiles including
+    /// starter roster, party composition, and settings.
+    /// 
+    /// RELATED FILES:
+    /// - Profile.cs: Profile data model
+    /// - SaveState.cs: Save file data model
+    /// - ProfileSettings.cs: Settings data model
+    /// - ProfileSelectManager.cs: Profile selection UI
+    /// - SaveFileSelectManager.cs: Save slot selection UI
+    /// </summary>
     public static class ProfileHelper
     {
-        // ---------------------------------------------------------------------
-        // Defaults
-        // ---------------------------------------------------------------------
+        #region Default Values
 
         public const string SettingsFileName = "Settings.json";
 
+        /// <summary>Default settings for new profiles.</summary>
         public static ProfileSettings DefaultSettings = new ProfileSettings()
         {
             ActorPanMultiplier = 0.05f,
@@ -29,17 +71,20 @@ namespace Assets.Helpers
             ReloadThumbnailSettings = false
         };
 
+        /// <summary>Default global save data.</summary>
         public static GlobalSaveData DefaultGlobal = new GlobalSaveData()
         {
             TotalCoins = 0,
         };
 
+        /// <summary>Default stage progress.</summary>
         public static StageSaveData DefaultStage = new StageSaveData()
         {
             CurrentStage = RNG.Stage(Map.Test),
             CurrentWave = 0,
         };
 
+        /// <summary>Default roster (all unlocked heroes).</summary>
         public static RosterSaveData DefaultRoster = new RosterSaveData()
         {
             Members = new List<CharacterLevelPair>()
@@ -57,6 +102,7 @@ namespace Assets.Helpers
             }
         };
 
+        /// <summary>Default starting party composition.</summary>
         public static PartySaveData DefaultParty = new PartySaveData()
         {
             Members = new List<CharacterLevelPair>()
@@ -721,5 +767,7 @@ namespace Assets.Helpers
         }
 
         public static OverworldSaveData GetOverworld() => Overworld;
+
+        #endregion
     }
 }

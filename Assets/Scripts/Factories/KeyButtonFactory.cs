@@ -5,10 +5,46 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for KeyButton - replaces KeyButtonPrefab.prefab
-    /// Hierarchy:
-    /// - KeyButton (root - Image, Button)
-    ///   - Label (TMP text)
+    /// KEYBUTTONFACTORY - Creates virtual keyboard key GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates individual key buttons for the virtual keyboard dialog.
+    /// Each key displays a character and handles touch/click input.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌────┐
+    /// │ A  │ ← Single key button
+    /// └────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// KeyButton (root)
+    /// ├── Image (key background)
+    /// ├── Button (click handler)
+    /// └── Label (TMP - key character)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Layer: UI (5)
+    /// - Default size: 64x64
+    /// - Image type: Sliced (for 9-slice scaling)
+    /// - ColorTint transition for button states
+    /// 
+    /// SPECIAL KEYS:
+    /// - Standard keys: A-Z, 0-9
+    /// - CapsLock: Toggle uppercase
+    /// - Backspace: Delete character
+    /// - Space: Wide space bar
+    /// - OK/Cancel: Dialog buttons
+    /// 
+    /// CALLED BY:
+    /// - KeyboardDialogFactory.CreateKey()
+    /// 
+    /// RELATED FILES:
+    /// - KeyboardDialogFactory.cs: Creates keyboard layout
+    /// - KeyboardDialogInstance.cs: Keyboard behavior
     /// </summary>
     public static class KeyButtonFactory
     {
@@ -23,6 +59,7 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new keyboard key button.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: KeyButton ===
@@ -38,13 +75,12 @@ namespace Assets.Scripts.Factories
 
             root.AddComponent<CanvasRenderer>();
 
-            // Image (background)
+            // Image (key background)
             var image = root.AddComponent<Image>();
             image.color = Color.white;
             image.raycastTarget = true;
             image.maskable = true;
             image.type = Image.Type.Sliced;
-            // sprite left null - assigned at runtime
 
             // Button
             var button = root.AddComponent<Button>();

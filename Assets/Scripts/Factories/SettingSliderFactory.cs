@@ -5,18 +5,45 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for SettingSlider - replaces SettingSlider.prefab
-    /// Hierarchy:
-    /// - SettingSlider (root - ContentSizeFitter, VerticalLayoutGroup)
-    ///   - Label (TMP, LayoutElement)
-    ///   - Panel (container)
-    ///     - Slider (Slider component)
-    ///       - Background (Image)
-    ///       - Fill Area
-    ///         - Fill (Image)
-    ///       - Handle Slide Area
-    ///         - Handle (Image)
-    ///     - Value (TMP, LayoutElement)
+    /// SETTINGSLIDERFACTORY - Creates settings slider GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates slider controls for numeric range settings on the
+    /// settings screen (volume, speed, sensitivity, etc).
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────────────┐
+    /// │ Game Speed                          │ ← Label
+    /// │ [========■==========] 1.5x          │ ← Slider + Value
+    /// └─────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// SettingSlider (root)
+    /// ├── ContentSizeFitter
+    /// ├── VerticalLayoutGroup
+    /// ├── Label (TMP - setting name)
+    /// └── Panel (horizontal container)
+    ///     ├── Slider
+    ///     │   ├── Background (Image)
+    ///     │   ├── Fill Area → Fill
+    ///     │   └── Handle Slide Area → Handle
+    ///     └── Value (TMP - current value)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Default size: 512x100
+    /// - Vertical layout with label above slider
+    /// - Value text shows current numeric value
+    /// 
+    /// CALLED BY:
+    /// - SettingsManager.CreateSliders()
+    /// 
+    /// RELATED FILES:
+    /// - SettingsManager.cs: Settings screen
+    /// - SettingsModel.cs: Numeric settings
     /// </summary>
     public static class SettingSliderFactory
     {
@@ -31,11 +58,12 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new settings slider control.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: SettingSlider ===
             var root = new GameObject("SettingSlider");
-            root.layer = 0; // Default layer
+            root.layer = 0;
 
             var rootRT = root.AddComponent<RectTransform>();
             rootRT.anchorMin = new Vector2(0.5f, 0.5f);

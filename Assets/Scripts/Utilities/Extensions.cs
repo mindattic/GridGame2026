@@ -8,11 +8,47 @@ using System.Text;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// EXTENSIONS - Extension methods for Unity and C# types.
+/// 
+/// PURPOSE:
+/// Provides utility extension methods that add functionality to
+/// built-in Unity and .NET types for cleaner, more readable code.
+/// 
+/// CATEGORIES:
+/// - GameObject: Child finding, path traversal
+/// - Transform: Component search, hierarchy navigation
+/// - Vector2/Vector3: SetX/SetY/SetZ individual axis setters
+/// - Color: Alpha manipulation
+/// - IEnumerable: Shuffle, random selection
+/// - String: Formatting utilities
+/// 
+/// USAGE:
+/// ```csharp
+/// // Vector extensions
+/// position = position.SetY(5f);
+/// 
+/// // Color extensions
+/// color = color.WithAlpha(0.5f);
+/// 
+/// // Collection extensions
+/// var shuffled = list.Shuffle();
+/// var random = list.Random();
+/// 
+/// // GameObject extensions
+/// var child = gameObject.GetChildByName("Thumbnail");
+/// ```
+/// 
+/// RELATED FILES:
+/// - Used throughout the codebase
+/// - Geometry.cs: Additional vector utilities
+/// </summary>
 
+#region GameObject Extensions
 
 public static class GameObjectExtensions
 {
-    // Gets a direct child by name (not recursive)
+    /// <summary>Gets a direct child by name (not recursive).</summary>
     public static GameObject GetChildByName(this GameObject parent, string childName)
     {
         if (parent == null || string.IsNullOrEmpty(childName))
@@ -22,7 +58,7 @@ public static class GameObjectExtensions
         return childTransform != null ? childTransform.gameObject : null;
     }
 
-    // Finds a descendant GameObject by slash-delimited path, starting from any GameObject in the scene
+    /// <summary>Finds a descendant GameObject by slash-delimited path.</summary>
     public static GameObject FindByPath(this GameObject root, string path)
     {
         if (string.IsNullOrWhiteSpace(path) || root == null)
@@ -624,13 +660,15 @@ public static class ActorInstanceTimelineExtensions
         float tilesToMove = 1f; // Safe default when unknown
         float perTileSeconds = 0.35f;
 
-        // Attack or cast time heuristic. You can enrich this later by flags or ability data.
+        // Attack or cast time heuristic
         float attackSeconds = 0.7f;
 
-        // Very simple first pass
+        // Simple first pass
         float total = baseSeconds + tilesToMove * perTileSeconds + attackSeconds;
 
-        // Clamp to a sane range so the UI looks consistent
+        // Clamp to a sane range
         return Mathf.Clamp(total, 0.6f, 4.0f);
     }
 }
+
+#endregion

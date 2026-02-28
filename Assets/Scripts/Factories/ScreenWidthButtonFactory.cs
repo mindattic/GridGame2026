@@ -5,10 +5,48 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for ScreenWidthButton - replaces ScreenWidthButtonPrefab.prefab
-    /// Hierarchy:
-    /// - ScreenWidthButton (root with Image, Button, LayoutElement)
-    ///   - Label (TextMeshProUGUI)
+    /// SCREENWIDTHBUTTONFACTORY - Creates full-width menu button GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates standardized full-screen-width buttons for menu screens
+    /// like profile select, stage select, etc.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌────────────────────────────────────────────┐
+    /// │              Button Label                  │
+    /// └────────────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// ScreenWidthButton (root)
+    /// ├── Image (button background)
+    /// ├── Button (click handler)
+    /// ├── LayoutElement (scroll view sizing)
+    /// └── Label (TMP - button text)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Layer: UI
+    /// - Default size: 1024x128
+    /// - LayoutElement for flexible scroll view integration
+    /// - ColorTint transition for button states
+    /// 
+    /// USE CASES:
+    /// - Profile selection buttons
+    /// - Stage selection buttons
+    /// - Menu options
+    /// - Settings entries
+    /// 
+    /// CALLED BY:
+    /// - ProfileSelectManager
+    /// - StageSelectManager
+    /// - SettingsManager
+    /// 
+    /// RELATED FILES:
+    /// - ProfileSelectManager.cs: Profile buttons
+    /// - StageSelectManager.cs: Stage buttons
     /// </summary>
     public static class ScreenWidthButtonFactory
     {
@@ -23,6 +61,7 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new full-width menu button.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: ScreenWidthButton ===
@@ -53,7 +92,7 @@ namespace Assets.Scripts.Factories
             button.colors = DefaultButtonColors;
             button.navigation = new Navigation { mode = Navigation.Mode.Automatic };
 
-            // LayoutElement (for flexible layout in scroll views)
+            // LayoutElement
             var layoutElement = root.AddComponent<LayoutElement>();
             layoutElement.ignoreLayout = false;
             layoutElement.minWidth = -1;

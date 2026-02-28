@@ -6,16 +6,53 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for TutorialPopup - replaces TutorialPopup.prefab
-    /// Hierarchy:
-    /// - TutorialPopup (root - TutorialPopup component)
-    ///   - Panel (Image - background)
-    ///     - Title (TMP)
-    ///     - Image (Image - tutorial image)
-    ///     - Content (TMP)
-    ///     - PreviousButton (Button with TMP child)
-    ///     - NextButton (Button with TMP child)
-    ///     - CloseButton (Button with TMP child)
+    /// TUTORIALPOPUPFACTORY - Creates tutorial overlay popups.
+    /// 
+    /// PURPOSE:
+    /// Creates full-screen tutorial popups that explain game mechanics
+    /// to new players with text, images, and navigation.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────────────┐
+    /// │          Tutorial: Pincer Attack    │
+    /// │  ┌─────────────────────────────┐   │
+    /// │  │                             │   │
+    /// │  │     [Tutorial Image]        │   │ ← Diagram/animation
+    /// │  │                             │   │
+    /// │  └─────────────────────────────┘   │
+    /// │                                     │
+    /// │  Trap enemies between two heroes   │ ← Explanation text
+    /// │  to deal bonus damage.             │
+    /// │                                     │
+    /// │ [◄ Prev]              [Next ►] [X] │
+    /// └─────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// TutorialPopup (root)
+    /// ├── TutorialPopup (behavior)
+    /// └── Panel (dark overlay)
+    ///     ├── Title (TMP)
+    ///     ├── Image (tutorial image)
+    ///     ├── Content (TMP description)
+    ///     ├── PreviousButton
+    ///     ├── NextButton
+    ///     └── CloseButton
+    /// ```
+    /// 
+    /// NAVIGATION:
+    /// - Previous/Next for multi-page tutorials
+    /// - Close button to dismiss
+    /// 
+    /// CALLED BY:
+    /// - TutorialManager.Show()
+    /// 
+    /// RELATED FILES:
+    /// - TutorialPopup.cs: Popup behavior
+    /// - TutorialManager.cs: Tutorial flow management
+    /// - TutorialLibrary.cs: Tutorial definitions
     /// </summary>
     public static class TutorialPopupFactory
     {
@@ -30,6 +67,7 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new tutorial popup.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: TutorialPopup ===
@@ -43,10 +81,9 @@ namespace Assets.Scripts.Factories
             rootRT.sizeDelta = Vector2.zero;
             rootRT.pivot = new Vector2(0.5f, 0.5f);
 
-            // Add TutorialPopup component (will be initialized later)
             root.AddComponent<TutorialPopup>();
 
-            // === CHILD: Panel (dark overlay + content container) ===
+            // === CHILD: Panel ===
             var panel = new GameObject("Panel");
             panel.layer = 5;
 

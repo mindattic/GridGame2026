@@ -4,20 +4,43 @@ using System;
 using UnityEngine;
 using Assets.Helpers;
 
+/// <summary>
+/// ACTORDATA - Static data definition for a character.
+/// 
+/// PURPOSE:
+/// Defines all static/template data for a character class including
+/// base stats, abilities, visual settings, and lore.
+/// 
+/// DATA CATEGORIES:
+/// - Identity: CharacterName, CharacterClass, Tags
+/// - Stats: BaseStats, StatGrowth, MilestoneStatGrowth
+/// - Visuals: ThumbnailSettings, Portrait
+/// - Combat: Abilities, BonusXP
+/// - Lore: Description, Expectations, Trivia
+/// 
+/// USAGE:
+/// ```csharp
+/// var data = ActorLibrary.Get(CharacterClass.Paladin);
+/// var hp = data.BaseStats.Vitality;
+/// ```
+/// 
+/// RELATED FILES:
+/// - ActorLibrary.cs: Registry of all ActorData
+/// - ActorInstance.cs: Runtime actor state
+/// - Data/Actor/*.cs: Individual character definitions
+/// </summary>
 [Serializable]
 public class ActorData
 {
 
     public string CharacterName;
     public int Level = 1;
-    public CharacterClass CharacterClass; // now enum for internal consistency
+    public CharacterClass CharacterClass;
 
-
-    // Base XP awarded when this actor is defeated. Can be overridden per actor Data().
+    /// <summary>Bonus XP awarded when this actor is defeated.</summary>
     public int BonusXP = 10;
 
     public ActorTag Tags { get; set; }
-
 
     public ActorStats BaseStats;
     public ActorStats Stats;
@@ -26,9 +49,8 @@ public class ActorData
     public Dictionary<int, StatGrowth> MilestoneStatGrowth = new Dictionary<int, StatGrowth>();
 
     public ThumbnailSettings ThumbnailSettings;
-    public CanvasThumbnailSettings CanvasThumbnailSettings; // New: Canvas-specific cropping for timeline blocks
+    public CanvasThumbnailSettings CanvasThumbnailSettings;
     public Sprite Portrait;
-
 
     public List<Ability> Abilities = new List<Ability>();
 

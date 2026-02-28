@@ -2,9 +2,32 @@
 
 namespace Game.Instances.Actor
 {
+    /// <summary>
+    /// ACTORLAYER - Layer name constants for actor rendering.
+    /// 
+    /// PURPOSE:
+    /// Defines string constants for all named layers within
+    /// an actor's GameObject hierarchy.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var front = actor.Find(ActorLayer.Name.Front);
+    /// var healthFill = actor.Find(ActorLayer.Name.HealthBar.Fill);
+    /// ```
+    /// 
+    /// LAYER HIERARCHY:
+    /// - Front/Back: Main sprite layers
+    /// - Opaque/Quality/Glow: Visual effect layers
+    /// - Parallax: 3D-like depth effect
+    /// - HealthBar.*: HP bar components
+    /// - ActionBar.*: Action/turn bar components
+    /// 
+    /// RELATED FILES:
+    /// - ActorRenderers.cs: Uses these constants
+    /// - ActorFactory.cs: Creates layers
+    /// </summary>
     public static class ActorLayer
     {
-        //Define names for all layers
         public static class Name
         {
             public const string Front = "Front";
@@ -19,7 +42,6 @@ namespace Game.Instances.Actor
             public const string Frame = "Frame";
             public const string StatusIcon = "StatusIcon";
 
-            //HealthBar Sub-Objects
             public static class HealthBar
             {
                 public const string Root = "HealthBar";
@@ -29,7 +51,6 @@ namespace Game.Instances.Actor
                 public const string Text = "HealthBarText";
             }
 
-            //ActionBar Sub-Objects
             public static class ActionBar
             {
                 public const string Root = "ActionBar";
@@ -45,7 +66,6 @@ namespace Game.Instances.Actor
             public const string RadialText = "RadialText";
             public const string TurnDelayText = "TurnDelayText";
             public const string NameTagText = "NameTagText";
-            //public const string WeaponIcon = "WeaponIcon";
 
             //Armor Sub-Objects
             public static class Armor

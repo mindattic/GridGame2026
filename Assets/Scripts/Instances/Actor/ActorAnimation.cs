@@ -8,11 +8,42 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Instances.Actor
 {
     /// <summary>
-    /// ActorAnimation encapsulates animated actions for an actor such as shaking, dodging, bumping,
-    /// growing, spinning, fading, and wiggles. All actions are coroutine based.
+    /// ACTORANIMATION - Coroutine-based animation system for actors.
+    /// 
+    /// PURPOSE:
+    /// Provides reusable animation routines for actor visual effects
+    /// including shaking, dodging, bumping, growing, spinning, and fading.
+    /// 
+    /// AVAILABLE ANIMATIONS:
+    /// ```
+    /// Shake     - Rapid position jitter (damage feedback)
+    /// Dodge     - Quick sidestep motion (miss/evade)
+    /// Bump      - Forward lunge and return (attack motion)
+    /// Grow      - Scale pulse effect (power up)
+    /// Spin      - Rotation effect (special ability)
+    /// Fade      - Alpha transition (death/spawn)
+    /// Wiggle    - Oscillating rotation (idle/attention)
+    /// ```
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// actor.Animation.Shake(0.5f, 0.3f);
+    /// actor.Animation.Bump(target.Position, onComplete: DoNextAction);
+    /// ```
+    /// 
+    /// COROUTINE BASED:
+    /// All animations are coroutines that can be chained or
+    /// run in parallel. Optional completion callbacks supported.
+    /// 
+    /// RELATED FILES:
+    /// - ActorInstance.cs: Owns the Animation component
+    /// - ActorRenderers.cs: Provides visual components to animate
+    /// - ActorMovement.cs: Movement-specific animations
     /// </summary>
     public class ActorAnimation
     {
+        #region References
+
         protected ActorRenderers render => instance.Render;
         protected ActorStats stats => instance.Stats;
         private bool isActive => instance.IsActive;
@@ -26,8 +57,12 @@ namespace Assets.Scripts.Instances.Actor
         private float wiggleFocus;
         private float wiggleAmplitude;
 
+        #endregion
+
+        #region Initialization
+
         /// <summary>
-        /// Initializes this Animation module for the owning actor and prepares animation parameters.
+        /// Initializes this Animation module for the owning actor.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
         {
@@ -37,8 +72,12 @@ namespace Assets.Scripts.Instances.Actor
             wiggleAmplitude = 15f;
         }
 
+        #endregion
+
+        #region Shake Animation
+
         /// <summary>
-        /// ProcessRoutine a shake on the actor's Thumbnail. Optional routine routine runs after the shake completes.
+        /// Triggers a shake animation on the actor (damage feedback).
         /// </summary>
         public void Shake(float intensity, float duration = 0f, IEnumerator routine = null)
         {
@@ -49,8 +88,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Applies a randomized positional offset to simulate a shaking effect, then restores position.
-        /// If a routine routine is provided, it runs before restoration.
+        /// Coroutine that applies randomized positional offsets for shake effect.
         /// </summary>
         private IEnumerator ShakeRoutine(float intensity, float duration, IEnumerator routine = null)
         {
@@ -533,5 +571,7 @@ namespace Assets.Scripts.Instances.Actor
 
         //    render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         //}
+
+        #endregion
     }
 }

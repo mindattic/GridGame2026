@@ -8,6 +8,26 @@ using UnityEngine.TextCore.Text;
 using Assets.Scripts.Libraries;
 using Assets.Helpers;
 
+/// <summary>
+/// STAGEACTOR - Enemy spawn configuration for a stage.
+/// 
+/// PURPOSE:
+/// Defines an enemy to spawn in a stage wave, including
+/// character class, level, team, and spawn location.
+/// 
+/// PROPERTIES:
+/// - CharacterClass: Enemy type to spawn
+/// - Level: Enemy level
+/// - Team: Which team (Enemy)
+/// - SpawnTurn: Turn number to spawn on
+/// - Location: Grid position (or random if null)
+/// - Stats: Calculated stats based on level
+/// 
+/// RELATED FILES:
+/// - StageWave.cs: Contains list of StageActors
+/// - StageManager.cs: Spawns actors
+/// - ActorLibrary.cs: Actor data lookup
+/// </summary>
 [Serializable]
 public class StageActor
 {
@@ -20,7 +40,6 @@ public class StageActor
 
     public StageActor() { }
 
-    //Copy constructor
     public StageActor(StageActor other)
     {
         CharacterClass = other.CharacterClass;
@@ -43,7 +62,6 @@ public class StageActor
 
     public void AssignStats()
     {
-        // Treat None as a null-equivalent; no stats to assign.
         if (CharacterClass == CharacterClass.None)
         {
             Stats = null;

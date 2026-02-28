@@ -5,49 +5,50 @@ using UnityEngine;
 namespace Assets.Scripts.Utilities
 {
     /// <summary>
-    /// Centralized readiness barrier for game-wide initialization.
-    /// Use this to delay components that depend on scene singletons (e.g., GameManager) until
-    /// the game signals it is fully initialized. Prevents null-reference races during scene loads.
+    /// GAMEREADY - Initialization synchronization barrier.
+    /// 
+    /// PURPOSE:
+    /// Prevents null-reference races by providing a centralized
+    /// readiness signal that dependent components can await.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// // In GameManager.Start(), after all init:
+    /// GameReady.Confirm();
+    /// 
+    /// // In dependent components:
+    /// void Awake() => GameReady.Begin(this);
+    /// // -or-
+    /// GameReady.WhenReady(this, () => Initialize());
+    /// // -or-
+    /// await GameReady.Ready;
+    /// ```
+    /// 
+    /// PROPERTIES:
+    /// - IsReady: True after Confirm() called
+    /// - Ready: Awaitable Task
+    /// - OnReady: Event fired once on confirmation
+    /// 
+    /// RELATED FILES:
+    /// - GameManager.cs: Calls Confirm()
     /// </summary>
-    /// <remarks>
-    /// - Call <see cref="Confirm"/> once, typically at the end of GameManager.Start(), after all systems are ready.
-    /// - Call <see cref="Begin(MonoBehaviour)"/> in Awake() of dependent components to auto-disable and re-enable when ready.
-    /// - Or use <see cref="WhenReady(MonoBehaviour, Action)"/> to run code once the game is ready.
-    /// - Threading: Keep all calls on Unity's main thread; enabling/disabling components must be done on the main thread.
-    /// </remarks>
     public static class GameReady
     {
-        /// <summary>
-        /// Backing task used to await readiness in async contexts.
-        /// Completes exactly once when <see cref="Confirm"/> is called.
-        /// </summary>
         private static TaskCompletionSource<bool> tsc = new TaskCompletionSource<bool>();
 
-        /// <summary>
-        /// Awaitable task that completes when the game is ready.
-        /// Example: await GameReady.Ready; inside an async Start().
-        /// </summary>
+        /// <summary>Awaitable task that completes when game is ready.</summary>
         public static Task Ready => tsc.Task;
 
-        /// <summary>
-        /// True after readiness was confirmed. Safe to query in guards for Update/Start.
-        /// </summary>
+        /// <summary>True after readiness was confirmed.</summary>
         public static bool IsReady => tsc.Task.IsCompletedSuccessfully;
 
-        /// <summary>
-        /// Event fired exactly once when readiness is confirmed.
-        /// Subscribers added after readiness will never be invoked (use <see cref="IsReady"/> to short-circuit).
-        /// </summary>
+        /// <summary>Event fired once when readiness is confirmed.</summary>
         public static event Action OnReady;
 
         /// <summary>
         /// Signals that the game has finished initialization.
         /// Idempotent: subsequent calls are ignored.
         /// </summary>
-        /// <remarks>
-        /// Typical call site: at the end of GameManager.Start(), after all systems are initialized.
-        /// This invokes <see cref="OnReady"/> once and transitions <see cref="Ready"/> to a completed task.
-        /// </remarks>
         public static void Confirm()
         {
             if (IsReady) return;                  // Do nothing if already signaled

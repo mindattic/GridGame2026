@@ -6,14 +6,45 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
+    /// <summary>
+    /// EXPERIENCEHELPER - XP calculation and distribution.
+    /// 
+    /// PURPOSE:
+    /// Calculates XP rewards for defeating enemies and
+    /// handles XP gain with level-up processing.
+    /// 
+    /// XP FORMULA:
+    /// Based on defeated enemy's stats:
+    /// - Physical power (offense + defense)
+    /// - Magic power (magic offense + resistance)
+    /// - HP score
+    /// - Level score
+    /// - Bonus XP from ActorData
+    /// 
+    /// LEVEL THRESHOLDS:
+    /// NextLevel(level) = 50 + (level²) * 10
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// int xp = ExperienceHelper.Calculate(defeatedEnemy);
+    /// ExperienceHelper.Gain(hero, xp);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - ExperienceTracker.cs: Tracks pending XP
+    /// - PostBattleManager.cs: Awards XP after battle
+    /// - LevelHelper.cs: Level-up stat growth
+    /// </summary>
     public static class ExperienceHelper
     {
+        /// <summary>XP required to reach next level.</summary>
         public static int NextLevel(int level)
         {
             level = Mathf.Max(1, level);
             return 50 + (level * level) * 10;
         }
 
+        /// <summary>Calculate XP reward for defeating an actor.</summary>
         public static int Calculate(ActorInstance defeated)
         {
             if (defeated == null || defeated.characterClass == CharacterClass.None)
@@ -40,7 +71,7 @@ namespace Assets.Helpers
             return reward;
         }
 
-        // Add XP to an actor. TotalXP is the source of truth; Level and CurrentXP are derived from it.
+        /// <summary>Add XP to an actor and handle level-ups.</summary>
         public static void Gain(ActorInstance actor, int amount)
         {
             if (actor == null || amount <= 0) return;

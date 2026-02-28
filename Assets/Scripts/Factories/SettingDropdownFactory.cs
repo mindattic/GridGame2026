@@ -5,8 +5,45 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for SettingDropdown - replaces SettingDropdown.prefab
-    /// Creates a simplified dropdown structure compatible with TMP_Dropdown
+    /// SETTINGDROPDOWNFACTORY - Creates settings dropdown GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates dropdown/combobox controls for multi-choice settings
+    /// on the settings screen (resolution, language, etc).
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────────────────┐
+    /// │ Resolution                          │ ← Label
+    /// │ [1920x1080                     ▼]  │ ← Dropdown
+    /// └─────────────────────────────────────┘
+    ///           ↓ (when expanded)
+    /// ┌─────────────────────────────────────┐
+    /// │ 1920x1080                           │
+    /// │ 1280x720                            │
+    /// │ 1600x900                            │
+    /// └─────────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// SettingDropdown (root)
+    /// ├── ContentSizeFitter
+    /// ├── VerticalLayoutGroup
+    /// ├── Label (TMP - setting name)
+    /// └── Panel (dropdown container)
+    ///     └── TMP_Dropdown
+    ///         ├── Label (selected value)
+    ///         ├── Arrow (dropdown indicator)
+    ///         └── Template (popup list)
+    /// ```
+    /// 
+    /// CALLED BY:
+    /// - SettingsManager.CreateDropdowns()
+    /// 
+    /// RELATED FILES:
+    /// - SettingsManager.cs: Settings screen
+    /// - SettingsModel.cs: Choice settings
     /// </summary>
     public static class SettingDropdownFactory
     {
@@ -21,11 +58,12 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new settings dropdown control.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: SettingDropdown ===
             var root = new GameObject("SettingDropdown");
-            root.layer = 0; // Default layer
+            root.layer = 0;
 
             var rootRT = root.AddComponent<RectTransform>();
             rootRT.anchorMin = new Vector2(0.5f, 0.5f);
@@ -46,7 +84,7 @@ namespace Assets.Scripts.Factories
             verticalLayout.childControlWidth = false;
             verticalLayout.childControlHeight = false;
 
-            // === CHILD: Label (setting name) ===
+            // === CHILD: Label ===
             var label = new GameObject("Label");
             label.layer = 0;
 

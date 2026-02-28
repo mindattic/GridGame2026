@@ -4,11 +4,44 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for RosterSlide - replaces RosterSlidePrefab.prefab
-    /// Hierarchy:
-    /// - RosterSlide (root with Image, Button, RosterSlideInstance)
-    ///   - CenterButton (Image [disabled], Button)
-    ///   - Checkmark (Image)
+    /// ROSTERSLIDEFACTORY - Creates hero roster slide GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates individual hero slides for the party selection carousel.
+    /// Each slide shows a hero portrait with selection state.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ???????????????????
+    /// ?                 ?
+    /// ?   [Portrait]    ?
+    /// ?                 ?
+    /// ?       ?         ? ? Checkmark if in party
+    /// ???????????????????
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// RosterSlide (root)
+    /// ??? Image (portrait background)
+    /// ??? Button (selection)
+    /// ??? RosterSlideInstance (behavior)
+    /// ??? CenterButton (invisible click target)
+    /// ??? Checkmark (party membership indicator)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Default size: 100x100 (resized by manager)
+    /// - ColorTint transition for button states
+    /// - Checkmark visible when hero in party
+    /// 
+    /// CALLED BY:
+    /// - PartyManager.BuildSlides()
+    /// 
+    /// RELATED FILES:
+    /// - RosterSlideInstance.cs: Slide behavior
+    /// - PartyManager.cs: Carousel management
+    /// - ActorLibrary.cs: Hero portraits
     /// </summary>
     public static class RosterSlideFactory
     {
@@ -23,6 +56,7 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new roster slide for a hero.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: RosterSlide ===
@@ -38,7 +72,7 @@ namespace Assets.Scripts.Factories
 
             root.AddComponent<CanvasRenderer>();
 
-            // Image (portrait background)
+            // Image (portrait)
             var rootImage = root.AddComponent<Image>();
             rootImage.color = Color.white;
             rootImage.raycastTarget = true;
@@ -53,7 +87,7 @@ namespace Assets.Scripts.Factories
             rootButton.colors = DefaultButtonColors;
             rootButton.navigation = new Navigation { mode = Navigation.Mode.Automatic };
 
-            // RosterSlideInstance (custom component)
+            // RosterSlideInstance
             var rosterSlide = root.AddComponent<RosterSlideInstance>();
             rosterSlide.Width = 1000f;
             rosterSlide.Height = 1000f;

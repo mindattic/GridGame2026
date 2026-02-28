@@ -6,9 +6,49 @@ using TMPro;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// ACTORRENDERERS - Visual component references for an actor.
+/// 
+/// PURPOSE:
+/// Holds references to all SpriteRenderers, TextMeshPro components,
+/// and other visual elements that make up an actor's appearance.
+/// 
+/// VISUAL HIERARCHY:
+/// ```
+/// Actor
+/// ├── Front (sorting group)
+/// │   ├── Thumbnail (main sprite)
+/// │   ├── Frame (border)
+/// │   ├── Glow (highlight effect)
+/// │   └── StatusIcon (buff/debuff indicator)
+/// │
+/// ├── Back (sorting group)
+/// │   ├── Parallax (shadow/depth)
+/// │   └── Quality (rarity glow)
+/// │
+/// ├── HealthBar
+/// │   ├── Back (background)
+/// │   ├── Drain (delayed damage)
+/// │   ├── Fill (current HP)
+/// │   └── Text (HP numbers)
+/// │
+/// └── ActionBar (AP display)
+/// ```
+/// 
+/// COLOR PROPERTIES:
+/// Each renderer has an associated color property for tinting:
+/// - thumbnailColor, frameColor, glowColor, etc.
+/// 
+/// RELATED FILES:
+/// - ActorInstance.cs: Owns the Render component
+/// - ActorFactory.cs: Creates visual hierarchy
+/// - ActorAnimation.cs: Animates these renderers
+/// </summary>
 public class ActorRenderers
 {
     public ActorRenderers() { }
+
+    #region Color Settings
 
     public Color opaqueColor = ColorHelper.Solid.White;
     public Color qualityColor = ColorHelper.Solid.White;
@@ -27,8 +67,16 @@ public class ActorRenderers
 
     public Color armorColor = ColorHelper.Solid.White;
 
+    #endregion
+
+    #region Transform References
+
     public Transform front;
     public Transform back;
+
+    #endregion
+
+    #region Sprite Renderers
 
     public SpriteRenderer opaque;
     public SpriteRenderer quality;
@@ -38,16 +86,31 @@ public class ActorRenderers
     public SpriteRenderer frame;
     public SpriteRenderer statusIcon;
     public SpriteRenderer gradient;
+
+    #endregion
+
+    #region Health Bar
+
     public GameObject healthBar;
     public SpriteRenderer healthBarBack;
     public SpriteRenderer healthBarDrain;
     public SpriteRenderer healthBarFill;
     public TextMeshPro healthBarText;
+
+    #endregion
+
+    #region Action Bar
+
     public GameObject actionBar;
     public SpriteRenderer actionBarBack;
     public SpriteRenderer actionBarDrain;
     public SpriteRenderer actionBarFill;
     public TextMeshPro actionBarText;
+
+    #endregion
+
+    #region Other Components
+
     public SpriteMask mask;
     public SpriteRenderer radialBack;
     public SpriteRenderer radial;
@@ -58,6 +121,8 @@ public class ActorRenderers
     public SpriteRenderer armorEast;
     public SpriteRenderer armorSouth;
     public SpriteRenderer armorWest;
+
+    #endregion
     public SpriteRenderer activeIndicator;
     public SpriteRenderer focusIndicator;
     public SpriteRenderer targetIndicator;

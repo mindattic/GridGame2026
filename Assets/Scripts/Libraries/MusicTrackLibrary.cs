@@ -6,6 +6,23 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// MUSICTRACKLIBRARY - Registry of background music tracks.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches AudioClip references for
+    /// background music used in scenes.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var track = MusicTrackLibrary.Get("MelancholyLull");
+    /// AudioManager.PlayMusic(track);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - AudioManager.cs: Music playback
+    /// - Resources/MusicTracks/: Audio files
+    /// </summary>
     public static class MusicTrackLibrary
     {
         private static Dictionary<string, AudioClip> musicTracks;

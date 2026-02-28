@@ -4,6 +4,29 @@ using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using Assets.Helper;
 
+/// <summary>
+/// HUBMANAGER - Central hub/town scene controller.
+/// 
+/// PURPOSE:
+/// Manages the hub scene where players can access various
+/// services between battles (party, shop, medical, etc.).
+/// 
+/// SECTIONS:
+/// - Party: Manage party composition
+/// - Shop: Buy items/equipment
+/// - Medical: Heal party members
+/// - Residence: Recruit new characters
+/// - Blacksmith: Upgrade equipment
+/// 
+/// NAVIGATION:
+/// Button bar at top switches between sections.
+/// Only one section visible at a time.
+/// 
+/// RELATED FILES:
+/// - PartySectionController.cs: Party management
+/// - ShopSectionController.cs: Shop functionality
+/// - SceneHelper.cs: Scene transitions
+/// </summary>
 public class HubManager : MonoBehaviour
 {
     // Navigation buttons (resolved at runtime; no inspector assignment required)

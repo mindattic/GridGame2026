@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// MAPDATA - Map layer sprites.
+    /// 
+    /// Contains terrain, surface, and canopy sprite layers
+    /// for a single map.
+    /// </summary>
     public class MapData
     {
         public string Name;
@@ -12,6 +18,23 @@ namespace Assets.Scripts.Libraries
         public Sprite Canopy;
     }
 
+    /// <summary>
+    /// MAPLIBRARY - Registry of map data.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches MapData for overworld maps
+    /// including terrain, surface, and canopy layers.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var map = MapLibrary.Get(Map.GreenValley);
+    /// terrainRenderer.sprite = map.Terrain;
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - OverworldManager.cs: Uses map data
+    /// - Map enum: Map identifiers
+    /// </summary>
     public static class MapLibrary
     {
         private static Dictionary<string, MapData> maps;

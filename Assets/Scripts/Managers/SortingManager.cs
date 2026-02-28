@@ -5,9 +5,7 @@ using Assets.Scripts.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-/// <summary>
-/// Types of sorting requests.
-/// </summary>
+/// <summary>Types of sorting requests.</summary>
 public enum SortEventType
 {
     Default,
@@ -22,7 +20,9 @@ public enum SortEventType
 }
 
 /// <summary>
-/// Context for a sorting request. Carries all the data needed by actors to decide their sorting.
+/// SORTEVENT - Context for sorting request.
+/// 
+/// Carries all data needed by actors to decide their sorting order.
 /// </summary>
 public class SortEvent
 {
@@ -34,18 +34,44 @@ public class SortEvent
 }
 
 /// <summary>
-/// Manages global sorting requests by raising events that actors handle individually.
+/// SORTINGMANAGER - Global actor sprite sorting system.
+/// 
+/// PURPOSE:
+/// Manages z-ordering and sorting layers for actors. Uses an event-based
+/// system where actors subscribe and handle their own sorting updates.
+/// 
+/// EVENT TYPES:
+/// - Default: Reset to standard sorting
+/// - Focus: Bring actor to front (selected)
+/// - Drag: Actor being dragged
+/// - LocationChanged: Actor moved to new tile
+/// - Drop: Actor dropped after drag
+/// - ActorMoving: Actor in motion
+/// - Overlap: Actors overlapping positions
+/// - PincerAttack: Pincer attack in progress
+/// - Bump: Actor bumping animation
+/// 
+/// USAGE:
+/// ```csharp
+/// g.SortingManager.OnActorFocus(hero);
+/// g.SortingManager.OnActorDrop(hero);
+/// ```
+/// 
+/// SUBSCRIPTION:
+/// Actors subscribe to OnSortRequested in Awake and handle sorting in callback.
+/// 
+/// RELATED FILES:
+/// - ActorRenderers.cs: Handles sorting for individual actors
+/// - SelectionManager.cs: Triggers focus/drag/drop events
+/// 
+/// ACCESS: g.SortingManager
 /// </summary>
 public class SortingManager : MonoBehaviour
 {
-    /// <summary>
-    /// Global event actors subscribe to in order to update their sorting.
-    /// </summary>
+    /// <summary>Global event actors subscribe to for sorting updates.</summary>
     public static event Action<SortEvent> OnSortRequested;
 
-    /// <summary>
-    /// Invokes the sorting event with the given context.
-    /// </summary>
+    /// <summary>Invokes the sorting event.</summary>
     private void Invoke(SortEvent e)
     {
         OnSortRequested?.Invoke(e);

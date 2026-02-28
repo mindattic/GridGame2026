@@ -11,6 +11,29 @@ using UnityEngine.Rendering.VirtualTexturing;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// ACTORLIBRARY - Central registry of all character data.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches ActorData for all CharacterClasses.
+    /// Provides lookup methods for retrieving character stats,
+    /// abilities, and visual data.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var paladin = ActorLibrary.Get(CharacterClass.Paladin);
+    /// var stats = paladin.BaseStats;
+    /// ```
+    /// 
+    /// DATA SOURCES:
+    /// Individual actor data files in Assets/Scripts/Data/Actor/
+    /// (e.g., Paladin.cs, Barbarian.cs, etc.)
+    /// 
+    /// RELATED FILES:
+    /// - ActorData.cs: Data structure
+    /// - CharacterClass.cs: Character enum
+    /// - Data/Actor/*.cs: Individual character definitions
+    /// </summary>
     public static class ActorLibrary
     {
         private static Dictionary<CharacterClass, ActorData> actors;

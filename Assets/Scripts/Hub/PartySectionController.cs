@@ -1,46 +1,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Assets.Helpers; // CharacterClass
-using Assets.Scripts.Libraries; // ActorLibrary
+using Assets.Helpers;
+using Assets.Scripts.Libraries;
 
 /// <summary>
-/// PartySectionController owns the party selection portion of the Hub.
-/// It exposes integration points for the existing PartyManager and provides a loadout layer
-/// for items and skills so combat scenes can query equipped configurations.
+/// PARTYSECTIONCONTROLLER - Hub party management section.
+/// 
+/// PURPOSE:
+/// Manages the party selection UI in the Hub, allowing players
+/// to add/remove heroes and manage their loadouts.
+/// 
+/// FEATURES:
+/// - View roster of available heroes
+/// - Add/remove heroes from active party
+/// - View hero stats and details
+/// - Manage equipment and skills per hero
+/// 
+/// UI CONTAINERS:
+/// - rosterContainer: Heroes not in party
+/// - partyContainer: Active party members
+/// - detailContainer: Selected hero details
+/// 
+/// RELATED FILES:
+/// - HubManager.cs: Hub scene controller
+/// - PartyManager.cs: Battle party data
+/// - HeroLoadout.cs: Hero equipment/skills
 /// </summary>
 public class PartySectionController : MonoBehaviour
 {
     private HubManager hub;
 
-    // Simple UI placeholders (assigned by editor builder or manually).
-    public RectTransform rosterContainer; // heroes not in party
-    public RectTransform partyContainer;  // active party heroes
-    public RectTransform detailContainer; // stat + equipment/skill detail
+    public RectTransform rosterContainer;
+    public RectTransform partyContainer;
+    public RectTransform detailContainer;
 
-    // Local model for hero loadouts.
     public PartyLoadout partyLoadout = new PartyLoadout();
 
-    /// <summary>
-    /// Initializes this controller for the owning HubManager.
-    /// </summary>
+    /// <summary>Initializes this controller.</summary>
     public void Initialize(HubManager hubManager)
     {
         hub = hubManager;
-        // TODO: Load current party from PartyManager or save system.
     }
 
-    /// <summary>
-    /// Called when this section becomes active. Refreshes UI and models.
-    /// </summary>
+    /// <summary>Called when section becomes active.</summary>
     public void OnActivated()
     {
-        // TODO: Refresh roster, party list, and selected hero detail.
+        // TODO: Refresh roster and party UI
     }
 
-    /// <summary>
-    /// Sets party composition using external data (e.g. PartyManager export).
-    /// </summary>
+    /// <summary>Sets party from external data.</summary>
     public void SetPartyFromExistingManager(IEnumerable<CharacterClass> classes)
     {
         partyLoadout.HeroLoadouts.Clear();

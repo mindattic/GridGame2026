@@ -6,8 +6,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// PROJECTILEINSTANCE - Runtime projectile behavior.
+/// 
+/// PURPOSE:
+/// Controls a projectile's movement, rotation, and lifecycle
+/// as it travels from start to target.
+/// 
+/// LIFECYCLE:
+/// 1. Spawned by ProjectileManager
+/// 2. Trail VFX attached
+/// 3. Moves toward target using MotionStyle
+/// 4. Impact VFX spawned on arrival
+/// 5. Self-destructs
+/// 
+/// MOTION STYLES:
+/// Motion controlled by ProjectileSettings.motionStyle.
+/// 
+/// RELATED FILES:
+/// - ProjectileManager.cs: Spawns projectiles
+/// - ProjectileSettings.cs: Configuration
+/// </summary>
 public class ProjectileInstance : MonoBehaviour
 {
+    #region Properties
+
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -32,14 +55,14 @@ public class ProjectileInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    private ProjectileSettings projectile = new ProjectileSettings();
+    #endregion
 
-    // Private fields for Move and for the instantiated trailInstance.
+    #region Fields
+
+    private ProjectileSettings projectile = new ProjectileSettings();
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject trailInstance;
 
-
-
-
+    #endregion
 }

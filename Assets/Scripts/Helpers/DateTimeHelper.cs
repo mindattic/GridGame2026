@@ -6,9 +6,38 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
+    /// <summary>
+    /// DATETIMEHELPER - Date/time parsing and formatting utilities.
+    /// 
+    /// PURPOSE:
+    /// Provides utilities for parsing timestamps and formatting
+    /// elapsed time into human-readable strings.
+    /// 
+    /// KEY METHODS:
+    /// - ParseUtcTimestamp: Converts string to DateTime
+    /// - ParseTimeElapsed: Formats elapsed time as "X ago" string
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// DateTime saved = DateTimeHelper.ParseUtcTimestamp(saveFile.Timestamp);
+    /// string display = DateTimeHelper.ParseTimeElapsed(saved);
+    /// // Result: "2 hours, 15 minutes ago"
+    /// ```
+    /// 
+    /// OUTPUT FORMATS:
+    /// - "X seconds ago"
+    /// - "X minutes, Y seconds ago"
+    /// - "X hours, Y minutes ago"
+    /// - "X days, Y hours ago"
+    /// - "X months, Y days ago"
+    /// 
+    /// RELATED FILES:
+    /// - SaveFileSelectManager.cs: Displays save timestamps
+    /// - DateFormat.cs: Timestamp format constants
+    /// </summary>
     public static class DateTimeHelper
     {
-
+        /// <summary>Parses a UTC timestamp string into DateTime.</summary>
         public static DateTime ParseUtcTimestamp(string timestamp)
         {
             return DateTime.ParseExact(
@@ -19,6 +48,7 @@ namespace Assets.Helpers
             );
         }
 
+        /// <summary>Formats elapsed time since timestamp as human-readable string.</summary>
         public static string ParseTimeElapsed(DateTime timestamp)
         {
             TimeSpan elapsed = DateTime.UtcNow - timestamp;
@@ -54,7 +84,7 @@ namespace Assets.Helpers
             }
             else
             {
-                // Approximate a month as 30 days.
+                // Approximate a month as 30 days
                 int months = (int)(elapsed.TotalDays / 30);
                 int days = (int)(elapsed.TotalDays % 30);
                 string monthPart = months == 1 ? "1 month" : $"{months} months";

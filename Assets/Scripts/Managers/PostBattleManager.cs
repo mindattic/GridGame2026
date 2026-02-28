@@ -8,26 +8,82 @@ using Assets.Scripts.Factories;
 using Assets.Scripts.Managers;
 using scene = Assets.Helpers.SceneHelper;
 using Assets.Helper;
-using Assets.Scripts.Libraries; // GameObjectHelper
+using Assets.Scripts.Libraries;
 
+/// <summary>
+/// POSTBATTLEMANAGER - Manages the post-battle results screen.
+/// 
+/// PURPOSE:
+/// Displays battle results including experience gained, level ups,
+/// and rewards after completing a stage.
+/// 
+/// VISUAL LAYOUT:
+/// ```
+/// ┌─────────────────────────────────────┐
+/// │         Battle Results              │
+/// ├─────────────────────────────────────┤
+/// │  ┌─────────────────────────────┐   │
+/// │  │ [Hero1] Paladin             │   │
+/// │  │ EXP: ████████░░ +150        │   │ ← Experience pane
+/// │  │ LEVEL UP! 5 → 6             │   │
+/// │  └─────────────────────────────┘   │
+/// │  ┌─────────────────────────────┐   │
+/// │  │ [Hero2] Archer              │   │
+/// │  │ EXP: ██████████ +200        │   │
+/// │  └─────────────────────────────┘   │
+/// │                                     │
+/// │            [ Next ]                 │
+/// └─────────────────────────────────────┘
+/// ```
+/// 
+/// EXPERIENCE PANES:
+/// Each hero gets a HeroExperiencePane showing:
+/// - Portrait and name
+/// - Experience bar animation
+/// - Level up notification if applicable
+/// 
+/// FLOW:
+/// 1. Stage completed successfully
+/// 2. Experience calculated and applied
+/// 3. PostBattle scene loaded
+/// 4. Panes animate experience gain
+/// 5. Player clicks Next to continue
+/// 
+/// RELATED FILES:
+/// - HeroExperiencePaneFactory.cs: Creates pane GameObjects
+/// - HeroExperiencePane.cs: Pane behavior/animation
+/// - StageManager.cs: Triggers post-battle
+/// - ProfileHelper.cs: Saves progress
+/// 
+/// ACCESS: Scene-based manager (PostBattle scene)
+/// </summary>
 public class PostBattleManager : MonoBehaviour
 {
-    // Constants / configuration (no inspector exposure)
-    private const float AutoEnableDelay = 0.25f;   // delay before enabling Next after all panes animate
-    private const float PaneSpacing = 8f;          // vertical spacing between panes
+    #region Configuration
 
-    // Scene wired references (resolved in Awake via GameObjectHelper)
-    private RectTransform _scrollContent;          // Canvas/ScrollView/Viewport/Content
-    private Button _nextButton;                    // Canvas/BottomBar/NextButton
+    private const float AutoEnableDelay = 0.25f;
+    private const float PaneSpacing = 8f;
 
-    // Destination scene decided at runtime (defaults to tracker hint, fallback to Hub)
+    #endregion
+
+    #region References
+
+    private RectTransform _scrollContent;
+    private Button _nextButton;
     private string nextSceneName;
 
-    // Runtime state
+    #endregion
+
+    #region Runtime State
+
     private readonly List<HeroExperiencePane> _panes = new List<HeroExperiencePane>();
     private bool _monitoring;
     private VerticalLayoutGroup _layout;
     private ContentSizeFitter _fitter;
+
+    #endregion
+
+    #region Initialization
 
     private void Awake()
     {
@@ -52,6 +108,10 @@ public class PostBattleManager : MonoBehaviour
         if (_nextButton != null)
             _nextButton.onClick.RemoveListener(OnNext);
     }
+
+    #endregion
+
+    #region Scene Setup
 
     private void ResolveSceneReferences()
     {
@@ -193,4 +253,6 @@ public class PostBattleManager : MonoBehaviour
         ExperienceTracker.Clear();
         SceneHelper.Fade.To(nextSceneName);
     }
+
+    #endregion
 }

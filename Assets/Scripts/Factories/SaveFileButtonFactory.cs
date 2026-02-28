@@ -5,11 +5,42 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for SaveFileButton - replaces SaveFileButtonPrefab.prefab
-    /// Hierarchy:
-    /// - SaveFileButton (root with Image, Button, LayoutElement)
-    ///   - SaveNumber (TextMeshProUGUI - left aligned)
-    ///   - Timestamp (TextMeshProUGUI - right aligned)
+    /// SAVEFILEBUTTONFACTORY - Creates save slot button GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates buttons for the save file selection screen. Each button
+    /// displays save slot number and timestamp.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ???????????????????????????????????????????
+    /// ? Save 1                    2024-01-15   ?
+    /// ???????????????????????????????????????????
+    ///    ?                              ?
+    ///  SaveNumber              Timestamp
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// SaveFileButton (root)
+    /// ??? Image (button background)
+    /// ??? Button (click handler)
+    /// ??? LayoutElement (scroll view sizing)
+    /// ??? SaveNumber (TMP - left aligned)
+    /// ??? Timestamp (TMP - right aligned)
+    /// ```
+    /// 
+    /// LAYOUT:
+    /// - Default size: 1024x128
+    /// - Uses LayoutElement for flexible scroll view sizing
+    /// - SaveNumber left-aligned, Timestamp right-aligned
+    /// 
+    /// CALLED BY:
+    /// - SaveFileSelectManager.AddSaveSlotButton()
+    /// 
+    /// RELATED FILES:
+    /// - SaveFileSelectManager.cs: Save selection screen
+    /// - ProfileHelper.cs: Save data access
     /// </summary>
     public static class SaveFileButtonFactory
     {
@@ -24,6 +55,7 @@ namespace Assets.Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates a new save file button.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT: SaveFileButton ===
@@ -54,7 +86,7 @@ namespace Assets.Scripts.Factories
             button.colors = DefaultButtonColors;
             button.navigation = new Navigation { mode = Navigation.Mode.Automatic };
 
-            // LayoutElement (for flexible layout in scroll views)
+            // LayoutElement
             var layoutElement = root.AddComponent<LayoutElement>();
             layoutElement.ignoreLayout = false;
             layoutElement.minWidth = -1;

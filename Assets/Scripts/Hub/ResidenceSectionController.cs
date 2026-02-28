@@ -2,50 +2,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ResidenceSectionController represents the player's caravan housing where trophies and decorations
-/// can be placed. Stores layout state so it persists across visits.
+/// RESIDENCESECTIONCONTROLLER - Hub residence/housing section.
+/// 
+/// PURPOSE:
+/// Manages the player's caravan housing where trophies and
+/// decorations can be placed for cosmetic customization.
+/// 
+/// FEATURES:
+/// - Place/remove decorations in grid slots
+/// - Unlock new decorations through gameplay
+/// - Persist layout across visits
+/// 
+/// DATA STRUCTURES:
+/// - DecorationPlacement: ID + grid position
+/// - unlockedDecorations: Available decoration IDs
+/// - placements: Current decoration layout
+/// 
+/// RELATED FILES:
+/// - HubManager.cs: Hub scene controller
 /// </summary>
 public class ResidenceSectionController : MonoBehaviour
 {
     private HubManager hub;
 
-    /// <summary>
-    /// Simple decoration slot model.
-    /// </summary>
-public class DecorationPlacement
+    /// <summary>Decoration placement data.</summary>
+    public class DecorationPlacement
     {
-    public string DecorationId;
-  public Vector2Int Slot; // conceptual grid position
+        public string DecorationId;
+        public Vector2Int Slot;
     }
 
-    /// <summary>
-    /// Available unlocked decoration ids.
-    /// </summary>
+    /// <summary>Available unlocked decoration IDs.</summary>
     public List<string> unlockedDecorations = new List<string>();
 
-    /// <summary>
-    /// Current placements in the residence.
-    /// </summary>
+    /// <summary>Current placements in residence.</summary>
     public List<DecorationPlacement> placements = new List<DecorationPlacement>();
 
-    /// <summary>
-    /// Initializes the section.
-    /// </summary>
+    /// <summary>Initializes the section.</summary>
     public void Initialize(HubManager hubManager)
     {
         hub = hubManager;
-   // TODO: Load unlockedDecorations and placements from save system.
+    }
+
+    /// <summary>Called when activated.</summary>
+    public void OnActivated()
+    {
+        // TODO: Rebuild placement visuals
     }
 
     /// <summary>
-    /// Called when activated. Refresh layout UI.
-    /// </summary>
-    public void OnActivated()
-    {
-        // TODO: Rebuild placement visuals.
-    }
-
-/// <summary>
     /// Places a decoration into a slot, replacing existing decoration in that slot if present.
     /// </summary>
     public bool Place(string decorationId, Vector2Int slot)

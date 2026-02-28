@@ -2,22 +2,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ItemDefinition describes a single item or equipment piece. Compatible with static data style used for actors.
-/// Stat modifiers (when equipment) must appear in the required order: Strength, Vitality, Agility, Stamina, Intelligence, Wisdom, Luck.
+/// ITEMDEFINITION - Item/equipment data template.
+/// 
+/// PURPOSE:
+/// Describes a single item or equipment piece with stats,
+/// costs, and requirements.
+/// 
+/// ITEM TYPES:
+/// - Consumable: Single-use items (healing, buffs)
+/// - Equipment: Weapons, armor, accessories
+/// - CraftingMaterial: Used for crafting
+/// - QuestItem: Story-related items
+/// 
+/// STAT MODIFIERS (equipment only):
+/// Applied in order: Strength, Vitality, Agility,
+/// Stamina, Intelligence, Wisdom, Luck
+/// 
+/// RELATED FILES:
+/// - ItemLibrary.cs: Item registry
+/// - PlayerInventory.cs: Item ownership
+/// - ShopSectionController.cs: Shop transactions
 /// </summary>
 [System.Serializable]
 public class ItemDefinition
 {
     public string Id;
-public string DisplayName;
+    public string DisplayName;
     public string Description;
     public ItemType Type;
     public int BaseCost;
     public int MaxStack = 99;
-    public int Durability; // equipment only; 0 means no durability tracking
-    public int BaseHealing; // consumable effect value (healing or similar); 0 if none
+    public int Durability;
+    public int BaseHealing;
 
-    // Stat modifiers for equipment (order enforced by project rules).
+    // Stat modifiers for equipment
     public float Strength;
     public float Vitality;
     public float Agility;
@@ -26,17 +44,15 @@ public string DisplayName;
     public float Wisdom;
     public float Luck;
 
-    // Tag constraints (e.g. requires Healer tag to equip).
+    // Tag constraints
     public List<ActorTag> RequiredTags = new List<ActorTag>();
 }
 
-/// <summary>
-/// ItemType classification for items.
-/// </summary>
+/// <summary>Item type classification.</summary>
 public enum ItemType
 {
     Consumable,
-Equipment,
+    Equipment,
     CraftingMaterial,
     QuestItem
 }

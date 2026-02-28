@@ -2,6 +2,28 @@
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// VISUALEFFECTASSET - VFX definition data.
+/// 
+/// PURPOSE:
+/// Defines a visual effect including prefab reference,
+/// positioning, timing, and behavior.
+/// 
+/// PROPERTIES:
+/// - Name: Unique identifier
+/// - Prefab: GameObject to instantiate
+/// - RelativeOffset: Position offset from spawn point
+/// - AngularRotation: Initial rotation
+/// - RelativeScale: Scale multiplier
+/// - Apex: Time when "impact" occurs (for damage sync)
+/// - Duration: Total lifetime
+/// - IsLooping: Whether effect loops until despawned
+/// 
+/// RELATED FILES:
+/// - VisualEffectLibrary.cs: Asset registry
+/// - VisualEffectManager.cs: Spawning
+/// - VisualEffectInstance.cs: Runtime behavior
+/// </summary>
 [Serializable]
 public class VisualEffectAsset
 {
@@ -19,28 +41,27 @@ public class VisualEffectAsset
         IsLooping = other.IsLooping;
     }
 
-
-    //Name of this VFX asset
+    /// <summary>Unique identifier for this VFX.</summary>
     public string Name;
 
-    //Prefab to spawn
+    /// <summary>Prefab to instantiate.</summary>
     public GameObject Prefab;
 
-    //Offset from target to spawn at relative to target's center
+    /// <summary>Position offset from spawn point.</summary>
     public Vector3 RelativeOffset;
 
-    //Rotation to apply to the prefab when spawning
+    /// <summary>Initial rotation.</summary>
     public Vector3 AngularRotation;
 
-    //Scale to apply to the prefab when spawning relative to original prefab scale
+    /// <summary>Scale multiplier.</summary>
     public Vector3 RelativeScale;
 
-    // Whether this VFX should loop until manually despawned
+    /// <summary>Whether effect loops until manually despawned.</summary>
     public bool IsLooping;
 
-    // Time since spawn + Delay at which the apex occurs
+    /// <summary>Time when "impact" occurs for damage sync.</summary>
     public float Apex = 1f;
 
-    //Time in ms since + Deplay before vfx despawns
+    /// <summary>Total lifetime in seconds.</summary>
     public float Duration;
 }

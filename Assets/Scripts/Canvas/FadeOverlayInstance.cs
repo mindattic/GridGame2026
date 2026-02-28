@@ -5,21 +5,66 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Controls a full-screen black Image used as a fade overlay.
-/// Provides fade in, fade out, show, and hide operations, each optionally followed by a caller-supplied routine.
+/// FADEOVERLAYINSTANCE - Full-screen fade transition overlay.
+/// 
+/// PURPOSE:
+/// Controls a full-screen black Image used for scene transition
+/// fade effects (fade to black, fade from black).
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Fade Out (to black):
+/// [Scene Visible] → [Darkening...] → [Solid Black]
+/// 
+/// Fade In (from black):
+/// [Solid Black] → [Lightening...] → [Scene Visible]
+/// ```
+/// 
+/// OPERATIONS:
+/// - FadeIn(): Black → Transparent (reveal scene)
+/// - FadeOut(): Transparent → Black (hide scene)
+/// - Show(): Instant black
+/// - Hide(): Instant transparent
+/// 
+/// CHAINING:
+/// Each operation accepts an optional IEnumerator that runs
+/// after the fade completes, enabling sequenced operations.
+/// 
+/// USAGE:
+/// ```csharp
+/// // Fade out, load scene, fade in
+/// overlay.FadeOut(LoadSceneAndFadeIn());
+/// 
+/// // Simple fade in on scene start
+/// overlay.FadeIn();
+/// ```
+/// 
+/// RELATED FILES:
+/// - FadeOverlayHelper.cs: Cached access to overlay
+/// - SceneHelper.cs: Uses for scene transitions
+/// - FadeOverlayFactory.cs: Creates overlay prefab
 /// </summary>
 public class FadeOverlayInstance : MonoBehaviour
 {
+    #region Configuration
+
     private Image image;
     private float fadeDuration = 0.25f;
 
+    #endregion
+
+    #region Initialization
+
     private void Awake()
     {
-        // Cache the Image and initialize as an opaque black overlay
         image = GetComponent<Image>();
         image.sprite = SpriteLibrary.Sprites["Black32x32"];
         SetAlpha(1f);
     }
+
+    #endregion
+
+    #region Fade Operations
 
     /// <summary>
     /// Fades from black to transparent over fadeDuration, then runs the optional routine.
@@ -28,24 +73,19 @@ public class FadeOverlayInstance : MonoBehaviour
 
     private IEnumerator FadeInRoutine(IEnumerator routine = null)
     {
-        // Start fully opaque
         SetAlpha(1f);
         float elapsedTime = 0f;
 
-        // Reduce alpha to 0 over time
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
             float alpha = 1f - Mathf.Clamp01(elapsedTime / fadeDuration);
             SetAlpha(alpha);
-            // IMPORTANT: yield a real frame so Time.deltaTime advances.
             yield return Wait.OneTick();
         }
 
-        // Ensure fully transparent
         SetAlpha(0f);
 
-        // Run additional routine (if provided)
         if (routine != null)
             yield return routine;
     }
@@ -106,9 +146,15 @@ public class FadeOverlayInstance : MonoBehaviour
             yield return routine;
     }
 
-    // Sets the overlay color to black with the specified alpha
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>Sets the overlay color with specified alpha.</summary>
     private void SetAlpha(float alpha)
     {
         image.color = new Color(1f, 1f, 1f, Mathf.Clamp01(alpha));
     }
+
+    #endregion
 }

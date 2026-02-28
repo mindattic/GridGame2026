@@ -2,13 +2,33 @@ using Assets.Scripts.Libraries;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 using scene = Assets.Helpers.SceneHelper;
-using Assets.Scripts.Managers; // ExperienceTracker
+using Assets.Scripts.Managers;
 
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Plays the victory SFX then routes to VictoryScreen.
-    /// Disables player input while sequence runs.
+    /// BATTLEWONSEQUENCE - Handles victory state after all enemies defeated.
+    /// 
+    /// PURPOSE:
+    /// Executes when all enemies are defeated, showing victory UI
+    /// and transitioning to the post-battle screen.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Lock input
+    /// 2. Show victory announcement
+    /// 3. Play victory SFX
+    /// 4. Wait for SFX duration
+    /// 5. Set next scene to Hub
+    /// 6. Fade to PostBattleScreen
+    /// 
+    /// POST-BATTLE:
+    /// PostBattleScreen awards XP, shows level-ups, then
+    /// transitions to the Hub.
+    /// 
+    /// RELATED FILES:
+    /// - VictoryAnnouncement.cs: Victory UI
+    /// - PostBattleManager.cs: XP awards
+    /// - ExperienceTracker.cs: XP tracking
     /// </summary>
     public class BattleWonSequence : SequenceEvent
     {

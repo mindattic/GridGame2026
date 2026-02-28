@@ -1,50 +1,59 @@
 using System.Collections.Generic;
-using Assets.Helpers; // CharacterClass enum
-using Assets.Scripts.Libraries; // ActorLibrary
+using Assets.Helpers;
+using Assets.Scripts.Libraries;
 
 /// <summary>
-/// Central skill lookup and equip validation utilities.
+/// SKILLLIBRARY - Central registry for skill definitions.
+/// 
+/// PURPOSE:
+/// Provides lookup, enumeration, and equip validation
+/// for skill definitions.
+/// 
+/// USAGE:
+/// ```csharp
+/// var heal = SkillLibrary.Get("basic_heal");
+/// bool canEquip = SkillLibrary.CanEquip(hero, skill);
+/// ```
+/// 
+/// RELATED FILES:
+/// - SkillDefinition.cs: Skill data structure
+/// - SkillData_Basic.cs: Basic skill definitions
+/// - HeroLoadout.cs: Equipped skills
 /// </summary>
 public static class SkillLibrary
 {
     private static Dictionary<string, SkillDefinition> skills = new Dictionary<string, SkillDefinition>();
     private static bool initialized;
 
-    /// <summary>
-    /// Ensures library is populated once.
-    /// </summary>
+    /// <summary>Ensures library is populated once.</summary>
     private static void Ensure()
     {
-    if (initialized) return;
-   initialized = true;
-   Register(SkillData_Basic.BasicHeal);
-   Register(SkillData_Basic.BasicStrike);
+        if (initialized) return;
+        initialized = true;
+        Register(SkillData_Basic.BasicHeal);
+        Register(SkillData_Basic.BasicStrike);
     }
 
     private static void Register(SkillDefinition def)
     {
-   if (def == null || string.IsNullOrEmpty(def.Id)) return;
-  if (!skills.ContainsKey(def.Id)) skills.Add(def.Id, def);
+        if (def == null || string.IsNullOrEmpty(def.Id)) return;
+        if (!skills.ContainsKey(def.Id)) skills.Add(def.Id, def);
     }
 
-    /// <summary>
-    /// Gets a skill by Id or null if missing.
-    /// </summary>
+    /// <summary>Gets a skill by Id or null if missing.</summary>
     public static SkillDefinition Get(string id)
     {
-   Ensure();
-  if (string.IsNullOrEmpty(id)) return null;
-    skills.TryGetValue(id, out var def);
-   return def;
+        Ensure();
+        if (string.IsNullOrEmpty(id)) return null;
+        skills.TryGetValue(id, out var def);
+        return def;
     }
 
-    /// <summary>
-    /// Enumerates all skills.
-    /// </summary>
+    /// <summary>Enumerates all skills.</summary>
     public static IEnumerable<SkillDefinition> All()
     {
-    Ensure();
-   return skills.Values;
+        Ensure();
+        return skills.Values;
     }
 
     /// <summary>

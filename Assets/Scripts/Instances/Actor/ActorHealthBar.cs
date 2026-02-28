@@ -3,15 +3,34 @@ using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// ACTORHEALTHBAR - Manages actor HP bar visualization.
+/// 
+/// PURPOSE:
+/// Controls the health bar UI element for an actor, handling
+/// fill levels, drain animations, and HP text display.
+/// 
+/// VISUAL COMPONENTS:
+/// - healthBarBack: Background bar (full size)
+/// - healthBarFill: Current HP (green/blue)
+/// - healthBarDrain: Damage animation (red, delayed shrink)
+/// - healthBarText: "HP/MaxHP" display
+/// 
+/// DRAIN ANIMATION:
+/// When damage is taken, the drain bar shows previous HP,
+/// then smoothly shrinks to match current HP.
+/// 
+/// RELATED FILES:
+/// - ActorRenderers.cs: Provides bar renderers
+/// - ActorStats.cs: HP/MaxHP values
+/// </summary>
 public class ActorHealthBar
 {
-    //Fields
     private ActorInstance instance;
     public bool isDraining;
     protected ActorRenderers render => instance.Render;
     protected ActorStats stats => instance.Stats;
 
-    //Properties
     public bool isEmpty => !isDraining && stats.PreviousHP < 1;
 
     public void Initialize(ActorInstance parentInstance)
@@ -19,7 +38,6 @@ public class ActorHealthBar
         this.instance = parentInstance;
     }
 
-    //Properties
     private Vector3 initialScale => render.healthBarBack.transform.localScale;
 
     private Vector3 GetScale(float value)
@@ -40,11 +58,9 @@ public class ActorHealthBar
 
     private IEnumerator DrainRoutine()
     {
-        //Before:
         Vector3 scale;
         isDraining = true;
 
-        //During:
         yield return Wait.For(Intermission.Before.HealthBar.Drain);
         while (stats.HP < stats.PreviousHP)
         {

@@ -1,13 +1,36 @@
 ﻿using System;
 
-// Category of ability: when/how it triggers
+/// <summary>
+/// ENUMS - Game-wide enumeration definitions.
+/// 
+/// PURPOSE:
+/// Centralized location for all enum types used throughout the game.
+/// Provides type-safe constants for game states, actions, and configurations.
+/// </summary>
+
+#region Ability Enums
+
+/// <summary>
+/// Category of ability: determines when/how the ability triggers.
+/// - Active: Player manually activates (Heal, Smite)
+/// - Passive: Always active, modifies behavior (DoubleAttack)
+/// - Reactive: Triggers automatically in response to events (CounterAttack)
+/// </summary>
 public enum AbilityCategory
 {
-    Active,     // Player manually activates (Heal, Smite, etc.)
-    Passive,    // Always active, modifies behavior (DoubleAttack, TripleAttack)
-    Reactive    // Triggers automatically in response to events (CounterAttack)
+    Active,
+    Passive,
+    Reactive
 }
 
+/// <summary>
+/// Targeting type for abilities.
+/// - Passive: No targeting required
+/// - Self: Targets the caster
+/// - TargetAlly: Must select an allied actor
+/// - TargetAny: Can select any actor
+/// - TargetOpponent: Must select an enemy actor
+/// </summary>
 public enum AbilityType
 {
     Passive,
@@ -17,6 +40,13 @@ public enum AbilityType
     TargetOpponent
 }
 
+#endregion
+
+#region Combat Enums
+
+/// <summary>
+/// Result of an attack roll.
+/// </summary>
 public enum AttackOutcome
 {
     None = 0,
@@ -25,6 +55,9 @@ public enum AttackOutcome
     CriticalHit = 3
 }
 
+/// <summary>
+/// AI targeting strategy for enemy actors.
+/// </summary>
 public enum AttackStrategy
 {
     AttackClosest,
@@ -34,12 +67,22 @@ public enum AttackStrategy
     MoveAnywhere
 }
 
+#endregion
+
+#region Direction/Position Enums
+
+/// <summary>
+/// Axis orientation (horizontal or vertical).
+/// </summary>
 public enum Axis
 {
     Horizontal,
     Vertical
 }
 
+/// <summary>
+/// Available background art sets for stages.
+/// </summary>
 public enum BackgroundSet
 {
     CyberNecropolis,
@@ -49,6 +92,9 @@ public enum BackgroundSet
     ElectricWasteland
 }
 
+/// <summary>
+/// Named positions on the game board (3x3 grid reference points).
+/// </summary>
 public enum BoardPoint
 {
     BottomCenter,
@@ -62,6 +108,14 @@ public enum BoardPoint
     TopRight
 }
 
+#endregion
+
+#region Character Enums
+
+/// <summary>
+/// All available character types in the game.
+/// Used for sprite loading, stats lookup, etc.
+/// </summary>
 public enum Characters
 {
     Barbarian,
@@ -77,7 +131,7 @@ public enum Characters
     Vampire,
     Yeti,
 
-    // New additions
+    // Additional characters
     Alchemist,
     Assassain,
     BadGirl,
@@ -572,15 +626,22 @@ public enum MotionStyle
 }
 
 
+/// <summary>Camera behavior mode for overworld exploration.</summary>
 public enum OverworldCameraMode
 {
     FollowHero,
     FreeCamera,
 }
 
-// New: Game mode for progression
+/// <summary>
+/// Game progression mode.
+/// - Campaign: Story-based progression through stages
+/// - Endless: Infinite wave survival mode
+/// </summary>
 public enum GameMode
 {
     Campaign,
     Endless
 }
+
+#endregion

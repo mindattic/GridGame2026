@@ -5,6 +5,29 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// SOUNDEFFECTLIBRARY - Registry of all sound effects.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches AudioClip references for all
+    /// sound effects used in the game.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var clip = SoundEffectLibrary.SoundEffects["Victory"];
+    /// audioSource.PlayOneShot(clip);
+    /// ```
+    /// 
+    /// CATEGORIES:
+    /// - UI: Click, Select
+    /// - Combat: Slash00-06, Death
+    /// - Movement: Move00-05
+    /// - Events: Victory, Defeat, NextTurn
+    /// 
+    /// RELATED FILES:
+    /// - AudioManager.cs: Sound playback
+    /// - Resources/SoundEffects/: Audio files
+    /// </summary>
     public static class SoundEffectLibrary
     {
         private static Dictionary<string, AudioClip> soundEffects;

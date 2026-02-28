@@ -8,25 +8,42 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Models
 {
-
+    /// <summary>Insertion order for queue operations.</summary>
     public enum InsertOrder
     {
         Before,
         After
     }
 
+    /// <summary>
+    /// QUEUECOLLECTION<T> - LinkedList-based queue with insertion.
+    /// 
+    /// PURPOSE:
+    /// Provides queue operations (FIFO) with ability to insert
+    /// items at specific positions relative to existing items.
+    /// 
+    /// OPERATIONS:
+    /// - Add: Enqueue at end
+    /// - AddFirst: Enqueue at front
+    /// - Insert: Insert before/after existing item
+    /// - Remove: Dequeue from front
+    /// 
+    /// USAGE:
+    /// Used by SequenceManager for sequence event ordering.
+    /// 
+    /// RELATED FILES:
+    /// - SequenceManager.cs: Uses for event queue
+    /// - SequenceEvent.cs: Queue item type
+    /// </summary>
     public class QueueCollection<T>
     {
-        //Properties
         public int Count => queue.Count;
 
-        //Fields
         private LinkedList<T> queue = new LinkedList<T>();
 
-        public void Add(T item) => queue.AddLast(item); // Normal enqueue
+        public void Add(T item) => queue.AddLast(item);
 
-        public void AddFirst(T item) => queue.AddFirst(item); // Add to top
-
+        public void AddFirst(T item) => queue.AddFirst(item);
 
         public void Insert(T item, T node, InsertOrder order = InsertOrder.Before)
         {

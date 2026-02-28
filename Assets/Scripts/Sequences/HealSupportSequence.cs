@@ -5,8 +5,22 @@ using UnityEngine;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Runs a support heal: launches a wiggle style projectile from a source point to the target,
-    /// plays the impact VFX, then yields the heal routine.
+    /// HEALSUPPORTSEQUENCE - Support heal from ally to target.
+    /// 
+    /// PURPOSE:
+    /// Executes a healing projectile from a support ally to
+    /// the target hero during pincer support phase.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Launch wiggle-motion projectile from source
+    /// 2. Projectile travels to target
+    /// 3. Play impact VFX
+    /// 4. Execute heal routine on target
+    /// 
+    /// RELATED FILES:
+    /// - HeroPincerSequence.cs: Queues support sequences
+    /// - ProjectileManager.cs: Projectile spawning
+    /// - ActorInstance.HealRoutine(): HP restoration
     /// </summary>
     public class HealSupportSequence : SequenceEvent
     {
@@ -19,10 +33,6 @@ namespace Assets.Scripts.Sequences
             this.target = target;
         }
 
-        /// <summary>
-        /// Executes the heal using the new ProjectileEngine.
-        /// Spawns a single looping trail, travels to the target, then spawns a single impact VFX.
-        /// </summary>
         public override IEnumerator ProcessRoutine()
         {
             if (target == null)
@@ -34,18 +44,15 @@ namespace Assets.Scripts.Sequences
                 startPosition = source,
                 target = target,
 
-                // Visuals
                 projectileVfxKey = "GreenSparkle",
                 impactVfxKey = "BuffLife",
 
-                // Motion
                 motionStyle = MotionStyle.Wiggle,
                 travelSeconds = 0.9f,
                 wiggleAmplitudeTiles = 0.35f,
                 wiggleHz = 3.5f,
                 arriveRadiusTiles = 0.1f,
 
-                // Post impact
                 routine = target.HealRoutine(10)
             };
 

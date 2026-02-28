@@ -8,6 +8,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Game.Behaviors
 {
+    /// <summary>Camera world-space corner coordinates.</summary>
     public class CameraWorldSpace
     {
         public Vector3 TopLeft;
@@ -21,7 +22,7 @@ namespace Game.Behaviors
         }
     }
 
-
+    /// <summary>Camera screen-space corner coordinates.</summary>
     public class CameraLocalSpace
     {
         public Vector3 TopLeft;
@@ -35,16 +36,34 @@ namespace Game.Behaviors
         }
     }
 
+    /// <summary>
+    /// CAMERAMANAGER - Camera state and effects.
+    /// 
+    /// PURPOSE:
+    /// Manages camera positioning, bounds, and effects like
+    /// screen shake and smooth following.
+    /// 
+    /// PROPERTIES:
+    /// - viewBounds: Visible area in world space
+    /// - screenBounds: Screen pixel bounds
+    /// - world: World-space corner coordinates
+    /// - local: Screen-space corner coordinates
+    /// 
+    /// EFFECTS:
+    /// - Shake(intensity): Camera shake effect
+    /// - Follow(target): Smooth camera follow
+    /// 
+    /// RELATED FILES:
+    /// - BoardInstance.cs: Positions board in view
+    /// - InputManager.cs: Pan controls
+    /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        //Fields
         public RectFloat viewBounds;
         public Game.Models.RectInt screenBounds;
         public CameraWorldSpace world;
         public CameraLocalSpace local;
 
-
-        //Method which is used for initialization tasks that need to occur before the game starts 
         private void Awake()
         {
             world = new CameraWorldSpace();

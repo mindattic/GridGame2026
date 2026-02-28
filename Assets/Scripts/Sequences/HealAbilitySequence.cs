@@ -6,9 +6,24 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Runs a simple heal ability: locks input, bounces the portrait,
-    /// launches a wiggle style projectile that plays an impact VFX on arrival,
-    /// then yields the target's heal routine.
+    /// HEALABILITYSEQUENCE - Executes a healing ability on a target.
+    /// 
+    /// PURPOSE:
+    /// Handles the visual and mechanical effects of a heal ability,
+    /// including projectile animation and HP restoration.
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Lock input
+    /// 2. Bounce caster portrait
+    /// 3. Spawn healing projectile (wiggle motion)
+    /// 4. Projectile travels to target
+    /// 5. Play impact VFX
+    /// 6. Restore target HP
+    /// 
+    /// RELATED FILES:
+    /// - ProjectileManager.cs: Projectile spawning
+    /// - ActorInstance.HealRoutine(): HP restoration
+    /// - AbilityManager.cs: Ability execution
     /// </summary>
     public class HealAbilitySequence : SequenceEvent
     {

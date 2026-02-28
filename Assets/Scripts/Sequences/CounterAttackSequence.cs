@@ -7,8 +7,30 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Executes a counter-attack from a defender who has the CounterAttack ability.
-    /// Triggered automatically when the defender is attacked and survives.
+    /// COUNTERATTACKSEQUENCE - Executes reactive counter-attack.
+    /// 
+    /// PURPOSE:
+    /// When an actor with CounterAttack ability is hit and survives,
+    /// this sequence executes an immediate retaliatory strike.
+    /// 
+    /// TRIGGER CONDITIONS:
+    /// - Defender has CounterAttack ability
+    /// - Defender survives the attack
+    /// - Attacker is adjacent to defender
+    /// - Both actors still active
+    /// 
+    /// SEQUENCE FLOW:
+    /// 1. Validate both actors alive
+    /// 2. Check adjacency
+    /// 3. Show "Counter!" text
+    /// 4. Calculate counter damage
+    /// 5. Bump animation toward attacker
+    /// 6. Apply damage to attacker
+    /// 
+    /// RELATED FILES:
+    /// - AttackHelper.cs: Damage application
+    /// - Formulas.cs: Damage calculation
+    /// - AbilityLibrary.cs: CounterAttack ability
     /// </summary>
     public class CounterAttackSequence : SequenceEvent
     {

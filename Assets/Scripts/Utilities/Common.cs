@@ -5,13 +5,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Global numeric constants used across the game.
+/// COMMON - Global numeric constants used across the game.
+/// 
+/// PURPOSE:
+/// Centralized location for game-wide constants that shouldn't
+/// be hardcoded throughout the codebase.
+/// 
+/// CONSTANTS:
+/// - MaxPartyMemberCount: Maximum heroes in player's party (6)
 /// </summary>
 public static class Common
 {
+    /// <summary>Maximum number of heroes allowed in the player's party.</summary>
     public const int MaxPartyMemberCount = 6;
 }
 
+/// <summary>
+/// TEXTSYMBOL - Unicode character constants for text formatting.
+/// 
+/// PURPOSE:
+/// Provides named constants for special Unicode characters used
+/// in UI text, avoiding raw Unicode escapes in code.
+/// 
+/// CHARACTERS:
+/// - Infinity (∞), Bullet (•), Ellipsis (…)
+/// - Dashes: En-dash (–), Em-dash (—)
+/// - Quotes: Smart quotes for proper typography
+/// - Legal: ™, ©, ®
+/// </summary>
 public static class TextSymbol
 {
     public const string Infinity = "\u221E";         
@@ -29,15 +50,28 @@ public static class TextSymbol
 }
 
 /// <summary>
-/// Standard date format strings.
+/// DATEFORMAT - Standard date format strings.
+/// 
+/// PURPOSE:
+/// Consistent date formatting across save files, timestamps, etc.
 /// </summary>
 public static class DateFormat
 {
+    /// <summary>Format: "2024.01.15.14.30.00"</summary>
     public const string yyyyMMddHHmmss = "yyyy.MM.dd.HH.mm.ss";
 }
 
 /// <summary>
-/// Common percentage and fractional values for calculations.
+/// INCREMENT - Common percentage and fractional values.
+/// 
+/// PURPOSE:
+/// Provides named constants for common percentages to improve
+/// code readability and avoid magic numbers.
+/// 
+/// USAGE:
+/// ```csharp
+/// float damage = baseDamage * (1 + Increment.Percent25);
+/// ```
 /// </summary>
 public static class Increment
 {
@@ -81,11 +115,13 @@ public static class Increment
     public const float OneEighth = 0.125f;
     public const float OneNinth = 0.11111111f;
 
+    /// <summary>Health bar drain rate constants.</summary>
     public static class HealthBar
     {
         public const float Drain = 1.0f;
     }
 
+    /// <summary>Action bar drain rate constants.</summary>
     public static class ActionBar
     {
         public const float Drain = 1.0f;
@@ -93,10 +129,24 @@ public static class Increment
 }
 
 /// <summary>
-/// Timings for intermission stages before and after actions.
+/// INTERMISSION - Timing delays before/after game actions.
+/// 
+/// PURPOSE:
+/// Configurable delays that create visual breathing room between
+/// game actions. Can be adjusted for pacing/feel.
+/// 
+/// STRUCTURE:
+/// - Before.*: Delays before actions start
+/// - After.*: Delays after actions complete
+/// 
+/// USAGE:
+/// ```csharp
+/// yield return new WaitForSeconds(Intermission.Before.Enemy.Attack);
+/// ```
 /// </summary>
 public static class Intermission
 {
+    /// <summary>Delays before actions begin.</summary>
     public static class Before
     {
         public static class Enemy
@@ -126,6 +176,7 @@ public static class Intermission
         }
     }
 
+    /// <summary>Delays after actions complete.</summary>
     public static class After
     {
         public static class Player
@@ -141,7 +192,16 @@ public static class Intermission
 }
 
 /// <summary>
-/// Common time intervals.
+/// INTERVAL - Common time duration constants.
+/// 
+/// PURPOSE:
+/// Named constants for common time durations, avoiding magic
+/// numbers like 0.25f scattered throughout codebase.
+/// 
+/// USAGE:
+/// ```csharp
+/// yield return new WaitForSeconds(Interval.HalfSecond);
+/// ```
 /// </summary>
 public static class Interval
 {
@@ -159,7 +219,11 @@ public static class Interval
 }
 
 /// <summary>
-/// Standard opacity levels and byte-based alpha equivalents.
+/// OPACITY - Standard alpha/transparency levels.
+/// 
+/// PURPOSE:
+/// Named constants for opacity values, both as floats (0-1)
+/// and as byte values (0-255) for color operations.
 /// </summary>
 public static class Opacity
 {

@@ -11,8 +11,33 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 
-// OverworldManager orchestrates input and scene transitions for the world-space overworld.
-// World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
+/// <summary>
+/// OVERWORLDMANAGER - Overworld scene controller.
+/// 
+/// PURPOSE:
+/// Orchestrates the world map exploration scene including
+/// input handling, camera control, and random encounters.
+/// 
+/// RESPONSIBILITIES:
+/// - Initialize world layers (terrain, surface, canopy)
+/// - Handle camera mode switching
+/// - Process tap vs drag input
+/// - Trigger random encounters
+/// - Manage offscreen arrow indicator
+/// 
+/// CAMERA MODES:
+/// - FollowHero: Camera tracks hero
+/// - FreePan: Player can pan camera
+/// 
+/// RANDOM ENCOUNTERS:
+/// Accumulates time while moving and triggers
+/// battle transition when threshold reached.
+/// 
+/// RELATED FILES:
+/// - OverworldHero.cs: Hero controller
+/// - Mode7CameraController.cs: Camera control
+/// - OffscreenArrowIndicator.cs: UI indicator
+/// </summary>
 public class OverworldManager : MonoBehaviour
 {
     // World layers

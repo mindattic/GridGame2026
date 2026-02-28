@@ -6,45 +6,44 @@ using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Draws a support line between two ActorInstances,
-/// handles overlay in/out, and initializes renderer settings.
+/// SUPPORTLINEINSTANCE - Visual connection between support allies.
+/// 
+/// PURPOSE:
+/// Draws a line connecting a supporter to the hero they're
+/// supporting during pincer attack setup.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// [Supporter] ─────────── [Hero]
+///             ↑
+///       support line
+/// ```
+/// 
+/// FEATURES:
+/// - Fade in/out animations
+/// - Follows actor positions
+/// - Semi-transparent appearance
+/// 
+/// RELATED FILES:
+/// - SupportLineFactory.cs: Creates this component
+/// - SupportLineManager.cs: Manages all support lines
+/// - PincerAttackManager.cs: Shows during pincer setup
 /// </summary>
 public class SupportLineInstance : MonoBehaviour
 {
-    /// <summary>
-    /// Quick reference to the parent transform.
-    /// Setting this moves the GameObject under the board in the hierarchy.
-    /// </summary>
     public Transform parent
     {
         get => transform.parent;
         set => transform.SetParent(value, true);
     }
 
-    /// <summary>
-    /// Current alpha transparency of the line.
-    /// </summary>
     public float alpha = 0f;
 
-    /// <summary>
-    /// Duration for overlay in and overlay out.
-    /// </summary>
-
     private float fadeDuration = 0.05f;
-
-    /// <summary>
-    /// Minimum alpha value (fully transparent).
-    /// </summary>
     private float minAlpha = Opacity.Transparent;
-
-    /// <summary>
-    /// Maximum alpha value (semi transparent).
-    /// </summary>
     private float maxAlpha = Opacity.Transparent;
 
-    /// <summary>
-    /// First actor endpoint for the line.
-    /// </summary>
+    /// <summary>First actor endpoint for the line.</summary>
     public ActorInstance supporter;
 
     /// <summary>

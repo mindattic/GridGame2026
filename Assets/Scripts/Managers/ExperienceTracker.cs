@@ -4,7 +4,33 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    // Holds per-battle XP gains and participants, persisted across scene loads until consumed by PostBattleScreen.
+    /// <summary>
+    /// EXPERIENCETRACKER - Tracks XP gains during battle.
+    /// 
+    /// PURPOSE:
+    /// Static class that accumulates XP earned during a battle
+    /// and persists it across scene loads until consumed by
+    /// PostBattleScreen.
+    /// 
+    /// LIFECYCLE:
+    /// 1. StartSession() clears and initializes participants
+    /// 2. AddXP() accumulates XP for each character
+    /// 3. PostBattleScreen reads and distributes XP
+    /// 4. Clear() resets for next battle
+    /// 
+    /// PARTICIPANTS:
+    /// Only party members who participated in the battle
+    /// receive XP. Tracked via AddParticipant().
+    /// 
+    /// SCENE ROUTING:
+    /// NextSceneAfterPostBattleScreen determines where to go
+    /// after XP is awarded (default: Hub).
+    /// 
+    /// RELATED FILES:
+    /// - PostBattleManager.cs: Distributes XP
+    /// - ExperienceHelper.cs: XP calculations
+    /// - BattleWonSequence.cs: Sets next scene
+    /// </summary>
     public static class ExperienceTracker
     {
         public class Entry
@@ -16,7 +42,7 @@ namespace Assets.Scripts.Managers
         private static readonly Dictionary<CharacterClass, int> characterXP = new Dictionary<CharacterClass, int>();
         private static readonly HashSet<CharacterClass> participants = new HashSet<CharacterClass>();
 
-        public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Hub; // default to Hub
+        public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Hub;
 
         public static void StartSession(IEnumerable<CharacterClass> participantCharacters)
         {

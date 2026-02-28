@@ -6,8 +6,26 @@ using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Displays a centered "Victory!" banner that slides in from off-screen.
-/// Uses the same Canvas child structure as WaveAnnouncement (Image, Back, Front).
+/// VICTORYANNOUNCEMENT - "Victory!" banner display.
+/// 
+/// PURPOSE:
+/// Shows a centered victory banner that slides in from off-screen
+/// when all enemies are defeated.
+/// 
+/// ANIMATION:
+/// - Starts off-screen (above viewport)
+/// - Slides down to center
+/// - Holds position
+/// 
+/// USAGE:
+/// ```csharp
+/// g.VictoryAnnouncement.Show();
+/// ```
+/// 
+/// RELATED FILES:
+/// - BattleWonSequence.cs: Triggers display
+/// - DefeatAnnouncement.cs: Defeat equivalent
+/// - WaveAnnouncement.cs: Wave start display
 /// </summary>
 public class VictoryAnnouncement : MonoBehaviour
 {

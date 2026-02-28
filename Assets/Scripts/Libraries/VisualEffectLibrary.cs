@@ -4,6 +4,33 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// VISUALEFFECTLIBRARY - Registry of all visual effects.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches VisualEffectAsset definitions
+    /// for all VFX used in combat, abilities, and UI.
+    /// 
+    /// VFX ASSET PROPERTIES:
+    /// - Prefab: GameObject to instantiate
+    /// - RelativeOffset: Position offset from spawn point
+    /// - AngularRotation: Initial rotation
+    /// - RelativeScale: Scale multiplier
+    /// - Apex: Time when effect "hits" (for damage sync)
+    /// - Duration: Total lifetime
+    /// - IsLooping: Continuous vs one-shot
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var vfx = VisualEffectLibrary.Get("AcidSplash");
+    /// VisualEffectManager.Play(vfx, position);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - VisualEffectAsset.cs: VFX data structure
+    /// - VisualEffectManager.cs: VFX spawning/playback
+    /// - VisualEffectInstance.cs: VFX behavior
+    /// </summary>
     public static class VisualEffectLibrary
     {
         private static Dictionary<string, VisualEffectAsset> visualEffects;

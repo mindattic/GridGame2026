@@ -9,10 +9,38 @@ using scene = Assets.Helpers.SceneHelper;
 namespace Assets.Scripts
 {
     /// <summary>
-    /// Centralized scene transition service with a loading screen.
-    /// Attach this component only in the LoadingScreen scene.
-    /// Provides overlay from black, delayed progress UI, and progress UI overlay in.
-    /// Tracks current and previous scene names and supports editor bootstrap when started on LoadingScreen.
+    /// SCENELOADER - Async scene loading with loading screen.
+    /// 
+    /// PURPOSE:
+    /// Provides centralized scene transitions with a loading
+    /// screen, progress bar, and fade effects.
+    /// 
+    /// TRANSITION FLOW:
+    /// 1. Fade from black overlay
+    /// 2. Show progress UI after delay
+    /// 3. Async load target scene
+    /// 4. Update progress bar
+    /// 5. Activate scene when ready
+    /// 6. Fade to new scene
+    /// 
+    /// SCENE TRACKING:
+    /// - currentScene: Currently active scene
+    /// - previousScene: Last scene before current
+    /// - Used for "back" navigation
+    /// 
+    /// EDITOR BOOTSTRAP:
+    /// If game starts on LoadingScreen, auto-loads
+    /// bootstrapScene (default: TitleScreen).
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// SceneLoader.Load("Game");
+    /// SceneLoader.LoadToPreviousScene();
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - SceneHelper.cs: Scene navigation helpers
+    /// - FadeOverlayInstance.cs: Fade transitions
     /// </summary>
     public sealed class SceneLoader : MonoBehaviour
     {

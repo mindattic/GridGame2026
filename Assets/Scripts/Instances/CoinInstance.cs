@@ -1,7 +1,9 @@
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-
+/// <summary>
+/// Coin value denominations.
+/// </summary>
 public enum CoinValue
 {
     Silver = 1,
@@ -9,43 +11,93 @@ public enum CoinValue
     Red = 20
 }
 
+/// <summary>
+/// COININSTANCE - Collectible coin behavior.
+/// 
+/// PURPOSE:
+/// Controls individual coins that spawn from defeated enemies,
+/// handling their spawn animation, bounce physics, and collection.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Enemy dies:
+///    💀
+///   /|\ → Coins burst out
+/// 🪙 🪙 🪙
+///  ↓bounce
+/// 🪙___🪙___🪙 (settle on ground)
+/// ```
+/// 
+/// STATES:
+/// 1. Start: Initial spawn animation
+/// 2. Moving: Arc toward collection point
+/// 3. Bouncing: Physics simulation with bounces
+/// 4. Collected: Absorbed by player
+/// 
+/// COIN TYPES:
+/// - Silver: 1 coin value
+/// - Gold: 10 coin value
+/// - Red: 20 coin value
+/// 
+/// PHYSICS:
+/// Uses simulated gravity and bounce dampening for
+/// realistic coin drop effect.
+/// 
+/// RELATED FILES:
+/// - CoinManager.cs: Spawns and manages coins
+/// - CoinFactory.cs: Creates coin GameObjects
+/// - ProfileHelper.cs: Tracks total coins
+/// </summary>
 public class CoinInstance : MonoBehaviour
 {
-    // Fields
+    #region Animation Curves
+
     [SerializeField] public AnimationCurve linearCurve;
     [SerializeField] public AnimationCurve slopeCurve;
     [SerializeField] public AnimationCurve sineCurve;
 
+    #endregion
+
+    #region Components
+
     private SpriteRenderer spriteRenderer;
     private ParticleSystem particles;
+
+    #endregion
+
+    #region Configuration
 
     private float scaleMultiplier = 0.05f;
     private float startDuration = 0.2f;
     private float moveDuration = 0.6f;
 
-    private float timeElapsed = 0.0f;
+    #endregion
 
+    #region State
+
+    private float timeElapsed = 0.0f;
     private Vector3 start;
     private Vector3 end;
-
     private CoinState state;
-
     private float t, x, y, z;
-
     private AnimationCurve cX;
     private AnimationCurve cY;
 
-    // BounceRoutine simulation fields
+    #endregion
+
+    #region Bounce Physics
+
     private Vector3 velocity;
     private float gravity = -20f;
     private int bouncesRemaining = 6;
     private float bounceDamp = 0.5f;
     private float minBounceVelocity = 1.5f;
-
-    // Randomized floor height for bounce realism
     private float groundOffsetY = 0f;
 
-    // Properties
+    #endregion
+
+    #region Properties
+
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -189,4 +241,6 @@ public class CoinInstance : MonoBehaviour
         g.AudioManager.Play($"Click");
         Destroy(gameObject);
     }
+
+    #endregion
 }

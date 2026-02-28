@@ -3,16 +3,29 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Models
 {
+    /// <summary>
+    /// TUTORIAL - Multi-page tutorial data.
+    /// 
+    /// PURPOSE:
+    /// Contains a collection of tutorial pages that teach
+    /// players game mechanics through text and images.
+    /// 
+    /// PROPERTIES:
+    /// - Key: Unique identifier
+    /// - Pages: List of TutorialPage content
+    /// 
+    /// RELATED FILES:
+    /// - TutorialLibrary.cs: Tutorial registry
+    /// - TutorialPopup.cs: Tutorial display UI
+    /// </summary>
     [Serializable]
     public class Tutorial
     {
         public string Key;
         public List<TutorialPage> Pages = new List<TutorialPage>();
 
-        // Default constructor
         public Tutorial() { }
 
-        // Copy constructor
         public Tutorial(Tutorial other)
         {
             if (other == null) return;
@@ -26,6 +39,14 @@ namespace Assets.Scripts.Models
         }
     }
 
+    /// <summary>
+    /// TUTORIALPAGE - Single page of tutorial content.
+    /// 
+    /// PROPERTIES:
+    /// - TextureKey: Image resource key
+    /// - Title: Page title text
+    /// - Content: Page body text
+    /// </summary>
     [Serializable]
     public class TutorialPage
     {
@@ -33,10 +54,8 @@ namespace Assets.Scripts.Models
         public string Title;
         public string Content;
 
-        // Default constructor
         public TutorialPage() { }
 
-        // Copy constructor
         public TutorialPage(TutorialPage other)
         {
             if (other == null) return;

@@ -3,6 +3,29 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// ABILITYLIBRARY - Registry of all abilities in the game.
+    /// 
+    /// PURPOSE:
+    /// Factory methods for creating Ability instances with
+    /// pre-configured settings (name, type, cost, effects).
+    /// 
+    /// ABILITY CATEGORIES:
+    /// - Active: Player-activated (Heal, Smite, Trap)
+    /// - Passive: Always-on modifiers (DoubleAttack)
+    /// - Reactive: Auto-triggered (CounterAttack)
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var heal = AbilityLibrary.Heal();
+    /// actor.Abilities.Add(heal);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - Ability.cs: Ability data structure
+    /// - AbilityManager.cs: Ability execution
+    /// - SpriteLibrary.cs: Ability button sprites
+    /// </summary>
     public static class AbilityLibrary
     {
         // ============== ACTIVE ABILITIES ==============

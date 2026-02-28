@@ -7,46 +7,58 @@ using g = Assets.Helpers.GameHelper;
 using Assets.Helpers;
 
 /// <summary>
-/// Spawns and normalizes VisualEffect or ParticleSystem prefabs so they render correctly in a top-down game.
-/// Responsibilities:
-/// 1) Scale to the provided tileSize using an authoring size reference.
-/// 2) Apply top-down rotation and any asset rotation.
-/// 3) Position at the requested world position plus asset offset.
-/// 4) Force sorting so the VFX appears on top of gameplay.
-/// 5) Drive lifetime rules:
-///    - If Duration > 0: play and auto-despawn after Duration.
-///    - If IsLoop and Duration <= 0: keep alive until manually despawned by reference.
-///    - Else: wait for natural completion with a safety timeout, then despawn.
+/// VISUALEFFECTINSTANCE - Runtime VFX behavior.
+/// 
+/// PURPOSE:
+/// Controls a spawned visual effect including positioning,
+/// scaling, sorting, and lifetime management.
+/// 
+/// NORMALIZATION:
+/// - Scales VFX to match tile size
+/// - Applies top-down rotation if needed
+/// - Sets sorting layer for visibility
+/// 
+/// LIFETIME RULES:
+/// - Duration > 0: Auto-despawn after Duration
+/// - IsLoop: Keep alive until manually despawned
+/// - Else: Wait for natural completion with safety timeout
+/// 
+/// RELATED FILES:
+/// - VisualEffectManager.cs: Spawns VFX
+/// - VisualEffectAsset.cs: VFX definition
+/// - VisualEffectLibrary.cs: VFX registry
 /// </summary>
 public class VisualEffectInstance : MonoBehaviour
 {
-    // Authoring and orientation configuration used for normalization.
+    #region Configuration
+
     [Header("Normalization")]
-    [Tooltip("Authoring world units that equal one tile at scale 1. Used to convert to your tileSize.")]
+    [Tooltip("Authoring world units that equal one tile at scale 1.")]
     private float authoringUnitSize = 1.0f;
 
     [Tooltip("Extra global multiplier applied after tile scaling.")]
     private float extraScaleMultiplier = 1.0f;
 
-    [Tooltip("Rotate X by this many degrees for top-down. 90 is typical.")]
+    [Tooltip("Rotate X by this many degrees for top-down.")]
     private float topDownRotateX = 90.0f;
 
     [Tooltip("If true, applies the top-down rotation automatically.")]
-    private bool applyTopDownRotation = false; // Default off to avoid unexpected camera-facing issues
+    private bool applyTopDownRotation = false;
 
-    [Tooltip("Sorting layer name to apply when possible. Leave empty to keep existing.")]
+    [Tooltip("Sorting layer name to apply.")]
     private string sortingLayerName = SortingHelper.Layer.VFX;
 
-    [Tooltip("Sorting order for Sprite and Particle renderers.")]
+    [Tooltip("Sorting order for renderers.")]
     private int sortingOrderOnTop = SortingHelper.Order.Max;
 
-    [Tooltip("Unity layer name to assign recursively. 'Default' is safest for visibility.")]
+    [Tooltip("Unity layer name to assign recursively.")]
     private string unityLayerName = "Default";
 
-    // Optional default tile size for the convenience Spawn overload.
     [Header("Defaults")]
-    [Tooltip("Default tile size used by Spawn without an explicit tileSize parameter.")]
+    [Tooltip("Default tile size for Spawn without explicit tileSize.")]
     private float defaultTileSize = 1.0f;
+
+    #endregion
 
     // Cached component references created at spawn time.
     private VisualEffect[] vfxComponents;

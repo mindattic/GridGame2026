@@ -2,15 +2,25 @@ using UnityEngine;
 
 namespace Assets.Helper
 {
-
+    /// <summary>
+    /// ROTATIONHELPER - Rotation calculation utilities.
+    /// 
+    /// PURPOSE:
+    /// Provides methods for calculating rotations, particularly
+    /// for sprites that need to face toward a target.
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// transform.rotation = RotationHelper.ByDirection(target.position, transform.position);
+    /// ```
+    /// 
+    /// NOTE:
+    /// Assumes sprite is facing right. If facing up, subtract 90
+    /// from angle or fix the sprite orientation.
+    /// </summary>
     public static class RotationHelper
     {
-        ///<summary>
-        ///Assumes sprite is facing right, if facing up subtract 90 from angle (or fix sprite)
-        ///</summary>
-        ///<param name="target"></param>
-        ///<param name="source"></param>
-        ///<returns></returns>
+        /// <summary>Calculates rotation to face from source toward target.</summary>
         public static Quaternion ByDirection(Vector3 target, Vector3 source)
         {
             var direction = target - source;

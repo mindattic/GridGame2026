@@ -5,6 +5,29 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// MATERIALLIBRARY - Registry of shader materials.
+    /// 
+    /// PURPOSE:
+    /// Lazy-loads and caches Material references for
+    /// special rendering effects.
+    /// 
+    /// MATERIALS:
+    /// - EnemyParallax: Parallax effect for enemies
+    /// - PlayerParallax: Parallax effect for players
+    /// - SpriteOutline: Outline shader for selection
+    /// - SpritePan: Pan/scroll effect
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var mat = MaterialLibrary.Materials["SpriteOutline"];
+    /// renderer.material = mat;
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - ActorParallax.cs: Uses parallax materials
+    /// - Resources/Materials/: Material assets
+    /// </summary>
     public static class MaterialLibrary
     {
         private static Dictionary<string, Material> materials;

@@ -5,46 +5,84 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Handles the behavior and animation of a single floating damage text instance.
-/// Configured at spawn time with a TextStyle profile (font, color, size, motion style).
+/// COMBATTEXTINSTANCE - Floating damage/status text.
+/// 
+/// PURPOSE:
+/// Handles the behavior and animation of floating combat text
+/// (damage numbers, status effects, healing, etc).
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Actor takes damage:
+///     -42
+///      ↑↗ (rises and fades)
+///   [Actor]
+/// ```
+/// 
+/// TEXT STYLES:
+/// Configured via TextStyle profile which specifies:
+/// - Font, Color, Size
+/// - Motion type (Rise, Oscillate, etc)
+/// 
+/// MOTION TYPES:
+/// - Rise: Float straight up
+/// - Oscillate: Wiggle side-to-side while rising
+/// - Bounce: Arc motion
+/// 
+/// LIFECYCLE:
+/// 1. Spawned by CombatTextManager
+/// 2. Positioned above actor with random offset
+/// 3. Animates based on motion style
+/// 4. Fades out
+/// 5. Self-destructs
+/// 
+/// RELATED FILES:
+/// - CombatTextManager.cs: Spawns text instances
+/// - CombatTextFactory.cs: Creates text GameObjects
+/// - TextStyle.cs: Style configuration
 /// </summary>
 public class CombatTextInstance : MonoBehaviour
 {
+    #region Fields
+
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
     public TextMotion style = TextMotion.Oscillate;
 
-    /// <summary>
-    /// Parent transform for positioning in the canvas.
-    /// </summary>
+    #endregion
+
+    #region Properties
+
+    /// <summary>Parent transform for positioning.</summary>
     public Transform parent
     {
         get => transform.parent;
         set => transform.SetParent(value, true);
     }
 
-    /// <summary>
-    /// World position property for external access.
-    /// </summary>
+    /// <summary>World position.</summary>
     public Vector3 position
     {
         get => transform.position;
         set => transform.position = value;
     }
 
-    /// <summary>
-    /// Initialization
-    /// </summary>
+    #endregion
+
+    #region Initialization
+
     void Awake()
     {
         textMesh = GetComponent<TextMeshPro>();
         speed = new Vector3(g.TileSize, g.TileSize / 32, 0);
     }
 
-    /// <summary>
-    /// Configures and spawns the floating text using a TextStyle profile.
-    /// </summary>
+    #endregion
+
+    #region Spawn
+
+    /// <summary>Configures and spawns the floating text using a TextStyle profile.</summary>
     public void Spawn(string text, Vector3 pos, TextStyle profile)
     {
         style = profile.Motion;
@@ -164,4 +202,6 @@ public class CombatTextInstance : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    #endregion
 }

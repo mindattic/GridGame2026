@@ -2,8 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// BlacksmithSectionController manages equipment buy, sell, craft, and repair.
-/// Relies on PlayerInventory and item definitions with stat modifiers.
+/// BLACKSMITHSECTIONCONTROLLER - Hub equipment/blacksmith section.
+/// 
+/// PURPOSE:
+/// Manages equipment transactions including buy, sell,
+/// craft, and repair operations.
+/// 
+/// SHOP MODES:
+/// - Buy: Purchase equipment from catalog
+/// - Sell: Sell equipment for gold
+/// - Craft: Combine materials into equipment
+/// - Repair: Restore equipment durability
+/// 
+/// RELATED FILES:
+/// - HubManager.cs: Hub scene controller
+/// - PlayerInventory.cs: Item storage
+/// - ItemDefinition.cs: Equipment stats
 /// </summary>
 public class BlacksmithSectionController : MonoBehaviour
 {
@@ -16,36 +30,28 @@ public class BlacksmithSectionController : MonoBehaviour
 
     private List<ItemDefinition> equipmentCatalog = new List<ItemDefinition>();
 
-    /// <summary>
-/// Initializes and loads equipment catalog.
-    /// </summary>
+    /// <summary>Initializes and loads equipment catalog.</summary>
     public void Initialize(HubManager hubManager)
     {
-  hub = hubManager;
+        hub = hubManager;
         LoadCatalog();
     }
 
-    /// <summary>
-    /// Called when section is shown.
-    /// </summary>
+    /// <summary>Called when section is shown.</summary>
     public void OnActivated()
     {
-   // TODO: Refresh equipment list UI based on mode.
+        // TODO: Refresh equipment list UI
     }
 
-    /// <summary>
-    /// Loads baseline equipment offerings.
-    /// </summary>
+    /// <summary>Loads baseline equipment offerings.</summary>
     private void LoadCatalog()
     {
-    equipmentCatalog.Clear();
+        equipmentCatalog.Clear();
         equipmentCatalog.Add(ItemData_Equipment.RustySword);
-  equipmentCatalog.Add(ItemData_Equipment.LeatherArmor);
+        equipmentCatalog.Add(ItemData_Equipment.LeatherArmor);
     }
 
-    /// <summary>
-    /// Buys equipment and adds to inventory.
-    /// </summary>
+    /// <summary>Buys equipment and adds to inventory.</summary>
     public bool Buy(ItemDefinition item)
     {
         if (item == null) return false;

@@ -6,6 +6,31 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
+    /// <summary>
+    /// TEXTSTYLELIBRARY - Registry of combat text styles.
+    /// 
+    /// PURPOSE:
+    /// Defines text styles for floating combat text including
+    /// font, size, color, and animation type.
+    /// 
+    /// STYLES:
+    /// - Damage: White, float animation
+    /// - Heal: Green, float animation
+    /// - CriticalHit: Yellow, bounce animation
+    /// - Miss: Gray, float animation
+    /// - LevelUp: Cyan, bounce animation
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var style = TextStyleLibrary.Get("Damage");
+    /// CombatTextManager.Spawn("-42", pos, style);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - TextStyle.cs: Style data structure
+    /// - CombatTextManager.cs: Text spawning
+    /// - CombatTextInstance.cs: Text animation
+    /// </summary>
     public static class TextStyleLibrary
     {
         private static Dictionary<string, TextStyle> textStyles;

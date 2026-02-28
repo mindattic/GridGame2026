@@ -6,21 +6,53 @@ using UnityEngine.UI;
 namespace Assets.Helpers
 {
     /// <summary>
-    /// Caches the current scene's Canvas and Canvas RectTransform so callers
-    /// always get the correct references without repeated GameObject.Find calls.
-    /// Looks up the "Canvas" GameObject once per scene load and stores references
-    /// for fast access across the scene's lifetime.
+    /// CANVASHELPER - Cached access to the scene's UI Canvas.
+    /// 
+    /// PURPOSE:
+    /// Provides fast, cached access to the current scene's Canvas and
+    /// related components without repeated GameObject.Find calls.
+    /// 
+    /// CACHING STRATEGY:
+    /// - Caches Canvas reference once per scene
+    /// - Automatically refreshes on scene change
+    /// - Lazy initialization on first access
+    /// 
+    /// PROPERTIES:
+    /// - Canvas: The scene's main Canvas component
+    /// - CanvasRect: The Canvas RectTransform for sizing calculations
+    /// - CanvasScaler: The CanvasScaler for resolution handling
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// // Instead of: GameObject.Find("Canvas").GetComponent<Canvas>()
+    /// var canvas = CanvasHelper.Canvas;
+    /// var screenWidth = CanvasHelper.CanvasRect.rect.width;
+    /// ```
+    /// 
+    /// AUTO-REFRESH:
+    /// Subscribes to SceneManager.sceneLoaded to automatically
+    /// refresh cache when scenes change.
+    /// 
+    /// RELATED FILES:
+    /// - ProfileSelectManager.cs: Uses for UI sizing
+    /// - StageSelectManager.cs: Uses for button layout
+    /// - All UI managers: Use for canvas access
     /// </summary>
     public static class CanvasHelper
     {
-        // Cached references
+        #region Cached References
+
         private static Canvas canvas;
         private static RectTransform canvasRect;
         private static CanvasScaler canvasScalar;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Fast access to the cached Canvas.
-        /// If the cache is empty, performs a one-time lookup for the current scene.
+        /// Performs one-time lookup if cache is empty.
         /// </summary>
         public static Canvas Canvas
         {
@@ -32,8 +64,7 @@ namespace Assets.Helpers
         }
 
         /// <summary>
-        /// Fast access to the cached Canvas RectTransform.
-        /// If the cache is empty, performs a one-time lookup for the current scene.
+        /// Fast access to the Canvas RectTransform for sizing calculations.
         /// </summary>
         public static RectTransform CanvasRect
         {
@@ -44,6 +75,9 @@ namespace Assets.Helpers
             }
         }
 
+        /// <summary>
+        /// Fast access to the CanvasScaler for resolution handling.
+        /// </summary>
         public static CanvasScaler CanvasScaler
         {
             get
@@ -53,9 +87,13 @@ namespace Assets.Helpers
             }
         }
 
+        #endregion
+
+        #region Initialization
+
         /// <summary>
-        /// Initializes the helper after the first scene load and sets up a listener
-        /// for future scene changes so the cache is refreshed automatically.
+        /// Initializes the helper after first scene load and sets up
+        /// listener for scene changes to auto-refresh cache.
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init()
@@ -103,11 +141,9 @@ namespace Assets.Helpers
             }
 
             canvasRect = canvas.GetComponent<RectTransform>();
-
-
             canvasScalar = canvas.GetComponent<CanvasScaler>();
-
-
         }
+
+        #endregion
     }
 }
