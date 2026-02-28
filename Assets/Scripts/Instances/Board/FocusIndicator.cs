@@ -3,8 +3,35 @@ using Game.Behaviors;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-// FocusIndicator is a MonoBehaviour responsible for displaying an indicator
-// that highlights the currently focused actor (if any) on the game board.
+/// <summary>
+/// FOCUSINDICATOR - Visual indicator for focused/selected actor.
+/// 
+/// PURPOSE:
+/// Highlights the currently selected actor with a visible marker,
+/// helping players track which unit is being controlled.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///    ┌───────┐
+///    │ Actor │ ← Selected actor
+///    └───────┘
+///  ╔═══════════╗
+///  ║  Focus    ║ ← Indicator ring/glow
+///  ╚═══════════╝
+/// ```
+/// 
+/// POSITIONING:
+/// - Show(): Moves to selected actor's position
+/// - Hide(): Moves off-screen (PositionHelper.Nowhere)
+/// 
+/// SCALING:
+/// Scales to match tile size (g.TileScale * 1.1f) for proper fit.
+/// 
+/// RELATED FILES:
+/// - SelectionManager.cs: Tracks selected actor
+/// - TargetIndicator.cs: Similar indicator for targets
+/// - InputManager.cs: Triggers selection changes
+/// </summary>
 public class FocusIndicator : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;

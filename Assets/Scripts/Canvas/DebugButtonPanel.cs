@@ -4,6 +4,27 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.GUI
 {
+    /// <summary>
+    /// DEBUGBUTTONPANEL - Debug command button UI panel.
+    /// 
+    /// PURPOSE:
+    /// Provides quick-access debug buttons for testing during
+    /// development. Allows stage manipulation and enemy spawning.
+    /// 
+    /// BUTTONS:
+    /// - ReloadStage: Restart current stage
+    /// - PreviousStage: Load previous stage (disabled)
+    /// - NextStage: Load next stage (disabled)
+    /// - SpawnRandomEnemy: Spawn enemy at random location
+    /// 
+    /// VISIBILITY:
+    /// Only shown in development builds when debug mode is enabled.
+    /// 
+    /// RELATED FILES:
+    /// - DebugManager.cs: Handles debug commands
+    /// - StageManager.cs: Stage reload/navigation
+    /// - GameManager.cs: Debug settings
+    /// </summary>
     public class DebugButtonPanel : MonoBehaviour
     {
         //Fields

@@ -5,6 +5,35 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
+    /// <summary>
+    /// ACTORGLOW - Selection/highlight glow effect for actors.
+    /// 
+    /// PURPOSE:
+    /// Manages the pulsing glow effect shown around actors when
+    /// they are selected or during their turn.
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    ///   ╔═══╗
+    ///   ║   ║ ← Glow pulses from 1.0x to 1.25x scale
+    ///   ╚═══╝
+    /// ```
+    /// 
+    /// ANIMATION:
+    /// - Warm up: 0.15 seconds to max scale (1.25x)
+    /// - Pulse: Continuous oscillation using glowCurve
+    /// - Cool down: Returns to base scale when stopped
+    /// 
+    /// CONFIGURATION:
+    /// - baseScale: Starting scale (tile size)
+    /// - maxScale: Peak scale (1.25x)
+    /// - speed: Animation speed multiplier
+    /// 
+    /// RELATED FILES:
+    /// - ActorRenderers.cs: Glow sprite renderers
+    /// - ActorInstance.cs: Owns glow component
+    /// - SelectionManager.cs: Triggers glow state
+    /// </summary>
     public class ActorGlow
     {
         protected ActorRenderers Render => instance.Render;

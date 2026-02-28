@@ -1,23 +1,39 @@
 using UnityEngine;
 
-// Drifts a cloud across the map and respawns it off-screen on the starting side when it exits the opposite side.
-// - Adjustable speed, scale, and buffers
-// - Randomizes Y within terrain bounds on each respawn
-// - Teleports always occur outside the camera frustum
+/// <summary>
+/// CLOUDINSTANCE - Drifting cloud in overworld.
+/// 
+/// PURPOSE:
+/// Drifts a cloud sprite across the map and respawns it
+/// off-screen when it exits the opposite side.
+/// 
+/// FEATURES:
+/// - Configurable drift direction (left/right)
+/// - Randomized speed, scale, flip, and opacity
+/// - Respawns at random Y within terrain bounds
+/// - Teleports always occur outside camera frustum
+/// 
+/// PERFORMANCE:
+/// Can skip Update while offscreen to save CPU.
+/// 
+/// RELATED FILES:
+/// - OverworldManager.cs: Overworld scene
+/// - CloudShadowInstance.cs: Shadow counterpart
+/// </summary>
 public class CloudInstance : MonoBehaviour
 {
     public enum CloudDirection { LeftToRight, RightToLeft }
 
     [Header("Scene References")]
-    [Tooltip("Terrain SpriteRenderer that defines the map/world bounds (XY plane). If null, will try to auto-find Map/Terrain or the largest SpriteRenderer.")]
+    [Tooltip("Terrain SpriteRenderer that defines map bounds.")]
     public SpriteRenderer terrain;
-    [Tooltip("Camera used to compute the on-screen region. If null, Camera.main is used.")]
+    [Tooltip("Camera for on-screen region. Defaults to Camera.main.")]
     public Camera worldCamera;
 
     [Header("Movement")]
     [Tooltip("Drift direction across the map.")]
     public CloudDirection direction = CloudDirection.LeftToRight;
-    [Tooltip("Cloud speed range (world units per second).")]
+    [Tooltip("Cloud speed range (world units/second).")]
     public Vector2 speedRange = new Vector2(0.1f, 0.4f);
     [Tooltip("Randomize speed on each respawn.")]
     public bool randomizeSpeedEachRespawn = true;
@@ -27,23 +43,23 @@ public class CloudInstance : MonoBehaviour
     public Vector2 scaleRange = new Vector2(1.0f, 1.25f);
     [Tooltip("Randomize scale on each respawn.")]
     public bool randomizeScale = false;
-    [Tooltip("Randomize SpriteRenderer Flip X when the cloud starts and each time it teleports to the other side.")]
+    [Tooltip("Randomize Flip X on spawn/respawn.")]
     public bool randomizeFlipX = false;
-    [Tooltip("Randomize SpriteRenderer Flip Y when the cloud starts and each time it teleports to the other side.")]
+    [Tooltip("Randomize Flip Y on spawn/respawn.")]
     public bool randomizeFlipY = false;
-    [Tooltip("Randomized opacity range in 8-bit (0-255). Alpha is picked uniformly in [min,max] at start, and on respawn.")]
+    [Tooltip("Alpha range in 8-bit (0-255).")]
     public Vector2 alpha8bitRange = new Vector2(16f, 32f);
 
     [Header("Buffers")]
-    [Tooltip("Extra world units beyond terrain bounds that trigger exit and are used for spawn on the opposite side.")]
+    [Tooltip("Extra units beyond terrain for exit trigger.")]
     public float mapEdgeBuffer = 1.0f;
-    [Tooltip("Extra world units outside the camera frustum to ensure teleports happen off-screen.")]
+    [Tooltip("Extra units outside camera for offscreen teleport.")]
     public float cameraFrustumBuffer = 2.0f;
-    [Tooltip("Padding inside terrain bounds for randomized Y placement.")]
+    [Tooltip("Y padding inside terrain bounds.")]
     public float yPadding = 0.5f;
 
     [Header("Performance")]
-    [Tooltip("If true, clouds continue to move and wrap while offscreen. If false, Update is skipped while invisible to save CPU.")]
+    [Tooltip("Continue moving while offscreen.")]
     public bool UpdateWhileOffscreen = true;
 
     private float _speed;

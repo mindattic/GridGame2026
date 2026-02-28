@@ -1,19 +1,45 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// Shows a screen-edge arrow pointing toward a world-space target when the target is offscreen.
-// Attach this to Canvas/OffscreenArrow. The GameObject remains active; we fade its alpha in/out.
+/// <summary>
+/// OFFSCREENARROWINDICATOR - Points to offscreen targets.
+/// 
+/// PURPOSE:
+/// Shows a screen-edge arrow pointing toward a world-space
+/// target when that target is outside the camera view.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///       [Target offscreen to the right]
+///                              →
+///    ┌──────────────────────┐ ← Arrow at edge
+///    │                      │
+///    │    [Viewport]        │
+///    │                      │
+///    └──────────────────────┘
+/// ```
+/// 
+/// FEATURES:
+/// - Positions arrow at screen edge
+/// - Rotates to point toward target
+/// - Fades in/out smoothly
+/// - Configurable margin from edge
+/// 
+/// RELATED FILES:
+/// - OverworldManager.cs: Overworld scene
+/// - OverworldHero.cs: Potential target
+/// </summary>
 public sealed class OffscreenArrowIndicator : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private Camera worldCamera;
-    [SerializeField] private float margin = 40f; // pixels inside screen edge
-    [SerializeField] private float fadeSpeed = 10f;   // alpha units per second
+    [SerializeField] private float margin = 40f;
+    [SerializeField] private float fadeSpeed = 10f;
 
     private RectTransform arrowRect;
     private RectTransform canvasRect;
-    private CanvasGroup canvasGroup; // preferred for fading entire UI
-    private Graphic arrowGraphic;    // fallback if no CanvasGroup
+    private CanvasGroup canvasGroup;
+    private Graphic arrowGraphic;
 
     public Transform Target
     {

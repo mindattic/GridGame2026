@@ -3,6 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Helper;
 
+/// <summary>
+/// SWINGINGWINDOW - Animated swinging panel effect.
+/// 
+/// PURPOSE:
+/// Creates a physically-simulated swinging/pendulum effect for UI panels,
+/// like a window swinging in the wind.
+/// 
+/// PHYSICS MODEL:
+/// - Simulates wind-driven rotation with acceleration
+/// - Uses rotation queue for natural movement patterns
+/// - Applies Perlin noise for organic variation
+/// - Includes wiggle effect for micro-movement
+/// 
+/// CONFIGURATION:
+/// - minAngle/maxAngle: Rotation limits (-90° to 90°)
+/// - windFocusMultiplier: Wind force strength
+/// - accelerationFactor: Movement responsiveness
+/// - noiseScale: Perlin noise influence
+/// - wiggleIntensity/Frequency: Micro-movement
+/// 
+/// ANIMATION FLOW:
+/// 1. Generate target rotation queue
+/// 2. Smoothly rotate toward current target
+/// 3. Apply wiggle overlay
+/// 4. Advance to next target when reached
+/// 
+/// RELATED FILES:
+/// - SwingingLogo.cs: Similar effect for logos
+/// - TitleScreenManager.cs: Menu decoration
+/// </summary>
 public class SwingingWindow : MonoBehaviour
 {
     private float minAngle;

@@ -355,6 +355,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cb6ca72b47af5b45be626ad412f679f
+    m_Address: Sprites/Coin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d223d4b225639f469ef46e58fa96ffa
     m_Address: Sprites/Seamless/WhiteFire1
     m_ReadOnly: 0

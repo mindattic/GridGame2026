@@ -3,6 +3,33 @@ using UnityEngine.UI;
 using TMPro;
 using Assets.Helpers;
 
+/// <summary>
+/// CLOCK - Real-time clock display UI component.
+/// 
+/// PURPOSE:
+/// Displays the current system time in the UI, automatically
+/// updating and respecting safe area insets.
+/// 
+/// FEATURES:
+/// - Auto-updates time display each second
+/// - Respects horizontal safe area insets
+/// - Configurable format, font size, color
+/// - Joins pane for equal width layout
+/// 
+/// CONFIGURATION:
+/// - timeFormat: Display format (default "h:mm tt")
+/// - fontSize: Text size (default 24)
+/// - fontColor: Text color (default white)
+/// - padding: Position offset from anchor
+/// 
+/// CHANGE DETECTION:
+/// Monitors safe area, screen size, and scale changes
+/// to reposition automatically.
+/// 
+/// RELATED FILES:
+/// - CanvasHelper.cs: Canvas access
+/// - GameManager.cs: UI hierarchy
+/// </summary>
 [DisallowMultipleComponent]
 [DefaultExecutionOrder(1000)]
 public sealed class Clock : MonoBehaviour

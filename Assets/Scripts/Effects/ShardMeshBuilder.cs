@@ -1,7 +1,30 @@
 using UnityEngine;
 
 /// <summary>
-/// Builds a grid mesh covering NDC-like space [-1,1] x [-1,1], with UV 0..1 and per-cell id in uv2.x
+/// SHARDMESHBUILDER - Generates grid meshes for screen effects.
+/// 
+/// PURPOSE:
+/// Creates a subdivided grid mesh covering normalized device coordinates
+/// [-1,1] x [-1,1] for full-screen effects like shatter and zoom.
+/// 
+/// MESH PROPERTIES:
+/// - Vertices in NDC space (-1 to 1)
+/// - UV coordinates (0 to 1)
+/// - uv2.x stores cell ID for per-shard effects
+/// 
+/// GRID DENSITY:
+/// 40x22 recommended for 16:9 at 1080p.
+/// Higher counts = smaller shards = smoother effect.
+/// 
+/// USAGE:
+/// ```csharp
+/// Mesh grid = ShardMeshBuilder.BuildGrid(40, 22);
+/// meshFilter.sharedMesh = grid;
+/// ```
+/// 
+/// RELATED FILES:
+/// - ScreenShatter.cs: Uses for shatter effect
+/// - ZoomEffect.cs: Uses for zoom effect
 /// </summary>
 public static class ShardMeshBuilder
 {

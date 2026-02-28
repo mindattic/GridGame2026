@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Models
 {
+    /// <summary>
+    /// TOGGLESETTING - Configuration for toggle-based settings.
+    /// 
+    /// PURPOSE:
+    /// Defines a boolean on/off setting with getter/setter delegates
+    /// for reading/writing the value.
+    /// 
+    /// PROPERTIES:
+    /// - FriendlyName: Display label
+    /// - TooltipText: Help text
+    /// - Getter/Setter: ProfileSettings accessors
+    /// 
+    /// RELATED FILES:
+    /// - SettingsManager.cs: Uses this to create UI
+    /// - ProfileSettings.cs: Storage target
+    /// </summary>
     public class ToggleSetting
     {
         public string FriendlyName { get; }

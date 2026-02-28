@@ -1,31 +1,60 @@
 using UnityEngine;
 
-// Attach this to the Main Camera to get a Mode7-like low-angle follow camera.
-// Keeps map logic intact; only camera pose is controlled here.
+/// <summary>
+/// MODE7CAMERACONTROLLER - Mode7-style perspective camera.
+/// 
+/// PURPOSE:
+/// Controls camera position and rotation to create a retro
+/// Mode7-like low-angle follow camera for overworld scenes.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///    _____________________
+///   /                     \   ← Horizon (vanishing point)
+///  /      [distant]        \
+/// |        terrain          |
+/// |      [Hero]              |
+/// |__________________________|  ← Ground plane
+/// ```
+/// 
+/// CONFIGURATION:
+/// - pitch: Camera angle (-45° typical)
+/// - distance: Distance from target
+/// - fieldOfView: Perspective FOV
+/// - followLerp: Follow smoothness
+/// 
+/// BOUNDS CLAMPING:
+/// Can clamp look-at point to terrain bounds
+/// to prevent viewing outside the map.
+/// 
+/// RELATED FILES:
+/// - OverworldHero.cs: Target to follow
+/// - OverworldManager.cs: Overworld scene
+/// </summary>
 [ExecuteAlways]
 [DisallowMultipleComponent]
 public class Mode7CameraController : MonoBehaviour
 {
     [Header("Target")]
-    public Transform target;                 // OverworldHero transform
-    public float lookAtYOffset = 0f;         // Optional Y offset for look-at point
+    public Transform target;
+    public float lookAtYOffset = 0f;
 
     [Header("Lens")]
-    public bool enableMode7 = true;          // Toggle on/off
-    public float fieldOfView = 45f;          // Perspective FOV in degrees
+    public bool enableMode7 = true;
+    public float fieldOfView = 45f;
 
-    [Header("Pose (relative to target)")]
-    [Range(-89f, 89f)] public float pitch = -45;   // Positive pitches the ground away (horizon toward top)
-    [Tooltip("Yaw is ignored to prevent rotating around Y (comfort)")]
-    public float yaw = 0f;                          // Ignored (locked to 0)
-    public float distance = 10f;                    // Distance from target along camera forward (spherical)
-    public float heightOffset = 0.5f;               // Extra world Y offset applied after spherical placement
+    [Header("Pose")]
+    [Range(-89f, 89f)] public float pitch = -45;
+    [Tooltip("Yaw is locked to 0 for comfort.")]
+    public float yaw = 0f;
+    public float distance = 10f;
+    public float heightOffset = 0.5f;
 
     [Header("Follow")]
-    public float followLerp = 10f;                  // Higher = snappier follow
+    public float followLerp = 10f;
 
-    [Header("Bounds (optional)")]
-    public SpriteRenderer terrain;                  // If set, we will clamp look-at XY inside map bounds
+    [Header("Bounds")]
+    public SpriteRenderer terrain;
     public bool clampLookAtToTerrain = true;
 
     private Camera _cam;

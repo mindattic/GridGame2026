@@ -1,16 +1,30 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ROCKINSTANCE - Rock prop in overworld.
+/// 
+/// PURPOSE:
+/// Static decorative rock sprite with Y-based sorting
+/// relative to the hero.
+/// 
+/// FEATURES:
+/// - Y-sorting from sprite bottom (base controls order)
+/// - No animation (static object)
+/// 
+/// RELATED FILES:
+/// - TreeInstance.cs: Similar prop
+/// - OverworldManager.cs: Overworld scene
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class RockInstance : MonoBehaviour
 {
     [Header("Sorting")]
-    [Tooltip("Match hero's sorting layer and go behind when hero is below, in front when above.")]
+    [Tooltip("Match hero's sorting layer and sort by Y position.")]
     public bool followHeroSorting = true;
 
     private SpriteRenderer spriteRenderer;
 
-    // Cache hero and its SpriteRenderer once for all rocks
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
@@ -19,11 +33,10 @@ public class RockInstance : MonoBehaviour
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        transform.position.SetZ(0f); // ensure on Z=0 plane
+        transform.position.SetZ(0f);
 
         isVisible = spriteRenderer != null && spriteRenderer.isVisible;
 
-        // Apply initial sort from the bottom of the sprite so base controls the order
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
@@ -46,7 +59,6 @@ public class RockInstance : MonoBehaviour
 
     private void Update()
     {
-        // Always apply Y-sort so rocks don't get stuck with a static order (e.g., 30)
         if (followHeroSorting)
             YSortUtility.ApplyFromBottom(spriteRenderer);
     }

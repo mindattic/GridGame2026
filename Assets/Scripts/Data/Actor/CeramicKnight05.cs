@@ -15,7 +15,7 @@ namespace Assets.Data.Actor
             {
                 CharacterName = "CeramicKnight05",
                 CharacterClass = CharacterClass.CeramicKnight05, // If this enum does not exist, replace accordingly.
-                Tags = Tag.Hero | Tag.Humanoid,
+                Tags = Tag.Enemy | Tag.Humanoid | Tag.Construct,
 
                 Description = "A stalwart defender that anchors the line and absorbs pressure.",
                 Expectations = "Frontline anchor. Uses [guard], [taunt], and [disrupt]. Protects allies.",

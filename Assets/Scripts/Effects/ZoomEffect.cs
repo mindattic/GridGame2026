@@ -6,8 +6,37 @@ using UnityEngine.UI;
 
 using scene = Assets.Helpers.SceneHelper;
 
-
-
+/// <summary>
+/// ZOOMEFFECT - Full-screen zoom/spin transition effect.
+/// 
+/// PURPOSE:
+/// Creates a dramatic zoom/spin effect by capturing the current
+/// screen and animating a zoom in with optional burn and invert.
+/// 
+/// EFFECT PARAMETERS:
+/// - duration: Animation length
+/// - zoomStrength: Final zoom amount
+/// - spinRadians: Rotation over duration
+/// - smudgeStrength: Motion blur effect
+/// - centerUV: Zoom focus point
+/// 
+/// BURN EFFECT:
+/// Circular burn/vignette from center:
+/// - burnStrength: Intensity (0-1)
+/// - burnRadius: Size of burn area
+/// - burnFeather: Edge softness
+/// 
+/// USAGE:
+/// ```csharp
+/// yield return zoomEffect.Play(() => {
+///     // Called when effect completes
+/// });
+/// ```
+/// 
+/// RELATED FILES:
+/// - ScreenGrabber.cs: Frame capture
+/// - ShardMeshBuilder.cs: Full-screen quad mesh
+/// </summary>
 [RequireComponent(typeof(ScreenGrabber))]
 public class ZoomEffect : MonoBehaviour
 {

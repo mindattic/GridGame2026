@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Fonts
   m_GUID: 121acc054c4563e4a98078a4949e86f0
   m_SerializeEntries:
+  - m_GUID: 022e32a7f3183c140afc2abdbbd80887
+    m_Address: Fonts/Avenir
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 14cfd037a0e5cce46baff77ffd09cbca
     m_Address: Fonts/Unifont
     m_ReadOnly: 0
@@ -37,6 +42,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7575f90983c12a741bc9593b614039af
     m_Address: Fonts/Arial
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9af2dcbc4d9455448b543a008a91acca
+    m_Address: Fonts/Play
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

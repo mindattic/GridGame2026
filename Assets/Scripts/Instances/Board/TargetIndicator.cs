@@ -3,8 +3,35 @@ using Game.Behaviors;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-// TargetIndicator is a MonoBehaviour responsible for displaying an indicator
-// that highlights the currently targeted actor (if any) on the game board.
+/// <summary>
+/// TARGETINDICATOR - Visual indicator for targeted actor.
+/// 
+/// PURPOSE:
+/// Highlights the currently targeted actor (enemy being aimed at)
+/// with a visible marker during ability targeting.
+/// 
+/// VISUAL EFFECT:
+/// ```
+///    ┌───────┐
+///    │ Enemy │ ← Targeted actor
+///    └───────┘
+///  ╔═══════════╗
+///  ║  Target   ║ ← Indicator ring (typically red/hostile)
+///  ╚═══════════╝
+/// ```
+/// 
+/// POSITIONING:
+/// - Show(): Moves to target actor's position
+/// - Hide(): Moves off-screen (PositionHelper.Nowhere)
+/// 
+/// SCALING:
+/// Scales to match tile size (g.TileScale * 1.1f) for proper fit.
+/// 
+/// RELATED FILES:
+/// - AbilityManager.cs: Sets target during ability targeting
+/// - FocusIndicator.cs: Similar indicator for selection
+/// - TargetModeOverlay.cs: Board dimming during targeting
+/// </summary>
 public class TargetIndicator : MonoBehaviour
 {
 

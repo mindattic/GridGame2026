@@ -1,26 +1,64 @@
-﻿// Waveform strand with sine + Perlin jitter, halo, alpha control, rev bursts,
-// halo desync, and sparks that travel along the line and despawn at the end.
-// All random values use RNG instead of UnityEngine.Random.
+﻿// --- File: Assets/Scripts/Instances/SynergyLine/SynergyLineStrand.cs ---
 
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// SYNERGYLINESTRAND - Single animated strand of a synergy line.
+/// 
+/// PURPOSE:
+/// Renders one waveform strand with sine wave motion, Perlin noise
+/// jitter, halo glow, and traveling spark effects.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// [Anchor A] ≈≈≈✦≈≈≈≈≈✦≈≈≈ [Anchor B]
+///            ↑ sine wave with sparks
+/// ```
+/// 
+/// FEATURES:
+/// - Sine wave motion with configurable frequency
+/// - Perlin noise jitter for organic feel
+/// - Halo glow with pulse animation
+/// - Rev bursts (random amplitude spikes)
+/// - Traveling sparks along the strand
+/// - Prewarm for instant visual feedback
+/// 
+/// CONFIGURATION:
+/// - coreAlpha: Main line transparency
+/// - halo*: Glow effect parameters
+/// - rev*: Burst animation parameters
+/// - frequency: Wave oscillation speed
+/// - noiseAmplitude: Perlin noise strength
+/// 
+/// RELATED FILES:
+/// - SynergyLineInstance.cs: Parent multi-strand line
+/// - SynergyStrandFactory.cs: Creates strand GameObjects
+/// - SynergyLineManager.cs: Manages all synergy lines
+/// </summary>
 [RequireComponent(typeof(LineRenderer))]
 public class SynergyLineStrand : MonoBehaviour
 {
-    // Core alpha used when tinting the main line
+    #region Core Settings
+
     [SerializeField] private float coreAlpha = 0.55f;
 
-    // Halo base behavior and randomization
+    #endregion
+
+    #region Halo Settings
+
     [SerializeField] private bool haloRandomize = true;
     [SerializeField] private Vector2 haloWidthScaleRange = new Vector2(2.2f, 3.1f);
     [SerializeField] private Vector2 haloAlphaRange = new Vector2(0.14f, 0.26f);
     [SerializeField] private Vector2 haloPulseAmpRange = new Vector2(0.22f, 0.36f);
     [SerializeField] private Vector2 haloPulseSpeedMultRange = new Vector2(0.75f, 1.25f);
     [SerializeField] private Vector2 haloHDRBoostRange = new Vector2(1.10f, 1.60f);
-    [SerializeField] private Vector2 haloPhaseOffsetRange = new Vector2(0.0f, 6.283185f); // 0..2*pi
+    [SerializeField] private Vector2 haloPhaseOffsetRange = new Vector2(0.0f, 6.283185f);
 
-    // Rev wiggle behavior
+    #endregion
+
+    #region Rev Burst Settings
+
     [SerializeField] private float revChancePerSecond = 0.12f;
     [SerializeField] private float revPeakMultiplier = 2.2f;
     [SerializeField] private float revAccelTime = 0.20f;
@@ -28,24 +66,39 @@ public class SynergyLineStrand : MonoBehaviour
     [SerializeField] private float revCooldownMin = 0.60f;
     [SerializeField] private float revCooldownMax = 1.60f;
 
-    // Strand prewarm
+    #endregion
+
+    #region Prewarm Settings
+
     [SerializeField] private float prewarmSeconds = 0.25f;
     [SerializeField] private int prewarmSteps = 16;
 
-    // Renderers
+    #endregion
+
+    #region Components
+
     private LineRenderer line;
     private LineRenderer glow;
 
-    // Endpoints
+    #endregion
+
+    #region Endpoints
+
     private Transform a;
     private Transform b;
 
-    // Strand parameters
+    #endregion
+
+    #region Strand Parameters
+
     private float phaseOffset;
     private float widthAbs;
     private float radiusAbs;
 
-    // Geometry and noise
+    #endregion
+
+    #region Geometry Settings
+
     [SerializeField] private float frequency = 2.2f;
     [SerializeField] private float noiseAmplitude = 0.015f;
     [SerializeField] private float noiseScale = 2.5f;
@@ -459,4 +512,6 @@ public class SynergyLineStrand : MonoBehaviour
         if (glow != null) glow.sortingLayerName = sortingLayer;
         sparkSystem.SetSorting(sortingLayer, (line != null ? line.sortingOrder : 0) + 2);
     }
+
+    #endregion
 }

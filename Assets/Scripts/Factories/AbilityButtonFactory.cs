@@ -5,17 +5,51 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for AbilityButton - replaces AbilityButtonPrefab.prefab
+    /// ABILITYBUTTONFACTORY - Creates ability button UI elements.
+    /// 
+    /// PURPOSE:
+    /// Creates buttons for casting hero abilities in the ability bar.
+    /// Each button displays an ability icon and handles click events.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌────────┐
+    /// │  ⚔️   │  ← Ability icon
+    /// │ Slash  │  ← Ability name (optional)
+    /// └────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// AbilityButton (root)
+    /// ├── RectTransform (128x128)
+    /// ├── LayoutElement
+    /// ├── Image (button background)
+    /// ├── Button (click handler)
+    /// ├── AbilityButton (behavior)
+    /// └── Label (TMP - ability name)
+    /// ```
+    /// 
+    /// CONFIGURATION:
+    /// - Default size: 128x128
+    /// - ColorTint transition for button states
+    /// - Sliced image type for scaling
+    /// 
+    /// CALLED BY:
+    /// - AbilityButtonManager.BuildAllHeroButtons()
+    /// 
+    /// RELATED FILES:
+    /// - AbilityButton.cs: Button behavior
+    /// - AbilityButtonManager.cs: Manages buttons
+    /// - AbilityManager.cs: Ability casting
     /// </summary>
     public static class AbilityButtonFactory
     {
         public static GameObject Create(Transform parent = null)
         {
-            // Root GameObject
             var root = new GameObject("AbilityButton");
             root.layer = LayerMask.NameToLayer("UI");
 
-            // RectTransform (root)
             var rootRT = root.AddComponent<RectTransform>();
             rootRT.anchorMin = Vector2.zero;
             rootRT.anchorMax = Vector2.zero;
@@ -23,10 +57,8 @@ namespace Assets.Scripts.Factories
             rootRT.sizeDelta = new Vector2(128, 128);
             rootRT.pivot = Vector2.zero;
 
-            // CanvasRenderer (required for UI rendering)
             root.AddComponent<CanvasRenderer>();
 
-            // LayoutElement
             var layoutElement = root.AddComponent<LayoutElement>();
             layoutElement.ignoreLayout = false;
             layoutElement.minWidth = -1;
@@ -37,12 +69,10 @@ namespace Assets.Scripts.Factories
             layoutElement.flexibleHeight = -1;
             layoutElement.layoutPriority = 1;
 
-            // Image (background)
             var image = root.AddComponent<Image>();
             image.color = Color.white;
             image.raycastTarget = true;
             image.maskable = true;
-            // sprite left null - assign via AbilityLibrary or at runtime
             image.type = Image.Type.Sliced;
             image.preserveAspect = false;
             image.fillCenter = true;

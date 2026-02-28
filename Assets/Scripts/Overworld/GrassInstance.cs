@@ -1,11 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// GRASSINSTANCE - Grass prop in overworld.
+/// 
+/// PURPOSE:
+/// Decorative grass sprite with idle sway animation,
+/// Y-based sorting, and interaction with hero movement.
+/// 
+/// FEATURES:
+/// - Idle sway animation (wind motion)
+/// - Y-sorting relative to hero
+/// - Trigger-based hero interaction
+/// 
+/// RELATED FILES:
+/// - TreeInstance.cs: Similar vegetation
+/// - BushInstance.cs: Similar vegetation
+/// - OverworldManager.cs: Overworld scene
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class GrassInstance : MonoBehaviour
 {
     [Header("Sorting")]
-    [Tooltip("Match hero's sorting layer and go behind when hero is below, in front when above.")]
+    [Tooltip("Match hero's sorting layer and sort by Y position.")]
     public bool followHeroSorting = true;
 
     [Header("Idle Sway")]
@@ -18,13 +35,12 @@ public class GrassInstance : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Collider2D trigger;
 
-    // Cache hero and its SpriteRenderer once for all grass
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
     private Coroutine flapRoutineRef;
     private Coroutine idleSwayRoutineRef;
-    private int heroInsideCount; // track nested overlaps
+    private int heroInsideCount;
     private float swayPhase;
     private bool isVisible;
 
@@ -33,16 +49,12 @@ public class GrassInstance : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         trigger = GetComponent<Collider2D>();
 
-        // Prefer trigger behavior for pass-through
         if (trigger != null && !trigger.isTrigger)
             trigger.isTrigger = true;
 
-        // Ensure we start at rest angle
         SetLocalEulerX(foldAngleX);
-
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
-
-        transform.position.SetZ(0f); // ensure on Z=0 plane
+        transform.position.SetZ(0f);
 
         isVisible = spriteRenderer != null && spriteRenderer.isVisible;
 

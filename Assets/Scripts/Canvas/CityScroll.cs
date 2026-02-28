@@ -3,6 +3,31 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// CITYSCROLL - Scrolling city background effect.
+/// 
+/// PURPOSE:
+/// Creates an infinitely scrolling horizontal background by
+/// animating the UV offset of a RawImage texture.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// [City Background] ←← scrolling left ←←
+/// ```
+/// 
+/// CONFIGURATION:
+/// - rawImage: The RawImage component with tiled texture
+/// - scrollFocus: Speed of horizontal scrolling
+/// 
+/// UV WRAPPING:
+/// - Scrolls UVs leftward continuously
+/// - Wraps at -1 to create seamless loop
+/// - Requires tileable texture
+/// 
+/// RELATED FILES:
+/// - ScrollingImage.cs: Similar scrolling effect
+/// - ScrollingRawImage.cs: Alternative implementation
+/// </summary>
 public class CityScroll : MonoBehaviour
 {
     public RawImage rawImage; // SelectProfile the RawImage in the inspector

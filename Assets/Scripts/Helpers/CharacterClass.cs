@@ -2,8 +2,33 @@
 
 namespace Assets.Helpers
 {
-    // Converted from static class of string constants to an enum.
-    // Values match the previous string names exactly so ToString() yields the same keys.
+    /// <summary>
+    /// CHARACTERCLASS - Actor type identifiers.
+    /// 
+    /// PURPOSE:
+    /// Enum identifying all playable heroes and enemy types in the game.
+    /// Used for actor data lookup, sprite loading, and save/load.
+    /// 
+    /// CATEGORIES:
+    /// - Heroes: Paladin, Alchemist, ChromaNinja, etc.
+    /// - Enemies: Slime00-03, Wolf00-03, CeramicKnight00-06, etc.
+    /// - None: Default/invalid value
+    /// 
+    /// NAMING CONVENTION:
+    /// - Base name: Character archetype (Slime, Wolf, etc.)
+    /// - Suffix number: Variant (00 = basic, higher = stronger)
+    /// 
+    /// USAGE:
+    /// ```csharp
+    /// var data = ActorLibrary.Get(CharacterClass.Paladin);
+    /// var sprite = SpriteLibrary.GetPortrait(CharacterClass.Slime00);
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - ActorLibrary.cs: Maps to ActorData
+    /// - SpriteLibrary.cs: Maps to sprites
+    /// - ActorData.cs: Character stats/abilities
+    /// </summary>
     public enum CharacterClass
     {
         None = 0,

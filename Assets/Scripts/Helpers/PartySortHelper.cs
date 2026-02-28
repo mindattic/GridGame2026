@@ -1,6 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// PARTYSORTHELPER - Party sprite sorting utility.
+/// 
+/// PURPOSE:
+/// Provides Y-based sorting utilities specifically for party
+/// members (hero and followers) in the overworld.
+/// 
+/// SORTING PRINCIPLE:
+/// ```
+/// North (higher Y) = Lower sort order (behind)
+/// South (lower Y) = Higher sort order (in front)
+/// ```
+/// 
+/// KEY METHODS:
+/// - ComputeOrderFromY(y, scale): Calculate sort order
+/// - GetHeroSortingLayerId(): Get hero's layer ID
+/// - ApplyActorYSort(sr): Apply Y-sorting to actor
+/// 
+/// CACHING:
+/// Caches party member references for performance,
+/// refreshing periodically (refreshInterval).
+/// 
+/// RELATED FILES:
+/// - YSortUtility.cs: General Y-sorting
+/// - OverworldHero.cs: Uses for party sorting
+/// - TreeInstance.cs, etc.: Use for prop sorting
+/// </summary>
 public static class PartySortHelper
 {
     private static OverworldHero hero;
@@ -9,17 +36,16 @@ public static class PartySortHelper
     private static float nextRefresh;
     private const float refreshInterval = 0.5f;
 
-    // Global scale used to map world Y to sorting order. Higher = more separation between rows.
+    /// <summary>Scale factor for sorting order calculation.</summary>
     public static int GlobalScale = 1000;
 
-    // Compute a sorting order from a world-space Y. North (higher Y) => lower order; South => higher order.
+    /// <summary>Compute sorting order from world Y position.</summary>
     public static int ComputeOrderFromY(float y, int scale)
     {
-        // Negative so higher Y gets smaller order
         return Mathf.RoundToInt(-y * Mathf.Max(1, scale));
     }
 
-    // Get hero's sorting layer ID if available
+    /// <summary>Get hero's sorting layer ID if available.</summary>
     public static int GetHeroSortingLayerId()
     {
         var hero = Object.FindFirstObjectByType<OverworldHero>();
@@ -27,7 +53,7 @@ public static class PartySortHelper
         return sr != null ? sr.sortingLayerID : 0;
     }
 
-    // Apply Y-sorting to an actor (hero/follower) each frame.
+    /// <summary>Apply Y-sorting to an actor sprite.</summary>
     public static void ApplyActorYSort(SpriteRenderer sr, int scale, int? forceLayerId = null)
     {
         if (sr == null) return;

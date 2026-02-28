@@ -1,6 +1,28 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// BUSHINSTANCE - Bush prop in overworld.
+/// 
+/// PURPOSE:
+/// Decorative bush sprite with rustle animation when hero
+/// passes through, plus idle sway and Y-based sorting.
+/// 
+/// FEATURES:
+/// - Rustle effect (squash + shake) on hero collision
+/// - Idle sway animation when not colliding
+/// - Y-sorting relative to hero
+/// 
+/// RUSTLE ANIMATION:
+/// ```
+/// [Hero enters] → Squash down → Shake → Return to rest
+/// ```
+/// 
+/// RELATED FILES:
+/// - TreeInstance.cs: Similar vegetation
+/// - GrassInstance.cs: Similar vegetation
+/// - OverworldManager.cs: Overworld scene
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class BushInstance : MonoBehaviour
 {
@@ -10,43 +32,28 @@ public class BushInstance : MonoBehaviour
     [Range(0.01f, 0.5f)] public float squashOutTime = 0.12f;
 
     [Header("Shake")]
-    [Tooltip("Horizontal shake amplitude in world units.")]
     [Range(0.0f, 0.5f)] public float shakeAmplitude = 0.02f;
-    [Tooltip("How many back-and-forth cycles during the rustle.")]
     [Range(1, 12)] public int shakeCycles = 3;
+    [Range(0.0f, 1.0f)] public float crossYProximity = 0.25f;
 
-    [Tooltip("How much vertical distance around the bush pivot still counts as a pass-through.")]
-    [Range(0.0f, 1.0f)] public float crossYProximity = 0.25f; // fraction of bush height
-
-
-
-    [Header("Idle Sway (Grass-style)")]
-    [Tooltip("Enable gentle sway when there is no collision with the hero.")]
+    [Header("Idle Sway")]
     public bool enableIdleSway = true;
-    [Tooltip("Rest X-rotation when plant is normal (degrees, negative tilts toward camera).")]
-    [Range(-80f, -5f)] public float foldAngleX = -45f; // normal state
-    [Tooltip("Sway amplitude in degrees around the rest angle.")]
+    [Range(-80f, -5f)] public float foldAngleX = -45f;
     [Range(0f, 45f)] public float swayAmplitude = 10f;
-    [Tooltip("Seconds per full sway cycle (higher = slower sway).")]
     [Range(0.2f, 10f)] public float swayPeriod = 3.5f;
-    [Tooltip("Randomize starting sway phase per instance.")]
     public bool randomizeSwayPhase = true;
 
-
-
     [Header("Sorting")]
-    [Tooltip("Match hero's sorting layer and go behind when hero is below, in front when above.")]
+    [Tooltip("Match hero's sorting layer and sort by Y position.")]
     public bool followHeroSorting = true;
 
     private SpriteRenderer spriteRenderer;
 
-    // Cache hero and its SpriteRenderer once for all bushes
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
     private bool isVisible;
-
-    private bool? heroWasBelow; // null until first sample
+    private bool? heroWasBelow;
     private Coroutine rustleRoutineRef;
 
     // Idle sway state

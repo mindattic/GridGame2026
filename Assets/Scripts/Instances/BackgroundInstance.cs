@@ -1,5 +1,36 @@
 using UnityEngine;
 
+/// <summary>
+/// BACKGROUNDINSTANCE - Animated background sprite.
+/// 
+/// PURPOSE:
+/// Manages a background sprite that scales to fill the screen
+/// and gently sways using sine wave movement.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Background fills screen and slowly drifts:
+///    ↔ horizontal sway
+///    ↕ vertical sway
+/// ```
+/// 
+/// INITIALIZATION:
+/// - Randomizes sprite on start
+/// - Calculates scale to fill screen with padding
+/// - Sets up sine wave movement parameters
+/// 
+/// MOVEMENT:
+/// Uses dual sine waves (X and Y) with different speeds
+/// for organic, non-repetitive drift effect.
+/// 
+/// CONFIGURATION:
+/// - amplitude: Range of movement (based on padding)
+/// - speed: Oscillation frequency
+/// 
+/// RELATED FILES:
+/// - SpriteLibrary.cs: Background sprites
+/// - GameManager.cs: Scene setup
+/// </summary>
 public class BackgroundInstance : MonoBehaviour
 {
     // Fields

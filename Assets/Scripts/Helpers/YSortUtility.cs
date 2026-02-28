@@ -1,16 +1,43 @@
 using UnityEngine;
 
+/// <summary>
+/// YSORTUTILITY - Y-axis sprite sorting utility.
+/// 
+/// PURPOSE:
+/// Computes and applies sorting order for sprites based on their
+/// Y position, enabling proper depth sorting in 2D/2.5D games.
+/// 
+/// SORTING PRINCIPLE:
+/// ```
+/// Lower Y = Closer to camera = Higher sort order
+/// Higher Y = Further from camera = Lower sort order
+/// ```
+/// 
+/// METHODS:
+/// - Apply(sr): Sort from transform pivot Y
+/// - ApplyFromBottom(sr): Sort from sprite bottom bounds
+/// 
+/// USE CASES:
+/// - Characters: Use Apply() (pivot at feet)
+/// - Props: Use ApplyFromBottom() (base of sprite)
+/// 
+/// RELATED FILES:
+/// - TreeInstance.cs, RockInstance.cs: Use for props
+/// - OverworldHero.cs: Uses for character sorting
+/// - PartySortHelper.cs: Provides layer ID
+/// </summary>
 public static class YSortUtility
 {
-    // Larger scale = bigger gaps between rows, keeps ordering stable
+    /// <summary>Scale factor for stable ordering between rows.</summary>
     public static int GlobalScale = 1000;
 
+    /// <summary>Computes sorting order from Y position.</summary>
     public static int ComputeOrderFromY(float y)
     {
         return Mathf.RoundToInt(-y * Mathf.Max(1, GlobalScale));
     }
 
-    // Use transform pivot Y (good for characters whose pivot is at the feet)
+    /// <summary>Applies sorting from transform pivot Y (good for characters).</summary>
     public static void Apply(SpriteRenderer sr)
     {
         if (sr == null) return;
@@ -22,7 +49,7 @@ public static class YSortUtility
             sr.sortingLayerID = heroLayerId;
     }
 
-    // Use the bottom of the sprite bounds (good for props whose base is visually at the bottom of the sprite)
+    /// <summary>Applies sorting from sprite bottom bounds (good for props).</summary>
     public static void ApplyFromBottom(SpriteRenderer sr)
     {
         if (sr == null) return;

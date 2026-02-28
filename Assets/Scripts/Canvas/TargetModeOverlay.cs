@@ -5,8 +5,41 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Full-board overlay for targeting modes using a SpriteRenderer under the Board.
-/// Always stays active; visibility is controlled by SpriteRenderer color alpha only.
+/// TARGETMODEOVERLAY - Board darkening overlay for targeting modes.
+/// 
+/// PURPOSE:
+/// Displays a semi-transparent overlay over the board when entering
+/// ability targeting mode, providing visual focus on targets.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Normal Mode:        Targeting Mode:
+/// [Board visible]     [Board darkened]
+///                          ↓
+///                     [Targets highlighted]
+/// ```
+/// 
+/// VISIBILITY CONTROL:
+/// - Always active (uses alpha for visibility)
+/// - Fades in when targeting mode starts
+/// - Fades out when targeting ends
+/// 
+/// CONFIGURATION:
+/// - minAlpha: Fully transparent (0)
+/// - maxAlpha: Visible overlay alpha (0.33)
+/// - duration: Fade time in seconds
+/// - overlayColor: RGB color (default black)
+/// 
+/// PENDING MODE:
+/// If mode change occurs while disabled, queues the change
+/// and applies it when re-enabled.
+/// 
+/// RELATED FILES:
+/// - AbilityManager.cs: Triggers targeting mode
+/// - InputManager.cs: InputMode changes
+/// - TileManager.cs: Tile highlighting
+/// 
+/// ACCESS: g.TargetModeOverlay
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class TargetModeOverlay : MonoBehaviour

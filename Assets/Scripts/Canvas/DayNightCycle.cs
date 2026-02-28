@@ -2,42 +2,61 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-// Add this to a full-screen Screen Space - Overlay Image to tint the scene over time.
-// Drives a 4-phase day/night cycle aligned to real clock time:
-// Night (12am-6am) -> Morning (6am-12pm) -> Day/Afternoon (12pm-6pm) -> Evening/Dusk (6pm-12am)
 namespace Assets.Scripts.Canvas
 {
+    /// <summary>
+    /// DAYNIGHTCYCLE - Visual day/night cycle effect.
+    /// 
+    /// PURPOSE:
+    /// Applies a 4-phase day/night color cycle to the screen,
+    /// tinting visuals based on time of day.
+    /// 
+    /// PHASES:
+    /// ```
+    /// Night (12am-6am) → Morning (6am-12pm) → Day (12pm-6pm) → Evening (6pm-12am)
+    ///   [Deep Blue]        [Warm Dawn]       [Bright White]    [Reddish Dusk]
+    /// ```
+    /// 
+    /// APPLY MODES:
+    /// - OverlayImage: Full-screen color overlay
+    /// - PerSpriteMultiply: Multiply color onto sprites
+    /// - Both: Combined effect
+    /// 
+    /// CONFIGURATION:
+    /// - cycleSeconds: Full cycle duration
+    /// - *Fraction: Duration of each phase
+    /// - *Color: Base tint for each phase
+    /// 
+    /// RELATED FILES:
+    /// - OverworldManager.cs: Overworld scene
+    /// </summary>
     public class DayNightCycle : MonoBehaviour
     {
         public enum DayPhase { Morning = 0, Day = 1, Evening = 2, Night = 3 }
         public enum ApplyMode { OverlayImage, PerSpriteMultiply, Both }
 
         [Header("Target")]
-        [Tooltip("Full-screen Image to tint the scene in OverlayImage/Both modes. If null, will use Image on this GameObject.")]
+        [Tooltip("Full-screen Image to tint the scene in OverlayImage/Both modes.")]
         public Image overlayImage;
-        [Tooltip("How to apply the effect: as an overlay image, multiply onto sprites, or both.")]
+        [Tooltip("How to apply the effect.")]
         public ApplyMode applyMode = ApplyMode.PerSpriteMultiply;
 
         [Header("Cycle")]
-        [Tooltip("Total seconds for a full cycle through Night -> Morning -> Day -> Evening.")]
+        [Tooltip("Total seconds for a full cycle.")]
         [Range(1f, 300f)] public float cycleSeconds = 1024f;
         [Tooltip("Automatically start playing on enable.")]
         public bool playOnEnable = true;
         [Tooltip("Loop the cycle.")]
         public bool loop = true;
-        [Tooltip("Use unscaled time (ignores Time.timeScale).")]
+        [Tooltip("Use unscaled time.")]
         public bool useUnscaledTime = true;
-        [Tooltip("Initial time offset into the cycle (seconds). Useful to start at a particular phase.")]
+        [Tooltip("Initial time offset into the cycle (seconds).")]
         [Range(0f, 300f)] public float startOffsetSeconds = 0f;
 
-        [Header("Phase Fractions (normalized at runtime)")]
-        [Tooltip("Portion of the cycle spent in Morning before transitioning to Day. Note: The visual order is Night->Morning->Day->Evening.")]
+        [Header("Phase Fractions")]
         [Range(0f, 1f)] public float morningFraction = 0.25f;
-        [Tooltip("Portion of the cycle spent in Day (Afternoon) before transitioning to Evening.")]
         [Range(0f, 1f)] public float dayFraction = 0.25f;
-        [Tooltip("Portion of the cycle spent in Evening (Dusk) before transitioning to Night.")]
         [Range(0f, 1f)] public float eveningFraction = 0.25f;
-        [Tooltip("Portion of the cycle spent in Night before transitioning back to Morning.")]
         [Range(0f, 1f)] public float nightFraction = 0.25f;
 
         [Header("Base Phase Colors")]

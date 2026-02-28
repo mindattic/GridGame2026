@@ -1,6 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// SCROLLINGIMAGE - Animated scrolling texture effect.
+/// 
+/// PURPOSE:
+/// Creates a continuously scrolling texture effect on UI Image
+/// or RawImage components for parallax backgrounds and effects.
+/// 
+/// SUPPORTED COMPONENTS:
+/// - RawImage: Scrolls UV rect directly
+/// - Image: Scrolls texture offset via material property
+/// 
+/// CONFIGURATION:
+/// - scrollSpeed: UV units per second (X, Y)
+/// - useUnscaledTime: Ignore Time.timeScale
+/// - textureProperty: Material property to offset ("_MainTex")
+/// 
+/// MATERIAL HANDLING:
+/// For Image components, creates a runtime material instance
+/// to avoid modifying shared materials. Cleans up on destroy.
+/// 
+/// RELATED FILES:
+/// - ScrollingRawImage.cs: Alternative with direction changes
+/// - CityScroll.cs: Simpler horizontal scroll
+/// </summary>
 public class ScrollingImage : MonoBehaviour
 {
     [Header("Scroll")]

@@ -1,8 +1,27 @@
 using UnityEngine;
 
 /// <summary>
-/// Helper to vary grass seed & optional wind per instance.
-/// Keeps the soil/grass sprite locked to the ground plane so it does not drift with camera movement.
+/// SOILINSTANCE - Ground/grass material variation.
+/// 
+/// PURPOSE:
+/// Adds visual variety to soil/grass sprites by assigning
+/// per-instance shader properties like seed values and wind jitter.
+/// 
+/// FEATURES:
+/// - Auto-seeding: Deterministic variety based on position
+/// - Wind jitter: Subtle time scale variation per instance
+/// - Ground lock: Keeps sprite on XY plane to prevent drift
+/// 
+/// SHADER INTEGRATION:
+/// Sets _Seed property for procedural variation.
+/// Requires grass/soil shader with seed support.
+/// 
+/// EDITOR SUPPORT:
+/// [ExecuteAlways] for real-time preview in scene view.
+/// 
+/// RELATED FILES:
+/// - GrassInstance.cs: Similar vegetation
+/// - OverworldManager.cs: Overworld scene
 /// </summary>
 [ExecuteAlways]
 [DisallowMultipleComponent]

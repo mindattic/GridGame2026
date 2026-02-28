@@ -4,6 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// DOTTEDLINEINSTANCE - Individual dotted line segment.
+/// 
+/// PURPOSE:
+/// Represents a single segment of a dotted line on the board,
+/// used for movement paths or visual connections.
+/// 
+/// SEGMENT TYPES:
+/// Various segment shapes (horizontal, vertical, corners, etc.)
+/// defined by DottedLineSegment enum.
+/// 
+/// CONNECTIVITY:
+/// Tracks connected grid locations for path building:
+/// - top: Location above
+/// - right: Location to right
+/// - bottom: Location below
+/// - left: Location to left
+/// 
+/// PROPERTIES:
+/// - location: Grid position of this segment
+/// - segment: Type of segment (shape)
+/// - connectedLocations: Adjacent connected positions
+/// 
+/// RELATED FILES:
+/// - DottedLineManager.cs: Manages all lines
+/// - DottedLineFactory.cs: Creates line GameObjects
+/// - StageDottedLine.cs: Stage configuration
+/// </summary>
 public class DottedLineInstance : MonoBehaviour
 {
     //Fields

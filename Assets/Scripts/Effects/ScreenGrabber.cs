@@ -4,19 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Captures the current frame into a Texture2D. Call from a coroutine.
-/// Optionally hides UI overlay during capture.
+/// SCREENGRABBER - Captures screen to texture.
+/// 
+/// PURPOSE:
+/// Captures the current rendered frame into a Texture2D.
+/// Used for screenshot features, transitions, etc.
+/// 
+/// USAGE:
+/// ```csharp
+/// yield return grabber.CaptureToTexture(tex => {
+///     // Use tex...
+///     Destroy(tex); // Cleanup when done
+/// });
+/// ```
+/// 
+/// OPTIONS:
+/// - hideFadeOverlayDuringCapture: Temporarily hide fade overlay
+/// 
+/// NOTE:
+/// Caller should Destroy() the texture when done.
+/// 
+/// RELATED FILES:
+/// - ScreenShatter.cs: Uses captured texture for shatter effect
 /// </summary>
 public class ScreenGrabber : MonoBehaviour
 {
-    // Default to false so we capture exactly what the player currently sees.
     public bool hideFadeOverlayDuringCapture = false;
 
-    /// <summary>
-    /// Captures the current frame to a Texture2D and invokes the callback with it.
-    /// Uses ScreenCapture.CaptureScreenshotAsTexture for robust, final-frame capture in URP/Built-in.
-    /// Caller should Destroy() the texture when done.
-    /// </summary>
+    /// <summary>Captures current frame and invokes callback with texture.</summary>
     public IEnumerator CaptureToTexture(Action<Texture2D> onDone)
     {
         Image faded = null;
@@ -35,7 +50,6 @@ public class ScreenGrabber : MonoBehaviour
             }
         }
 
-        // Wait for the frame to finish, then capture the final composited screen
         yield return new WaitForEndOfFrame();
 
         Texture2D tex = ScreenCapture.CaptureScreenshotAsTexture();

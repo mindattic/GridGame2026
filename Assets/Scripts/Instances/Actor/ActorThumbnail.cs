@@ -4,6 +4,38 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
 
+/// <summary>
+/// ACTORTHUMBNAIL - Animated portrait display for actors.
+/// 
+/// PURPOSE:
+/// Controls the main sprite display for an actor with subtle
+/// pan and wobble animation for visual interest.
+/// 
+/// ANIMATION EFFECTS:
+/// - Pan: Slow drift across sprite based on Perlin noise
+/// - Wobble: Small oscillating movement for life-like feel
+/// - Pause: Periodic pauses in animation cycle
+/// 
+/// SHADER INTEGRATION:
+/// Uses _MainTexOffset shader property to pan the texture
+/// UV coordinates without moving the sprite.
+/// 
+/// CONFIGURATION:
+/// - range: Maximum UV pan range
+/// - panFocus: Pan animation speed
+/// - wobbleAmplitudeFactorX/Y: Wobble intensity
+/// - pauseDuration: How long to pause
+/// - pauseRampDuration: Ease in/out of pauses
+/// 
+/// THUMBNAIL SETTINGS:
+/// Uses ThumbnailSettings from ActorData to control
+/// initial offset and scale for portrait cropping.
+/// 
+/// RELATED FILES:
+/// - ActorRenderers.cs: Owns thumbnail reference
+/// - ThumbnailSettings.cs: Cropping configuration
+/// - ActorData.cs: Contains ThumbnailSettings
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
 {

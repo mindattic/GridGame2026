@@ -6,17 +6,45 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for Tooltip - replaces TooltipPrefab.prefab
-    /// Hierarchy:
-    /// - Tooltip (root)
-    ///   - Background (Image - tiled background)
-    ///     - Label (TextMeshProUGUI)
+    /// TOOLTIPFACTORY - Creates tooltip popup GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates hoverable tooltip popups that display contextual
+    /// information when the player hovers over UI elements.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────┐
+    /// │ Tooltip text here...    │
+    /// └─────────────────────────┘
+    ///            ↑
+    ///     [Hovered Element]
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// Tooltip (root)
+    /// ├── CanvasGroup (for fading)
+    /// ├── TooltipInstance (behavior)
+    /// └── Background (Image - tiled)
+    ///     └── Label (TMP)
+    /// ```
+    /// 
+    /// FEATURES:
+    /// - Optional fade in/out
+    /// - Optional typewriter effect
+    /// - Optional pointer following
+    /// - Auto-destroy after delay
+    /// - Configurable padding
+    /// 
+    /// RELATED FILES:
+    /// - TooltipInstance.cs: Tooltip behavior
+    /// - TooltipManager.cs: Manages tooltips
     /// </summary>
     public static class TooltipFactory
     {
         public static GameObject Create(Transform parent = null)
         {
-            // === ROOT: Tooltip ===
             var root = new GameObject("Tooltip");
             root.layer = LayerMask.NameToLayer("UI");
 
@@ -27,7 +55,6 @@ namespace Assets.Scripts.Factories
             rootRT.sizeDelta = Vector2.zero;
             rootRT.pivot = new Vector2(0.5f, 0.5f);
 
-            // CanvasGroup (for fade-out)
             var canvasGroup = root.AddComponent<CanvasGroup>();
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
@@ -35,7 +62,6 @@ namespace Assets.Scripts.Factories
 
             root.AddComponent<CanvasRenderer>();
 
-            // TooltipInstance (custom component)
             var tooltipInstance = root.AddComponent<TooltipInstance>();
             tooltipInstance.useFade = false;
             tooltipInstance.useTypewriter = false;
@@ -45,7 +71,6 @@ namespace Assets.Scripts.Factories
             tooltipInstance.horizontalPadding = 12f;
             tooltipInstance.verticalPadding = 12f;
 
-            // === CHILD: Background ===
             var background = new GameObject("Background");
             background.layer = LayerMask.NameToLayer("UI");
 

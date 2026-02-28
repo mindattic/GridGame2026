@@ -1,5 +1,34 @@
 using UnityEngine;
 
+/// <summary>
+/// MAPICON - Hovering/bobbing map marker effect.
+/// 
+/// PURPOSE:
+/// Creates a gentle hovering animation for map icons and markers,
+/// supporting both UI (RectTransform) and world-space transforms.
+/// 
+/// MODES:
+/// - Static: Icon remains at base position
+/// - Hover: Icon bobs up and down continuously
+/// 
+/// ANIMATION:
+/// ```
+///    ↑ amplitude
+///    ○  ← icon bobs
+///    ↓
+/// ```
+/// Uses sine wave for smooth oscillation.
+/// 
+/// CONFIGURATION:
+/// - amplitude: Vertical movement range (pixels/units)
+/// - speed: Oscillation frequency (cycles per second)
+/// - phaseOffset: Starting phase (radians)
+/// - useUnscaledTime: Ignore Time.timeScale
+/// 
+/// RELATED FILES:
+/// - WorldMapInstance.cs: Map display
+/// - StageButtonInstance.cs: Stage markers
+/// </summary>
 [DisallowMultipleComponent]
 public class MapIcon : MonoBehaviour
 {

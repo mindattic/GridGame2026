@@ -3,6 +3,33 @@ using UnityEngine.UI;
 using Assets.Scripts.Utilities;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// SCROLLINGRAWIMAGE - Animated scrolling with random direction changes.
+/// 
+/// PURPOSE:
+/// Creates a continuously scrolling texture effect with periodic
+/// random direction changes for organic-feeling parallax backgrounds.
+/// 
+/// BEHAVIOR:
+/// - Scrolls UV rect continuously based on scrollFocus
+/// - Periodically changes scroll direction randomly
+/// - Optional lerp transition for smooth direction changes
+/// 
+/// CONFIGURATION:
+/// - scrollFocus: Current scroll velocity (UV units/sec)
+/// - scrollFocusMin/Max: Range for random direction
+/// - minSecondsBetweenChanges: Minimum time before direction change
+/// - maxSecondsBetweenChanges: Maximum time before direction change
+/// - focusLerpSpeed: Transition speed between directions
+/// - useLerpTransition: Smooth vs snap direction changes
+/// 
+/// INITIALIZATION:
+/// Seeds UV position randomly on start for variety.
+/// 
+/// RELATED FILES:
+/// - ScrollingImage.cs: Simpler continuous scroll
+/// - GameReady.cs: Initialization barrier
+/// </summary>
 public class ScrollingRawImage : MonoBehaviour
 {
     public Vector2 scrollFocus = new Vector2(0f, 0f);

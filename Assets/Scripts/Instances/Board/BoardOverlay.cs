@@ -3,7 +3,34 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Handles overlay-in and overlay-out of the BoardOverlay using a SpriteRenderer.
+/// BOARDOVERLAY - Semi-transparent overlay for board dimming.
+/// 
+/// PURPOSE:
+/// Provides a fade-able overlay sprite that dims the board during
+/// special sequences like ability targeting or cutscenes.
+/// 
+/// VISUAL EFFECT:
+/// ```
+/// Normal:            With Overlay:
+/// [Board visible]    [Board dimmed]
+///                    ████████████
+/// ```
+/// 
+/// OPERATIONS:
+/// - Show(): Instantly display overlay at max alpha
+/// - Hide(): Instantly hide overlay (alpha = 0)
+/// - FadeInRoutine(): Smooth fade to visible
+/// - FadeOutRoutine(): Smooth fade to transparent
+/// 
+/// CONFIGURATION:
+/// - fadeDuration: Time for fade transitions
+/// - minAlpha: Fully transparent value
+/// - maxAlpha: Maximum opacity value
+/// - overlayColor: Tint color for overlay
+/// 
+/// RELATED FILES:
+/// - BoardManager.cs: Uses for board dimming
+/// - TargetModeOverlay.cs: Similar targeting overlay
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class BoardOverlay : MonoBehaviour

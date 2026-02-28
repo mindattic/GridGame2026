@@ -2,6 +2,38 @@ using Assets.Helpers;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ROSTERSLIDEINSTANCE - Hero carousel slide component.
+/// 
+/// PURPOSE:
+/// Represents a single hero slide in the party roster carousel,
+/// displaying the hero sprite and handling selection.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌─────────────────┐
+/// │                 │
+/// │  [Hero Sprite]  │
+/// │                 │
+/// │       ✓         │ ← Checkmark if in party
+/// └─────────────────┘
+/// ```
+/// 
+/// COMPONENTS:
+/// - image: Hero sprite display
+/// - imageButton: Full-slide tap detection
+/// - centerButton: Center region tap for selection
+/// - checkmark: Party membership indicator
+/// 
+/// INITIALIZATION:
+/// Configured via Initialize() with character class, sprite,
+/// dimensions, click handler, and party state.
+/// 
+/// RELATED FILES:
+/// - RosterSlideFactory.cs: Creates slides
+/// - PartyManager.cs: Manages carousel
+/// - ActorLibrary.cs: Hero sprite data
+/// </summary>
 public class RosterSlideInstance : MonoBehaviour
 {
     [HideInInspector] public CharacterClass CharacterClass;

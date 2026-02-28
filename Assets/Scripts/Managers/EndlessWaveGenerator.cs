@@ -8,21 +8,50 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
+    /// <summary>
+    /// ENDLESSWAVEGENERATOR - Procedural enemy wave generation.
+    /// 
+    /// PURPOSE:
+    /// Generates enemy waves for endless/survival mode by selecting
+    /// enemies based on budget and spawning them over time.
+    /// 
+    /// WAVE SCALING:
+    /// - Budget: BaseBudget + (waveNumber - 1) × BudgetPerWave
+    /// - Enemy Level: 1 + floor((waveNumber - 1) × 0.5)
+    /// 
+    /// SPAWN PATTERN:
+    /// - Initial: MinInitialSpawns to MaxInitialSpawns enemies at wave start
+    /// - Trickle: Additional enemies spawn every TrickleEveryTurns
+    /// 
+    /// ENEMY SELECTION:
+    /// - Candidates filtered by ActorTag
+    /// - Picked based on budget cost
+    /// - Higher waves = more/stronger enemies
+    /// 
+    /// RELATED FILES:
+    /// - StageWave.cs: Wave data structure
+    /// - StageActor.cs: Enemy spawn config
+    /// - StageManager.cs: Uses generated waves
+    /// - ActorLibrary.cs: Enemy data lookup
+    /// </summary>
     public static class EndlessWaveGenerator
     {
-        // Config
-        private const int BaseBudget = 30;          // initial points
-        private const int BudgetPerWave = 12;       // growth per wave
-        private const int MinInitialSpawns = 2;     // immediate enemies at wave start
+        #region Configuration
+
+        private const int BaseBudget = 30;
+        private const int BudgetPerWave = 12;
+        private const int MinInitialSpawns = 2;
         private const int MaxInitialSpawns = 4;
-        private const int TrickleEveryTurns = 3;    // how many turns between trickle spawns
+        private const int TrickleEveryTurns = 3;
         private const int TrickleBatchMin = 1;
         private const int TrickleBatchMax = 2;
+
+        #endregion
 
         public static StageWave Generate(int waveNumber, ActorTag tags)
         {
             int budget = BaseBudget + (waveNumber - 1) * BudgetPerWave;
-            int enemyLevel = 1 + Mathf.FloorToInt((waveNumber - 1) * 0.5f); // scale slowly
+            int enemyLevel = 1 + Mathf.FloorToInt((waveNumber - 1) * 0.5f);
 
             var candidates = GetCandidatesByTags(tags);
             var picked = PickByBudget(candidates, enemyLevel, budget);

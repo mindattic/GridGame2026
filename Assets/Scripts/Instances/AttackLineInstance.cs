@@ -6,6 +6,34 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Game.Instances
 {
+    /// <summary>
+    /// ATTACKLINEINSTANCE - Visual connection line during pincer attacks.
+    /// 
+    /// PURPOSE:
+    /// Renders a glowing line connecting two heroes during a pincer attack,
+    /// showing the attack formation visually.
+    /// 
+    /// VISUAL EFFECT:
+    /// ```
+    /// [Hero A] ════════════════ [Hero B]
+    ///              ↑
+    ///        attack line (glowing)
+    /// ```
+    /// 
+    /// LINE RENDERING:
+    /// Uses LineRenderer with calculated corner points based on axis.
+    /// Width based on tile size for proper scaling.
+    /// 
+    /// ANIMATION:
+    /// - Fades in when spawned
+    /// - Fades out when attack completes
+    /// - fadeDuration controls animation speed
+    /// 
+    /// RELATED FILES:
+    /// - AttackLineFactory.cs: Creates line GameObjects
+    /// - AttackLineManager.cs: Manages all lines
+    /// - PincerAttackSequence.cs: Triggers lines
+    /// </summary>
     public class AttackLineInstance : MonoBehaviour
     {
         public Transform parent { get => gameObject.transform.parent; set => gameObject.transform.SetParent(value, true); }

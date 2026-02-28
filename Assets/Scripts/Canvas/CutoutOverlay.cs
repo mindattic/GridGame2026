@@ -2,6 +2,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.Helper;
 
+/// <summary>
+/// CUTOUTOVERLAY - Safe area cutout masking overlay.
+/// 
+/// PURPOSE:
+/// Creates UI panels that mask the screen edges to respect
+/// device safe areas (notches, rounded corners, etc.).
+/// 
+/// STRUCTURE:
+/// ```
+/// ┌──────────────────────────────┐
+/// │          [Top]               │ ← Masks top safe area
+/// ├─────┬────────────────┬───────┤
+/// │Left │   CenterPane   │ Right │ ← Side masks
+/// │Pane │   (visible)    │ Pane  │
+/// ├─────┴────────────────┴───────┤
+/// │         [Bottom]             │ ← Masks bottom safe area
+/// └──────────────────────────────┘
+/// ```
+/// 
+/// AUTO-ADAPTATION:
+/// - Monitors safe area changes
+/// - Updates on screen size/orientation change
+/// - Respects canvas scale factor
+/// 
+/// HIERARCHY:
+/// - topRoot: Top masking panel
+/// - leftPane/centerPane/rightPane: Middle row
+/// - bottomRoot: Bottom masking panel
+/// 
+/// RELATED FILES:
+/// - GameObjectHelper.cs: Reference paths
+/// - CanvasHelper.cs: Canvas access
+/// </summary>
 [DisallowMultipleComponent]
 //[ExecuteAlways]
 [RequireComponent(typeof(RectTransform))]

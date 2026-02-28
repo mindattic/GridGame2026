@@ -5,6 +5,38 @@ using Assets.Helpers;
 using System.Collections;
 using Assets.Scripts.Libraries;
 
+/// <summary>
+/// HEROEXPERIENCEPANE - Post-battle XP display for a hero.
+/// 
+/// PURPOSE:
+/// Displays a single hero's experience gain after battle,
+/// showing portrait, name, level, and animated XP bar fill.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌──────────────────────────────┐
+/// │ [Portrait]  Hero Name        │
+/// │             Level 5          │
+/// │             ████████░░ +150  │ ← XP bar animates
+/// │             LEVEL UP!        │ ← Shows on level up
+/// └──────────────────────────────┘
+/// ```
+/// 
+/// ANIMATION:
+/// - XP bar fills incrementally over time
+/// - IsFillComplete tracks animation state
+/// - LEVEL UP label appears when threshold crossed
+/// 
+/// LAYOUT:
+/// - Auto-wires components via Reset()
+/// - Uses constants for padding and sizing
+/// - Panel color indicates highlight state
+/// 
+/// RELATED FILES:
+/// - HeroExperiencePaneFactory.cs: Creates pane GameObjects
+/// - PostBattleManager.cs: Manages all panes
+/// - ExperienceTracker.cs: Provides XP data
+/// </summary>
 public class HeroExperiencePane : MonoBehaviour
 {
     public Image Panel;

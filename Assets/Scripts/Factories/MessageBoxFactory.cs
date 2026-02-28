@@ -6,13 +6,36 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for MessageBox - replaces MessageBoxPrefab.prefab
-    /// Hierarchy:
-    /// - MessageBox (root)
-    ///   - Panel
-    ///     - Prompt (TextMeshProUGUI)
-    ///     - ButtonOk (Button + Image)
-    ///       - Label (TextMeshProUGUI)
+    /// MESSAGEBOXFACTORY - Creates message box (OK dialog) GameObjects.
+    /// 
+    /// PURPOSE:
+    /// Creates modal dialog boxes with a message and OK button
+    /// for informational alerts to the player.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌────────────────────────────────┐
+    /// │                                │
+    /// │   Your progress has been       │
+    /// │   saved successfully!          │
+    /// │                                │
+    /// │         [ OK ]                 │
+    /// └────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// MessageBox (root)
+    /// ├── MessageBoxInstance (behavior)
+    /// └── Panel (centered container)
+    ///     ├── Prompt (TMP - message text)
+    ///     └── ButtonOk (Button)
+    ///         └── Label (TMP - "OK")
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - MessageBoxInstance.cs: Dialog behavior
+    /// - ConfirmationDialogFactory.cs: Yes/No variant
     /// </summary>
     public static class MessageBoxFactory
     {
@@ -29,7 +52,6 @@ namespace Assets.Scripts.Factories
 
         public static GameObject Create(Transform parent = null)
         {
-            // === ROOT: MessageBox ===
             var root = new GameObject("MessageBox");
             root.layer = LayerMask.NameToLayer("UI");
 
@@ -41,11 +63,8 @@ namespace Assets.Scripts.Factories
             rootRT.pivot = new Vector2(0.5f, 0.5f);
 
             root.AddComponent<CanvasRenderer>();
-
-            // MessageBoxInstance (custom component)
             root.AddComponent<MessageBoxInstance>();
 
-            // === PANEL ===
             var panel = CreatePanel(rootRT);
             var panelRT = panel.GetComponent<RectTransform>();
 

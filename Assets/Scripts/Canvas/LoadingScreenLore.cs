@@ -3,6 +3,29 @@ using TMPro;
 using System.Collections.Generic;
 using Assets.Helper;
 
+/// <summary>
+/// LOADINGSCREENLORE - Loading screen lore text display.
+/// 
+/// PURPOSE:
+/// Displays random lore text snippets during loading screens
+/// to provide world-building while players wait.
+/// 
+/// LORE CATEGORIES:
+/// - Core: Central world element mythology
+/// - Orthodoxy: Religious faction lore
+/// - Wilds: Forest/nature region lore
+/// - Mire: Swamp region lore
+/// - Rustlands: Industrial wasteland lore
+/// - Septach: Political/judicial faction lore
+/// 
+/// SELECTION:
+/// Randomly picks one lore entry from the collection
+/// each time the loading screen appears.
+/// 
+/// RELATED FILES:
+/// - SceneLoader.cs: Loading screen controller
+/// - GameObjectHelper.cs: UI element paths
+/// </summary>
 public class LoadingScreenLore : MonoBehaviour
 {
     // Reference to your TMP text element

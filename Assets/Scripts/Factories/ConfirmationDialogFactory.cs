@@ -5,15 +5,39 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Factories
 {
     /// <summary>
-    /// Programmatic factory for ConfirmationDialog - replaces ConfirmationDialogPrefab.prefab
-    /// Hierarchy:
-    /// - ConfirmationDialog (root)
-    ///   - Panel
-    ///     - Prompt (TextMeshProUGUI)
-    ///     - ButtonYes (Button + Image)
-    ///       - Label (TextMeshProUGUI)
-    ///     - ButtonNo (Button + Image)
-    ///       - Label (TextMeshProUGUI)
+    /// CONFIRMATIONDIALOGFACTORY - Creates confirmation (Yes/No) dialogs.
+    /// 
+    /// PURPOSE:
+    /// Creates modal dialog boxes with a message and Yes/No buttons
+    /// for player confirmations (quit, restart, etc).
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌────────────────────────────────┐
+    /// │                                │
+    /// │   Are you sure you want to     │
+    /// │   quit the game?               │
+    /// │                                │
+    /// │    [ Yes ]      [ No ]         │
+    /// └────────────────────────────────┘
+    /// ```
+    /// 
+    /// CREATED HIERARCHY:
+    /// ```
+    /// ConfirmationDialog (root)
+    /// ├── ConfirmationDialogInstance (behavior)
+    /// └── Panel (centered container)
+    ///     ├── Prompt (TMP - question text)
+    ///     ├── ButtonYes (Button)
+    ///     │   └── Label (TMP - "Yes")
+    ///     └── ButtonNo (Button)
+    ///         └── Label (TMP - "No")
+    /// ```
+    /// 
+    /// RELATED FILES:
+    /// - ConfirmationDialogInstance.cs: Dialog behavior
+    /// - MessageBoxFactory.cs: OK-only variant
+    /// - PauseMenu.cs: Uses for quit confirmation
     /// </summary>
     public static class ConfirmationDialogFactory
     {
@@ -30,7 +54,6 @@ namespace Assets.Scripts.Factories
 
         public static GameObject Create(Transform parent = null)
         {
-            // === ROOT: ConfirmationDialog ===
             var root = new GameObject("ConfirmationDialog");
             root.layer = LayerMask.NameToLayer("UI");
 
@@ -42,11 +65,8 @@ namespace Assets.Scripts.Factories
             rootRT.pivot = new Vector2(0.5f, 0.5f);
 
             root.AddComponent<CanvasRenderer>();
-
-            // ConfirmationDialogInstance (custom component)
             root.AddComponent<ConfirmationDialogInstance>();
 
-            // === PANEL ===
             var panel = CreatePanel(rootRT);
             var panelRT = panel.GetComponent<RectTransform>();
 

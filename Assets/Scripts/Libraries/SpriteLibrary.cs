@@ -177,17 +177,17 @@ namespace Assets.Scripts.Libraries
                 { "WhiteFire2", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/WhiteFire2") },
             };
 
-            sprites = new Dictionary<string, Sprite>
-            {
-                { "Coin", AssetHelper.LoadAsset<Sprite>("Textures/coin") },
-                { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
-                { "DottedLineArrow", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineArrow") },
-                { "DottedLineTurn", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineTurn") },
-                { "Footstep", AssetHelper.LoadAsset<Sprite>("Sprites/Footstep") },
-                { "Pause", AssetHelper.LoadAsset<Sprite>("Sprites/Pause") },
-                { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
-                { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
-                { "Black32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Black32x32") },
+                        sprites = new Dictionary<string, Sprite>
+                        {
+                            { "Coin", AssetHelper.LoadAsset<Sprite>("Sprites/Coin") },
+                            { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
+                            { "DottedLineArrow", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineArrow") },
+                            { "DottedLineTurn", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineTurn") },
+                            { "Footstep", AssetHelper.LoadAsset<Sprite>("Sprites/Footstep") },
+                            { "Pause", AssetHelper.LoadAsset<Sprite>("Sprites/Pause") },
+                            { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
+                            { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
+                            { "Black32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Black32x32") },
                 { "SynergySpark", AssetHelper.LoadAsset<Sprite>("Sprites/SynergySpark") },
                 { "White32x32", AssetHelper.LoadAsset<Sprite>("Sprites/White32x32") },
                 { "Transparent32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Transparent32x32") },

@@ -7,6 +7,38 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Canvas
 {
+    /// <summary>
+    /// ABILITYCASTCONFIRM - Ability cast confirmation dialog.
+    /// 
+    /// PURPOSE:
+    /// Displays a confirmation UI when the player is about to cast
+    /// an ability, showing the ability name and Cast/Cancel buttons.
+    /// 
+    /// VISUAL APPEARANCE:
+    /// ```
+    /// ┌─────────────────────────┐
+    /// │      "Cast Heal?"       │ ← Label
+    /// │                         │
+    /// │  [Cancel]    [Cast]     │ ← Buttons
+    /// └─────────────────────────┘
+    /// ```
+    /// 
+    /// VISIBILITY:
+    /// - Uses CanvasGroup alpha for fade in/out
+    /// - interactable and blocksRaycasts controlled together
+    /// - Hidden by default (alpha = 0)
+    /// 
+    /// BUTTON WIRING:
+    /// - Cancel → AbilityManager.OnCancelButtonClickedEvent()
+    /// - Cast → AbilityManager.OnCastButtonClicked()
+    /// 
+    /// RELATED FILES:
+    /// - AbilityManager.cs: Handles cast/cancel events
+    /// - AbilityButtonManager.cs: Triggers ability selection
+    /// - TargetLineManager.cs: Target selection UI
+    /// 
+    /// ACCESS: AbilityCastConfirm.instance
+    /// </summary>
     public class AbilityCastConfirm : MonoBehaviour
     {
         public static AbilityCastConfirm instance;

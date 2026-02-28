@@ -2,7 +2,43 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// Attach this to the joystick background. Assign Handle in the Inspector.
+/// <summary>
+/// VIRTUALJOYSTICK - On-screen analog joystick input.
+/// 
+/// PURPOSE:
+/// Provides touch-based analog joystick control for mobile devices.
+/// Outputs a normalized direction vector for movement input.
+/// 
+/// VISUAL APPEARANCE:
+/// ```
+/// ┌─────────────┐
+/// │      ○      │ ← Handle (draggable)
+/// │    ╱   ╲    │
+/// │   ○     ○   │ ← Background bounds
+/// │    ╲   ╱    │
+/// │      ○      │
+/// └─────────────┘
+/// ```
+/// 
+/// OUTPUT:
+/// - Direction: Vector2 from -1 to 1 for both axes
+/// - Magnitude preserved for analog speed control
+/// - Dead zone filters small movements
+/// 
+/// CONFIGURATION:
+/// - maxRadius: Pixels from center to edge (default 60)
+/// - deadZone: Normalized threshold for ignoring input (default 0.1)
+/// 
+/// USAGE:
+/// ```csharp
+/// Vector2 input = virtualJoystick.Direction;
+/// hero.Move(input * speed);
+/// ```
+/// 
+/// RELATED FILES:
+/// - OverworldHero.cs: Uses for movement input
+/// - InputManager.cs: Alternative input source
+/// </summary>
 public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField] private RectTransform handle;

@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Models
 {
-
+    /// <summary>
+    /// SLIDERSETTING - Configuration for slider-based settings.
+    /// 
+    /// PURPOSE:
+    /// Defines a numeric setting with min/max range, increment step,
+    /// and getter/setter delegates for reading/writing the value.
+    /// 
+    /// PROPERTIES:
+    /// - FriendlyName: Display label
+    /// - TooltipText: Help text
+    /// - Min/Max: Value range
+    /// - Increment: Step size
+    /// - AsInt: Round to integer
+    /// - Getter/Setter: ProfileSettings accessors
+    /// 
+    /// RELATED FILES:
+    /// - SettingsManager.cs: Uses this to create UI
+    /// - ProfileSettings.cs: Storage target
+    /// </summary>
     public class SliderSetting
     {
         public string FriendlyName { get; }
@@ -38,5 +56,4 @@ namespace Assets.Scripts.Models
             AsInt = asInt;
         }
     }
-
 }

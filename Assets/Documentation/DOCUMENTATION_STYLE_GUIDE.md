@@ -607,6 +607,32 @@ public class ProjectileSettings
 public static class Geometry
 ```
 
+### Actor Data Class
+
+```csharp
+/// <summary>
+/// ALCHEMIST - Hero character data definition.
+/// 
+/// ROLE: Backline Support
+/// ARCHETYPE: Healer / Buffer
+/// 
+/// STAT FOCUS:
+/// - Primary: Intelligence (16), Wisdom (15)
+/// - Secondary: Speed (12), Stamina (12)
+/// - Weakness: Strength (10)
+/// 
+/// PLAYSTYLE:
+/// Sustains allies through healing and cleansing while
+/// manipulating battle tempo with buffs.
+/// 
+/// RELATED FILES:
+/// - ActorLibrary.cs: Registers this data
+/// - ActorData.cs: Data structure
+/// - CharacterClass.cs: Enum definition
+/// </summary>
+public static class Alchemist
+```
+
 ---
 
 ## Quick Reference Checklist
@@ -624,11 +650,18 @@ When documenting a new file:
 - [ ] Use `#region` for classes > 100 lines
 - [ ] Add one-line summaries to public methods
 
+### Actor Data Files (Data/Actor/*.cs)
+
+- [ ] Add ROLE (Frontline/Backline, Tank/Support/DPS)
+- [ ] Add ARCHETYPE (class fantasy)
+- [ ] Add STAT FOCUS (Primary, Secondary, Weakness)
+- [ ] Add PLAYSTYLE (1-2 sentence description)
+
 ---
 
 ## Version History
 
 | Date | Author | Changes |
 |------|--------|---------|
-| 2025-01 | AI Assistant | Initial documentation pass (~300 files) |
+| 2025-01 | AI Assistant | Initial documentation pass (~320 files) |
 
