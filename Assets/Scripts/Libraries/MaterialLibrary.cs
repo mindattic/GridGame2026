@@ -43,18 +43,32 @@ namespace Assets.Scripts.Libraries
             }
         }
 
+        /// <summary>Forces reload of materials on next access.</summary>
+        public static void Reset()
+        {
+            isLoaded = false;
+            materials = null;
+        }
+
         private static void Load()
         {
             if (isLoaded) return;
 
-            // Create SpritesDefault programmatically (replicates Unity's Sprites-Default)
-            var spritesDefault = new Material(Shader.Find("Sprites/Default"));
-            spritesDefault.name = "SpritesDefault";
+            // Create Sprites-Default material using the correct shader
+            // This matches what Unity uses for default SpriteRenderers
+            var spritesDefaultShader = Shader.Find("Sprites/Default");
+            var spritesDefault = new Material(spritesDefaultShader);
+            spritesDefault.name = "Sprites-Default"; // Match the exact name Unity uses
+
+            // Create Sprite-Unlit-Default material for URP
+            var spriteUnlitShader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
+            var spriteUnlitDefault = new Material(spriteUnlitShader);
+            spriteUnlitDefault.name = "Sprite-Unlit-Default"; // Match the exact name
 
             materials = new Dictionary<string, Material>
             {
                 { "SpritesDefault", spritesDefault },
-                { "SpriteUnlitDefault", new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default")) },
+                { "SpriteUnlitDefault", spriteUnlitDefault },
                 { "EnemyParallax", AssetHelper.LoadAsset<Material>("Materials/EnemyParallax") },
                 { "PlayerParallax", AssetHelper.LoadAsset<Material>("Materials/PlayerParallax") },
                 { "RadialFill", AssetHelper.LoadAsset<Material>("Materials/RadialFill") },

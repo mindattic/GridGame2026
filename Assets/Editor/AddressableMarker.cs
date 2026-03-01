@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
 /// Editor tool to mark assets as Addressable programmatically.
@@ -10,6 +11,28 @@ using System.Collections.Generic;
 /// </summary>
 public class AddressableMarker : Editor
 {
+    [MenuItem("Tools/Create SpriteUnlitDefault Material")]
+    public static void CreateSpriteUnlitDefaultMaterial()
+    {
+        var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
+        if (shader == null)
+        {
+            Debug.LogError("Could not find Sprite-Unlit-Default shader");
+            return;
+        }
+
+        var mat = new Material(shader);
+        mat.name = "SpriteUnlitDefault";
+
+        // Ensure directory exists
+        if (!Directory.Exists("Assets/Materials"))
+            Directory.CreateDirectory("Assets/Materials");
+
+        AssetDatabase.CreateAsset(mat, "Assets/Materials/SpriteUnlitDefault.mat");
+        AssetDatabase.SaveAssets();
+        Debug.Log("Created SpriteUnlitDefault.mat at Assets/Materials/");
+    }
+
     [MenuItem("Tools/Mark Actor Sprites as Addressable")]
     public static void MarkActorSpritesAsAddressable()
     {
@@ -64,6 +87,7 @@ public class AddressableMarker : Editor
 
             // Materials
             { "Assets/Materials/RadialFill.mat", "Materials/RadialFill" },
+            { "Assets/Materials/SpriteUnlitDefault.mat", "Materials/SpriteUnlitDefault" },
         };
 
         int successCount = 0;
