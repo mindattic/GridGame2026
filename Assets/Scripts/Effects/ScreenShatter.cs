@@ -2,7 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Effects
+{
 /// <summary>
 /// SCREENSHATTER - Full-screen shatter transition effect.
 /// 
@@ -76,10 +98,10 @@ public class ScreenShatter : MonoBehaviour
     public IEnumerator Play(System.Action onFinished = null)
     {
         // Optionally disable overlay canvases (they render above everything else)
-        var disabledCanvases = new List<Canvas>();
+        var disabledCanvases = new List<UnityEngine.Canvas>();
         if (disableOverlayCanvases)
         {
-            var canvases = FindObjectsOfType<Canvas>(true);
+            var canvases = FindObjectsOfType<UnityEngine.Canvas>(true);
             for (int i = 0; i < canvases.Length; i++)
             {
                 if (canvases[i].renderMode == RenderMode.ScreenSpaceOverlay && canvases[i].enabled)
@@ -207,4 +229,6 @@ public class ScreenShatter : MonoBehaviour
         Debug.Break();
         #endif
     }
+}
+
 }

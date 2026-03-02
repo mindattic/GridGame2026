@@ -1,20 +1,36 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.GUI;
-using Assets.Scripts.Models;
-using Game.Manager;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Models;
+using Scripts.Managers;
 using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
-using scene = Assets.Helpers.SceneHelper;
-using Assets.Scripts.Managers;
-using Assets.Scripts.Sequences;
-using Assets.Scripts.Libraries;
-using Assets.Scripts.Factories;
+using g = Scripts.Helpers.GameHelper;
+using scene = Scripts.Helpers.SceneHelper;
+using Scripts.Managers;
+using Scripts.Sequences;
+using Scripts.Libraries;
+using Scripts.Factories;
 using System.Collections.Generic;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Managers
+{
 /// <summary>
 /// STAGEMANAGER - Controls stage loading, wave spawning, and victory conditions.
 /// 
@@ -157,7 +173,7 @@ public class StageManager : MonoBehaviour
     private void LoadEndlessWave(int waveIndex)
     {
         int nextWaveNumber = waveIndex + 1;
-        var wave = Assets.Scripts.Managers.EndlessWaveGenerator.Generate(nextWaveNumber, GameModeHelper.Tags);
+        var wave = Scripts.Managers.EndlessWaveGenerator.Generate(nextWaveNumber, GameModeHelper.Tags);
 
         // Track current index
         currentWave = waveIndex;
@@ -455,5 +471,7 @@ public class StageManager : MonoBehaviour
     }
 
     #endregion
+
+}
 
 }

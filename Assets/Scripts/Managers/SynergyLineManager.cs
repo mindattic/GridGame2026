@@ -1,12 +1,31 @@
-﻿// Assets/Scripts/Managers/SynergyLineManager.cs
+// Assets/Scripts/Managers/SynergyLineManager.cs
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using g = Assets.Helpers.GameHelper;
-using Assets.Scripts.Factories;
-using Assets.Helpers;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-
+namespace Scripts.Managers
+{
 /// <summary>
 /// SYNERGYLINEMANAGER - Manages synergy connection lines between allies.
 /// 
@@ -136,4 +155,6 @@ public class SynergyLineManager : MonoBehaviour
 
         return $"SynergyLine_{first}{second}";
     }
+}
+
 }

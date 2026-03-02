@@ -1,22 +1,37 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.Factories;
-using Assets.Scripts.GUI;
-using Assets.Scripts.Libraries;
-using Assets.Scripts.Managers;
-using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
-using Game.Behaviors;
-using Game.Instances;
-using Game.Manager;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Factories;
+using Scripts.Canvas;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Utilities;
+using Scripts.Managers;
+using Scripts.Instances;
+using Scripts.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Scripts.Canvas; // added for TimelineBarInstance
+using Scripts.Canvas; // added for TimelineBarInstance
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
 
+namespace Scripts.Managers
+{
 public class GameManager : Singleton<GameManager>
 {
     // Device
@@ -48,7 +63,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
-    [HideInInspector] public Canvas canvas3D;
+    [HideInInspector] public UnityEngine.Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
         [HideInInspector] public AbilityCastConfirm abilityCastConfirm;
@@ -181,7 +196,7 @@ public class GameManager : Singleton<GameManager>
                     }
                     else
                     {
-                        Debug.LogWarning("PauseMenu not found under Canvas. Make sure it exists in the scene.");
+                        Debug.LogWarning("PauseMenu not found under UnityEngine.Canvas. Make sure it exists in the scene.");
                     }
                 }
 
@@ -225,7 +240,7 @@ public class GameManager : Singleton<GameManager>
 
         ShakeIntensity.Initialize(tileSize);
 
-        // Canvas
+        // UnityEngine.Canvas
         card = GameObjectHelper.Game.Card.Instance;
         canvas3D = GameObjectHelper.Game.Canvas3D;
         portraitsRect = GameObjectHelper.Game.Portraits;
@@ -365,4 +380,6 @@ public class GameManager : Singleton<GameManager>
 
         GameReady.Confirm();
     }
+}
+
 }

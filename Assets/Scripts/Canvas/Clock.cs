@@ -1,8 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Assets.Helpers;
+using Scripts.Helpers;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// CLOCK - Real-time clock display UI component.
 /// 
@@ -45,7 +66,7 @@ public sealed class Clock : MonoBehaviour
     // Components
     private TMP_Text clockText;
     private RectTransform rect;
-    private Canvas rootCanvas;
+    private UnityEngine.Canvas rootCanvas;
     private CanvasScaler canvasScaler;
     private LayoutElement layoutElement;
 
@@ -64,7 +85,7 @@ public sealed class Clock : MonoBehaviour
         clockText = GetComponent<TextMeshProUGUI>();
   
 
-        rootCanvas = GetComponentInParent<Canvas>();
+        rootCanvas = GetComponentInParent<UnityEngine.Canvas>();
         canvasScaler = rootCanvas != null ? rootCanvas.GetComponent<CanvasScaler>() : null;
 
         clockText.raycastTarget = false;
@@ -250,5 +271,7 @@ public sealed class Clock : MonoBehaviour
         return 0;
     }
 
+
+}
 
 }

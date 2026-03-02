@@ -1,8 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Scripts.Utilities;
-using g = Assets.Helpers.GameHelper;
+using Scripts.Utilities;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// SCROLLINGRAWIMAGE - Animated scrolling with random direction changes.
 /// 
@@ -128,5 +149,7 @@ public class ScrollingRawImage : MonoBehaviour
         float wait = RNG.Range(minSecondsBetweenChanges, maxSecondsBetweenChanges);
         nextChangeAt = Time.unscaledTime + Mathf.Max(0f, wait);
     }
+
+}
 
 }

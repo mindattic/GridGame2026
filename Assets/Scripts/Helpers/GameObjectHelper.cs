@@ -2,8 +2,28 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Helper
+namespace Scripts.Helpers
 {
     /// <summary>
     /// GAMEOBJECTHELPER - GameObject path constants for scene lookups.
@@ -96,7 +116,7 @@ namespace Assets.Helper
         /// <summary>Game scene paths.</summary>
         public static class Game
         {
-            public static Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<Canvas>();
+            public static UnityEngine.Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<UnityEngine.Canvas>();
 
 
 
@@ -290,7 +310,7 @@ namespace Assets.Helper
                 public const string Bottom = Root + "/Bottom";
 
                 public static RectTransform RootRect => GameObject.Find(Root).GetComponent<RectTransform>();
-                public static global::CutoutOverlay Instance => GameObject.Find(Root).GetComponent<global::CutoutOverlay>();
+                public static Scripts.Canvas.CutoutOverlay Instance => GameObject.Find(Root).GetComponent<Scripts.Canvas.CutoutOverlay>();
                 public static RectTransform TopRoot => GameObject.Find(Top).GetComponent<RectTransform>();
                 public static RectTransform LeftPaneRect => GameObject.Find(LeftPane).GetComponent<RectTransform>();
                 public static RectTransform CenterPaneRect => GameObject.Find(CenterPane).GetComponent<RectTransform>();

@@ -1,12 +1,32 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.Libraries;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Libraries;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameHelper;
-using scene = Assets.Helpers.SceneHelper;
+using g = Scripts.Helpers.GameHelper;
+using scene = Scripts.Helpers.SceneHelper;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Managers
+{
 /// <summary>
 /// PAUSEMENU - Handles game pause state and pause menu UI.
 /// 
@@ -216,4 +236,5 @@ public class PauseMenu : MonoBehaviour
     }
 
     #endregion
+}
 }

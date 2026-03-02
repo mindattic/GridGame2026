@@ -1,8 +1,29 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
 namespace Assets.EditorTools
 {
@@ -32,7 +53,7 @@ namespace Assets.EditorTools
 		/// </summary>
 		private void OnEnable()
 		{
-			Assets.Helpers.CombatLogHelper.OnWrite += HandleWrite;
+			CombatLogHelper.OnWrite += HandleWrite;
 			EditorApplication.playModeStateChanged += HandlePlayModeChanged;
 		}
 
@@ -41,7 +62,7 @@ namespace Assets.EditorTools
 		/// </summary>
 		private void OnDisable()
 		{
-			Assets.Helpers.CombatLogHelper.OnWrite -= HandleWrite;
+			CombatLogHelper.OnWrite -= HandleWrite;
 			EditorApplication.playModeStateChanged -= HandlePlayModeChanged;
 		}
 
@@ -68,7 +89,7 @@ namespace Assets.EditorTools
 		private void OnGUI()
 		{
 			DrawToolbar();
-			DrawLogArea(Assets.Helpers.CombatLogHelper.Messages);
+			DrawLogArea(CombatLogHelper.Messages);
 		}
 
 		/// <summary>
@@ -80,7 +101,7 @@ namespace Assets.EditorTools
 			{
 				if (GUILayout.Button("Clear", EditorStyles.toolbarButton))
 				{
-					Assets.Helpers.CombatLogHelper.Clear();
+					CombatLogHelper.Clear();
 				}
 
 				if (GUILayout.Button("Copy", EditorStyles.toolbarButton))
@@ -100,7 +121,7 @@ namespace Assets.EditorTools
 		/// </summary>
 		private void CopyAllToClipboard()
 		{
-			var messages = Assets.Helpers.CombatLogHelper.Messages;
+			var messages = CombatLogHelper.Messages;
 			if (messages == null || messages.Count == 0)
 			{
 				EditorGUIUtility.systemCopyBuffer = string.Empty;

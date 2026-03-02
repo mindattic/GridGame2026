@@ -1,8 +1,29 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Assets.Helper;
+using Scripts.Helpers;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// LOADINGSCREENLORE - Loading screen lore text display.
 /// 
@@ -40,53 +61,53 @@ public class LoadingScreenLore : MonoBehaviour
         loreText = GameObjectHelper.LoadingScreen.LoreText;
 
         // Core
-        lore.Add("The Core burns without ceasing, a light eternal yet unseen. — Pilgrim’s Verse");
-        lore.Add("Ashes return to the Core, as all things must. — Ashbinder Proverb");
-        lore.Add("The heat of the Core can forge or destroy. — Blacksmith’s Canticle");
-        lore.Add("Some say the Core remembers every breath taken above it. — Archivist of the Septach");
-        lore.Add("Children born near the Core are said to never know cold. — Hearthmother’s Tale");
+        lore.Add("The Core burns without ceasing, a light eternal yet unseen. ï¿½ Pilgrimï¿½s Verse");
+        lore.Add("Ashes return to the Core, as all things must. ï¿½ Ashbinder Proverb");
+        lore.Add("The heat of the Core can forge or destroy. ï¿½ Blacksmithï¿½s Canticle");
+        lore.Add("Some say the Core remembers every breath taken above it. ï¿½ Archivist of the Septach");
+        lore.Add("Children born near the Core are said to never know cold. ï¿½ Hearthmotherï¿½s Tale");
 
         // Orthodoxy
-        lore.Add("The Orthodoxy enforces silence in its halls. — Edict of Stillness");
-        lore.Add("Their scriptures are etched in steel, not parchment. — Chronicler’s Margin");
-        lore.Add("A man is measured by obedience, not mercy, in the Orthodoxy. — Catechism of Iron");
-        lore.Add("The Core is a tool to them, not a mystery. — Dissident Whisper");
-        lore.Add("The Orthodoxy burns books more often than candles. — Scribe’s Lament");
+        lore.Add("The Orthodoxy enforces silence in its halls. ï¿½ Edict of Stillness");
+        lore.Add("Their scriptures are etched in steel, not parchment. ï¿½ Chroniclerï¿½s Margin");
+        lore.Add("A man is measured by obedience, not mercy, in the Orthodoxy. ï¿½ Catechism of Iron");
+        lore.Add("The Core is a tool to them, not a mystery. ï¿½ Dissident Whisper");
+        lore.Add("The Orthodoxy burns books more often than candles. ï¿½ Scribeï¿½s Lament");
 
         // Wilds
-        lore.Add("The Wilds never forget a trespass. — Hunter’s Warning");
-        lore.Add("Roots crack stone, given time. — Druid’s Chant");
-        lore.Add("Hunters whisper to the trees and sometimes the trees answer. — Forester’s Account");
-        lore.Add("Moss hides bones of the careless. — Warning Stone");
-        lore.Add("Those who stay too long walk on all fours. — Campfire Tale");
+        lore.Add("The Wilds never forget a trespass. ï¿½ Hunterï¿½s Warning");
+        lore.Add("Roots crack stone, given time. ï¿½ Druidï¿½s Chant");
+        lore.Add("Hunters whisper to the trees and sometimes the trees answer. ï¿½ Foresterï¿½s Account");
+        lore.Add("Moss hides bones of the careless. ï¿½ Warning Stone");
+        lore.Add("Those who stay too long walk on all fours. ï¿½ Campfire Tale");
 
         // Mire
-        lore.Add("The Mire swallows all sound beneath its fog. — Ferryman’s Note");
-        lore.Add("Lanterns here drown faster than men. — Mirekeeper’s Journal");
-        lore.Add("The air of the Mire is half-breath, half-poison. — Apothecary’s Ledger");
-        lore.Add("Some say the Mire has no bottom, only descent. — Lost Traveler’s Carving");
-        lore.Add("Few return from the Mire unchanged in mind or body. — Septach Report");
+        lore.Add("The Mire swallows all sound beneath its fog. ï¿½ Ferrymanï¿½s Note");
+        lore.Add("Lanterns here drown faster than men. ï¿½ Mirekeeperï¿½s Journal");
+        lore.Add("The air of the Mire is half-breath, half-poison. ï¿½ Apothecaryï¿½s Ledger");
+        lore.Add("Some say the Mire has no bottom, only descent. ï¿½ Lost Travelerï¿½s Carving");
+        lore.Add("Few return from the Mire unchanged in mind or body. ï¿½ Septach Report");
 
         // Rustlands
-        lore.Add("Iron here bleeds as if alive. — Scrapper’s Saying");
-        lore.Add("Machines lie like carcasses, half buried in dust. — Scavenger Hymn");
-        lore.Add("Children here play with gears instead of stones. — Rustlands Nursery Rhyme");
-        lore.Add("Scrappers say the machines dream when storms roll in. — Gear-Priest Fragment");
-        lore.Add("Water runs red through the Rustlands. — Wanderer’s Account");
+        lore.Add("Iron here bleeds as if alive. ï¿½ Scrapperï¿½s Saying");
+        lore.Add("Machines lie like carcasses, half buried in dust. ï¿½ Scavenger Hymn");
+        lore.Add("Children here play with gears instead of stones. ï¿½ Rustlands Nursery Rhyme");
+        lore.Add("Scrappers say the machines dream when storms roll in. ï¿½ Gear-Priest Fragment");
+        lore.Add("Water runs red through the Rustlands. ï¿½ Wandererï¿½s Account");
 
         // Septach
-        lore.Add("The Septach builds spires with no end. — Observer’s Note");
-        lore.Add("Truth is divided into seven parts, they say. — Septach Axiom");
-        lore.Add("Every word spoken in the Septach has a double meaning. — Spy’s Report");
-        lore.Add("Seven judges weigh each soul upon entry. — Tribunal Record");
-        lore.Add("The Septach archives hold maps of dreams. — Librarian’s Confession");
+        lore.Add("The Septach builds spires with no end. ï¿½ Observerï¿½s Note");
+        lore.Add("Truth is divided into seven parts, they say. ï¿½ Septach Axiom");
+        lore.Add("Every word spoken in the Septach has a double meaning. ï¿½ Spyï¿½s Report");
+        lore.Add("Seven judges weigh each soul upon entry. ï¿½ Tribunal Record");
+        lore.Add("The Septach archives hold maps of dreams. ï¿½ Librarianï¿½s Confession");
 
         // Drifting Aether
-        lore.Add("The Aether shifts with no anchor. — Sailor’s Guide");
-        lore.Add("Travelers tie stones to their ankles to stay grounded. — Aetherfarer’s Trick");
-        lore.Add("Some speak of storms that rain glass from the sky. — Glasswalker Account");
-        lore.Add("Time bends in the Drifting Aether, loops upon itself. — Chronomancer’s Diary");
-        lore.Add("The Aether swallows names, leaving wanderers nameless. — Nameless Song");
+        lore.Add("The Aether shifts with no anchor. ï¿½ Sailorï¿½s Guide");
+        lore.Add("Travelers tie stones to their ankles to stay grounded. ï¿½ Aetherfarerï¿½s Trick");
+        lore.Add("Some speak of storms that rain glass from the sky. ï¿½ Glasswalker Account");
+        lore.Add("Time bends in the Drifting Aether, loops upon itself. ï¿½ Chronomancerï¿½s Diary");
+        lore.Add("The Aether swallows names, leaving wanderers nameless. ï¿½ Nameless Song");
     }
 
     private void Start()
@@ -105,4 +126,6 @@ public class LoadingScreenLore : MonoBehaviour
         int index = RNG.Int(0, lore.Count - 1);
         loreText.text = lore[index];
     }
+}
+
 }

@@ -1,9 +1,28 @@
-using Assets.Scripts.Factories;
-using Game.Models;
+using Scripts.Factories;
+using Scripts.Models;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helpers;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Instances.Board
+{
 /// <summary>
 /// BOARDINSTANCE - The tactical grid where combat takes place.
 /// 
@@ -224,7 +243,7 @@ public class BoardInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns true if the given world position is within the board’s world-space bounds.
+    /// Returns true if the given world position is within the boardï¿½s world-space bounds.
     /// </summary>
     public bool IsInsideBoard(Vector3 worldPosition)
     {
@@ -235,5 +254,7 @@ public class BoardInstance : MonoBehaviour
     }
 
     #endregion
+
+}
 
 }

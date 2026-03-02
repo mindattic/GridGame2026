@@ -1,5 +1,5 @@
-﻿using Assets.Data.Actor;
-using Assets.Helpers;
+using Scripts.Data.Actor;
+using Scripts.Helpers;
 using Sentry.Protocol;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,26 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Rendering.VirtualTexturing;
+using Scripts.Canvas;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Scripts.Libraries
+namespace Scripts.Libraries
 {
     /// <summary>
     /// ACTORLIBRARY - Central registry of all character data.

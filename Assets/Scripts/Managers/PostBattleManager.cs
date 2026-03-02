@@ -3,13 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Helpers;
-using Assets.Scripts.Factories;
-using Assets.Scripts.Managers;
-using scene = Assets.Helpers.SceneHelper;
-using Assets.Helper;
-using Assets.Scripts.Libraries;
+using Scripts.Helpers;
+using Scripts.Factories;
+using Scripts.Managers;
+using scene = Scripts.Helpers.SceneHelper;
+using Scripts.Helpers;
+using Scripts.Libraries;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Managers
+{
 /// <summary>
 /// POSTBATTLEMANAGER - Manages the post-battle results screen.
 /// 
@@ -255,4 +274,6 @@ public class PostBattleManager : MonoBehaviour
     }
 
     #endregion
+}
+
 }

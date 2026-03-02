@@ -1,17 +1,35 @@
-using Assets.Helpers;
-using Assets.Scripts.Libraries;
-using Assets.Scripts.Managers;
-using Assets.Scripts.Models;
-using Assets.Scripts.Sequences;
+using Scripts.Helpers;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Sequences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
-using scene = Assets.Helpers.SceneHelper;
+using g = Scripts.Helpers.GameHelper;
+using scene = Scripts.Helpers.SceneHelper;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Managers
+{
 public class DebugManager : MonoBehaviour
 {
     //DEBUG: No gaurentee these values exist, define and use inside tests...
@@ -799,5 +817,7 @@ public class DebugManager : MonoBehaviour
         var vfx = VisualEffectLibrary.VisualEffects["TechSword"];
         SpawnVisualEffect(vfx);
     }
+
+}
 
 }

@@ -1,11 +1,32 @@
-using Assets.Scripts.Models;
+using Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helpers;
+using g = Scripts.Helpers.GameHelper;
+using VisualEffectAsset = Scripts.Models.VisualEffectAsset;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Instances
+{
 /// <summary>
 /// VISUALEFFECTINSTANCE - Runtime VFX behavior.
 /// 
@@ -432,4 +453,6 @@ public class VisualEffectInstance : MonoBehaviour
 
         Recurse(transform);
     }
+}
+
 }

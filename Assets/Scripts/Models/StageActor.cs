@@ -1,13 +1,33 @@
-﻿using Assets.Scripts.Models;
+using Scripts.Models;
 using System;
 using UnityEngine;
-using static Game.Instances.Actor.ActorLayer;
+using static Scripts.Instances.Actor.ActorLayer;
 using UnityEngine.UIElements;
 using static UnityEditor.FilePathAttribute;
 using UnityEngine.TextCore.Text;
-using Assets.Scripts.Libraries;
-using Assets.Helpers;
+using Scripts.Libraries;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Models
+{
 /// <summary>
 /// STAGEACTOR - Enemy spawn configuration for a stage.
 /// 
@@ -79,4 +99,6 @@ public class StageActor
             Stats = null;
         }
     }
+}
+
 }

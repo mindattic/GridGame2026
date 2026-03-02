@@ -1,10 +1,31 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using Assets.Helper;
+using Scripts.Helpers;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameHelper;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// VICTORYANNOUNCEMENT - "Victory!" banner display.
 /// 
@@ -64,7 +85,7 @@ public class VictoryAnnouncement : MonoBehaviour
     private void Start()
     {
         // Compute an off-screen start position (above the viewport) based on canvas height.
-        var canvas = GetComponentInParent<Canvas>();
+        var canvas = GetComponentInParent<UnityEngine.Canvas>();
         var canvasRect = canvas != null ? canvas.GetComponent<RectTransform>() : null;
         float height = canvasRect != null ? canvasRect.rect.height : Screen.height;
         float y = (height * 0.5f) + (rect != null ? rect.rect.height : 0f) + 50f; // a bit past the top
@@ -156,4 +177,6 @@ public class VictoryAnnouncement : MonoBehaviour
             front.color = c;
         }
     }
+}
+
 }

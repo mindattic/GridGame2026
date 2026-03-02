@@ -1,4 +1,4 @@
-﻿// File: Assets/Editor/EightWayAnimatorGenerator_CustomOrder_SpriteRenderer.cs
+// File: Assets/Editor/EightWayAnimatorGenerator_CustomOrder_SpriteRenderer.cs
 #if UNITY_EDITOR
 using System;
 using System.IO;
@@ -7,6 +7,27 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
 /// <summary>
 /// Builds 16 clips and a two-blend-tree Animator for an 8-way character using SpriteRenderer.

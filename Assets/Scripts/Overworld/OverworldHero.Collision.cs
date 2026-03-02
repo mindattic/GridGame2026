@@ -1,5 +1,27 @@
 using UnityEngine;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Overworld
+{
 public partial class OverworldHero
 {
     // Predict a final stop position using a simple cast-based approach; fixed step for determinism
@@ -200,7 +222,7 @@ public partial class OverworldHero
             float moved = (nextPos - curPos).magnitude;
             if (moved <= 1e-6f)
             {
-                // Blocked – stop here
+                // Blocked ï¿½ stop here
                 break;
             }
 
@@ -218,4 +240,6 @@ public partial class OverworldHero
             OnHeroMoved?.Invoke(curPos);
         }
     }
+}
+
 }

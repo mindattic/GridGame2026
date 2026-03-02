@@ -2,7 +2,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Hub
+{
 /// <summary>
 /// Applies a parallax/scroll effect to a panel based on device tilt.
 /// Editor emulation: hold LeftControl and move the mouse (screen position maps to tilt -1..1).
@@ -152,4 +174,6 @@ public class TiltParallax : MonoBehaviour
         return Vector2.zero;
 #endif
     }
+}
+
 }

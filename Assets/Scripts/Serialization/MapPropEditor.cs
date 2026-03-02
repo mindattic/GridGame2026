@@ -5,9 +5,29 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Utilities;
 #endif
 
-namespace Assets.Scripts.Serialization
+namespace Scripts.Serialization
 {
     // Implement on components to emit/apply per-instance override data.
     public interface IPropSerializable

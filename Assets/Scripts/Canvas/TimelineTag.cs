@@ -1,13 +1,31 @@
-using Assets.Scripts.Models;
+using Scripts.Models;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using g = Assets.Helpers.GameHelper;
+using g = Scripts.Helpers.GameHelper;
 using TMPro;
-using Assets.Scripts.Libraries;
+using Scripts.Libraries;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Scripts.Canvas
+namespace Scripts.Canvas
 {
     /// <summary>
     /// TIMELINETAGMODE - State machine for timeline tag behavior.

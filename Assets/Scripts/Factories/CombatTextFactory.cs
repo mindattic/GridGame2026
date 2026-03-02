@@ -1,9 +1,28 @@
-using Assets.Scripts.Libraries;
+using Scripts.Libraries;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Scripts.Factories
+namespace Scripts.Factories
 {
     /// <summary>
     /// COMBATTEXTFACTORY - Creates floating combat text (damage numbers).
@@ -31,7 +50,7 @@ namespace Assets.Scripts.Factories
     /// CONFIGURATION:
     /// - Font: FontLibrary.Fonts["Attic"]
     /// - Scale: 0.1x (world-space sizing)
-    /// - SortingOrder: 1000 (renders above everything)
+    /// - SortingLayer: "DamageText" (renders above actors and VFX)
     /// 
     /// ANIMATION:
     /// Uses AnimationCurve (riseCurve) to control:
@@ -89,8 +108,8 @@ namespace Assets.Scripts.Factories
                 meshRenderer.receiveShadows = false;
                 meshRenderer.lightProbeUsage = LightProbeUsage.Off;
                 meshRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
-                meshRenderer.sortingLayerName = "Default";
-                meshRenderer.sortingOrder = 1000; // Render above everything
+                meshRenderer.sortingLayerName = "DamageText";
+                meshRenderer.sortingOrder = 0;
             }
 
             // CombatTextInstance (animation component)

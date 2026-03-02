@@ -3,12 +3,31 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using System;
-using c = Assets.Helpers.CanvasHelper;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helper;
-using Assets.Scripts.Factories;
-using Assets.Scripts.Libraries;
+using c = Scripts.Helpers.CanvasHelper;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Helpers;
+using Scripts.Factories;
+using Scripts.Libraries;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Instances
+{
 /// <summary>
 /// KEYBOARDDIALOGINSTANCE - On-screen virtual keyboard for text input.
 /// 
@@ -342,7 +361,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         key9.GetComponent<Button>().onClick.AddListener(() => Append('9'));
         key0.GetComponent<Button>().onClick.AddListener(() => Append('0'));
 
-        //Row2: Q–P
+        //Row2: Qï¿½P
         keyQ.GetComponent<Button>().onClick.AddListener(() => Append('Q'));
         keyW.GetComponent<Button>().onClick.AddListener(() => Append('W'));
         keyE.GetComponent<Button>().onClick.AddListener(() => Append('E'));
@@ -354,7 +373,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         keyO.GetComponent<Button>().onClick.AddListener(() => Append('O'));
         keyP.GetComponent<Button>().onClick.AddListener(() => Append('P'));
 
-        //Row3: A–L
+        //Row3: Aï¿½L
         keyA.GetComponent<Button>().onClick.AddListener(() => Append('A'));
         keyS.GetComponent<Button>().onClick.AddListener(() => Append('S'));
         keyD.GetComponent<Button>().onClick.AddListener(() => Append('D'));
@@ -365,7 +384,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         keyK.GetComponent<Button>().onClick.AddListener(() => Append('K'));
         keyL.GetComponent<Button>().onClick.AddListener(() => Append('L'));
 
-        //Row4: Z–M, 
+        //Row4: Zï¿½M, 
     
         keyZ.GetComponent<Button>().onClick.AddListener(() => Append('Z'));
         keyX.GetComponent<Button>().onClick.AddListener(() => Append('X'));
@@ -395,7 +414,7 @@ public class KeyboardDialogInstance : MonoBehaviour
 
     private void UpdateKeyLabels()
     {
-        //Row2: Q–P
+        //Row2: Qï¿½P
         var row2Letters = new char[] { 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P' };
         var row2Buttons = new RectTransform[] { keyQ, keyW, keyE, keyR, keyT, keyY, keyU, keyI, keyO, keyP };
         for (int i = 0; i < row2Buttons.Length; i++)
@@ -404,7 +423,7 @@ public class KeyboardDialogInstance : MonoBehaviour
             label.text = isCapsLockOn ? row2Letters[i].ToString() : row2Letters[i].ToString().ToLower();
         }
 
-        //Row3: A–L
+        //Row3: Aï¿½L
         var row3Letters = new char[] { 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L' };
         var row3Buttons = new RectTransform[] { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL };
         for (int i = 0; i < row3Buttons.Length; i++)
@@ -413,7 +432,7 @@ public class KeyboardDialogInstance : MonoBehaviour
             label.text = isCapsLockOn ? row3Letters[i].ToString() : row3Letters[i].ToString().ToLower();
         }
 
-        //Row4: Z–M
+        //Row4: Zï¿½M
         var row4Letters = new char[] { 'Z', 'X', 'C', 'V', 'B', 'N', 'M' };
         var row4Buttons = new RectTransform[] { keyZ, keyX, keyC, keyV, keyB, keyN, keyM };
         for (int i = 0; i < row4Buttons.Length; i++)
@@ -505,3 +524,5 @@ public static class KeyboardDialog
     }
 }
 
+
+}

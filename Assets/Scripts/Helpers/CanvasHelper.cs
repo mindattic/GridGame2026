@@ -1,12 +1,32 @@
-﻿// --- File: Assets/Scripts/Helpers/CanvasHelper.cs ---
+// --- File: Assets/Scripts/Helpers/CanvasHelper.cs ---
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Helpers
+namespace Scripts.Helpers
 {
     /// <summary>
-    /// CANVASHELPER - Cached access to the scene's UI Canvas.
+    /// CANVASHELPER - Cached access to the scene's UI UnityEngine.Canvas.
     /// 
     /// PURPOSE:
     /// Provides fast, cached access to the current scene's Canvas and
@@ -24,7 +44,7 @@ namespace Assets.Helpers
     /// 
     /// USAGE:
     /// ```csharp
-    /// // Instead of: GameObject.Find("Canvas").GetComponent<Canvas>()
+    /// // Instead of: GameObject.Find("Canvas").GetComponent<UnityEngine.Canvas>()
     /// var canvas = CanvasHelper.Canvas;
     /// var screenWidth = CanvasHelper.CanvasRect.rect.width;
     /// ```
@@ -42,7 +62,7 @@ namespace Assets.Helpers
     {
         #region Cached References
 
-        private static Canvas canvas;
+        private static UnityEngine.Canvas canvas;
         private static RectTransform canvasRect;
         private static CanvasScaler canvasScalar;
 
@@ -51,10 +71,10 @@ namespace Assets.Helpers
         #region Properties
 
         /// <summary>
-        /// Fast access to the cached Canvas.
+        /// Fast access to the cached UnityEngine.Canvas.
         /// Performs one-time lookup if cache is empty.
         /// </summary>
-        public static Canvas Canvas
+        public static UnityEngine.Canvas Canvas
         {
             get
             {
@@ -133,7 +153,7 @@ namespace Assets.Helpers
                 return;
             }
 
-            canvas = go.GetComponent<Canvas>();
+            canvas = go.GetComponent<UnityEngine.Canvas>();
             if (canvas == null)
             {
                 canvasRect = null;

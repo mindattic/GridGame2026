@@ -1,15 +1,32 @@
-﻿using Assets.Scripts.GUI;
-using Assets.Scripts.Managers;
-using Assets.Scripts.Models;
-using Game.Behaviors;
-using Game.Manager;
+using Scripts.Canvas;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Managers;
+using Scripts.Managers;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Game.Models.Profile;
-using Assets.Scripts.Canvas;
+using Scripts.Models;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Assets.Helpers
+namespace Scripts.Helpers
 {
     /// <summary>
     /// GAMEHELPER - Central access point for all game systems.
@@ -20,7 +37,7 @@ namespace Assets.Helpers
     /// 
     /// USAGE:
     /// ```csharp
-    /// using g = Assets.Helpers.GameHelper;
+    /// using g = Scripts.Helpers.GameHelper;
     /// 
     /// g.Actors.Heroes           // All hero ActorInstances
     /// g.TurnManager.NextTurn()  // Advance turn
@@ -64,7 +81,7 @@ namespace Assets.Helpers
     /// - g.Viewport: Screen viewport size
     /// 
     /// LLM CONTEXT:
-    /// Always use "using g = Assets.Helpers.GameHelper;" at top of file.
+    /// Always use "using g = Scripts.Helpers.GameHelper;" at top of file.
     /// Then access everything via g.Something. This is the standard pattern
     /// throughout the codebase for accessing any game system.
     /// </summary>
@@ -217,7 +234,7 @@ namespace Assets.Helpers
         public static Vector3 TileScale => gm != null ? gm.tileScale : Vector3.one;
 
         /// <summary>World-space canvas for 3D UI.</summary>
-        public static Canvas Canvas3D => gm != null ? gm.canvas3D : null;
+        public static UnityEngine.Canvas Canvas3D => gm != null ? gm.canvas3D : null;
 
         /// <summary>Wave announcement overlay ("Wave 1", "Wave 2", etc.).</summary>
         public static WaveAnnouncement WaveAnnouncement => gm != null ? gm.waveAnnouncement : null;
@@ -242,7 +259,7 @@ namespace Assets.Helpers
 
         /// <summary>Ability display bar UI.</summary>
         public static AbilityBar AbilityBar => gm != null ? gm.abilityBar : null;
-        public static Assets.Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
+        public static Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
 
         #endregion
 

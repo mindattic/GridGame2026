@@ -28,43 +28,43 @@ Root Object Count: 3
     Transform: pos=(0.00,1823.55,0.00), scale=(1,1,1)
     Image: sprite=null
     [PartyButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(-860.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Party"
     [ShopButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(-652.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Shop"
     [MedicalButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(-444.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Medical"
     [ResidenceButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(-236.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Residence"
     [BlacksmithButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(-28.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Blacksmith"
     [OverworldButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(180.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
         TextMeshProUGUI: "Overworld"
     [BattleButton]
-      Transform: pos=(-960.00,-80.00,0.00), scale=(1,1,1)
+      Transform: pos=(388.00,-30.00,0.00), scale=(1,1,1)
       Image: sprite=Green-Button_0
       Button: interactable=True
       [Text]
@@ -89,13 +89,14 @@ Root Object Count: 3
   [Output]
     Transform: pos=(0.00,1000.00,0.00), scale=(1,1,1)
     TextMeshProUGUI: "New Text"
+    [TMP SubMeshUI [Avenir Material + LiberationSans SDF Atlas]]
 [EventSystem]
 [HubManager]
 ```
 
 ## Summary
 
-- **Total GameObjects**: 32
+- **Total GameObjects**: 33
 - **Managers**: HubManager
 - **Cameras**: 
 - **Canvases**: Canvas

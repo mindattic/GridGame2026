@@ -1,12 +1,31 @@
-using Game.Models;
+using Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
-namespace Game.Behaviors
+namespace Scripts.Managers
 {
     /// <summary>Camera world-space corner coordinates.</summary>
     public class CameraWorldSpace
@@ -60,7 +79,7 @@ namespace Game.Behaviors
     public class CameraManager : MonoBehaviour
     {
         public RectFloat viewBounds;
-        public Game.Models.RectInt screenBounds;
+        public Scripts.Models.RectInt screenBounds;
         public CameraWorldSpace world;
         public CameraLocalSpace local;
 

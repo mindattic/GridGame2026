@@ -1,9 +1,9 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.Behaviors.Actor;
-using Assets.Scripts.Instances.Actor;
-using Assets.Scripts.Libraries;
-using Assets.Scripts.Models;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Actor;
+using Scripts.Libraries;
+using Scripts.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +11,29 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Assets.Helper.GameObjectHelper;
-using g = Assets.Helpers.GameHelper;
-using s = Assets.Helpers.SettingsHelper;
-using Assets.Scripts.Managers;
+using static Scripts.Helpers.GameObjectHelper;
+using g = Scripts.Helpers.GameHelper;
+using s = Scripts.Helpers.SettingsHelper;
+using Scripts.Managers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Instances.Actor
+{
 /// <summary>
 /// ACTORINSTANCE - Runtime character on the battlefield (hero or enemy).
 /// 
@@ -596,8 +614,8 @@ public partial class ActorInstance : MonoBehaviour
                         amount = Mathf.RoundToInt(baseXp * 1.1f); // +10% killer bonus
                     }
 
-                    Assets.Scripts.Managers.ExperienceTracker.AddParticipant(character);
-                    Assets.Scripts.Managers.ExperienceTracker.AddXP(character, amount);
+                    Scripts.Managers.ExperienceTracker.AddParticipant(character);
+                    Scripts.Managers.ExperienceTracker.AddXP(character, amount);
                 }
             }
         }
@@ -731,4 +749,6 @@ public partial class ActorInstance : MonoBehaviour
     }
 
     #endregion
+}
+
 }

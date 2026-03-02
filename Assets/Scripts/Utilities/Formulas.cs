@@ -1,8 +1,27 @@
-﻿using Assets.Scripts.Models;
-using Game.Behaviors;
+using Scripts.Models;
+using Scripts.Managers;
 using UnityEngine;
-using Assets.Helpers;
+using Scripts.Helpers;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
 
+namespace Scripts.Utilities
+{
 /// <summary>Elemental damage types for abilities and attacks.</summary>
 public enum ElementalDamageType
 {
@@ -296,4 +315,5 @@ public static class Formulas
     {
         return CritPercent(attacker.Stats);
     }
+}
 }

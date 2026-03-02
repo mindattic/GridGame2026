@@ -1,7 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Helper;
+using Scripts.Helpers;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// CUTOUTOVERLAY - Safe area cutout masking overlay.
 /// 
@@ -48,7 +69,7 @@ public sealed class CutoutOverlay : MonoBehaviour
     [SerializeField] private RectTransform bottomRoot;     // "Bottom" container with Image
 
     private RectTransform _rect;
-    private Canvas _rootCanvas;
+    private UnityEngine.Canvas _rootCanvas;
 
     private Rect _lastSafe = Rect.zero;
     private Vector2Int _lastSize = Vector2Int.zero;
@@ -63,7 +84,7 @@ public sealed class CutoutOverlay : MonoBehaviour
     {
         // Cache core components
         _rect = GetComponent<RectTransform>();
-        _rootCanvas = GetComponentInParent<Canvas>();
+        _rootCanvas = GetComponentInParent<UnityEngine.Canvas>();
 
         // Assign serialized references using helper if available
         // These paths are defined in GameObjectHelper.Game.CutoutOverlay
@@ -91,7 +112,7 @@ public sealed class CutoutOverlay : MonoBehaviour
         }
         if (_rootCanvas == null)
         {
-            _rootCanvas = GetComponentInParent<Canvas>();
+            _rootCanvas = GetComponentInParent<UnityEngine.Canvas>();
         }
 
         if (topRoot == null || leftPane == null || centerPane == null || rightPane == null || bottomRoot == null)
@@ -327,7 +348,7 @@ public sealed class CutoutOverlay : MonoBehaviour
     // ---------------------------------------------------------------------
 
     /// <summary>
-    /// Ensures the root RectTransform fills the canvas.
+    /// Ensures the root RectTransform fills the UnityEngine.Canvas.
     /// </summary>
     private void EnsureRootAnchors()
     {
@@ -413,4 +434,6 @@ public sealed class CutoutOverlay : MonoBehaviour
         if (_rootCanvas == null) return 1f;
         return _rootCanvas.scaleFactor <= 0f ? 1f : _rootCanvas.scaleFactor;
     }
+}
+
 }

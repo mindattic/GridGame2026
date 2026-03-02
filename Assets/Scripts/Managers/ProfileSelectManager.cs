@@ -1,14 +1,33 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.Factories;
-using Game.Models.Profile;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Factories;
+using Scripts.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
-using c = Assets.Helpers.CanvasHelper;
-using scene = Assets.Helpers.SceneHelper;
+using c = Scripts.Helpers.CanvasHelper;
+using scene = Scripts.Helpers.SceneHelper;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Managers
+{
 /// <summary>
 /// PROFILESELECTMANAGER - Manages the profile/save file selection screen.
 /// 
@@ -319,4 +338,6 @@ public class ProfileSelectManager : MonoBehaviour
     }
 
     #endregion
+}
+
 }

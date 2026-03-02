@@ -1,17 +1,36 @@
-using Assets.Helper;
-using Assets.Helpers;
-using Assets.Scripts.Libraries;
-using Assets.Scripts.Utilities;
+using Scripts.Helpers;
+using Scripts.Helpers;
+using Scripts.Libraries;
+using Scripts.Utilities;
 using System;
 using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Assets.Helper.GameObjectHelper;
-using c = Assets.Helpers.CanvasHelper;
-using g = Assets.Helpers.GameHelper;
+using static Scripts.Helpers.GameObjectHelper;
+using c = Scripts.Helpers.CanvasHelper;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
 
+namespace Scripts.Canvas
+{
 /// <summary>
 /// ACTORCARD - Hero detail card display.
 /// 
@@ -373,4 +392,6 @@ public class ActorCard : MonoBehaviour
     }
 
     #endregion
+}
+
 }

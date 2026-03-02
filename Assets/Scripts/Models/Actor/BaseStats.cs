@@ -1,5 +1,27 @@
-﻿using System;
+using System;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Instances.SynergyLine;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Models.Actor
+{
 /// <summary>
 /// BASESTATS - Core stat definitions shared by all actors.
 /// 
@@ -67,4 +89,5 @@ public class BaseStats
 
     /// <summary>Critical hit chance and drop rates.</summary>
     public float Luck;
+}
 }

@@ -1,11 +1,32 @@
-﻿// --- File: Assets/Scripts/Instances/SynergyLine/SynergyLineInstance.cs ---
-using Assets.Scripts.Factories;
+// --- File: Assets/Scripts/Instances/SynergyLine/SynergyLineInstance.cs ---
+using Scripts.Factories;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameHelper;
+using g = Scripts.Helpers.GameHelper;
+using Scripts.Canvas;
+using Scripts.Data.Actor;
+using Scripts.Data.Items;
+using Scripts.Data.Skills;
+using Scripts.Effects;
+using Scripts.Helpers;
+using Scripts.Hub;
+using Scripts.Instances;
+using Scripts.Instances.Actor;
+using Scripts.Instances.Board;
+using Scripts.Inventory;
+using Scripts.Libraries;
+using Scripts.Managers;
+using Scripts.Models;
+using Scripts.Models.Actor;
+using Scripts.Overworld;
+using Scripts.Sequences;
+using Scripts.Serialization;
+using Scripts.Utilities;
 
+namespace Scripts.Instances.SynergyLine
+{
 /// <summary>
 /// SYNERGYLINEINSTANCE - Animated multi-strand connection between allies.
 /// 
@@ -389,13 +410,13 @@ public class SynergyLineInstance : MonoBehaviour
         else if (bGroup != null)
             bLayer = bGroup.sortingLayerName;
 
-        bool anyBelow = string.Equals(aLayer, Assets.Helpers.SortingHelper.Layer.ActorBelow)
-                        || string.Equals(bLayer, Assets.Helpers.SortingHelper.Layer.ActorBelow);
+        bool anyBelow = string.Equals(aLayer, Scripts.Helpers.SortingHelper.Layer.ActorBelow)
+                        || string.Equals(bLayer, Scripts.Helpers.SortingHelper.Layer.ActorBelow);
 
         // If any endpoint is below, keep the line below; otherwise keep it just under ActorAbove
         layerName = anyBelow
-            ? Assets.Helpers.SortingHelper.Layer.SupportLineBelow
-            : Assets.Helpers.SortingHelper.Layer.SupportLineAbove;
+            ? Scripts.Helpers.SortingHelper.Layer.SupportLineBelow
+            : Scripts.Helpers.SortingHelper.Layer.SupportLineAbove;
 
         // Keep a small base order so per-wave offsets work but we remain inside this layer
         order = 0;
@@ -412,4 +433,6 @@ public class SynergyLineInstance : MonoBehaviour
             strands[i].SetSortingLayer(sortingLayer);
         }
     }
+}
+
 }
