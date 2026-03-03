@@ -43,6 +43,7 @@ public partial class OverworldHero
 
     // ---------------- Animation helpers (8-way blend tree) ----------------
 
+    /// <summary>Sets the animation.</summary>
     private void SetAnimation(Vector2 delta)
     {
         float speed = delta.magnitude;           // units moved this frame
@@ -55,6 +56,7 @@ public partial class OverworldHero
         ApplyAnimatorParameters(dir, speed);
     }
 
+    /// <summary>Sets the animation from input.</summary>
     private void SetAnimationFromInput(Vector2 dir, float speed)
     {
         if (dir.sqrMagnitude < 1e-6f)
@@ -69,12 +71,14 @@ public partial class OverworldHero
         ApplyAnimatorParameters(dir, speed);
     }
 
+    /// <summary>Sets the idle.</summary>
     private void SetIdle()
     {
         lastDirection = MoveDirection.Idle;
         ApplyAnimatorParameters(lastLook, 0f);
     }
 
+    /// <summary>Applies the animator parameters.</summary>
     private void ApplyAnimatorParameters(Vector2 dir, float speed)
     {
         animator.SetFloat("MoveX", dir.x);
@@ -86,6 +90,7 @@ public partial class OverworldHero
         animator.SetFloat("Speed", speedPerSecond);
     }
 
+    /// <summary>Stabilize direction for blend.</summary>
     private Vector2 StabilizeDirectionForBlend(Vector2 dir)
     {
         if (dir.sqrMagnitude < 1e-6f) return dir;
@@ -108,6 +113,7 @@ public partial class OverworldHero
         return d;
     }
 
+    /// <summary>Sets the facing.</summary>
     public void SetFacing(string facingName)
     {
         if (string.IsNullOrEmpty(facingName)) return;
@@ -132,6 +138,7 @@ public partial class OverworldHero
         ApplyAnimatorParameters(lastLook, 0f);
     }
 
+    /// <summary>Determine direction4 way.</summary>
     private static MoveDirection DetermineDirection4Way(Vector2 delta)
     {
         if (delta.sqrMagnitude < 1e-6f) return MoveDirection.Idle;

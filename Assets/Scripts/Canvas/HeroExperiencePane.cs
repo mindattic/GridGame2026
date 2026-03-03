@@ -81,6 +81,7 @@ public class HeroExperiencePane : MonoBehaviour
     private const int FILL_STEPS_PER_LEVEL = 255;          // target steps per level bar (more ticks)
     private const float FILL_STEP_DELAY = Interval.OneTick; // delay per step
 
+    /// <summary>Auto-wires child component references by name for editor convenience.</summary>
     private void Reset()
     {
         // Auto-wire on add (editor convenience)
@@ -96,6 +97,7 @@ public class HeroExperiencePane : MonoBehaviour
         MakeXPBarReadOnly();
     }
 
+    /// <summary>Resolves component references and ensures the XP bar is non-interactive.</summary>
     private void Awake()
     {
         Reset();
@@ -103,6 +105,7 @@ public class HeroExperiencePane : MonoBehaviour
         MakeXPBarReadOnly();
     }
 
+    /// <summary>Populates the pane with hero data and starts the animated XP fill if XP was gained.</summary>
     public void Build(CharacterClass characterClass, int xpGained, bool highlight)
     {
         IsFillComplete = false;
@@ -170,6 +173,7 @@ public class HeroExperiencePane : MonoBehaviour
        // StartCoroutine(DeferredLayout());
     }
 
+    /// <summary>Disables interaction, navigation, and transition on the XP bar slider.</summary>
     private void MakeXPBarReadOnly()
     {
         if (!XPBar) return;
@@ -181,12 +185,14 @@ public class HeroExperiencePane : MonoBehaviour
         XPBar.transition = Selectable.Transition.None;
     }
 
+    /// <summary>Waits one frame for parent layout sizing before applying layout.</summary>
     private IEnumerator DeferredLayout()
     {
         yield return null; // wait 1 frame for layout sizing
         //ApplyLayout();
     }
 
+    /// <summary>Positions portrait, name, level, XP bar, and level-up labels within the pane.</summary>
     private void ApplyLayout()
     {
         var rt = (RectTransform)transform;
@@ -251,6 +257,7 @@ public class HeroExperiencePane : MonoBehaviour
         }
     }
 
+    /// <summary>Incrementally fills the XP bar, triggering level-up flashes when thresholds are crossed.</summary>
     private IEnumerator FillRoutine(int level, int currentXP, int gained)
     {
         if (!XPBar)
@@ -280,6 +287,7 @@ public class HeroExperiencePane : MonoBehaviour
         IsFillComplete = true;
     }
 
+    /// <summary>Briefly flashes the "LEVEL UP" label with a pulsing yellow glow.</summary>
     private IEnumerator FlashLevelUp()
     {
         if (!LevelUpLabel) yield break;

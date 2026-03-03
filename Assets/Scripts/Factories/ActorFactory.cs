@@ -46,6 +46,7 @@ namespace Scripts.Factories
 
         #region Main Create Method
 
+        /// <summary>Creates the instance.</summary>
         public static GameObject Create(Transform parent = null)
         {
             // === ROOT ===
@@ -109,6 +110,7 @@ namespace Scripts.Factories
 
         #region Helper Methods
 
+        /// <summary>Creates the child.</summary>
         private static GameObject CreateChild(GameObject parent, string name, bool isActive = true)
         {
             var child = new GameObject(name);
@@ -118,6 +120,7 @@ namespace Scripts.Factories
             return child;
         }
 
+        /// <summary>Add sprite renderer.</summary>
         private static SpriteRenderer AddSpriteRenderer(
             GameObject go,
             Sprite sprite,
@@ -143,6 +146,7 @@ namespace Scripts.Factories
             return sr;
         }
 
+        /// <summary>Add text mesh pro.</summary>
         private static TextMeshPro AddTextMeshPro(
             GameObject go,
             string fontKey,
@@ -175,6 +179,7 @@ namespace Scripts.Factories
 
         #region Front Children
 
+        /// <summary>Creates the opaque.</summary>
         private static void CreateOpaque(GameObject parent)
         {
             var go = CreateChild(parent, "Opaque");
@@ -187,6 +192,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the quality.</summary>
         private static void CreateQuality(GameObject parent)
         {
             var go = CreateChild(parent, "Quality");
@@ -199,6 +205,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the glow.</summary>
         private static void CreateGlow(GameObject parent)
         {
             var go = CreateChild(parent, "Glow");
@@ -212,6 +219,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the parallax.</summary>
         private static void CreateParallax(GameObject parent)
         {
             var go = CreateChild(parent, "Parallax", isActive: false);
@@ -225,6 +233,7 @@ namespace Scripts.Factories
                 SpriteMaskInteraction.VisibleInsideMask);
         }
 
+        /// <summary>Creates the thumbnail.</summary>
         private static void CreateThumbnail(GameObject parent)
         {
             var go = CreateChild(parent, "Thumbnail");
@@ -245,6 +254,7 @@ namespace Scripts.Factories
             thumbnail.pauseRampDuration = 0.5f;
         }
 
+        /// <summary>Creates the gradient.</summary>
         private static void CreateGradient(GameObject parent)
         {
             var go = CreateChild(parent, "Gradient");
@@ -257,6 +267,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the frame.</summary>
         private static void CreateFrame(GameObject parent)
         {
             var go = CreateChild(parent, "Frame", isActive: false);
@@ -269,6 +280,7 @@ namespace Scripts.Factories
                 SpriteDrawMode.Simple);
         }
 
+        /// <summary>Creates the status icon.</summary>
         private static void CreateStatusIcon(GameObject parent)
         {
             var go = CreateChild(parent, "StatusIcon", isActive: false);
@@ -285,6 +297,7 @@ namespace Scripts.Factories
 
         #region Health Bar
 
+        /// <summary>Creates the health bar.</summary>
         private static void CreateHealthBar(GameObject parent)
         {
             var healthBar = CreateChild(parent, "HealthBar");
@@ -339,6 +352,7 @@ namespace Scripts.Factories
 
         #region Action Bar
 
+        /// <summary>Creates the action bar.</summary>
         private static void CreateActionBar(GameObject parent)
         {
             var actionBar = CreateChild(parent, "ActionBar", isActive: false);
@@ -393,6 +407,7 @@ namespace Scripts.Factories
 
         #region Mask & Radial
 
+        /// <summary>Creates the mask.</summary>
         private static void CreateMask(GameObject parent)
         {
             var go = CreateChild(parent, "Mask");
@@ -402,6 +417,7 @@ namespace Scripts.Factories
             mask.alphaCutoff = 0.1f;
         }
 
+        /// <summary>Creates the radial back.</summary>
         private static void CreateRadialBack(GameObject parent)
         {
             var go = CreateChild(parent, "RadialBack", isActive: false);
@@ -416,6 +432,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the radial fill.</summary>
         private static void CreateRadialFill(GameObject parent)
         {
             var go = CreateChild(parent, "RadialFill", isActive: false);
@@ -430,6 +447,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the radial text.</summary>
         private static void CreateRadialText(GameObject parent)
         {
             var go = CreateChild(parent, "RadialText", isActive: false);
@@ -444,6 +462,7 @@ namespace Scripts.Factories
 
         #region Text Elements
 
+        /// <summary>Creates the turn delay text.</summary>
         private static void CreateTurnDelayText(GameObject parent)
         {
             var go = CreateChild(parent, "TurnDelayText");
@@ -454,6 +473,7 @@ namespace Scripts.Factories
                 10, "", enabled: true);
         }
 
+        /// <summary>Creates the name tag text.</summary>
         private static void CreateNameTagText(GameObject parent)
         {
             var go = CreateChild(parent, "NameTagText");
@@ -475,6 +495,7 @@ namespace Scripts.Factories
             tmp.enabled = false;
         }
 
+        /// <summary>Creates the weapon icon.</summary>
         private static void CreateWeaponIcon(GameObject parent)
         {
             var go = CreateChild(parent, "WeaponIcon", isActive: false);
@@ -493,6 +514,7 @@ namespace Scripts.Factories
 
         #region Armor
 
+        /// <summary>Creates the armor.</summary>
         private static void CreateArmor(GameObject parent)
         {
             var armor = CreateChild(parent, "Armor", isActive: false);
@@ -538,6 +560,7 @@ namespace Scripts.Factories
 
         #region Indicators
 
+        /// <summary>Creates the active indicator.</summary>
         private static void CreateActiveIndicator(GameObject parent)
         {
             var go = CreateChild(parent, "ActiveIndicator");
@@ -550,6 +573,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the focus indicator.</summary>
         private static void CreateFocusIndicator(GameObject parent)
         {
             var go = CreateChild(parent, "FocusIndicator");
@@ -562,6 +586,7 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
+        /// <summary>Creates the target indicator.</summary>
         private static void CreateTargetIndicator(GameObject parent)
         {
             var go = CreateChild(parent, "TargetIndicator");
@@ -578,6 +603,7 @@ namespace Scripts.Factories
 
         #region Back
 
+        /// <summary>Creates the back.</summary>
         private static void CreateBack(GameObject root)
         {
             var back = CreateChild(root, "Back", isActive: false);

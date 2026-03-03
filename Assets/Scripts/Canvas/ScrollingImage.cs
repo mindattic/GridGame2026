@@ -63,6 +63,7 @@ public class ScrollingImage : MonoBehaviour
     private Material runtimeMaterial;
     private Vector2 offset;
 
+    /// <summary>Caches the RawImage or Image component and creates a runtime material if needed.</summary>
     private void Awake()
     {
         rawImage = GetComponent<RawImage>();
@@ -88,6 +89,7 @@ public class ScrollingImage : MonoBehaviour
         }
     }
 
+    /// <summary>Cleans up the instantiated runtime material to prevent memory leaks.</summary>
     private void OnDestroy()
     {
         if (runtimeMaterial != null)
@@ -100,6 +102,7 @@ public class ScrollingImage : MonoBehaviour
         }
     }
 
+    /// <summary>Advances the texture UV offset each frame based on scroll speed.</summary>
     private void Update()
     {
         float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
@@ -125,9 +128,11 @@ public class ScrollingImage : MonoBehaviour
         }
     }
 
-    // Optional helpers
+    /// <summary>Sets both X and Y scroll speed.</summary>
     public void SetScrollSpeed(Vector2 speed) => scrollSpeed = speed;
+    /// <summary>Sets the horizontal scroll speed.</summary>
     public void SetScrollX(float x) => scrollSpeed.x = x;
+    /// <summary>Sets the vertical scroll speed.</summary>
     public void SetScrollY(float y) => scrollSpeed.y = y;
 }
 }

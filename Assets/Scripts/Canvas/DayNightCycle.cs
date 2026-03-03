@@ -146,6 +146,7 @@ namespace Scripts.Canvas
 
         public bool IsPlaying => _isPlaying;
 
+        /// <summary>Resolves the overlay image and initializes phase color and fraction data.</summary>
         private void Awake()
         {
             if (overlayImage == null) overlayImage = GetComponent<Image>();
@@ -154,6 +155,7 @@ namespace Scripts.Canvas
             transform.GetComponent<RectTransform>().anchorMin = Vector2.zero;
         }
 
+        /// <summary>Discovers sprites if needed, and starts or previews the cycle.</summary>
         private void OnEnable()
         {
             if (applyMode != ApplyMode.OverlayImage)
@@ -166,6 +168,7 @@ namespace Scripts.Canvas
             else ApplyColor(EvaluateColor(CurrentTime01()));
         }
 
+        /// <summary>Stops the cycle and restores original sprite colors.</summary>
         private void OnDisable()
         {
             _isPlaying = false;
@@ -184,6 +187,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Starts the day/night cycle from the configured offset, randomizing phase colors.</summary>
         public void StartCycle()
         {
             NormalizeFractions();
@@ -195,12 +199,14 @@ namespace Scripts.Canvas
             ApplyColor(EvaluateColor(CurrentTime01()));
         }
 
+        /// <summary>Pauses the cycle, freezing at the current time.</summary>
         public void Pause()
         {
             _pausedT01 = CurrentTime01();
             _isPlaying = false;
         }
 
+        /// <summary>Resumes the cycle from the paused time position.</summary>
         public void Resume()
         {
             // Resume from paused T by shifting the start time so CurrentTime01() returns paused value at this moment
@@ -209,13 +215,14 @@ namespace Scripts.Canvas
             _isPlaying = true;
         }
 
+        /// <summary>Updates the total cycle duration and recalculates phase fractions.</summary>
         public void SetCycleSeconds(float seconds)
         {
             cycleSeconds = Mathf.Max(0.01f, seconds);
             NormalizeFractions();
         }
 
-        // Jump to a specific phase and pause the cycle
+        /// <summary>Jumps to a specific phase at the given position within it and pauses.</summary>
         public void GoToPhase(DayPhase phase, float position01WithinPhase = 0.5f)
         {
             position01WithinPhase = Mathf.Clamp01(position01WithinPhase);
@@ -239,6 +246,7 @@ namespace Scripts.Canvas
                 ApplyToSprites(c);
         }
 
+        /// <summary>Drives sprite discovery, day-wrap detection, phase color evaluation, and color application each frame.</summary>
         private void Update()
         {
             // Always update virtual time string to reflect current t
@@ -270,8 +278,10 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Time now.</summary>
         private float TimeNow() => useUnscaledTime ? Time.unscaledTime : Time.time;
 
+        /// <summary>Current time01.</summary>
         private float CurrentTime01()
         {
             if (!_isPlaying) return _pausedT01;
@@ -282,6 +292,7 @@ namespace Scripts.Canvas
             return Mathf.Clamp01(t);
         }
 
+        /// <summary>Returns the current DayPhase based on the cycle progress.</summary>
         public DayPhase GetCurrentPhase()
         {
             float total = Mathf.Max(0.01f, cycleSeconds);
@@ -294,6 +305,7 @@ namespace Scripts.Canvas
             return DayPhase.Night;
         }
 
+        /// <summary>Copies the inspector phase colors into the base color array.</summary>
         private void CacheBaseColors()
         {
             _phaseBase[(int)DayPhase.Morning] = morningColor;
@@ -302,6 +314,7 @@ namespace Scripts.Canvas
             _phaseBase[(int)DayPhase.Night] = nightColor;
         }
 
+        /// <summary>Normalizes phase fractions to sum to 1 and computes duration and accumulation arrays.</summary>
         private void NormalizeFractions()
         {
             float sum = Mathf.Max(0.0001f, morningFraction + dayFraction + eveningFraction + nightFraction);
@@ -321,6 +334,7 @@ namespace Scripts.Canvas
             _accumTimes[3] = _accumTimes[2] + _durations[3]; // should equal total
         }
 
+        /// <summary>Applies random HSV variance to each phase base color for the current day.</summary>
         private void RandomizePhaseKeys()
         {
             CacheBaseColors(); // in case user edited at runtime
@@ -330,6 +344,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Applies the variance.</summary>
         private static Color ApplyVariance(Color baseCol, float variance, bool affectAlpha)
         {
             variance = Mathf.Max(0f, variance);
@@ -352,6 +367,7 @@ namespace Scripts.Canvas
             return outCol;
         }
 
+        /// <summary>Evaluates the blended phase color at the given normalized cycle time.</summary>
         private Color EvaluateColor(float t01)
         {
             // Align t01 to a phase timeline where Night begins at 00:00.
@@ -381,6 +397,7 @@ namespace Scripts.Canvas
             return Color.LerpUnclamped(_phaseKeys[seg], _phaseKeys[next], u);
         }
 
+        /// <summary>Applies the evaluated color to the overlay image (or hides it for sprite-only mode).</summary>
         private void ApplyColor(Color c)
         {
             if (overlayImage == null) return;
@@ -394,6 +411,7 @@ namespace Scripts.Canvas
             overlayImage.color = c;
         }
 
+        /// <summary>Applies the to sprites.</summary>
         private void ApplyToSprites(Color tint)
         {
             // Convert overlay-style color to a multiplicative tint around white using alpha as intensity
@@ -411,6 +429,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Creates the multiplier.</summary>
         private static Color MakeMultiplier(Color overlayTint, float vibrance)
         {
             // Interpret overlayTint.a as intensity of the tint relative to white (1). Do not affect alpha.
@@ -423,6 +442,7 @@ namespace Scripts.Canvas
             return mul;
         }
 
+        /// <summary>Discover sprites.</summary>
         public void DiscoverSprites(bool clearExisting)
         {
             if (clearExisting)
@@ -448,6 +468,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Updates the virtual time string.</summary>
         private void UpdateVirtualTimeString(float t01)
         {
             // Map 0..1 to a 24-hour clock
@@ -465,6 +486,7 @@ namespace Scripts.Canvas
         }
 
 #if UNITY_EDITOR
+        /// <summary>Editor callback when inspector values change.</summary>
         private void OnValidate()
         {
             if (cycleSeconds < 0.01f) cycleSeconds = 0.01f;

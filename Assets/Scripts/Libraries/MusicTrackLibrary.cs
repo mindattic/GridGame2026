@@ -56,6 +56,7 @@ namespace Scripts.Libraries
             }
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;

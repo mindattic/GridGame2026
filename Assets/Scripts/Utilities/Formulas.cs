@@ -76,6 +76,7 @@ public static class Formulas
     private const float HitShiftPerLevel = 3f;
     private const float DamageScalePerLevel = 1.07f;
 
+    /// <summary>Level advantage.</summary>
     private static int LevelAdvantage(ActorStats atk, ActorStats def)
         => Mathf.RoundToInt(atk.Level - def.Level);
 
@@ -90,11 +91,13 @@ public static class Formulas
     // ---------------
     // Logging helpers
     // ---------------
+    /// <summary>Log.</summary>
     private static void Log(string message)
     {
         CombatLogHelper.Write(message);
     }
 
+    /// <summary>Name of.</summary>
     private static string NameOf(ActorInstance a)
     {
         if (a == null) return "<null>";
@@ -105,16 +108,22 @@ public static class Formulas
     // ----------------------------
     // Minimal stat accessors (6x)
     // ----------------------------
+    /// <summary>Atk.</summary>
     private static float Atk(ActorStats s) => s.Strength;  // Attack
+    /// <summary>Def.</summary>
     private static float Def(ActorStats s) => s.Vitality;  // Defense
+    /// <summary>Spd.</summary>
     private static float Spd(ActorStats s) => s.Speed;     // Speed
+    /// <summary>Lck.</summary>
     private static float Lck(ActorStats s) => s.Luck;      // Luck
 
     // Hit%: raise the base a bit to reduce early whiffs
+    /// <summary>Hit percent.</summary>
     private static float HitPercent(ActorStats s)
         => Mathf.Clamp(80f + Spd(s) * 0.5f + Lck(s) * 0.2f, 5f, 95f); // base was 70f
 
     // Crit%: small bump to base crit so early hits feel better
+    /// <summary>Crit percent.</summary>
     private static float CritPercent(ActorStats s)
         => Mathf.Clamp(8f + Lck(s) * 0.4f, 0f, 50f); // base was 5f
 
@@ -147,7 +156,9 @@ public static class Formulas
     // -----------------------
     // Simple core percentages
     // -----------------------
+    /// <summary>Accuracy.</summary>
     public static float Accuracy(ActorStats stats) => HitPercent(stats);
+    /// <summary>Evasion.</summary>
     public static float Evasion(ActorStats stats) => 0f;
 
     /// <summary>
@@ -180,26 +191,31 @@ public static class Formulas
         return Mathf.Floor(baseHP + Def(stats) * perVit + stats.Level * perLvl);
     }
 
+    /// <summary>Offense.</summary>
     public static float Offense(ActorStats stats, float weaponPower = 0f)
     {
         return Atk(stats) + weaponPower;
     }
 
+    /// <summary>Defense.</summary>
     public static float Defense(ActorStats stats, float armorRating = 0f)
     {
         return Def(stats) + armorRating;
     }
 
+    /// <summary>Magic offense.</summary>
     public static float MagicOffense(ActorStats stats)
     {
         return Atk(stats);
     }
 
+    /// <summary>Magic resistance.</summary>
     public static float MagicResistance(ActorStats stats)
     {
         return Def(stats);
     }
 
+    /// <summary>Applies the resistance.</summary>
     public static float ApplyResistance(float baseValue, float resistance)
     {
         if (resistance >= 0f)
@@ -301,16 +317,19 @@ public static class Formulas
         return new AttackResult(caster, target, finalDamage, type);
     }
 
+    /// <summary>Clamp alive.</summary>
     public static float ClampAlive(float hp)
     {
         return hp < 1f ? 0f : hp;
     }
 
+    /// <summary>Ap regen.</summary>
     public static float APRegen(ActorStats stats)
     {
         return 3f + Spd(stats) * 0.6f + stats.Level * 0.2f;
     }
 
+    /// <summary>Critical hit percent.</summary>
     public static float CriticalHitPercent(ActorInstance attacker, ActorInstance opponent)
     {
         return CritPercent(attacker.Stats);

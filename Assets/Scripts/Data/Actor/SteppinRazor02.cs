@@ -27,6 +27,7 @@ namespace Scripts.Data.Actor
     public static class SteppinRazor02
     {
 
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

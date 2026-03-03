@@ -107,16 +107,27 @@ public class TileInstance : MonoBehaviour
         get => spriteRenderer.color;
         set => spriteRenderer.color = value;
     }
+    /// <summary>Returns whether the is same column condition is met.</summary>
     public bool IsSameColumn(Vector2Int other) => this.location.x == other.x;
+    /// <summary>Returns whether the is same row condition is met.</summary>
     public bool IsSameRow(Vector2Int other) => this.location.y == other.y;
+    /// <summary>Returns whether the is north of condition is met.</summary>
     public bool IsNorthOf(Vector2Int other) => IsSameColumn(other) && this.location.y == other.y - 1;
+    /// <summary>Returns whether the is east of condition is met.</summary>
     public bool IsEastOf(Vector2Int other) => IsSameRow(other) && this.location.x == other.x + 1;
+    /// <summary>Returns whether the is south of condition is met.</summary>
     public bool IsSouthOf(Vector2Int other) => IsSameColumn(other) && this.location.y == other.y + 1;
+    /// <summary>Returns whether the is west of condition is met.</summary>
     public bool IsWestOf(Vector2Int other) => IsSameRow(other) && this.location.x == other.x - 1;
+    /// <summary>Returns whether the is north west of condition is met.</summary>
     public bool IsNorthWestOf(Vector2Int other) => this.location.x == other.x - 1 && this.location.y == other.y - 1;
+    /// <summary>Returns whether the is north east of condition is met.</summary>
     public bool IsNorthEastOf(Vector2Int other) => this.location.x == other.x + 1 && this.location.y == other.y - 1;
+    /// <summary>Returns whether the is south west of condition is met.</summary>
     public bool IsSouthWestOf(Vector2Int other) => this.location.x == other.x - 1 && this.location.y == other.y + 1;
+    /// <summary>Returns whether the is south east of condition is met.</summary>
     public bool IsSouthEastOf(Vector2Int other) => this.location.x == other.x + 1 && this.location.y == other.y + 1;
+    /// <summary>Returns whether the is adjacent to condition is met.</summary>
     public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(this.location, other) == 1;
 
 
@@ -125,16 +136,19 @@ public class TileInstance : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     //Method which is used for initialization tasks that need to occur before the game starts 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     public void Start()
     {
         
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(int col, int row)
     {
         location = new Vector2Int(col, row);

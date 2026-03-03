@@ -31,6 +31,7 @@ namespace Scripts.Managers
 /// </summary>
 public class TileManager : MonoBehaviour
 {
+    /// <summary>Resets component to default values (editor only).</summary>
     public void Reset()
     {
         foreach (var tile in g.Tiles)
@@ -56,6 +57,7 @@ public class TileManager : MonoBehaviour
     //}
 
 
+    /// <summary>Hightlight.</summary>
     public void Hightlight(Vector2Int previous, Vector2Int current)
     {
         g.TileMap.GetTile(previous).color = ColorHelper.Tile.White;

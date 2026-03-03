@@ -157,6 +157,7 @@ public partial class OverworldHero : MonoBehaviour
     // Party collision cache
     private Collider2D[] selfColliders;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // Auto-binding core components using exact hierarchy paths
@@ -206,12 +207,14 @@ public partial class OverworldHero : MonoBehaviour
         CacheSelfColliders();
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         CacheSelfColliders();
         ApplyPartyIgnoreCollisions();
     }
 
+    /// <summary>Editor callback when inspector values change.</summary>
     private void OnValidate()
     {
         if (!Application.isPlaying) return;
@@ -219,6 +222,7 @@ public partial class OverworldHero : MonoBehaviour
         ApplyPartyIgnoreCollisions();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (IsLeader)
@@ -239,6 +243,7 @@ public partial class OverworldHero : MonoBehaviour
  
     // ---------------- Visibility and clamping (world space) ----------------
 
+    /// <summary>Returns whether the is visible condition is met.</summary>
     private bool IsVisible()
     {
         if (!requireVisibleToMove) return true;
@@ -247,6 +252,7 @@ public partial class OverworldHero : MonoBehaviour
         return v.z > 0f && v.x >= 0f && v.x <= 1f && v.y >= 0f && v.y <= 1f;
     }
 
+    /// <summary>Clamp to map.</summary>
     private Vector2 ClampToMap(Vector2 p)
     {
         // World-space clamp against sprite bounds
@@ -262,6 +268,7 @@ public partial class OverworldHero : MonoBehaviour
 
 
     // World bindings
+    /// <summary>Bind world.</summary>
     public void BindWorld(SpriteRenderer map, Camera cam)
     {
         terrainSprite = map;
@@ -279,6 +286,7 @@ public partial class OverworldHero : MonoBehaviour
 
 
     // Speed sampling hook (placeholder for zones)
+    /// <summary>Gets the speed multiplier.</summary>
     private float GetSpeedMultiplier(Vector2 world)
     {
         return 1f; // constant speed (slow zones can be added later)
@@ -287,6 +295,7 @@ public partial class OverworldHero : MonoBehaviour
 
     // ---------------- helpers ----------------
 
+    /// <summary>Gets the position.</summary>
     private Vector2 GetPosition()
     {
         if (rb != null)
@@ -294,6 +303,7 @@ public partial class OverworldHero : MonoBehaviour
         return new Vector2(transform.position.x, transform.position.y);
     }
 
+    /// <summary>Sets the position.</summary>
     private void SetPosition(Vector2 v)
     {
         // Keep Z from transform but drive both Transform and Rigidbody2D when available
@@ -307,38 +317,50 @@ public partial class OverworldHero : MonoBehaviour
 
 
     // Inspector toggles via code (optional helpers)
+    /// <summary>Sets the move speed.</summary>
     public void SetMoveSpeed(int unitsPerSecond) => moveSpeed = Mathf.Max(0f, unitsPerSecond);
+    /// <summary>Sets the snap threshold.</summary>
     public void SetSnapThreshold(int value) => snapThreshold = Mathf.Max(0f, value);
+    /// <summary>Sets the pathfinding.</summary>
     public void SetPathfinding(bool enabled) => usePathfinding = enabled;
 
     // Exposed setters for tuning friction and clearance
+    /// <summary>Sets the nav clearance.</summary>
     public void SetNavClearance(float value) => navObstacleBuffer = Mathf.Max(0f, value);
   
+    /// <summary>Sets the follow speed ramp distance.</summary>
     public void SetFollowSpeedRampDistance(float dist) => followSpeedRampDistance = Mathf.Max(0.01f, dist);
 
     // New: control collision sampling relative to animator pivot
+    /// <summary>Sets the feet offset local.</summary>
     public void SetFeetOffsetLocal(Vector2 offset) => feetOffset = offset;
 
     // --- Leader/follower API ---
+    /// <summary>Sets the leader.</summary>
     public void SetLeader(Transform t)
     {
         leader = t;
         if (leader != null) IsLeader = false;
         ApplyPartyIgnoreCollisions();
     }
+    /// <summary>Sets the leader.</summary>
     public void SetLeader(OverworldHero h) => SetLeader(h != null ? h.transform : null);
+    /// <summary>Gets the leader.</summary>
     public Transform GetLeader() => leader;
+    /// <summary>Sets the as leader.</summary>
     public void SetAsLeader(bool value)
     {
         IsLeader = value;
         if (value) leader = null;
     }
 
+    /// <summary>Cache self colliders.</summary>
     private void CacheSelfColliders()
     {
         selfColliders = GetComponentsInChildren<Collider2D>(true);
     }
 
+    /// <summary>Applies the party ignore collisions.</summary>
     private void ApplyPartyIgnoreCollisions()
     {
         if (!Application.isPlaying) return;

@@ -171,11 +171,13 @@ public class PortraitManager : MonoBehaviour
         yield return instance.SlideIn();
     }
 
+    /// <summary>Pop in out.</summary>
     public void PopInOut(ActorInstance actor, float scale = 0.1666f)
     {
         StartCoroutine(PopInOutRoutine(actor, scale));
     }
 
+    /// <summary>Coroutine that executes the pop in out sequence.</summary>
     public IEnumerator PopInOutRoutine(ActorInstance actor, float scale = 0.1666f)
     {
         // Use factory instead of Instantiate(prefab)
@@ -197,6 +199,7 @@ public class PortraitManager : MonoBehaviour
         yield return instance.PopInOut();
     }
 
+    /// <summary>Coroutine that executes the pop in sequence.</summary>
     public IEnumerator PopInRoutine(ActorInstance actor, float scale = 0.1666f)
     {
         var existing = portraits.FirstOrDefault(x => x != null && x.actor == actor);
@@ -225,6 +228,7 @@ public class PortraitManager : MonoBehaviour
         yield return instance.PopIn();
     }
 
+    /// <summary>Coroutine that executes the pop out sequence.</summary>
     public IEnumerator PopOutRoutine(ActorInstance actor)
     {
         var instance = portraits.FirstOrDefault(x => x != null && x.actor == actor);
@@ -234,6 +238,7 @@ public class PortraitManager : MonoBehaviour
         }
     }
 
+    /// <summary>Dissolve.</summary>
     public void Dissolve(ActorInstance actor, IEnumerator routine = null)
     {
         // Use factory instead of Instantiate(prefab)
@@ -255,6 +260,7 @@ public class PortraitManager : MonoBehaviour
         StartCoroutine(instance.DissolveRoutine(routine));
     }
 
+    /// <summary>Coroutine that executes the spawn pair3 d sequence.</summary>
     public IEnumerator SpawnPair3DRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);

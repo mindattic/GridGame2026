@@ -134,6 +134,7 @@ namespace Scripts.Canvas
 
         #endregion
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             if (barRect == null) barRect = GetComponent<RectTransform>();
@@ -165,6 +166,7 @@ namespace Scripts.Canvas
             cachedLeftX = float.NaN; cachedRightX = float.NaN;
         }
 
+        /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
             RebuildLayout();
@@ -172,6 +174,7 @@ namespace Scripts.Canvas
             PauseAll();
         }
 
+        /// <summary>Ensure layout then reposition.</summary>
         private System.Collections.IEnumerator EnsureLayoutThenReposition()
         {
             for (int i = 0; i < 2; i++) yield return null;
@@ -182,6 +185,7 @@ namespace Scripts.Canvas
             if (debugLogs) Debug.Log($"[TimelineBar] LayoutReady left={LeftX:F1} right={RightX:F1} width={Width:F1}");
         }
 
+        /// <summary>Called when the RectTransform dimensions change.</summary>
         private void OnRectTransformDimensionsChange()
         {
             RebuildLayout();
@@ -189,6 +193,7 @@ namespace Scripts.Canvas
             Recalculate();
         }
 
+        /// <summary>Runs per-frame update logic.</summary>
         private void Update()
         {
             // Periodically enforce queue spacing to prevent overlap
@@ -198,6 +203,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Rebuild layout.</summary>
         private void RebuildLayout()
         {
             if (c.CanvasRect == null || barRect == null) return;
@@ -223,6 +229,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Units per sec from speed.</summary>
         private float UnitsPerSecFromSpeed(int speed)
         {
             // Speed stat affects movement speed with gentler scaling for strategic play
@@ -236,6 +243,7 @@ namespace Scripts.Canvas
             return Mathf.Max(0.01f, speedMultiplier / crossing);
         }
 
+        /// <summary>Gets the queue delay from speed.</summary>
         private float GetQueueDelayFromSpeed(int speed)
         {
             // Queue delay based on speed: faster enemies wait less before starting approach
@@ -373,6 +381,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Gets the initial position from speed.</summary>
         private float GetInitialPositionFromSpeed(int speed, int maxSpeed, int minSpeed)
         {
             // Scatter enemies across timeline based on speed
@@ -383,11 +392,13 @@ namespace Scripts.Canvas
             return Mathf.Lerp(0.2f, 0.9f, t);
         }
 
+        /// <summary>Sorted enemies by speed desc.</summary>
         private System.Collections.Generic.IEnumerable<ActorInstance> SortedEnemiesBySpeedDesc()
         {
             return g.Actors.Enemies.Where(e => e != null && e.IsPlaying).OrderByDescending(e => e.Stats.Speed.ToInt());
         }
 
+        /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
         public void Clear()
         {
             for (int i = activeTags.Count - 1; i >= 0; i--) if (activeTags[i] != null) Destroy(activeTags[i].gameObject);
@@ -462,18 +473,24 @@ namespace Scripts.Canvas
             PauseAll(); // Start paused until hero moves
         }
 
+        /// <summary>Creates the initial for all enemies.</summary>
         public void SpawnInitialForAllEnemies()
         {
             EnsureTagsForAllEnemies(true);
         }
 
+        /// <summary>Pause all.</summary>
         private void PauseAll()
         { foreach (var t in activeTags) t?.Pause(); advancing = false; }
+        /// <summary>Resume all.</summary>
         private void ResumeAll()
         { foreach (var t in activeTags) t?.Resume(); advancing = true; }
 
+        /// <summary>Handles the hero start move event.</summary>
         public void OnHeroStartMove() { Recalculate(); EnforceQueueSpacing(); ResumeAll(); }
+        /// <summary>Handles the hero stop move event.</summary>
         public void OnHeroStopMove() { PauseAll(); }
+        /// <summary>Handles the enemy turn started event.</summary>
         public void OnEnemyTurnStarted(ActorInstance enemy) { 
             PauseAll(); 
             // Lock any tags that are already at/past the left to the exact left position
@@ -489,6 +506,7 @@ namespace Scripts.Canvas
                 }
             }
         }
+        /// <summary>Handles the enemy turn finished event.</summary>
         public void OnEnemyTurnFinished(ActorInstance enemy)
         {
             var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
@@ -545,6 +563,7 @@ namespace Scripts.Canvas
             isProcessingTrigger = false;
         }
 
+        /// <summary>Handles the tag reached left event.</summary>
         private void OnTagReachedLeft(TimelineTag tag)
         {
             if (tag == null) return;
@@ -571,6 +590,7 @@ namespace Scripts.Canvas
             g.SequenceManager.Execute();
         }
 
+        /// <summary>Gets the seconds until next enemy reaches left.</summary>
         public float GetSecondsUntilNextEnemyReachesLeft()
         {
             if (activeTags.Count == 0) 
@@ -588,6 +608,7 @@ namespace Scripts.Canvas
 
         // NEW: Advance all tags by a number of seconds instantly (banking mechanic)
         // Returns true if at least one tag reached the trigger point.
+        /// <summary>Advance by seconds.</summary>
         public bool AdvanceBySeconds(float seconds)
         {
             seconds = Mathf.Max(0f, seconds);
@@ -656,6 +677,7 @@ namespace Scripts.Canvas
             PauseAll();
         }
 
+        /// <summary>Creates the tag.</summary>
         private void SpawnTag(ActorInstance enemy, float startU, float releaseDelay = 0f)
         {
             if (enemy == null || !enemy.IsEnemy) return;
@@ -682,12 +704,14 @@ namespace Scripts.Canvas
                 Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
         }
 
+        /// <summary>Updates the all endpoints.</summary>
         private void UpdateAllEndpoints()
         {
             float left = LeftX; float right = RightX;
             foreach (var t in activeTags) t?.UpdateEndpoints(left, right);
         }
 
+        /// <summary>Recalculate.</summary>
         private void Recalculate()
         {
             float left = LeftX; float right = RightX;

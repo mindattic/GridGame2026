@@ -39,6 +39,7 @@ using Scripts.Utilities;
 public class AddressablesAnalyzer : Editor
 {
     [MenuItem("Tools/Analyze Addressables")]
+    /// <summary>Analyze addressables.</summary>
     public static void AnalyzeAddressables()
     {
         var settings = AddressableAssetSettingsDefaultObject.Settings;

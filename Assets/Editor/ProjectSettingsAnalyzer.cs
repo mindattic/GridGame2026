@@ -38,6 +38,7 @@ using Scripts.Utilities;
 public class ProjectSettingsAnalyzer : Editor
 {
     [MenuItem("Tools/Analyze Project Settings")]
+    /// <summary>Analyze project settings.</summary>
     public static void AnalyzeProjectSettings()
     {
         var sb = new StringBuilder();

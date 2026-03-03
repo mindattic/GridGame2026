@@ -37,6 +37,7 @@ public class CustomPlayBehaviour
         EditorApplication.update += OnUpdate;
     }
 
+    /// <summary>Handles the update event.</summary>
     private static void OnUpdate()
     {
         if (!EditorApplication.isPlayingOrWillChangePlaymode)
@@ -60,6 +61,7 @@ public class CustomPlayBehaviour
         }
     }
 
+    /// <summary>Handles the play mode state changing event.</summary>
     private static void OnPlayModeStateChanging(PlayModeStateChange playModeStateChange)
     {
         if (playModeStateChange == PlayModeStateChange.ExitingEditMode)
@@ -84,6 +86,7 @@ public class CustomPlayBehaviour
         }
     }
 
+    /// <summary>Handles the about to enter playmode event.</summary>
     private static void OnAboutToEnterPlaymode()
     {
         //this will run just before play mode

@@ -72,13 +72,14 @@ public class MapIcon : MonoBehaviour
 
     private float TimeNow => useUnscaledTime ? Time.unscaledTime : Time.time;
 
+    /// <summary>Caches the RectTransform and determines whether this is a UI element.</summary>
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
         isUI = rect != null;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    /// <summary>Records the initial position as the base for hover oscillation.</summary>
     void Start()
     {
         if (isUI)
@@ -87,7 +88,7 @@ public class MapIcon : MonoBehaviour
             baseLocalPos = transform.localPosition;
     }
 
-    // Update is called once per frame
+    /// <summary>Applies a sine-wave vertical offset for the hover bob effect each frame.</summary>
     void Update()
     {
         if (mode == HoverMode.Static)
@@ -114,7 +115,7 @@ public class MapIcon : MonoBehaviour
         }
     }
 
-    // Runtime toggle
+    /// <summary>Enables or disables the hover bob effect at runtime.</summary>
     public void SetHoverEnabled(bool enabled)
     {
         mode = enabled ? HoverMode.Hover : HoverMode.Static;

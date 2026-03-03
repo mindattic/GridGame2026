@@ -62,6 +62,7 @@ namespace Scripts.Managers
         /// <summary>Distance threshold for position snapping during drag.</summary>
         public float snapTheshold;
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             snapTheshold = g.TileSize * 0.125f * 1.01f;

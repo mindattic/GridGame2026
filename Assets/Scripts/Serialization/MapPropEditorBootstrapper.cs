@@ -30,6 +30,7 @@ namespace Scripts.Serialization
         [SerializeField] private bool loadOnStart = true;
         [SerializeField] private bool clearExisting = true;
 
+        /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
             if (loadOnStart && propsRoot != null && !string.IsNullOrWhiteSpace(mapPath))
@@ -39,6 +40,7 @@ namespace Scripts.Serialization
         }
 
         [ContextMenu("Load Map Now")]
+        /// <summary>Load now.</summary>
         private void LoadNow()
         {
             if (propsRoot == null) return;

@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class Duelist
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

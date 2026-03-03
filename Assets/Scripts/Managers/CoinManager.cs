@@ -83,6 +83,7 @@ namespace Scripts.Managers
             StartCoroutine(SpawnRoutine(worldPosition, amount));
         }
 
+        /// <summary>Coroutine that executes the spawn sequence.</summary>
         private IEnumerator SpawnRoutine(Vector3 worldPosition, int amount)
         {
             for (int i = 0; i < amount; i++)

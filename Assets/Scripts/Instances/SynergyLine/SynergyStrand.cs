@@ -436,6 +436,7 @@ public class SynergyStrand : MonoBehaviour
         configured = false;
     }
 
+    /// <summary>Applies the color.</summary>
     private void ApplyColor(LineRenderer lr, Color c)
     {
         lr.startColor = c;
@@ -449,6 +450,7 @@ public class SynergyStrand : MonoBehaviour
         }
     }
 
+    /// <summary>Calculates the tinted green.</summary>
     private Color ComputeTintedGreen()
     {
         float t = Time.time;
@@ -464,6 +466,7 @@ public class SynergyStrand : MonoBehaviour
         return Color.HSVToRGB(h, s, v);
     }
 
+    /// <summary>Updates the rev and get time warp.</summary>
     private float UpdateRevAndGetTimeWarp(float dt)
     {
         if (!revActive)
@@ -509,6 +512,7 @@ public class SynergyStrand : MonoBehaviour
         return 1f + (peak - 1f) * k;
     }
 
+    /// <summary>Evaluate path point.</summary>
     private Vector3 EvaluatePathPoint(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi, float t)
     {
         float radius = radiusAbs * radiusOverT.Evaluate(t) * envelope;

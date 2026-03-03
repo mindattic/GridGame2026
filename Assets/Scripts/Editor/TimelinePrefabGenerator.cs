@@ -29,6 +29,7 @@ namespace Scripts.Editor
 public static class TimelinePrefabGenerator
 {
  [MenuItem("Tools/Generate Timeline Prefabs")] 
+ /// <summary>Generate.</summary>
  public static void Generate()
  {
  // Create TimelineTag prefab

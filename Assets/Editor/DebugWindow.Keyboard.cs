@@ -26,6 +26,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderKeyboard draws UI buttons that simulate keyboard arrow keys.
+    /// <summary>Render keyboard.</summary>
     private void RenderKeyboard()
     {
         GUILayout.BeginVertical();
@@ -66,24 +67,28 @@ public partial class DebugWindow
     }
 
     // Keyboard control methods for actor Move.
+    /// <summary>Handles the key up event.</summary>
     private void OnKeyUp()
     {
         if (!g.Actors.HasSelectedActor) return;
         g.Actors.SelectedActor.TeleportToward(Vector2Int.down);
     }
 
+    /// <summary>Handles the key down event.</summary>
     private void OnKeyDown()
     {
         if (!g.Actors.HasSelectedActor) return;
         g.Actors.SelectedActor.TeleportToward(Vector2Int.up);
     }
 
+    /// <summary>Handles the key left event.</summary>
     private void OnKeyLeft()
     {
         if (!g.Actors.HasSelectedActor) return;
         g.Actors.SelectedActor.TeleportToward(Vector2Int.left);
     }
 
+    /// <summary>Handles the key right event.</summary>
     private void OnKeyRight()
     {
         if (!g.Actors.HasSelectedActor) return;

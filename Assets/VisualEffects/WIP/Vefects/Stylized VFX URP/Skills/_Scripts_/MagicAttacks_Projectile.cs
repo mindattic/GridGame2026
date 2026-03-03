@@ -13,6 +13,7 @@ public class MagicAttacks_Projectile : MonoBehaviour
 
     AudioSource SFX_Projectile;
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         FX_Projectile = gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
@@ -21,11 +22,13 @@ public class MagicAttacks_Projectile : MonoBehaviour
 
     }
 
+    /// <summary>Sets the up.</summary>
     public void Setup(Vector3 projectileDir)
     {
         this.projectileDir = projectileDir;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         float moveSpeed = 60f;
@@ -33,6 +36,7 @@ public class MagicAttacks_Projectile : MonoBehaviour
         Destroy(gameObject, 5f);
     }
 
+    /// <summary>Handles the trigger enter event.</summary>
     private void OnTriggerEnter(Collider col)
     {
         Instantiate(FX_Hit, col.transform.position, Quaternion.identity);

@@ -40,6 +40,7 @@ using Scripts.Utilities;
 public class DocumentationGenerator : EditorWindow
 {
     [MenuItem("Tools/Generate All Documentation")]
+    /// <summary>Generate all.</summary>
     public static void GenerateAll()
     {
         var sb = new StringBuilder();
@@ -74,24 +75,28 @@ public class DocumentationGenerator : EditorWindow
     }
 
     [MenuItem("Tools/Documentation/Generate Project Settings")]
+    /// <summary>Gen project settings.</summary>
     public static void GenProjectSettings()
     {
         ProjectSettingsAnalyzer.AnalyzeProjectSettings();
     }
 
     [MenuItem("Tools/Documentation/Generate Addressables")]
+    /// <summary>Gen addressables.</summary>
     public static void GenAddressables()
     {
         AddressablesAnalyzer.AnalyzeAddressables();
     }
 
     [MenuItem("Tools/Documentation/Generate Current Scene")]
+    /// <summary>Gen current scene.</summary>
     public static void GenCurrentScene()
     {
         EditorApplication.ExecuteMenuItem("Tools/Analyze Current Scene");
     }
 
     [MenuItem("Tools/Documentation/Generate All Scenes")]
+    /// <summary>Gen all scenes.</summary>
     public static void GenAllScenes()
     {
         var scenes = EditorBuildSettings.scenes;

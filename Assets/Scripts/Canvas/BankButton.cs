@@ -42,16 +42,16 @@ namespace Scripts.Canvas
 /// </summary>
 public class BankButton : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    /// <summary>Registers button click listeners on startup.</summary>
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
+    /// <summary>Per-frame update (stub, no current logic).</summary>
     void Update()
     {
-        
+
     }
 }
 

@@ -54,11 +54,13 @@ public class CityScroll : MonoBehaviour
     public RawImage rawImage; // SelectProfile the RawImage in the inspector
     public float scrollFocus = 0.1f; // Intelligence of scrolling
 
+    /// <summary>Begins the infinite UV scrolling coroutine.</summary>
     private void Start()
     {
         StartCoroutine(ScrollUVRoutine());
     }
 
+    /// <summary>Continuously scrolls the RawImage UV rect leftward, wrapping at -1 for a seamless loop.</summary>
     private IEnumerator ScrollUVRoutine()
     {
         Vector2 offset = rawImage.uvRect.position;

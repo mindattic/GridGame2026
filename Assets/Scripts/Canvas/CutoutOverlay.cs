@@ -80,6 +80,7 @@ public sealed class CutoutOverlay : MonoBehaviour
     // Lifecycle
     // ---------------------------------------------------------------------
 
+    /// <summary>Caches core components and resolves child panel references from GameObjectHelper or auto-creates them.</summary>
     private void Awake()
     {
         // Cache core components
@@ -104,6 +105,7 @@ public sealed class CutoutOverlay : MonoBehaviour
         }
     }
 
+    /// <summary>Re-caches components if needed and applies the safe area layout.</summary>
     private void OnEnable()
     {
         if (_rect == null)
@@ -123,6 +125,7 @@ public sealed class CutoutOverlay : MonoBehaviour
         Apply(force: true);
     }
 
+    /// <summary>Detects safe area, screen size, orientation, or scale changes and reapplies layout.</summary>
     private void Update()
     {
 #if UNITY_EDITOR

@@ -30,6 +30,7 @@ public partial class DebugWindow
     // Cache input per style key
     private Dictionary<string, string> textStyleInputs = new Dictionary<string, string>();
 
+    /// <summary>Render text styles.</summary>
     private void RenderTextStyles()
     {
         if (!Application.isPlaying || g.CombatTextManager == null)
@@ -74,6 +75,7 @@ public partial class DebugWindow
         GUILayout.Space(6);
     }
 
+    /// <summary>Gets the random playing actor.</summary>
     private static ActorInstance GetRandomPlayingActor()
     {
         var all = g.Actors.All;

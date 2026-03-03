@@ -138,6 +138,7 @@ public class PartyManager : MonoBehaviour
     private int partyMemberCount => ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Count;
 
     #endregion
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         if (!ProfileHelper.HasProfiles())
@@ -188,11 +189,13 @@ public class PartyManager : MonoBehaviour
         LoadRosterSlides();
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         scene.FadeIn();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         HandleTouch();
@@ -221,6 +224,7 @@ public class PartyManager : MonoBehaviour
         WrapSlides();
     }
 
+    /// <summary>Load roster slides.</summary>
     private void LoadRosterSlides()
     {
         var rosterMembers = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members;
@@ -260,6 +264,7 @@ public class PartyManager : MonoBehaviour
         RepositionSlides();
     }
 
+    /// <summary>Handle touch.</summary>
     private void HandleTouch()
     {
         if (Input.touchCount > 0)
@@ -296,6 +301,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Move slides.</summary>
     private void MoveSlides(float deltaX)
     {
         foreach (var item in slides.Values)
@@ -306,6 +312,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Wrap slides.</summary>
     private void WrapSlides()
     {
         var itemList = slides.Values.ToList();
@@ -332,6 +339,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Gets the leftmost x.</summary>
     private float GetLeftmostX()
     {
         float min = float.MaxValue;
@@ -340,6 +348,7 @@ public class PartyManager : MonoBehaviour
         return min;
     }
 
+    /// <summary>Gets the rightmost x.</summary>
     private float GetRightmostX()
     {
         float max = float.MinValue;
@@ -348,6 +357,7 @@ public class PartyManager : MonoBehaviour
         return max;
     }
 
+    /// <summary>Reposition slides.</summary>
     private void RepositionSlides()
     {
         float x = 0;
@@ -359,6 +369,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Center on.</summary>
     public void CenterOn(RosterSlideInstance slide)
     {
         if (!clickAllowed) return;
@@ -380,6 +391,7 @@ public class PartyManager : MonoBehaviour
         UpdateStatsDisplay(slide.CharacterClass);
     }
 
+    /// <summary>Updates the stats display.</summary>
     private void UpdateStatsDisplay(CharacterClass characterClass)
     {
         var rosterMember = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.CharacterClass == characterClass).First();
@@ -387,16 +399,19 @@ public class PartyManager : MonoBehaviour
         Load(rosterMember.CharacterClass, Mathf.Max(1, derived.level));
     }
 
+    /// <summary>Updates the party member label.</summary>
     private void UpdatePartyMemberLabel(bool isInParty)
     {
         addRemovePartyMemberLabel.text = isInParty ? "Remove from Party" : "Add to Party";
     }
 
+    /// <summary>Updates the party member count label.</summary>
     private void UpdatePartyMemberCountLabel()
     {
         partyMemberCountLabel.text = $"{partyMemberCount}/{Common.MaxPartyMemberCount}";
     }
 
+    /// <summary>Updates the slide checkmark.</summary>
     private void UpdateSlideCheckmark(CharacterClass characterClass, bool isInParty)
     {
         // Update the checkmark for the slide
@@ -406,6 +421,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Updates the add remove button.</summary>
     private void UpdateAddRemoveButton(CharacterClass characterClass)
     {
         bool isInParty = IsInParty(characterClass);
@@ -426,6 +442,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Add to party.</summary>
     private void AddToParty(CharacterClass characterClass)
     {
         if (partyMemberCount >= Common.MaxPartyMemberCount)
@@ -440,12 +457,14 @@ public class PartyManager : MonoBehaviour
 
 
 
+    /// <summary> remove from party..Groups[0].Value.ToUpper() emove from party.</summary>
     private void RemoveFromParty(CharacterClass characterClass)
     {
         ProfileHelper.RemoveFromParty(characterClass);
         UpdateAddRemoveButton(characterClass); // Refresh button state
     }
 
+    /// <summary>Add item.</summary>
     public void AddItem(RosterSlideInstance slide)
     {
         if (!slides.ContainsKey(slide.CharacterClass))
@@ -454,6 +473,7 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>Load.</summary>
     public void Load(CharacterClass characterClass, int level)
     {
         if (characterClass == CharacterClass.None) return;
@@ -476,6 +496,7 @@ public class PartyManager : MonoBehaviour
 
 
 
+    /// <summary>Updates the stat row.</summary>
     private void UpdateStatRow(RectTransform row, string label, float value, float maxValue = 99)
     {
         var labelComponent = row.Find("Label").GetComponent<TextMeshProUGUI>();
@@ -497,6 +518,7 @@ public class PartyManager : MonoBehaviour
 
     }
 
+    /// <summary>Coroutine that executes the animate bar fill sequence.</summary>
     private IEnumerator AnimateBarFillRoutine(RectTransform row, RectTransform bar, float targetWidth)
     {
         float duration = 0.4f;
@@ -521,12 +543,14 @@ public class PartyManager : MonoBehaviour
 
 
 
+    /// <summary>Handles the back button clicked event.</summary>
     public void OnBackButtonClicked()
     {
         scene.Fade.ToGame();
     }
 
 
+    /// <summary>Handles the equipment tooltip anchor clicked event.</summary>
     public void OnEquipmentTooltipAnchorClicked()
     {
 

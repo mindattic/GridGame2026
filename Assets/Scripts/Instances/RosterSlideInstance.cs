@@ -76,6 +76,7 @@ public class RosterSlideInstance : MonoBehaviour
     private float centerButtonWidth;
 
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -99,6 +100,7 @@ public class RosterSlideInstance : MonoBehaviour
         centerButtonWidth = Width * 0.33f;
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(CharacterClass characterClass, Sprite sprite, float width, float height, System.Action onClick, bool isInParty)
     {
         // Show key and dimensions
@@ -121,6 +123,7 @@ public class RosterSlideInstance : MonoBehaviour
         SetCheckmark(isInParty);
     }
 
+    /// <summary>Sets the checkmark.</summary>
     public void SetCheckmark(bool isInParty)
     {
         checkmark.gameObject.SetActive(isInParty);

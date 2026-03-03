@@ -103,6 +103,7 @@ public class GhostInstance : MonoBehaviour
 
     #region Spawn
 
+    /// <summary>Creates the instance.</summary>
     public void Spawn(ActorInstance actor)
     {
         this.renderers.frame.enabled = false;
@@ -116,6 +117,7 @@ public class GhostInstance : MonoBehaviour
 
     #region Unity Lifecycle
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         renderers.thumbnail = gameObject.transform.GetChild(Thumbnail).GetComponent<SpriteRenderer>();
@@ -123,6 +125,7 @@ public class GhostInstance : MonoBehaviour
     }
 
 
+    /// <summary>Coroutine that executes the fade out sequence.</summary>
     private IEnumerator FadeOutRoutine()
     {
         float alpha = renderers.thumbnail.color.a;

@@ -38,6 +38,7 @@ using Scripts.Utilities;
 public class AnimatorAnalyzer : Editor
 {
     [MenuItem("Tools/Analyze Selected Animator Controller")]
+    /// <summary>Analyze selected.</summary>
     public static void AnalyzeSelected()
     {
         var selected = Selection.activeObject as AnimatorController;
@@ -50,6 +51,7 @@ public class AnimatorAnalyzer : Editor
         AnalyzeController(selected);
     }
 
+    /// <summary>Analyze controller.</summary>
     public static void AnalyzeController(AnimatorController controller)
     {
         var sb = new StringBuilder();

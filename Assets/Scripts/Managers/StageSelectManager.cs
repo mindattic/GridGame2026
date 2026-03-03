@@ -81,6 +81,7 @@ public class StageSelectManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
@@ -92,6 +93,7 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         scene.FadeIn();
@@ -116,12 +118,14 @@ public class StageSelectManager : MonoBehaviour
         label.text = stageName;
     }
 
+    /// <summary>Handles the stage select button clicked event.</summary>
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
         scene.Fade.ToGame();
     }
 
+    /// <summary>Handles the back button clicked event.</summary>
     public void OnBackButtonClicked()
     {
         scene.Fade.ToPreviousScene();

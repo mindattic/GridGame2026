@@ -46,6 +46,7 @@ namespace Scripts.Managers
         }
 
 
+        /// <summary>Info.</summary>
         public void Info(string message)
         {
             if (logLevel < LogLevel.Info)
@@ -55,6 +56,7 @@ namespace Scripts.Managers
             messages.Add($@"<color=""white"">{message}</color>");
         }
 
+        /// <summary>Success.</summary>
         public void Success(string message)
         {
             if (logLevel < LogLevel.Success)
@@ -64,6 +66,7 @@ namespace Scripts.Managers
             messages.Add($@"<color=""green"">{message}</color>");
         }
 
+        /// <summary>Warning.</summary>
         public void Warning(string message)
         {
             if (logLevel < LogLevel.Warning)
@@ -74,6 +77,7 @@ namespace Scripts.Managers
         }
 
 
+        /// <summary>Error.</summary>
         public void Error(string message)
         {
             if (logLevel < LogLevel.Error)
@@ -84,6 +88,7 @@ namespace Scripts.Managers
         }
 
 
+        /// <summary>Exception.</summary>
         public void Exception(UnityException ex)
         {
             if (logLevel < LogLevel.Error)
@@ -93,6 +98,7 @@ namespace Scripts.Managers
             messages.Add($@"<color=""red"">{ex.Message.ToString()}</color>");
         }
 
+        /// <summary>Runs per-frame update logic.</summary>
         private void Update()
         {
             if (logLevel == LogLevel.None)

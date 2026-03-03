@@ -27,6 +27,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderGameSpeed renders a dropdown to select the game speed and an Apply button.
+    /// <summary>Render game speed options.</summary>
     private void RenderGameSpeedOptions()
     {
         GUILayout.BeginHorizontal();
@@ -39,6 +40,7 @@ public partial class DebugWindow
     }
 
     // OnGameSpeedChange adjusts the game speed based on the selected option.
+    /// <summary>Handles the game speed change event.</summary>
     private void OnGameSpeedChange()
     {
         switch (selectedGameFocus)

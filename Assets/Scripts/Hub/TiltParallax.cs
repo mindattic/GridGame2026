@@ -52,6 +52,7 @@ public class TiltParallax : MonoBehaviour
     private bool usingMouseEmulation; // editor flag
     private Vector2 lastMouseNormalized; // for output
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -62,9 +63,12 @@ public class TiltParallax : MonoBehaviour
         if (primary == null) primary = this; // first instance becomes primary
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable() => ResetPosition();
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable() => ResetPosition();
 
+    /// <summary>Reset position.</summary>
     private void ResetPosition()
     {
         if (rect == null) return;
@@ -72,6 +76,7 @@ public class TiltParallax : MonoBehaviour
         currentOffset = Vector2.zero;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (rect == null) return;
@@ -94,12 +99,14 @@ public class TiltParallax : MonoBehaviour
         if (writeToOutput && this == primary) WriteStatus(input);
     }
 
+    /// <summary>Runs per-frame logic after all Update calls.</summary>
     private void LateUpdate()
     {
         if (rect != null)
             rect.anchoredPosition = basePos + currentOffset;
     }
 
+    /// <summary>Detect layout locking.</summary>
     private void DetectLayoutLocking()
     {
         var p = transform.parent;
@@ -116,6 +123,7 @@ public class TiltParallax : MonoBehaviour
         }
     }
 
+    /// <summary>Acquire output label.</summary>
     private void AcquireOutputLabel()
     {
         if (sharedOutput != null) return;
@@ -125,6 +133,7 @@ public class TiltParallax : MonoBehaviour
             sharedOutput = go.GetComponent<TextMeshProUGUI>();
     }
 
+    /// <summary>Write status.</summary>
     private void WriteStatus(Vector2 input2D)
     {
         if (sharedOutput == null) return;
@@ -147,6 +156,7 @@ public class TiltParallax : MonoBehaviour
         "";
     }
 
+    /// <summary>Read tilt.</summary>
     private Vector2 ReadTilt()
     {
 #if UNITY_EDITOR

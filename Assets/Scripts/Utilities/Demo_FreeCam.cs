@@ -63,6 +63,7 @@ public class Demo_FreeCam : MonoBehaviour
 
     [SerializeField] private KeyCode anchoredRotateKey = KeyCode.Mouse1;
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         SavePosAndRot();
@@ -89,6 +90,7 @@ public class Demo_FreeCam : MonoBehaviour
         cooldown -= Time.deltaTime;
     }
 
+    /// <summary>Runs per-frame logic after all Update calls.</summary>
     private void LateUpdate()
     {
         Vector3 move = Vector3.zero;
@@ -139,6 +141,7 @@ public class Demo_FreeCam : MonoBehaviour
         transform.Translate(Vector3.forward * mouseScroll * zoomSpeed);
     }
 
+    /// <summary>Focus object.</summary>
     private void FocusObject()
     {
         //To be able to undo
@@ -160,18 +163,21 @@ public class Demo_FreeCam : MonoBehaviour
         }
     }
 
+    /// <summary>Save pos and rot.</summary>
     private void SavePosAndRot()
     {
         prevRot = transform.rotation;
         prevPos = transform.position;
     }
 
+    /// <summary>Go back to last position.</summary>
     private void GoBackToLastPosition()
     {
         transform.position = prevPos;
         transform.rotation = prevRot;
     }
 
+    /// <summary>Gets the offset.</summary>
     private Vector3 GetOffset(Vector3 targetPos, Vector3 targetSize)
     {
         Vector3 dirToTarget = targetPos - transform.position;

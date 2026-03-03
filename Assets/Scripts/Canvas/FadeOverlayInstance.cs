@@ -75,6 +75,7 @@ public class FadeOverlayInstance : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Caches the Image component, assigns the black sprite, and sets initial full-opaque state.</summary>
     private void Awake()
     {
         image = GetComponent<Image>();
@@ -91,6 +92,7 @@ public class FadeOverlayInstance : MonoBehaviour
     /// </summary>
     public void FadeIn(IEnumerator routine = null) => StartCoroutine(FadeInRoutine(routine));
 
+    /// <summary>Gradually reduces alpha from 1 to 0, then runs the optional chained routine.</summary>
     private IEnumerator FadeInRoutine(IEnumerator routine = null)
     {
         SetAlpha(1f);
@@ -115,6 +117,7 @@ public class FadeOverlayInstance : MonoBehaviour
     /// </summary>
     public void FadeOut(IEnumerator routine = null) => StartCoroutine(FadeOutRoutine(routine));
 
+    /// <summary>Gradually increases alpha from 0 to 1, then runs the optional chained routine.</summary>
     private IEnumerator FadeOutRoutine(IEnumerator routine = null)
     {
         // Start fully transparent
@@ -144,6 +147,7 @@ public class FadeOverlayInstance : MonoBehaviour
     /// </summary>
     public void Show(IEnumerator routine = null) => StartCoroutine(ShowRoutine(routine));
 
+    /// <summary>Sets overlay to transparent immediately, then runs the optional chained routine.</summary>
     private IEnumerator ShowRoutine(IEnumerator routine = null)
     {
         SetAlpha(0f);
@@ -157,6 +161,7 @@ public class FadeOverlayInstance : MonoBehaviour
     /// </summary>
     public void Hide(IEnumerator routine = null) => StartCoroutine(HideRoutine(routine));
 
+    /// <summary>Sets overlay to opaque immediately, then runs the optional chained routine.</summary>
     private IEnumerator HideRoutine(IEnumerator routine = null)
     {
         SetAlpha(1f);

@@ -92,6 +92,7 @@ public class ScalableControl : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Resolves all child RectTransform references by name for the 9-slice layout.</summary>
     public void Awake()
     {
         top = this.transform.Find("Top")?.GetComponent<RectTransform>();
@@ -108,7 +109,9 @@ public class ScalableControl : MonoBehaviour
         label = this.transform.Find("Label")?.GetComponent<RectTransform>();
     }
 
+    /// <summary>Applies layout on start.</summary>
     void Start() => ApplyLayout();
+    /// <summary>Reapplies layout when inspector values change.</summary>
     void OnValidate() => ApplyLayout();
 
     #endregion
@@ -123,6 +126,7 @@ public class ScalableControl : MonoBehaviour
 
     #region Layout
 
+    /// <summary>Positions all 9-slice edges, corners, background, and label based on the root dimensions.</summary>
     void ApplyLayout()
     {
         RectTransform root = GetComponent<RectTransform>();

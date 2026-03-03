@@ -253,6 +253,7 @@ namespace Scripts.Helpers
             // New: AbilityCastConfirm helpers (mirror for renamed UI object)
             public static class AbilityCastConfirm
             {
+                /// <summary>Finds the under canvas.</summary>
                 private static Transform FindUnderCanvas(string path)
                 {
                     var canvas = GameObject.Find("Canvas");

@@ -25,6 +25,7 @@ namespace Scripts.Overworld
 public partial class OverworldHero
 {
     // ---------------- FollowCursor (DirectionalPress) ----------------
+    /// <summary>Tick follow cursor.</summary>
     private void TickFollowCursor()
     {
         // Ignore analog input, use directional override only
@@ -62,6 +63,7 @@ public partial class OverworldHero
         isMoving = false; _path = null;
     }
 
+    /// <summary>Tick follow leader.</summary>
     private void TickFollowLeader()
     {
         if (leader == null)
@@ -120,6 +122,7 @@ public partial class OverworldHero
     }
 
     // Hold-to-move directional clicks (screen param kept for compatibility)
+    /// <summary>Begin directional from screen.</summary>
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform _)
     {
         var cam = worldCamera != null ? worldCamera : Camera.main;
@@ -127,6 +130,7 @@ public partial class OverworldHero
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
     }
 
+    /// <summary>Updates the directional from screen.</summary>
     public void UpdateDirectionalFromScreen(Vector2 screenPos, RectTransform _)
     {
         if (!directionalActive) return;
@@ -135,6 +139,7 @@ public partial class OverworldHero
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
     }
 
+    /// <summary>Full stop.</summary>
     public void FullStop()
     {
         directionalActive = false;
@@ -142,6 +147,7 @@ public partial class OverworldHero
         SetIdle();
     }
 
+    /// <summary>Sets the directional override.</summary>
     private void SetDirectionalOverride(Vector2 world)
     {
         Vector2 delta = ClampToMap(world) - GetPosition();

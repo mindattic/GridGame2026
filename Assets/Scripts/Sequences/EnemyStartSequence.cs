@@ -31,6 +31,7 @@ namespace Scripts.Sequences
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             if (!g.TurnManager.IsEnemyTurn)

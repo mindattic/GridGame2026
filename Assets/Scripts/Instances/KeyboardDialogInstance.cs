@@ -167,6 +167,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         set => inputLabel.GetComponent<TextMeshProUGUI>().text = Sanitize(value);
     }
 
+    /// <summary>Assign.</summary>
     public void Assign(
       string promptText,
       string confirmText = "Are you sure?",
@@ -188,6 +189,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         onSubmitClicked = onSubmit;
     }
 
+    /// <summary>Sets the up.</summary>
     private void Setup()
     {
         panel = GameObject.Find(GameObjectHelper.KeyboardDialog.Panel).GetComponent<RectTransform>();
@@ -258,6 +260,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         buttonNo = GameObject.Find(GameObjectHelper.KeyboardDialog.ButtonNo).GetComponent<RectTransform>();
     }
 
+    /// <summary>Resize ui.</summary>
     private void ResizeUI()
     {
         //Screen dimension references
@@ -336,6 +339,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         buttonNo.anchoredPosition = new Vector2(keyWidth / 2 + keySpacing, -keyHeight);
     }
 
+    /// <summary>Sets the up row.</summary>
     private void SetupRow(RectTransform row, RectTransform[] keys, float keyWidth, float keyHeight, float keySpacing, float offsetX)
     {
         float currentX = offsetX;
@@ -347,6 +351,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Bind events.</summary>
     private void BindEvents()
     {
         //Row1: Numbers
@@ -406,12 +411,14 @@ public class KeyboardDialogInstance : MonoBehaviour
         buttonNo.GetComponent<Button>().onClick.AddListener(() => ToggleConfirmation());
     }
 
+    /// <summary>Toggle caps locks this component.</summary>
     private void ToggleCapsLock()
     {
         isCapsLockOn = !isCapsLockOn;
         UpdateKeyLabels();
     }
 
+    /// <summary>Updates the key labels.</summary>
     private void UpdateKeyLabels()
     {
         //Row2: Q�P
@@ -441,6 +448,7 @@ public class KeyboardDialogInstance : MonoBehaviour
             label.text = isCapsLockOn ? row4Letters[i].ToString() : row4Letters[i].ToString().ToLower();
         }
     }
+    /// <summary>Append.</summary>
     private void Append(char c)
     {
         var character = isCapsLockOn && char.IsLetter(c) ? char.ToUpper(c) : char.ToLower(c);
@@ -451,12 +459,14 @@ public class KeyboardDialogInstance : MonoBehaviour
             ToggleCapsLock();
     }
 
+    /// <summary>Backspace.</summary>
     private void Backspace()
     {
         if (InputText.Length > 0)
             InputText = InputText.Substring(0, InputText.Length - 1);
     }
 
+    /// <summary>Toggle confirmations this component.</summary>
     private void ToggleConfirmation()
     {
         if (InputText.Length < 1)
@@ -468,6 +478,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         confirmationContainer.gameObject.SetActive(isVisible);
     }
 
+    /// <summary>Submit.</summary>
     private void Submit()
     {
         InputText = Sanitize(InputText);
@@ -489,6 +500,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>Sanitize.</summary>
     private string Sanitize(string input)
     {
         return new string(input.Where(c => validCharacters.Contains(c)).ToArray());
@@ -497,6 +509,7 @@ public class KeyboardDialogInstance : MonoBehaviour
 
 public static class KeyboardDialog
 {
+    /// <summary>Shows this component.</summary>
     public static KeyboardDialogInstance Show(
         string promptText,
         string confirmText = "Are you sure?",

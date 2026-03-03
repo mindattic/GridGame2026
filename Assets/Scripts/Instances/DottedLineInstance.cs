@@ -67,6 +67,7 @@ public class DottedLineInstance : MonoBehaviour
     public Vector2Int left => location + new Vector2Int(-1, 0);
 
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -109,16 +110,19 @@ public class DottedLineInstance : MonoBehaviour
 
 
 
+    /// <summary>Sets the color.</summary>
     public void SetColor()
     {
         spriteRenderer.color = ColorHelper.Translucent.Yellow;
     }
 
+    /// <summary>Reset color.</summary>
     public void ResetColor()
     {
         spriteRenderer.color = ColorHelper.Translucent.White;
     }
 
+    /// <summary>Creates the instance.</summary>
     public void Spawn(DottedLineSegment segment, Vector2Int location)
     {
         this.segment = segment;
@@ -202,6 +206,7 @@ public class DottedLineInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Despawn.</summary>
     public void Despawn()
     {
         StopAllCoroutines();

@@ -338,11 +338,13 @@ static class RNG
 
         #region Stage Selection
 
+        /// <summary>Stage.</summary>
         public static string Stage(Map map)
         {
             return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
         }
 
+        /// <summary>Stage.</summary>
         public static string Stage(string mapName)
         {
             Map map = (Map)Enum.Parse(typeof(Map), mapName);

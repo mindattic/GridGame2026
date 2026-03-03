@@ -104,6 +104,7 @@ public class PostBattleManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // Guard: require active save & party
@@ -120,8 +121,10 @@ public class PostBattleManager : MonoBehaviour
         BuildPanes();
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start() => scene.FadeIn();
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         if (_nextButton != null)
@@ -132,6 +135,7 @@ public class PostBattleManager : MonoBehaviour
 
     #region Scene Setup
 
+    /// <summary>Resolve scene references.</summary>
     private void ResolveSceneReferences()
     {
         var contentGO = GameObject.Find(GameObjectHelper.PostBattleScreen.Content);
@@ -156,6 +160,7 @@ public class PostBattleManager : MonoBehaviour
         }
     }
 
+    /// <summary>Resolve prefabs and config.</summary>
     private void ResolvePrefabsAndConfig()
     {
         nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
@@ -163,6 +168,7 @@ public class PostBattleManager : MonoBehaviour
             nextSceneName = SceneHelper.Hub; // go to Hub by default
     }
 
+    /// <summary>Configure layout.</summary>
     private void ConfigureLayout()
     {
         if (_scrollContent == null) return;
@@ -182,6 +188,7 @@ public class PostBattleManager : MonoBehaviour
         _fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (!_monitoring || _panes.Count == 0) return;
@@ -192,6 +199,7 @@ public class PostBattleManager : MonoBehaviour
         }
     }
 
+    /// <summary>Enable next soons this component.</summary>
     private IEnumerator EnableNextSoon()
     {
         yield return new WaitForSeconds(AutoEnableDelay);
@@ -199,6 +207,7 @@ public class PostBattleManager : MonoBehaviour
             _nextButton.gameObject.SetActive(true);
     }
 
+    /// <summary>Creates the panes.</summary>
     private void BuildPanes()
     {
         if (_scrollContent == null) return;
@@ -223,6 +232,7 @@ public class PostBattleManager : MonoBehaviour
             StartCoroutine(EnableNextSoon());
     }
 
+    /// <summary>Creates the pane.</summary>
     private void CreatePane(CharacterClass character, bool inParty, int xpGained)
     {
         if (_scrollContent == null) return;
@@ -252,6 +262,7 @@ public class PostBattleManager : MonoBehaviour
         }
     }
 
+    /// <summary>Handles the next event.</summary>
     private void OnNext()
     {
         var save = ProfileHelper.CurrentProfile.CurrentSave;

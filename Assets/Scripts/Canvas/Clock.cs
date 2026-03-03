@@ -79,6 +79,7 @@ public sealed class Clock : MonoBehaviour
     private float lastEffectiveScale = -1f;
     private int lastSiblingCount = -1;
 
+    /// <summary>Caches components, configures text settings, and performs initial layout and time display.</summary>
     private void OnEnable()
     {
         rect = GetComponent<RectTransform>();
@@ -100,6 +101,7 @@ public sealed class Clock : MonoBehaviour
         UpdateClock(true);
     }
 
+    /// <summary>Monitors safe area and screen changes to reposition, and updates the clock text each second.</summary>
     private void Update()
     {
 #if UNITY_EDITOR
@@ -144,7 +146,7 @@ public sealed class Clock : MonoBehaviour
         }
     }
 
-    // Overlay hookup
+    /// <summary>Parents the clock under the CutoutOverlay's LeftPane if not already there.</summary>
     private void EnsureInOverlay()
     {
         var overlay = FindFirstObjectByType<CutoutOverlay>(FindObjectsInactive.Include);
@@ -160,7 +162,7 @@ public sealed class Clock : MonoBehaviour
         }
     }
 
-    // Equal width logic
+    /// <summary>Configures anchors and layout for equal-width distribution among sibling pane elements.</summary>
     private void JoinPaneForEqualWidth()
     {
         if (rect == null || rect.parent == null) return;
@@ -206,7 +208,7 @@ public sealed class Clock : MonoBehaviour
         rect.offsetMax = Vector2.zero;
     }
 
-    // Layout
+    /// <summary>Positions the clock element within its cell, applying safe area insets and padding.</summary>
     private void AnchorAndPosition(bool force)
     {
         if (rect == null) return;
@@ -234,7 +236,7 @@ public sealed class Clock : MonoBehaviour
         rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, fontSize + 8f);
     }
 
-    // Time text
+    /// <summary>Updates the displayed time string using the configured format.</summary>
     private void UpdateClock(bool force)
     {
         if (clockText == null) return;
@@ -248,7 +250,7 @@ public sealed class Clock : MonoBehaviour
         }
     }
 
-    // Helpers
+    /// <summary>Returns the number of active children under the given transform.</summary>
     private int CountActiveChildren(Transform t)
     {
         int c = 0;
@@ -257,6 +259,7 @@ public sealed class Clock : MonoBehaviour
         return c;
     }
 
+    /// <summary>Returns the index of this transform among its active siblings.</summary>
     private int ActiveSiblingIndex(Transform me)
     {
         var p = me.parent;

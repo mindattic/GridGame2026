@@ -68,11 +68,13 @@ public class FootstepManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         threshold = 0.01f;
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         if (target == null)

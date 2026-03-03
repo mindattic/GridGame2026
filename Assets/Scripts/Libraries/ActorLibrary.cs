@@ -67,6 +67,7 @@ namespace Scripts.Libraries
             }
         }
 
+        /// <summary>Get.</summary>
         public static ActorData Get(CharacterClass key)
         {
             if (!isLoaded)
@@ -75,6 +76,7 @@ namespace Scripts.Libraries
             return actors != null && actors.TryGetValue(key, out ActorData data) ? data : null;
         }
 
+        /// <summary>Get.</summary>
         public static ActorData Get(string key)
         {
             if (!isLoaded)
@@ -86,6 +88,7 @@ namespace Scripts.Libraries
             return null;
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;

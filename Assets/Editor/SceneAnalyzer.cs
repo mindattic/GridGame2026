@@ -57,18 +57,21 @@ public class SceneAnalyzer : EditorWindow
     private int maxDepth = 20;
 
     [MenuItem("Tools/Scene Analyzer")]
+    /// <summary>Show windows this component.</summary>
     public static void ShowWindow()
     {
         GetWindow<SceneAnalyzer>("Scene Analyzer");
     }
 
     [MenuItem("Tools/Analyze Current Scene")]
+    /// <summary>Analyze current scene menu.</summary>
     public static void AnalyzeCurrentSceneMenu()
     {
         var scene = SceneManager.GetActiveScene();
         AnalyzeScene(scene, true, true, true, true, true, 20);
     }
 
+    /// <summary>Draws immediate-mode GUI elements.</summary>
     private void OnGUI()
     {
         EditorGUILayout.LabelField("Scene Analyzer", EditorStyles.boldLabel);
@@ -97,6 +100,7 @@ public class SceneAnalyzer : EditorWindow
         }
     }
 
+    /// <summary>Analyze all scenes.</summary>
     private void AnalyzeAllScenes()
     {
         var scenes = EditorBuildSettings.scenes;
@@ -110,6 +114,7 @@ public class SceneAnalyzer : EditorWindow
         Debug.Log($"Analyzed {scenes.Length} scenes");
     }
 
+    /// <summary>Analyze scene.</summary>
     public static void AnalyzeScene(Scene scene, bool includeInactive, bool includeTransforms, 
         bool includeRenderers, bool includeUI, bool includeScripts, int maxDepth)
     {
@@ -178,6 +183,7 @@ public class SceneAnalyzer : EditorWindow
         EditorUtility.RevealInFinder(outputPath);
     }
 
+    /// <summary>Collect all objects.</summary>
     private static void CollectAllObjects(GameObject obj, List<GameObject> list, bool includeInactive)
     {
         if (!includeInactive && !obj.activeInHierarchy) return;
@@ -189,6 +195,7 @@ public class SceneAnalyzer : EditorWindow
         }
     }
 
+    /// <summary>Analyze game object.</summary>
     private static void AnalyzeGameObject(GameObject obj, int depth, StringBuilder sb,
         bool includeInactive, bool includeTransforms, bool includeRenderers, 
         bool includeUI, bool includeScripts, int maxDepth)
@@ -306,6 +313,7 @@ public class SceneAnalyzer : EditorWindow
         }
     }
 
+    /// <summary>Format vector3.</summary>
     private static string FormatVector3(Vector3 v)
     {
         if (v == Vector3.zero) return "(0,0,0)";

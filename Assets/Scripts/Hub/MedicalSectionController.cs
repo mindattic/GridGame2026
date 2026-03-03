@@ -44,11 +44,13 @@ public class MedicalSectionController : MonoBehaviour
     private HubManager hub;
     private Dictionary<CharacterClass, float> heroHealth = new Dictionary<CharacterClass, float>();
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(HubManager hubManager)
     {
         hub = hubManager;
     }
 
+    /// <summary>Handles the activated event.</summary>
     public void OnActivated() { }
 
     /// <summary>Restore hero to full HP.</summary>
@@ -72,6 +74,7 @@ public class MedicalSectionController : MonoBehaviour
         heroHealth[hero] = GetMaxHP(hero);
     }
 
+    /// <summary>Gets the max hp.</summary>
     private float GetMaxHP(CharacterClass hero)
     {
         var data = ActorLibrary.Get(hero);

@@ -71,6 +71,7 @@ public class TreeInstance : MonoBehaviour
     private float swayPhase;
     private bool isVisible;
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -83,6 +84,7 @@ public class TreeInstance : MonoBehaviour
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         TryCacheHero();
@@ -92,12 +94,14 @@ public class TreeInstance : MonoBehaviour
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable()
     {
         StopIdleSway();
         SetLocalEulerX(foldAngleX);
     }
 
+    /// <summary>Called when the renderer becomes visible by any camera.</summary>
     private void OnBecameVisible()
     {
         isVisible = true;
@@ -105,12 +109,14 @@ public class TreeInstance : MonoBehaviour
         StartIdleSwayIfAllowed();
     }
 
+    /// <summary>Called when the renderer is no longer visible by any camera.</summary>
     private void OnBecameInvisible()
     {
         isVisible = false;
         StopIdleSway();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (!isVisible) return;
@@ -120,6 +126,7 @@ public class TreeInstance : MonoBehaviour
         YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Try cache hero.</summary>
     private static void TryCacheHero()
     {
         if (hero == null) hero = Object.FindObjectOfType<OverworldHero>();
@@ -128,6 +135,7 @@ public class TreeInstance : MonoBehaviour
     }
 
     // === Idle sway (no trigger required) ===
+    /// <summary>Coroutine that executes the idle sway sequence.</summary>
     private IEnumerator IdleSwayRoutine()
     {
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
@@ -140,6 +148,7 @@ public class TreeInstance : MonoBehaviour
         idleSwayRoutineRef = null;
     }
 
+    /// <summary>Start idle sway if allowed.</summary>
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
@@ -148,6 +157,7 @@ public class TreeInstance : MonoBehaviour
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }
 
+    /// <summary>Stop idle sway.</summary>
     private void StopIdleSway()
     {
         if (idleSwayRoutineRef != null)
@@ -157,6 +167,7 @@ public class TreeInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Sets the local euler x.</summary>
     private void SetLocalEulerX(float x)
     {
         Vector3 e = transform.localEulerAngles;

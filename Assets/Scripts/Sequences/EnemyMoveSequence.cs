@@ -55,6 +55,7 @@ namespace Scripts.Sequences
             this.enemy = enemy;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Safety: null or not in play should quietly skip.

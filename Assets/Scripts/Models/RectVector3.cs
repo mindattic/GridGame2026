@@ -43,6 +43,7 @@ public class RectVector3
         Left = left;
     }
 
+    /// <summary>Set.</summary>
     public void Set(Vector3 top, Vector3 right, Vector3 bottom, Vector3 left)
     {
         Top = top;

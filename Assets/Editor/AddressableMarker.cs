@@ -33,6 +33,7 @@ using Scripts.Utilities;
 public class AddressableMarker : Editor
 {
     [MenuItem("Tools/Create SpriteUnlitDefault Material")]
+    /// <summary>Creates the sprite unlit default material.</summary>
     public static void CreateSpriteUnlitDefaultMaterial()
     {
         var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
@@ -55,6 +56,7 @@ public class AddressableMarker : Editor
     }
 
     [MenuItem("Tools/Mark Actor Sprites as Addressable")]
+    /// <summary>Mark actor sprites as addressable.</summary>
     public static void MarkActorSpritesAsAddressable()
     {
         var settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -175,6 +177,7 @@ public class AddressableMarker : Editor
     }
 
     [MenuItem("Tools/Build Addressables (Editor)")]
+    /// <summary>Creates the addressables.</summary>
     public static void BuildAddressables()
     {
         // For Editor play mode, just refresh the asset database

@@ -162,6 +162,7 @@ namespace Scripts.Managers
  BeginHeroWindow();
  }
 
+ /// <summary>Begin hero window.</summary>
  private void BeginHeroWindow()
  {
  IsHeroTurn = true;
@@ -191,6 +192,7 @@ namespace Scripts.Managers
  g.SequenceManager.Execute();
  }
 
+ /// <summary>Begin enemy turn.</summary>
  public void BeginEnemyTurn(ActorInstance enemy)
  {
  UnityEngine.Debug.Log($"[TurnManager] BeginEnemyTurn called for {enemy?.name ?? "null"}, IsEnemyTurn={IsEnemyTurn}");
@@ -209,6 +211,7 @@ namespace Scripts.Managers
  g.SequenceManager.Execute();
  }
 
+ /// <summary>Updates the active indicators.</summary>
  private void UpdateActiveIndicators()
  {
  foreach (var a in g.Actors.All)
@@ -219,13 +222,17 @@ namespace Scripts.Managers
  }
 
  // Optional hook: call from outside after EndTurnSequence if needed
+ /// <summary>Notify enemy turn finished.</summary>
  public void NotifyEnemyTurnFinished()
  {
  if (lastEnemy != null) g.TimelineBar?.OnEnemyTurnFinished(lastEnemy);
  }
 
+ /// <summary>Handle hero turn focus.</summary>
  private void HandleHeroTurnFocus() { }
+ /// <summary>Applies the hero turn desaturation.</summary>
  public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
+ /// <summary>Restore full saturation.</summary>
  public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
 
  #endregion

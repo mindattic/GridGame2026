@@ -46,6 +46,7 @@ namespace Scripts.Sequences
     /// </summary>
     public class EnemySpawnSequence : SequenceEvent
     {
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Show any enemies flagged as spawnable

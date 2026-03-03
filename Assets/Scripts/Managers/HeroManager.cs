@@ -28,6 +28,7 @@ namespace Scripts.Managers
 {
 public class HeroManager : MonoBehaviour
 {
+    /// <summary>Glow.</summary>
     public void Glow()
     {
         foreach (var x in g.Actors.Heroes.Where(x => x != null && x.IsPlaying))

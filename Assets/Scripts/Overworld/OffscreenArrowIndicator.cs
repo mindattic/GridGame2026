@@ -81,6 +81,7 @@ public sealed class OffscreenArrowIndicator : MonoBehaviour
         set => margin = Mathf.Max(0f, value);
     }
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         arrowRect = GetComponent<RectTransform>();
@@ -97,6 +98,7 @@ public sealed class OffscreenArrowIndicator : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    /// <summary>Runs per-frame logic after all Update calls.</summary>
     private void LateUpdate()
     {
         float targetAlpha = 0f;
@@ -169,6 +171,7 @@ public sealed class OffscreenArrowIndicator : MonoBehaviour
         ApplyAlpha(targetAlpha);
     }
 
+    /// <summary>Applies the alpha.</summary>
     private void ApplyAlpha(float targetAlpha)
     {
         float dt = Application.isPlaying ? Time.deltaTime : 0f;

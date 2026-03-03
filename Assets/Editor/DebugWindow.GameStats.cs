@@ -27,6 +27,7 @@ public partial class DebugWindow
 {
     // Draws focused actor, input mode, current turn, and sequence details.
     // Safe during scene switches: avoids HasFocusedActor and null-guards all managers.
+    /// <summary>Render game stats.</summary>
     private void RenderGameStats()
     {
         GUILayout.BeginHorizontal();

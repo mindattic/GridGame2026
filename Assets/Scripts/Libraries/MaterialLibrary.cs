@@ -68,6 +68,7 @@ namespace Scripts.Libraries
             materials = null;
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;

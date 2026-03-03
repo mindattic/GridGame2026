@@ -72,6 +72,7 @@ public class VictoryAnnouncement : MonoBehaviour
     private Vector2 offscreenStart;   // computed in Start
     private Vector2 centerPos = Vector2.zero;
 
+    /// <summary>Resolves UI references via GameObjectHelper and caches the RectTransform.</summary>
     private void Awake()
     {
         // Resolve labels using GameObjectHelper strongly-typed paths.
@@ -82,6 +83,7 @@ public class VictoryAnnouncement : MonoBehaviour
         rect = root != null ? root.GetComponent<RectTransform>() : GetComponent<RectTransform>();
     }
 
+    /// <summary>Computes the off-screen start position and hides the banner by setting alpha to zero.</summary>
     private void Start()
     {
         // Compute an off-screen start position (above the viewport) based on canvas height.
@@ -112,6 +114,7 @@ public class VictoryAnnouncement : MonoBehaviour
         RestartAnimation();
     }
 
+    /// <summary>Starts the slide-in animation if not already running.</summary>
     private void RestartAnimation()
     {
         // Do not restart if already animating
@@ -121,6 +124,7 @@ public class VictoryAnnouncement : MonoBehaviour
         animationRoutine = StartCoroutine(AnimateSlideInRoutine());
     }
 
+    /// <summary>Slides the banner from off-screen down to center, then optionally holds.</summary>
     private IEnumerator AnimateSlideInRoutine()
     {
         // Ensure we start off-screen at the top edge
@@ -148,12 +152,14 @@ public class VictoryAnnouncement : MonoBehaviour
     // Helpers
     // ------------------------------------------------------------------------
 
+    /// <summary>Sets the text on both front and back TMP labels.</summary>
     private void SetText(string value)
     {
         if (back != null) back.text = value;
         if (front != null) front.text = value;
     }
 
+    /// <summary>Sets the alpha of the image and both text labels.</summary>
     private void SetLabelAlpha(float a)
     {
         if (image != null)

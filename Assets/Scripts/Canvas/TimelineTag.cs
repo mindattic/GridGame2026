@@ -152,6 +152,7 @@ namespace Scripts.Canvas
         // Tolerance for deciding a tag reached the left edge (in local pixels)
         private const float ReachTolerance =0.25f;
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
@@ -218,6 +219,7 @@ namespace Scripts.Canvas
             le.ignoreLayout = true;
         }
 
+        /// <summary>Wire.</summary>
         public void Wire(Image tagImage, CanvasGroup group)
         {
             if (tagImage != null) Tag = tagImage;
@@ -243,6 +245,7 @@ namespace Scripts.Canvas
         }
 
         // Handle pointer clicks on the tag to select the owner actor and show their card
+        /// <summary>Handles pointer click on this UI element.</summary>
         public void OnPointerClick(PointerEventData eventData)
         {
             if (Owner == null) 
@@ -251,6 +254,7 @@ namespace Scripts.Canvas
         }
 
         // Initialize using normalized coordinates and speed
+        /// <summary>Initializes initialize normalized.</summary>
         public void InitializeNormalized(ActorInstance owner, float leftX, float rightX, float startU, float uPerSec, System.Action<TimelineTag> onReached, float queueDelay = 0f)
         {
             Owner = owner;
@@ -316,6 +320,7 @@ namespace Scripts.Canvas
         }
 
         // Backward-compatible initializer
+        /// <summary>Initializes initialize.</summary>
         public void Initialize(ActorInstance owner, float leftEdgeX, float startX, float moveSpeedPxPerSec, System.Action<TimelineTag> onReached)
         {
             float width = Mathf.Max(1f, rightX - leftEdgeX);
@@ -324,6 +329,7 @@ namespace Scripts.Canvas
             InitializeNormalized(owner, leftEdgeX, rightX, startU, uSpeed, onReached);
         }
 
+        /// <summary>Updates the endpoints.</summary>
         public void UpdateEndpoints(float newLeftX, float newRightX)
         {
             // Preserve normalized u while endpoints shift
@@ -333,8 +339,11 @@ namespace Scripts.Canvas
             UpdateLabel();
         }
 
+        /// <summary>Pause.</summary>
         public void Pause() => paused = true;
+        /// <summary>Resume.</summary>
         public void Resume() => paused = false;
+        /// <summary>Sets the alpha.</summary>
         public void SetAlpha(float a) { if (CanvasGroup != null) CanvasGroup.alpha = Mathf.Clamp01(a); }
 
         /// <summary>
@@ -394,6 +403,7 @@ namespace Scripts.Canvas
         }
 
         // Set anchored x from normalized u (left-edge pivot guarantees alignment)
+        /// <summary>Applies the position.</summary>
         private void ApplyPosition()
         {
             if (Rect == null) return;
@@ -404,6 +414,7 @@ namespace Scripts.Canvas
             Rect.anchoredPosition = new Vector2(xPos, p.y);
         }
 
+        /// <summary>Sets the x.</summary>
         public void SetX(float xPos)
         {
             if (Rect != null)
@@ -423,6 +434,7 @@ namespace Scripts.Canvas
             UpdateLabel();
         }
 
+        /// <summary>Sets the u.</summary>
         public void SetU(float value)
         {
             u = Mathf.Clamp01(value);
@@ -430,8 +442,11 @@ namespace Scripts.Canvas
             UpdateLabel();
         }
 
+        /// <summary>Gets the u.</summary>
         public float GetU() => u;
+        /// <summary>Gets the u per sec.</summary>
         public float GetUPerSec() => uPerSec;
+        /// <summary>Gets the queue timer.</summary>
         public float GetQueueTimer() => queueTimer;
         
         /// <summary>
@@ -448,6 +463,7 @@ namespace Scripts.Canvas
             UpdateLabel();
         }
         
+        /// <summary>Gets the seconds remaining.</summary>
         public float GetSecondsRemaining()
         {
             float moveTime = uPerSec <= 0f ? 0f : Mathf.Max(0f, u / uPerSec);
@@ -505,6 +521,7 @@ namespace Scripts.Canvas
             Mode = TimelineTagMode.PushedBack;
         }
 
+        /// <summary>Runs per-frame update logic.</summary>
         private void Update()
         {
             if (isFading) return;
@@ -544,6 +561,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Updates the queued.</summary>
         private void UpdateQueued()
         {
             if (paused) return;
@@ -558,6 +576,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Updates the approaching.</summary>
         private void UpdateApproaching()
         {
             if (paused) return;
@@ -567,6 +586,7 @@ namespace Scripts.Canvas
             ApplyPosition();
         }
 
+        /// <summary>Updates the pushed back.</summary>
         private void UpdatePushedBack()
         {
             // Pushback animation runs even when paused (it's a reaction to being hit)
@@ -613,6 +633,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Updates the stunned.</summary>
         private void UpdateStunned()
         {
             // Stun recovery runs even when paused (it's a status effect)
@@ -625,6 +646,7 @@ namespace Scripts.Canvas
         }
 
         // Helper for debugging: return a path for a transform (useful in logs)
+        /// <summary>Gets the transform path.</summary>
         private string GetTransformPath(Transform t)
         {
             if (t == null) return "<null>";
@@ -639,6 +661,7 @@ namespace Scripts.Canvas
             return string.Join("/", parts);
         }
 
+        /// <summary>Updates the label.</summary>
         private void UpdateLabel()
         {
             if (Label == null) return;
@@ -646,6 +669,7 @@ namespace Scripts.Canvas
             Label.text = sec.ToString("0.0");
         }
 
+        /// <summary>Applies the label alpha.</summary>
         private void ApplyLabelAlpha()
         {
             if (Label == null) return;
@@ -653,6 +677,7 @@ namespace Scripts.Canvas
             Label.color = new Color(c.r, c.g, c.b, labelAlpha);
         }
 
+        /// <summary>Start label fade in.</summary>
         private void StartLabelFadeIn()
         {
             if (labelFadeCoroutine != null)
@@ -660,6 +685,7 @@ namespace Scripts.Canvas
             labelFadeCoroutine = StartCoroutine(LabelFadeInRoutine());
         }
 
+        /// <summary>Coroutine that executes the label fade in sequence.</summary>
         private IEnumerator LabelFadeInRoutine()
         {
             float startAlpha = labelAlpha;
@@ -678,6 +704,7 @@ namespace Scripts.Canvas
             labelFadeCoroutine = null;
         }
 
+        /// <summary>Fade and destroy.</summary>
         public void FadeAndDestroy(float duration =0.25f)
         {
             if (isFading) return;
@@ -685,6 +712,7 @@ namespace Scripts.Canvas
             StartCoroutine(FadeOutAndDestroy(duration));
         }
 
+        /// <summary>Fade out and destroy.</summary>
         private IEnumerator FadeOutAndDestroy(float duration)
         {
             float t =0f;

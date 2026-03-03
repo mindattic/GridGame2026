@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class MarshShambler01
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

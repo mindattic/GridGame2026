@@ -55,11 +55,13 @@ public class ActorActionBar
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
     private ActorInstance instance;
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;
     }
 
+    /// <summary>Gets the scale.</summary>
     private Vector3 GetScale(float value)
     {
         return new Vector3(
@@ -68,6 +70,7 @@ public class ActorActionBar
             initialScale.z);
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     public void Update()
     {
         render.actionBarDrain.transform.localScale = GetScale(stats.PreviousAP);
@@ -79,6 +82,7 @@ public class ActorActionBar
 
     // Drain starts the drain coroutine to Animation the reduction of the drain fill,
     // but only if the actor actors is active.
+    /// <summary>Drain.</summary>
     private void Drain()
     {
         if (instance.IsActive)
@@ -88,6 +92,7 @@ public class ActorActionBar
     // DrainRoutine is a coroutine that gradually reduces the displayed AP on the drain fill until it matches the CurrentProfile AP.
     // It waits for a brief interval before starting, then decreases Stats.PreviousAP in increments,
     // updating the scale of the drain fill each tick.
+    /// <summary>Coroutine that executes the drain sequence.</summary>
     private IEnumerator DrainRoutine()
     {
         // Abort if no drain is required (i.e., CurrentProfile AP equals previous AP).
@@ -116,6 +121,7 @@ public class ActorActionBar
     }
 
     // Fill starts the coroutine that fills the Animation fill (increasing AP) if conditions are met.
+    /// <summary>Fill.</summary>
     public void Fill()
     {
         if (instance.IsActive)
@@ -124,6 +130,7 @@ public class ActorActionBar
 
     // FillRoutine is a coroutine that incrementally increases the actor's AP based on its Intelligence stat.
     // It continues to increase AP until the actor reaches max AP or one of the abort conditions occurs.
+    /// <summary>Coroutine that executes the fill sequence.</summary>
     private IEnumerator FillRoutine()
     {
         // Abort the fill process if:
@@ -157,6 +164,7 @@ public class ActorActionBar
     }
 
     // Reset sets the actor's AP values to zero and refreshes the Animation fill UI.
+    /// <summary>Resets component to default values (editor only).</summary>
     public void Reset()
     {
         stats.AP = 0;
@@ -166,6 +174,7 @@ public class ActorActionBar
 
     // AddInitiative provides a small initial AP value based on the actor's Intelligence stat.
     // This is used to seed the initiative system, allowing for a randomized start.
+    /// <summary>Add initiative.</summary>
     public void AddInitiative()
     {
         // TODO: Consider incorporating Stats.Luck for more nuanced randomization.

@@ -31,6 +31,7 @@ namespace Scripts.Sequences
             this.actor = actor;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             yield return g.PortraitManager.PopOutRoutine(actor);

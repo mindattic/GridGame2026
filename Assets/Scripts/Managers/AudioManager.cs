@@ -47,6 +47,7 @@ namespace Scripts.Managers
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
+    /// <summary>Play.</summary>
     public void Play(string sfx)
     {
         var soundEffect = SoundEffectLibrary.SoundEffects[sfx];
@@ -78,6 +79,7 @@ public class AudioManager : MonoBehaviour
             StartCoroutine(InvokeAfter(soundEffect.length, routine));
     }
 
+    /// <summary>Invoke after.</summary>
     private IEnumerator InvokeAfter(float seconds, IEnumerator routine)
     {
         if (seconds > 0f)

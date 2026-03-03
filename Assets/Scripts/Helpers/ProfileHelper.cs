@@ -558,6 +558,7 @@ namespace Scripts.Helpers
         // ---------------------------------------------------------------------
 
         // Renamed from LoadSettings to avoid overload conflict with the public void LoadSettings method.
+        /// <summary>Load or create settings.</summary>
         private static ProfileSettings LoadOrCreateSettings(Profile profile)
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Folder))
@@ -583,6 +584,7 @@ namespace Scripts.Helpers
             return ProfileHelper.DefaultSettings;
         }
 
+        /// <summary>Save settings.</summary>
         private static void SaveSettings(Profile profile, ProfileSettings settings)
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Folder) || settings == null)
@@ -599,6 +601,7 @@ namespace Scripts.Helpers
             }
         }
 
+        /// <summary>Ensure settings.</summary>
         public static void EnsureSettings(Profile profile)
         {
             if (profile == null) return;
@@ -609,12 +612,14 @@ namespace Scripts.Helpers
             }
         }
 
+        /// <summary>Gets the settings path.</summary>
         public static string GetSettingsPath(Profile profile)
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Folder)) return null;
             return Path.Combine(profile.Folder, SettingsFileName);
         }
 
+        /// <summary>Load settings.</summary>
         public static void LoadSettings(Profile profile = null)
         {
             profile ??= CurrentProfile;
@@ -641,6 +646,7 @@ namespace Scripts.Helpers
             EnsureSettings(profile);
         }
 
+        /// <summary>Save settings.</summary>
         public static void SaveSettings(Profile profile = null)
         {
             profile ??= CurrentProfile;
@@ -663,11 +669,13 @@ namespace Scripts.Helpers
         // Save Management
         // ---------------------------------------------------------------------
 
+        /// <summary>Save.</summary>
         public static bool Save(bool overwrite = true)
         {
             return overwrite ? OverwriteSave() : CreateSave();
         }
 
+        /// <summary>Creates the save.</summary>
         private static bool CreateSave()
         {
             if (!HasCurrentSave)
@@ -701,6 +709,7 @@ namespace Scripts.Helpers
             }
         }
 
+        /// <summary>Overwrite save.</summary>
         private static bool OverwriteSave()
         {
             if (!HasCurrentSave)
@@ -772,6 +781,7 @@ namespace Scripts.Helpers
         // ---------------------------------------------------------------------
         // Overworld helpers
         // ---------------------------------------------------------------------
+        /// <summary>Save overworld position.</summary>
         public static void SaveOverworldPosition(Vector2 heroLocal, string mapName, string facing)
         {
             if (!HasCurrentSave) return;
@@ -784,6 +794,7 @@ namespace Scripts.Helpers
             Save(true);
         }
 
+        /// <summary>Gets the overworld.</summary>
         public static OverworldSaveData GetOverworld() => Overworld;
 
         #endregion

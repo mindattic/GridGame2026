@@ -55,6 +55,7 @@ public class LoadingScreenLore : MonoBehaviour
     private List<string> lore = new List<string>();
 
 
+    /// <summary>Resolves the TMP text reference and populates the lore collection.</summary>
     private void Awake()
     {
 
@@ -110,6 +111,7 @@ public class LoadingScreenLore : MonoBehaviour
         lore.Add("The Aether swallows names, leaving wanderers nameless. � Nameless Song");
     }
 
+    /// <summary>Displays a random lore entry on first frame.</summary>
     private void Start()
     {
       
@@ -117,7 +119,7 @@ public class LoadingScreenLore : MonoBehaviour
         Show();
     }
 
-    // Picks one random lore line each time the loading screen appears
+    /// <summary>Picks and displays a random lore line from the collection.</summary>
     public void Show()
     {
         if (lore.Count == 0 || loreText == null)

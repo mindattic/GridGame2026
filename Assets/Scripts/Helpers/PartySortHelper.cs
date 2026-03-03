@@ -87,6 +87,7 @@ public static class PartySortHelper
             sr.sortingLayerID = layerId;
     }
 
+    /// <summary>Refreshes the refresh if needed.</summary>
     private static void RefreshIfNeeded()
     {
         if (Time.unscaledTime < nextRefresh && party.Count > 0) return;
@@ -110,6 +111,7 @@ public static class PartySortHelper
         nextRefresh = Time.unscaledTime + refreshInterval;
     }
 
+    /// <summary>Gets the closest to y.</summary>
     public static SpriteRenderer GetClosestToY(float y)
     {
         RefreshIfNeeded();
@@ -125,6 +127,7 @@ public static class PartySortHelper
         return best;
     }
 
+    /// <summary>Gets the lowest y.</summary>
     public static SpriteRenderer GetLowestY()
     {
         RefreshIfNeeded();
@@ -140,6 +143,7 @@ public static class PartySortHelper
         return best;
     }
 
+    /// <summary>Gets the highest y.</summary>
     public static SpriteRenderer GetHighestY()
     {
         RefreshIfNeeded();
@@ -155,6 +159,7 @@ public static class PartySortHelper
         return best;
     }
 
+    /// <summary>Gets the closest below.</summary>
     public static SpriteRenderer GetClosestBelow(float y)
     {
         RefreshIfNeeded();
@@ -169,6 +174,7 @@ public static class PartySortHelper
         return best;
     }
 
+    /// <summary>Gets the closest above.</summary>
     public static SpriteRenderer GetClosestAbove(float y)
     {
         RefreshIfNeeded();

@@ -79,6 +79,7 @@ namespace Scripts.Models
 
         public static CanvasThumbnailSettings Default => SetDefault();
 
+        /// <summary>Sets the default.</summary>
         public static CanvasThumbnailSettings SetDefault()
         {
             // Pos X = 0, Pos Y = -150, Width = 96, Height = 96, Scale = (4,4)

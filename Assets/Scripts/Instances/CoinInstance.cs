@@ -144,6 +144,7 @@ public class CoinInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -151,6 +152,7 @@ public class CoinInstance : MonoBehaviour
         transform.localScale = g.TileScale * scaleMultiplier;
     }
 
+    /// <summary>Creates the instance.</summary>
     public void Spawn(Vector3 position)
     {
         start = position;
@@ -178,6 +180,7 @@ public class CoinInstance : MonoBehaviour
         state = CoinState.Bounce;
     }
 
+    /// <summary>Random curve.</summary>
     private AnimationCurve RandomCurve()
     {
         int r = RNG.Int(1, 3);
@@ -186,6 +189,7 @@ public class CoinInstance : MonoBehaviour
         return sineCurve;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     public void Update()
     {
         switch (state)
@@ -206,6 +210,7 @@ public class CoinInstance : MonoBehaviour
         timeElapsed += Time.deltaTime;
     }
 
+    /// <summary>Bounce.</summary>
     private void Bounce()
     {
         // Apply gravity
@@ -240,6 +245,7 @@ public class CoinInstance : MonoBehaviour
         transform.position = pos;
     }
 
+    /// <summary>Seek.</summary>
     private void Seek()
     {
         t = Mathf.Clamp01(timeElapsed / moveDuration);
@@ -254,6 +260,7 @@ public class CoinInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Despawn.</summary>
     private void Despawn()
     {
         spriteRenderer.enabled = false;

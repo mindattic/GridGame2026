@@ -51,6 +51,7 @@ namespace Scripts.Sequences
             this.projectile = projectile;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             yield return g.ProjectileManager.SpawnRoutine(projectile);

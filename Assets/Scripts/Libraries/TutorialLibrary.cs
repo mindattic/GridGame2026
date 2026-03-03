@@ -59,6 +59,7 @@ namespace Scripts.Libraries
             }
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;
@@ -79,6 +80,7 @@ namespace Scripts.Libraries
             isLoaded = true;
         }
 
+        /// <summary>Get.</summary>
         public static Tutorial Get(string key)
         {
             if (!isLoaded) Load();

@@ -36,6 +36,7 @@ public class PointerManager : MonoBehaviour
     }
 
     // Method which is used for initialization tasks that need to occur before the game starts
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // No initialization required after cleanup.
@@ -43,6 +44,7 @@ public class PointerManager : MonoBehaviour
     }
 
     // Updates the cached pointer positions each frame using touch when available or mouse as a fallback.
+    /// <summary>Runs per-frame update logic.</summary>
     public void Update()
     {
         Vector2 screenPos = GetCurrentPointerScreenPosition();
@@ -58,6 +60,7 @@ public class PointerManager : MonoBehaviour
 
     // Returns the active pointer position in screen pixels.
     // Prefers the first touch when present, otherwise falls back to mouse position.
+    /// <summary>Gets the current pointer screen position.</summary>
     private static Vector2 GetCurrentPointerScreenPosition()
     {
         if (Input.touchCount > 0)

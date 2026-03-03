@@ -52,6 +52,7 @@ public class RockInstance : MonoBehaviour
 
     private bool isVisible;
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -62,23 +63,27 @@ public class RockInstance : MonoBehaviour
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         TryCacheHero();
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the renderer becomes visible by any camera.</summary>
     private void OnBecameVisible()
     {
         isVisible = true;
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the renderer is no longer visible by any camera.</summary>
     private void OnBecameInvisible()
     {
         isVisible = false;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (followHeroSorting)
@@ -86,6 +91,7 @@ public class RockInstance : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    /// <summary>Editor callback when inspector values change.</summary>
     private void OnValidate()
     {
         // Keep order correct in editor when moving objects
@@ -95,6 +101,7 @@ public class RockInstance : MonoBehaviour
     }
 #endif
 
+    /// <summary>Try cache hero.</summary>
     private static void TryCacheHero()
     {
         if (hero == null) hero = Object.FindObjectOfType<OverworldHero>();

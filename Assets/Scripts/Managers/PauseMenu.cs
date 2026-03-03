@@ -91,6 +91,7 @@ public class PauseMenu : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake() { }
 
     /// <summary>Wires up button events. Call after scene load.</summary>
@@ -159,6 +160,7 @@ public class PauseMenu : MonoBehaviour
     }
 
 
+    /// <summary>Toggles this component.</summary>
     public void Toggle()
     {
         if (IsPaused) 
@@ -167,6 +169,7 @@ public class PauseMenu : MonoBehaviour
             OnPauseButtonClicked();
     }
 
+    /// <summary>Pause.</summary>
     private void Pause()
     {
         Time.timeScale = 0f;
@@ -175,6 +178,7 @@ public class PauseMenu : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    /// <summary>Resume.</summary>
     private void Resume()
     {
         Time.timeScale = 1f;
@@ -183,52 +187,63 @@ public class PauseMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>Runaway.</summary>
     private void Runaway()
     {
         Time.timeScale = 1f;
         scene.Fade.ToOverworld();
     }
 
+    /// <summary>Handles the pause button clicked event.</summary>
     public void OnPauseButtonClicked() => Pause();
+    /// <summary>Handles the resume button clicked event.</summary>
     public void OnResumeButtonClicked() => Resume();
+    /// <summary>Handles the run away clicked event.</summary>
     public void OnRunAwayClicked() => Runaway();
 
+    /// <summary>Handles the quick save game button clicked event.</summary>
     public void OnQuickSaveGameButtonClicked()
     {
         ProfileHelper.Save(overwrite: true);
         Resume();
     }
 
+    /// <summary>Handles the create save game button clicked event.</summary>
     public void OnCreateSaveGameButtonClicked()
     {
         ProfileHelper.Save(overwrite: false);
         Resume();
     }
 
+    /// <summary>Handles the restart stage button clicked event.</summary>
     public void OnRestartStageButtonClicked()
     {
         g.StageManager.RestartStage();
         Resume();
     }
 
+    /// <summary>Handles the party manager button clicked event.</summary>
     public void OnPartyManagerButtonClicked()
     {
         Time.timeScale = 1f;
         scene.Fade.ToPartyManager();
     }
 
+    /// <summary>Handles the stage select button clicked event.</summary>
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
         scene.Fade.ToStageSelect();
     }
 
+    /// <summary>Handles the settings button clicked event.</summary>
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
         scene.Fade.ToSettings();
     }
 
+    /// <summary>Handles the quit button clicked event.</summary>
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;

@@ -137,6 +137,7 @@ public class PortraitInstance : MonoBehaviour
     }
 
     public SortingGroup sortingGroup => GetComponent<SortingGroup>();
+    /// <summary>Sets the sorting.</summary>
     public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
         var sg = sortingGroup;
@@ -145,6 +146,7 @@ public class PortraitInstance : MonoBehaviour
         sg.sortingOrder = sortingOrder;
     }
 
+    /// <summary>Initializes component references and state.</summary>
     protected void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -169,6 +171,7 @@ public class PortraitInstance : MonoBehaviour
         };
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy() => isBeingDestroyed = true;
 
     // =====================
@@ -252,6 +255,7 @@ public class PortraitInstance : MonoBehaviour
     // World (SpriteRenderer) FX
     // ==========================
 
+    /// <summary>Slide in.</summary>
     public IEnumerator SlideIn()
     {
         if (spriteRenderer == null)
@@ -308,6 +312,7 @@ public class PortraitInstance : MonoBehaviour
         Despawn();
     }
 
+    /// <summary>Pop in out.</summary>
     public IEnumerator PopInOut(float fadeDuration = 0.25f, float holdDuration = 0.25f, float rotateDuration = 0.2f)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -331,6 +336,7 @@ public class PortraitInstance : MonoBehaviour
         yield return PopOut(rotateDuration, fadeDuration);
     }
 
+    /// <summary>Pop in.</summary>
     public IEnumerator PopIn(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -380,6 +386,7 @@ public class PortraitInstance : MonoBehaviour
         popOutFrontRestorePos = originalFrontPos;
     }
 
+    /// <summary>Pop out.</summary>
     public IEnumerator PopOut(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -426,6 +433,7 @@ public class PortraitInstance : MonoBehaviour
         Despawn();
     }
 
+    /// <summary>Coroutine that executes the dissolve sequence.</summary>
     public IEnumerator DissolveRoutine(IEnumerator routine = null)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -456,6 +464,7 @@ public class PortraitInstance : MonoBehaviour
         Despawn();
     }
 
+    /// <summary>Align portrait with front.</summary>
     private void AlignPortraitWithFront(Vector3 frontAnchorPos)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -466,6 +475,7 @@ public class PortraitInstance : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
+    /// <summary>Despawn.</summary>
     protected void Despawn()
     {
         if (isBeingDestroyed) return;

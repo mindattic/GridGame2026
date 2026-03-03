@@ -37,6 +37,7 @@ public class TitleScreenManager : MonoBehaviour
     private RectTransform profileButton;
     private RectTransform profileButtonLabel;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // Always default to Campaign on title load
@@ -50,47 +51,56 @@ public class TitleScreenManager : MonoBehaviour
         profileButtonLabel.GetComponent<TextMeshProUGUI>().text = ProfileHelper.CurrentProfile.Key;
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         scene.FadeIn();
     }
 
+    /// <summary>Handles the continue button clicked event.</summary>
     public void OnContinueButtonClicked()
     {
         ProfileHelper.CurrentProfile.CurrentSave = ProfileHelper.CurrentProfile.LatestSave;
         scene.Fade.ToGame();
     }
 
+    /// <summary>Handles the load game button clicked event.</summary>
     public void OnLoadGameButtonClicked()
     {
         scene.Fade.ToSaveFileSelect();
     }
 
+    /// <summary>Handles the new game button clicked event.</summary>
     public void OnNewGameButtonClicked()
     {
         scene.Fade.ToProfileCreate();
     }
 
+    /// <summary>Handles the endless mode clicked event.</summary>
     public void OnEndlessModeClicked()
     {
         GameModeHelper.ToEndlessMode();
     }
 
+    /// <summary>Handles the party manager clicked event.</summary>
     public void OnPartyManagerClicked()
     {
         scene.Fade.ToPartyManager();
     }
 
+    /// <summary>Handles the settings button clicked event.</summary>
     public void OnSettingsButtonClicked()
     {
         scene.Fade.ToSettings();
     }
 
+    /// <summary>Handles the credits button clicked event.</summary>
     public void OnCreditsButtonClicked()
     {
         scene.Fade.ToCredits();
     }
 
+    /// <summary>Handles the change profile button clicked event.</summary>
     public void OnChangeProfileButtonClicked()
     {
         scene.Fade.ToProfileSelect();

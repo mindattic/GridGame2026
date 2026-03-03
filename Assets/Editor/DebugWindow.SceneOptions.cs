@@ -26,6 +26,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderScenes draws buttons to switch between different game scenes.
+    /// <summary>Render scenes.</summary>
     private void RenderScenes()
     {
         GUILayout.BeginHorizontal();

@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class Courier
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

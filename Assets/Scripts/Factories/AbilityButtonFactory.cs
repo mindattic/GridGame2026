@@ -65,6 +65,7 @@ namespace Scripts.Factories
     /// </summary>
     public static class AbilityButtonFactory
     {
+        /// <summary>Creates the instance.</summary>
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("AbilityButton");

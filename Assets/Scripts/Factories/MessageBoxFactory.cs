@@ -69,6 +69,7 @@ namespace Scripts.Factories
             fadeDuration = 0.1f
         };
 
+        /// <summary>Creates the instance.</summary>
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("MessageBox");
@@ -102,6 +103,7 @@ namespace Scripts.Factories
             return root;
         }
 
+        /// <summary>Creates the panel.</summary>
         private static GameObject CreatePanel(RectTransform parentRT)
         {
             var panel = new GameObject("Panel");
@@ -129,6 +131,7 @@ namespace Scripts.Factories
             return panel;
         }
 
+        /// <summary>Creates the prompt.</summary>
         private static GameObject CreatePrompt(RectTransform parentRT)
         {
             var prompt = new GameObject("Prompt");
@@ -159,6 +162,7 @@ namespace Scripts.Factories
             return prompt;
         }
 
+        /// <summary>Creates the ok button.</summary>
         private static GameObject CreateOkButton(RectTransform parentRT)
         {
             var button = new GameObject("ButtonOk");

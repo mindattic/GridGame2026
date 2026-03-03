@@ -35,6 +35,7 @@ public partial class DebugWindow
     private string canvasScaleY = "4";
     private CharacterClass lastCanvasKey = CharacterClass.None;
 
+    /// <summary>Render canvas thumbnail settings.</summary>
     private void RenderCanvasThumbnailSettings()
     {
         GUILayout.BeginHorizontal();
@@ -149,11 +150,13 @@ public partial class DebugWindow
 #endif
     }
 
+    /// <summary>Preview canvas crop.</summary>
     private void PreviewCanvasCrop(float x, float y, int w, int h, float sx, float sy)
     {
         // timeline removed: no live preview
     }
 
+    /// <summary>Applies the canvas crop to data.</summary>
     private void ApplyCanvasCropToData(float x, float y, int w, int h, float sx, float sy)
     {
         var actor = g.Actors.SelectedActor;

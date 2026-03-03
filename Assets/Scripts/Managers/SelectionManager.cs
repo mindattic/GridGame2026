@@ -95,6 +95,7 @@ public class SelectionManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         dragThreshold = g.TileSize * 0.25f;
@@ -159,6 +160,7 @@ public class SelectionManager : MonoBehaviour
 #endif
  }
 
+  /// <summary>Drag.</summary>
   public void Drag()
   {
   // Guard: Only allow dragging during PlayerTurn mode (not during ability targeting)
@@ -216,6 +218,7 @@ public class SelectionManager : MonoBehaviour
  }
  }
 
+  /// <summary>Drop.</summary>
   public void Drop()
   {
   // Guard: Only process drops during PlayerTurn mode to prevent state contamination

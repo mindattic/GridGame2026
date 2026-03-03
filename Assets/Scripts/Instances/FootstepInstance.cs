@@ -100,6 +100,7 @@ public class FootstepInstance : MonoBehaviour
 
     #region Unity Lifecycle
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         transform.localScale = g.TileScale / 2;
@@ -111,6 +112,7 @@ public class FootstepInstance : MonoBehaviour
 
     #region Spawn
 
+    /// <summary>Creates the instance.</summary>
     public void Spawn(Vector3 position, Quaternion rotation, bool isRightFoot)
     {
         this.Position = position;
@@ -120,6 +122,7 @@ public class FootstepInstance : MonoBehaviour
         StartCoroutine(FadeOutRoutine());
     }
 
+        /// <summary>Coroutine that executes the fade out sequence.</summary>
         private IEnumerator FadeOutRoutine()
         {
             yield return Wait.For(Duration);

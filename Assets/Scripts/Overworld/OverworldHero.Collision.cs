@@ -25,6 +25,7 @@ namespace Scripts.Overworld
 public partial class OverworldHero
 {
     // Predict a final stop position using a simple cast-based approach; fixed step for determinism
+    /// <summary>Predict stop.</summary>
     private Vector2 PredictStop(Vector2 start, Vector2 target)
     {
         Vector2 cur = start;
@@ -48,6 +49,7 @@ public partial class OverworldHero
         return cur;
     }
 
+    /// <summary>Returns whether the is party member condition is met.</summary>
     private static bool IsPartyMember(Collider2D c)
     {
         if (c == null) return false;
@@ -55,6 +57,7 @@ public partial class OverworldHero
     }
 
     // Performs a cast and updates nextPos with the planned position (with slide)
+    /// <summary>Plan cast move.</summary>
     private void PlanCastMove(ref Vector2 nextPos, Vector2 dir, float distance)
     {
         if (distance <= 1e-6f || dir.sqrMagnitude <= 1e-12f) return;
@@ -190,6 +193,7 @@ public partial class OverworldHero
     }
 
     // Chooses cast-and-slide; applies position and event
+    /// <summary>Move with cast.</summary>
     private void MoveWithCast(Vector2 displacement)
     {
         if (displacement.sqrMagnitude <= 1e-10f) return;

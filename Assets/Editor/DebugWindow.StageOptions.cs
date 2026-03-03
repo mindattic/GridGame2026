@@ -26,6 +26,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderLevels renders buttons for stage control: Load, Previous, and None.
+    /// <summary>Render levels.</summary>
     private void RenderLevels()
     {
         GUILayout.BeginHorizontal();
@@ -49,6 +50,7 @@ public partial class DebugWindow
 
     // Stage control methods:
     // Reloads the CurrentProfile stage.
+    /// <summary>Handles the reload stage click event.</summary>
     private void OnReloadStageClick() => g.StageManager.RestartStage();
     // Moves to the previous stage.
     //private void OnPreviousStageClick() => g.StageManager.Previous();

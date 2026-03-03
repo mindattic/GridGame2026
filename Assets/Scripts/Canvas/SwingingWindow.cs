@@ -76,6 +76,7 @@ public class SwingingWindow : MonoBehaviour
     private float currentVelocity = 0f;
     private Queue<float> targetRotations = new Queue<float>();
 
+    /// <summary>Initializes wind, acceleration, and wiggle parameters with default values.</summary>
     private void Awake()
     {
         minAngle = -90f;
@@ -97,12 +98,14 @@ public class SwingingWindow : MonoBehaviour
         currentYRotation = 0f;
     }
 
+    /// <summary>Generates the initial rotation target and starts the swing coroutine.</summary>
     void Start()
     {
         GenerateRotationBuffer();
         StartCoroutine(SwingWindowRoutine());
     }
 
+    /// <summary>Enqueues a new random target rotation within the configured angle range.</summary>
     private void GenerateRotationBuffer()
     {
         float initialRotation = 0f;
@@ -111,6 +114,7 @@ public class SwingingWindow : MonoBehaviour
         targetRotations.Enqueue(initialRotation);
     }
 
+    /// <summary>Continuously rotates toward queued targets with wind-driven acceleration and wiggle overlay.</summary>
     private IEnumerator SwingWindowRoutine()
     {
         while (true)

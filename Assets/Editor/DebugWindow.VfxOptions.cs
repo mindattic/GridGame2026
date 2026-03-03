@@ -26,6 +26,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderVfxOptions renders a dropdown to select a VfxManager option and a Bounce button.
+    /// <summary>Render vfx options.</summary>
     private void RenderVfxOptions()
     {
         GUILayout.BeginHorizontal();
@@ -38,6 +39,7 @@ public partial class DebugWindow
     }
 
     // OnPlayVFXClick plays a visual effects test based on the selected VfxManager option.
+    /// <summary>Handles the play vfx click event.</summary>
     private void OnPlayVFXClick()
     {
         switch (selectedVfx)

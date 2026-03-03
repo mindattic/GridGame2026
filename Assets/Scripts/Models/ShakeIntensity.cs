@@ -54,6 +54,7 @@ public static class ShakeIntensity
     public static float Low { get; private set; }
     public static float Stop { get; private set; } = 0f;
 
+    /// <summary>Initializes initialize.</summary>
     public static void Initialize(float tileSize)
     {
         TileSize = tileSize;

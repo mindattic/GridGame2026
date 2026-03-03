@@ -93,6 +93,7 @@ public class ActorCard : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Caches UI references, initializes animation curves, computes layout, and clears card.</summary>
     private void Awake()
     {
         card = GameObjectHelper.Game.Card.Rect;
@@ -115,16 +116,19 @@ public class ActorCard : MonoBehaviour
         GameReady.Begin(this);
     }
 
+    /// <summary>Recomputes layout after the first frame to account for canvas sizing.</summary>
     private void Start()
     {
         RecomputeLayout();
     }
 
+    /// <summary>Recalculates layout when the card's RectTransform dimensions change.</summary>
     private void OnRectTransformDimensionsChange()
     {
         RecomputeLayout();
     }
 
+    /// <summary>Populates the card with the currently selected actor's portrait, name, and stats.</summary>
     public void Assign()
     {
         if (!g.Actors.HasSelectedActor) return;
@@ -174,6 +178,7 @@ public class ActorCard : MonoBehaviour
         SetAlpha(detailsCG, 1f);
     }
 
+    /// <summary>Immediately sets all card elements to full visibility without animation.</summary>
     private void SlideIn()
     {
         // Immediate ensure visible; no fade/slide
@@ -186,6 +191,7 @@ public class ActorCard : MonoBehaviour
         portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
     }
 
+    /// <summary>Coroutine that ensures full visibility immediately (animation removed).</summary>
     private IEnumerator SlideInRoutine(bool fadeText)
     {
         // No animation anymore; ensure fully visible immediately
@@ -198,6 +204,7 @@ public class ActorCard : MonoBehaviour
         yield break;
     }
 
+    /// <summary>Keeps all card elements visible (slide-out animation removed).</summary>
     public void SlideOut()
     {
         // No-op: keep visible
@@ -212,6 +219,7 @@ public class ActorCard : MonoBehaviour
         portrait.gameObject.SetActive(true);
     }
 
+    /// <summary>Coroutine that maintains visibility (slide-out animation removed).</summary>
     private IEnumerator SlideOutRoutine()
     {
         // No-op animation; maintain visibility
@@ -224,6 +232,7 @@ public class ActorCard : MonoBehaviour
         yield break;
     }
 
+    /// <summary>Resets the card to a blank state, clearing title and detail text.</summary>
     public void Clear()
     {
         StopAllCoroutines();
@@ -245,17 +254,20 @@ public class ActorCard : MonoBehaviour
         SetAlpha(portraitCG, 1f);
     }
 
+    /// <summary>Returns the portrait's world position converted from canvas coordinates.</summary>
     public Vector3 PortraitWorldPosition()
     {
         return UnitConversionHelper.Canvas.ToWorld(portrait.transform);
     }
 
+    /// <summary>Plays a vertical bounce animation on the portrait image.</summary>
     public void BouncePortrait(float percentOfScreenHeight = 0.03f, float bounceDuration = 0.3333f)
     {
         float bounceDistance = Screen.height * percentOfScreenHeight;
         StartCoroutine(BouncePortraitRoutine(bounceDistance, bounceDuration));
     }
 
+    /// <summary>Coroutine that moves the portrait up then back down with smooth easing.</summary>
     private IEnumerator BouncePortraitRoutine(float bounceDistance, float bounceDuration)
     {
         Vector2 originalPos = portrait.anchoredPosition;
@@ -283,6 +295,7 @@ public class ActorCard : MonoBehaviour
         portrait.anchoredPosition = originalPos;
     }
 
+    /// <summary>Immediately swaps the card's portrait, title, and details without animation.</summary>
     private IEnumerator QuickSwapRoutine(Sprite newSprite, string newTitle, string newDetails, bool fadeText)
     {
         // No fade or slide: swap immediately and stay visible
@@ -300,6 +313,7 @@ public class ActorCard : MonoBehaviour
         yield break;
     }
 
+    /// <summary>Recalculates portrait size and offscreen/destination positions based on current screen size.</summary>
     private void RecomputeLayout()
     {
         if (card == null || portrait == null) return;
@@ -315,6 +329,7 @@ public class ActorCard : MonoBehaviour
         offscreenPosition = new Vector3(width, 0f, 0f);
     }
 
+    /// <summary>Ensure canvas group.</summary>
     private static CanvasGroup EnsureCanvasGroup(RectTransform target)
     {
         var cg = target.GetComponent<CanvasGroup>();
@@ -322,11 +337,13 @@ public class ActorCard : MonoBehaviour
         return cg;
     }
 
+    /// <summary>Sets the alpha.</summary>
     private static void SetAlpha(CanvasGroup cg, float a)
     {
         if (cg != null) cg.alpha = a;
     }
 
+    /// <summary>Resets component to default values (editor only).</summary>
     private static void Reset(CanvasGroup cg)
     {
         if (cg == null) return;
@@ -335,6 +352,7 @@ public class ActorCard : MonoBehaviour
         cg.blocksRaycasts = false;
     }
 
+    /// <summary>Approximately vector2.</summary>
     private static bool ApproximatelyVector2(Vector2 a, Vector2 b, float tol = 0.5f)
     {
         return Mathf.Abs(a.x - b.x) <= tol && Mathf.Abs(a.y - b.y) <= tol;
@@ -344,6 +362,7 @@ public class ActorCard : MonoBehaviour
     // UI: Arrow buttons to cycle focused hero
     // --------------------------------------------------------------------------------------------
 
+    /// <summary>Cycle hero.</summary>
     private void CycleHero(int direction)
     {
         // Block during ability targeting flows to avoid conflicting UI states
@@ -381,11 +400,13 @@ public class ActorCard : MonoBehaviour
     }
 
     // Bind these in the Inspector to Card/ArrowLeft and Card/ArrowRight buttons
+    /// <summary>Handles the previous hero arrow click event.</summary>
     public void OnPreviousHeroArrowClick()
     {
         CycleHero(-1);
     }
 
+    /// <summary>Handles the next hero arrow click event.</summary>
     public void OnNextHeroArrowClick()
     {
         CycleHero(1);

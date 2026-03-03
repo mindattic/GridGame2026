@@ -54,6 +54,7 @@ namespace Scripts.Canvas
         [SerializeField] private Button NextStageButton;
         [SerializeField] private Button SpawnRandomEnemyButton;
 
+        /// <summary>Wires button click listeners on startup.</summary>
         private void Start()
         {
             ////SelectProfile anchors and pivot to center
@@ -72,6 +73,7 @@ namespace Scripts.Canvas
         }
 
 
+        /// <summary>Restarts the current stage when the Reload button is clicked.</summary>
         private void OnReloadStageButtonClicked()
         {
             g.StageManager.RestartStage();
@@ -87,6 +89,7 @@ namespace Scripts.Canvas
         //    g.StageManager.None();
         //}
 
+        /// <summary>Spawns a random enemy via DebugManager when the Spawn button is clicked.</summary>
         private void OnSpawnRandomEnemyButtonClicked()
         {
             g.DebugManager.SpawnRandomEnemy();

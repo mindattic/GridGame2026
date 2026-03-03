@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class Speedster
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

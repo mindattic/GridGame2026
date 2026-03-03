@@ -71,6 +71,7 @@ namespace Scripts.Models
     public class PincerAttackParticipants
     {
         public List<PincerAttackPair> pair = new();
+        /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
         public void Clear() => pair.Clear();
     }
 

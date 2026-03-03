@@ -86,6 +86,7 @@ public class CloudShadowInstance : MonoBehaviour
     // Visibility gate to save CPU when offscreen
     private bool _isVisible;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         _t = transform;
@@ -115,6 +116,7 @@ public class CloudShadowInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         NormalizeRanges();
@@ -150,6 +152,7 @@ public class CloudShadowInstance : MonoBehaviour
         ApplyRandomAlpha();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         // Early out when not visible by any camera unless we want to update offscreen
@@ -189,16 +192,19 @@ public class CloudShadowInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Called when the renderer becomes visible by any camera.</summary>
     private void OnBecameVisible()
     {
         _isVisible = true;
     }
 
+    /// <summary>Called when the renderer is no longer visible by any camera.</summary>
     private void OnBecameInvisible()
     {
         _isVisible = false;
     }
 
+    /// <summary>Respawn to right.</summary>
     private void RespawnToRight()
     {
         if (terrain == null) return;
@@ -230,6 +236,7 @@ public class CloudShadowInstance : MonoBehaviour
         ApplyRandomAlpha();
     }
 
+    /// <summary>Respawn to left.</summary>
     private void RespawnToLeft()
     {
         if (terrain == null) return;
@@ -262,6 +269,7 @@ public class CloudShadowInstance : MonoBehaviour
     }
 
     // Allow OverworldManager to prewarm clouds so they start distributed across the map
+    /// <summary>Prewarm distribute.</summary>
     public void PrewarmDistribute(int index, int total, Bounds mapBounds, Camera cam)
     {
         if (cam != null) worldCamera = cam;
@@ -287,6 +295,7 @@ public class CloudShadowInstance : MonoBehaviour
         _t.position = new Vector3(spawnX, spawnY, _t.position.z);
     }
 
+    /// <summary>Gets the camera x range on plane.</summary>
     private static void GetCameraXRangeOnPlane(Camera cam, float planeZ, out float xMin, out float xMax)
     {
         if (cam == null) cam = Camera.main;
@@ -302,6 +311,7 @@ public class CloudShadowInstance : MonoBehaviour
         xMax = Mathf.Max(w00.x, w10.x, w01.x, w11.x);
     }
 
+    /// <summary>Normalize ranges.</summary>
     private void NormalizeRanges()
     {
         if (speedRange.x > speedRange.y) { float t = speedRange.x; speedRange.x = speedRange.y; speedRange.y = t; }
@@ -316,6 +326,7 @@ public class CloudShadowInstance : MonoBehaviour
         alpha8bitRange.y = Mathf.Clamp(alpha8bitRange.y, alpha8bitRange.x, 255f);
     }
 
+    /// <summary>Maybe randomize flip.</summary>
     private void MaybeRandomizeFlip()
     {
         if (_sprite == null) return;
@@ -323,6 +334,7 @@ public class CloudShadowInstance : MonoBehaviour
         if (randomizeFlipY) _sprite.flipY = Random.value > 0.5f;
     }
 
+    /// <summary>Applies the random alpha.</summary>
     private void ApplyRandomAlpha()
     {
         if (_sprite == null) return;

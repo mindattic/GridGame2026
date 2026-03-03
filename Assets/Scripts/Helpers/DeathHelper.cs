@@ -28,7 +28,9 @@ namespace Scripts.Helpers
 {
     public static class DeathHelper
     {
+        /// <summary>Process.</summary>
         public static void Process(MonoBehaviour context) => context.StartCoroutine(ProcessRoutine());
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public static IEnumerator ProcessRoutine()
         {
             // find everyone who’s flagged as dying

@@ -254,6 +254,7 @@ namespace Scripts.Models
         }
 
         // 8-way neighbors (adjacent + diagonals)
+        /// <summary>Gets the neighbors.</summary>
         public IEnumerable<TileInstance> GetNeighbors(Vector2Int location, bool includeOccupied = true)
         {
             for (int i = 0; i < Neighbors.Length; i++)
@@ -267,6 +268,7 @@ namespace Scripts.Models
         }
 
         // 4-way neighbors (adjacent only: up, right, down, left)
+        /// <summary>Gets the adjacent neighbors.</summary>
         public IEnumerable<TileInstance> GetAdjacentNeighbors(Vector2Int location, bool includeOccupied = true)
         {
             for (int i = 0; i < Adjacents.Length; i++)
@@ -400,17 +402,20 @@ namespace Scripts.Models
 
         // Internal helpers
 
+        /// <summary>Gets the entry.</summary>
         private TileEntry GetEntry(Vector2Int location)
         {
             if (!InBounds(location.x, location.y)) return null;
             return grid[location.x, location.y];
         }
 
+        /// <summary>In bounds.</summary>
         private bool InBounds(int col, int row)
         {
             return col > 0 && row > 0 && col <= maxCol && row <= maxRow && grid != null;
         }
 
+        /// <summary>Ensure grid size.</summary>
         private void EnsureGridSize(int needCol, int needRow)
         {
             if (grid != null && needCol <= maxCol && needRow <= maxRow) return;
@@ -436,6 +441,7 @@ namespace Scripts.Models
             maxRow = newMaxRow;
         }
 
+        /// <summary>Next capacity.</summary>
         private static int NextCapacity(int need, int current)
         {
             if (current <= 0) return Math.Max(need, 8);
@@ -444,6 +450,7 @@ namespace Scripts.Models
             return cap;
         }
 
+        /// <summary>Column to letter.</summary>
         private static string ColumnToLetter(int col)
         {
             string result = string.Empty;

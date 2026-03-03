@@ -67,6 +67,7 @@ public class ScrollingRawImage : MonoBehaviour
     private Vector2 targetScrollFocus;
     private float nextChangeAt;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         GameReady.Begin(this);

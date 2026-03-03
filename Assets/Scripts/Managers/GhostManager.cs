@@ -83,6 +83,7 @@ public class GhostManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         threshold = g.TileSize / 12;

@@ -83,12 +83,14 @@ namespace Scripts.Managers
         public CameraWorldSpace world;
         public CameraLocalSpace local;
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             world = new CameraWorldSpace();
             local = new CameraLocalSpace();
         }
 
+        /// <summary>Screen to viewport.</summary>
         public Vector2 ScreenToViewport(Vector2 point, int pixelWidth, int pixelHeight)
         {
             float x = point.x / Camera.main.pixelWidth;
@@ -97,6 +99,7 @@ namespace Scripts.Managers
         }
 
 
+        /// <summary>Draws editor gizmos for this component.</summary>
         private void OnDrawGizmos()
         {
             var p = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Camera.main.nearClipPlane));

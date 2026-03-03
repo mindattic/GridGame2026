@@ -54,6 +54,7 @@ namespace Scripts.Sequences
             this.supporter = supporter;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // If supporter is a Cleric, heal the attacker

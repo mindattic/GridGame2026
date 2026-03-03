@@ -51,6 +51,7 @@ namespace Scripts.Sequences
             this.target = target;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             if (target == null || !target.IsPlaying)

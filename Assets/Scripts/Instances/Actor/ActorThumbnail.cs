@@ -85,6 +85,7 @@ public class ActorThumbnail : MonoBehaviour
     public Texture2D texture => spriteRenderer != null && spriteRenderer.sprite != null ? spriteRenderer.sprite.texture : null;
     public Sprite sprite => spriteRenderer != null ? spriteRenderer.sprite : null;
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -119,12 +120,14 @@ public class ActorThumbnail : MonoBehaviour
         }
     }
 
+    /// <summary>Set.</summary>
     public void Set(Vector3 position, Vector3 scale)
     {
         settings = new ThumbnailSettings(position, scale);
         ApplySettingsToTransform();
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(ActorInstance parentInstance)
     {
         instance = parentInstance;
@@ -148,6 +151,7 @@ public class ActorThumbnail : MonoBehaviour
         wobbleAmplitudeFactorY = 0.25f;
     }
 
+    /// <summary>Applies the settings to transform.</summary>
     private void ApplySettingsToTransform()
     {
         // Clamp localPosition so portrait cannot be pushed beyond the mask edges based on scale.
@@ -161,6 +165,7 @@ public class ActorThumbnail : MonoBehaviour
         transform.localScale = settings.Scale;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (spriteRenderer == null || settings == null)
@@ -205,6 +210,7 @@ public class ActorThumbnail : MonoBehaviour
         spriteRenderer.material.SetVector(MainTexOffsetId, new Vector4(offsetX, offsetY, 0f, 0f));
     }
 
+    /// <summary>Recalculate range multiplier.</summary>
     private void RecalculateRangeMultiplier()
     {
         var tex = texture;
@@ -218,6 +224,7 @@ public class ActorThumbnail : MonoBehaviour
         rangeMultiplier = 0.05f * (textureSize / 1024f);
     }
 
+    /// <summary>Reset cycle.</summary>
     private void ResetCycle()
     {
         nextPauseInterval = RNG.Float(3f, 7f);
@@ -226,6 +233,7 @@ public class ActorThumbnail : MonoBehaviour
         cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
     }
 
+    /// <summary>Evaluate pause multiplier.</summary>
     private float EvaluatePauseMultiplier(float t)
     {
         float rampDownStart = nextPauseInterval - pauseRampDuration;

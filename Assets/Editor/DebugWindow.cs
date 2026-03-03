@@ -50,12 +50,14 @@ public partial class DebugWindow : EditorWindow
     }
 
     [MenuItem("Window/Debug Window")]
+    /// <summary>Show windows this component.</summary>
     public static void ShowWindow()
     {
         instance = GetWindow<DebugWindow>("Debug Window");
         isOpen = true;
     }
 
+    /// <summary>Close window.</summary>
     public static void CloseWindow()
     {
         if (instance == null)
@@ -66,6 +68,7 @@ public partial class DebugWindow : EditorWindow
         isOpen = false;
     }
 
+    /// <summary>Handles the play mode state changed event.</summary>
     private static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
 #if UNITY_EDITOR_WIN
@@ -77,11 +80,13 @@ public partial class DebugWindow : EditorWindow
     }
 
 #if UNITY_EDITOR_WIN
+    /// <summary>Wait for game scene.</summary>
     private static void WaitForGameScene()
     {
         EditorApplication.update += CheckSceneLoad;
     }
 
+    /// <summary>Check scene load.</summary>
     private static void CheckSceneLoad()
     {
         if (!Application.isPlaying)
@@ -99,11 +104,13 @@ public partial class DebugWindow : EditorWindow
     }
 #endif
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         DelayCall(Initialize);
     }
 
+    /// <summary>Delay call.</summary>
     private static void DelayCall(Action action)
     {
         EditorApplication.delayCall += () =>
@@ -113,6 +120,7 @@ public partial class DebugWindow : EditorWindow
         };
     }
 
+    /// <summary>Initializes initialize.</summary>
     private void Initialize()
     {
         instance = this;
@@ -122,6 +130,7 @@ public partial class DebugWindow : EditorWindow
         EditorApplication.update += OnEditorUpdate;
     }
 
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable()
     {
         isOpen = false;
@@ -132,6 +141,7 @@ public partial class DebugWindow : EditorWindow
         EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
     }
 
+    /// <summary>Handles the editor update event.</summary>
     private void OnEditorUpdate()
     {
         if ((DateTime.Now - lastUpdateTime).TotalSeconds >= updateInterval)
@@ -141,6 +151,7 @@ public partial class DebugWindow : EditorWindow
         }
     }
 
+    /// <summary>Render button row.</summary>
     private void RenderButtonRow(params (string label, System.Action onClick)[] buttons)
     {
         GUILayout.BeginHorizontal();
@@ -164,6 +175,7 @@ public partial class DebugWindow : EditorWindow
         GUILayout.Space(4);
     }
 
+    /// <summary>Draws immediate-mode GUI elements.</summary>
     private void OnGUI()
     {
         // Only draw content while playing and while the active activeScene is Game.
@@ -219,6 +231,7 @@ public partial class DebugWindow : EditorWindow
         }
     }
 
+    /// <summary>Returns whether the is active scene game condition is met.</summary>
     private static bool IsActiveSceneGame()
     {
         var activeScene = SceneManager.GetActiveScene();

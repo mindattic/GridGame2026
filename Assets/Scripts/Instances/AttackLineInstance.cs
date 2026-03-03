@@ -72,6 +72,7 @@ namespace Scripts.Instances
         private Color color;
         private LineRenderer lineRenderer;
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             thickness = g.TileSize * 0.02f;
@@ -81,12 +82,14 @@ namespace Scripts.Instances
             lineRenderer = gameObject.GetComponent<LineRenderer>();
         }
 
+        /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
             lineRenderer.startWidth = thickness;
             lineRenderer.endWidth = thickness;
         }
 
+        /// <summary>Creates the instance.</summary>
         public void Spawn(ActorPair actorPair)
         {
             parent = g.Board.transform;
@@ -122,6 +125,7 @@ namespace Scripts.Instances
             StartCoroutine(FadeInRoutine());
         }
 
+        /// <summary>Coroutine that executes the fade in sequence.</summary>
         private IEnumerator FadeInRoutine()
         {
             float startAlpha = 0f;
@@ -140,11 +144,13 @@ namespace Scripts.Instances
             SetAlpha(alpha);
         }
 
+        /// <summary>Despawn.</summary>
         public void Despawn()
         {
             StartCoroutine(DespawnRoutine());
         }
 
+        /// <summary>Coroutine that executes the despawn sequence.</summary>
         public IEnumerator DespawnRoutine()
         {
             //Before:
@@ -167,6 +173,7 @@ namespace Scripts.Instances
             StopAllCoroutines();
         }
 
+        /// <summary>Sets the alpha.</summary>
         private void SetAlpha(float a)
         {
             color = new Color(baseColor.r, baseColor.g, baseColor.b, a);

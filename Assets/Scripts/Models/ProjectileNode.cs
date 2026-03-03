@@ -109,6 +109,7 @@ namespace Scripts.Models
             }
         }
 
+        /// <summary>Applies the trail world scale.</summary>
         private void ApplyTrailWorldScale(Transform tf, Vector3 tileScale, Vector3 relative)
         {
             if (tf == null) return;
@@ -300,11 +301,13 @@ namespace Scripts.Models
             }
         }
 
+        /// <summary>Lerp line.</summary>
         private Vector3 LerpLine(float t)
         {
             return Vector3.Lerp(start, end, t);
         }
 
+        /// <summary>Calculates the basis.</summary>
         private static void CalculateBasis(Vector3 dir, out Vector3 right, out Vector3 up, out Vector3 ortho)
         {
             var n = dir.sqrMagnitude > 1e-8f ? dir.normalized : Vector3.forward;

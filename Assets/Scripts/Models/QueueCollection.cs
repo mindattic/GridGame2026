@@ -61,10 +61,13 @@ namespace Scripts.Models
 
         private LinkedList<T> queue = new LinkedList<T>();
 
+        /// <summary>Add.</summary>
         public void Add(T item) => queue.AddLast(item);
 
+        /// <summary>Add first.</summary>
         public void AddFirst(T item) => queue.AddFirst(item);
 
+        /// <summary>Insert.</summary>
         public void Insert(T item, T node, InsertOrder order = InsertOrder.Before)
         {
             var nodeRef = queue.Find(node);
@@ -77,6 +80,7 @@ namespace Scripts.Models
                 queue.AddAfter(nodeRef, item);
         }
 
+        /// <summary> remove..Groups[0].Value.ToUpper() emove.</summary>
         public T Remove()
         {
             if (queue.Count == 0) return default;
@@ -85,6 +89,7 @@ namespace Scripts.Models
             return value;
         }
 
+        /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
         public void Clear()
         {
             queue.Clear();

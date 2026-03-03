@@ -76,8 +76,10 @@ namespace Scripts.Canvas
 
         #region Initialization
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake() { }
 
+        /// <summary>Resolves UI references from GameObjectHelper and marks the component as initialized.</summary>
         public void Initialize()
         {
             if (initialized) return;
@@ -93,6 +95,7 @@ namespace Scripts.Canvas
             initialized = true;
         }
 
+        /// <summary>Ensures initialization and toggles visibility based on debug tutorial setting.</summary>
         private void Start()
         {
             if (!initialized) Initialize();
@@ -100,6 +103,7 @@ namespace Scripts.Canvas
             if (panel != null) panel.SetActive(show);
         }
 
+        /// <summary>Loads tutorial pages and optionally shows the first page.</summary>
         public void Load(Tutorial tutorial, bool show = true)
         {
             if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
@@ -112,6 +116,7 @@ namespace Scripts.Canvas
                 Show();
         }
 
+        /// <summary>Displays the tutorial panel at the specified page index.</summary>
         public void Show(int currentPage = 0)
         {
             if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
@@ -121,6 +126,7 @@ namespace Scripts.Canvas
             Navigate();
         }
 
+        /// <summary>Updates the image, title, content, and button visibility for the current page.</summary>
         private void Navigate()
         {
             if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
@@ -135,6 +141,7 @@ namespace Scripts.Canvas
             if (closeButton != null) closeButton.gameObject.SetActive(currentPage == lastPage);
         }
 
+        /// <summary>Navigates to the previous tutorial page if available.</summary>
         public void PreviousPage()
         {
             if (currentPage > 0)
@@ -144,6 +151,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Navigates to the next tutorial page if available.</summary>
         public void NextPage()
         {
             if (currentPage < lastPage)
@@ -153,6 +161,7 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Hides the tutorial panel.</summary>
         public void Close()
         {
             if (panel != null) panel.SetActive(false);

@@ -76,6 +76,7 @@ public class HubManager : MonoBehaviour
     // Track active section.
     private RectTransform activePanel;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         ResolveSceneObjects();
@@ -87,6 +88,7 @@ public class HubManager : MonoBehaviour
         GoToPartySection();
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         // Unwire to prevent leaking listeners if Hub scene is unloaded.
@@ -100,11 +102,13 @@ public class HubManager : MonoBehaviour
     }
 
     // Fade in overlay once scene is fully started so Hub appears smoothly.
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         scene.FadeIn();
     }
 
+    /// <summary>Resolve scene objects.</summary>
     private void ResolveSceneObjects()
     {
         // Buttons
@@ -124,6 +128,7 @@ public class HubManager : MonoBehaviour
         blacksmithPanel = GameObject.Find(GameObjectHelper.Hub.BlacksmithPanel)?.GetComponent<RectTransform>();
     }
 
+    /// <summary>Attach tilt parallax.</summary>
     private void AttachTiltParallax()
     {
         void Ensure(RectTransform rt)
@@ -154,6 +159,7 @@ public class HubManager : MonoBehaviour
         if (blacksmithPanel != null) yield return blacksmithPanel;
     }
 
+    /// <summary>Wire button listeners.</summary>
     private void WireButtonListeners()
     {
         if (partyButton != null) { partyButton.onClick.RemoveListener(GoToPartySection); partyButton.onClick.AddListener(GoToPartySection); }

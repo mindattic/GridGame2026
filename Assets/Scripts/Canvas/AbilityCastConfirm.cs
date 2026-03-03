@@ -68,6 +68,7 @@ namespace Scripts.Canvas
 
         public CanvasGroup CanvasGroup => canvasGroup;
 
+        /// <summary>Caches singleton, resolves UI references, wires button events, and sets initial hidden state.</summary>
         private void Awake()
         {
             instance = this;
@@ -96,16 +97,19 @@ namespace Scripts.Canvas
             castBtn.onClick.AddListener(() => GameHelper.AbilityManager.OnCastButtonClicked());
         }
 
+        /// <summary>Sets the confirmation dialog title text.</summary>
         public void SetTitle(string text)
         {
             label.text = text ?? string.Empty;
         }
 
+        /// <summary>Clears the confirmation dialog title text.</summary>
         public void ClearTitle()
         {
             label.text = string.Empty;
         }
 
+        /// <summary>Toggles the dialog visibility and interactivity with a fade transition.</summary>
         public void Toggle(bool isActive = true)
         {
             // make interactable immediately so buttons respond once visible
@@ -119,6 +123,7 @@ namespace Scripts.Canvas
         }
 
 
+        /// <summary>Activates buttons and fades the canvas group to full opacity.</summary>
         public void FadeIn()
         {
             cancelBtn.gameObject.SetActive(true);
@@ -127,6 +132,7 @@ namespace Scripts.Canvas
             StartCoroutine(FadeGroupTo(1f, 0.12f));
         }
 
+        /// <summary>Hides buttons and fades the canvas group to zero opacity.</summary>
         public void FadeOut()
         {
             cancelBtn.gameObject.SetActive(false);
@@ -135,19 +141,21 @@ namespace Scripts.Canvas
             StartCoroutine(FadeGroupTo(0f, 0.12f));         
         }
 
-        // Expose explicit show/hide for buttons without changing canvas visibility
+        /// <summary>Activates Cast and Cancel buttons without changing canvas alpha.</summary>
         public void ShowButtons()
         {
             cancelBtn.gameObject.SetActive(true);
             castBtn.gameObject.SetActive(true);
         }
 
+        /// <summary>Deactivates Cast and Cancel buttons without changing canvas alpha.</summary>
         public void HideButtons()
         {
             cancelBtn.gameObject.SetActive(false);
             castBtn.gameObject.SetActive(false);
         }
 
+        /// <summary>Lerps the canvas group alpha to the target over the given duration.</summary>
         private IEnumerator FadeGroupTo(float targetAlpha, float duration)
         {
             // assume canvasGroup always present

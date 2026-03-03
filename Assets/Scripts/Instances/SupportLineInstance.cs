@@ -279,6 +279,7 @@ public class SupportLineInstance : MonoBehaviour
         DriveSparksStraight(p0, p1);
     }
 
+    /// <summary>Drive sparks straight.</summary>
     private void DriveSparksStraight(Vector3 p0, Vector3 p1)
     {
         // Ensure Z=0 for 2D
@@ -324,6 +325,7 @@ public class SupportLineInstance : MonoBehaviour
         g.SupportLineManager.Destroy(supporter, attacker);
     }
 
+    /// <summary>Stop and clear particles.</summary>
     private void StopAndClearParticles()
     {
         // Stop and clear all particle systems in the hierarchy to prevent lingering particles

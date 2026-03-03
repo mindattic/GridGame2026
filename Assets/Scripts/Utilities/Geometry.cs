@@ -138,41 +138,63 @@ public class Geometry
     // The following methods provide spatial relationship checks between ActorInstances or grid locations.
 
     // ActorInstance overloads:
+    /// <summary>Returns whether the is same column condition is met.</summary>
     public static bool IsSameColumn(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x;
+    /// <summary>Returns whether the is same row condition is met.</summary>
     public static bool IsSameRow(ActorInstance a, ActorInstance b)
         => a.location.y == b.location.y;
+    /// <summary>Returns whether the is north of condition is met.</summary>
     public static bool IsNorthOf(ActorInstance a, ActorInstance b)
         => IsSameColumn(a, b) && a.location.y == b.location.y - 1;
+    /// <summary>Returns whether the is east of condition is met.</summary>
     public static bool IsEastOf(ActorInstance a, ActorInstance b)
         => IsSameRow(a, b) && a.location.x == b.location.x + 1;
+    /// <summary>Returns whether the is south of condition is met.</summary>
     public static bool IsSouthOf(ActorInstance a, ActorInstance b)
         => IsSameColumn(a, b) && a.location.y == b.location.y + 1;
+    /// <summary>Returns whether the is west of condition is met.</summary>
     public static bool IsWestOf(ActorInstance a, ActorInstance b)
         => IsSameRow(a, b) && a.location.x == b.location.x - 1;
+    /// <summary>Returns whether the is north west of condition is met.</summary>
     public static bool IsNorthWestOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x - 1 && a.location.y == b.location.y - 1;
+    /// <summary>Returns whether the is north east of condition is met.</summary>
     public static bool IsNorthEastOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x + 1 && a.location.y == b.location.y - 1;
+    /// <summary>Returns whether the is south west of condition is met.</summary>
     public static bool IsSouthWestOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x - 1 && a.location.y == b.location.y + 1;
+    /// <summary>Returns whether the is south east of condition is met.</summary>
     public static bool IsSouthEastOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x + 1 && a.location.y == b.location.y + 1;
 
+    /// <summary>Returns whether the is adjacent to condition is met.</summary>
     public static bool IsAdjacentTo(ActorInstance a, ActorInstance b)
         => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a.location, b.location).Equals(1);
 
     // Grid location overloads:
+    /// <summary>Returns whether the is same column condition is met.</summary>
     public static bool IsSameColumn(Vector2Int a, Vector2Int b) => a.x == b.x;
+    /// <summary>Returns whether the is same row condition is met.</summary>
     public static bool IsSameRow(Vector2Int a, Vector2Int b) => a.y == b.y;
+    /// <summary>Returns whether the is north of condition is met.</summary>
     public static bool IsNorthOf(Vector2Int a, Vector2Int b) => IsSameColumn(a, b) && a.y == b.y - 1;
+    /// <summary>Returns whether the is east of condition is met.</summary>
     public static bool IsEastOf(Vector2Int a, Vector2Int b) => IsSameRow(a, b) && a.x == b.x + 1;
+    /// <summary>Returns whether the is south of condition is met.</summary>
     public static bool IsSouthOf(Vector2Int a, Vector2Int b) => IsSameColumn(a, b) && a.y == b.y + 1;
+    /// <summary>Returns whether the is west of condition is met.</summary>
     public static bool IsWestOf(Vector2Int a, Vector2Int b) => IsSameRow(a, b) && a.x == b.x - 1;
+    /// <summary>Returns whether the is north west of condition is met.</summary>
     public static bool IsNorthWestOf(Vector2Int a, Vector2Int b) => a.x == b.x - 1 && a.y == b.y - 1;
+    /// <summary>Returns whether the is north east of condition is met.</summary>
     public static bool IsNorthEastOf(Vector2Int a, Vector2Int b) => a.x == b.x + 1 && a.y == b.y - 1;
+    /// <summary>Returns whether the is south west of condition is met.</summary>
     public static bool IsSouthWestOf(Vector2Int a, Vector2Int b) => a.x == b.x - 1 && a.y == b.y + 1;
+    /// <summary>Returns whether the is south east of condition is met.</summary>
     public static bool IsSouthEastOf(Vector2Int a, Vector2Int b) => a.x == b.x + 1 && a.y == b.y + 1;
+    /// <summary>Returns whether the is adjacent to condition is met.</summary>
     public static bool IsAdjacentTo(Vector2Int a, Vector2Int b)
         => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a, b).Equals(1);
 
@@ -246,6 +268,7 @@ public class Geometry
 
 
 
+    /// <summary>Gets the closest opponent.</summary>
     public static ActorInstance GetClosestOpponent(ActorInstance attacker, IEnumerable<AttackResult> results)
     {
         return results
@@ -431,6 +454,7 @@ public class Geometry
                     g.TileSize * (y / g.TileSize),
                     g.TileSize * (z / g.TileSize));
             }
+            /// <summary>Translation.</summary>
             public static Vector3 Translation(Vector3 v) => Translation(v.x, v.y, v.z);
 
             /// <summary>
@@ -443,6 +467,7 @@ public class Geometry
                     g.TileSize * y,
                     g.TileSize * z);
             }
+            /// <summary>Scale.</summary>
             public static Vector3 Scale(Vector3 v) => Scale(v.x, v.y, v.z);
         }
     }

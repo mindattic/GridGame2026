@@ -141,6 +141,7 @@ namespace Scripts.Helpers
                 SaveHeroProgress(actor);
         }
 
+        /// <summary>Save hero progress.</summary>
         private static void SaveHeroProgress(ActorInstance actor)
         {
             var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
@@ -171,6 +172,7 @@ namespace Scripts.Helpers
         }
 
         // Convenience: normalize a pair to match TotalXP (useful when you want to sync save fields).
+        /// <summary>Normalize from total.</summary>
         public static void NormalizeFromTotal(ref int level, ref int currentXP, int totalXP)
         {
             (level, currentXP) = DeriveFromTotalXP(totalXP);

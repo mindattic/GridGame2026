@@ -42,6 +42,7 @@ namespace Scripts.Managers
         public FpsMonitor fpsMonitor = new FpsMonitor();
 
         //Method which is used for initialization tasks that need to occur before the game starts 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             textMesh = GetComponent<TextMeshProUGUI>();
@@ -59,6 +60,7 @@ namespace Scripts.Managers
             fpsMonitor.Update();
         }
 
+        /// <summary>Runs per fixed-timestep physics update.</summary>
         private void FixedUpdate()
         {
             //string fps = $@"{fpsMonitor.currentFps}";

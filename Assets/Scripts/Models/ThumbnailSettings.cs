@@ -114,6 +114,7 @@ namespace Scripts.Models
         // Recalculate offset (from center, in mask-size units) from the pixel focus point.
         // Offset.x = (cx - px) * (scale.x / T)
         // Offset.y = (py - cy) * (scale.y / T)
+        /// <summary>Offset from pixels.</summary>
         public void OffsetFromPixels()
         {
             int T = Mathf.Max(1, TextureSize);
@@ -143,6 +144,7 @@ namespace Scripts.Models
         }
 
         // Helper to estimate a pixel coordinate from an existing offset/scale, for backward compatibility.
+        /// <summary>Pixel from offset.</summary>
         private static Vector2Int PixelFromOffset(Vector2 position, Vector2 scale, int textureSize)
         {
             int T = Mathf.Max(1, textureSize);
@@ -159,18 +161,21 @@ namespace Scripts.Models
         }
 
         // Call this if you change Scale after setting PixelPosition so the derived offset updates.
+        /// <summary>Handles the scale changed event.</summary>
         public void OnScaleChanged()
         {
             OffsetFromPixels();
         }
 
         // Call this if you change TextureSize after construction.
+        /// <summary>Handles the texture size changed event.</summary>
         public void OnTextureSizeChanged()
         {
             OffsetFromPixels();
         }
 
         // Call this if you change PixelPosition after construction.
+        /// <summary>Handles the pixel position changed event.</summary>
         public void OnPixelPositionChanged()
         {
             OffsetFromPixels();

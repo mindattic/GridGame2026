@@ -41,6 +41,7 @@ public static class DebugWindowBootstrapper
     private static bool subscribedPlayMode = false;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    /// <summary>Handles the scene loaded event.</summary>
     private static void OnSceneLoaded()
     {
         EnsureSceneSubscription();
@@ -62,6 +63,7 @@ public static class DebugWindowBootstrapper
         }
     }
 
+    /// <summary>Wait and open debug window.</summary>
     private static void WaitAndOpenDebugWindow()
     {
         if (!isWaiting)
@@ -89,6 +91,7 @@ public static class DebugWindowBootstrapper
         }
     }
 
+    /// <summary>Handles the active scene changed event.</summary>
     private static void OnActiveSceneChanged(Scene oldScene, Scene newScene)
     {
         if (!Application.isPlaying)
@@ -108,6 +111,7 @@ public static class DebugWindowBootstrapper
         }
     }
 
+    /// <summary>Handles the play mode state changed event.</summary>
     private static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
         if (state == PlayModeStateChange.ExitingPlayMode || state == PlayModeStateChange.EnteredEditMode)
@@ -116,6 +120,7 @@ public static class DebugWindowBootstrapper
         }
     }
 
+    /// <summary>Begin wait.</summary>
     private static void BeginWait()
     {
         isWaiting = true;
@@ -123,6 +128,7 @@ public static class DebugWindowBootstrapper
         EnsureUpdateSubscription();
     }
 
+    /// <summary>Returns whether the cancel wait condition is met.</summary>
     private static void CancelWait()
     {
         isWaiting = false;
@@ -130,6 +136,7 @@ public static class DebugWindowBootstrapper
         RemoveUpdateSubscription();
     }
 
+    /// <summary>Safe open window.</summary>
     private static void SafeOpenWindow()
     {
         try
@@ -140,17 +147,20 @@ public static class DebugWindowBootstrapper
         catch { }
     }
 
+    /// <summary>Returns whether the is active scene game condition is met.</summary>
     private static bool IsActiveSceneGame()
     {
         var activeScene = SceneManager.GetActiveScene();
         return activeScene.IsValid() && activeScene.name == scene.Game;
     }
 
+    /// <summary>Returns whether the is game condition is met.</summary>
     private static bool IsGame(Scene activeScene)
     {
         return activeScene.IsValid() && activeScene.name == scene.Game;
     }
 
+    /// <summary>Ensure update subscription.</summary>
     private static void EnsureUpdateSubscription()
     {
         if (subscribedUpdate) return;
@@ -158,6 +168,7 @@ public static class DebugWindowBootstrapper
         subscribedUpdate = true;
     }
 
+    /// <summary>Remove update subscription.</summary>
     private static void RemoveUpdateSubscription()
     {
         if (!subscribedUpdate) return;
@@ -165,6 +176,7 @@ public static class DebugWindowBootstrapper
         subscribedUpdate = false;
     }
 
+    /// <summary>Ensure scene subscription.</summary>
     private static void EnsureSceneSubscription()
     {
         if (subscribedScene) return;
@@ -172,6 +184,7 @@ public static class DebugWindowBootstrapper
         subscribedScene = true;
     }
 
+    /// <summary>Ensure play mode subscription.</summary>
     private static void EnsurePlayModeSubscription()
     {
         if (subscribedPlayMode) return;

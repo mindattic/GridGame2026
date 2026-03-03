@@ -53,6 +53,7 @@ public class ActorHealthBar
 
     public bool isEmpty => !isDraining && stats.PreviousHP < 1;
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;
@@ -60,12 +61,14 @@ public class ActorHealthBar
 
     private Vector3 initialScale => render.healthBarBack.transform.localScale;
 
+    /// <summary>Gets the scale.</summary>
     private Vector3 GetScale(float value)
     {
         var x = Mathf.Clamp(initialScale.x * (value / stats.MaxHP), 0f, initialScale.x);
         return new Vector3(x, initialScale.y, initialScale.z);
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     public void Update()
     {
         render.healthBarDrain.transform.localScale = GetScale(stats.PreviousHP);
@@ -76,6 +79,7 @@ public class ActorHealthBar
             instance.StartCoroutine(DrainRoutine());
     }
 
+    /// <summary>Coroutine that executes the drain sequence.</summary>
     private IEnumerator DrainRoutine()
     {
         Vector3 scale;

@@ -202,6 +202,7 @@ public class SequenceManager : MonoBehaviour
         }
     }
 
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable()
     {
         // DespawnRoutine active run

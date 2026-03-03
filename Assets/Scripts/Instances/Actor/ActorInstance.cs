@@ -349,6 +349,7 @@ public partial class ActorInstance : MonoBehaviour
                              .GetComponent<ActorThumbnail>();
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
     }
@@ -493,6 +494,7 @@ public partial class ActorInstance : MonoBehaviour
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
     }
 
+    /// <summary>Fire damage.</summary>
     public void FireDamage(float amount)
     {
         if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
@@ -508,6 +510,7 @@ public partial class ActorInstance : MonoBehaviour
         yield return Wait.None();
     }
 
+    /// <summary>Heal.</summary>
     public void Heal(int amount)
     {
         if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
@@ -531,6 +534,7 @@ public partial class ActorInstance : MonoBehaviour
         yield break;
     }
 
+    /// <summary>Damage.</summary>
     public void Damage(AttackResult attackResult)
     {
         if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects

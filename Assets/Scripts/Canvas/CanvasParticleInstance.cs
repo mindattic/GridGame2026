@@ -98,6 +98,7 @@ public class CanvasParticleInstance : MonoBehaviour
 
     #region Movement
 
+    /// <summary>Drifts the particle horizontally while falling and rotating, then self-destructs past the screen edge.</summary>
     private IEnumerator MoveAndDestroyRoutine()
     {
         while (rectTransform.anchoredPosition.x < Screen.width)

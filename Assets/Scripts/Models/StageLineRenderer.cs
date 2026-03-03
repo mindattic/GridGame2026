@@ -28,6 +28,7 @@ namespace Scripts.Models
         [SerializeField] private Button startButton;
         [SerializeField] private Button endButton;
 
+        /// <summary>Runs per-frame update logic.</summary>
         private void Update()
         {
             if (startButton != null && endButton != null)

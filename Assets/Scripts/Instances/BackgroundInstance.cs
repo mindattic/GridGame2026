@@ -64,12 +64,14 @@ public class BackgroundInstance : MonoBehaviour
     private Vector2 speed;                  // Speed of sine wave movement
     private float time;                     // Time accumulator for movement
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // Cache the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         // Store the initial position
@@ -100,6 +102,7 @@ public class BackgroundInstance : MonoBehaviour
         speed = new Vector2(0.2f, 0.2f);
     }
 
+    /// <summary>Runs per fixed-timestep physics update.</summary>
     private void FixedUpdate()
     {
         // Update time
@@ -113,6 +116,7 @@ public class BackgroundInstance : MonoBehaviour
         transform.position = new Vector3(x, y, initialPosition.z);
     }
 
+    /// <summary>Randomize.</summary>
     public void Randomize()
     {
         // Assign a random background sprite

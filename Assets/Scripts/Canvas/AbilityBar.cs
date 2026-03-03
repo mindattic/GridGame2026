@@ -87,6 +87,7 @@ namespace Scripts.Canvas
 
         #region Initialization
 
+        /// <summary>Initializes component references and state.</summary>
         private void Awake()
         {
             if (canvasGroup == null)
@@ -150,6 +151,7 @@ namespace Scripts.Canvas
             hideCoroutine = StartCoroutine(FadeOutRoutine());
         }
 
+        /// <summary>Returns whether the cancel hide condition is met.</summary>
         private void CancelHide()
         {
             if (hideCoroutine != null)
@@ -159,12 +161,14 @@ namespace Scripts.Canvas
             }
         }
 
+        /// <summary>Coroutine that executes the auto hide sequence.</summary>
         private IEnumerator AutoHideRoutine()
         {
             yield return new WaitForSeconds(displayDuration);
             yield return FadeOutRoutine();
         }
 
+        /// <summary>Coroutine that executes the fade out sequence.</summary>
         private IEnumerator FadeOutRoutine()
         {
             float startAlpha = canvasGroup.alpha;

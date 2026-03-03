@@ -83,11 +83,13 @@ namespace Scripts.Instances.Actor
 
         #region Lifecycle
 
+        /// <summary>Performs initial setup after all Awake calls complete.</summary>
         public void Start()
         {
             // Movement is driven by explicit calls
         }
 
+        /// <summary>Initializes initialize.</summary>
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;

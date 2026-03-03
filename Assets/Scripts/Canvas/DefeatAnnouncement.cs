@@ -71,6 +71,7 @@ public class DefeatAnnouncement : MonoBehaviour
     private Vector2 startPos;
     private Vector2 centerPos = Vector2.zero;
 
+    /// <summary>Resolves UI references via GameObjectHelper and caches the RectTransform.</summary>
     private void Awake()
     {
         // Resolve UI references via GameObjectHelper.
@@ -81,6 +82,7 @@ public class DefeatAnnouncement : MonoBehaviour
         rect = root != null ? root.GetComponent<RectTransform>() : GetComponent<RectTransform>();
     }
 
+    /// <summary>Positions the banner above center and sets initial alpha to zero.</summary>
     private void Start()
     {
         // Set initial position above center and make fully transparent.
@@ -105,6 +107,7 @@ public class DefeatAnnouncement : MonoBehaviour
         RestartAnimation();
     }
 
+    /// <summary>Starts the float-in animation if not already running.</summary>
     private void RestartAnimation()
     {
         // Do not restart if already animating
@@ -114,6 +117,7 @@ public class DefeatAnnouncement : MonoBehaviour
         animationRoutine = StartCoroutine(AnimateFloatInRoutine());
     }
 
+    /// <summary>Animates the banner floating down from above while fading in to full opacity.</summary>
     private IEnumerator AnimateFloatInRoutine()
     {
         if (rect != null)
@@ -150,12 +154,14 @@ public class DefeatAnnouncement : MonoBehaviour
     // Helpers
     // ------------------------------------------------------------------------
 
+    /// <summary>Sets the text on both front and back TMP labels.</summary>
     private void SetText(string value)
     {
         if (back != null) back.text = value;
         if (front != null) front.text = value;
     }
 
+    /// <summary>Sets the alpha of the image and both text labels.</summary>
     private void SetLabelAlpha(float a)
     {
         if (image != null)

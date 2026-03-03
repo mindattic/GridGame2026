@@ -54,6 +54,7 @@ public static class SkillLibrary
         Register(SkillData_Basic.BasicStrike);
     }
 
+    /// <summary>Register.</summary>
     private static void Register(SkillDefinition def)
     {
         if (def == null || string.IsNullOrEmpty(def.Id)) return;

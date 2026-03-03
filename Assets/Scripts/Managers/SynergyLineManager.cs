@@ -115,6 +115,7 @@ public class SynergyLineManager : MonoBehaviour
         collection.Remove(key);
     }
 
+    /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
     public void Clear()
     {
         // Make a copy to avoid modifying the dictionary while iterating

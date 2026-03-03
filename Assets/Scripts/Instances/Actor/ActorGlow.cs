@@ -66,6 +66,7 @@ namespace Scripts.Instances.Actor
         private float speed;
         private Coroutine glowRoutineRef;
 
+        /// <summary>Initializes initialize.</summary>
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
@@ -78,6 +79,7 @@ namespace Scripts.Instances.Actor
         //private bool IsGlowing =>
         //    instance.IsPlaying && ((g.TurnManager.IsHeroTurn && IsPlayer) || (g.TurnManager.IsEnemyTurn && IsEnemy));
 
+        /// <summary>Play.</summary>
         public void Play()
         {
             if (!instance.IsActive) return;
@@ -86,11 +88,13 @@ namespace Scripts.Instances.Actor
             glowRoutineRef = instance.StartCoroutine(GlowRoutine());
         }
 
+        /// <summary>Stop.</summary>
         public void Stop()
         {
             IsGlowing = false;
         }
 
+        /// <summary>Coroutine that executes the glow sequence.</summary>
         public IEnumerator GlowRoutine()
         {
             // Ensure starting scale at 1

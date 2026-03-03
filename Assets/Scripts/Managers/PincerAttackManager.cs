@@ -227,6 +227,7 @@ public class PincerAttackManager : MonoBehaviour
         return ordered;
     }
 
+    /// <summary>Sort pairs for attacker1.</summary>
     private List<PincerAttackPair> SortPairsForAttacker1(ActorInstance attacker, List<PincerAttackPair> list)
     {
         IEnumerable<(PincerAttackPair pair, int orientPri, int primaryDist, int tieX, int tieY)> keyed =
@@ -343,11 +344,13 @@ public class PincerAttackManager : MonoBehaviour
         OnResolved?.Invoke();
     }
 
+    /// <summary>Creates the attack result.</summary>
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)
     {
         return Formulas.CalculateAttackResult(attacker, opponent);
     }
 
+    /// <summary>Finds the supporters.</summary>
     public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
         var candidates = g.Actors.All
@@ -363,6 +366,7 @@ public class PincerAttackManager : MonoBehaviour
         return result;
     }
 
+    /// <summary>Returns whether the is actor blocked condition is met.</summary>
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
         if (!Geometry.IsSameRow(a.location, b.location) && !Geometry.IsSameColumn(a.location, b.location))

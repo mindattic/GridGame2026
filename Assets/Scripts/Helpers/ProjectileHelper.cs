@@ -49,6 +49,7 @@ namespace Scripts.Helpers
 /// </summary>
 public static class ProjectileHelper
 {
+    /// <summary>Fire straight.</summary>
     public static void FireStraight(Vector3 start, Transform target, string trailEffectKey, string impactVfxKey, float travelSeconds = 0.7f, IEnumerator onImpact = null)
     {
         g.ProjectileManager.Spawn(new ProjectileSettings
@@ -63,6 +64,7 @@ public static class ProjectileHelper
         });
     }
 
+    /// <summary>Fire wiggle.</summary>
     public static void FireWiggle(Vector3 start, Transform target, string trailEffectKey, string impactVfxKey, float wiggleAmplitudeTiles = 0.35f, float wiggleHz = 3.5f, float travelSeconds = 0.8f, IEnumerator onImpact = null)
     {
         g.ProjectileManager.Spawn(new ProjectileSettings
@@ -79,6 +81,7 @@ public static class ProjectileHelper
         });
     }
 
+    /// <summary>Fire lobbed.</summary>
     public static void FireLobbed(Vector3 start, Transform target, string trailEffectKey, string impactVfxKey, float heightTiles = 1.0f, float travelSeconds = 0.9f, IEnumerator onImpact = null)
     {
         g.ProjectileManager.Spawn(new ProjectileSettings
@@ -94,6 +97,7 @@ public static class ProjectileHelper
         });
     }
 
+    /// <summary>Fire homing spiral.</summary>
     public static void FireHomingSpiral(Vector3 start, Transform target, string trailEffectKey, string impactVfxKey, int turns = 2, float startRadiusTiles = 0.6f, float travelSeconds = 1.0f, IEnumerator onImpact = null)
     {
         g.ProjectileManager.Spawn(new ProjectileSettings

@@ -149,6 +149,7 @@ public class ActorRenderers
     public SpriteRenderer targetIndicator;
 
     private ActorInstance instance;
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;
@@ -188,6 +189,7 @@ public class ActorRenderers
         back = instance.transform.GetChild(ActorLayer.Name.Back);
     }
 
+    /// <summary>Sets the alpha.</summary>
     public void SetAlpha(float alpha)
     {
         SetOpaqueAlpha(alpha);
@@ -205,18 +207,21 @@ public class ActorRenderers
         SetArmorAlpha(alpha);
     }
 
+    /// <summary>Sets the opaque color.</summary>
     public void SetOpaqueColor(Color color)
     {
         opaqueColor = new Color(color.r, color.g, color.b, color.a);
         if (opaque != null) opaque.color = opaqueColor;
     }
 
+    /// <summary>Sets the opaque alpha.</summary>
     public void SetOpaqueAlpha(float alpha)
     {
         opaqueColor.a = Mathf.Clamp(alpha, 0, 1);
         if (opaque != null) opaque.color = opaqueColor;
     }
 
+    /// <summary>Sets the quality color.</summary>
     public void SetQualityColor(Color color)
     {
         qualityColor = new Color(color.r, color.g, color.b, Mathf.Clamp(color.a, Opacity.Transparent, qualityAlphaMax));
@@ -224,39 +229,46 @@ public class ActorRenderers
     }
 
 
+    /// <summary>Sets the quality alpha.</summary>
     public void SetQualityAlpha(float alpha)
     {
         qualityColor.a = Mathf.Clamp(alpha, Opacity.Transparent, qualityAlphaMax);
         if (quality != null) this.quality.color = qualityColor;
     }
 
+    /// <summary>Sets the glow color.</summary>
     public void SetGlowColor(Color color)
     {
         glowColor = new Color(color.r, color.g, color.b, color.a);
         if (glow != null) this.glow.color = glowColor;
     }
 
+    /// <summary>Sets the glow alpha.</summary>
     public void SetGlowAlpha(float alpha)
     {
         glowColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent50);
         if (glow != null) this.glow.color = glowColor;
     }
 
+    /// <summary>Sets the glow scale.</summary>
     public void SetGlowScale(Vector3 scale)
     {
         if (glow != null) this.glow.transform.localScale = scale;
     }
 
+    /// <summary>Sets the parallax sprite.</summary>
     public void SetParallaxSprite(Sprite sprite)
     {
         if (parallax != null) parallax.sprite = sprite;
     }
 
+    /// <summary>Sets the parallax material.</summary>
     public void SetParallaxMaterial(Material material)
     {
         if (parallax != null) parallax.material = material;
     }
 
+    /// <summary>Sets the parallax material.</summary>
     public void SetParallaxMaterial(Material material, Texture texture = null)
     {
         if (parallax == null) return;
@@ -265,12 +277,14 @@ public class ActorRenderers
             parallax.material.mainTexture = texture;
     }
 
+    /// <summary>Sets the parallax alpha.</summary>
     public void SetParallaxAlpha(float alpha)
     {
         parallaxColor.a = Mathf.Clamp(alpha, Opacity.Transparent, parallaxAlphaMax);
         if (parallax != null) this.parallax.color = parallaxColor;
     }
 
+    /// <summary>Sets the parallax focus.</summary>
     public void SetParallaxFocus(float xScroll, float yScroll)
     {
         if (instance == null || parallax == null) return;
@@ -278,6 +292,7 @@ public class ActorRenderers
         instance.StartCoroutine(UpdateParallaxFocusRoutine("_YScroll", yScroll));
     }
 
+    /// <summary>Coroutine that executes the update parallax focus sequence.</summary>
     private IEnumerator UpdateParallaxFocusRoutine(string scrollProperty, float targetValue)
     {
         //Fetch the CurrentProfile value once at the start
@@ -298,38 +313,45 @@ public class ActorRenderers
         parallax.material.SetFloat(scrollProperty, targetValue);
     }
 
+    /// <summary>Sets the thumbnail alpha.</summary>
     public void SetThumbnailAlpha(float alpha)
     {
         thumbnailColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
         if (thumbnail != null) thumbnail.color = thumbnailColor;
     }
+    /// <summary>Sets the gradient alpha.</summary>
     public void SetGradientAlpha(float alpha)
     {
         gradientColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
         if (gradient != null) gradient.color = gradientColor;
     }
 
+    /// <summary>Sets the thumbnail material.</summary>
     public void SetThumbnailMaterial(Material material)
     {
         if (thumbnail != null) thumbnail.material = material;
     }
 
+    /// <summary>Sets the thumbnail sprite.</summary>
     public void SetThumbnailSprite(Sprite sprite)
     {
         if (thumbnail != null) thumbnail.sprite = sprite;
     }
 
+    /// <summary>Sets the frame alpha.</summary>
     public void SetFrameAlpha(float alpha)
     {
         frameColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
         if (frame != null) frame.color = frameColor;
     }
 
+    /// <summary>Sets the frame enabled.</summary>
     public void SetFrameEnabled(bool isEnabled)
     {
         if (frame != null) frame.enabled = isEnabled;
     }
 
+    /// <summary>Sets the health bar alpha.</summary>
     public void SetHealthBarAlpha(float alpha)
     {
         if (healthBarBack != null)
@@ -344,6 +366,7 @@ public class ActorRenderers
             healthBarText.color = new Color(1, 1, 1, alpha);
     }
 
+    /// <summary>Sets the action bar alpha.</summary>
     public void SetActionBarAlpha(float alpha)
     {
         if (actionBarBack != null)
@@ -360,6 +383,7 @@ public class ActorRenderers
             actionBarText.color = new Color(1, 1, 1, alpha);
     }
 
+    /// <summary>Sets the radial enabled.</summary>
     public void SetRadialEnabled(bool isEnabled)
     {
         if (radialBack != null) radialBack.enabled = isEnabled;
@@ -367,6 +391,7 @@ public class ActorRenderers
         if (radialText != null) radialText.enabled = isEnabled;
     }
 
+    /// <summary>Sets the radial alpha.</summary>
     public void SetRadialAlpha(float alpha)
     {
         if (radialBack != null)
@@ -377,6 +402,7 @@ public class ActorRenderers
             radialText.color = new Color(1, 1, 1, alpha);
     }
 
+    /// <summary>Sets the frame color.</summary>
     public void SetFrameColor(Color color)
     {
         frameColor = color;
@@ -384,6 +410,7 @@ public class ActorRenderers
     }
 
 
+    /// <summary>Sets the turn delay font size.</summary>
     public void SetTurnDelayFontSize(int key)
     {
         var fontSizeKeyValueMap = new Dictionary<int, float>() {
@@ -414,12 +441,14 @@ public class ActorRenderers
             turnDelayText.text = string.Empty;
     }
 
+    /// <summary>Sets the turn delay text enabled.</summary>
     public void SetTurnDelayTextEnabled(bool isEnabled)
     {
         if (turnDelayText != null)
             turnDelayText.enabled = isEnabled;
     }
 
+    /// <summary>Sets the turn delay text alpha.</summary>
     public void SetTurnDelayTextAlpha(float alpha)
     {
         turnDelayColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
@@ -427,6 +456,7 @@ public class ActorRenderers
             turnDelayText.color = turnDelayColor;
     }
 
+    /// <summary>Sets the turn delay text color.</summary>
     public void SetTurnDelayTextColor(Color color)
     {
         turnDelayColor = color;
@@ -434,29 +464,34 @@ public class ActorRenderers
             turnDelayText.color = turnDelayColor;
     }
 
+    /// <summary>Sets the name tag text.</summary>
     public void SetNameTagText(string text)
     {
         if (nameTagText != null)
             nameTagText.text = text;
     }
 
+    /// <summary>Sets the name tag text alpha.</summary>
     public void SetNameTagTextAlpha(float alpha)
     {
         if (nameTagText != null)
             nameTagText.color = new Color(1, 1, 1, alpha);
     }
 
+    /// <summary>Sets the name tag enabled.</summary>
     public void SetNameTagEnabled(bool isEnabled)
     {
         if (nameTagText != null)
             nameTagText.enabled = isEnabled;
     }
 
+    /// <summary>Sets the action bar enabled.</summary>
     public void SetActionBarEnabled(bool isEnabled)
     {
         if (actionBarBack != null) actionBarBack.enabled = isEnabled; if (actionBarFill != null) actionBarFill.enabled = isEnabled;
     }
 
+    /// <summary>Sets the armor alpha.</summary>
     public void SetArmorAlpha(float alpha)
     {
         armorColor = new Color(1, 1, 1, alpha);
@@ -466,10 +501,13 @@ public class ActorRenderers
         if (armorWest != null) armorWest.color = armorColor;
     }
 
+    /// <summary>Sets the active indicator enabled.</summary>
     public void SetActiveIndicatorEnabled(bool isEnabled)
     { if (activeIndicator != null) activeIndicator.enabled = isEnabled; }
+    /// <summary>Sets the focus indicator enabled.</summary>
     public void SetFocusIndicatorEnabled(bool isEnabled)
     { if (focusIndicator != null) focusIndicator.enabled = isEnabled; }
+    /// <summary>Sets the target indicator enabled.</summary>
     public void SetTargetIndicatorEnabled(bool isEnabled)
     { if (targetIndicator != null) targetIndicator.enabled = isEnabled; }
 
@@ -478,6 +516,7 @@ public class ActorRenderers
     private bool saturationCached;
     private Color oOpaque, oQuality, oParallax, oThumbnail, oFrame, oArmor;
 
+    /// <summary>Desaturate.</summary>
     private static Color Desaturate(Color c, float k)
     {
         Color.RGBToHSV(c, out float h, out float s, out float v);
@@ -540,6 +579,7 @@ public class ActorRenderers
     }
 
     // helpers used above
+    /// <summary>Sets the thumbnail color.</summary>
     public void SetThumbnailColor(Color color)
     {
         thumbnailColor = new Color(color.r, color.g, color.b, color.a);

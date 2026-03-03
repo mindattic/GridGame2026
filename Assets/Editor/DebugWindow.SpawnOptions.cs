@@ -27,6 +27,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderSpawnOptions renders buttons to spawn various enemy types.
+    /// <summary>Render spawn options.</summary>
     private void RenderSpawnOptions()
     {
         GUILayout.BeginHorizontal();

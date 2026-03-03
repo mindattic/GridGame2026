@@ -170,6 +170,7 @@ public class StageManager : MonoBehaviour
         scene.FadeIn();
     }
 
+    /// <summary>Load endless wave.</summary>
     private void LoadEndlessWave(int waveIndex)
     {
         int nextWaveNumber = waveIndex + 1;

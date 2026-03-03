@@ -302,6 +302,7 @@ namespace Scripts.Libraries
         }
 
         // Returns the best-matching tag icon for a given ActorTag mask based on a priority list.
+        /// <summary>Gets the actor tag icon.</summary>
         public static Sprite GetActorTagIcon(ActorTag tags)
         {
             if (!isLoaded) Load();

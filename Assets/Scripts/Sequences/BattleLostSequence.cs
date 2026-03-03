@@ -48,6 +48,7 @@ namespace Scripts.Sequences
     /// </summary>
     public class BattleLostSequence : SequenceEvent
     {
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Disable input

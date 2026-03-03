@@ -86,6 +86,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Configures default particle parameters and loads leaf sprites.</summary>
     private void Awake()
     {
         xMin = -Screen.width;
@@ -116,6 +117,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     }
 
+    /// <summary>Spawns initial prewarm particles and begins the continuous spawn loop.</summary>
     void Start()
     {
         PrewarmParticles();
@@ -124,6 +126,7 @@ public class CanvasParticleEmitter : MonoBehaviour
     #endregion
     }
 
+    /// <summary>Spawns the initial batch of particles distributed across the screen.</summary>
     private void PrewarmParticles()
     {
         for (int i = 0; i < prewarmCount; i++)
@@ -132,6 +135,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
     }
 
+    /// <summary>Continuously spawns new particles at random intervals.</summary>
     private IEnumerator SpawnImagesRoutine()
     {
         while (true)
@@ -142,6 +146,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
     }
 
+    /// <summary>Creates a single canvas particle with random sprite, position, rotation, and drift parameters.</summary>
     private void SpawnImage(bool preheat = false)
     {
         // Use factory instead of Instantiate(prefab)

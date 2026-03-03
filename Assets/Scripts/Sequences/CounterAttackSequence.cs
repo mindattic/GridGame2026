@@ -61,6 +61,7 @@ namespace Scripts.Sequences
             this.attacker = attacker;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Guard: both actors must still be playing

@@ -25,6 +25,7 @@ namespace Scripts.Sequences
 {
     public class HideTargetIndicatorSequence : SequenceEvent
     {
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             g.Actors.TargetActor.Render.SetTargetIndicatorEnabled(false);

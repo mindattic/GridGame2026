@@ -79,11 +79,13 @@ public class FocusIndicator : MonoBehaviour
     }
     #endregion
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize()
     {
 
@@ -91,12 +93,14 @@ public class FocusIndicator : MonoBehaviour
     }
 
     // SelectProfile activates and positions the FocusIndicator based on whether a focused actor exists.
+    /// <summary>Shows this component.</summary>
     public void Show()
     {
         position = g.Actors.HasSelectedActor ? g.Actors.SelectedActor.Position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the FocusIndicator and moves it off-screen.
+    /// <summary>Hides this component.</summary>
     public void Hide()
     {
         position = PositionHelper.Nowhere;

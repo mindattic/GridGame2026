@@ -30,6 +30,7 @@ namespace Scripts.Sequences
     /// </summary>
     public class HeroStartSequence : SequenceEvent
     {
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Only run during hero turns

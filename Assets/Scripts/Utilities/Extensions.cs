@@ -124,6 +124,7 @@ public static class GameObjectExtensions
 
 public static class StringExtensions
 {
+    /// <summary>Sanitize file name.</summary>
     public static string SanitizeFileName(this string value)
     {
         //Trim and replace spaces
@@ -135,6 +136,7 @@ public static class StringExtensions
         return value;
     }
 
+    /// <summary>To pascal case.</summary>
     public static string ToPascalCase(this string input)
     {
         if (string.IsNullOrWhiteSpace(input)) return string.Empty;
@@ -156,6 +158,7 @@ public static class StringExtensions
 
 public static class TransformExtensions
 {
+    /// <summary>Gets the child.</summary>
     public static Transform GetChild(this Transform parent, string childName)
     {
         foreach (Transform child in parent)
@@ -216,6 +219,7 @@ public static class EnumExtensions
         return (values.Length == index) ? values[0] : values[index];
     }
 
+    /// <summary>Gets the description.</summary>
     public static string GetDescription(this Enum value)
     {
         FieldInfo field = value.GetType().GetField(value.ToString());
@@ -223,6 +227,7 @@ public static class EnumExtensions
         return attribute == null ? value.ToString() : attribute.Description;
     }
 
+    /// <summary>To name.</summary>
     public static string ToName(this Enum value)
     {
         return Enum.GetName(value.GetType(), value);
@@ -234,12 +239,14 @@ public static class EnumExtensions
     }
 
     // Convert enum to int
+    /// <summary>To int.</summary>
     public static int ToInt(this Enum value)
     {
         return Convert.ToInt32(value);
     }
 
     // Convert enum to float
+    /// <summary>To float.</summary>
     public static float ToFloat(this Enum value)
     {
         return Convert.ToSingle(value);
@@ -250,6 +257,7 @@ public static class EnumExtensions
 
 public static class TileInstanceExtensions
 {
+    /// <summary>Exists.</summary>
     public static bool Exists(this TileInstance tile)
         => tile != null;
 
@@ -400,27 +408,32 @@ public static class Vector2IntExtensions
             && v.y >= 1 && v.y <= g.Board.rowCount;
     }
 
+    /// <summary>Shift.</summary>
     public static void Shift(this ref Vector2Int v, int x, int y)
     {
         v.x += x;
         v.y += y;
     }
 
+    /// <summary>Sets the x.</summary>
     public static Vector2Int SetX(this Vector2Int v, int x)
     {
         return new Vector2Int(x, v.y);
     }
 
+    /// <summary>Add x.</summary>
     public static Vector2Int AddX(this Vector2Int v, int x)
     {
         return new Vector2Int(v.x + x, v.y);
     }
 
+    /// <summary>Sets the y.</summary>
     public static Vector2Int SetY(this Vector2Int v, int y)
     {
         return new Vector2Int(v.x, y);
     }
 
+    /// <summary>Add y.</summary>
     public static Vector2Int AddY(this Vector2Int v, int y)
     {
         return new Vector2Int(v.x, v.y + y);
@@ -430,21 +443,25 @@ public static class Vector2IntExtensions
 
 public static class Vector2Extensions
 {
+    /// <summary>Sets the x.</summary>
     public static Vector2 SetX(this Vector2 v, float x)
     {
         return new Vector2(x, v.y);
     }
 
+    /// <summary>Add x.</summary>
     public static Vector2 AddX(this Vector2 v, float x)
     {
         return new Vector2(v.x + x, v.y);
     }
 
+    /// <summary>Sets the y.</summary>
     public static Vector2 SetY(this Vector2 v, float y)
     {
         return new Vector2(v.x, y);
     }
 
+    /// <summary>Add y.</summary>
     public static Vector2 AddY(this Vector2 v, float y)
     {
         return new Vector2(v.x, v.y + y);
@@ -453,46 +470,55 @@ public static class Vector2Extensions
 
 public static class Vector3Extensions
 {
+    /// <summary>Sets the x.</summary>
     public static Vector3 SetX(this Vector3 v, float x)
     {
         return new Vector3(x, v.y, v.z);
     }
 
+    /// <summary>Add x.</summary>
     public static Vector3 AddX(this Vector3 v, float x)
     {
         return new Vector3(v.x + x, v.y, v.z);
     }
 
+    /// <summary>Sets the y.</summary>
     public static Vector3 SetY(this Vector3 v, float y)
     {
         return new Vector3(v.x, y, v.z);
     }
 
+    /// <summary>Add y.</summary>
     public static Vector3 AddY(this Vector3 v, float y)
     {
         return new Vector3(v.x, v.y + y, v.z);
     }
 
+    /// <summary>Sets the z.</summary>
     public static Vector3 SetZ(this Vector3 v, float z)
     {
         return new Vector3(v.x, v.y, z);
     }
 
+    /// <summary>Add z.</summary>
     public static Vector3 AddZ(this Vector3 v, float z)
     {
         return new Vector3(v.x, v.y, v.z + z);
     }
 
+    /// <summary>Returns whether the has na n condition is met.</summary>
     public static bool HasNaN(this Vector3 v)
     {
         return v.x == float.NaN || v.y == float.NaN || v.z == float.NaN;
     }
 
+    /// <summary>Randomize offset.</summary>
     public static Vector3 RandomizeOffset(this Vector3 v, float amount)
     {
         return new Vector3(v.x + RNG.Float(-amount, amount), v.y + RNG.Float(-amount, amount), v.z);
     }
 
+    /// <summary>From string.</summary>
     public static Vector3 FromString(string v)
     {
         //Remove parentheses and split by commas
@@ -509,11 +535,13 @@ public static class Vector3Extensions
         return new Vector3(x, y, z);
     }
 
+    /// <summary>Multiply by.</summary>
     public static Vector3 MultiplyBy(this Vector3 v, Vector2 other)
     {
         return new Vector3(v.x * other.x, v.y * other.y, v.z);
     }
 
+    /// <summary>Multiply by.</summary>
     public static Vector3 MultiplyBy(this Vector3 v, Vector3 other)
     {
         return new Vector3(v.x * other.x, v.y * other.y, v.z * other.z);
@@ -541,11 +569,13 @@ public static class Vector3Extensions
 public static class ColorExtensions
 {
 
+    /// <summary>Sets the a.</summary>
     public static Color SetA(this Color c, float a)
     {
         return new Color(c.r, c.g, c.b, a);
     }
 
+    /// <summary>Add a.</summary>
     public static Color AddA(this Color c, float a)
     {
         return new Color(c.r, c.g, c.b, c.a + a);
@@ -559,6 +589,7 @@ public static class ColorExtensions
 
 public static class IntExtensions
 {
+    /// <summary>To float.</summary>
     public static float ToFloat(this int i)
     {
         return (float)i;
@@ -567,6 +598,7 @@ public static class IntExtensions
 
 public static class FloatExtensions
 {
+    /// <summary>To int.</summary>
     public static int ToInt(this float f)
     {
         return (int)f;
@@ -600,6 +632,7 @@ static class StopwatchExtensions
     ///<param value="counter"></param>
     ///<param value="counterGoal"></param>
     ///<returns></returns>
+    /// <summary>Gets the eta.</summary>
     public static TimeSpan GetEta(this Stopwatch sw, int counter, int counterGoal)
     {
         /* this is based off of:
@@ -621,6 +654,7 @@ static class StopwatchExtensions
 
 public static class DirectionExtensions
 {
+    /// <summary>Opposite.</summary>
     public static Direction Opposite(this Direction direction)
     {
         return direction switch
@@ -638,6 +672,7 @@ public static class DirectionExtensions
 
 public static class Texture2DExtensions
 {
+    /// <summary>To sprite.</summary>
     public static Sprite ToSprite(this Texture2D texture)
     {
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
@@ -647,11 +682,13 @@ public static class Texture2DExtensions
 
 public static class CharactersExtensions
 {
+    /// <summary>Returns a string representation of this object.</summary>
     public static string ToString(this Characters character)
     {
         return character.ToString();
     }
 
+    /// <summary>From string.</summary>
     public static Characters FromString(string value)
     {
         if (Enum.TryParse(value, true, out Characters result))

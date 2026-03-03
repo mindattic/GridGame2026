@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class Sellsword
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

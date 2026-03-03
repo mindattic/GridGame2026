@@ -79,6 +79,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         // Find the header object
@@ -161,6 +162,7 @@ public class ProfileSelectManager : MonoBehaviour
         // Note: Button width and height sizing is left to the prefab/layout.
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         Reload();
@@ -171,6 +173,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     #region Profile List
 
+    /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
     private void Clear()
     {
         if (content == null)
@@ -185,6 +188,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Reload.</summary>
     private void Reload()
     {
         // Start with a clean slate.
@@ -219,6 +223,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Add create new profile button.</summary>
     public void AddCreateNewProfileButton()
     {
         // Validate required references.
@@ -259,6 +264,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Add profile select button.</summary>
     public void AddProfileSelectButton(Profile item)
     {
         // Validate input and references.
@@ -314,6 +320,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Handles the profile button clicked event.</summary>
     private void OnProfileButtonClicked(string key)
     {
         // Select the profile and navigate to the title screen.
@@ -327,11 +334,13 @@ public class ProfileSelectManager : MonoBehaviour
         scene.Fade.ToTitleScreen();
     }
 
+    /// <summary>Handles the create new profile button clicked event.</summary>
     private void OnCreateNewProfileButtonClicked()
     {
         scene.Fade.ToProfileCreate();
     }
 
+    /// <summary>Handles the back button clicked event.</summary>
     public void OnBackButtonClicked()
     {
         scene.Fade.ToPreviousScene();

@@ -37,11 +37,13 @@ public class ActorFactoryDebugger : EditorWindow
     private string comparisonResult = "";
 
     [MenuItem("Tools/Debug Actor Factory")]
+    /// <summary>Show windows this component.</summary>
     public static void ShowWindow()
     {
         GetWindow<ActorFactoryDebugger>("Actor Factory Debugger");
     }
 
+    /// <summary>Draws immediate-mode GUI elements.</summary>
     private void OnGUI()
     {
         EditorGUILayout.LabelField("Actor Factory vs Prefab Comparison", EditorStyles.boldLabel);
@@ -67,6 +69,7 @@ public class ActorFactoryDebugger : EditorWindow
         EditorGUILayout.EndScrollView();
     }
 
+    /// <summary>Creates the and compare.</summary>
     private void SpawnAndCompare()
     {
         CleanUp();
@@ -105,6 +108,7 @@ public class ActorFactoryDebugger : EditorWindow
         Debug.Log(comparisonResult);
     }
 
+    /// <summary>Compare game objects.</summary>
     private void CompareGameObjects(GameObject prefab, GameObject factory, string indent, StringBuilder sb)
     {
         // Compare basic properties
@@ -179,6 +183,7 @@ public class ActorFactoryDebugger : EditorWindow
         }
     }
 
+    /// <summary>Compare transforms.</summary>
     private void CompareTransforms(Transform p, Transform f, string indent, StringBuilder sb)
     {
         if (!ApproxEqual(p.localPosition, f.localPosition))
@@ -191,6 +196,7 @@ public class ActorFactoryDebugger : EditorWindow
             sb.AppendLine($"{indent}[{p.name}] ROTATION DIFF: Prefab={p.localEulerAngles}, Factory={f.localEulerAngles}");
     }
 
+    /// <summary>Compare sprite renderers.</summary>
     private void CompareSpriteRenderers(SpriteRenderer p, SpriteRenderer f, string name, string indent, StringBuilder sb)
     {
         if (p == null) { sb.AppendLine($"{indent}[{name}] SR MISSING IN PREFAB"); return; }
@@ -228,6 +234,7 @@ public class ActorFactoryDebugger : EditorWindow
             sb.AppendLine($"{indent}[{name}] MATERIAL DIFF: Prefab={pMat}, Factory={fMat}");
     }
 
+    /// <summary>Compare sprite masks.</summary>
     private void CompareSpriteMasks(SpriteMask p, SpriteMask f, string name, string indent, StringBuilder sb)
     {
         if (p == null) { sb.AppendLine($"{indent}[{name}] MASK MISSING IN PREFAB"); return; }
@@ -242,6 +249,7 @@ public class ActorFactoryDebugger : EditorWindow
             sb.AppendLine($"{indent}[{name}] ALPHA_CUTOFF DIFF: Prefab={p.alphaCutoff}, Factory={f.alphaCutoff}");
     }
 
+    /// <summary>Compare tmp.</summary>
     private void CompareTMP(TextMeshPro p, TextMeshPro f, string name, string indent, StringBuilder sb)
     {
         if (p == null) { sb.AppendLine($"{indent}[{name}] TMP MISSING IN PREFAB"); return; }
@@ -262,6 +270,7 @@ public class ActorFactoryDebugger : EditorWindow
             sb.AppendLine($"{indent}[{name}] TMP_SORTING_ORDER DIFF: Prefab={p.sortingOrder}, Factory={f.sortingOrder}");
     }
 
+    /// <summary>Approx equal.</summary>
     private bool ApproxEqual(Vector3 a, Vector3 b, float tolerance = 0.001f)
     {
         return Mathf.Abs(a.x - b.x) < tolerance &&
@@ -269,12 +278,14 @@ public class ActorFactoryDebugger : EditorWindow
                Mathf.Abs(a.z - b.z) < tolerance;
     }
 
+    /// <summary>Approx equal.</summary>
     private bool ApproxEqual(Vector2 a, Vector2 b, float tolerance = 0.001f)
     {
         return Mathf.Abs(a.x - b.x) < tolerance &&
                Mathf.Abs(a.y - b.y) < tolerance;
     }
 
+    /// <summary>Approx equal.</summary>
     private bool ApproxEqual(Color a, Color b, float tolerance = 0.01f)
     {
         return Mathf.Abs(a.r - b.r) < tolerance &&
@@ -283,6 +294,7 @@ public class ActorFactoryDebugger : EditorWindow
                Mathf.Abs(a.a - b.a) < tolerance;
     }
 
+    /// <summary>Clean up.</summary>
     private void CleanUp()
     {
         if (prefabInstance != null) DestroyImmediate(prefabInstance);
@@ -291,6 +303,7 @@ public class ActorFactoryDebugger : EditorWindow
         factoryInstance = null;
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         CleanUp();

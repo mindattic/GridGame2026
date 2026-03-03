@@ -64,6 +64,7 @@ public class BoardOverlay : MonoBehaviour
     private float maxAlpha = Opacity.Translucent.Alpha196; // Maximum opacity
     private Color overlayColor = ColorHelper.Translucent.DarkBlack; // Default color
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -90,6 +91,7 @@ public class BoardOverlay : MonoBehaviour
         spriteRenderer.enabled = true;
     }
 
+    /// <summary>Coroutine that executes the fade in sequence.</summary>
     public IEnumerator FadeInRoutine()
     {
         if (runningCoroutine != null)
@@ -97,6 +99,7 @@ public class BoardOverlay : MonoBehaviour
         yield return runningCoroutine = StartCoroutine(FadeRoutine(maxAlpha, true));
     }
 
+    /// <summary>Coroutine that executes the fade out sequence.</summary>
     public IEnumerator FadeOutRoutine()
     {
         if (runningCoroutine != null)

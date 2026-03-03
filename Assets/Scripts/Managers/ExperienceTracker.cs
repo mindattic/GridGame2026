@@ -63,6 +63,7 @@ namespace Scripts.Managers
 
         public static string NextSceneAfterPostBattleScreen = Scripts.Helpers.SceneHelper.Hub;
 
+        /// <summary>Start session.</summary>
         public static void StartSession(IEnumerable<CharacterClass> participantCharacters)
         {
             characterXP.Clear();
@@ -76,12 +77,14 @@ namespace Scripts.Managers
             }
         }
 
+        /// <summary>Add participant.</summary>
         public static void AddParticipant(CharacterClass character)
         {
             if (character == CharacterClass.None) return;
             participants.Add(character);
         }
 
+        /// <summary>Add xp.</summary>
         public static void AddXP(CharacterClass character, int amount)
         {
             if (character == CharacterClass.None || amount <= 0) return;
@@ -91,6 +94,7 @@ namespace Scripts.Managers
                 characterXP[character] = amount;
         }
 
+        /// <summary>Gets the xp gained.</summary>
         public static int GetXPGained(CharacterClass characterClass)
         {
             if (characterClass == CharacterClass.None) return 0;
@@ -100,6 +104,7 @@ namespace Scripts.Managers
         public static IReadOnlyDictionary<CharacterClass, int> AllGains => characterXP;
         public static IReadOnlyCollection<CharacterClass> Participants => participants;
 
+        /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
         public static void Clear()
         {
             characterXP.Clear();

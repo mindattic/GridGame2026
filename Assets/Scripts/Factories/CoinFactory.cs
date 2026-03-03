@@ -126,6 +126,7 @@ namespace Scripts.Factories
             return root;
         }
 
+        /// <summary>Creates the linear curve.</summary>
         private static AnimationCurve CreateLinearCurve()
         {
             return new AnimationCurve(
@@ -134,6 +135,7 @@ namespace Scripts.Factories
             );
         }
 
+        /// <summary>Creates the slope curve.</summary>
         private static AnimationCurve CreateSlopeCurve()
         {
             return new AnimationCurve(
@@ -142,6 +144,7 @@ namespace Scripts.Factories
             );
         }
 
+        /// <summary>Creates the sine curve.</summary>
         private static AnimationCurve CreateSineCurve()
         {
             return new AnimationCurve(
@@ -150,6 +153,7 @@ namespace Scripts.Factories
             );
         }
 
+        /// <summary>Configure particle system.</summary>
         private static void ConfigureParticleSystem(ParticleSystem ps)
         {
             // Main module
@@ -224,6 +228,7 @@ namespace Scripts.Factories
             lights.enabled = false;
         }
 
+        /// <summary>Configure particle renderer.</summary>
         private static void ConfigureParticleRenderer(ParticleSystemRenderer renderer)
         {
             renderer.enabled = true;

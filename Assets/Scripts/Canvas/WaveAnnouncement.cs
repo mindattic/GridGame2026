@@ -68,6 +68,7 @@ public class WaveAnnouncement : MonoBehaviour
     // Unity lifecycle
     // ------------------------------------------------------------------------
 
+    /// <summary>Resolves UI references via GameObjectHelper strongly-typed paths.</summary>
     private void Awake()
     {
         // Resolve labels using GameObjectHelper strongly-typed paths.
@@ -77,6 +78,7 @@ public class WaveAnnouncement : MonoBehaviour
         front = GameObjectHelper.Game.WaveAnnouncement.Front;
     }
 
+    /// <summary>Sets the initial rotation to -90° (hidden off-axis) and zeroes label alpha.</summary>
     private void Start()
     {
         // Ensure the initial rotation is -90 degrees so it is hidden off-axis.
@@ -114,6 +116,7 @@ public class WaveAnnouncement : MonoBehaviour
     // Animation
     // ------------------------------------------------------------------------
 
+    /// <summary>Stops any running animation and starts the wave text rotate-in/out sequence.</summary>
     private void RestartAnimation()
     {
         if (animationRoutine != null)
@@ -166,12 +169,14 @@ public class WaveAnnouncement : MonoBehaviour
     // Helpers
     // ------------------------------------------------------------------------
 
+    /// <summary>Sets the text on both front and back TMP labels.</summary>
     private void SetText(string value)
     {
         if (back != null) back.text = value;
         if (front != null) front.text = value;
     }
 
+    /// <summary>Sets the alpha of the image and both text labels.</summary>
     private void SetLabelAlpha(float a)
     {
         if (image != null)

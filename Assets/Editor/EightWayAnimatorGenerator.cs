@@ -83,6 +83,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     };
 
     [MenuItem("Tools/Generate 8-Way Animator (SpriteRenderer)")]
+    /// <summary>Open.</summary>
     private static void Open()
     {
         var win = CreateInstance<EightWayAnimatorGenerator_CustomOrder_SpriteRenderer>();
@@ -92,6 +93,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Window UI
+    /// <summary>Draws immediate-mode GUI elements.</summary>
     private void OnGUI()
     {
         GUILayout.Label("Input Spritesheets", EditorStyles.boldLabel);
@@ -124,6 +126,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Validate input, create SpriteRenderer clips, and build the Animator
+    /// <summary>Generate all.</summary>
     private void GenerateAll()
     {
         try
@@ -211,6 +214,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
         }
     }
 
+    /// <summary>Validate input.</summary>
     private void ValidateInput()
     {
         if (idleSheet == null) throw new Exception("Assign Idle Sheet.");
@@ -221,6 +225,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Load sliced sprites sorted by trailing numeric index
+    /// <summary>Load sliced sprites.</summary>
     private static Sprite[] LoadSlicedSprites(Texture2D sheet)
     {
         var path = AssetDatabase.GetAssetPath(sheet);
@@ -229,6 +234,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
         return all;
     }
 
+    /// <summary>Extract index.</summary>
     private static int ExtractIndex(string spriteName)
     {
         var m = Regex.Match(spriteName, @"_(\d+)$");
@@ -239,6 +245,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Single-frame looping clip for SpriteRenderer.m_Sprite
+    /// <summary>Creates the sprite clip single_sprite renderer.</summary>
     private static AnimationClip CreateSpriteClipSingle_SpriteRenderer(Sprite sprite, int samples)
     {
         var clip = new AnimationClip { frameRate = Mathf.Max(1, samples) };
@@ -259,6 +266,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Multi-frame looping clip for SpriteRenderer.m_Sprite
+    /// <summary>Creates the sprite clip_sprite renderer.</summary>
     private static AnimationClip CreateSpriteClip_SpriteRenderer(Sprite[] sprites, int samples)
     {
         var clip = new AnimationClip { frameRate = Mathf.Max(1, samples) };
@@ -283,6 +291,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Loop settings
+    /// <summary>Sets the loop.</summary>
     private static void SetLoop(AnimationClip clip, bool loop)
     {
         var s = AnimationUtility.GetAnimationClipSettings(clip);
@@ -293,6 +302,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Build a 2D Freeform Directional blend tree using provided clips, mapped to standard vectors
+    /// <summary>Creates the directional blend tree.</summary>
     private static BlendTree CreateDirectionalBlendTree(
         string name,
         AnimatorController controller,
@@ -324,6 +334,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : Edito
     }
 
     // Ensure target folder exists
+    /// <summary>Ensure folder.</summary>
     private static void EnsureFolder(string folder)
     {
         if (AssetDatabase.IsValidFolder(folder)) return;

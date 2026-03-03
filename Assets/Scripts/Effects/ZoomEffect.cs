@@ -85,6 +85,7 @@ public class ZoomEffect : MonoBehaviour
     [Header("Invert")]
     [Range(0f, 1f)] public float invertStrength = 1f;
 
+    /// <summary>Play.</summary>
     public IEnumerator Play(System.Action onFinished = null)
     {
         // 1) Grab frame

@@ -66,6 +66,7 @@ public class GrassInstance : MonoBehaviour
     private float swayPhase;
     private bool isVisible;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -83,6 +84,7 @@ public class GrassInstance : MonoBehaviour
         if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         TryCacheHero();
@@ -94,6 +96,7 @@ public class GrassInstance : MonoBehaviour
         if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable()
     {
         if (flapRoutineRef != null)
@@ -110,6 +113,7 @@ public class GrassInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
     }
 
+    /// <summary>Called when the renderer becomes visible by any camera.</summary>
     private void OnBecameVisible()
     {
         isVisible = true;
@@ -117,12 +121,14 @@ public class GrassInstance : MonoBehaviour
         StartIdleSwayIfAllowed();
     }
 
+    /// <summary>Called when the renderer is no longer visible by any camera.</summary>
     private void OnBecameInvisible()
     {
         isVisible = false;
         StopIdleSway();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (!isVisible) return;
@@ -131,6 +137,7 @@ public class GrassInstance : MonoBehaviour
         YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Try cache hero.</summary>
     private static void TryCacheHero()
     {
         if (hero == null) hero = Object.FindObjectOfType<OverworldHero>();
@@ -138,6 +145,7 @@ public class GrassInstance : MonoBehaviour
             heroSR = hero.GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Called when a 2D trigger collider is entered.</summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Only react to the hero entering
@@ -154,6 +162,7 @@ public class GrassInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Called when a 2D trigger collider is exited.</summary>
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!IsHeroCollider(other)) return;
@@ -167,6 +176,7 @@ public class GrassInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Returns whether the is hero collider condition is met.</summary>
     private bool IsHeroCollider(Component other)
     {
         if (other == null) return false;
@@ -174,6 +184,7 @@ public class GrassInstance : MonoBehaviour
         return h != null;
     }
 
+    /// <summary>Coroutine that executes the flatten to zero sequence.</summary>
     private IEnumerator FlattenToZeroRoutine()
     {
         float start = transform.localEulerAngles.x;
@@ -196,6 +207,7 @@ public class GrassInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Coroutine that executes the return to rest sequence.</summary>
     private IEnumerator ReturnToRestRoutine()
     {
         float start = transform.localEulerAngles.x;
@@ -214,6 +226,7 @@ public class GrassInstance : MonoBehaviour
     }
 
     // === Idle sway (no trigger required) ===
+    /// <summary>Coroutine that executes the idle sway sequence.</summary>
     private IEnumerator IdleSwayRoutine()
     {
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
@@ -226,6 +239,7 @@ public class GrassInstance : MonoBehaviour
         idleSwayRoutineRef = null;
     }
 
+    /// <summary>Start idle sway if allowed.</summary>
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
@@ -234,6 +248,7 @@ public class GrassInstance : MonoBehaviour
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }
 
+    /// <summary>Stop idle sway.</summary>
     private void StopIdleSway()
     {
         if (idleSwayRoutineRef != null)
@@ -243,6 +258,7 @@ public class GrassInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Sets the local euler x.</summary>
     private void SetLocalEulerX(float x)
     {
         Vector3 e = transform.localEulerAngles;

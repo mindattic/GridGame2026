@@ -27,6 +27,7 @@ namespace Scripts.Data.Actor
     public static class Vampire
     {
 
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

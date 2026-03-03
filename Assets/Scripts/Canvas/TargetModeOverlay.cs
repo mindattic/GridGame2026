@@ -92,6 +92,7 @@ public class TargetModeOverlay : MonoBehaviour
     // Lifecycle
     // ---------------------------------------------------------------------
 
+    /// <summary>Caches the SpriteRenderer, sets initial transparent state, sizes to board, and signals readiness.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -114,6 +115,7 @@ public class TargetModeOverlay : MonoBehaviour
         GameReady.Begin(this);
     }
 
+    /// <summary>Applies any queued mode change that arrived while this component was disabled.</summary>
     private void OnEnable()
     {
         // If we were enabled after a pending mode, apply immediately
@@ -124,12 +126,14 @@ public class TargetModeOverlay : MonoBehaviour
         }
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         //if (g.InputManager != null)
         //    g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
+    /// <summary>Subscribes to input mode changes, fits to board, applies sorting, and snaps to current state.</summary>
     public void Initialize()
     {
         // Subscribe to mode changes
@@ -158,6 +162,7 @@ public class TargetModeOverlay : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    /// <summary>Editor callback when inspector values change.</summary>
     private void OnValidate()
     {
         // Keep sorting and sizing up-to-date while editing
@@ -171,6 +176,7 @@ public class TargetModeOverlay : MonoBehaviour
     // Event handling
     // ---------------------------------------------------------------------
 
+    /// <summary>Responds to input mode changes by fading the overlay in or out.</summary>
     private void HandleModeChanged(InputMode mode)
     {
         if (!isActiveAndEnabled)
@@ -192,16 +198,19 @@ public class TargetModeOverlay : MonoBehaviour
     // Helpers
     // ---------------------------------------------------------------------
 
+    /// <summary>Returns true if the overlay should be visible for the given input mode.</summary>
     private static bool ShouldBeVisible(InputMode mode)
     {
         return mode == InputMode.AnyTarget || mode == InputMode.LinearTarget;
     }
 
+    /// <summary>Returns the current sprite renderer alpha.</summary>
     private float GetAlpha()
     {
         return spriteRenderer != null ? spriteRenderer.color.a : 0f;
     }
 
+    /// <summary>Stops any active fade coroutine.</summary>
     private void StopFade()
     {
         if (runningCoroutine != null)
@@ -211,6 +220,7 @@ public class TargetModeOverlay : MonoBehaviour
         }
     }
 
+    /// <summary>Immediately sets the overlay alpha based on the given input mode without fading.</summary>
     private void ApplyInstant(InputMode mode)
     {
         bool visible = ShouldBeVisible(mode);
@@ -225,6 +235,7 @@ public class TargetModeOverlay : MonoBehaviour
         }
     }
 
+    /// <summary>Applies the configured sorting layer and order to the sprite renderer.</summary>
     private void ApplySorting()
     {
         if (spriteRenderer == null) return;
@@ -265,6 +276,7 @@ public class TargetModeOverlay : MonoBehaviour
     // Animation
     // ---------------------------------------------------------------------
 
+    /// <summary>Lerps the overlay alpha from one value to another over the specified duration.</summary>
     private IEnumerator FadeRoutine(float from, float to, float seconds)
     {
         if (spriteRenderer == null)
@@ -293,7 +305,7 @@ public class TargetModeOverlay : MonoBehaviour
         runningCoroutine = null;
     }
 
-    // Apply alpha to sprite color (preserving configured RGB)
+    /// <summary>Sets the sprite renderer alpha while preserving the configured overlay RGB color.</summary>
     private void SetAlpha(float a)
     {
         if (spriteRenderer == null) return;
@@ -304,12 +316,14 @@ public class TargetModeOverlay : MonoBehaviour
 
 #if UNITY_EDITOR
     [ContextMenu("Preview Show")]
+    /// <summary>Editor preview show.</summary>
     private void EditorPreviewShow()
     {
         SetAlpha(maxAlpha);
     }
 
     [ContextMenu("Preview Hide")]
+    /// <summary>Editor preview hide.</summary>
     private void EditorPreviewHide()
     {
         SetAlpha(minAlpha);

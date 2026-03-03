@@ -78,6 +78,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     #region Unity Lifecycle
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         GameObject contentGO = GameObject.Find(GameObjectHelper.StageSelect.Content);
@@ -94,6 +95,7 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         // Validate that a current profile exists
@@ -112,6 +114,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     #region UI Population
 
+    /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
     private void Clear()
     {
         // Remove any previously created buttons to avoid duplicates.
@@ -127,6 +130,7 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Reload.</summary>
     private void Reload()
     {
         // Hide existing content and prepare to repopulate.
@@ -181,6 +185,7 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Add load save file button.</summary>
     public void AddLoadSaveFileButton(SaveState item)
     {
         // Validate required references and data early.
@@ -263,6 +268,7 @@ public class SaveFileSelectManager : MonoBehaviour
     // Actions
     // ----------------------------------------------------------------------------------------------------
 
+    /// <summary>Handles the load save file button clicked event.</summary>
     private void OnLoadSaveFileButtonClicked(string filePath)
     {
         // Validate the path before any IO.
@@ -313,6 +319,7 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
+    /// <summary>Handles the back button clicked event.</summary>
     public void OnBackButtonClicked()
     {
         scene.Fade.ToPreviousScene();

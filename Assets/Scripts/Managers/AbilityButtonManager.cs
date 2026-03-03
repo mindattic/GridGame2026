@@ -89,6 +89,7 @@ public class AbilityButtonManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
         abilityButtonContainer = GameObjectHelper.Game.Card.AbilityButtonContainer;
@@ -109,6 +110,7 @@ public class AbilityButtonManager : MonoBehaviour
         }
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         BuildAllHeroButtons();
@@ -148,6 +150,7 @@ public class AbilityButtonManager : MonoBehaviour
         }
     }
 
+    /// <summary>Gets the abilities for.</summary>
     private List<Ability> GetAbilitiesFor(CharacterClass characterClass)
     {
         var list = new List<Ability>();
@@ -167,6 +170,7 @@ public class AbilityButtonManager : MonoBehaviour
         return list;
     }
 
+    /// <summary>Creates the buttons for hero.</summary>
     private void CreateButtonsForHero(CharacterClass characterClass, List<Ability> abilities)
     {
         var list = new List<AbilityButton>();
@@ -196,6 +200,7 @@ public class AbilityButtonManager : MonoBehaviour
         buttonsByHero[characterClass] = list;
     }
 
+    /// <summary>Shows this component.</summary>
     public void Show(ActorInstance actor)
     {
         HideAll();
@@ -214,22 +219,26 @@ public class AbilityButtonManager : MonoBehaviour
         foreach (var btn in list) if (btn != null) { btn.gameObject.SetActive(true); btn.UpdateInteractable(g.ManaPoolManager != null ? g.ManaPoolManager.heroMana : 0f); }
     }
 
+    /// <summary>Hides this component.</summary>
     public void Hide()
     {
         HideAll();
     }
 
+    /// <summary>Hide alls this component.</summary>
     private void HideAll()
     {
         foreach (var btn in allButtons) if (btn != null) btn.gameObject.SetActive(false);
     }
 
     // Update interactable state for all known buttons based on current hero mana
+    /// <summary>Updates the all interactables.</summary>
     public void UpdateAllInteractables(float currentMana)
     {
         foreach (var btn in allButtons) if (btn != null) btn.UpdateInteractable(currentMana);
     }
 
+    /// <summary>Handles the ability button clicked event.</summary>
     private void OnAbilityButtonClicked(ActorInstance actor, Ability ability)
     {
         if (IsInteractionLocked()) return;

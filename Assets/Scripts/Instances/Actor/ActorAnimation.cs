@@ -229,6 +229,7 @@ namespace Scripts.Instances.Actor
         /// 3) Return to start.
         /// </summary>
         /// 
+        /// <summary>Coroutine that executes the bump sequence.</summary>
         public IEnumerator BumpRoutine(ActorInstance target, IEnumerator routine = null)
         {
             g.SortingManager.OnBump(instance, target);

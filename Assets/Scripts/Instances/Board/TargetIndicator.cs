@@ -80,23 +80,27 @@ public class TargetIndicator : MonoBehaviour
     }
     #endregion
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize()
     {
         scale = g.TileScale * 1.1f;
     }
 
     // Activates and positions the TargetIndicator based on whether a focused actor exists.
+    /// <summary>Shows this component.</summary>
     public void Show()
     {
         position = g.Actors.HasTargetActor ? g.Actors.TargetActor.Position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the TargetIndicator and moves it off-screen.
+    /// <summary>Hides this component.</summary>
     public void Hide()
     {
         position = PositionHelper.Nowhere;

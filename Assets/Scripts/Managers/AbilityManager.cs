@@ -88,6 +88,7 @@ namespace Scripts.Managers
 
         private static bool IsEnemyTurn => g.TurnManager.IsEnemyTurn;
         private static bool IsSequenceExecuting => g.SequenceManager.IsExecuting;
+        /// <summary>Returns whether the is interaction locked condition is met.</summary>
         private static bool IsInteractionLocked() => IsEnemyTurn || IsSequenceExecuting || g.InputManager.InputMode == InputMode.None;
 
         #endregion
@@ -181,6 +182,7 @@ namespace Scripts.Managers
             }
         }
 
+        /// <summary>Updates the ability target.</summary>
         public void UpdateAbilityTarget(Touch touch)
         {
             if (IsInteractionLocked() || touch.phase != TouchPhase.Began) return;
@@ -189,6 +191,7 @@ namespace Scripts.Managers
             ToggleTarget(target);
         }
 
+        /// <summary>Updates the linear target.</summary>
         public void UpdateLinearTarget(Touch touch)
         {
             if (IsInteractionLocked() || touch.phase != TouchPhase.Began) return;
@@ -253,6 +256,7 @@ namespace Scripts.Managers
             g.SequenceManager.Execute();
         }
 
+        /// <summary> clear focus and ui..Groups[0].Value.ToUpper() lear focus and ui.</summary>
         private void ClearFocusAndUI()
         {
             ClearMovementState();
@@ -282,6 +286,7 @@ namespace Scripts.Managers
             }
         }
 
+        /// <summary>Returns whether the cancel targeting internal condition is met.</summary>
         private void CancelTargetingInternal()
         {
             ClearAllIndicators();
@@ -293,6 +298,7 @@ namespace Scripts.Managers
             g.TileManager?.Reset();
         }
 
+        /// <summary>Returns whether the cancel targeting condition is met.</summary>
         public void CancelTargeting()
         {
             CancelTargetingInternal();
@@ -300,6 +306,7 @@ namespace Scripts.Managers
             g.InputManager.RequireTouchRelease();
         }
 
+        /// <summary>Handles the cancel button clicked event event.</summary>
         public void OnCancelButtonClickedEvent()
         {
             if (IsSequenceExecuting) return;
@@ -321,15 +328,19 @@ namespace Scripts.Managers
             g.TouchOffset = Vector3.zero;
         }
 
+        /// <summary>Show cancel buttons this component.</summary>
         public void ShowCancelButton() => g.AbilityCastConfirm.ShowButtons();
+        /// <summary>Hide cancel buttons this component.</summary>
         public void HideCancelButton() => g.AbilityCastConfirm.HideButtons();
 
+        /// <summary>Select.</summary>
         private void Select(ActorInstance actor)
         {
             targetList.Add(actor);
             actor.Render.SetTargetIndicatorEnabled(true);
         }
 
+        /// <summary> clear all indicators..Groups[0].Value.ToUpper() lear all indicators.</summary>
         private void ClearAllIndicators()
         {
             foreach (var a in targetList)
@@ -340,6 +351,7 @@ namespace Scripts.Managers
             g.AbilityCastConfirm.CanvasGroup.blocksRaycasts = false;
         }
 
+        /// <summary>Handles the selection changed event.</summary>
         private void OnSelectionChanged(bool added)
         {
             if (added)
@@ -348,6 +360,7 @@ namespace Scripts.Managers
                 AbilityCastConfirm.instance.FadeOut();
         }
 
+        /// <summary>Returns whether the is valid target for ability condition is met.</summary>
         private static bool IsValidTargetForAbility(Ability ability, ActorInstance user, ActorInstance target)
         {
             return ability.type switch
@@ -357,6 +370,7 @@ namespace Scripts.Managers
             };
         }
 
+        /// <summary>Returns whether the is valid linear target condition is met.</summary>
         private static bool IsValidLinearTarget(ActorInstance hero, ActorInstance target)
         {
             if (hero == null || target == null) return false;

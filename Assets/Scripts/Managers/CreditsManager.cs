@@ -34,6 +34,7 @@ public class CreditsManager : MonoBehaviour
     private RectTransform textarea;
 
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         //title = GameObject.Find(GameObjectHelper.Credits.Title).GetComponent<RectTransform>();
@@ -86,11 +87,13 @@ public class CreditsManager : MonoBehaviour
 
         textarea.sizeDelta = new Vector2(c.CanvasRect.rect.width, textareaHeight);
     }
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         scene.FadeIn();
     }
 
+    /// <summary>Handles the back button clicked event.</summary>
     public void OnBackButtonClicked()
     {
 

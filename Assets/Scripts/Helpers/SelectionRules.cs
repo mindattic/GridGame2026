@@ -24,6 +24,7 @@ namespace Scripts.Helpers
 {
 public static class SelectionRules
 {
+    /// <summary>Returns whether the can control hero condition is met.</summary>
     public static bool CanControlHero(ActorInstance candidate)
     {
         if (candidate == null || !candidate.IsPlaying || !candidate.IsHero)

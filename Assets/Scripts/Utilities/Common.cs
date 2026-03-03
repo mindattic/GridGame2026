@@ -344,7 +344,9 @@ public static class Wait
     private sealed class Immediate : IEnumerator
     {
         public static readonly Immediate Instance = new Immediate();
+        /// <summary>Move next.</summary>
         public bool MoveNext() => false;
+        /// <summary>Resets component to default values (editor only).</summary>
         public void Reset() { }
         public object Current => null;
     }

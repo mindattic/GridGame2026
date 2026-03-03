@@ -75,6 +75,7 @@ namespace Scripts.Canvas
 
         #region Initialization
 
+        /// <summary>Caches the SpriteRenderer component.</summary>
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -106,6 +107,7 @@ namespace Scripts.Canvas
 
         #region Update Loop
 
+        /// <summary>Checks distance to target each frame and self-destructs on arrival.</summary>
         private void Update()
         {
             if (target == null) return;

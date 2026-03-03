@@ -69,6 +69,7 @@ namespace Scripts.Libraries
             }
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;
@@ -197,6 +198,7 @@ namespace Scripts.Libraries
             isLoaded = true;
         }
 
+        /// <summary>Get.</summary>
         public static Stage Get(string name)
         {
             if (!isLoaded) Load();
@@ -208,6 +210,7 @@ namespace Scripts.Libraries
             return new Stage(stages[name]);
         }
 
+        /// <summary>Generate waves.</summary>
         private static List<StageWave> GenerateWaves(int waveCount, List<CharacterClass> possibleEnemies)
         {
             List<StageWave> waves = new List<StageWave>();

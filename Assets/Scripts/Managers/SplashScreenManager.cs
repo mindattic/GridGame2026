@@ -29,6 +29,7 @@ public class SplashScreenManager : MonoBehaviour
     //Fields
     private float waitDuration = 30;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
     }
@@ -38,12 +39,14 @@ public class SplashScreenManager : MonoBehaviour
         StartCoroutine(FadeInRoutine());
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
             scene.Fade.ToTitleScreen();
     }
 
+    /// <summary>Coroutine that executes the fade in sequence.</summary>
     private IEnumerator FadeInRoutine()
     {
         scene.FadeIn();

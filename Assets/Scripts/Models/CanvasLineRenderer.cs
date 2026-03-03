@@ -32,6 +32,7 @@ public class CanvasLineRenderer : Graphic
     [SerializeField] public float dotSpacing = 20f;
     [SerializeField] public RectTransform content; // Reference to the ScrollView's Content
 
+    /// <summary>Handles the populate mesh event.</summary>
     protected override void OnPopulateMesh(VertexHelper vh)
     {
         vh.Clear();
@@ -43,6 +44,7 @@ public class CanvasLineRenderer : Graphic
         }
     }
 
+    /// <summary>Updates the line.</summary>
     public void UpdateLine(Button startButton, Button endButton)
     {
         if (startButton == null || endButton == null || content == null)
@@ -55,6 +57,7 @@ public class CanvasLineRenderer : Graphic
         SetVerticesDirty(); // Force UI to refresh
     }
 
+    /// <summary>Convert to local space.</summary>
     private Vector2 ConvertToLocalSpace(RectTransform buttonTransform)
     {
         Vector2 localPoint;

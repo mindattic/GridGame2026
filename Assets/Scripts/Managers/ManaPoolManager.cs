@@ -79,6 +79,7 @@ public class ManaPoolManager : MonoBehaviour
     private Image HeroFill;
     private Image EnemyFill;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         _heroMana = 0f;
@@ -94,11 +95,13 @@ public class ManaPoolManager : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         BankButton.onClick.RemoveListener(OnBankButtonClicked);
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         // Accumulate mana at a constant rate while the timeline is advancing
@@ -199,6 +202,7 @@ public class ManaPoolManager : MonoBehaviour
         }
     }
 
+    /// <summary>Applies the bloom color.</summary>
     private void ApplyBloomColor()
     {
         HeroFill.color = manaHdrColor;

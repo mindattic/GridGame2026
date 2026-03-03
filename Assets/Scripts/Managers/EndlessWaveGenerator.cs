@@ -65,6 +65,7 @@ namespace Scripts.Managers
 
         #endregion
 
+        /// <summary>Generate.</summary>
         public static StageWave Generate(int waveNumber, ActorTag tags)
         {
             int budget = BaseBudget + (waveNumber - 1) * BudgetPerWave;
@@ -101,6 +102,7 @@ namespace Scripts.Managers
             return wave;
         }
 
+        /// <summary>Gets the candidates by tags.</summary>
         private static List<CharacterClass> GetCandidatesByTags(ActorTag tags)
         {
             if (tags == ActorTag.None)
@@ -126,6 +128,7 @@ namespace Scripts.Managers
             return result;
         }
 
+        /// <summary>Pick by budget.</summary>
         private static List<CharacterClass> PickByBudget(List<CharacterClass> candidates, int level, int budget)
         {
             var scored = candidates
@@ -172,6 +175,7 @@ namespace Scripts.Managers
             return result;
         }
 
+        /// <summary>Score for.</summary>
         private static int ScoreFor(CharacterClass characterClass, int level)
         {
             var data = ActorLibrary.Get(characterClass);

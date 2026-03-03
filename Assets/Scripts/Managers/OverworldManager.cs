@@ -110,6 +110,7 @@ public class OverworldManager : MonoBehaviour
     ZoomEffect zoomEffect;
 
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         cam = Camera.main;
@@ -195,6 +196,7 @@ public class OverworldManager : MonoBehaviour
         scene.FadeIn();
     }
 
+    /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
@@ -202,6 +204,7 @@ public class OverworldManager : MonoBehaviour
     }
 
     // Called by UI button to cycle the active leader to the next party member
+    /// <summary>Change leader.</summary>
     public void ChangeLeader()
     {
         var all = GetOrderedHeroes();
@@ -227,6 +230,7 @@ public class OverworldManager : MonoBehaviour
         }
     }
 
+    /// <summary>Cycle camera mode.</summary>
     public void CycleCameraMode()
     {
         cameraMode = cameraMode == OverworldCameraMode.FollowHero ? OverworldCameraMode.FreeCamera : OverworldCameraMode.FollowHero;
@@ -259,6 +263,7 @@ public class OverworldManager : MonoBehaviour
         UpdateCameraModeUI();
     }
 
+    /// <summary>Updates the camera mode ui.</summary>
     private void UpdateCameraModeUI()
     {
         if (cameraModeImage == null || cameraModeLabel == null || cameraModeLabel == null)
@@ -276,6 +281,7 @@ public class OverworldManager : MonoBehaviour
 
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (terrainSR == null) return;
@@ -327,6 +333,7 @@ public class OverworldManager : MonoBehaviour
         }
     }
 
+    /// <summary>Runs per-frame logic after all Update calls.</summary>
     private void LateUpdate()
     {
         // Only move camera when Mode7 is not actively driving it
@@ -371,6 +378,7 @@ public class OverworldManager : MonoBehaviour
     }
 
 
+    /// <summary>Returns whether the is over ui condition is met.</summary>
     private bool IsOverUI(Vector2 screenPos)
     {
         // Treat any UI under the pointer as blocking, except the virtual joystick hierarchy.
@@ -390,12 +398,14 @@ public class OverworldManager : MonoBehaviour
 
 
     // Follow hero while moving and flag movement for encounter timer
+    /// <summary>Handle hero moved.</summary>
     private void HandleHeroMoved(Vector2 heroPos)
     {
         movedThisFrame = true;
     }
 
     // Trigger scene change to a random stage after sustained movement
+    /// <summary>Trigger random encounter.</summary>
     private void TriggerRandomEncounter()
     {
         if (!hasRandomEncounters || isLoadingEncounter) return;
@@ -428,6 +438,7 @@ public class OverworldManager : MonoBehaviour
     }
 
     // --- Party helpers ---
+    /// <summary>Gets the ordered heroes.</summary>
     private List<OverworldHero> GetOrderedHeroes()
     {
         return GameObject.FindObjectsOfType<OverworldHero>(true)
@@ -436,6 +447,7 @@ public class OverworldManager : MonoBehaviour
             .ToList();
     }
 
+    /// <summary>Assign party chain.</summary>
     private void AssignPartyChain(OverworldHero leaderHero, List<OverworldHero> all)
     {
         if (leaderHero == null || all == null || all.Count == 0) return;
@@ -467,6 +479,7 @@ public class OverworldManager : MonoBehaviour
     }
 
     // --- Camera helpers ---
+    /// <summary>Updates the pan target.</summary>
     private void UpdatePanTarget(Vector2 currentScreen)
     {
         if (cam == null) return;
@@ -479,6 +492,7 @@ public class OverworldManager : MonoBehaviour
         cameraTarget = panStartCameraTarget - new Vector3(worldDelta.x, worldDelta.y, 0f);
     }
 
+    /// <summary>Clamp camera target.</summary>
     private Vector3 ClampCameraTarget(Vector3 target)
     {
         if (terrainSR == null || cam == null) return target;

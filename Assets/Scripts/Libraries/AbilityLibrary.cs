@@ -49,6 +49,7 @@ namespace Scripts.Libraries
     {
         // ============== ACTIVE ABILITIES ==============
         
+        /// <summary>Heal.</summary>
         public static Ability Heal() => new Ability
         {
             name = "Spark of Healing",
@@ -62,6 +63,7 @@ namespace Scripts.Libraries
             Description = "Launches a healing spark that flies to the target and restores HP."
         };
 
+        /// <summary>Shield rush.</summary>
         public static Ability ShieldRush() => new Ability
         {
             name = "Shield Bash",
@@ -75,6 +77,7 @@ namespace Scripts.Libraries
             Description = "Rush in a straight line to bash an enemy. Can trigger a Pincer Attack."
         };
 
+        /// <summary>Trap.</summary>
         public static Ability Trap() => new Ability
         {
             name = "Trap",
@@ -88,6 +91,7 @@ namespace Scripts.Libraries
             Description = "Fires a trap that roots the target for their next turn."
         };
 
+        /// <summary>Smite.</summary>
         public static Ability Smite() => new Ability
         {
             name = "Smite",
@@ -103,6 +107,7 @@ namespace Scripts.Libraries
 
         // ============== PASSIVE ABILITIES ==============
         
+        /// <summary>Double attack.</summary>
         public static Ability DoubleAttack() => new Ability
         {
             name = "Double Attack",
@@ -114,6 +119,7 @@ namespace Scripts.Libraries
             Description = "Attacks twice per turn against each adjacent target."
         };
 
+        /// <summary>Triple attack.</summary>
         public static Ability TripleAttack() => new Ability
         {
             name = "Triple Attack",
@@ -125,6 +131,7 @@ namespace Scripts.Libraries
             Description = "Attacks three times per turn against each adjacent target."
         };
 
+        /// <summary>Double move.</summary>
         public static Ability DoubleMove() => new Ability
         {
             name = "Double Move",
@@ -136,6 +143,7 @@ namespace Scripts.Libraries
             Description = "Moves twice per turn instead of once."
         };
 
+        /// <summary>Triple move.</summary>
         public static Ability TripleMove() => new Ability
         {
             name = "Triple Move",
@@ -149,6 +157,7 @@ namespace Scripts.Libraries
 
         // ============== REACTIVE ABILITIES ==============
         
+        /// <summary>Counter attack.</summary>
         public static Ability CounterAttack() => new Ability
         {
             name = "Counter Attack",

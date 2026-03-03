@@ -95,6 +95,7 @@ public class ScreenShatter : MonoBehaviour
     private const string URPShaderPath = "Universal Render Pipeline/Unlit/ScreenShatter";
     private const string BuiltinShaderPath = "Unlit/ScreenShatter";
 
+    /// <summary>Play.</summary>
     public IEnumerator Play(System.Action onFinished = null)
     {
         // Optionally disable overlay canvases (they render above everything else)
@@ -220,6 +221,7 @@ public class ScreenShatter : MonoBehaviour
         onFinished?.Invoke();
     }
 
+    /// <summary>Pause here.</summary>
     private void PauseHere(string reason)
     {
         Debug.Log($"ScreenShatter: Pause - {reason}");

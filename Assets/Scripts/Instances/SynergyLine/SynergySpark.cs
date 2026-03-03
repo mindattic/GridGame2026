@@ -229,6 +229,7 @@ public class SynergySpark
         if (sparks != null) sparks.Clear();
     }
 
+    /// <summary>Creates the instance.</summary>
     private void Spawn(bool revActiveFlag)
     {
         var s = new SynergyLineSpark();
@@ -250,6 +251,7 @@ public class SynergySpark
         active.Add(s);
     }
 
+    /// <summary>Updates the active.</summary>
     private void UpdateActive(
         Func<float, Vector3> samplePos,
         Func<float, float> radiusAtT,

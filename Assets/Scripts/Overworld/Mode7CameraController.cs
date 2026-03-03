@@ -81,6 +81,7 @@ public class Mode7CameraController : MonoBehaviour
 
     private Camera _cam;
 
+    /// <summary>Resets component to default values (editor only).</summary>
     private void Reset()
     {
         _cam = GetComponent<Camera>();
@@ -89,6 +90,7 @@ public class Mode7CameraController : MonoBehaviour
         AutoFind();
     }
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         _cam = GetComponent<Camera>();
@@ -96,12 +98,14 @@ public class Mode7CameraController : MonoBehaviour
         AutoFind();
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         if (_cam == null) _cam = GetComponent<Camera>();
         if (_cam != null) _cam.orthographic = false;
     }
 
+    /// <summary>Auto find.</summary>
     private void AutoFind()
     {
         if (target == null)
@@ -112,6 +116,7 @@ public class Mode7CameraController : MonoBehaviour
   
     }
 
+    /// <summary>Runs per-frame logic after all Update calls.</summary>
     private void LateUpdate()
     {
         if (!enableMode7) return;
@@ -160,6 +165,7 @@ public class Mode7CameraController : MonoBehaviour
     }
 
     // Utility: Convert a screen point to world point on the Z=planeZ (XY plane)
+    /// <summary>Screen to world on z plane.</summary>
     public static Vector3 ScreenToWorldOnZPlane(Camera cam, Vector2 screenPos, float planeZ)
     {
         if (cam == null) cam = Camera.main;

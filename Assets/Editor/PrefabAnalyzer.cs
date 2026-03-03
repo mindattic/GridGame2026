@@ -36,6 +36,7 @@ using Scripts.Utilities;
 public class PrefabAnalyzer : EditorWindow
 {
     [MenuItem("Tools/Analyze Selected Prefab")]
+    /// <summary>Analyze selected prefab.</summary>
     public static void AnalyzeSelectedPrefab()
     {
         var selected = Selection.activeGameObject;
@@ -63,6 +64,7 @@ public class PrefabAnalyzer : EditorWindow
         Debug.Log($"Analysis saved to: {path}");
     }
 
+    /// <summary>Analyze game object.</summary>
     private static void AnalyzeGameObject(GameObject go, StringBuilder sb, int depth)
     {
         var indent = new string(' ', depth * 2);
@@ -180,6 +182,7 @@ public class PrefabAnalyzer : EditorWindow
         }
     }
 
+    /// <summary>Gets the property value.</summary>
     private static string GetPropertyValue(SerializedProperty prop)
     {
         switch (prop.propertyType)

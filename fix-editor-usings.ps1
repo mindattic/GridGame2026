@@ -13,7 +13,6 @@ $allNamespaces = @(
     'Scripts.Instances.Actor',
     'Scripts.Instances.Board',
     'Scripts.Instances.SynergyLine',
-    'Scripts.Instances.Timeline',
     'Scripts.Inventory',
     'Scripts.Libraries',
     'Scripts.Managers',

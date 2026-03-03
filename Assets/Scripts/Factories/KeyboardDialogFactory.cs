@@ -212,6 +212,7 @@ namespace Scripts.Factories
             return root;
         }
 
+        /// <summary>Creates the row.</summary>
         private static GameObject CreateRow(string name, RectTransform parent, float yPos)
         {
             var row = new GameObject(name);
@@ -236,6 +237,7 @@ namespace Scripts.Factories
             return row;
         }
 
+        /// <summary>Creates the key row.</summary>
         private static void CreateKeyRow(GameObject row, string[] keys, string prefix)
         {
             var rowRT = row.GetComponent<RectTransform>();
@@ -245,6 +247,7 @@ namespace Scripts.Factories
             }
         }
 
+        /// <summary>Creates the key.</summary>
         private static GameObject CreateKey(string name, string label, RectTransform parent)
         {
             var key = new GameObject(name);
@@ -299,6 +302,7 @@ namespace Scripts.Factories
             return key;
         }
 
+        /// <summary>Creates the special key.</summary>
         private static GameObject CreateSpecialKey(GameObject row, string name, string label, float xOffset, float width)
         {
             var key = new GameObject($"Key{name}");
@@ -357,6 +361,7 @@ namespace Scripts.Factories
             return key;
         }
 
+        /// <summary>Creates the text object.</summary>
         private static GameObject CreateTextObject(string name, RectTransform parent, Vector2 position, Vector2 size, string text, float fontSize)
         {
             var obj = new GameObject(name);
@@ -382,6 +387,7 @@ namespace Scripts.Factories
             return obj;
         }
 
+        /// <summary>Creates the confirm button.</summary>
         private static GameObject CreateConfirmButton(string name, string label, RectTransform parent, Vector2 position)
         {
             var button = new GameObject(name);

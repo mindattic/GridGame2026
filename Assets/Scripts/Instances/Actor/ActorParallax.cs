@@ -52,12 +52,14 @@ namespace Scripts.Instances.Actor
         public Direction attackerDirection = Direction.None;
         public float transitionDuration = 2f;
 
+        /// <summary>Initializes initialize.</summary>
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
             maxFocus = g.TileSize * 10f;
         }
 
+        /// <summary>Assign.</summary>
         public void Assign(Direction attackerDirection)
         {
             this.attackerDirection = attackerDirection;

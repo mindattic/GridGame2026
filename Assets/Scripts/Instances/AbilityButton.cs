@@ -55,6 +55,7 @@ public class AbilityButton : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         if (button == null)
@@ -64,6 +65,7 @@ public class AbilityButton : MonoBehaviour
             label = GetComponentInChildren<TMP_Text>();
     }
 
+    /// <summary>Initializes initialize.</summary>
     public void Initialize(Ability ability, System.Action onClick)
     {
         if (label != null)
@@ -88,12 +90,14 @@ public class AbilityButton : MonoBehaviour
 
     #region State
 
+    /// <summary>Updates the interactable.</summary>
     public void UpdateInteractable(float currentMana)
     {
         if (ability == null || button == null) return;
         button.interactable = currentMana >= ability.ManaCost;
     }
 
+    /// <summary>World position.</summary>
     public Vector3 WorldPosition()
     {
         return UnitConversionHelper.Canvas.ToWorld(button.transform, button.transform.position.z);
@@ -159,6 +163,7 @@ public class Ability
     public bool requiresTarget =>
         type == AbilityType.TargetAlly || type == AbilityType.TargetOpponent || type == AbilityType.TargetAny;
 
+    /// <summary>Activate.</summary>
     public void Activate(ActorInstance user, ActorInstance target)
     {
         Debug.Log($"{user.name} used {name} on {(target ? target.name : "no target")}");

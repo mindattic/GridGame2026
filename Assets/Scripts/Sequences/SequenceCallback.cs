@@ -55,6 +55,7 @@ namespace Scripts.Sequences
             this.action = action;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             action?.Invoke();

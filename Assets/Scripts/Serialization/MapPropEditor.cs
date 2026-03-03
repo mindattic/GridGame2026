@@ -82,6 +82,7 @@ namespace Scripts.Serialization
         private const string BakedFolder = "_Baked";
 
         // Runtime: Load JSON and rebuild under root.
+        /// <summary>Load into.</summary>
         public static bool LoadInto(Transform propsRoot, string mapPath, bool clearExisting = true)
         {
             if (propsRoot == null)
@@ -113,6 +114,7 @@ namespace Scripts.Serialization
             return true;
         }
 
+        /// <summary>Instantiate node.</summary>
         private static void InstantiateNode(PropNode node, Transform parent)
         {
             GameObject go;
@@ -166,6 +168,7 @@ namespace Scripts.Serialization
             go.SetActive(node.active);
         }
 
+        /// <summary> destroy all children immediate..Groups[0].Value.ToUpper() estroy all children immediate.</summary>
         private static void DestroyAllChildrenImmediate(Transform root)
         {
             for (int i = root.childCount - 1; i >= 0; i--)
@@ -180,6 +183,7 @@ namespace Scripts.Serialization
             }
         }
 
+        /// <summary>Unity tag exists.</summary>
         private static bool UnityTagExists(string tag)
         {
             try { var _ = GameObject.FindWithTag(tag); return true; }
@@ -188,6 +192,7 @@ namespace Scripts.Serialization
 
 #if UNITY_EDITOR
         // Editor: Capture hierarchy to JSON under Assets/Resources/<mapPath>.json
+        /// <summary>Save from.</summary>
         public static bool SaveFrom(Transform propsRoot, string mapPath, bool includeInactive = true, bool bakeOrphans = true)
         {
             if (propsRoot == null)
@@ -216,6 +221,7 @@ namespace Scripts.Serialization
             return true;
         }
 
+        /// <summary>Creates the node recursive.</summary>
         private static PropNode BuildNodeRecursive(Transform t, bool bakeOrphans)
         {
             var node = new PropNode
@@ -268,6 +274,7 @@ namespace Scripts.Serialization
             return node;
         }
 
+        /// <summary>Gets the prefab resource path.</summary>
         private static string GetPrefabResourcePath(GameObject go, bool bakeOrphans)
         {
             GameObject srcPrefab = null;
@@ -306,6 +313,7 @@ namespace Scripts.Serialization
             return ToResourcesPath(assetPath);
         }
 
+        /// <summary>Ensure prefab in resources.</summary>
         private static string EnsurePrefabInResources(string srcAssetPath)
         {
             srcAssetPath = srcAssetPath.Replace("\\", "/");
@@ -332,6 +340,7 @@ namespace Scripts.Serialization
             return ToResourcesPath(dstAssetPath);
         }
 
+        /// <summary>To resources asset path.</summary>
         private static string ToResourcesAssetPath(string mapPath)
         {
             mapPath = mapPath.Trim('/').Trim('\\');
@@ -339,6 +348,7 @@ namespace Scripts.Serialization
             return full;
         }
 
+        /// <summary>To resources path.</summary>
         private static string ToResourcesPath(string assetPath)
         {
             assetPath = assetPath.Replace("\\", "/");
@@ -352,6 +362,7 @@ namespace Scripts.Serialization
             return rel; // e.g., "PropsLibrary/Tree_A"
         }
 
+        /// <summary>Ensure folder.</summary>
         private static void EnsureFolder(string folderAssetPath)
         {
             if (string.IsNullOrEmpty(folderAssetPath)) return;
@@ -371,6 +382,7 @@ namespace Scripts.Serialization
             }
         }
 
+        /// <summary>Sanitize file name.</summary>
         private static string SanitizeFileName(string name)
         {
             foreach (char c in Path.GetInvalidFileNameChars())
@@ -378,6 +390,7 @@ namespace Scripts.Serialization
             return name;
         }
 
+        /// <summary>Strip editor only.</summary>
         private static void StripEditorOnly(GameObject go)
         {
             // Remove StableIdHolder and any other editor-only helpers from the baked prefab.
@@ -405,6 +418,7 @@ namespace Scripts.Serialization
 #endif
 
         // Diff & merge helpers --------------------------------------------------------
+        /// <summary>Merge maps.</summary>
         public static PropMap MergeMaps(PropMap original, PropMap incoming)
         {
             var byId = new Dictionary<string, PropNode>();
@@ -428,6 +442,7 @@ namespace Scripts.Serialization
             return original;
         }
 
+        /// <summary>Index recursive.</summary>
         private static void IndexRecursive(PropNode n, Dictionary<string, PropNode> index)
         {
             if (!string.IsNullOrEmpty(n.id) && !index.ContainsKey(n.id))
@@ -436,6 +451,7 @@ namespace Scripts.Serialization
                 IndexRecursive(c, index);
         }
 
+        /// <summary>Merge node.</summary>
         private static void MergeNode(PropNode dst, PropNode src)
         {
             dst.name = src.name;
@@ -469,6 +485,7 @@ namespace Scripts.Serialization
             dst.children = newChildren;
         }
 
+        /// <summary>Gets the or make stable id.</summary>
         private static string GetOrMakeStableId(Transform t)
         {
             // Generate stable id based on path + a GUID component stored on a helper
@@ -492,6 +509,7 @@ namespace Scripts.Serialization
         [SerializeField] private bool requireAlt = true;
 
 #if UNITY_EDITOR
+        /// <summary>Runs per-frame update logic.</summary>
         private void Update()
         {
             if (loader == null) return;

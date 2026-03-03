@@ -125,6 +125,7 @@ namespace Scripts.Factories
             return root;
         }
 
+        /// <summary>Sets the rise curve.</summary>
         private static void SetRiseCurve(CombatTextInstance instance)
         {
             // Access the riseCurve field via reflection since it's SerializeField

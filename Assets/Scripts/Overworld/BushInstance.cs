@@ -82,6 +82,7 @@ public class BushInstance : MonoBehaviour
     private Coroutine idleSwayRoutineRef;
     private float swayPhase;
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -95,6 +96,7 @@ public class BushInstance : MonoBehaviour
         if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes enabled and active.</summary>
     private void OnEnable()
     {
         TryCacheHero();
@@ -109,6 +111,7 @@ public class BushInstance : MonoBehaviour
         if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
+    /// <summary>Called when the component becomes disabled.</summary>
     private void OnDisable()
     {
         if (rustleRoutineRef != null)
@@ -120,6 +123,7 @@ public class BushInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
     }
 
+    /// <summary>Called when the renderer becomes visible by any camera.</summary>
     private void OnBecameVisible()
     {
         isVisible = true;
@@ -127,12 +131,14 @@ public class BushInstance : MonoBehaviour
         StartIdleSwayIfAllowed();
     }
 
+    /// <summary>Called when the renderer is no longer visible by any camera.</summary>
     private void OnBecameInvisible()
     {
         isVisible = false;
         StopIdleSway();
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (!isVisible) return;
@@ -159,6 +165,7 @@ public class BushInstance : MonoBehaviour
         heroWasBelow = isAnchorBelow;
     }
 
+    /// <summary>Try cache hero.</summary>
     private static void TryCacheHero()
     {
         if (hero == null) hero = Object.FindObjectOfType<OverworldHero>();
@@ -166,6 +173,7 @@ public class BushInstance : MonoBehaviour
             heroSR = hero.GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>Returns whether the is overlapping horizontally condition is met.</summary>
     private bool IsOverlappingHorizontally(Vector3 heroPos)
     {
         // Consider overlap within the bush bounds in X
@@ -173,6 +181,7 @@ public class BushInstance : MonoBehaviour
         return heroPos.x >= b.min.x && heroPos.x <= b.max.x;
     }
 
+    /// <summary>Returns whether the is near pivot y condition is met.</summary>
     private bool IsNearPivotY(Vector3 heroPos)
     {
         // Near the bush pivot Y within a fraction of the bush height
@@ -181,6 +190,7 @@ public class BushInstance : MonoBehaviour
         return Mathf.Abs(heroPos.y - transform.position.y) <= Mathf.Max(0.02f, tolerance);
     }
 
+    /// <summary>Coroutine that executes the rustle sequence.</summary>
     private IEnumerator RustleRoutine()
     {
         // Cache start transforms
@@ -238,6 +248,7 @@ public class BushInstance : MonoBehaviour
     }
 
     // === Idle sway (no trigger required) ===
+    /// <summary>Coroutine that executes the idle sway sequence.</summary>
     private IEnumerator IdleSwayRoutine()
     {
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
@@ -250,6 +261,7 @@ public class BushInstance : MonoBehaviour
         idleSwayRoutineRef = null;
     }
 
+    /// <summary>Start idle sway if allowed.</summary>
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
@@ -258,6 +270,7 @@ public class BushInstance : MonoBehaviour
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }
 
+    /// <summary>Stop idle sway.</summary>
     private void StopIdleSway()
     {
         if (idleSwayRoutineRef != null)
@@ -267,6 +280,7 @@ public class BushInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Sets the local euler x.</summary>
     private void SetLocalEulerX(float x)
     {
         Vector3 e = transform.localEulerAngles;

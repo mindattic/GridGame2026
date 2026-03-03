@@ -26,6 +26,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderDebugOptions renders a dropdown for various debug options and a Run button.
+    /// <summary>Render debug options.</summary>
     private void RenderDebugOptions()
     {
         GUILayout.BeginHorizontal();
@@ -38,6 +39,7 @@ public partial class DebugWindow
     }
 
     // OnDebugOptionRunClick executes a test based on the selected debug option.
+    /// <summary>Handles the debug option run click event.</summary>
     private void OnDebugOptionRunClick()
     {
         switch (selectedOption)

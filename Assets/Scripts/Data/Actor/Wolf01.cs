@@ -26,6 +26,7 @@ namespace Scripts.Data.Actor
 {
     public static class Wolf01
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

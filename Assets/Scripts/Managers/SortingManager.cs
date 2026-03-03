@@ -97,6 +97,7 @@ public class SortingManager : MonoBehaviour
         OnSortRequested?.Invoke(e);
     }
 
+    /// <summary>Handles the actor focus event.</summary>
     public void OnActorFocus()
     {
         if (!g.Actors.HasSelectedActor) return;
@@ -107,6 +108,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the hero drag event.</summary>
     public void OnHeroDrag()
     {
         if (!g.Actors.HasSelectedActor) return;
@@ -117,6 +119,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the selected hero location changed event.</summary>
     public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
     {
         if (!g.Actors.HasSelectedActor) return;
@@ -128,6 +131,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the selected hero drop event.</summary>
     public void OnSelectedHeroDrop()
     {
         if (!g.Actors.HasSelectedActor) return;
@@ -138,6 +142,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the actor moving event.</summary>
     public void OnActorMoving(ActorInstance actor)
     {
         Invoke(new SortEvent
@@ -147,6 +152,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the actor overlap event.</summary>
     public void OnActorOverlap(ActorInstance initiator, ActorInstance target)
     {
         Invoke(new SortEvent
@@ -157,6 +163,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the pincer attack event.</summary>
     public void OnPincerAttack(PincerAttackParticipants participants)
     {
         Invoke(new SortEvent
@@ -166,6 +173,7 @@ public class SortingManager : MonoBehaviour
         });
     }
 
+    /// <summary>Handles the bump event.</summary>
     public void OnBump(ActorInstance initiator, ActorInstance target)
     {
         Invoke(new SortEvent
@@ -177,6 +185,7 @@ public class SortingManager : MonoBehaviour
     }
 
     // These two rely on existing direct layering logic:
+    /// <summary>Handles the support line spawn event.</summary>
     public void OnSupportLineSpawn(SupportLineInstance supportLine)
     {
         var isAbove = supportLine.supporter.SortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
@@ -200,6 +209,7 @@ public class SortingManager : MonoBehaviour
         synergyLineInstance.SetSorting(layer);
     }
 
+    /// <summary>Handles the portrait pop in event.</summary>
     public void OnPortraitPopIn(PortraitInstance portrait)
     {
         portrait.SetSorting(SortingHelper.Layer.PortraitPopIn, SortingHelper.Order.Max);

@@ -38,6 +38,7 @@ public partial class DebugWindow
     // Track last selected actor to auto-load values into the UI when selection changes
     private CharacterClass lastThumbKey = CharacterClass.None;
 
+    /// <summary>Render thumbnail settings.</summary>
     private void RenderThumbnailSettings()
     {
 

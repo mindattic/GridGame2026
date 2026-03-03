@@ -44,6 +44,7 @@ namespace Scripts.Data.Actor
     /// </summary>
     public static class Paladin
     {
+        /// <summary>Data.</summary>
         public static ActorData Data()
         {
             return new ActorData

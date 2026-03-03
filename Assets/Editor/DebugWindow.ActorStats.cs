@@ -27,6 +27,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderActorStats displays a list of all hero and enemy actors with basic status info.
+    /// <summary>Render actor stats.</summary>
     private void RenderActorStats()
     {
         GUILayout.BeginHorizontal();

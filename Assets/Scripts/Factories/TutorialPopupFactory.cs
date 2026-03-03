@@ -201,6 +201,7 @@ namespace Scripts.Factories
             return root;
         }
 
+        /// <summary>Creates the button.</summary>
         private static GameObject CreateButton(string name, string labelText, RectTransform parent, Vector2 position)
         {
             var button = new GameObject(name);

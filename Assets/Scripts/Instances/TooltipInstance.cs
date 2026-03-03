@@ -211,6 +211,7 @@ public class TooltipInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Wrap message.</summary>
     private string WrapMessage(string input, float maxWidth)
     {
         string[] words = input.Split(' ');
@@ -238,6 +239,7 @@ public class TooltipInstance : MonoBehaviour
         return builder.ToString();
     }
 
+    /// <summary>Coroutine that executes the typewriter sequence.</summary>
     private IEnumerator TypewriterRoutine(string fullText)
     {
         label.text = "";
@@ -266,6 +268,7 @@ public class TooltipInstance : MonoBehaviour
         if (autoDestroy) StartCoroutine(AutoDestroyRoutine());
     }
 
+    /// <summary>Coroutine that executes the typewriter line sequence.</summary>
     private IEnumerator TypewriterLineRoutine(string fullText)
     {
         label.text = "";
@@ -285,6 +288,7 @@ public class TooltipInstance : MonoBehaviour
         if (autoDestroy) StartCoroutine(AutoDestroyRoutine());
     }
 
+    /// <summary>Coroutine that executes the animate growth sequence.</summary>
     private IEnumerator AnimateGrowthRoutine(Vector2 anchoredTarget, TooltipPlacement placement)
     {
         float duration = 0.2f;
@@ -317,6 +321,7 @@ public class TooltipInstance : MonoBehaviour
         background.anchoredPosition = endPos;
     }
 
+    /// <summary>Updates the background size.</summary>
     private void UpdateBackgroundSize()
     {
         float fontSize = label.fontSize;
@@ -333,6 +338,7 @@ public class TooltipInstance : MonoBehaviour
         background.sizeDelta = new Vector2(width, height);
     }
 
+    /// <summary>Coroutine that executes the fade sequence.</summary>
     private IEnumerator FadeRoutine(float from, float to, float duration)
     {
         float t = 0f;
@@ -346,6 +352,7 @@ public class TooltipInstance : MonoBehaviour
         canvasGroup.alpha = to;
     }
 
+    /// <summary>Coroutine that executes the auto destroy sequence.</summary>
     private IEnumerator AutoDestroyRoutine()
     {
         yield return new WaitForSeconds(autoDestroyDelay);
@@ -354,6 +361,7 @@ public class TooltipInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (followingPointer)
@@ -364,6 +372,7 @@ public class TooltipInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Calculates the position.</summary>
     private Vector2 CalculatePosition(Vector2 origin, Vector2 tooltipSize, Vector2 targetSize, TooltipPlacement placement)
     {
         float padding = 16f;
@@ -382,6 +391,7 @@ public class TooltipInstance : MonoBehaviour
         }
     }
 
+    /// <summary>Clamp to screen.</summary>
     private Vector2 ClampToScreen(Vector2 position, Vector2 size)
     {
         float canvasWidth = c.CanvasRect.rect.width;
@@ -411,6 +421,7 @@ public class TooltipSettings
 
 public static class Tooltip
 {
+    /// <summary>Shows this component.</summary>
     public static TooltipInstance Show(TooltipSettings settings)
     {
         // Use factory instead of Instantiate(prefab)

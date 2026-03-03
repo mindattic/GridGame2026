@@ -176,6 +176,7 @@ public class GameManager : Singleton<GameManager>
     // Debug
 
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         if (!ProfileHelper.HasProfiles())
@@ -356,6 +357,7 @@ public class GameManager : Singleton<GameManager>
 #endif
     }
 
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
     {
         if (!ProfileHelper.HasProfiles())

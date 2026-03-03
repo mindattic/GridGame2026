@@ -73,6 +73,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
     public Vector2 Direction => output;                 // Consumers read this
 
+    /// <summary>Caches the RectTransform and resolves the handle child, centering it.</summary>
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -84,11 +85,13 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         if (handle != null) handle.anchoredPosition = Vector2.zero;
     }
 
+    /// <summary>Begins drag tracking when the joystick area is touched.</summary>
     public void OnPointerDown(PointerEventData eventData)
     {
         OnDrag(eventData);
     }
 
+    /// <summary>Moves the handle toward the pointer position, clamped within maxRadius, and outputs normalized direction.</summary>
     public void OnDrag(PointerEventData eventData)
     {
         if (rect == null || handle == null) return;
@@ -108,13 +111,14 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
             output = raw; // keep magnitude for analog speed
     }
 
+    /// <summary>Resets the handle to center and clears the output direction on release.</summary>
     public void OnPointerUp(PointerEventData eventData)
     {
         output = Vector2.zero;
         if (handle != null) handle.anchoredPosition = Vector2.zero;
     }
 
-    // Added: allow external reset (e.g., on encounter)
+    /// <summary>Externally resets the joystick output and handle position (e.g., on encounter start).</summary>
     public void ResetOutput()
     {
         output = Vector2.zero;

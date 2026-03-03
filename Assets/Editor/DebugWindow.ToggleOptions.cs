@@ -28,6 +28,7 @@ using Scripts.Utilities;
 public partial class DebugWindow
 {
     // RenderCheckboxes provides several toggles for various debug options.
+    /// <summary>Render toggle options.</summary>
     private void RenderToggleOptions()
     {
 

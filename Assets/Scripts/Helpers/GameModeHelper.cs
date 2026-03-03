@@ -29,10 +29,14 @@ namespace Scripts.Helpers
         // Tag mask for enemy selection (flags). Default to Enemy only.
         public static ActorTag Tags = ActorTag.Enemy;
 
+        /// <summary>Sets the tags.</summary>
         public static void SetTags(ActorTag tags) => Tags = tags;
+        /// <summary>Add tags.</summary>
         public static void AddTags(ActorTag tags) => Tags |= tags;
+        /// <summary> clear tags..Groups[0].Value.ToUpper() lear tags.</summary>
         public static void ClearTags() => Tags = ActorTag.None;
 
+        /// <summary>To campaign mode.</summary>
         public static void ToCampaignMode()
         {
             CurrentMode = GameMode.Campaign;
@@ -41,6 +45,7 @@ namespace Scripts.Helpers
         }
 
         // Activate Endless without scene switch
+        /// <summary>To endless mode.</summary>
         public static void ToEndlessMode()
         {
             // Auto-select latest save into CurrentSave so Game can start immediately

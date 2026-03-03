@@ -64,6 +64,7 @@ public class CoinCounter : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Resolves child UI references and caches the main camera.</summary>
     void Awake()
     {
         icon = transform.GetChild("Icon").GetComponent<Image>();
@@ -76,6 +77,7 @@ public class CoinCounter : MonoBehaviour
 
     #region Update
 
+    /// <summary>Updates the pulsing glow effect each fixed timestep.</summary>
     void FixedUpdate()
     {
         UpdateGlow();
@@ -87,6 +89,7 @@ public class CoinCounter : MonoBehaviour
         value.text = g.TotalCoins.ToString("D7");
     }
 
+    /// <summary>Scales the glow image based on the animation curve evaluation.</summary>
     private void UpdateGlow()
     {
         float glowScale = maxGlowScale * glowCurve.Evaluate(Time.time % glowCurve.length);

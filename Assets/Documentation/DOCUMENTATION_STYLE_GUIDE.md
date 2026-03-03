@@ -388,6 +388,15 @@ public class MyClass : MonoBehaviour
 
 ## Method Documentation
 
+### Rule: Every Method Must Have a Summary
+
+**Every method** in the project — public, private, internal, or protected — must have a `/// <summary>` XML doc comment. No method should be left undocumented.
+
+- Unity lifecycle methods (`Awake`, `Start`, `Update`, `OnEnable`, etc.) included.
+- Coroutines included.
+- Event handlers included.
+- One-line summaries are acceptable for simple methods.
+
 ### Simple Methods
 
 One-line summary is sufficient:
@@ -648,7 +657,7 @@ When documenting a new file:
 - [ ] List 3-5 RELATED FILES
 - [ ] Add ACCESS if singleton via GameHelper
 - [ ] Use `#region` for classes > 100 lines
-- [ ] Add one-line summaries to public methods
+- [ ] Add `/// <summary>` to **every** method (public, private, coroutine, lifecycle)
 
 ### Actor Data Files (Data/Actor/*.cs)
 

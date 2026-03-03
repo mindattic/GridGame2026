@@ -46,6 +46,7 @@ namespace Scripts.Sequences
             this.enemy = enemy;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             UnityEngine.Debug.Log($"[EnemyTakeTurnSequence] ProcessRoutine started for {enemy?.name ?? "null"}");

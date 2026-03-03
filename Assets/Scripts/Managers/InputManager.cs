@@ -142,8 +142,10 @@ public class InputManager : MonoBehaviour
 
     #endregion
 
+    /// <summary>Any pointer down.</summary>
     private static bool AnyPointerDown() => Input.touchCount > 0 || Input.GetMouseButton(0);
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         dragThreshold = GameManager.instance.tileSize * 0.01f;
@@ -180,6 +182,7 @@ public class InputManager : MonoBehaviour
     private void UpdateAbilityTarget(Touch touch) => g.AbilityManager?.UpdateAbilityTarget(touch);
 
     // Linear target: select an enemy in same row/column with clear line; move hero and bump
+    /// <summary>Updates the linear target.</summary>
     private void UpdateLinearTarget(Touch touch) => g.AbilityManager?.UpdateLinearTarget(touch);
 
     /// <summary>
@@ -255,6 +258,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     private void Update()
     {
         if (GameManager.instance.inputManager == null) return;

@@ -29,6 +29,7 @@ namespace Scripts.Managers
 public class ProfileCreateManager : MonoBehaviour
 {
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
 

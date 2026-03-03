@@ -37,6 +37,7 @@ using Scripts.Utilities;
 public class ScriptableObjectAnalyzer : Editor
 {
     [MenuItem("Tools/Analyze Selected ScriptableObjects")]
+    /// <summary>Analyze selected.</summary>
     public static void AnalyzeSelected()
     {
         var selected = Selection.objects;
@@ -80,6 +81,7 @@ public class ScriptableObjectAnalyzer : Editor
     }
 
     [MenuItem("Tools/Analyze All ScriptableObjects of Type...")]
+    /// <summary>Analyze all of type.</summary>
     public static void AnalyzeAllOfType()
     {
         // Find all ScriptableObject types in the project
@@ -112,6 +114,7 @@ public class ScriptableObjectAnalyzer : Editor
         menu.ShowAsContext();
     }
 
+    /// <summary>Analyze all of specific type.</summary>
     private static void AnalyzeAllOfSpecificType(System.Type type)
     {
         var guids = AssetDatabase.FindAssets($"t:{type.Name}");
@@ -150,6 +153,7 @@ public class ScriptableObjectAnalyzer : Editor
         EditorUtility.RevealInFinder(outputPath);
     }
 
+    /// <summary>Analyze scriptable object.</summary>
     private static void AnalyzeScriptableObject(ScriptableObject so, StringBuilder sb)
     {
         var path = AssetDatabase.GetAssetPath(so);
@@ -186,6 +190,7 @@ public class ScriptableObjectAnalyzer : Editor
         sb.AppendLine();
     }
 
+    /// <summary>Gets the property value.</summary>
     private static string GetPropertyValue(SerializedProperty prop)
     {
         switch (prop.propertyType)

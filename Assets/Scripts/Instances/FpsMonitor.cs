@@ -33,12 +33,14 @@ public class FpsMonitor
     public bool isActive = false;
 
     //Method which is automatically called before the first frame update  
+    /// <summary>Performs initial setup after all Awake calls complete.</summary>
     public void Start(bool isActive)
     {
         this.isActive = isActive;
         nextPeriod = Time.realtimeSinceStartup + measurePeriod;
     }
 
+    /// <summary>Runs per-frame update logic.</summary>
     public void Update()
     {
         if (!isActive) 

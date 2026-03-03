@@ -68,12 +68,14 @@ namespace Scripts.Libraries
             }
         }
 
+        /// <summary>Get.</summary>
         public static MapData Get(string name)
         {
             if (!isLoaded) Load();
             return maps.TryGetValue(name, out var data) ? data : null;
         }
 
+        /// <summary>Get.</summary>
         public static MapData Get(Map map)
         {
             if (!isLoaded) Load();
@@ -81,6 +83,7 @@ namespace Scripts.Libraries
             return maps.TryGetValue(name, out var data) ? data : null;
         }
 
+        /// <summary>Load.</summary>
         private static void Load()
         {
             if (isLoaded) return;
@@ -92,6 +95,7 @@ namespace Scripts.Libraries
             isLoaded = true;
         }
 
+        /// <summary>Creates the instance.</summary>
         private static MapData Create(Map map)
         {
             string name = map.ToString();

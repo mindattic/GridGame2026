@@ -40,6 +40,7 @@ namespace Scripts.Sequences
             this.target = target;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             // Safety checks in case state changed after queuing
@@ -67,6 +68,7 @@ namespace Scripts.Sequences
             yield return paladin.Animation.BumpRoutine(target, ShieldBashDamageRoutine());
         }
 
+        /// <summary>Coroutine that executes the shield bash damage sequence.</summary>
         private IEnumerator ShieldBashDamageRoutine()
         {
             if (target != null && target.IsPlaying)

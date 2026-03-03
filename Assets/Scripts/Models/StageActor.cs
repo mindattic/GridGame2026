@@ -80,6 +80,7 @@ public class StageActor
         AssignStats();
     }
 
+    /// <summary>Assign stats.</summary>
     public void AssignStats()
     {
         if (CharacterClass == CharacterClass.None)

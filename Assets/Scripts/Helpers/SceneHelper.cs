@@ -129,6 +129,7 @@ namespace Scripts.Helpers
             }
         }
 
+        /// <summary>Sets the alpha.</summary>
         public static void SetAlpha(float alpha)
         {
             var overlay = FadeOverlayHelper.Overlay;
@@ -143,6 +144,7 @@ namespace Scripts.Helpers
         /// </summary>
         public static class Fade
         {
+            /// <summary>To.</summary>
             public static void To(string sceneName)
             {
                 if (string.IsNullOrWhiteSpace(sceneName))
@@ -163,6 +165,7 @@ namespace Scripts.Helpers
                 FadeOut(afterFade());
             }
 
+            /// <summary>To previous scene.</summary>
             public static void ToPreviousScene(string defaultScene = Game)
             {
                 IEnumerator afterFade()
@@ -178,18 +181,31 @@ namespace Scripts.Helpers
             }
 
             // Strongly typed helpers
+            /// <summary>To credits.</summary>
             public static void ToCredits() => To(Credits);
+            /// <summary>To game.</summary>
             public static void ToGame() => To(Game);
+            /// <summary>To overworld.</summary>
             public static void ToOverworld() => To(Overworld);
+            /// <summary>To party manager.</summary>
             public static void ToPartyManager() => To(PartyManager);
+            /// <summary>To profile create.</summary>
             public static void ToProfileCreate() => To(ProfileCreate);
+            /// <summary>To profile select.</summary>
             public static void ToProfileSelect() => To(ProfileSelect);
+            /// <summary>To save file select.</summary>
             public static void ToSaveFileSelect() => To(SaveFileSelect);
+            /// <summary>To splash screen.</summary>
             public static void ToSplashScreen() => To(SplashScreen);
+            /// <summary>To settings.</summary>
             public static void ToSettings() => To(Settings);
+            /// <summary>To stage select.</summary>
             public static void ToStageSelect() => To(StageSelect);
+            /// <summary>To title screen.</summary>
             public static void ToTitleScreen() => To(TitleScreen);
+            /// <summary>To post battle screen.</summary>
             public static void ToPostBattleScreen() => To(PostBattleScreen);
+            /// <summary>To hub.</summary>
             public static void ToHub() => To(Hub); // new helper
         }
 
@@ -198,6 +214,7 @@ namespace Scripts.Helpers
         /// </summary>
         public static class Switch
         {
+            /// <summary>To.</summary>
             public static void To(string sceneName)
             {
                 if (string.IsNullOrWhiteSpace(sceneName))
@@ -214,6 +231,7 @@ namespace Scripts.Helpers
                 SceneLoader.Load(sceneName);
             }
 
+            /// <summary>To previous scene.</summary>
             public static void ToPreviousScene(string defaultScene = Game)
             {
                 SetAlpha(0f);
@@ -223,18 +241,31 @@ namespace Scripts.Helpers
             }
 
             // Strongly typed helpers
+            /// <summary>To credits.</summary>
             public static void ToCredits() => To(Credits);
+            /// <summary>To game.</summary>
             public static void ToGame() => To(Game);
+            /// <summary>To overworld.</summary>
             public static void ToOverworld() => To(Overworld);
+            /// <summary>To party manager.</summary>
             public static void ToPartyManager() => To(PartyManager);
+            /// <summary>To profile create.</summary>
             public static void ToProfileCreate() => To(ProfileCreate);
+            /// <summary>To profile select.</summary>
             public static void ToProfileSelect() => To(ProfileSelect);
+            /// <summary>To save file select.</summary>
             public static void ToSaveFileSelect() => To(SaveFileSelect);
+            /// <summary>To splash screen.</summary>
             public static void ToSplashScreen() => To(SplashScreen);
+            /// <summary>To settings.</summary>
             public static void ToSettings() => To(Settings);
+            /// <summary>To stage select.</summary>
             public static void ToStageSelect() => To(StageSelect);
+            /// <summary>To title screen.</summary>
             public static void ToTitleScreen() => To(TitleScreen);
+            /// <summary>To post battle screen.</summary>
             public static void ToPostBattleScreen() => To(PostBattleScreen);
+            /// <summary>To hub.</summary>
             public static void ToHub() => To(Hub); 
         }
 

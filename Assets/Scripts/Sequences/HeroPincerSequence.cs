@@ -57,6 +57,7 @@ namespace Scripts.Sequences
             this.droppedHero = droppedHero;
         }
 
+        /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
             if (participants == null || !participants.pair.Any())

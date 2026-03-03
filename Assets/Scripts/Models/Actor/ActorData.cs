@@ -116,16 +116,19 @@ public class ActorData
         Stats = GetStats(Level);
     }
 
+    /// <summary>Recalculate stats.</summary>
     public void RecalculateStats()
     {
         Stats = GetStats(Level);
     }
 
+    /// <summary>Gets the stats.</summary>
     public ActorStats GetStats(int level)
     {
         return GetStatsWithOptions(level, DefaultMilestoneWindow, true);
     }
 
+    /// <summary>Gets the stats with options.</summary>
     public ActorStats GetStatsWithOptions(int level, int milestoneWindow, bool distributeMilestones)
     {
         if (level < 1) level = 1;
@@ -235,8 +238,11 @@ public class ActorData
         return stats;
     }
 
+    /// <summary>In groups.</summary>
     public bool InGroups(ActorTag mask) => (Tags & mask) == mask;
+    /// <summary>Add groups.</summary>
     public void AddGroups(ActorTag groups) => Tags |= groups;
+    /// <summary> remove groups..Groups[0].Value.ToUpper() emove groups.</summary>
     public void RemoveGroups(ActorTag groups) => Tags &= ~groups;
 
 }

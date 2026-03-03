@@ -76,6 +76,7 @@ public class TargetLineManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
         mainCamera = Camera.main;
@@ -139,6 +140,7 @@ public class TargetLineManager : MonoBehaviour
         }
     }
 
+    /// <summary>Snap to target.</summary>
     private void SnapToTarget(ActorInstance actor)
     {
         hoveredTarget = actor;
@@ -146,6 +148,7 @@ public class TargetLineManager : MonoBehaviour
         instance.UpdateArcPoints(buttonOrigin, actor.Position);
     }
 
+    /// <summary>End targeting.</summary>
     private void EndTargeting()
     {
         // cleanup line

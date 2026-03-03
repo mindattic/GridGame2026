@@ -49,6 +49,7 @@ public class DebugManager : MonoBehaviour
     public bool isEnemyStunned = false;
 
     // Small helper to spawn a VFX for available heroes (guards null heroes)
+    /// <summary>Creates the visual effect.</summary>
     private void SpawnVisualEffect(VisualEffectAsset vfx)
     {
         var h1 = hero1;
@@ -60,6 +61,7 @@ public class DebugManager : MonoBehaviour
     }
 
     // Gain a small, random chunk of XP for a random hero (wired in DebugWindow DebugOptions -> AddExperience)
+    /// <summary>Add experience.</summary>
     public void AddExperience()
     {
         var hero = RNG.Hero;
@@ -74,6 +76,7 @@ public class DebugManager : MonoBehaviour
     }
 
     // New: Gain exact XP for the selected/random hero (utility)
+    /// <summary>Add experience.</summary>
     public void AddExperience(int amount)
     {
         var hero = RNG.Hero;
@@ -96,6 +99,7 @@ public class DebugManager : MonoBehaviour
     //}
 
     // New: spawn an exact number of coins at hero1 (or a random hero) using CoinManager
+    /// <summary>Creates the coins.</summary>
     public void SpawnCoins()
     {
         var target = hero1 ?? RNG.Hero;
@@ -158,6 +162,7 @@ public class DebugManager : MonoBehaviour
     }
 
 
+    /// <summary>Arrange double combo.</summary>
     public void ArrangeDoubleCombo()
     {
         // Spawn either slimes used by this debug layout
@@ -201,6 +206,7 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    /// <summary>Arrange triple combo.</summary>
     public void ArrangeTripleCombo()
     {
         // Spawn nine slimes used by this debug layout
@@ -287,6 +293,7 @@ public class DebugManager : MonoBehaviour
 
 
 
+    /// <summary>Bump.</summary>
     public void Bump()
     {
         var hero = RNG.Hero;
@@ -305,23 +312,27 @@ public class DebugManager : MonoBehaviour
         hero.Animation.Bump(enemy);
     }
 
+    /// <summary>Dodge.</summary>
     public void Dodge()
     {
         hero1.Animation.Dodge();
     }
 
+    /// <summary>Kill enemies.</summary>
     public void KillEnemies()
     {
         var actors = g.Actors.Enemies.Where(x => x != null && x.IsPlaying).ToList();
         StartCoroutine(KillRoutine(actors));
     }
 
+    /// <summary>Kill heroes.</summary>
     public void KillHeroes()
     {
         var actors = g.Actors.Heroes.Where(x => x != null && x.IsPlaying).ToList();
         StartCoroutine(KillRoutine(actors));
     }
 
+    /// <summary>Coroutine that executes the kill sequence.</summary>
     private IEnumerator KillRoutine(List<ActorInstance> playingActors)
     {
         // Capture the currently playing actors so we only wait on these
@@ -347,6 +358,7 @@ public class DebugManager : MonoBehaviour
         g.StageManager.OnActorDeath();
     }
 
+    /// <summary>Goto post battle screen.</summary>
     public void GotoPostBattleScreen()
     {
         // Seed XP for participating heroes and route to PostBattleScreen for accumulation
@@ -383,6 +395,7 @@ public class DebugManager : MonoBehaviour
         scene.Fade.ToPostBattleScreen();
     }
 
+    /// <summary>Portrait2 d slide in.</summary>
     public void Portrait2DSlideIn()
     {
         var hero = RNG.Hero;
@@ -390,6 +403,7 @@ public class DebugManager : MonoBehaviour
         g.PortraitManager.SlideIn2D(hero, direction);
     }
 
+    /// <summary>Portrait3 d slide in.</summary>
     public void Portrait3DSlideIn()
     {
         var hero = RNG.Hero;
@@ -397,6 +411,7 @@ public class DebugManager : MonoBehaviour
         g.PortraitManager.SlideIn3D(hero, direction);
     }
 
+    /// <summary>Portrait pop in.</summary>
     public void PortraitPopIn()
     {
         var hero = RNG.Hero;
@@ -405,6 +420,7 @@ public class DebugManager : MonoBehaviour
         StartCoroutine(g.SequenceManager.ExecuteRoutine());
     }
 
+    /// <summary>Creates the damage text.</summary>
     public void SpawnDamageText()
     {
         var hero = RNG.Hero;
@@ -412,6 +428,7 @@ public class DebugManager : MonoBehaviour
         g.CombatTextManager.Spawn(text, hero.Position, "Damage");
     }
 
+    /// <summary>Creates the heal text.</summary>
     public void SpawnHealText()
     {
         var hero = RNG.Hero;
@@ -420,6 +437,7 @@ public class DebugManager : MonoBehaviour
     }
 
 
+    /// <summary>Shake.</summary>
     public void Shake()
     {
         var intensity = RNG.ShakeIntensityLevel();
@@ -427,11 +445,13 @@ public class DebugManager : MonoBehaviour
         hero1.Animation.Shake(intensity, duration);
     }
 
+    /// <summary>Spin.</summary>
     public void Spin()
     {
         hero1.Animation.Spin360();
     }
 
+    /// <summary>Creates the support lines.</summary>
     public void SpawnSupportLines()
     {
         foreach (var attacker in g.Actors.Heroes)
@@ -445,6 +465,7 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    /// <summary>Creates the synergy lines.</summary>
     public void SpawnSynergyLines()
     {
         foreach (var attacker in g.Actors.Heroes)
@@ -457,6 +478,7 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    /// <summary>Creates the tooltip1.</summary>
     public void SpawnTooltip1()
     {
         var tt = new TooltipSettings()
@@ -474,6 +496,7 @@ public class DebugManager : MonoBehaviour
         Tooltip.Show(tt);
     }
 
+    /// <summary>Creates the tooltip2.</summary>
     public void SpawnTooltip2()
     {
         var tt = new TooltipSettings()
@@ -491,6 +514,7 @@ public class DebugManager : MonoBehaviour
         Tooltip.Show(tt);
     }
 
+    /// <summary>Trigger enemy move attack.</summary>
     public void TriggerEnemyMoveAttack()
     {
         var attackingEnemies = g.Actors.Enemies.Where(x => x.IsPlaying).ToList();
@@ -501,6 +525,7 @@ public class DebugManager : MonoBehaviour
 
     }
 
+    /// <summary>Trigger enemy attack.</summary>
     public void TriggerEnemyAttack()
     {
         if (g.TurnManager.IsHeroTurn)
@@ -508,44 +533,52 @@ public class DebugManager : MonoBehaviour
     }
 
 
+    /// <summary>Title test.</summary>
     public void TitleTest()
     {
         var text = DateTime.UtcNow.Ticks.ToString();
 
     }
 
+    /// <summary>Tutorial test.</summary>
     public void TutorialTest()
     {
         var tutorial = TutorialLibrary.Tutorials["Tutorial1"];
         g.TutorialPopup.Load(tutorial);
     }
 
+    /// <summary>Creates the slime.</summary>
     public ActorInstance SpawnSlime()
     {
         return g.StageManager.AddEnemy(CharacterClass.Slime00);
     }
 
+    /// <summary>Creates the bat.</summary>
     public ActorInstance SpawnBat()
     {
         return g.StageManager.AddEnemy(CharacterClass.Bat00);
     }
 
+    /// <summary>Creates the scorpion.</summary>
     public ActorInstance SpawnScorpion()
     {
         return g.StageManager.AddEnemy(CharacterClass.Scorpion);
     }
 
+    /// <summary>Creates the yeti.</summary>
     public ActorInstance SpawnYeti()
     {
         return g.StageManager.AddEnemy(CharacterClass.Yeti);
     }
 
+    /// <summary>Creates the soldier.</summary>
     public ActorInstance SpawnSoldier()
     {
         return SpawnRandomByGroup(ActorTag.Soldier | ActorTag.Soldier);
     }
 
 
+    /// <summary>Creates the random enemy.</summary>
     public void SpawnRandomEnemy()
     {
         var r = RNG.Int(1, 10);
@@ -571,6 +604,7 @@ public class DebugManager : MonoBehaviour
     }
 
 
+    /// <summary>Fireball.</summary>
     public void Fireball()
     {
         var startPosition = hero1.Position;
@@ -581,6 +615,7 @@ public class DebugManager : MonoBehaviour
         g.SequenceManager.Execute();
     }
 
+    /// <summary>Heal.</summary>
     public void Heal()
     {
         var source = hero1.Position;
@@ -591,6 +626,7 @@ public class DebugManager : MonoBehaviour
         g.SequenceManager.Execute();
     }
 
+    /// <summary>Homing spiral.</summary>
     public void HomingSpiral()
     {
         var source = hero1.Position;
@@ -602,17 +638,20 @@ public class DebugManager : MonoBehaviour
     }
 
 
+    /// <summary>Randomize background.</summary>
     public void RandomizeBackground()
     {
         g.Background.Randomize();
     }
 
 
+    /// <summary>Trigger next turn.</summary>
     public void TriggerNextTurn()
     {
         g.TurnManager.NextTurn();
     }
 
+    /// <summary>Vfx test_blue slash1.</summary>
     public void VFXTest_BlueSlash1()
     {
         var targetEnemy = g.Actors.Enemies.FirstOrDefault();
@@ -631,179 +670,209 @@ public class DebugManager : MonoBehaviour
         g.VisualEffectManager.Spawn(vfx, hero1.Position, hero1.DamageRoutine(attackResult));
     }
 
+    /// <summary>Vfx test_blue slash2.</summary>
     public void VFXTest_BlueSlash2()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueSlash2"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue slash3.</summary>
     public void VFXTest_BlueSlash3()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueSlash3"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue slash4.</summary>
     public void VFXTest_BlueSlash4()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueSlash4"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue sword.</summary>
     public void VFXTest_BlueSword()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueSword"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue sword4 x.</summary>
     public void VFXTest_BlueSword4X()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueSword4X"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blood claw.</summary>
     public void VFXTest_BloodClaw()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BloodClaw"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_level up.</summary>
     public void VFXTest_LevelUp()
     {
         var vfx = VisualEffectLibrary.VisualEffects["LevelUp"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_yellow hit.</summary>
     public void VFXTest_YellowHit()
     {
         var vfx = VisualEffectLibrary.VisualEffects["YellowHit"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_double claw.</summary>
     public void VFXTest_DoubleClaw()
     {
         var vfx = VisualEffectLibrary.VisualEffects["DoubleClaw"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_lightning explosion.</summary>
     public void VFXTest_LightningExplosion()
     {
         var vfx = VisualEffectLibrary.VisualEffects["LightningExplosion"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_buff life.</summary>
     public void VFXTest_BuffLife()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BuffLife"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_rotary knife.</summary>
     public void VFXTest_RotaryKnife()
     {
         var vfx = VisualEffectLibrary.VisualEffects["RotaryKnife"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_air slash.</summary>
     public void VFXTest_AirSlash()
     {
         var vfx = VisualEffectLibrary.VisualEffects["AirSlash"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_fire rain.</summary>
     public void VFXTest_FireRain()
     {
         var vfx = VisualEffectLibrary.VisualEffects["FireRain"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_ray blast.</summary>
     public void VFXTest_RayBlast()
     {
         var vfx = VisualEffectLibrary.VisualEffects["RayBlast"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_lightning strike.</summary>
     public void VFXTest_LightningStrike()
     {
         var vfx = VisualEffectLibrary.VisualEffects["LightningStrike"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_puffy explosion.</summary>
     public void VFXTest_PuffyExplosion()
     {
         var vfx = VisualEffectLibrary.VisualEffects["PuffyExplosion"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_red slash2 x.</summary>
     public void VFXTest_RedSlash2X()
     {
         var vfx = VisualEffectLibrary.VisualEffects["RedSlash2X"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_god rays.</summary>
     public void VFXTest_GodRays()
     {
         var vfx = VisualEffectLibrary.VisualEffects["GodRays"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_acid splash.</summary>
     public void VFXTest_AcidSplash()
     {
         var vfx = VisualEffectLibrary.VisualEffects["AcidSplash"];
         SpawnVisualEffect(vfx);
     }
+    /// <summary>Vfx test_green buff.</summary>
     public void VFXTest_GreenBuff()
     {
         var vfx = VisualEffectLibrary.VisualEffects["GreenBuff"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_gold buff.</summary>
     public void VFXTest_GoldBuff()
     {
         var vfx = VisualEffectLibrary.VisualEffects["GoldBuff"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_hex shield.</summary>
     public void VFXTest_HexShield()
     {
         var vfx = VisualEffectLibrary.VisualEffects["HexShield"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_toxic cloud.</summary>
     public void VFXTest_ToxicCloud()
     {
         var vfx = VisualEffectLibrary.VisualEffects["ToxicCloud"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_orange slash.</summary>
     public void VFXTest_OrangeSlash()
     {
         var vfx = VisualEffectLibrary.VisualEffects["OrangeSlash"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_moon feather.</summary>
     public void VFXTest_MoonFeather()
     {
         var vfx = VisualEffectLibrary.VisualEffects["MoonFeather"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_pink spark.</summary>
     public void VFXTest_PinkSpark()
     {
         var vfx = VisualEffectLibrary.VisualEffects["PinkSpark"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue yellow sword.</summary>
     public void VFXTest_BlueYellowSword()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueYellowSword"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_blue yellow sword3 x.</summary>
     public void VFXTest_BlueYellowSword3X()
     {
         var vfx = VisualEffectLibrary.VisualEffects["BlueYellowSword3X"];
         SpawnVisualEffect(vfx);
     }
 
+    /// <summary>Vfx test_red sword.</summary>
     public void VFXTest_RedSword()
     {
         var vfx = VisualEffectLibrary.VisualEffects["RedSword"];
@@ -812,6 +881,7 @@ public class DebugManager : MonoBehaviour
 
 
 
+    /// <summary>Vfx test_tech sword.</summary>
     public void VFXTest_TechSword()
     {
         var vfx = VisualEffectLibrary.VisualEffects["TechSword"];
