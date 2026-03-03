@@ -668,6 +668,69 @@ When documenting a new file:
 
 ---
 
+## Screen-Relative Sizing (ScreenMetrics)
+
+All UI sizes, font sizes, padding, and world-space measurements should use `ScreenMetrics` instead of hardcoded pixel values. This guarantees identical visual proportions across all screen sizes and aspect ratios.
+
+### Axis Selection Guide
+
+| Use Case | Method | Example |
+|----------|--------|---------|
+| Font sizes | `ScreenMetrics.Font(frac)` | `Font(0.03f)` → 3% of screen height |
+| Button height | `ScreenMetrics.H(frac)` | `H(0.06f)` → 6% of canvas height |
+| Button width | `ScreenMetrics.W(frac)` | `W(0.80f)` → 80% of canvas width |
+| Icons / squares | `ScreenMetrics.Min(frac)` | `Min(0.05f)` → 5% of shorter axis |
+| Padding / margins | `ScreenMetrics.Min(frac)` | `Min(0.01f)` → 1% of shorter axis |
+| Full-width bars | `ScreenMetrics.W(frac)` | `W(1f)` → full canvas width |
+| Board-relative | `ScreenMetrics.Tile(mult)` | `Tile(0.5f)` → half a tile |
+| World sprites | `ScreenMetrics.WorldH(frac)` | `WorldH(0.10f)` → 10% of visible height |
+| Notch insets | `ScreenMetrics.SafeInsetTop` | Returns canvas-unit inset |
+
+### Rule: No Hardcoded Pixel Sizes
+
+❌ **Do not** use raw pixel values for sizing:
+```csharp
+rootRT.sizeDelta = new Vector2(1024f, 128f);  // BAD: only correct at one resolution
+labelTMP.fontSize = 48;                        // BAD: too small on 4K, too large on mobile
+```
+
+✅ **Do** use `ScreenMetrics`:
+```csharp
+rootRT.sizeDelta = ScreenMetrics.Size(0.80f, 0.06f);  // GOOD: 80% wide, 6% tall
+labelTMP.fontSize = ScreenMetrics.Font(0.025f);        // GOOD: 2.5% of screen height
+```
+
+### Quick Reference
+
+```csharp
+// Canvas-space (UI)
+ScreenMetrics.W(0.5f)         // Half canvas width
+ScreenMetrics.H(0.06f)        // 6% canvas height
+ScreenMetrics.Min(0.05f)      // 5% shorter axis (aspect-safe squares)
+ScreenMetrics.Size(0.8f, 0.1f)// Vector2(80% width, 10% height)
+ScreenMetrics.Square(0.05f)   // Vector2(5% min, 5% min)
+ScreenMetrics.Font(0.03f)     // Font: 3% of height, rounded
+
+// World-space (sprites, camera)
+ScreenMetrics.WorldW(0.5f)    // Half visible world width
+ScreenMetrics.WorldH(0.1f)    // 10% visible world height
+
+// Board-relative (tile-based elements)
+ScreenMetrics.Tile(1f)        // One tile width
+ScreenMetrics.Tile(0.5f)      // Half tile
+
+// Safe area (notch/cutout)
+ScreenMetrics.SafeInsetTop    // Top inset in canvas units
+ScreenMetrics.SafeWidth       // Width minus left+right insets
+
+// Aspect queries
+ScreenMetrics.IsLandscape     // Width >= Height
+ScreenMetrics.IsUltraWide     // Ratio >= 2:1
+ScreenMetrics.AspectRatio     // Width / Height
+```
+
+---
+
 ## Version History
 
 | Date | Author | Changes |

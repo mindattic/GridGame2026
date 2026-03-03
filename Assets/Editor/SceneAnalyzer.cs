@@ -114,9 +114,10 @@ public class SceneAnalyzer : EditorWindow
         Debug.Log($"Analyzed {scenes.Length} scenes");
     }
 
-    /// <summary>Analyze scene.</summary>
+    /// <summary>Analyzes the scene hierarchy and writes a markdown file to Assets/Documentation/Scenes/.</summary>
     public static void AnalyzeScene(Scene scene, bool includeInactive, bool includeTransforms, 
-        bool includeRenderers, bool includeUI, bool includeScripts, int maxDepth)
+        bool includeRenderers, bool includeUI, bool includeScripts, int maxDepth,
+        bool revealInFinder = true)
     {
         var sb = new StringBuilder();
         
@@ -180,7 +181,8 @@ public class SceneAnalyzer : EditorWindow
         AssetDatabase.Refresh();
 
         Debug.Log($"Scene analysis saved to: {outputPath}");
-        EditorUtility.RevealInFinder(outputPath);
+        if (revealInFinder)
+            EditorUtility.RevealInFinder(outputPath);
     }
 
     /// <summary>Collect all objects.</summary>
@@ -319,5 +321,81 @@ public class SceneAnalyzer : EditorWindow
         if (v == Vector3.zero) return "(0,0,0)";
         if (v == Vector3.one) return "(1,1,1)";
         return $"({v.x:F2},{v.y:F2},{v.z:F2})";
+    }
+}
+
+/// <summary>
+/// SCENEANALYZERAUTOSAVE - Automatically regenerates scene hierarchy
+/// documentation whenever a scene is saved in the editor.
+///
+/// PURPOSE:
+/// Keeps Assets/Documentation/Scenes/ always up-to-date without manual
+/// intervention. Hooks into EditorSceneManager.sceneSaved which fires
+/// after every Ctrl+S or File → Save Scene.
+///
+/// TOGGLE:
+/// Menu: Tools → Auto-Generate Scene Docs (persists via EditorPrefs).
+///
+/// RELATED FILES:
+/// - SceneAnalyzer: The analysis engine this calls
+/// - Assets/Documentation/Scenes/: Output directory
+/// </summary>
+[InitializeOnLoad]
+public static class SceneAnalyzerAutoSave
+{
+    private const string PrefKey = "SceneAnalyzerAutoSave_Enabled";
+    private const string MenuPath = "Tools/Auto-Generate Scene Docs";
+
+    /// <summary>Subscribes to the scene-saved event on editor load.</summary>
+    static SceneAnalyzerAutoSave()
+    {
+        EditorSceneManager.sceneSaved -= OnSceneSaved;
+        EditorSceneManager.sceneSaved += OnSceneSaved;
+    }
+
+    /// <summary>Returns whether the auto-generation toggle is enabled.</summary>
+    private static bool IsEnabled
+    {
+        get => EditorPrefs.GetBool(PrefKey, true);
+        set => EditorPrefs.SetBool(PrefKey, value);
+    }
+
+    /// <summary>Menu toggle for enabling/disabling auto-generation.</summary>
+    [MenuItem(MenuPath, priority = 200)]
+    private static void ToggleAutoGenerate()
+    {
+        IsEnabled = !IsEnabled;
+        Debug.Log($"[SceneAnalyzerAutoSave] Auto-generate scene docs: {(IsEnabled ? "ON" : "OFF")}");
+    }
+
+    /// <summary>Adds a checkmark to the menu item when enabled.</summary>
+    [MenuItem(MenuPath, true)]
+    private static bool ToggleAutoGenerateValidate()
+    {
+        Menu.SetChecked(MenuPath, IsEnabled);
+        return true;
+    }
+
+    /// <summary>Called by Unity after a scene is saved. Regenerates the hierarchy markdown.</summary>
+    private static void OnSceneSaved(Scene scene)
+    {
+        if (!IsEnabled)
+            return;
+
+        if (string.IsNullOrEmpty(scene.path))
+            return;
+
+        SceneAnalyzer.AnalyzeScene(
+            scene,
+            includeInactive: true,
+            includeTransforms: true,
+            includeRenderers: true,
+            includeUI: true,
+            includeScripts: true,
+            maxDepth: 20,
+            revealInFinder: false
+        );
+
+        Debug.Log($"[SceneAnalyzerAutoSave] Regenerated: Assets/Documentation/Scenes/{scene.name}_Hierarchy.md");
     }
 }
