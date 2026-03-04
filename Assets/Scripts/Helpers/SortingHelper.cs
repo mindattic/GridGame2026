@@ -29,7 +29,7 @@ namespace Scripts.Helpers
         public static class Layer
         {
             public const string Default = "Default";
-            public const string Board = "BoardManager";
+            public const string Board = "Board";
             public const string DottedLine = "DottedLine";
             public const string SupportLineBelow = "SupportLineBelow";
             public const string ActorBelow = "ActorBelow";
@@ -38,9 +38,9 @@ namespace Scripts.Helpers
             public const string ActorAbove = "ActorAbove";
             public const string VFX = "VFX";
             public const string Coin = "Coin";
-            public const string DamageText = "CombatTextManager";
+            public const string DamageText = "DamageText";
             public const string PortraitPopIn = "PortraitPopIn";
-            public const string Portrait = "Portrait3DManager";
+            public const string Portrait = "Portrait";
         }
 
         public static class Order

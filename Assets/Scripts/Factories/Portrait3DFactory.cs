@@ -89,9 +89,9 @@ namespace Scripts.Factories
             spriteRenderer.sortingOrder = 1;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
-            // SortingGroup
+            // SortingGroup — Portrait layer is above DamageText
             var sortingGroup = root.AddComponent<SortingGroup>();
-            sortingGroup.sortingLayerName = "ActorAbove";
+            sortingGroup.sortingLayerName = "Portrait";
             sortingGroup.sortingOrder = 0;
 
             // PortraitInstance

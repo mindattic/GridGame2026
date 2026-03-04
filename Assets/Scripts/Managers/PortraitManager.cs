@@ -94,7 +94,7 @@ public class PortraitManager : MonoBehaviour
         instance.parent = g.PortraitsContainer;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
-        if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, 1);
+        if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, Opacity.Translucent.Alpha196);
 
         // lanes
         instance.fixedX = fixedX;
@@ -164,7 +164,7 @@ public class PortraitManager : MonoBehaviour
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         if (instance.spriteRenderer != null)
-            instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
+            instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Translucent.Alpha196);
         instance.startTime = Time.time;
 
         portraits.Add(instance);
@@ -252,7 +252,7 @@ public class PortraitManager : MonoBehaviour
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
         if (instance.spriteRenderer != null)
-            instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
+            instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Translucent.Alpha196);
         instance.position = actor.Position;
         instance.startPosition = actor.Position;
 
