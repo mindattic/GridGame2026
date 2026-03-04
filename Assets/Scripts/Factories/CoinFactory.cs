@@ -97,13 +97,7 @@ namespace Scripts.Factories
             // var animator = root.AddComponent<Animator>();
             // animator.runtimeAnimatorController = AssetHelper.LoadAsset<RuntimeAnimatorController>("Animations/Coin");
 
-            // CoinInstance with animation curves
-            var coinInstance = root.AddComponent<CoinInstance>();
-            coinInstance.linearCurve = CreateLinearCurve();
-            coinInstance.slopeCurve = CreateSlopeCurve();
-            coinInstance.sineCurve = CreateSineCurve();
-
-            // ParticleSystem - configure BEFORE it starts playing
+            // ParticleSystem - must be added BEFORE CoinInstance so Awake() can find it
             var particleSystem = root.AddComponent<ParticleSystem>();
             particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             ConfigureParticleSystem(particleSystem);
@@ -111,6 +105,12 @@ namespace Scripts.Factories
             // ParticleSystemRenderer
             var particleRenderer = root.GetComponent<ParticleSystemRenderer>();
             ConfigureParticleRenderer(particleRenderer);
+
+            // CoinInstance with animation curves (added after ParticleSystem)
+            var coinInstance = root.AddComponent<CoinInstance>();
+            coinInstance.linearCurve = CreateLinearCurve();
+            coinInstance.slopeCurve = CreateSlopeCurve();
+            coinInstance.sineCurve = CreateSineCurve();
 
             // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();

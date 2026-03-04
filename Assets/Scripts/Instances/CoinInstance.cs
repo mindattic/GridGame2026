@@ -264,7 +264,8 @@ public class CoinInstance : MonoBehaviour
     private void Despawn()
     {
         spriteRenderer.enabled = false;
-        particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (particles != null)
+            particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         g.TotalCoins++;
         g.CoinCounter.value.text = g.TotalCoins.ToString("D7");
         g.AudioManager.Play($"Click");
