@@ -92,9 +92,12 @@ public class MedicalSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        heroListContainer = rt.Find("HeroList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
+        // Center — scrollable list of hero HP rows + heal-all + potion rows
+        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top-center — contextual heading
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
     }
 
     /// <summary>Loads hero HP from party data. Assumes full HP if not tracked.</summary>

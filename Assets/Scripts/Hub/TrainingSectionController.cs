@@ -80,11 +80,16 @@ public class TrainingSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        heroListContainer = rt.Find("HeroList")?.GetComponent<RectTransform>();
-        trainingListContainer = rt.Find("TrainingList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        vendorPortrait = rt.Find("VendorPortrait")?.GetComponent<Image>();
+        // Left column — party members with learned skill count
+        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Right column — available trainings for selected hero
+        trainingListContainer = rt.Find(GameObjectHelper.Hub.TrainingList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Right header — "Training for: {hero}"
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Left-top — trainer character portrait (set to Mannequin)
+        vendorPortrait = rt.Find(GameObjectHelper.Hub.VendorPortrait)?.GetComponent<Image>();
 
         // Set vendor to Mannequin placeholder
         if (vendorPortrait != null)

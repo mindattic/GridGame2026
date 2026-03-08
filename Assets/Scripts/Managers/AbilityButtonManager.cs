@@ -43,6 +43,7 @@ namespace Scripts.Managers
 /// BUTTON ORGANIZATION:
 /// - Buttons stored by CharacterClass in buttonsByHero dictionary
 /// - Each hero has their own set of ability buttons
+/// - Capped at MaxAbilitySlots (5) per hero — skills + equipped consumables
 /// - Buttons created via AbilityButtonFactory
 /// 
 /// UI LAYOUT:
@@ -75,6 +76,9 @@ namespace Scripts.Managers
 public class AbilityButtonManager : MonoBehaviour
 {
     #region Fields
+
+    /// <summary>Maximum ability buttons (slots) per hero. Includes skills and equipped consumable items.</summary>
+    public const int MaxAbilitySlots = 5;
 
     private Transform abilityButtonContainer;
     private HorizontalLayoutGroup layoutGroup;
@@ -170,12 +174,15 @@ public class AbilityButtonManager : MonoBehaviour
         return list;
     }
 
-    /// <summary>Creates the buttons for hero.</summary>
+    /// <summary>Creates the buttons for hero, capped at MaxAbilitySlots.</summary>
     private void CreateButtonsForHero(CharacterClass characterClass, List<Ability> abilities)
     {
         var list = new List<AbilityButton>();
+        int slotCount = 0;
         foreach (var ability in abilities)
         {
+            if (slotCount >= MaxAbilitySlots) break;
+
             // Use factory instead of Instantiate(prefab)
             var go = AbilityButtonFactory.Create(abilityButtonContainer);
             var layout = go.GetComponent<LayoutElement>();
@@ -196,6 +203,7 @@ public class AbilityButtonManager : MonoBehaviour
             instance.gameObject.SetActive(false);
             list.Add(instance);
             allButtons.Add(instance);
+            slotCount++;
         }
         buttonsByHero[characterClass] = list;
     }

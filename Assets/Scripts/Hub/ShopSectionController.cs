@@ -85,11 +85,15 @@ public class ShopSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        itemListContainer = rt.Find("ItemList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        buyTabButton = rt.Find("BuyTab")?.GetComponent<Button>();
-        sellTabButton = rt.Find("SellTab")?.GetComponent<Button>();
+        // Center — scrollable list of buyable/sellable item rows
+        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top-center — shows "Buy Items" or "Sell Items" heading
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top tab bar — mode toggles
+        buyTabButton = rt.Find(GameObjectHelper.Hub.BuyTab)?.GetComponent<Button>();
+        sellTabButton = rt.Find(GameObjectHelper.Hub.SellTab)?.GetComponent<Button>();
 
         if (buyTabButton != null) buyTabButton.onClick.AddListener(() => SetMode(ShopMode.Buy));
         if (sellTabButton != null) sellTabButton.onClick.AddListener(() => SetMode(ShopMode.Sell));

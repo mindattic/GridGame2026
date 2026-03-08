@@ -114,14 +114,18 @@ public class InventorySectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        itemListContainer = rt.Find("ItemList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        filterAllButton = rt.Find("FilterAll")?.GetComponent<Button>();
-        filterEquipButton = rt.Find("FilterEquip")?.GetComponent<Button>();
-        filterConsButton = rt.Find("FilterCons")?.GetComponent<Button>();
-        filterMatsButton = rt.Find("FilterMats")?.GetComponent<Button>();
-        filterQuestButton = rt.Find("FilterQuest")?.GetComponent<Button>();
+        // Left column — scrollable filtered/sorted item rows + summary row
+        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Right column — full item detail (rarity, type, stats, durability, salvage)
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top tab bar — 5 filter buttons
+        filterAllButton = rt.Find(GameObjectHelper.Hub.FilterAll)?.GetComponent<Button>();
+        filterEquipButton = rt.Find(GameObjectHelper.Hub.FilterEquip)?.GetComponent<Button>();
+        filterConsButton = rt.Find(GameObjectHelper.Hub.FilterCons)?.GetComponent<Button>();
+        filterMatsButton = rt.Find(GameObjectHelper.Hub.FilterMats)?.GetComponent<Button>();
+        filterQuestButton = rt.Find(GameObjectHelper.Hub.FilterQuest)?.GetComponent<Button>();
 
         if (filterAllButton != null) filterAllButton.onClick.AddListener(() => SetFilter(FilterMode.All));
         if (filterEquipButton != null) filterEquipButton.onClick.AddListener(() => SetFilter(FilterMode.Equipment));

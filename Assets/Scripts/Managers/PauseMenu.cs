@@ -187,10 +187,11 @@ public class PauseMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>Runaway.</summary>
+    /// <summary>Abandons the current battle and returns to overworld. Saves progress first.</summary>
     private void Runaway()
     {
         Time.timeScale = 1f;
+        ProfileHelper.Save(true);
         scene.Fade.ToOverworld();
     }
 

@@ -366,6 +366,14 @@ namespace Scripts.Helpers
                 public const string CameraModeImage = "Canvas/CameraModeButton/Image";
                 public const string CameraModeLabel = "Canvas/CameraModeButton/Label";
 
+                /// <summary>Button shown when hero is near caravan. Hidden by default.</summary>
+                public const string EnterHubButton = "Canvas/EnterHubButton";
+                /// <summary>TMP label child of the Enter Hub button.</summary>
+                public const string EnterHubLabel = "Canvas/EnterHubButton/Label";
+
+                /// <summary>DayNightCycle component for time-of-day tinting.</summary>
+                public const string DayNightCycle = "Canvas/DayNightCycle";
+
             }
             public static class Map
             {
@@ -374,6 +382,8 @@ namespace Scripts.Helpers
                 public const string Surface = "Map/Surface";
                 public const string Canopy = "Map/Canopy";
                 public const string Hero = "Map/Heroes/Hero_00";
+                /// <summary>Caravan world object under Map. Has SpriteRenderer + CircleCollider2D trigger.</summary>
+                public const string Caravan = "Map/Caravan";
             }
 
             public const string BattleTransition = "BattleTransition";
@@ -523,10 +533,11 @@ namespace Scripts.Helpers
             public const string NextButton = "Canvas/BottomBar/NextButton";
         }
 
-        // Add Hub navigation + panel paths (use simple names; adjust if scene hierarchy differs).
+        /// <summary>Hub scene navigation buttons, section panels, and per-panel child element names.</summary>
         public static class Hub
         {
-            // Buttons
+            // ── Navigation Buttons (top bar, siblings under NavBar) ──
+
             public const string PartyButton = "PartyButton";
             public const string ShopButton = "ShopButton";
             public const string MedicalButton = "MedicalButton";
@@ -539,7 +550,8 @@ namespace Scripts.Helpers
             public const string OverworldButton = "OverworldButton";
             public const string BattleButton = "BattleButton";
 
-            // Panels
+            // ── Section Panels (siblings under ContentPanel) ──
+
             public const string PartyPanel = "PartyPanel";
             public const string ShopPanel = "ShopPanel";
             public const string MedicalPanel = "MedicalPanel";
@@ -549,6 +561,97 @@ namespace Scripts.Helpers
             public const string EquipPanel = "EquipPanel";
             public const string InventoryPanel = "InventoryPanel";
             public const string BattlePrepPanel = "BattlePrepPanel";
+
+            // ── Shared Child Names (reused across multiple panels) ──
+
+            /// <summary>TMP label showing current gold. Present in every section panel.</summary>
+            public const string GoldLabel = "GoldLabel";
+
+            /// <summary>TMP label for contextual detail text. Present in every section panel.</summary>
+            public const string DetailLabel = "DetailLabel";
+
+            /// <summary>ScrollRect container for item rows. Used by Shop, Blacksmith, Inventory, BattlePrep.</summary>
+            public const string ItemList = "ItemList";
+
+            /// <summary>ScrollRect container for hero rows. Used by Medical, Training, Equip.</summary>
+            public const string HeroList = "HeroList";
+
+            // ── Party Panel Children ──
+
+            /// <summary>Container for available roster heroes not in party. RectTransform + VerticalLayoutGroup.</summary>
+            public const string RosterList = "RosterList";
+
+            /// <summary>Container for active party member rows. RectTransform + VerticalLayoutGroup.</summary>
+            public const string PartyList = "PartyList";
+
+            // ── Shop Panel Children ──
+
+            /// <summary>Button to switch to Buy mode.</summary>
+            public const string BuyTab = "BuyTab";
+
+            /// <summary>Button to switch to Sell mode.</summary>
+            public const string SellTab = "SellTab";
+
+            // ── Blacksmith Panel Children ──
+
+            /// <summary>Button to switch to Craft mode.</summary>
+            public const string CraftTab = "CraftTab";
+
+            /// <summary>Button to switch to Repair mode.</summary>
+            public const string RepairTab = "RepairTab";
+
+            /// <summary>Button to switch to Salvage mode.</summary>
+            public const string SalvageTab = "SalvageTab";
+
+            // ── Residence Panel Children ──
+
+            /// <summary>Container for rest/party actions. RectTransform + VerticalLayoutGroup.</summary>
+            public const string ActionList = "ActionList";
+
+            /// <summary>Container for recruitable hero rows. RectTransform + VerticalLayoutGroup.</summary>
+            public const string RecruitList = "RecruitList";
+
+            // ── Training Panel Children ──
+
+            /// <summary>Container for available training rows. RectTransform + VerticalLayoutGroup.</summary>
+            public const string TrainingList = "TrainingList";
+
+            /// <summary>Image displaying the vendor/trainer portrait.</summary>
+            public const string VendorPortrait = "VendorPortrait";
+
+            // ── Equip Panel Children ──
+
+            /// <summary>Container for the 6 equipment slot rows. RectTransform + VerticalLayoutGroup.</summary>
+            public const string SlotList = "SlotList";
+
+            /// <summary>Container for inventory items matching browsed slot. RectTransform + VerticalLayoutGroup.</summary>
+            public const string ItemPicker = "ItemPicker";
+
+            /// <summary>TMP label showing base stats + gear bonuses + totals.</summary>
+            public const string StatsLabel = "StatsLabel";
+
+            // ── Inventory Panel Children ──
+
+            /// <summary>Button to show all item types.</summary>
+            public const string FilterAll = "FilterAll";
+
+            /// <summary>Button to filter Equipment items.</summary>
+            public const string FilterEquip = "FilterEquip";
+
+            /// <summary>Button to filter Consumable items.</summary>
+            public const string FilterCons = "FilterCons";
+
+            /// <summary>Button to filter CraftingMaterial items.</summary>
+            public const string FilterMats = "FilterMats";
+
+            /// <summary>Button to filter QuestItem items.</summary>
+            public const string FilterQuest = "FilterQuest";
+
+            // ── BattlePrep Panel Children ──
+            // Uses PartyList, ItemList, GoldLabel, DetailLabel (shared names above)
+
+            /// <summary>Button to enter battle. Triggers HubManager.GoToBattle().</summary>
+            public const string BattlePrepBattleButton = "BattleButton";
         }
 
         #endregion

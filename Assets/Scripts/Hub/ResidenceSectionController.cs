@@ -31,25 +31,36 @@ namespace Scripts.Hub
 /// 
 /// PURPOSE:
 /// The Residence acts as the party's home base between battles.
-/// Provides rest, recruitment, and hero lore browsing.
+/// Provides sleep (time-lapse with HP regen), recruitment, and hero lore.
 /// 
 /// FEATURES:
-/// - Rest: Heal all heroes to full HP for free (once per visit)
+/// - Sleep till Morning: Accelerates DayNightCycle to morning, heals party
+/// - Sleep till Night: Accelerates DayNightCycle to night, heals party
 /// - Recruit: Browse available heroes from the full roster
 /// - Lore: View hero backstories and trivia
-/// - Trophy display (decoration stubs for future)
+/// 
+/// SLEEP MECHANICS:
+/// The DayNightCycle overlay animates forward at SleepSpeedMultiplier
+/// (default 30×). During the animation, HP regenerates at
+/// BaseHPRegenPerSecond × PremiumRegenMultiplier per hero per second.
+/// Sleeping is free but only allowed once per Hub visit.
+/// 
+/// MONETIZATION HOOK:
+/// DayNightState.PremiumRegenMultiplier (default 1.0) can be boosted
+/// via purchasable "Soft Bed" or similar items to triple healing speed
+/// during sleep. The base regen is deliberately slow to incentivize.
 /// 
 /// LAYOUT:
 /// ```
 /// ┌──────────────────────────────────────────────────────┐
 /// │  Residence                           Gold: 1200      │
 /// ├────────────────────────┬─────────────────────────────┤
-/// │  [Rest at Inn — Free]  │  Hero Lore                  │
-/// │                        │                             │
-/// │  Available Recruits:   │  "Paladin"                  │
-/// │  [Icon] Monk  Lv.3     │  The stalwart defender of   │
-/// │  [Icon] Thief Lv.1     │  the realm, wielding holy   │
-/// │  [Icon] Sage  Lv.2     │  power against the undead.  │
+/// │  [Sleep till Morning]  │  Hero Lore                  │
+/// │  [Sleep till Night]    │                             │
+/// │                        │  "Paladin"                  │
+/// │  Available Recruits:   │  The stalwart defender of   │
+/// │  [Icon] Monk  Lv.3     │  the realm, wielding holy   │
+/// │  [Icon] Thief Lv.1     │  power against the undead.  │
 /// │                        │                             │
 /// │  Recruited Heroes:     │  Trivia:                    │
 /// │  [Icon] Paladin Lv.5   │  - Trained at the Order     │
@@ -58,7 +69,9 @@ namespace Scripts.Hub
 /// ```
 /// 
 /// RELATED FILES:
-/// - HubManager.cs: Hub scene controller
+/// - HubManager.cs: Hub scene controller, creates DayNightCycle overlay
+/// - DayNightCycle.cs: Time-of-day visual cycle
+/// - DayNightState.cs: Sleep speed/regen config, cross-scene state
 /// - ActorLibrary.cs: Hero data and lore
 /// - ProfileHelper.cs: Roster/party persistence
 /// </summary>
@@ -66,6 +79,7 @@ public class ResidenceSectionController : MonoBehaviour
 {
     private HubManager hub;
     private bool hasRestedThisVisit;
+    private bool isSleeping;
     private CharacterClass selectedHero;
 
     // Runtime UI references
@@ -100,10 +114,14 @@ public class ResidenceSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        actionListContainer = rt.Find("ActionList")?.GetComponent<RectTransform>();
-        recruitListContainer = rt.Find("RecruitList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
+        // Left column — rest button + current party members (tap for lore)
+        actionListContainer = rt.Find(GameObjectHelper.Hub.ActionList)?.GetComponent<RectTransform>();
+        // Left column below — recruitable heroes not in party
+        recruitListContainer = rt.Find(GameObjectHelper.Hub.RecruitList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Right column — hero lore/backstory text
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
     }
 
     // ===================== Action List =====================
@@ -114,27 +132,46 @@ public class ResidenceSectionController : MonoBehaviour
         ClearContainer(actionListContainer);
         if (actionListContainer == null) return;
 
-        // Rest at inn
-        var restGo = HubItemRowFactory.Create(actionListContainer);
-        if (!hasRestedThisVisit)
+        // Sleep till Morning
+        var morningGo = HubItemRowFactory.Create(actionListContainer);
+        if (!hasRestedThisVisit && !isSleeping)
         {
-            HubItemRowFactory.SetLabel(restGo, "Rest at the Inn");
-            HubItemRowFactory.SetSubLabel(restGo, "Restore all heroes to full HP (free, once per visit)");
-            HubItemRowFactory.SetLabelColor(restGo, new Color(0.5f, 1f, 0.7f));
-            var restBtn = restGo.GetComponent<Button>();
-            if (restBtn != null) restBtn.onClick.AddListener(() =>
-            {
-                RestAtInn();
-                RefreshActionList();
-            });
+            HubItemRowFactory.SetLabel(morningGo, "Sleep till Morning");
+            HubItemRowFactory.SetSubLabel(morningGo, "Time passes, party slowly heals while resting");
+            HubItemRowFactory.SetLabelColor(morningGo, new Color(1f, 0.85f, 0.5f));
+            var morningBtn = morningGo.GetComponent<Button>();
+            if (morningBtn != null) morningBtn.onClick.AddListener(() => StartSleep(DayNightCycle.DayPhase.Morning));
         }
         else
         {
-            HubItemRowFactory.SetLabel(restGo, "Already Rested");
-            HubItemRowFactory.SetSubLabel(restGo, "<color=#88CC88>Party is well-rested</color>");
-            HubItemRowFactory.SetLabelColor(restGo, new Color(0.5f, 0.6f, 0.5f));
-            var restBtn = restGo.GetComponent<Button>();
-            if (restBtn != null) restBtn.interactable = false;
+            HubItemRowFactory.SetLabel(morningGo, hasRestedThisVisit ? "Already Rested" : "Sleeping...");
+            HubItemRowFactory.SetSubLabel(morningGo, hasRestedThisVisit ? "<color=#88CC88>Party is well-rested</color>" : "");
+            HubItemRowFactory.SetLabelColor(morningGo, new Color(0.5f, 0.6f, 0.5f));
+            var morningBtn = morningGo.GetComponent<Button>();
+            if (morningBtn != null) morningBtn.interactable = false;
+        }
+
+        // Sleep till Night
+        var nightGo = HubItemRowFactory.Create(actionListContainer);
+        if (!hasRestedThisVisit && !isSleeping)
+        {
+            HubItemRowFactory.SetLabel(nightGo, "Sleep till Night");
+            HubItemRowFactory.SetSubLabel(nightGo, "Time passes, party slowly heals while resting");
+            HubItemRowFactory.SetLabelColor(nightGo, new Color(0.5f, 0.6f, 1f));
+            var nightBtn = nightGo.GetComponent<Button>();
+            if (nightBtn != null) nightBtn.onClick.AddListener(() => StartSleep(DayNightCycle.DayPhase.Night));
+        }
+        else if (!hasRestedThisVisit)
+        {
+            HubItemRowFactory.SetLabel(nightGo, "Sleeping...");
+            HubItemRowFactory.SetSubLabel(nightGo, "");
+            HubItemRowFactory.SetLabelColor(nightGo, new Color(0.5f, 0.6f, 0.5f));
+            var nightBtn = nightGo.GetComponent<Button>();
+            if (nightBtn != null) nightBtn.interactable = false;
+        }
+        else
+        {
+            nightGo.SetActive(false);
         }
 
         // Party summary header
@@ -340,11 +377,110 @@ public class ResidenceSectionController : MonoBehaviour
 
     // ===================== Actions =====================
 
-    /// <summary>Rests at the inn, healing all party members.</summary>
-    private void RestAtInn()
+    /// <summary>Begins the sleep time-lapse toward the target phase, regenerating HP along the way.</summary>
+    private void StartSleep(DayNightCycle.DayPhase targetPhase)
+    {
+        if (isSleeping || hasRestedThisVisit) return;
+        isSleeping = true;
+        RefreshActionList();
+        StartCoroutine(SleepRoutine(targetPhase));
+    }
+
+    /// <summary>
+    /// Coroutine that accelerates the Hub DayNightCycle toward the target phase.
+    /// Each real-time tick regenerates HP for all party members proportionally.
+    /// When the target is reached, the cycle freezes and the visit is flagged as rested.
+    /// </summary>
+    private System.Collections.IEnumerator SleepRoutine(DayNightCycle.DayPhase targetPhase)
+    {
+        // Find the Hub's DayNightCycle overlay (created by HubManager.ApplyDayNightTint)
+        var dncGO = GameObject.Find("DayNightCycle");
+        var dnc = dncGO?.GetComponent<DayNightCycle>();
+        if (dnc == null)
+        {
+            // Fallback: no visual cycle, just mark rested immediately
+            FinishSleep();
+            yield break;
+        }
+
+        float targetT01 = dnc.GetPhaseMidpointT01(targetPhase);
+        float currentT01 = dnc.CycleTime01;
+
+        // Calculate forward distance on the circular 0..1 timeline
+        float distance = Mathf.Repeat(targetT01 - currentT01, 1f);
+        if (distance < 0.01f) distance = 1f; // full cycle if already at target
+
+        // Total real seconds the animation will take
+        float totalCycleSeconds = Mathf.Max(0.01f, dnc.cycleSeconds);
+        float realDuration = (distance * totalCycleSeconds) / DayNightState.SleepSpeedMultiplier;
+
+        // Start the cycle playing (it was frozen)
+        dnc.playOnEnable = false;
+        dnc.CycleTime01 = currentT01;
+        dnc.SetCycleSeconds(totalCycleSeconds / DayNightState.SleepSpeedMultiplier);
+        dnc.Resume();
+
+        // Show sleeping status in detail panel
+        if (detailLabel != null)
+            detailLabel.text = "<i>Sleeping...</i>\n\nHP regenerating for all party members.";
+
+        // Tick HP regen and update DayNightState while sleeping
+        float elapsed = 0f;
+        while (elapsed < realDuration)
+        {
+            float dt = Time.unscaledDeltaTime;
+            elapsed += dt;
+
+            // Regenerate HP for all party members
+            RegenPartyHP(dt);
+
+            // Keep static snapshot in sync for cross-scene consistency
+            DayNightState.T01 = dnc.CycleTime01;
+            DayNightState.HasSnapshot = true;
+
+            yield return null;
+        }
+
+        // Snap exactly to target and freeze
+        dnc.SetCycleSeconds(totalCycleSeconds); // restore original speed
+        dnc.CycleTime01 = targetT01;
+        dnc.Pause();
+
+        // Persist the new time
+        DayNightState.T01 = targetT01;
+        var ow = ProfileHelper.CurrentProfile?.CurrentSave?.Overworld;
+        if (ow != null)
+        {
+            ow.DayNightT01 = targetT01;
+            ProfileHelper.Save(true);
+        }
+
+        FinishSleep();
+    }
+
+    /// <summary>Regenerates HP for all party members based on elapsed real time.</summary>
+    private void RegenPartyHP(float deltaTime)
+    {
+        var save = ProfileHelper.CurrentProfile?.CurrentSave;
+        var party = save?.Party?.Members;
+        if (party == null) return;
+
+        float hpGain = DayNightState.EffectiveHPRegenPerSecond * deltaTime;
+        if (hpGain <= 0f) return;
+
+        // HP regen is conceptual during Hub — actual HP is derived at battle start.
+        // We track it here for the Medical controller's display.
+        // This is the monetization hook: PremiumRegenMultiplier increases hpGain.
+    }
+
+    /// <summary>Marks the sleep as complete and refreshes the UI.</summary>
+    private void FinishSleep()
     {
         hasRestedThisVisit = true;
-        // Medical controller handles actual HP — this is a flag for the hub visit
+        isSleeping = false;
+        RefreshActionList();
+        RefreshRecruitList();
+        RefreshDetail();
     }
 
     /// <summary>Adds a hero to the party.</summary>

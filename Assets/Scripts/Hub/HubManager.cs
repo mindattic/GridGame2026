@@ -113,6 +113,7 @@ public class HubManager : MonoBehaviour
         AttachTiltParallax();
         InitializeSections();
         WireButtonListeners();
+        ApplyDayNightTint();
 
         // Ensure a clean start state: disable all panels then show Party.
         GoToPartySection();
@@ -232,6 +233,58 @@ public class HubManager : MonoBehaviour
         if (equipPanel != null) yield return equipPanel;
         if (inventoryPanel != null) yield return inventoryPanel;
         if (battlePrepPanel != null) yield return battlePrepPanel;
+    }
+
+    // ===================== Day/Night Tint =====================
+
+    /// <summary>
+    /// Creates a frozen DayNightCycle overlay on the Hub canvas.
+    /// Reads the cycle position from save data or the static snapshot,
+    /// applies the matching color, and pauses so the tint stays fixed
+    /// for the entire Hub visit.
+    /// </summary>
+    private void ApplyDayNightTint()
+    {
+        var canvas = GameObject.Find("Canvas");
+        if (canvas == null) return;
+
+        // Create overlay GameObject as last sibling so it renders on top
+        var go = new GameObject("DayNightCycle");
+        go.layer = LayerMask.NameToLayer("UI");
+        go.transform.SetParent(canvas.transform, false);
+        go.transform.SetAsLastSibling();
+
+        // Stretch to fill screen
+        var rt = go.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        // Image is the tint overlay (raycast disabled so it doesn't block input)
+        var img = go.AddComponent<Image>();
+        img.raycastTarget = false;
+
+        // Configure cycle: overlay-only mode, frozen (not playing)
+        var dnc = go.AddComponent<DayNightCycle>();
+        dnc.overlayImage = img;
+        dnc.applyMode = DayNightCycle.ApplyMode.OverlayImage;
+        dnc.playOnEnable = false;
+
+        // Determine the T01 to use: prefer static snapshot, fall back to save data
+        float t01 = 0f;
+        if (DayNightState.HasSnapshot)
+        {
+            t01 = DayNightState.T01;
+        }
+        else
+        {
+            var ow = ProfileHelper.CurrentProfile?.CurrentSave?.Overworld;
+            if (ow != null) t01 = ow.DayNightT01;
+        }
+
+        // Jump to the saved position and immediately freeze
+        dnc.CycleTime01 = t01;
     }
 
     /// <summary>Wire button listeners.</summary>

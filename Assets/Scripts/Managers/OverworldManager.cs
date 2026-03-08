@@ -75,6 +75,13 @@ public class OverworldManager : MonoBehaviour
     // Offscreen arrow (now handled by its own component)
     private OffscreenArrowIndicator offscreenArrow;
 
+    // Caravan proximity
+    private CaravanInstance caravan;
+    private Button enterHubButton;
+
+    // Day/night cycle — snapshot and restore across scene transitions
+    private DayNightCycle dayNightCycle;
+
     [SerializeField] private bool hasRandomEncounters = false;
 
     // Random encounter
@@ -158,8 +165,20 @@ public class OverworldManager : MonoBehaviour
 
         // Resolve a default hero reference (by name/path), but leader will be chosen from inspector or fallback
         var defaultHero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
-        defaultHero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, defaultHero.transform.position.z);
+        defaultHero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, overworld.HeroZ);
         defaultHero.SetFacing(overworld.HeroDirection);
+
+        // Restore camera position from save — exact match on return from battle
+        if (cam != null && (overworld.CameraX != 0f || overworld.CameraY != 0f))
+        {
+            cam.transform.position = new Vector3(overworld.CameraX, overworld.CameraY, overworld.CameraZ);
+            cameraTarget = cam.transform.position;
+        }
+
+        // Restore day/night cycle position from save
+        dayNightCycle = GameObject.Find(GameObjectHelper.Overworld.Canvas.DayNightCycle)?.GetComponent<DayNightCycle>();
+        if (dayNightCycle != null && overworld.DayNightT01 > 0f)
+            dayNightCycle.CycleTime01 = overworld.DayNightT01;
 
         // Gather all heroes in a stable order and bind world
         var allHeroes = GetOrderedHeroes();
@@ -190,6 +209,26 @@ public class OverworldManager : MonoBehaviour
         offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();
         offscreenArrow.WorldCamera = Camera.main;
 
+        // Wire caravan — restore saved position, subscribe for proximity
+        var caravanGO = GameObject.Find(GameObjectHelper.Overworld.Map.Caravan);
+        if (caravanGO != null)
+        {
+            caravan = caravanGO.GetComponent<CaravanInstance>();
+            // Restore caravan position from save (0,0 means first visit — keep scene default)
+            if (overworld.CaravanX != 0f || overworld.CaravanY != 0f)
+                caravanGO.transform.position = new Vector3(overworld.CaravanX, overworld.CaravanY, caravanGO.transform.position.z);
+            if (caravan != null)
+                caravan.OnHeroNearby += OnCaravanProximity;
+        }
+
+        // Wire Enter Hub button — hidden until hero approaches caravan
+        enterHubButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.EnterHubButton)?.GetComponent<Button>();
+        if (enterHubButton != null)
+        {
+            enterHubButton.onClick.AddListener(EnterHub);
+            enterHubButton.gameObject.SetActive(false);
+        }
+
         // Initialize UI state
         UpdateCameraModeUI();
 
@@ -201,6 +240,48 @@ public class OverworldManager : MonoBehaviour
     {
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
         if (cameraModeButton != null) cameraModeButton.onClick.RemoveListener(CycleCameraMode);
+        if (caravan != null) caravan.OnHeroNearby -= OnCaravanProximity;
+        if (enterHubButton != null) enterHubButton.onClick.RemoveListener(EnterHub);
+    }
+
+    /// <summary>Saves overworld state when the app loses focus (mobile background, Alt+Tab).</summary>
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused) SaveState();
+    }
+
+    /// <summary>Saves overworld state when the app is quitting.</summary>
+    private void OnApplicationQuit()
+    {
+        SaveState();
+    }
+
+    /// <summary>Persists hero position/facing, camera position, and day/night state to the save file.</summary>
+    private void SaveState()
+    {
+        if (hero == null || !ProfileHelper.HasCurrentSave) return;
+        var ow = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
+        if (ow == null) return;
+
+        // Hero position + facing
+        ow.HeroX = hero.transform.position.x;
+        ow.HeroY = hero.transform.position.y;
+        ow.HeroZ = hero.transform.position.z;
+        ow.HeroDirection = hero.CurrentFacingName ?? "Idle";
+
+        // Camera position — exact match on return
+        if (cam != null)
+        {
+            ow.CameraX = cam.transform.position.x;
+            ow.CameraY = cam.transform.position.y;
+            ow.CameraZ = cam.transform.position.z;
+        }
+
+        // Day/night cycle position
+        if (dayNightCycle != null)
+            ow.DayNightT01 = dayNightCycle.CycleTime01;
+
+        ProfileHelper.Save(true);
     }
 
     // Called by UI button to cycle the active leader to the next party member
@@ -404,6 +485,31 @@ public class OverworldManager : MonoBehaviour
         movedThisFrame = true;
     }
 
+    // --- Caravan ---
+
+    /// <summary>Shows or hides the Enter Hub button when hero enters/exits caravan proximity.</summary>
+    private void OnCaravanProximity(bool isNear)
+    {
+        if (enterHubButton != null)
+            enterHubButton.gameObject.SetActive(isNear);
+    }
+
+    /// <summary>Saves state and transitions to the Hub scene.</summary>
+    private void EnterHub()
+    {
+        // Persist hero + caravan positions
+        SaveState();
+        if (caravan != null && ProfileHelper.HasCurrentSave)
+        {
+            var ow = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
+            ow.CaravanX = caravan.transform.position.x;
+            ow.CaravanY = caravan.transform.position.y;
+            ProfileHelper.Save(true);
+        }
+
+        scene.Fade.ToHub();
+    }
+
     // Trigger scene change to a random stage after sustained movement
     /// <summary>Trigger random encounter.</summary>
     private void TriggerRandomEncounter()
@@ -411,17 +517,14 @@ public class OverworldManager : MonoBehaviour
         if (!hasRandomEncounters || isLoadingEncounter) return;
         if (StageLibrary.Stages == null || StageLibrary.Stages.Count == 0) return;
 
-        string mapName = ProfileHelper.Overworld.MapName;
+        // Persist overworld location and facing before entering battle
+        SaveState();
 
-        // Persist overworld location and facing
+        string mapName = ProfileHelper.Overworld.MapName;
         if (hero != null)
         {
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.MapName = mapName;
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroX = hero.transform.position.x;
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroY = hero.transform.position.y;
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroDirection = hero.CurrentFacingName ?? "Idle";
-            ProfileHelper.SaveOverworldPosition(new Vector2(hero.transform.position.x, hero.transform.position.y), mapName, hero.CurrentFacingName ?? "Idle");
             ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = RNG.Stage(mapName);
+            ProfileHelper.Save(true);
         }
 
         isLoadingEncounter = true;

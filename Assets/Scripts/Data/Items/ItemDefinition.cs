@@ -36,6 +36,12 @@ namespace Scripts.Data.Items
 /// - CraftingMaterial: Used for crafting
 /// - QuestItem: Story-related items
 /// 
+/// CONSUMABLE BATTLE USAGE:
+/// Consumable items can only be used during battle. When equipped
+/// to a hero's loadout, a consumable occupies one ability slot and
+/// appears as a usable ability button during that hero's turn.
+/// Uses per battle are limited by MaxUsesPerBattle (0 = unlimited).
+/// 
 /// STAT MODIFIERS (equipment only):
 /// Applied in order: Strength, Vitality, Agility,
 /// Stamina, Intelligence, Wisdom, Luck
@@ -48,6 +54,8 @@ namespace Scripts.Data.Items
 /// - PlayerInventory.cs: Item ownership
 /// - ShopSectionController.cs: Shop transactions
 /// - RecipeLibrary.cs: Crafting recipes
+/// - AbilityButton.cs: Renders consumables as ability buttons in battle
+/// - HeroLoadout.cs: Equips consumables to ability slots
 /// </summary>
 [System.Serializable]
 public class ItemDefinition
@@ -63,6 +71,9 @@ public class ItemDefinition
     public int MaxStack = 99;
     public int Durability;
     public int BaseHealing;
+
+    /// <summary>Max uses of this consumable per battle (0 = unlimited). Only relevant for Consumable type.</summary>
+    public int MaxUsesPerBattle;
 
     // Stat modifiers for equipment
     public float Strength;
@@ -84,6 +95,9 @@ public class ItemDefinition
 
     /// <summary>True if this item is equippable gear.</summary>
     public bool IsEquipment => Type == ItemType.Equipment && Slot != EquipmentSlot.None;
+
+    /// <summary>True if this item is a consumable (battle-only, occupies an ability slot).</summary>
+    public bool IsConsumable => Type == ItemType.Consumable;
 
     /// <summary>True if this item is a crafting material.</summary>
     public bool IsCraftingMaterial => Type == ItemType.CraftingMaterial;

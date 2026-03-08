@@ -146,6 +146,25 @@ namespace Scripts.Canvas
 
         public bool IsPlaying => _isPlaying;
 
+        /// <summary>
+        /// Gets or sets the normalized cycle position (0..1).
+        /// On get, returns the current t value.
+        /// On set, jumps the cycle to that position and resumes playing.
+        /// </summary>
+        public float CycleTime01
+        {
+            get => CurrentTime01();
+            set
+            {
+                float t = Mathf.Clamp01(value);
+                float total = Mathf.Max(0.01f, cycleSeconds);
+                _startTime = TimeNow() - (t * total);
+                _pausedT01 = t;
+                if (_isPlaying)
+                    ApplyColor(EvaluateColor(t));
+            }
+        }
+
         /// <summary>Resolves the overlay image and initializes phase color and fraction data.</summary>
         private void Awake()
         {
@@ -276,6 +295,11 @@ namespace Scripts.Canvas
             {
                 ApplyToSprites(phaseColor);
             }
+
+            // Write snapshot for cross-scene use (Hub, PostBattle)
+            DayNightState.T01 = t01;
+            DayNightState.OverlayColor = phaseColor;
+            DayNightState.HasSnapshot = true;
         }
 
         /// <summary>Time now.</summary>
@@ -303,6 +327,21 @@ namespace Scripts.Canvas
             if (tAlignedSec <= _accumTimes[1]) return DayPhase.Day;
             if (tAlignedSec <= _accumTimes[2]) return DayPhase.Evening;
             return DayPhase.Night;
+        }
+
+        /// <summary>
+        /// Returns the base T01 value at the midpoint of the given phase.
+        /// Useful for targeting a phase during sleep transitions.
+        /// </summary>
+        public float GetPhaseMidpointT01(DayPhase phase)
+        {
+            NormalizeFractions();
+            float total = Mathf.Max(0.01f, cycleSeconds);
+            int idx = (int)phase;
+            float segStart = (idx == 0) ? 0f : _accumTimes[idx - 1];
+            float segDur = _durations[idx];
+            float alignedT01 = (segStart + segDur * 0.5f) / total;
+            return Mathf.Repeat(alignedT01 - PhaseShift01, 1f);
         }
 
         /// <summary>Copies the inspector phase colors into the base color array.</summary>

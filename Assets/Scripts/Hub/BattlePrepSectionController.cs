@@ -123,11 +123,16 @@ public class BattlePrepSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        partyListContainer = rt.Find("PartyList")?.GetComponent<RectTransform>();
-        itemListContainer = rt.Find("ItemList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        battleButton = rt.Find("BattleButton")?.GetComponent<Button>();
+        // Top section — full hero cards (portrait, level, HP, stats, gear, skills)
+        partyListContainer = rt.Find(GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
+        // Middle section — consumable items with toggle selection for battle
+        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Bottom — aggregate party power summary (total STR/VIT/AGI, avg level)
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Bottom-center — triggers HubManager.GoToBattle()
+        battleButton = rt.Find(GameObjectHelper.Hub.BattlePrepBattleButton)?.GetComponent<Button>();
 
         if (battleButton != null) battleButton.onClick.AddListener(() => hub?.GoToBattle());
     }

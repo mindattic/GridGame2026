@@ -237,7 +237,15 @@ namespace Scripts.Models
         public string MapName = Map.Test.ToString();
         public float HeroX;
         public float HeroY;
+        public float HeroZ;
         public string HeroDirection = "Idle"; // MoveDirection as name
+        public float CaravanX;
+        public float CaravanY;
+        public float CameraX;
+        public float CameraY;
+        public float CameraZ = -10f;
+        /// <summary>Day/night cycle position (0..1). 0 = cycle start, 1 = full cycle.</summary>
+        public float DayNightT01;
 
         public OverworldSaveData() { }
         public OverworldSaveData(OverworldSaveData other)
@@ -245,7 +253,14 @@ namespace Scripts.Models
             MapName = other.MapName;
             HeroX = other.HeroX;
             HeroY = other.HeroY;
+            HeroZ = other.HeroZ;
             HeroDirection = other.HeroDirection;
+            CaravanX = other.CaravanX;
+            CaravanY = other.CaravanY;
+            CameraX = other.CameraX;
+            CameraY = other.CameraY;
+            CameraZ = other.CameraZ;
+            DayNightT01 = other.DayNightT01;
         }
         public OverworldSaveData(string mapName, Vector2 pos, string facing)
         {

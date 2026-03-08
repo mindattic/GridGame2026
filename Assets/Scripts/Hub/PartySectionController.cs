@@ -89,10 +89,14 @@ public class PartySectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        rosterContainer = rt.Find("RosterList")?.GetComponent<RectTransform>();
-        partyContainer = rt.Find("PartyList")?.GetComponent<RectTransform>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
+        // Left column — scrollable list of roster heroes not yet in party
+        rosterContainer = rt.Find(GameObjectHelper.Hub.RosterList)?.GetComponent<RectTransform>();
+        // Right column — scrollable list of active party members (max 4)
+        partyContainer = rt.Find(GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
+        // Right side — multi-line stat block for the selected hero
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
     }
 
     /// <summary>Refreshes all lists and detail display.</summary>

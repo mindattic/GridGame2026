@@ -91,14 +91,18 @@ public class BlacksmithSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        listContainer = rt.Find("ItemList")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
-        buyTabButton = rt.Find("BuyTab")?.GetComponent<Button>();
-        sellTabButton = rt.Find("SellTab")?.GetComponent<Button>();
-        craftTabButton = rt.Find("CraftTab")?.GetComponent<Button>();
-        repairTabButton = rt.Find("RepairTab")?.GetComponent<Button>();
-        salvageTabButton = rt.Find("SalvageTab")?.GetComponent<Button>();
+        // Center — scrollable list; content changes per mode (buy/sell/craft/repair/salvage)
+        listContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top-center — shows current mode name
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
+        // Top tab bar — 5 mode toggle buttons
+        buyTabButton = rt.Find(GameObjectHelper.Hub.BuyTab)?.GetComponent<Button>();
+        sellTabButton = rt.Find(GameObjectHelper.Hub.SellTab)?.GetComponent<Button>();
+        craftTabButton = rt.Find(GameObjectHelper.Hub.CraftTab)?.GetComponent<Button>();
+        repairTabButton = rt.Find(GameObjectHelper.Hub.RepairTab)?.GetComponent<Button>();
+        salvageTabButton = rt.Find(GameObjectHelper.Hub.SalvageTab)?.GetComponent<Button>();
 
         if (buyTabButton != null) buyTabButton.onClick.AddListener(() => SetMode(BlacksmithMode.Buy));
         if (sellTabButton != null) sellTabButton.onClick.AddListener(() => SetMode(BlacksmithMode.Sell));

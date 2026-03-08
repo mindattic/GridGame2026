@@ -111,12 +111,18 @@ public class EquipSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        heroListContainer = rt.Find("HeroList")?.GetComponent<RectTransform>();
-        slotListContainer = rt.Find("SlotList")?.GetComponent<RectTransform>();
-        itemPickerContainer = rt.Find("ItemPicker")?.GetComponent<RectTransform>();
-        goldLabel = rt.Find("GoldLabel")?.GetComponent<TextMeshProUGUI>();
-        statsLabel = rt.Find("StatsLabel")?.GetComponent<TextMeshProUGUI>();
-        detailLabel = rt.Find("DetailLabel")?.GetComponent<TextMeshProUGUI>();
+        // Left column — party members with equipped slot count
+        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Right-top — 6 equipment slot rows (Weapon/Armor/Helmet/Boots/Ring/Amulet)
+        slotListContainer = rt.Find(GameObjectHelper.Hub.SlotList)?.GetComponent<RectTransform>();
+        // Right-bottom — inventory items matching the browsed slot
+        itemPickerContainer = rt.Find(GameObjectHelper.Hub.ItemPicker)?.GetComponent<RectTransform>();
+        // Top-right — current gold display
+        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
+        // Right-middle — base stats + equipment bonuses + totals
+        statsLabel = rt.Find(GameObjectHelper.Hub.StatsLabel)?.GetComponent<TextMeshProUGUI>();
+        // Right header — "Equipment: {hero}"
+        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
     }
 
     // ===================== Hero Selection =====================
