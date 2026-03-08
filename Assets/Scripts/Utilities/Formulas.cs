@@ -215,6 +215,81 @@ public static class Formulas
         return Def(stats);
     }
 
+    // ============================ Equipment Bonuses ============================
+
+    /// <summary>
+    /// Computes combined stat bonuses from all equipment a hero has equipped.
+    /// Returns a flat stat block that should be added to the hero's base stats.
+    /// </summary>
+    public static EquipmentBonus ComputeEquipmentBonus(HeroLoadout loadout)
+    {
+        var bonus = new EquipmentBonus();
+        if (loadout?.EquippedSlots == null) return bonus;
+
+        foreach (var kvp in loadout.EquippedSlots)
+        {
+            var item = kvp.Value;
+            if (item == null) continue;
+            bonus.Strength += item.Strength;
+            bonus.Vitality += item.Vitality;
+            bonus.Agility += item.Agility;
+            bonus.Stamina += item.Stamina;
+            bonus.Intelligence += item.Intelligence;
+            bonus.Wisdom += item.Wisdom;
+            bonus.Luck += item.Luck;
+        }
+        return bonus;
+    }
+
+    /// <summary>
+    /// Applies equipment bonuses to a stat block in-place. Call after constructing
+    /// ActorStats from base data and before combat begins.
+    /// </summary>
+    public static void ApplyEquipmentBonus(ActorStats stats, HeroLoadout loadout)
+    {
+        if (stats == null || loadout == null) return;
+        var bonus = ComputeEquipmentBonus(loadout);
+        stats.Strength = Mathf.Max(1f, stats.Strength + bonus.Strength);
+        stats.Vitality = Mathf.Max(1f, stats.Vitality + bonus.Vitality);
+        stats.Agility = Mathf.Max(0f, stats.Agility + bonus.Agility);
+        stats.Speed = Mathf.Max(1f, stats.Speed + bonus.Agility * 0.5f); // Agility influences Speed
+        stats.Stamina = Mathf.Max(0f, stats.Stamina + bonus.Stamina);
+        stats.Intelligence = Mathf.Max(0f, stats.Intelligence + bonus.Intelligence);
+        stats.Wisdom = Mathf.Max(0f, stats.Wisdom + bonus.Wisdom);
+        stats.Luck = Mathf.Max(0f, stats.Luck + bonus.Luck);
+
+        // Recalculate HP from modified vitality
+        float newMaxHP = Health(stats);
+        float hpRatio = stats.MaxHP > 0f ? stats.HP / stats.MaxHP : 1f;
+        stats.MaxHP = newMaxHP;
+        stats.HP = Mathf.Max(1f, newMaxHP * hpRatio);
+    }
+
+    /// <summary>
+    /// Returns effective weapon power from the hero's equipped weapon (Strength stat on item).
+    /// </summary>
+    public static float EquippedWeaponPower(HeroLoadout loadout)
+    {
+        if (loadout == null) return 0f;
+        var weapon = loadout.GetEquipped(EquipmentSlot.Weapon);
+        return weapon?.Strength ?? 0f;
+    }
+
+    /// <summary>
+    /// Returns effective armor rating from all equipped defensive items (Vitality stat sum).
+    /// </summary>
+    public static float EquippedArmorRating(HeroLoadout loadout)
+    {
+        if (loadout == null) return 0f;
+        float rating = 0f;
+        foreach (var kvp in loadout.EquippedSlots)
+        {
+            if (kvp.Key == EquipmentSlot.Weapon) continue;
+            if (kvp.Value != null) rating += kvp.Value.Vitality;
+        }
+        return rating;
+    }
+
     /// <summary>Applies the resistance.</summary>
     public static float ApplyResistance(float baseValue, float resistance)
     {
@@ -334,5 +409,20 @@ public static class Formulas
     {
         return CritPercent(attacker.Stats);
     }
+}
+
+/// <summary>
+/// Flat stat bonus block computed from equipment.
+/// Used by Formulas.ComputeEquipmentBonus / ApplyEquipmentBonus.
+/// </summary>
+public struct EquipmentBonus
+{
+    public float Strength;
+    public float Vitality;
+    public float Agility;
+    public float Stamina;
+    public float Intelligence;
+    public float Wisdom;
+    public float Luck;
 }
 }

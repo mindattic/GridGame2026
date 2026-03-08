@@ -139,6 +139,18 @@ namespace Scripts.Helpers
             HeroDirection = "Idle"
         };
 
+        public static InventorySaveData DefaultInventory = new InventorySaveData
+        {
+            Gold = 200,
+            Items = new List<InventoryEntrySave>
+            {
+                new InventoryEntrySave("healing_potion_basic", 3, 0),
+            }
+        };
+
+        public static EquipmentSaveData DefaultEquipment = new EquipmentSaveData();
+        public static TrainingSaveData DefaultTraining = new TrainingSaveData();
+
         // ---------------------------------------------------------------------
         // Backing Fields
         // ---------------------------------------------------------------------

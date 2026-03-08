@@ -100,6 +100,10 @@ public class PostBattleManager : MonoBehaviour
     private VerticalLayoutGroup _layout;
     private ContentSizeFitter _fitter;
 
+    // Loot phase
+    private bool _lootPhaseActive;
+    private Button _doneButton;
+
     #endregion
 
     #region Initialization
@@ -129,6 +133,8 @@ public class PostBattleManager : MonoBehaviour
     {
         if (_nextButton != null)
             _nextButton.onClick.RemoveListener(OnNext);
+        if (_doneButton != null)
+            _doneButton.onClick.RemoveListener(OnDone);
     }
 
     #endregion
@@ -262,9 +268,10 @@ public class PostBattleManager : MonoBehaviour
         }
     }
 
-    /// <summary>Handles the next event.</summary>
+    /// <summary>Handles the next event — transitions from XP phase to Loot phase.</summary>
     private void OnNext()
     {
+        // Apply XP gains to save data
         var save = ProfileHelper.CurrentProfile.CurrentSave;
         if (save != null)
         {
@@ -281,7 +288,130 @@ public class PostBattleManager : MonoBehaviour
             ProfileHelper.Save(true);
         }
         ExperienceTracker.Clear();
-        SceneHelper.Fade.To(nextSceneName);
+
+        // Transition to loot display phase
+        if (LootTracker.HasLoot)
+        {
+            ShowLootPhase();
+        }
+        else
+        {
+            // No loot — go directly to next scene
+            LootTracker.Clear();
+            SceneHelper.Fade.To(nextSceneName);
+        }
+    }
+
+    // ============================ Loot Phase ============================
+
+    /// <summary>Builds the loot display replacing the XP panes.</summary>
+    private void ShowLootPhase()
+    {
+        _lootPhaseActive = true;
+
+        // Hide Next button
+        if (_nextButton != null)
+            _nextButton.gameObject.SetActive(false);
+
+        // Clear XP panes
+        if (_scrollContent != null)
+        {
+            for (int i = _scrollContent.childCount - 1; i >= 0; i--)
+                Destroy(_scrollContent.GetChild(i).gameObject);
+        }
+        _panes.Clear();
+
+        // Build loot header
+        BuildLootHeader();
+
+        // Build loot rows
+        foreach (var loot in LootTracker.AllLoot)
+        {
+            BuildLootRow(loot.DisplayName, loot.Count);
+        }
+
+        // Commit loot to inventory save data
+        LootTracker.CommitToInventory();
+        ProfileHelper.Save(true);
+
+        // Show Done button (reuse Next button position or create new)
+        ShowDoneButton();
+    }
+
+    /// <summary>Creates a header text for the loot section.</summary>
+    private void BuildLootHeader()
+    {
+        if (_scrollContent == null) return;
+
+        var go = new GameObject("LootHeader");
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(_scrollContent, false);
+        rt.anchorMin = new Vector2(0, 1);
+        rt.anchorMax = new Vector2(1, 1);
+        rt.pivot = new Vector2(0.5f, 1f);
+
+        var le = go.AddComponent<LayoutElement>();
+        le.minHeight = 80f;
+        le.preferredHeight = 80f;
+        le.flexibleWidth = 1f;
+
+        go.AddComponent<CanvasRenderer>();
+        var tmp = go.AddComponent<TMPro.TextMeshProUGUI>();
+        tmp.text = "Loot Collected";
+        tmp.fontSize = 42;
+        tmp.color = new Color(1f, 0.85f, 0.3f, 1f);
+        tmp.alignment = TMPro.TextAlignmentOptions.Center;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = false;
+    }
+
+    /// <summary>Creates a row for a single loot item.</summary>
+    private void BuildLootRow(string displayName, int count)
+    {
+        if (_scrollContent == null) return;
+
+        var go = HubItemRowFactory.Create(_scrollContent);
+        var label = go.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (label != null)
+        {
+            label.text = count > 1 ? $"{displayName}  x{count}" : displayName;
+            label.fontSize = 30;
+        }
+
+        // Disable button interaction on loot rows (display only)
+        var btn = go.GetComponent<Button>();
+        if (btn != null) btn.interactable = false;
+    }
+
+    /// <summary>Shows the Done button to leave post-battle.</summary>
+    private void ShowDoneButton()
+    {
+        if (_nextButton != null)
+        {
+            // Reuse the existing button — change label to "Done"
+            _doneButton = _nextButton;
+            _doneButton.onClick.RemoveAllListeners();
+            _doneButton.onClick.AddListener(OnDone);
+
+            var label = _doneButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            if (label != null) label.text = "Done";
+
+            _doneButton.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>Handles the done event — leaves post-battle and returns to overworld.</summary>
+    private void OnDone()
+    {
+        LootTracker.Clear();
+
+        // Route to Overworld instead of Hub after loot is collected
+        string destination = ExperienceTracker.NextSceneAfterPostBattleScreen;
+        if (string.IsNullOrEmpty(destination))
+            destination = SceneHelper.Overworld;
+
+        SceneHelper.Fade.To(destination);
     }
 
     #endregion

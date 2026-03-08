@@ -1,0 +1,1253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Icons
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Icons
+  m_GUID: c100678b70ac76749937f5e76143eeae
+  m_SerializeEntries:
+  - m_GUID: 003e2107469461548961d3a6c0a8f9d6
+    m_Address: Assets/Sprites/Icons/32x32/Redo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 009b5c955cb70454f86d1c1c4762bbe9
+    m_Address: Assets/Sprites/Icons/32x32/New file.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 00db89cc2b7eb834c9e1e1fabc24de2a
+    m_Address: Assets/Sprites/Icons/32x32/LAB color model.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 01bf099dd257e09448b0feeb5feed726
+    m_Address: Assets/Sprites/Icons/32x32/Pin.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0653815c0c89bbe48bac23044b45f297
+    m_Address: Assets/Sprites/Icons/32x32/Monitor.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07323687c65a6ea4298641ccebb4899d
+    m_Address: Assets/Sprites/Icons/32x32/Left-right.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08882bed6f7ed4841a78a368ccdfafba
+    m_Address: Assets/Sprites/Icons/32x32/Scenario.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b1f99f1349284045a44b0a68605abc4
+    m_Address: Assets/Sprites/Icons/32x32/Icon wizard.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c3cfe493d2bab6419f3fd245b0c7b53
+    m_Address: Assets/Sprites/Icons/32x32/Lock color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c4e1ae74790caa4fb7d4b7f91db9f02
+    m_Address: Assets/Sprites/Icons/32x32/New frame1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c833366d03e1bd4bb63aeaf114debca
+    m_Address: Assets/Sprites/Icons/32x32/Curve points.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c8a1dd18f1dd644684518ec2d3c687a
+    m_Address: Assets/Sprites/Icons/32x32/Forward.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cf53ac7ec0e470419d9d86180450586
+    m_Address: Assets/Sprites/Icons/32x32/Upload image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d6ca8eb7706dd74eb5b4aebb68f76df
+    m_Address: Assets/Sprites/Icons/32x32/Up-down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0da98e3c5a3eb04448a5b2b0060b9f8c
+    m_Address: Assets/Sprites/Icons/32x32/Bitmap editor.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f9a29f2f15f91747a5d3951b41175f3
+    m_Address: Assets/Sprites/Icons/32x32/Download.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 109decdb96d9a2b4b8d873867d12682f
+    m_Address: Assets/Sprites/Icons/32x32/Comment.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10a4bc4c2ee33ef44972ab5144909c39
+    m_Address: Assets/Sprites/Icons/32x32/Spell checking.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1101a041559c2f946a5f9a57f7b7e939
+    m_Address: Assets/Sprites/Icons/32x32/Rotation.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 110c0417a400d7b449170d48667ae8a1
+    m_Address: Assets/Sprites/Icons/32x32/Time.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12055cff49926594fab7fd5edb933d4d
+    m_Address: Assets/Sprites/Icons/32x32/Print.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12b733ecf0f4cef47b48af5c5d334a31
+    m_Address: Assets/Sprites/Icons/32x32/Touch.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1409b893f129c814a9c9a000a491189e
+    m_Address: Assets/Sprites/Icons/32x32/New imagelist.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14320599cb4dc56488758ac5285350d0
+    m_Address: Assets/Sprites/Icons/32x32/Grid.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1700c46f1ea2c1345875080e37b0826c
+    m_Address: Assets/Sprites/Icons/32x32/Right.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 170b0bb236cd41c4c938c7a765d42b2f
+    m_Address: Assets/Sprites/Icons/32x32/Restangle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1739a1cf1cc9e5c4c91403cad5c25afe
+    m_Address: Assets/Sprites/Icons/32x32/Find.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1853f1ddb1389b84bb73c152d8fac540
+    m_Address: Assets/Sprites/Icons/32x32/Hints.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a5883f363fe7a549a59d94daa808137
+    m_Address: Assets/Sprites/Icons/32x32/Back.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bc49d25286d54f4db255e511f7e3b56
+    m_Address: Assets/Sprites/Icons/32x32/Go up.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e2fc94032d3172409b9e71b955b20f4
+    m_Address: Assets/Sprites/Icons/32x32/Search computer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1eb29750c1d25294c83916fedc45edd7
+    m_Address: Assets/Sprites/Icons/32x32/Apply.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20e2f03a67efb914ab9208d976f372b1
+    m_Address: Assets/Sprites/Icons/32x32/Play.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21608f6399c9a7548aa49a1d66010fc0
+    m_Address: Assets/Sprites/Icons/32x32/Homepage.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22349dcd8ab1a5d488eb9f602af8d824
+    m_Address: Assets/Sprites/Icons/32x32/Synchronize.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22b06fd1ad7be184e9be421f597b8b7f
+    m_Address: Assets/Sprites/Icons/32x32/Edit text.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2497bfd2a8d069c47ade23313a4d1677
+    m_Address: Assets/Sprites/Icons/32x32/Pie chart.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25385369ec08d0a44b7e3cc2f4bfa4c1
+    m_Address: Assets/Sprites/Icons/32x32/Revert.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25915b319ddd4a148ae51c8f1c30186a
+    m_Address: Assets/Sprites/Icons/32x32/Layers.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26886d316411c4746b7a94246b39b52c
+    m_Address: Assets/Sprites/Icons/32x32/Magic hat.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28172d5665503774080b6d6bde2f6a14
+    m_Address: Assets/Sprites/Icons/32x32/Target1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 285c3ed8b315c814580845fc1ff9dce1
+    m_Address: Assets/Sprites/Icons/32x32/Attach.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b232ab24f393314d8b80ca49c1afaab
+    m_Address: Assets/Sprites/Icons/32x32/Registry.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c5548ff71fd5f64ea8325dafe8e31f0
+    m_Address: Assets/Sprites/Icons/32x32/Hint.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e2bea3b510d03a45a3cf32853cd2a13
+    m_Address: Assets/Sprites/Icons/32x32/New clip art.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e7efa79689888742b239ea5cd392ecf
+    m_Address: Assets/Sprites/Icons/32x32/Help book.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e97c828ba371414c9782c412d32f073
+    m_Address: Assets/Sprites/Icons/32x32/Yes.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f6f1018ba749ee45bf20bab210da343
+    m_Address: Assets/Sprites/Icons/32x32/Angle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31992030a953bc94ea0c8c5ead69d108
+    m_Address: Assets/Sprites/Icons/32x32/Target.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31ef19284b626af4e800c2c477042b2f
+    m_Address: Assets/Sprites/Icons/32x32/16 colors.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 338799d931a44cb418184f5dece35882
+    m_Address: Assets/Sprites/Icons/32x32/Paste.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33994b574f6c85240817c65b56295458
+    m_Address: Assets/Sprites/Icons/32x32/Brightness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33b09100058ebe54199edac94307ed82
+    m_Address: Assets/Sprites/Icons/32x32/Save data.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36902af9e4121d247bee42cd53f36a51
+    m_Address: Assets/Sprites/Icons/32x32/Contrast.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 382919de99b332542a300260308757af
+    m_Address: Assets/Sprites/Icons/32x32/Stop.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3851b3509f8043c4a9e07a6851230b54
+    m_Address: Assets/Sprites/Icons/32x32/Add folder.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a9046e5ab95da847b1d5f1f5742fab9
+    m_Address: Assets/Sprites/Icons/32x32/Graphic file.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ba9cc8b62ca18245b3357f2dfc9877e
+    m_Address: Assets/Sprites/Icons/32x32/Triangle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c7c875224c41934ab18fe79dd6a79f6
+    m_Address: Assets/Sprites/Icons/32x32/Add.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ea2c9ae52903fd4c9a92a017b0bf7e5
+    m_Address: Assets/Sprites/Icons/32x32/Square.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 408a4b7aacf2eaa4d912a0f8b69797e9
+    m_Address: Assets/Sprites/Icons/32x32/Pencil.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 418ece0365af65648a2dde10787b87be
+    m_Address: Assets/Sprites/Icons/32x32/Pick color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4244dc33e38f2ec48b2c4d981837877d
+    m_Address: Assets/Sprites/Icons/32x32/Delete frames.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43313a14c6aa6d54b87d7e3f828e1b26
+    m_Address: Assets/Sprites/Icons/32x32/Tag.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44211758f8a44bd48a3dd2ace88934e0
+    m_Address: Assets/Sprites/Icons/32x32/Objects.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 444106016d4699a48b2e984935456aa6
+    m_Address: Assets/Sprites/Icons/32x32/Text replace.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 471692510473c06439d526b9347c98cc
+    m_Address: Assets/Sprites/Icons/32x32/Flip horizontally.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48668d553187d6743a3a813276c2f52b
+    m_Address: Assets/Sprites/Icons/32x32/Test line.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b3ca14e478f90d42b5dd1e63bb8835e
+    m_Address: Assets/Sprites/Icons/32x32/Check boxes.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4bab58dcf161d0647bb8ace2da4a9941
+    m_Address: Assets/Sprites/Icons/32x32/New image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c28a988ed6ef9b41bfc5077ab85b158
+    m_Address: Assets/Sprites/Icons/32x32/Knife.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4df3d0b49780e994794e17640df856da
+    m_Address: Assets/Sprites/Icons/32x32/Graphic designer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f1689b3f06f6dd4291b3f69ec49bc6b
+    m_Address: Assets/Sprites/Icons/32x32/Unlock.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 526d30e7cc35d5044bc0771761584355
+    m_Address: Assets/Sprites/Icons/32x32/Open.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 537af6aa1b23d8b49bd7a64b205f845f
+    m_Address: Assets/Sprites/Icons/32x32/Script.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53f2b2f5c244b1f429b98279ab762319
+    m_Address: Assets/Sprites/Icons/32x32/Resize image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 549e6d1c88b62964bb8a2dcce54abecc
+    m_Address: Assets/Sprites/Icons/32x32/Tip of the day.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57a1e428f3469004584c8d14c94a6eac
+    m_Address: Assets/Sprites/Icons/32x32/Color test.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5908ada10557dc3459ffd732d4476fc8
+    m_Address: Assets/Sprites/Icons/32x32/Show.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 599cb51e8286cea4c800d71da78c7f7b
+    m_Address: Assets/Sprites/Icons/32x32/Left.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 59d436d563fb618479bd5b6349199bc6
+    m_Address: Assets/Sprites/Icons/32x32/Arc.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a2b48e50d92b6241bf7df93b5491ec7
+    m_Address: Assets/Sprites/Icons/32x32/Hide.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ad8c87caf62ec844944f72f8e16d6fc
+    m_Address: Assets/Sprites/Icons/32x32/Funnel.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ebc2221f146fdf43b2a4c5e3acdacb5
+    m_Address: Assets/Sprites/Icons/32x32/Lock.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f1058c6955608a4eb8c67e8acb00de8
+    m_Address: Assets/Sprites/Icons/32x32/Zoom.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f51d7eafa6961a41b4cb23d01be554e
+    m_Address: Assets/Sprites/Icons/32x32/Pixel editor.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f7d868b86ff6fd41887d803faa2bef4
+    m_Address: Assets/Sprites/Icons/32x32/Rename.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6072c5dabb280e64fa29af613e263cc8
+    m_Address: Assets/Sprites/Icons/32x32/Lock transparency.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60fccbbdce9c6e94ca601c229fdb80e7
+    m_Address: Assets/Sprites/Icons/32x32/Close file.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 610fd8ffd17a48c46b80615c8cc8623e
+    m_Address: Assets/Sprites/Icons/32x32/No.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 620f49359acdce0498051bd35aace314
+    m_Address: Assets/Sprites/Icons/32x32/Down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 623a904d6dbeb5241963bff446384fd3
+    m_Address: Assets/Sprites/Icons/32x32/Clipboard.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62b83b89b8c2af740b2b16e88f865cd7
+    m_Address: Assets/Sprites/Icons/32x32/To do list.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64aa895c05fe21d449d92bd14028f4c1
+    m_Address: Assets/Sprites/Icons/32x32/Movie.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64d5338bf618c8b4ab7bcd1848a2930b
+    m_Address: Assets/Sprites/Icons/32x32/Zoom out.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66a6208dd5a82ce408f0a6a5a674909b
+    m_Address: Assets/Sprites/Icons/32x32/Rotate left.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66d02214878afb440b736bfd54fb1226
+    m_Address: Assets/Sprites/Icons/32x32/Flip vertically.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67a008092b9dbfa4db07f144c02d26f3
+    m_Address: Assets/Sprites/Icons/32x32/Transparency.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68cf40fa11b40af44a22838a344643c9
+    m_Address: Assets/Sprites/Icons/32x32/Designer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68eae53c2c50aff4eaf68eccbb2209fc
+    m_Address: Assets/Sprites/Icons/32x32/New frame.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 690c7104f1c5b9949b71b1f6fdef4706
+    m_Address: Assets/Sprites/Icons/32x32/Webcam.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 694361a86b5573842922663cd8add2a8
+    m_Address: Assets/Sprites/Icons/32x32/256 colors.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6967499961ac65e4ea86a8a900c230f3
+    m_Address: Assets/Sprites/Icons/32x32/Error.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 697b6d6a5618ee64baf649ea539cd5f9
+    m_Address: Assets/Sprites/Icons/32x32/Danger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b384e831da2a0f40814a66c9161ab9e
+    m_Address: Assets/Sprites/Icons/32x32/Painter.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b9fe76b2de52af4f9c8fb1932aa72a2
+    m_Address: Assets/Sprites/Icons/32x32/Import.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bc8e4b43b875c947b6c6a04667eb392
+    m_Address: Assets/Sprites/Icons/32x32/Open file.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c79335710161854bab55e324959c206
+    m_Address: Assets/Sprites/Icons/32x32/Save.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e6d11405811c17469e9fb3ed26fa95e
+    m_Address: Assets/Sprites/Icons/32x32/Select gpadient.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72301c978ddb14b4499d17651cafb2d1
+    m_Address: Assets/Sprites/Icons/32x32/Folder.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7287d9851e6878d4a8b57b5a810a98ef
+    m_Address: Assets/Sprites/Icons/32x32/Red eye removing.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72bd741c5aa98fb4d864003d28060918
+    m_Address: Assets/Sprites/Icons/32x32/Help.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7407f4960adaab741a6a2ea6e52919d9
+    m_Address: Assets/Sprites/Icons/32x32/Brush.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 749257dede86c8a4a8eca164a2db2b3a
+    m_Address: Assets/Sprites/Icons/32x32/Coffe.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74b0a9379905f2049aaad7494474c6fc
+    m_Address: Assets/Sprites/Icons/32x32/Form.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75ec1fc01f6abd24fb4c438e0e819b19
+    m_Address: Assets/Sprites/Icons/32x32/Registration.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76c38715a25d44841b3d1c2ba1e9dc9a
+    m_Address: Assets/Sprites/Icons/32x32/Create.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76f6d386d2da51b46a3b4790458eef7d
+    m_Address: Assets/Sprites/Icons/32x32/Color layers.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77c799f275e295b4ea3dcfeb38c8bd2c
+    m_Address: Assets/Sprites/Icons/32x32/Delete.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77f8504df5679414b953acfbc81ae97e
+    m_Address: Assets/Sprites/Icons/32x32/Units.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79193c9462c73324aa6e4c2017928946
+    m_Address: Assets/Sprites/Icons/32x32/Work area.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 794f007324e05e543b7f591cf081bced
+    m_Address: Assets/Sprites/Icons/32x32/Smooth.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bc0461a2c3f7f14993410da5ec08c2a
+    m_Address: Assets/Sprites/Icons/32x32/Color palette.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bf12bc616c5f9844936a1081dd5de4d
+    m_Address: Assets/Sprites/Icons/32x32/Eraser.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7deaffd46cb79b94fa5a8dda77d077ba
+    m_Address: Assets/Sprites/Icons/32x32/Spiral.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e7838b4e1d224646b014e19ec5b7235
+    m_Address: Assets/Sprites/Icons/32x32/Save as.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 804087b83de0d604689b0ec52233a7e0
+    m_Address: Assets/Sprites/Icons/32x32/Text color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82e5af74d94fccc4fb344b7cd9e8d7fc
+    m_Address: Assets/Sprites/Icons/32x32/Move.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83dca5ad9e1465e45bb0c0960d90a7cd
+    m_Address: Assets/Sprites/Icons/32x32/Stop playing.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84436085e2d84d7488b0620bdc446ef8
+    m_Address: Assets/Sprites/Icons/32x32/Pantone.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 848b430398565f148936fdd3b550c71f
+    m_Address: Assets/Sprites/Icons/32x32/Transparent background.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84979643690a64847abb74a6a5f52c74
+    m_Address: Assets/Sprites/Icons/32x32/Search.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 879eaaa58d3b0b847821aa1c73b60827
+    m_Address: Assets/Sprites/Icons/32x32/RGB.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 882e164427b7c1d41b7d8678b8348f1f
+    m_Address: Assets/Sprites/Icons/32x32/Copy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89185d48d885f6f418b62eb32c515032
+    m_Address: Assets/Sprites/Icons/32x32/3d chart.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89f27a81b78f4ea49a08618f95c16325
+    m_Address: Assets/Sprites/Icons/32x32/Coffee.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a027b0f73b32ae46a05f209fcf9686f
+    m_Address: Assets/Sprites/Icons/32x32/Dropper.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a37e7f6dc2bece409179dc20842d820
+    m_Address: Assets/Sprites/Icons/32x32/Increase time.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a5570eae2a49494b9ac9d6c8da69115
+    m_Address: Assets/Sprites/Icons/32x32/Paint over pixels.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e5e10a07ec00e64d8376dc9ab1949d3
+    m_Address: Assets/Sprites/Icons/32x32/Flower.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f7972695e8936348b7f2b2ca224e579
+    m_Address: Assets/Sprites/Icons/32x32/Scan film.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fdd1773fa9d5b540bd8570523db8483
+    m_Address: Assets/Sprites/Icons/32x32/Smooth line.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9015124bd3deda340b97d6841d53bdb1
+    m_Address: Assets/Sprites/Icons/32x32/Zoom auto.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90229183ad9a82c43964d5dc302f8724
+    m_Address: Assets/Sprites/Icons/32x32/Up.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90adccb7b461a3142aeca21873b50a11
+    m_Address: Assets/Sprites/Icons/32x32/Cut.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91baf0a35636afc4cb9521e614a744d3
+    m_Address: Assets/Sprites/Icons/32x32/Circle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91e2a17de5e40f84b8696979f68b3580
+    m_Address: Assets/Sprites/Icons/32x32/Pen.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 924defaefdb00d1428c4a1f45bf80cec
+    m_Address: Assets/Sprites/Icons/32x32/Search text.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9258c64124ad8ca41909906a1ed8154d
+    m_Address: Assets/Sprites/Icons/32x32/Color filter.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92b6e0121003de340a34a70adcd99d15
+    m_Address: Assets/Sprites/Icons/32x32/Rotate CCW.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 971fd92ca38d6dd49b2732f930d0026d
+    m_Address: Assets/Sprites/Icons/32x32/Color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97d574b9f10b622469e68754cb8e2599
+    m_Address: Assets/Sprites/Icons/32x32/Flip.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 984b6139fdb44a740baca9ef834f4e47
+    m_Address: Assets/Sprites/Icons/32x32/Save picture.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 984d96b079cde154cbf30f24efbb81e8
+    m_Address: Assets/Sprites/Icons/32x32/Undo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bcdc33570c99b748893eaa9e2a07954
+    m_Address: Assets/Sprites/Icons/32x32/Equipment.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bceb3d768880df418b88d6e315fbea1
+    m_Address: Assets/Sprites/Icons/32x32/Gpadient.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eadff1915234d84dad48697025ba1e3
+    m_Address: Assets/Sprites/Icons/32x32/Go down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f2d4abe9db3e964da500c42bc2f4b17
+    m_Address: Assets/Sprites/Icons/32x32/New video.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f871409494f06540995271b1c415533
+    m_Address: Assets/Sprites/Icons/32x32/Key.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a008cd7b41b169b40a0eaf4fbff6cfe3
+    m_Address: Assets/Sprites/Icons/32x32/True color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2d3323d1bde19948b35883d12c6f5dd
+    m_Address: Assets/Sprites/Icons/32x32/Curve.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3c8d99961d8146488a8a65ad5d84d19
+    m_Address: Assets/Sprites/Icons/32x32/Camera.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a426a095878a9934b8a03e2183975bbd
+    m_Address: Assets/Sprites/Icons/32x32/Search folder.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a456e655d0ebc0a47a41c3955bc33aa1
+    m_Address: Assets/Sprites/Icons/32x32/Microsoft flag.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a51fcd7a77882a44eb481a4ef670bd75
+    m_Address: Assets/Sprites/Icons/32x32/Mouse pointer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9bceed6b1ff74c499e3c4d3c9c5781c
+    m_Address: Assets/Sprites/Icons/32x32/Save image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9ff6d0c2df1406469b0e87faaa8ab1d
+    m_Address: Assets/Sprites/Icons/32x32/Spray.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab13062c7000e264eb382f1f50e94025
+    m_Address: Assets/Sprites/Icons/32x32/Flow block.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab53598fffe37e949875eee498a7f433
+    m_Address: Assets/Sprites/Icons/32x32/Home.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abf0d3d0be64a76429d02d0d76b92667
+    m_Address: Assets/Sprites/Icons/32x32/Problem.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad815b09869a2e74d88fd35b5e4b298a
+    m_Address: Assets/Sprites/Icons/32x32/Feather.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: adf6668f0f0338c459167c3985f125b2
+    m_Address: Assets/Sprites/Icons/32x32/Chart xy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aef4357b5128dda46822a64cd37ad840
+    m_Address: Assets/Sprites/Icons/32x32/Erase.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b04c0953901db584da7187c6d6df14db
+    m_Address: Assets/Sprites/Icons/32x32/Hexagon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2921e3cccd51c04baa6a75569b6f42b
+    m_Address: Assets/Sprites/Icons/32x32/Critical details.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3f6ea90a14c4044589eaab5d854afc4
+    m_Address: Assets/Sprites/Icons/32x32/Red book.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b44b2ed1ef3b524458a900612deb9305
+    m_Address: Assets/Sprites/Icons/32x32/Rotate CW.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b496448a4b90441458dcbf32c04041a8
+    m_Address: Assets/Sprites/Icons/32x32/Save color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5de12b5aea66284492c9500fdd75ff5
+    m_Address: Assets/Sprites/Icons/32x32/Open v2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b81ce1105a7fb1949a237ce12f52e622
+    m_Address: Assets/Sprites/Icons/32x32/Open colors.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8d5afd0e8ea2ba4a8f02fe10b5df380
+    m_Address: Assets/Sprites/Icons/32x32/Fine brush.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b90711722f04be94f95dfc18ed65eb2b
+    m_Address: Assets/Sprites/Icons/32x32/3d bar chart.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba81ee6e9745e0041bad89ac51f219bc
+    m_Address: Assets/Sprites/Icons/32x32/Rotate right.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc9fc7a68c0d00a46bc2b7789b487313
+    m_Address: Assets/Sprites/Icons/32x32/Picture.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd5406ea762c4cf46a0aefa93c85c28a
+    m_Address: Assets/Sprites/Icons/32x32/About.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be68a81f85e430740b6a6cb6465ac8fb
+    m_Address: Assets/Sprites/Icons/32x32/Ico.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bea1ebfd3a270f84f8976029b067bad0
+    m_Address: Assets/Sprites/Icons/32x32/Measure.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf6331fb4c73fae4aa782c6804e95bac
+    m_Address: Assets/Sprites/Icons/32x32/Close.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfb85892c50abdc4f8c1d4b3ca32a065
+    m_Address: Assets/Sprites/Icons/32x32/Tools.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c09b6a9e3bf242648ad51223c1bf1991
+    m_Address: Assets/Sprites/Icons/32x32/Ellipse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c25551f61f1ffd54c88674260ad2b21d
+    m_Address: Assets/Sprites/Icons/32x32/Transparent color.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3fe870bf1be59848ad5db8a0ec910c2
+    m_Address: Assets/Sprites/Icons/32x32/Frames.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c858f654ae007724996c80307029df7f
+    m_Address: Assets/Sprites/Icons/32x32/YUV color space.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c88dbf3de66cb3947b03d4c601a5c938
+    m_Address: Assets/Sprites/Icons/32x32/Web designer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9b2338d20a0c754a9e46cc0627eb805
+    m_Address: Assets/Sprites/Icons/32x32/Search online.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca4e40dcc54eb06448b5656f91253d5f
+    m_Address: Assets/Sprites/Icons/32x32/Clear.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc04c557d769fb340ba71ccc1c7bc6c9
+    m_Address: Assets/Sprites/Icons/32x32/E-mail.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc325b598ec251f45afaad3c94c9b2c8
+    m_Address: Assets/Sprites/Icons/32x32/Properties.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf83bae3fd5a70148bf694e0d0536e1b
+    m_Address: Assets/Sprites/Icons/32x32/Wait.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d003446b93e818b46887ff54372d5d90
+    m_Address: Assets/Sprites/Icons/32x32/Ok.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1f5d8cde9173e94981587ed7f39d251
+    m_Address: Assets/Sprites/Icons/32x32/Fill.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d21b2011709a4d445aed1659b9a2ecd2
+    m_Address: Assets/Sprites/Icons/32x32/Arrow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d463be0b19f03024ca57b24b637d29ad
+    m_Address: Assets/Sprites/Icons/32x32/Pinion.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d46f26b4a7e52554aa1f38568423b266
+    m_Address: Assets/Sprites/Icons/32x32/Pixels.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d52f03af38baebb49a1660b88f0c690e
+    m_Address: Assets/Sprites/Icons/32x32/HSV.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db376ba4d2121d147ac15a6457291bd7
+    m_Address: Assets/Sprites/Icons/32x32/Settings.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db43236c18a147348bc61c0bd5086886
+    m_Address: Assets/Sprites/Icons/32x32/Replace pixels.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dba9b1e8d3179b64792887539bb427f2
+    m_Address: Assets/Sprites/Icons/32x32/HSL.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbb59470192f9904bb56f2514a7e6cfe
+    m_Address: Assets/Sprites/Icons/32x32/Export.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc389fc9f922d0a458001ea8f5bbe95a
+    m_Address: Assets/Sprites/Icons/32x32/Rounded rectangle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcd93e374411e1944a4575e3c6b652b9
+    m_Address: Assets/Sprites/Icons/32x32/Color balance.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddc82849fd6ae3f4abaaaa770222e9cf
+    m_Address: Assets/Sprites/Icons/32x32/Wrong.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de47353ea1074274ca7fa50ee7f31cae
+    m_Address: Assets/Sprites/Icons/32x32/Warning.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de8b12a7c145d894da4ea9dd16d3a3c0
+    m_Address: Assets/Sprites/Icons/32x32/Scan image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: deeb5a0e982472f41bed0e38ac397d67
+    m_Address: Assets/Sprites/Icons/32x32/Edit.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e003f04ae318ae844a858015f3422233
+    m_Address: Assets/Sprites/Icons/32x32/Sizes.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0b0b9362d3b94a4db71b6ec69368a53
+    m_Address: Assets/Sprites/Icons/32x32/List.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e26b91450eea6cf478dce6fcd40b7e21
+    m_Address: Assets/Sprites/Icons/32x32/Mouse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2c7672097be085439ae1a70910061c2
+    m_Address: Assets/Sprites/Icons/32x32/Sharpness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2f5fdc254cb1cd4d8cfae5390a01889
+    m_Address: Assets/Sprites/Icons/32x32/CMYK.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e396db6cc8859b34ba38a33710875743
+    m_Address: Assets/Sprites/Icons/32x32/Wizard.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e41921f152eff70479dd19f017ef5caf
+    m_Address: Assets/Sprites/Icons/32x32/Graphic tools.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4eb6be92c85cdc4fa5ceb2413bd4bed
+    m_Address: Assets/Sprites/Icons/32x32/Scanner.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e51f3e355aad92a4aba5fbdf1db91743
+    m_Address: Assets/Sprites/Icons/32x32/Index.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e777038b11e5f6847a654202896117f6
+    m_Address: Assets/Sprites/Icons/32x32/Color profile.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb858c29b519b7a43a50b0d46e2244d3
+    m_Address: Assets/Sprites/Icons/32x32/Wide brush.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed584b849176f034c93a5e2ac7c79ef4
+    m_Address: Assets/Sprites/Icons/32x32/Zoom in.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee1ebfd93bfe3964e97ecfe60cb578ca
+    m_Address: Assets/Sprites/Icons/32x32/Delete frame.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2883f0f19813604e842c3c73f21b000
+    m_Address: Assets/Sprites/Icons/32x32/Edit page.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2e77d40602eeac48a36187178f332ff
+    m_Address: Assets/Sprites/Icons/32x32/Cancel.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f419daaa9bd4c304d8dc71063e7f0ddc
+    m_Address: Assets/Sprites/Icons/32x32/Selection.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4e3082f26857b441b1b84288d3320ba
+    m_Address: Assets/Sprites/Icons/32x32/Writing pencil.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5f1107dd5720044a9c9984ec9282b96
+    m_Address: Assets/Sprites/Icons/32x32/Refresh.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6307360f0b4a7c429715c35e027a067
+    m_Address: Assets/Sprites/Icons/32x32/Diagram.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9d640c97673e9e4c8eba30a3273ca01
+    m_Address: Assets/Sprites/Icons/32x32/Monitors.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa7f18bf8faa11d47af861bc7e6f32df
+    m_Address: Assets/Sprites/Icons/32x32/Text tool.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: faa00046643bbc943914e24091dfa585
+    m_Address: Assets/Sprites/Icons/32x32/File exetension.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: faccb03bc5a816247bdab923a4555bf5
+    m_Address: Assets/Sprites/Icons/32x32/Preview.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fad95aad190b609489b81733c06176d8
+    m_Address: Assets/Sprites/Icons/32x32/Info.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fae235b273f9b5447bf50450a54d0e80
+    m_Address: Assets/Sprites/Icons/32x32/Download image.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbfd0ca6111efb34dab59ff0e2150784
+    m_Address: Assets/Sprites/Icons/32x32/Close folder.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcc2049ec4bd92f4197c0b3a5cebeb25
+    m_Address: Assets/Sprites/Icons/32x32/Decrease time.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcd505b56726e3142823122f3949adb7
+    m_Address: Assets/Sprites/Icons/32x32/Favourites.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd7e958014b371441943c8fd173afde2
+    m_Address: Assets/Sprites/Icons/32x32/Line.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe1c2bfd086dfbd408d52f4e33b3579a
+    m_Address: Assets/Sprites/Icons/32x32/Exit.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fec47653ad4e8f744a206b63633eebf0
+    m_Address: Assets/Sprites/Icons/32x32/3d graph.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c5d32957992dd0d439acbc1bfc798460, type: 2}
+    - {fileID: 11400000, guid: 0ee0c737b298843498f57ccbb4420735, type: 2}

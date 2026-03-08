@@ -622,6 +622,10 @@ public partial class ActorInstance : MonoBehaviour
                     Scripts.Managers.ExperienceTracker.AddXP(character, amount);
                 }
             }
+
+            // Roll drop table and track loot
+            var drops = Scripts.Data.Items.DropTableLibrary.RollDrops(this.characterClass);
+            Scripts.Managers.LootTracker.AddDropResults(drops);
         }
 
         g.PortraitManager.Dissolve(this);

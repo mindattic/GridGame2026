@@ -61,6 +61,13 @@ public static class SkillLibrary
         if (!skills.ContainsKey(def.Id)) skills.Add(def.Id, def);
     }
 
+    /// <summary>Registers a skill from an external source (e.g. TrainingLibrary).</summary>
+    public static void RegisterExternal(SkillDefinition def)
+    {
+        Ensure();
+        Register(def);
+    }
+
     /// <summary>Gets a skill by Id or null if missing.</summary>
     public static SkillDefinition Get(string id)
     {

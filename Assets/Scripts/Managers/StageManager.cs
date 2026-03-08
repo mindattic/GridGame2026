@@ -115,6 +115,7 @@ public class StageManager : MonoBehaviour
         // Begin a new XP session with current party participants
         var participants = ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Select(m => m.CharacterClass);
         ExperienceTracker.StartSession(participants);
+        LootTracker.StartSession();
 
         if (IsEndless)
         {

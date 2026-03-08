@@ -40,10 +40,14 @@ namespace Scripts.Data.Items
 /// Applied in order: Strength, Vitality, Agility,
 /// Stamina, Intelligence, Wisdom, Luck
 /// 
+/// EQUIPMENT SLOTS:
+/// - Weapon, Armor, Helmet, Boots, Ring, Amulet
+/// 
 /// RELATED FILES:
 /// - ItemLibrary.cs: Item registry
 /// - PlayerInventory.cs: Item ownership
 /// - ShopSectionController.cs: Shop transactions
+/// - RecipeLibrary.cs: Crafting recipes
 /// </summary>
 [System.Serializable]
 public class ItemDefinition
@@ -52,7 +56,10 @@ public class ItemDefinition
     public string DisplayName;
     public string Description;
     public ItemType Type;
+    public ItemRarity Rarity = ItemRarity.Common;
+    public EquipmentSlot Slot = EquipmentSlot.None;
     public int BaseCost;
+    public int SellValue = -1; // -1 means auto-compute as BaseCost / 2
     public int MaxStack = 99;
     public int Durability;
     public int BaseHealing;
@@ -68,6 +75,36 @@ public class ItemDefinition
 
     // Tag constraints
     public List<ActorTag> RequiredTags = new List<ActorTag>();
+
+    // Salvage: what materials this item breaks down into
+    public List<SalvageComponent> SalvageComponents = new List<SalvageComponent>();
+
+    /// <summary>Computed sell value (half of cost if not explicitly set).</summary>
+    public int ComputedSellValue => SellValue >= 0 ? SellValue : UnityEngine.Mathf.Max(1, BaseCost / 2);
+
+    /// <summary>True if this item is equippable gear.</summary>
+    public bool IsEquipment => Type == ItemType.Equipment && Slot != EquipmentSlot.None;
+
+    /// <summary>True if this item is a crafting material.</summary>
+    public bool IsCraftingMaterial => Type == ItemType.CraftingMaterial;
+
+    /// <summary>True if this item can be salvaged into materials.</summary>
+    public bool CanSalvage => SalvageComponents != null && SalvageComponents.Count > 0;
+}
+
+/// <summary>A single material returned when salvaging an item.</summary>
+[System.Serializable]
+public class SalvageComponent
+{
+    public string MaterialId;
+    public int Count;
+
+    public SalvageComponent() { }
+    public SalvageComponent(string materialId, int count)
+    {
+        MaterialId = materialId;
+        Count = count;
+    }
 }
 
 /// <summary>Item type classification.</summary>

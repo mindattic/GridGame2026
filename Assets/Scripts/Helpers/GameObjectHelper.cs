@@ -532,6 +532,10 @@ namespace Scripts.Helpers
             public const string MedicalButton = "MedicalButton";
             public const string ResidenceButton = "ResidenceButton";
             public const string BlacksmithButton = "BlacksmithButton";
+            public const string TrainingButton = "TrainingButton";
+            public const string EquipButton = "EquipButton";
+            public const string InventoryButton = "InventoryButton";
+            public const string BattlePrepButton = "BattlePrepButton";
             public const string OverworldButton = "OverworldButton";
             public const string BattleButton = "BattleButton";
 
@@ -541,6 +545,10 @@ namespace Scripts.Helpers
             public const string MedicalPanel = "MedicalPanel";
             public const string ResidencePanel = "ResidencePanel";
             public const string BlacksmithPanel = "BlacksmithPanel";
+            public const string TrainingPanel = "TrainingPanel";
+            public const string EquipPanel = "EquipPanel";
+            public const string InventoryPanel = "InventoryPanel";
+            public const string BattlePrepPanel = "BattlePrepPanel";
         }
 
         #endregion
