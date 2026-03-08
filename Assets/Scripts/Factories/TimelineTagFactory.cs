@@ -92,8 +92,8 @@ namespace Scripts.Factories
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            // TimelineTag (custom component)
-            root.AddComponent<TimelineTag>();
+            // NOTE: TimelineTag component is added AFTER children are created
+            // so that Awake() can find Tag, Icon, and Label via transform.Find().
 
             // === CHILD: Tag (background image) ===
             var tag = new GameObject("Tag");
@@ -166,6 +166,9 @@ namespace Scripts.Factories
             {
                 rootRT.SetParent(parent, false);
             }
+
+            // Add TimelineTag AFTER all children exist so Awake() finds them
+            root.AddComponent<TimelineTag>();
 
             return root;
         }

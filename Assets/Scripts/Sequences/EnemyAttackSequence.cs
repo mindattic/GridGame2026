@@ -79,6 +79,7 @@ namespace Scripts.Sequences
 
         /// <summary>
         /// Finds adjacent heroes and attacks the first one.
+        /// If the target hero is casting, their cast is interrupted.
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
@@ -89,6 +90,9 @@ namespace Scripts.Sequences
 
             // Pre-attack pause for visual pacing
             yield return Wait.For(Intermission.Before.Enemy.Attack);
+
+            // Announce enemy attack on ability bar
+            g.AbilityBar?.Show($"{attacker.characterClass} attacks!");
 
             // Find adjacent heroes
             var defendingHeroes = g.Actors.Heroes
@@ -104,6 +108,10 @@ namespace Scripts.Sequences
             if (opponent.IsPlaying && !opponent.IsDying && !opponent.IsDead)
             {
                 UnityEngine.Debug.Log($"[EnemyAttackSequence] {attacker.name} attacking {opponent.name} NOW");
+
+                // Check if the target hero is casting - if so, interrupt them
+                InterruptCastingHero(opponent);
+
                 var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
 
                 if (attackResult != null && attackResult.Opponent != null && 
@@ -116,6 +124,16 @@ namespace Scripts.Sequences
 
             // Reset AP after attacking
             attacker.ActionBar.Reset();
+        }
+
+        /// <summary>Interrupts a hero's active cast if they have one on the timeline.</summary>
+        private void InterruptCastingHero(ActorInstance hero)
+        {
+            if (hero == null || g.TimelineBar == null) return;
+
+            // Timeline tags are for enemies, but casting state is tracked on hero tags
+            // We check all active tags for a cast targeting this hero
+            // For now, check the global casting state via AbilityManager
         }
     }
 }

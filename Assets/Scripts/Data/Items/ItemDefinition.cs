@@ -96,6 +96,9 @@ public class ItemDefinition
     /// <summary>True if this item is equippable gear.</summary>
     public bool IsEquipment => Type == ItemType.Equipment && Slot != EquipmentSlot.None;
 
+    /// <summary>True if this item is a relic (equippable in any Relic slot).</summary>
+    public bool IsRelic => IsEquipment && EquipmentSlotHelper.IsRelicSlot(Slot);
+
     /// <summary>True if this item is a consumable (battle-only, occupies an ability slot).</summary>
     public bool IsConsumable => Type == ItemType.Consumable;
 

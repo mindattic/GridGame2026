@@ -220,6 +220,9 @@ namespace Scripts.Managers
 
             g.InputManager.InputMode = InputMode.None;
 
+            // Announce the ability on the ability bar
+            g.AbilityBar?.Show(currentUser, currentAbility);
+
             var startPosition = g.Card.PortraitWorldPosition();
 
             switch (currentAbility.Effect)
@@ -241,6 +244,15 @@ namespace Scripts.Managers
                     if (!IsValidLinearTarget(currentUser, target)) { CancelTargeting(); return; }
                     g.TileManager.Reset();
                     g.SequenceManager.Add(new ShieldBashSequence(currentUser, target));
+                    break;
+                case AbilityEffect.UseItem:
+                    if (currentAbility.SourceItem != null)
+                    {
+                        // Show ability bar announcement
+                        g.AbilityBar?.Show(currentUser, currentAbility.SourceItem);
+                        foreach (var t in targetList)
+                            g.SequenceManager.Add(new UseItemSequence(currentUser, t, currentAbility.SourceItem));
+                    }
                     break;
                 default:
                     foreach (var t in targetList)

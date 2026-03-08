@@ -134,6 +134,38 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
+        /// Shows the ability bar for an actor using a consumable item.
+        /// Format: "{CharacterClass} uses {ItemName}"
+        /// </summary>
+        public void Show(ActorInstance user, ItemDefinition item)
+        {
+            if (item == null)
+                return;
+
+            string text = user != null
+                ? $"{user.characterClass} uses {item.DisplayName}"
+                : item.DisplayName;
+
+            Show(text);
+        }
+
+        /// <summary>
+        /// Shows the ability bar for an actor performing a named action.
+        /// Format: "{CharacterClass} {verb} {actionName}"
+        /// </summary>
+        public void ShowAction(ActorInstance actor, string verb, string actionName)
+        {
+            if (string.IsNullOrEmpty(actionName))
+                return;
+
+            string text = actor != null
+                ? $"{actor.characterClass} {verb} {actionName}"
+                : actionName;
+
+            Show(text);
+        }
+
+        /// <summary>
         /// Immediately hides the ability bar.
         /// </summary>
         public void Hide()

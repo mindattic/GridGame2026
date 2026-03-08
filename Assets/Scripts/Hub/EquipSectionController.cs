@@ -161,7 +161,7 @@ public class EquipSectionController : MonoBehaviour
                 HubItemRowFactory.SetIconColor(go, new Color(0.4f, 0.5f, 0.7f));
 
             HubItemRowFactory.SetLabel(go, cc.ToString());
-            HubItemRowFactory.SetSubLabel(go, $"{equippedCount}/6 slots equipped");
+            HubItemRowFactory.SetSubLabel(go, $"{equippedCount}/5 slots equipped");
 
             var btn = go.GetComponent<Button>();
             if (btn != null) btn.onClick.AddListener(() => SelectHero(cc));
@@ -174,8 +174,8 @@ public class EquipSectionController : MonoBehaviour
     // ===================== Equipment Slots =====================
 
     private static readonly EquipmentSlot[] AllSlots = {
-        EquipmentSlot.Weapon, EquipmentSlot.Armor, EquipmentSlot.Helmet,
-        EquipmentSlot.Boots, EquipmentSlot.Ring, EquipmentSlot.Amulet
+        EquipmentSlot.Weapon, EquipmentSlot.Armor,
+        EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3
     };
 
     /// <summary>Refreshes the equipment slot list for the selected hero.</summary>
@@ -190,11 +190,12 @@ public class EquipSectionController : MonoBehaviour
         {
             var equipped = loadout.GetEquipped(slot);
             var go = HubItemRowFactory.Create(slotListContainer);
+            var slotName = EquipmentSlotHelper.DisplayName(slot);
 
             if (equipped != null)
             {
                 HubItemRowFactory.SetIcon(go, equipped);
-                HubItemRowFactory.SetLabel(go, $"{slot}: {equipped.DisplayName}");
+                HubItemRowFactory.SetLabel(go, $"{slotName}: {equipped.DisplayName}");
                 HubItemRowFactory.SetSubLabel(go, FormatItemStats(equipped));
                 HubItemRowFactory.SetLabelColor(go, HubItemRowFactory.RarityColor(equipped.Rarity));
 
@@ -207,7 +208,7 @@ public class EquipSectionController : MonoBehaviour
             }
             else
             {
-                HubItemRowFactory.SetLabel(go, $"{slot}: (empty)");
+                HubItemRowFactory.SetLabel(go, $"{slotName}: (empty)");
                 HubItemRowFactory.SetSubLabel(go, "Tap to browse");
 
                 var capturedSlot = slot;
@@ -243,11 +244,25 @@ public class EquipSectionController : MonoBehaviour
         var loadout = Loadout?.Get(selectedHero);
         var currentlyEquipped = loadout?.GetEquipped(browsingSlot);
 
+        // Collect IDs of items equipped in any relic slot (to avoid showing them in picker)
+        var equippedRelicIds = new HashSet<string>();
+        if (EquipmentSlotHelper.IsRelicSlot(browsingSlot) && loadout != null)
+        {
+            var relicSlots = new[] { EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3 };
+            foreach (var rs in relicSlots)
+            {
+                var eq = loadout.GetEquipped(rs);
+                if (eq != null) equippedRelicIds.Add(eq.Id);
+            }
+        }
+
         // Show items from inventory that match this slot
         foreach (var entry in Inventory.BySlot(browsingSlot))
         {
             // Skip the item that's already equipped in this slot
             if (currentlyEquipped != null && entry.Definition.Id == currentlyEquipped.Id) continue;
+            // Skip relic items equipped in other relic slots
+            if (equippedRelicIds.Contains(entry.Definition.Id)) continue;
 
             var item = entry.Definition;
             var go = HubItemRowFactory.Create(itemPickerContainer);
@@ -296,8 +311,12 @@ public class EquipSectionController : MonoBehaviour
         // Remove from inventory
         Inventory.Remove(item.Id, 1);
 
-        // Equip (returns old item)
-        var previous = loadout.Equip(item);
+        // Equip to the specific slot being browsed (important for relics)
+        ItemDefinition previous;
+        if (EquipmentSlotHelper.IsRelicSlot(browsingSlot) && EquipmentSlotHelper.IsRelicSlot(item.Slot))
+            previous = loadout.EquipToSlot(item, browsingSlot);
+        else
+            previous = loadout.Equip(item);
 
         // Return old item to inventory
         if (previous != null)

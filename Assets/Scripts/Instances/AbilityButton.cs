@@ -90,11 +90,29 @@ public class AbilityButton : MonoBehaviour
 
     #region State
 
-    /// <summary>Updates the interactable.</summary>
+    /// <summary>Updates the interactable based on mana availability and item stock.</summary>
     public void UpdateInteractable(float currentMana)
     {
         if (ability == null || button == null) return;
-        button.interactable = currentMana >= ability.ManaCost;
+
+        bool canAfford = currentMana >= ability.ManaCost;
+
+        // For item-backed abilities, also check inventory stock
+        if (ability.IsItemAbility && ability.SourceItem != null)
+        {
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Inventory?.Items != null)
+            {
+                var entry = save.Inventory.Items.Find(e => e.ItemId == ability.SourceItem.Id);
+                canAfford = canAfford && entry != null && entry.Count > 0;
+            }
+            else
+            {
+                canAfford = false;
+            }
+        }
+
+        button.interactable = canAfford;
     }
 
     /// <summary>World position.</summary>
@@ -114,6 +132,8 @@ public enum AbilityEffect
     ShieldRush,
     Trap,
     Smite,
+    // Item usage
+    UseItem,
     // Passive effects - Attack
     DoubleAttack,
     TripleAttack,
@@ -152,9 +172,18 @@ public class Ability
 
     // For passive abilities: number of extra attacks (DoubleAttack = 1, TripleAttack = 2)
     public int ExtraAttacks = 0;
-    
+
     // For passive abilities: number of extra moves (DoubleMove = 1, TripleMove = 2)
     public int ExtraMoves = 0;
+
+    // Casting time in seconds (0 = instant). Visible as a bar on the timeline.
+    public float CastTimeSeconds = 0f;
+
+    // Source item for consumable-backed abilities (null for normal abilities)
+    public ItemDefinition SourceItem;
+
+    /// <summary>True if this ability is backed by a consumable item.</summary>
+    public bool IsItemAbility => SourceItem != null;
 
     public bool IsActive => category == AbilityCategory.Active;
     public bool IsPassive => category == AbilityCategory.Passive;

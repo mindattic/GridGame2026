@@ -552,6 +552,9 @@ namespace Scripts.Canvas
             // Update label after we potentially moved this frame
             UpdateLabel();
 
+            // Update cast bar visualization
+            UpdateCastBar();
+
             // Left-edge strict check using anchoredPosition.x (left pivot)
             // Only trigger if in Approaching mode (not during pushback/stun)
             if (!fired && Mode == TimelineTagMode.Approaching && Rect != null && Rect.anchoredPosition.x <= leftX + ReachTolerance)
@@ -710,6 +713,97 @@ namespace Scripts.Canvas
             if (isFading) return;
             isFading = true;
             StartCoroutine(FadeOutAndDestroy(duration));
+        }
+
+        // ===================== Cast Bar =====================
+
+        /// <summary>Current casting state (null when not casting).</summary>
+        public CastingState ActiveCast { get; private set; }
+
+        /// <summary>Cast bar image child (created on demand).</summary>
+        private Image castBarImage;
+
+        /// <summary>
+        /// Begins a cast visualization on this tag. Creates a colored bar that
+        /// fills over the cast duration.
+        /// </summary>
+        public void BeginCast(CastingState state)
+        {
+            ActiveCast = state;
+            EnsureCastBar();
+            if (castBarImage != null)
+            {
+                castBarImage.gameObject.SetActive(true);
+                castBarImage.fillAmount = 0f;
+                castBarImage.color = new Color(0.3f, 0.6f, 1f, 0.8f); // blue cast bar
+            }
+        }
+
+        /// <summary>Clears the casting state and hides the bar.</summary>
+        public void ClearCast()
+        {
+            ActiveCast = null;
+            if (castBarImage != null)
+                castBarImage.gameObject.SetActive(false);
+        }
+
+        /// <summary>Updates the cast bar fill each frame.</summary>
+        private void UpdateCastBar()
+        {
+            if (ActiveCast == null || castBarImage == null) return;
+
+            if (ActiveCast.IsInterrupted)
+            {
+                castBarImage.color = new Color(1f, 0.3f, 0.3f, 0.8f); // red on interrupt
+                StartCoroutine(FadeCastBar());
+                ActiveCast = null;
+                return;
+            }
+
+            castBarImage.fillAmount = ActiveCast.Progress;
+
+            if (ActiveCast.IsComplete)
+            {
+                castBarImage.gameObject.SetActive(false);
+                ActiveCast = null;
+            }
+        }
+
+        /// <summary>Ensures the cast bar child image exists.</summary>
+        private void EnsureCastBar()
+        {
+            if (castBarImage != null) return;
+            var barGO = new GameObject("CastBar");
+            barGO.layer = LayerMask.NameToLayer("Default");
+            var rt = barGO.AddComponent<RectTransform>();
+            rt.SetParent(Rect, false);
+            rt.anchorMin = new Vector2(0f, 0f);
+            rt.anchorMax = new Vector2(1f, 0.15f);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            barGO.AddComponent<CanvasRenderer>();
+            castBarImage = barGO.AddComponent<Image>();
+            castBarImage.type = Image.Type.Filled;
+            castBarImage.fillMethod = Image.FillMethod.Horizontal;
+            castBarImage.fillOrigin = 0;
+            castBarImage.fillAmount = 0f;
+            castBarImage.color = new Color(0.3f, 0.6f, 1f, 0.8f);
+            barGO.SetActive(false);
+        }
+
+        /// <summary>Fades the cast bar out after interruption.</summary>
+        private IEnumerator FadeCastBar()
+        {
+            if (castBarImage == null) yield break;
+            float t = 0f;
+            while (t < 0.5f)
+            {
+                t += Time.deltaTime;
+                var c = castBarImage.color;
+                castBarImage.color = new Color(c.r, c.g, c.b, Mathf.Lerp(0.8f, 0f, t / 0.5f));
+                yield return null;
+            }
+            castBarImage.gameObject.SetActive(false);
         }
 
         /// <summary>Fade out and destroy.</summary>

@@ -107,11 +107,10 @@ public static class PlaceholderIconFactory
                 switch (slot)
                 {
                     case EquipmentSlot.Weapon: return IconShape.Diamond;
-                    case EquipmentSlot.Armor:
-                    case EquipmentSlot.Helmet:
-                    case EquipmentSlot.Boots: return IconShape.Circle;
-                    case EquipmentSlot.Ring:
-                    case EquipmentSlot.Amulet: return IconShape.SmallCircle;
+                    case EquipmentSlot.Armor: return IconShape.Circle;
+                    case EquipmentSlot.Relic1:
+                    case EquipmentSlot.Relic2:
+                    case EquipmentSlot.Relic3: return IconShape.SmallCircle;
                     default: return IconShape.Square;
                 }
             case ItemType.Consumable: return IconShape.Triangle;
@@ -132,10 +131,9 @@ public static class PlaceholderIconFactory
                 {
                     case EquipmentSlot.Weapon: return new Color(0.75f, 0.35f, 0.30f);
                     case EquipmentSlot.Armor: return new Color(0.40f, 0.50f, 0.65f);
-                    case EquipmentSlot.Helmet: return new Color(0.50f, 0.55f, 0.60f);
-                    case EquipmentSlot.Boots: return new Color(0.55f, 0.40f, 0.30f);
-                    case EquipmentSlot.Ring: return new Color(0.65f, 0.55f, 0.20f);
-                    case EquipmentSlot.Amulet: return new Color(0.30f, 0.60f, 0.55f);
+                    case EquipmentSlot.Relic1: return new Color(0.65f, 0.55f, 0.20f);
+                    case EquipmentSlot.Relic2: return new Color(0.30f, 0.60f, 0.55f);
+                    case EquipmentSlot.Relic3: return new Color(0.50f, 0.55f, 0.60f);
                     default: return new Color(0.5f, 0.5f, 0.5f);
                 }
             case ItemType.Consumable: return new Color(0.30f, 0.70f, 0.35f);

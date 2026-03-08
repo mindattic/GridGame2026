@@ -357,10 +357,9 @@ namespace Scripts.Models
         public CharacterClass CharacterClass;
         public string WeaponId;
         public string ArmorId;
-        public string HelmetId;
-        public string BootsId;
-        public string RingId;
-        public string AmuletId;
+        public string Relic1Id;
+        public string Relic2Id;
+        public string Relic3Id;
 
         public HeroEquipmentSave() { }
         public HeroEquipmentSave(HeroEquipmentSave other)
@@ -368,10 +367,9 @@ namespace Scripts.Models
             CharacterClass = other.CharacterClass;
             WeaponId = other.WeaponId;
             ArmorId = other.ArmorId;
-            HelmetId = other.HelmetId;
-            BootsId = other.BootsId;
-            RingId = other.RingId;
-            AmuletId = other.AmuletId;
+            Relic1Id = other.Relic1Id;
+            Relic2Id = other.Relic2Id;
+            Relic3Id = other.Relic3Id;
         }
 
         /// <summary>Gets the item ID equipped in the given slot.</summary>
@@ -381,10 +379,9 @@ namespace Scripts.Models
             {
                 case Scripts.Data.Items.EquipmentSlot.Weapon: return WeaponId;
                 case Scripts.Data.Items.EquipmentSlot.Armor: return ArmorId;
-                case Scripts.Data.Items.EquipmentSlot.Helmet: return HelmetId;
-                case Scripts.Data.Items.EquipmentSlot.Boots: return BootsId;
-                case Scripts.Data.Items.EquipmentSlot.Ring: return RingId;
-                case Scripts.Data.Items.EquipmentSlot.Amulet: return AmuletId;
+                case Scripts.Data.Items.EquipmentSlot.Relic1: return Relic1Id;
+                case Scripts.Data.Items.EquipmentSlot.Relic2: return Relic2Id;
+                case Scripts.Data.Items.EquipmentSlot.Relic3: return Relic3Id;
                 default: return null;
             }
         }
@@ -396,10 +393,9 @@ namespace Scripts.Models
             {
                 case Scripts.Data.Items.EquipmentSlot.Weapon: WeaponId = itemId; break;
                 case Scripts.Data.Items.EquipmentSlot.Armor: ArmorId = itemId; break;
-                case Scripts.Data.Items.EquipmentSlot.Helmet: HelmetId = itemId; break;
-                case Scripts.Data.Items.EquipmentSlot.Boots: BootsId = itemId; break;
-                case Scripts.Data.Items.EquipmentSlot.Ring: RingId = itemId; break;
-                case Scripts.Data.Items.EquipmentSlot.Amulet: AmuletId = itemId; break;
+                case Scripts.Data.Items.EquipmentSlot.Relic1: Relic1Id = itemId; break;
+                case Scripts.Data.Items.EquipmentSlot.Relic2: Relic2Id = itemId; break;
+                case Scripts.Data.Items.EquipmentSlot.Relic3: Relic3Id = itemId; break;
             }
         }
     }

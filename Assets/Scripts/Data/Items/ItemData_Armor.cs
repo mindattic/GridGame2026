@@ -71,7 +71,7 @@ public static class ItemData_Armor
         DisplayName = "Iron Helm",
         Description = "A basic iron helmet.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Helmet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 60,
         MaxStack = 1,
@@ -85,7 +85,7 @@ public static class ItemData_Armor
         DisplayName = "Leather Boots",
         Description = "Light boots that improve footwork.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Boots,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 50,
         MaxStack = 1,
@@ -99,7 +99,7 @@ public static class ItemData_Armor
         DisplayName = "Steel Greaves",
         Description = "Heavy greaves that trade agility for durability.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Boots,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Uncommon,
         BaseCost = 140,
         MaxStack = 1,
@@ -157,7 +157,7 @@ public static class ItemData_Armor
         Strength = 3,
     };
 
-    // === Additional Helmets ===
+    // === Additional Relics (former Helmets) ===
 
     public static readonly ItemDefinition SteelHelm = new ItemDefinition
     {
@@ -165,7 +165,7 @@ public static class ItemData_Armor
         DisplayName = "Steel Helm",
         Description = "A reinforced steel helmet.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Helmet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Uncommon,
         BaseCost = 110,
         MaxStack = 1,
@@ -179,7 +179,7 @@ public static class ItemData_Armor
         DisplayName = "Wizard's Hat",
         Description = "A pointed hat thrumming with magical resonance.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Helmet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Uncommon,
         BaseCost = 130,
         MaxStack = 1,
@@ -195,7 +195,7 @@ public static class ItemData_Armor
         DisplayName = "Horned Helm",
         Description = "A fearsome helm adorned with polished horns.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Helmet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Rare,
         BaseCost = 240,
         MaxStack = 1,
@@ -204,7 +204,7 @@ public static class ItemData_Armor
         Strength = 2,
     };
 
-    // === Additional Boots ===
+    // === Additional Relics (former Boots) ===
 
     public static readonly ItemDefinition WindRunners = new ItemDefinition
     {
@@ -212,7 +212,7 @@ public static class ItemData_Armor
         DisplayName = "Wind Runners",
         Description = "Feather-light boots enchanted for speed.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Boots,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Rare,
         BaseCost = 280,
         MaxStack = 1,
@@ -227,7 +227,7 @@ public static class ItemData_Armor
         DisplayName = "Iron Sabatons",
         Description = "Heavy iron boots that anchor the wearer.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Boots,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 70,
         MaxStack = 1,

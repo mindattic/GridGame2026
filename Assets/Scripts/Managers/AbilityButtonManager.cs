@@ -154,9 +154,17 @@ public class AbilityButtonManager : MonoBehaviour
         }
     }
 
-    /// <summary>Gets the abilities for.</summary>
+    /// <summary>Gets the abilities for a hero from their loadout, falling back to class defaults.</summary>
     private List<Ability> GetAbilitiesFor(CharacterClass characterClass)
     {
+        // Try to get abilities from the hero's loadout first
+        var loadout = GetLoadoutFor(characterClass);
+        if (loadout != null && loadout.EquippedAbilities.Count > 0)
+        {
+            return loadout.GetActiveAbilities();
+        }
+
+        // Fallback: class-based defaults (used when no loadout is configured)
         var list = new List<Ability>();
         if (characterClass == CharacterClass.Cleric)
         {
@@ -172,6 +180,18 @@ public class AbilityButtonManager : MonoBehaviour
             list.Add(AbilityLibrary.Trap());
         }
         return list;
+    }
+
+    /// <summary>Gets the hero loadout from the hub or profile.</summary>
+    private HeroLoadout GetLoadoutFor(CharacterClass characterClass)
+    {
+        var save = ProfileHelper.CurrentProfile?.CurrentSave;
+        if (save?.Equipment == null) return null;
+        var heroSave = save.Equipment.Heroes?.Find(h => h.CharacterClass == characterClass);
+        if (heroSave == null) return null;
+        var loadout = new HeroLoadout { CharacterClass = characterClass };
+        loadout.LoadFromSave(heroSave);
+        return loadout;
     }
 
     /// <summary>Creates the buttons for hero, capped at MaxAbilitySlots.</summary>

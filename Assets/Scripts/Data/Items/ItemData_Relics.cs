@@ -22,11 +22,11 @@ using Scripts.Utilities;
 namespace Scripts.Data.Items
 {
 /// <summary>
-/// ITEMDATA_RELICS - Ring and amulet definitions.
+/// ITEMDATA_RELICS - Relic equipment definitions.
 /// 
 /// PURPOSE:
-/// Static definitions for accessory equipment (rings, amulets)
-/// that provide unique stat combinations.
+/// Static definitions for relic equipment (rings, amulets, charms)
+/// that can be equipped in any of the three Relic slots.
 /// 
 /// RELATED FILES:
 /// - ItemLibrary.cs: Registers these items
@@ -40,7 +40,7 @@ public static class ItemData_Relics
         DisplayName = "Copper Ring",
         Description = "A simple ring that bolsters luck.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Ring,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 40,
         MaxStack = 1,
@@ -53,7 +53,7 @@ public static class ItemData_Relics
         DisplayName = "Silver Ring",
         Description = "A polished silver ring with faint enchantment.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Ring,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Uncommon,
         BaseCost = 120,
         MaxStack = 1,
@@ -67,7 +67,7 @@ public static class ItemData_Relics
         DisplayName = "Bone Amulet",
         Description = "A carved bone amulet radiating protective energy.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Amulet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 55,
         MaxStack = 1,
@@ -81,7 +81,7 @@ public static class ItemData_Relics
         DisplayName = "Jade Amulet",
         Description = "A translucent jade stone channeling nature's fortitude.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Amulet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Rare,
         BaseCost = 260,
         MaxStack = 1,
@@ -98,7 +98,7 @@ public static class ItemData_Relics
         DisplayName = "Gold Ring",
         Description = "A gleaming gold ring that sharpens the wearer's focus.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Ring,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Rare,
         BaseCost = 220,
         MaxStack = 1,
@@ -113,7 +113,7 @@ public static class ItemData_Relics
         DisplayName = "Bloodstone Ring",
         Description = "A crimson gem pulses with vitality.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Ring,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Epic,
         BaseCost = 480,
         MaxStack = 1,
@@ -128,7 +128,7 @@ public static class ItemData_Relics
         DisplayName = "Phantom Band",
         Description = "A spectral ring that phases its wearer between strikes.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Ring,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Legendary,
         BaseCost = 900,
         MaxStack = 1,
@@ -145,7 +145,7 @@ public static class ItemData_Relics
         DisplayName = "Iron Talisman",
         Description = "A crude talisman hammered from iron scraps.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Amulet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Common,
         BaseCost = 35,
         MaxStack = 1,
@@ -159,7 +159,7 @@ public static class ItemData_Relics
         DisplayName = "Sunfire Amulet",
         Description = "An amulet blazing with solar energy.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Amulet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Epic,
         BaseCost = 520,
         MaxStack = 1,
@@ -174,7 +174,7 @@ public static class ItemData_Relics
         DisplayName = "Crown of Stars",
         Description = "An ancient relic said to contain the light of a constellation.",
         Type = ItemType.Equipment,
-        Slot = EquipmentSlot.Amulet,
+        Slot = EquipmentSlot.Relic1,
         Rarity = ItemRarity.Legendary,
         BaseCost = 1100,
         MaxStack = 1,

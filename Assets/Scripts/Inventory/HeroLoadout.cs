@@ -47,6 +47,12 @@ public class HeroLoadout
     public List<ItemDefinition> Items = new List<ItemDefinition>();
     public List<ItemDefinition> Equipment = new List<ItemDefinition>();
 
+    /// <summary>Equipped abilities (skills + consumable items). Max 5 slots.</summary>
+    public List<Ability> EquippedAbilities = new List<Ability>();
+
+    /// <summary>Maximum number of ability slots per hero.</summary>
+    public const int MaxAbilitySlots = 5;
+
     // Slot-based equipment
     public Dictionary<EquipmentSlot, ItemDefinition> EquippedSlots = new Dictionary<EquipmentSlot, ItemDefinition>();
 
@@ -57,12 +63,70 @@ public class HeroLoadout
         return item;
     }
 
+    /// <summary>Adds an ability to the loadout if there is room.</summary>
+    public bool AddAbility(Ability ability)
+    {
+        if (ability == null || EquippedAbilities.Count >= MaxAbilitySlots) return false;
+        EquippedAbilities.Add(ability);
+        return true;
+    }
+
+    /// <summary>Removes an ability by index.</summary>
+    public void RemoveAbility(int index)
+    {
+        if (index >= 0 && index < EquippedAbilities.Count)
+            EquippedAbilities.RemoveAt(index);
+    }
+
+    /// <summary>Gets all active abilities (non-passive, non-reactive).</summary>
+    public List<Ability> GetActiveAbilities()
+    {
+        var result = new List<Ability>();
+        foreach (var a in EquippedAbilities)
+            if (a != null && a.IsActive) result.Add(a);
+        return result;
+    }
+
     /// <summary>Equips an item into its slot, returning the previously equipped item (or null).</summary>
     public ItemDefinition Equip(ItemDefinition item)
     {
         if (item == null || item.Slot == EquipmentSlot.None) return null;
+
+        // Relic items: find the first open relic slot, or replace in Relic1 if all full
+        if (EquipmentSlotHelper.IsRelicSlot(item.Slot))
+        {
+            return EquipRelic(item);
+        }
+
         EquippedSlots.TryGetValue(item.Slot, out var previous);
         EquippedSlots[item.Slot] = item;
+        return previous;
+    }
+
+    /// <summary>Equips a relic into a specific slot, returning the previously equipped item.</summary>
+    public ItemDefinition EquipToSlot(ItemDefinition item, EquipmentSlot targetSlot)
+    {
+        if (item == null) return null;
+        EquippedSlots.TryGetValue(targetSlot, out var previous);
+        EquippedSlots[targetSlot] = item;
+        return previous;
+    }
+
+    /// <summary>Finds the first open relic slot and equips the item there.</summary>
+    private ItemDefinition EquipRelic(ItemDefinition item)
+    {
+        var relicSlots = new[] { EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3 };
+        foreach (var slot in relicSlots)
+        {
+            if (!EquippedSlots.ContainsKey(slot) || EquippedSlots[slot] == null)
+            {
+                EquippedSlots[slot] = item;
+                return null;
+            }
+        }
+        // All full — replace Relic1
+        EquippedSlots.TryGetValue(EquipmentSlot.Relic1, out var previous);
+        EquippedSlots[EquipmentSlot.Relic1] = item;
         return previous;
     }
 
@@ -80,10 +144,9 @@ public class HeroLoadout
         if (save == null) return;
         TryEquipFromId(save.WeaponId);
         TryEquipFromId(save.ArmorId);
-        TryEquipFromId(save.HelmetId);
-        TryEquipFromId(save.BootsId);
-        TryEquipFromId(save.RingId);
-        TryEquipFromId(save.AmuletId);
+        TryEquipFromIdToSlot(save.Relic1Id, EquipmentSlot.Relic1);
+        TryEquipFromIdToSlot(save.Relic2Id, EquipmentSlot.Relic2);
+        TryEquipFromIdToSlot(save.Relic3Id, EquipmentSlot.Relic3);
     }
 
     /// <summary>Exports equipment to save data.</summary>
@@ -94,10 +157,9 @@ public class HeroLoadout
             CharacterClass = CharacterClass,
             WeaponId = GetEquipped(EquipmentSlot.Weapon)?.Id,
             ArmorId = GetEquipped(EquipmentSlot.Armor)?.Id,
-            HelmetId = GetEquipped(EquipmentSlot.Helmet)?.Id,
-            BootsId = GetEquipped(EquipmentSlot.Boots)?.Id,
-            RingId = GetEquipped(EquipmentSlot.Ring)?.Id,
-            AmuletId = GetEquipped(EquipmentSlot.Amulet)?.Id,
+            Relic1Id = GetEquipped(EquipmentSlot.Relic1)?.Id,
+            Relic2Id = GetEquipped(EquipmentSlot.Relic2)?.Id,
+            Relic3Id = GetEquipped(EquipmentSlot.Relic3)?.Id,
         };
     }
 
@@ -106,6 +168,13 @@ public class HeroLoadout
         if (string.IsNullOrEmpty(itemId)) return;
         var def = ItemLibrary.Get(itemId);
         if (def != null) Equip(def);
+    }
+
+    private void TryEquipFromIdToSlot(string itemId, EquipmentSlot targetSlot)
+    {
+        if (string.IsNullOrEmpty(itemId)) return;
+        var def = ItemLibrary.Get(itemId);
+        if (def != null) EquippedSlots[targetSlot] = def;
     }
 }
 

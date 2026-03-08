@@ -144,19 +144,11 @@ public static class ItemLibrary
                     if (tier >= 2) item.SalvageComponents.Add(new SalvageComponent("mat_cloth", tier));
                     break;
 
-                case EquipmentSlot.Helmet:
-                    item.SalvageComponents.Add(new SalvageComponent("mat_iron_ore", 1 + tier));
-                    if (tier >= 1) item.SalvageComponents.Add(new SalvageComponent("mat_leather", 1));
-                    break;
-
-                case EquipmentSlot.Boots:
-                    item.SalvageComponents.Add(new SalvageComponent("mat_leather", 1 + tier));
-                    if (tier >= 2) item.SalvageComponents.Add(new SalvageComponent("mat_cloth", 1));
-                    break;
-
-                case EquipmentSlot.Ring:
-                case EquipmentSlot.Amulet:
+                case EquipmentSlot.Relic1:
+                case EquipmentSlot.Relic2:
+                case EquipmentSlot.Relic3:
                     item.SalvageComponents.Add(new SalvageComponent("mat_arcane_dust", 1 + tier));
+                    if (tier >= 1) item.SalvageComponents.Add(new SalvageComponent("mat_leather", 1));
                     if (tier >= 2) item.SalvageComponents.Add(new SalvageComponent("mat_undead_bone", 1));
                     break;
             }

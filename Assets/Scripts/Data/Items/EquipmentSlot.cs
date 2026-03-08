@@ -27,9 +27,30 @@ public enum EquipmentSlot
     None,
     Weapon,
     Armor,
-    Helmet,
-    Boots,
-    Ring,
-    Amulet
+    Relic1,
+    Relic2,
+    Relic3
+}
+
+/// <summary>Helper methods for EquipmentSlot.</summary>
+public static class EquipmentSlotHelper
+{
+    /// <summary>True if the slot is any of the three relic slots.</summary>
+    public static bool IsRelicSlot(EquipmentSlot slot)
+        => slot == EquipmentSlot.Relic1 || slot == EquipmentSlot.Relic2 || slot == EquipmentSlot.Relic3;
+
+    /// <summary>Display name for a slot.</summary>
+    public static string DisplayName(EquipmentSlot slot)
+    {
+        switch (slot)
+        {
+            case EquipmentSlot.Weapon: return "Weapon";
+            case EquipmentSlot.Armor: return "Armor";
+            case EquipmentSlot.Relic1: return "Relic 1";
+            case EquipmentSlot.Relic2: return "Relic 2";
+            case EquipmentSlot.Relic3: return "Relic 3";
+            default: return "None";
+        }
+    }
 }
 }

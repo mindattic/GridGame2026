@@ -156,7 +156,7 @@ namespace Scripts.Libraries
         };
 
         // ============== REACTIVE ABILITIES ==============
-        
+
         /// <summary>Counter attack.</summary>
         public static Ability CounterAttack() => new Ability
         {
@@ -167,5 +167,35 @@ namespace Scripts.Libraries
             ManaCost = 0,
             Description = "When attacked, automatically strikes back at the attacker."
         };
+
+        // ============== ITEM-BACKED ABILITIES ==============
+
+        /// <summary>
+        /// Creates an ability from a consumable item definition.
+        /// The ability, when activated, consumes the item and applies its effect.
+        /// </summary>
+        public static Ability FromConsumable(ItemDefinition item)
+        {
+            if (item == null || !item.IsConsumable) return null;
+
+            var targeting = item.BaseHealing > 0 ? AbilityType.TargetAlly : AbilityType.Self;
+            var sprite = SpriteLibrary.AbilityButtons.ContainsKey("Heal")
+                ? SpriteLibrary.AbilityButtons["Heal"]
+                : null;
+
+            return new Ability
+            {
+                name = item.DisplayName,
+                category = AbilityCategory.Active,
+                type = targeting,
+                button = sprite,
+                TotalNumberOfTargets = 1,
+                Effect = AbilityEffect.UseItem,
+                TargetingMode = AbilityTargetingMode.AnyActor,
+                ManaCost = 0,
+                Description = item.Description,
+                SourceItem = item,
+            };
+        }
     }
 }

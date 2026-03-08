@@ -120,9 +120,11 @@ public class PlayerInventory
         return entries.Values.Where(e => e.Definition.Type == type);
     }
 
-    /// <summary>Enumerates equipment entries filtered by slot.</summary>
+    /// <summary>Enumerates equipment entries filtered by slot. Relic slots return all relic-compatible items.</summary>
     public IEnumerable<Entry> BySlot(EquipmentSlot slot)
     {
+        if (EquipmentSlotHelper.IsRelicSlot(slot))
+            return entries.Values.Where(e => EquipmentSlotHelper.IsRelicSlot(e.Definition.Slot));
         return entries.Values.Where(e => e.Definition.Slot == slot);
     }
 

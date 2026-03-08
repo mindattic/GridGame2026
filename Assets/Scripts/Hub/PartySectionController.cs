@@ -360,14 +360,15 @@ public class PartySectionController : MonoBehaviour
                 lines.Add($"<color=#88CC88>Gear: {string.Join("  ", bonusParts)}</color>");
 
             // Equipment summary
-            foreach (var slot in new[] { EquipmentSlot.Weapon, EquipmentSlot.Armor, EquipmentSlot.Helmet,
-                                         EquipmentSlot.Boots, EquipmentSlot.Ring, EquipmentSlot.Amulet })
+            foreach (var slot in new[] { EquipmentSlot.Weapon, EquipmentSlot.Armor,
+                                         EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3 })
             {
                 var eq = loadout.GetEquipped(slot);
+                var slotName = EquipmentSlotHelper.DisplayName(slot);
                 if (eq != null)
-                    lines.Add($"  {slot}: <color=#{ColorUtility.ToHtmlStringRGB(HubItemRowFactory.RarityColor(eq.Rarity))}>{eq.DisplayName}</color>");
+                    lines.Add($"  {slotName}: <color=#{ColorUtility.ToHtmlStringRGB(HubItemRowFactory.RarityColor(eq.Rarity))}>{eq.DisplayName}</color>");
                 else
-                    lines.Add($"  {slot}: <color=#666666>(empty)</color>");
+                    lines.Add($"  {slotName}: <color=#666666>(empty)</color>");
             }
         }
 
