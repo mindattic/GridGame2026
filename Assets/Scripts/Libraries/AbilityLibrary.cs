@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Scripts.Helpers;
 using UnityEngine;
 using Scripts.Canvas;
@@ -47,6 +48,40 @@ namespace Scripts.Libraries
     /// </summary>
     public static class AbilityLibrary
     {
+        // ============== NAME LOOKUP ==============
+
+        private static Dictionary<string, System.Func<Ability>> registry;
+
+        /// <summary>Ensures the name→factory registry is populated.
+        /// Names must match the 'name' field in each factory method exactly.</summary>
+        private static void EnsureRegistry()
+        {
+            if (registry != null) return;
+            registry = new Dictionary<string, System.Func<Ability>>(System.StringComparer.OrdinalIgnoreCase)
+            {
+                // Active
+                { "Spark of Healing", Heal },
+                { "Shield Bash",      ShieldRush },
+                { "Trap",             Trap },
+                { "Smite",            Smite },
+                // Passive
+                { "Double Attack",    DoubleAttack },
+                { "Triple Attack",    TripleAttack },
+                { "Double Move",      DoubleMove },
+                { "Triple Move",      TripleMove },
+                // Reactive
+                { "Counter Attack",   CounterAttack },
+            };
+        }
+
+        /// <summary>Looks up an ability by name. Returns a new instance or null.</summary>
+        public static Ability Get(string abilityName)
+        {
+            if (string.IsNullOrEmpty(abilityName)) return null;
+            EnsureRegistry();
+            return registry.TryGetValue(abilityName, out var factory) ? factory() : null;
+        }
+
         // ============== ACTIVE ABILITIES ==============
         
         /// <summary>Heal.</summary>

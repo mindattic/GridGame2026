@@ -147,12 +147,38 @@ public class HeroLoadout
         TryEquipFromIdToSlot(save.Relic1Id, EquipmentSlot.Relic1);
         TryEquipFromIdToSlot(save.Relic2Id, EquipmentSlot.Relic2);
         TryEquipFromIdToSlot(save.Relic3Id, EquipmentSlot.Relic3);
+
+        // Load ability bar slots in save order
+        EquippedAbilities.Clear();
+        if (save.AbilityBarSlots != null)
+        {
+            foreach (var slot in save.AbilityBarSlots)
+            {
+                if (slot == null || slot.IsEmpty) continue;
+                Ability ability = null;
+                if (slot.IsItem)
+                {
+                    var item = ItemLibrary.Get(slot.ItemId);
+                    if (item != null)
+                        ability = AbilityLibrary.FromConsumable(item);
+                    else
+                        UnityEngine.Debug.LogWarning($"[HeroLoadout] Could not resolve item '{slot.ItemId}' for {CharacterClass} ability bar.");
+                }
+                else if (slot.IsAbility)
+                {
+                    ability = AbilityLibrary.Get(slot.AbilityName);
+                    if (ability == null)
+                        UnityEngine.Debug.LogWarning($"[HeroLoadout] Could not resolve ability '{slot.AbilityName}' for {CharacterClass} ability bar.");
+                }
+                if (ability != null) EquippedAbilities.Add(ability);
+            }
+        }
     }
 
     /// <summary>Exports equipment to save data.</summary>
     public HeroEquipmentSave ToSave()
     {
-        return new HeroEquipmentSave
+        var save = new HeroEquipmentSave
         {
             CharacterClass = CharacterClass,
             WeaponId = GetEquipped(EquipmentSlot.Weapon)?.Id,
@@ -161,6 +187,19 @@ public class HeroLoadout
             Relic2Id = GetEquipped(EquipmentSlot.Relic2)?.Id,
             Relic3Id = GetEquipped(EquipmentSlot.Relic3)?.Id,
         };
+
+        // Export ability bar slots in order
+        save.AbilityBarSlots = new List<AbilityBarSlotSave>();
+        foreach (var ability in EquippedAbilities)
+        {
+            if (ability == null) continue;
+            if (ability.IsItemAbility && ability.SourceItem != null)
+                save.AbilityBarSlots.Add(new AbilityBarSlotSave(null, ability.SourceItem.Id));
+            else
+                save.AbilityBarSlots.Add(new AbilityBarSlotSave(ability.name, null));
+        }
+
+        return save;
     }
 
     private void TryEquipFromId(string itemId)

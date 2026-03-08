@@ -1,5 +1,4 @@
 using Scripts.Helpers;
-using Scripts.Helpers;
 using Scripts.Factories;
 using Scripts.Libraries;
 using System.Collections.Generic;
@@ -33,36 +32,25 @@ namespace Scripts.Managers
 /// 
 /// PURPOSE:
 /// Creates and manages the ability buttons shown when a hero is selected.
-/// Handles button visibility, interaction, and ability activation.
+/// All buttons for every hero are pre-spawned at Start() and simply
+/// shown/hidden when the selected hero changes. No dynamic spawning,
+/// despawning, or re-binding at runtime.
 /// 
 /// BUTTON LIFECYCLE:
-/// 1. BuildAllHeroButtons() at Start - creates buttons for all heroes
-/// 2. Show(hero) - displays buttons for selected hero
-/// 3. Hide() - hides all buttons when deselected
+/// 1. Start() → BuildAllHeroButtons() creates buttons for ALL heroes, hidden
+/// 2. Show(hero) → activates that hero's buttons in save-file order
+/// 3. Hide() → deactivates all buttons
 /// 
-/// BUTTON ORGANIZATION:
-/// - Buttons stored by CharacterClass in buttonsByHero dictionary
-/// - Each hero has their own set of ability buttons
-/// - Capped at MaxAbilitySlots (5) per hero — skills + equipped consumables
-/// - Buttons created via AbilityButtonFactory
+/// ORDERING:
+/// Button order matches the AbilityBarSlots saved in HeroEquipmentSave
+/// (assigned by the player in the Hub scene). When no save data exists,
+/// falls back to class defaults (e.g. Cleric gets Heal + Smite).
 /// 
-/// UI LAYOUT:
-/// - Uses HorizontalLayoutGroup for left-aligned buttons
-/// - Buttons appear in ActorCard.AbilityButtonContainer
-/// - Spacing: 8 pixels between buttons
-/// 
-/// INTERACTION GUARDS:
-/// Buttons disabled when:
-/// - Enemy turn (InputMode.EnemyTurn)
-/// - Sequences executing (g.SequenceManager.IsExecuting)
-/// - Input disabled (InputMode.None)
-/// 
-/// BUTTON CLICK FLOW:
-/// 1. Player clicks ability button
-/// 2. AbilityManager.BeginTargeting() called
-/// 3. InputMode changes to targeting mode
-/// 4. Player selects targets
-/// 5. AbilityManager.Cast() executes ability
+/// INPUT LOCKING:
+/// When a button is clicked the InputMode changes to AnyTarget or
+/// LinearTarget. While in those modes the ability buttons become
+/// non-interactable so no other ability can be activated until
+/// targeting completes or is cancelled.
 /// 
 /// RELATED FILES:
 /// - AbilityButtonFactory.cs: Creates button GameObjects
@@ -70,6 +58,7 @@ namespace Scripts.Managers
 /// - AbilityManager.cs: Handles targeting/casting
 /// - ActorCard.cs: Contains AbilityButtonContainer
 /// - Ability.cs: Ability data definition
+/// - HeroEquipmentSave.AbilityBarSlots: Persisted bar layout
 /// 
 /// ACCESS: g.AbilityButtonManager
 /// </summary>
@@ -88,6 +77,9 @@ public class AbilityButtonManager : MonoBehaviour
 
     /// <summary>All ability buttons for quick iteration.</summary>
     private readonly List<AbilityButton> allButtons = new();
+
+    /// <summary>The CharacterClass whose buttons are currently visible (None if hidden).</summary>
+    private CharacterClass visibleHero = CharacterClass.None;
 
     #endregion
 
@@ -114,22 +106,92 @@ public class AbilityButtonManager : MonoBehaviour
         }
     }
 
-    /// <summary>Performs initial setup after all Awake calls complete.</summary>
+    /// <summary>Defers initialization until GameReady so all heroes are spawned.</summary>
     private void Start()
+    {
+        GameReady.WhenReady(this, Initialize);
+    }
+
+    /// <summary>Builds all hero buttons and subscribes to events.
+    /// Called via GameReady.WhenReady so g.Actors.Heroes is fully populated.</summary>
+    private void Initialize()
     {
         BuildAllHeroButtons();
         HideAll();
+
+        // Subscribe to input mode changes to lock/unlock buttons during targeting
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged += OnInputModeChanged;
+
+        // If a hero is already selected (e.g. auto-selected at turn start), show their buttons
+        var selected = g.Actors.SelectedActor;
+        if (selected != null && selected.IsHero && selected.IsPlaying)
+            Show(selected);
+    }
+
+    private void OnDestroy()
+    {
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged -= OnInputModeChanged;
     }
 
     #endregion
 
     #region Interaction Guards
 
-    /// <summary>Returns true if ability interactions should be blocked.</summary>
+    /// <summary>Returns true if ability button clicks should be blocked.
+    /// Only allows interaction during PlayerTurn with no sequences executing.</summary>
     private static bool IsInteractionLocked()
     {
-        return g.InputManager == null || g.SequenceManager == null ||
-               g.InputManager.InputMode == InputMode.EnemyTurn || g.SequenceManager.IsExecuting || g.InputManager.InputMode == InputMode.None;
+        if (g.InputManager == null || g.SequenceManager == null) return true;
+        if (g.SequenceManager.IsExecuting) return true;
+        return g.InputManager.InputMode != InputMode.PlayerTurn;
+    }
+
+    /// <summary>Handles input mode changes. Only PlayerTurn enables ability buttons;
+    /// all other modes (targeting, enemy turn, sequences, etc.) disable them.</summary>
+    private void OnInputModeChanged(InputMode newMode)
+    {
+        if (newMode == InputMode.PlayerTurn)
+        {
+            // Verify the visible hero is still valid (may have died during enemy turn)
+            if (visibleHero != CharacterClass.None)
+            {
+                var selected = g.Actors.SelectedActor;
+                if (selected == null || !selected.IsPlaying || !selected.IsHero || selected.characterClass != visibleHero)
+                {
+                    HideAll();
+                    return;
+                }
+            }
+
+            // Re-enable buttons for visible hero
+            RefreshVisibleInteractables();
+        }
+        else
+        {
+            // Any non-PlayerTurn mode → disable all ability buttons
+            SetAllButtonsInteractable(false);
+        }
+    }
+
+    /// <summary>Sets all ability buttons interactable or non-interactable.</summary>
+    private void SetAllButtonsInteractable(bool interactable)
+    {
+        foreach (var btn in allButtons)
+            if (btn != null && btn.button != null)
+                btn.button.interactable = interactable;
+    }
+
+    /// <summary>Re-evaluates interactable state for the visible hero's buttons based on current mana.</summary>
+    private void RefreshVisibleInteractables()
+    {
+        if (visibleHero == CharacterClass.None) return;
+        if (!buttonsByHero.TryGetValue(visibleHero, out var list)) return;
+        float mana = g.ManaPoolManager != null ? g.ManaPoolManager.heroMana : 0f;
+        foreach (var btn in list)
+            if (btn != null && btn.gameObject.activeSelf)
+                btn.UpdateInteractable(mana);
     }
 
     #endregion
@@ -154,32 +216,47 @@ public class AbilityButtonManager : MonoBehaviour
         }
     }
 
-    /// <summary>Gets the abilities for a hero from their loadout, falling back to class defaults.</summary>
+    /// <summary>Gets the abilities for a hero. Priority order:
+    /// 1. Save-file loadout (AbilityBarSlots assigned in Hub)
+    /// 2. ActorData.Abilities (data-driven defaults)
+    /// 3. Hardcoded class fallbacks (last resort)
+    /// </summary>
     private List<Ability> GetAbilitiesFor(CharacterClass characterClass)
     {
-        // Try to get abilities from the hero's loadout first
+        // 1. Save-file loadout (player-assigned in Hub scene)
         var loadout = GetLoadoutFor(characterClass);
         if (loadout != null && loadout.EquippedAbilities.Count > 0)
-        {
             return loadout.GetActiveAbilities();
+
+        // 2. ActorData.Abilities (data-driven defaults defined in Data/Actor/*.cs)
+        var actorData = ActorLibrary.Get(characterClass);
+        if (actorData?.Abilities != null && actorData.Abilities.Count > 0)
+        {
+            var dataAbilities = new List<Ability>();
+            foreach (var a in actorData.Abilities)
+                if (a != null && a.IsActive) dataAbilities.Add(a);
+            if (dataAbilities.Count > 0) return dataAbilities;
         }
 
-        // Fallback: class-based defaults (used when no loadout is configured)
-        var list = new List<Ability>();
-        if (characterClass == CharacterClass.Cleric)
+        // 3. Hardcoded class fallbacks (last resort, used until Hub assigns abilities)
+        return GetClassDefaults(characterClass);
+    }
+
+    /// <summary>Hardcoded default abilities per class. Used only when no save data
+    /// and no ActorData.Abilities exist. Add new hero defaults here.</summary>
+    private static List<Ability> GetClassDefaults(CharacterClass characterClass)
+    {
+        switch (characterClass)
         {
-            list.Add(AbilityLibrary.Heal());
-            list.Add(AbilityLibrary.Smite());
+            case CharacterClass.Cleric:
+                return new List<Ability> { AbilityLibrary.Heal(), AbilityLibrary.Smite() };
+            case CharacterClass.Paladin:
+                return new List<Ability> { AbilityLibrary.ShieldRush() };
+            case CharacterClass.Barbarian:
+                return new List<Ability> { AbilityLibrary.Trap() };
+            default:
+                return new List<Ability>();
         }
-        else if (characterClass == CharacterClass.Paladin)
-        {
-            list.Add(AbilityLibrary.ShieldRush());
-        }
-        else if (characterClass == CharacterClass.Barbarian)
-        {
-            list.Add(AbilityLibrary.Trap());
-        }
-        return list;
     }
 
     /// <summary>Gets the hero loadout from the hub or profile.</summary>
@@ -228,45 +305,58 @@ public class AbilityButtonManager : MonoBehaviour
         buttonsByHero[characterClass] = list;
     }
 
-    /// <summary>Shows this component.</summary>
+    #endregion
+
+    #region Show/Hide
+
+    /// <summary>Shows the ability buttons for the given hero. Buttons were pre-spawned at Start.</summary>
     public void Show(ActorInstance actor)
     {
         HideAll();
         if (actor == null || !actor.IsPlaying || actor.IsEnemy) return;
 
-        var name = actor.characterClass;
-        if (!buttonsByHero.TryGetValue(name, out var list))
-        {
-            // If a new hero enters mid-stage, build on demand
-            var abilities = GetAbilitiesFor(name);
-            CreateButtonsForHero(name, abilities);
-            buttonsByHero.TryGetValue(name, out list);
-        }
+        visibleHero = actor.characterClass;
+        if (!buttonsByHero.TryGetValue(visibleHero, out var list) || list == null) return;
 
-        if (list == null) return;
-        foreach (var btn in list) if (btn != null) { btn.gameObject.SetActive(true); btn.UpdateInteractable(g.ManaPoolManager != null ? g.ManaPoolManager.heroMana : 0f); }
+        // Activate button GameObjects
+        foreach (var btn in list)
+            if (btn != null) btn.gameObject.SetActive(true);
+
+        // Set interactable state based on current input mode
+        if (g.InputManager != null && g.InputManager.InputMode == InputMode.PlayerTurn)
+            RefreshVisibleInteractables();
+        else
+            SetAllButtonsInteractable(false);
     }
 
-    /// <summary>Hides this component.</summary>
+    /// <summary>Hides all ability buttons.</summary>
     public void Hide()
     {
         HideAll();
     }
 
-    /// <summary>Hide alls this component.</summary>
     private void HideAll()
     {
-        foreach (var btn in allButtons) if (btn != null) btn.gameObject.SetActive(false);
+        visibleHero = CharacterClass.None;
+        foreach (var btn in allButtons)
+            if (btn != null) btn.gameObject.SetActive(false);
     }
 
-    // Update interactable state for all known buttons based on current hero mana
-    /// <summary>Updates the all interactables.</summary>
+    /// <summary>Updates interactable state for all visible buttons based on current hero mana.
+    /// No-op if not in PlayerTurn mode (buttons stay locked during targeting/enemy turns).</summary>
     public void UpdateAllInteractables(float currentMana)
     {
-        foreach (var btn in allButtons) if (btn != null) btn.UpdateInteractable(currentMana);
+        if (g.InputManager == null || g.InputManager.InputMode != InputMode.PlayerTurn) return;
+        foreach (var btn in allButtons)
+            if (btn != null && btn.gameObject.activeSelf)
+                btn.UpdateInteractable(currentMana);
     }
 
-    /// <summary>Handles the ability button clicked event.</summary>
+    #endregion
+
+    #region Button Click
+
+    /// <summary>Handles an ability button click. Locks input and begins targeting.</summary>
     private void OnAbilityButtonClicked(ActorInstance actor, Ability ability)
     {
         if (IsInteractionLocked()) return;
@@ -276,8 +366,6 @@ public class AbilityButtonManager : MonoBehaviour
         var desc = GameObjectHelper.Game.Card.Details.GetComponent<TextMeshProUGUI>();
         if (title != null) title.text = ability.name;
         if (desc != null) desc.text = ability.Description ?? string.Empty;
-
-        // Do not set title yet for abilities that require a target; AbilityManager will set title when a target is selected
 
         if (ability.TargetingMode == AbilityTargetingMode.Linear)
         {
@@ -294,19 +382,15 @@ public class AbilityButtonManager : MonoBehaviour
         }
         else
         {
-            // Ensure enough mana before activating
+            // Instant-cast: ensure enough mana before activating
             if (g.ManaPoolManager == null || g.ManaPoolManager.Spend(Team.Hero, ability.ManaCost))
             {
                 ability.Activate(actor, null);
             }
-            else
-            {
-                // Optionally: show feedback for insufficient mana
-            }
         }
-
-        #endregion
     }
+
+    #endregion
 }
 
 }

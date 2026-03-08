@@ -223,6 +223,13 @@ public class OverworldManager : MonoBehaviour
 
         // Wire Enter Hub button — hidden until hero approaches caravan
         enterHubButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.EnterHubButton)?.GetComponent<Button>();
+        if (enterHubButton == null)
+        {
+            // Button not found in scene — create it programmatically under Canvas
+            var canvas = GameObject.Find(GameObjectHelper.Overworld.Canvas.Root)?.transform;
+            if (canvas != null)
+                enterHubButton = EnterHubButtonFactory.Create(canvas);
+        }
         if (enterHubButton != null)
         {
             enterHubButton.onClick.AddListener(EnterHub);

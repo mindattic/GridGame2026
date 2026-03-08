@@ -350,7 +350,7 @@ namespace Scripts.Models
         }
     }
 
-    /// <summary>Equipment assignments for a single hero.</summary>
+    /// <summary>Equipment assignments and ability bar layout for a single hero.</summary>
     [Serializable]
     public class HeroEquipmentSave
     {
@@ -361,6 +361,10 @@ namespace Scripts.Models
         public string Relic2Id;
         public string Relic3Id;
 
+        /// <summary>Ordered ability bar slots assigned in the Hub. Each entry is either
+        /// an ability name or a consumable item ID. Null/empty entries are empty slots.</summary>
+        public List<AbilityBarSlotSave> AbilityBarSlots = new List<AbilityBarSlotSave>();
+
         public HeroEquipmentSave() { }
         public HeroEquipmentSave(HeroEquipmentSave other)
         {
@@ -370,6 +374,12 @@ namespace Scripts.Models
             Relic1Id = other.Relic1Id;
             Relic2Id = other.Relic2Id;
             Relic3Id = other.Relic3Id;
+            AbilityBarSlots = new List<AbilityBarSlotSave>();
+            if (other.AbilityBarSlots != null)
+            {
+                foreach (var s in other.AbilityBarSlots)
+                    AbilityBarSlots.Add(new AbilityBarSlotSave(s));
+            }
         }
 
         /// <summary>Gets the item ID equipped in the given slot.</summary>
@@ -397,6 +407,33 @@ namespace Scripts.Models
                 case Scripts.Data.Items.EquipmentSlot.Relic2: Relic2Id = itemId; break;
                 case Scripts.Data.Items.EquipmentSlot.Relic3: Relic3Id = itemId; break;
             }
+        }
+    }
+
+    /// <summary>A single slot in a hero's ability bar. Stores either an ability name
+    /// (for class skills) or a consumable item ID (for item-backed abilities).</summary>
+    [Serializable]
+    public class AbilityBarSlotSave
+    {
+        /// <summary>Ability name (e.g. "Spark of Healing"). Null for item-backed slots.</summary>
+        public string AbilityName;
+        /// <summary>Consumable item ID (e.g. "healing_potion"). Null for skill slots.</summary>
+        public string ItemId;
+
+        public bool IsItem => !string.IsNullOrEmpty(ItemId);
+        public bool IsAbility => !string.IsNullOrEmpty(AbilityName);
+        public bool IsEmpty => string.IsNullOrEmpty(AbilityName) && string.IsNullOrEmpty(ItemId);
+
+        public AbilityBarSlotSave() { }
+        public AbilityBarSlotSave(AbilityBarSlotSave other)
+        {
+            AbilityName = other.AbilityName;
+            ItemId = other.ItemId;
+        }
+        public AbilityBarSlotSave(string abilityName, string itemId)
+        {
+            AbilityName = abilityName;
+            ItemId = itemId;
         }
     }
 

@@ -113,7 +113,6 @@ public class HubManager : MonoBehaviour
         AttachTiltParallax();
         InitializeSections();
         WireButtonListeners();
-        ApplyDayNightTint();
 
         // Ensure a clean start state: disable all panels then show Party.
         GoToPartySection();
@@ -209,6 +208,7 @@ public class HubManager : MonoBehaviour
             t.amplitude = 12f;
             t.smoothing = 6f;
             t.deadzone = 0.015f;
+            t.writeToOutput = false;
         }
         Ensure(partyPanel);
         Ensure(shopPanel);
@@ -248,8 +248,10 @@ public class HubManager : MonoBehaviour
         var canvas = GameObject.Find("Canvas");
         if (canvas == null) return;
 
-        // Create overlay GameObject as last sibling so it renders on top
+        // Create overlay GameObject — start inactive so Awake/OnEnable
+        // don't fire until configuration is complete.
         var go = new GameObject("DayNightCycle");
+        go.SetActive(false);
         go.layer = LayerMask.NameToLayer("UI");
         go.transform.SetParent(canvas.transform, false);
         go.transform.SetAsLastSibling();
@@ -265,14 +267,16 @@ public class HubManager : MonoBehaviour
         var img = go.AddComponent<Image>();
         img.raycastTarget = false;
 
-        // Configure cycle: overlay-only mode, frozen (not playing)
+        // Configure cycle: overlay-only mode, frozen (not playing).
+        // Because the GO is inactive, AddComponent won't trigger Awake/OnEnable
+        // so these values are in place before the first lifecycle callbacks.
         var dnc = go.AddComponent<DayNightCycle>();
         dnc.overlayImage = img;
         dnc.applyMode = DayNightCycle.ApplyMode.OverlayImage;
         dnc.playOnEnable = false;
 
         // Determine the T01 to use: prefer static snapshot, fall back to save data
-        float t01 = 0f;
+        float t01 = -1f;
         if (DayNightState.HasSnapshot)
         {
             t01 = DayNightState.T01;
@@ -283,7 +287,14 @@ public class HubManager : MonoBehaviour
             if (ow != null) t01 = ow.DayNightT01;
         }
 
-        // Jump to the saved position and immediately freeze
+        // Activate — Awake and OnEnable now run with correct configuration
+        go.SetActive(true);
+
+        // Default to midday (minimal tint) when no saved time exists
+        if (t01 < 0f)
+            t01 = dnc.GetPhaseMidpointT01(DayNightCycle.DayPhase.Day);
+
+        // Jump to the saved position (frozen because playOnEnable is false)
         dnc.CycleTime01 = t01;
     }
 

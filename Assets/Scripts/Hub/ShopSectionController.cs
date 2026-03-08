@@ -28,28 +28,52 @@ namespace Scripts.Hub
 {
 /// <summary>
 /// SHOPSECTIONCONTROLLER - Hub shop/store section.
-/// 
+///
 /// PURPOSE:
 /// Manages Buy and Sell operations for consumables, crafting
 /// materials, and vendor equipment in the Hub shop screen.
 /// Uses HubManager.SharedInventory for all transactions.
-/// 
+///
+/// NAVIGATION:
+/// ```
+/// ┌─────────────────────────────┐
+/// │  General Store              │
+/// │  Gold: 500                  │
+/// ├─────────────────────────────┤
+/// │  ► Buy                      │  ← Menu (default landing)
+/// │  ► Sell                     │
+/// └─────────────────────────────┘
+///
+/// Click "Buy" →
+/// ┌─────────────────────────────┐
+/// │  Buy Items                  │
+/// │  Gold: 500                  │
+/// ├─────────────────────────────┤
+/// │  ← Back                    │
+/// │  Health Potion — 50g       │
+/// │  Mana Potion — 30g         │
+/// │  Rusty Sword — 100g        │
+/// └─────────────────────────────┘
+/// ```
+///
 /// SHOP MODES:
-/// - Buy: Purchase items from catalog (consumables + materials)
-/// - Sell: Sell inventory items for gold (uses ComputedSellValue)
-/// 
+/// - Menu: Initial landing with Buy/Sell navigation rows
+/// - Buy: Purchase items from catalog (consumables + materials + equipment)
+/// - Sell: Sell inventory items for gold (always 50% of buy price)
+///
 /// RELATED FILES:
 /// - HubManager.cs: Hub scene controller, owns SharedInventory
 /// - PlayerInventory.cs: Item storage
-/// - ItemDefinition.cs: Item data
+/// - ItemDefinition.cs: Item data (ComputedSellValue = BaseCost/2)
 /// - ItemLibrary.cs: Item catalog
+/// - HubItemRowFactory.cs: Row UI creation
 /// </summary>
 public class ShopSectionController : MonoBehaviour
 {
     private HubManager hub;
 
-    public enum ShopMode { Buy, Sell }
-    public ShopMode mode = ShopMode.Buy;
+    private enum ShopMode { Menu, Buy, Sell }
+    private ShopMode mode = ShopMode.Menu;
 
     private List<ItemDefinition> buyCatalog = new List<ItemDefinition>();
 
@@ -57,8 +81,6 @@ public class ShopSectionController : MonoBehaviour
     private RectTransform itemListContainer;
     private TextMeshProUGUI goldLabel;
     private TextMeshProUGUI detailLabel;
-    private Button buyTabButton;
-    private Button sellTabButton;
 
     /// <summary>Gets the shared inventory from HubManager.</summary>
     private PlayerInventory Inventory => hub?.SharedInventory;
@@ -72,31 +94,26 @@ public class ShopSectionController : MonoBehaviour
         HubVendorFactory.Build(GetComponent<RectTransform>(), HubVendorFactory.ShopTheme);
     }
 
-    /// <summary>Called when activated.</summary>
+    /// <summary>Called when activated — always resets to the main menu.</summary>
     public void OnActivated()
     {
+        mode = ShopMode.Menu;
         RefreshList();
         RefreshGoldDisplay();
     }
 
-    /// <summary>Resolves UI references from scene hierarchy.</summary>
+    /// <summary>Resolves UI references from scene hierarchy, creating missing children at runtime.</summary>
     private void ResolveUI()
     {
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Center — scrollable list of buyable/sellable item rows
-        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Center — scrollable list used for menu, buy list, and sell list
+        itemListContainer = EnsureContainer(rt, GameObjectHelper.Hub.ItemList);
         // Top-right — current gold display
-        goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
-        // Top-center — shows "Buy Items" or "Sell Items" heading
-        detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
-        // Top tab bar — mode toggles
-        buyTabButton = rt.Find(GameObjectHelper.Hub.BuyTab)?.GetComponent<Button>();
-        sellTabButton = rt.Find(GameObjectHelper.Hub.SellTab)?.GetComponent<Button>();
-
-        if (buyTabButton != null) buyTabButton.onClick.AddListener(() => SetMode(ShopMode.Buy));
-        if (sellTabButton != null) sellTabButton.onClick.AddListener(() => SetMode(ShopMode.Sell));
+        goldLabel = EnsureLabel(rt, GameObjectHelper.Hub.GoldLabel);
+        // Top-center — heading text (changes per mode)
+        detailLabel = EnsureLabel(rt, GameObjectHelper.Hub.DetailLabel);
     }
 
     /// <summary>Loads shop catalog from item libraries.</summary>
@@ -120,12 +137,15 @@ public class ShopSectionController : MonoBehaviour
         buyCatalog.Add(ItemData_Equipment.LeatherArmor);
     }
 
-    /// <summary>Sets the shop mode and refreshes the list.</summary>
-    public void SetMode(ShopMode newMode)
+    /// <summary>Changes mode and refreshes the list.</summary>
+    private void SetMode(ShopMode newMode)
     {
         mode = newMode;
         RefreshList();
+        RefreshGoldDisplay();
     }
+
+    // ===================== List Rendering =====================
 
     /// <summary>Refreshes the item list UI for current mode.</summary>
     private void RefreshList()
@@ -133,53 +153,114 @@ public class ShopSectionController : MonoBehaviour
         if (itemListContainer == null) return;
         ClearChildren(itemListContainer);
 
-        if (mode == ShopMode.Buy)
+        switch (mode)
         {
-            foreach (var item in buyCatalog)
-            {
-                bool canAfford = Inventory != null && Inventory.Gold >= item.BaseCost;
-                int owned = Inventory?.CountOf(item.Id) ?? 0;
-
-                var go = HubItemRowFactory.Create(itemListContainer);
-                HubItemRowFactory.SetIcon(go, item);
-                HubItemRowFactory.SetLabel(go, $"{item.DisplayName} — {item.BaseCost}g");
-                HubItemRowFactory.SetLabelColor(go, HubItemRowFactory.RarityColor(item.Rarity));
-
-                string sub = item.Description ?? "";
-                if (owned > 0) sub += $"  (owned: {owned})";
-                HubItemRowFactory.SetSubLabel(go, sub);
-
-                var btn = go.GetComponent<Button>();
-                if (btn != null)
-                {
-                    btn.interactable = canAfford;
-                    var captured = item;
-                    btn.onClick.AddListener(() => { Buy(captured); RefreshList(); RefreshGoldDisplay(); });
-                }
-            }
+            case ShopMode.Menu: ShowMenu(); break;
+            case ShopMode.Buy:  ShowBuyList(); break;
+            case ShopMode.Sell: ShowSellList(); break;
         }
-        else
-        {
-            if (Inventory == null) return;
-            foreach (var entry in Inventory.All())
-            {
-                var item = entry.Definition;
-                var go = HubItemRowFactory.Create(itemListContainer);
-
-                HubItemRowFactory.SetIcon(go, item);
-                HubItemRowFactory.SetLabel(go, $"{item.DisplayName} x{entry.Count}");
-                HubItemRowFactory.SetLabelColor(go, HubItemRowFactory.RarityColor(item.Rarity));
-                HubItemRowFactory.SetSubLabel(go, $"Sell for {item.ComputedSellValue}g each — {item.Description ?? ""}");
-
-                var btn = go.GetComponent<Button>();
-                var captured = item;
-                if (btn != null) btn.onClick.AddListener(() => { Sell(captured); RefreshList(); RefreshGoldDisplay(); });
-            }
-        }
-
-        if (detailLabel != null)
-            detailLabel.text = mode == ShopMode.Buy ? "Buy Items" : "Sell Items";
     }
+
+    /// <summary>Shows the main shop menu (Buy / Sell navigation).</summary>
+    private void ShowMenu()
+    {
+        if (detailLabel != null) detailLabel.text = "General Store";
+
+        // Buy row
+        var buyRow = HubItemRowFactory.Create(itemListContainer);
+        HubItemRowFactory.SetLabel(buyRow, "► Buy");
+        HubItemRowFactory.SetSubLabel(buyRow, "Browse items for sale");
+        var buyBtn = buyRow.GetComponent<Button>();
+        if (buyBtn != null) buyBtn.onClick.AddListener(() => SetMode(ShopMode.Buy));
+
+        // Sell row
+        var sellRow = HubItemRowFactory.Create(itemListContainer);
+        HubItemRowFactory.SetLabel(sellRow, "► Sell");
+        HubItemRowFactory.SetSubLabel(sellRow, "Sell items from your inventory");
+        var sellBtn = sellRow.GetComponent<Button>();
+        if (sellBtn != null) sellBtn.onClick.AddListener(() => SetMode(ShopMode.Sell));
+    }
+
+    /// <summary>Shows the buy catalog list.</summary>
+    private void ShowBuyList()
+    {
+        if (detailLabel != null) detailLabel.text = "Buy Items";
+
+        // Back row
+        var backRow = HubItemRowFactory.Create(itemListContainer);
+        HubItemRowFactory.SetLabel(backRow, "← Back");
+        var backBtn = backRow.GetComponent<Button>();
+        if (backBtn != null) backBtn.onClick.AddListener(() => SetMode(ShopMode.Menu));
+
+        // Catalog items
+        foreach (var item in buyCatalog)
+        {
+            bool canAfford = Inventory != null && Inventory.Gold >= item.BaseCost;
+            int owned = Inventory?.CountOf(item.Id) ?? 0;
+
+            var go = HubItemRowFactory.Create(itemListContainer);
+            HubItemRowFactory.SetIcon(go, item);
+            HubItemRowFactory.SetLabel(go, $"{item.DisplayName} — {item.BaseCost}g");
+            HubItemRowFactory.SetLabelColor(go, HubItemRowFactory.RarityColor(item.Rarity));
+
+            string sub = item.Description ?? "";
+            if (owned > 0) sub += $"  (owned: {owned})";
+            HubItemRowFactory.SetSubLabel(go, sub);
+
+            var btn = go.GetComponent<Button>();
+            if (btn != null)
+            {
+                btn.interactable = canAfford;
+                var captured = item;
+                btn.onClick.AddListener(() => { Buy(captured); RefreshList(); RefreshGoldDisplay(); });
+            }
+        }
+    }
+
+    /// <summary>Shows the sell list from player inventory.</summary>
+    private void ShowSellList()
+    {
+        if (detailLabel != null) detailLabel.text = "Sell Items";
+
+        // Back row
+        var backRow = HubItemRowFactory.Create(itemListContainer);
+        HubItemRowFactory.SetLabel(backRow, "← Back");
+        var backBtn = backRow.GetComponent<Button>();
+        if (backBtn != null) backBtn.onClick.AddListener(() => SetMode(ShopMode.Menu));
+
+        // Inventory items
+        if (Inventory == null) return;
+        var items = Inventory.All();
+        if (!items.Any())
+        {
+            var emptyRow = HubItemRowFactory.Create(itemListContainer);
+            HubItemRowFactory.SetLabel(emptyRow, "No items to sell");
+            var emptyBtn = emptyRow.GetComponent<Button>();
+            if (emptyBtn != null) emptyBtn.interactable = false;
+            return;
+        }
+
+        foreach (var entry in items)
+        {
+            var item = entry.Definition;
+            int sellPrice = item.ComputedSellValue;
+
+            var go = HubItemRowFactory.Create(itemListContainer);
+            HubItemRowFactory.SetIcon(go, item);
+            HubItemRowFactory.SetLabel(go, $"{item.DisplayName} x{entry.Count}");
+            HubItemRowFactory.SetLabelColor(go, HubItemRowFactory.RarityColor(item.Rarity));
+            HubItemRowFactory.SetSubLabel(go, $"Sell for {sellPrice}g each");
+
+            var btn = go.GetComponent<Button>();
+            if (btn != null)
+            {
+                var captured = item;
+                btn.onClick.AddListener(() => { Sell(captured); RefreshList(); RefreshGoldDisplay(); });
+            }
+        }
+    }
+
+    // ===================== Transactions =====================
 
     /// <summary>Refreshes gold display.</summary>
     private void RefreshGoldDisplay()
@@ -198,7 +279,7 @@ public class ShopSectionController : MonoBehaviour
         return true;
     }
 
-    /// <summary>Attempts to sell an item using ComputedSellValue.</summary>
+    /// <summary>Attempts to sell an item (sell price is always 50% of buy price).</summary>
     public bool Sell(ItemDefinition item)
     {
         if (item == null || Inventory == null) return false;
@@ -208,11 +289,70 @@ public class ShopSectionController : MonoBehaviour
         return true;
     }
 
+    // ===================== Helpers =====================
+
     /// <summary>Clears all child GameObjects of a container.</summary>
     private void ClearChildren(RectTransform container)
     {
         for (int i = container.childCount - 1; i >= 0; i--)
             Destroy(container.GetChild(i).gameObject);
+    }
+
+    // ── Runtime UI scaffolding ──
+
+    /// <summary>Ensures a named scrollable container child exists on the parent.</summary>
+    private static RectTransform EnsureContainer(RectTransform parent, string childName)
+    {
+        var found = parent.Find(childName);
+        if (found != null) return found.GetComponent<RectTransform>();
+
+        var go = new GameObject(childName);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        var vlg = go.AddComponent<VerticalLayoutGroup>();
+        vlg.childAlignment = TextAnchor.UpperLeft;
+        vlg.childControlWidth = true;
+        vlg.childControlHeight = false;
+        vlg.childForceExpandWidth = true;
+        vlg.childForceExpandHeight = false;
+        vlg.spacing = 4f;
+
+        var csf = go.AddComponent<ContentSizeFitter>();
+        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        return rt;
+    }
+
+    /// <summary>Ensures a named TMP label child exists on the parent.</summary>
+    private static TextMeshProUGUI EnsureLabel(RectTransform parent, string childName)
+    {
+        var found = parent.Find(childName);
+        if (found != null) return found.GetComponent<TextMeshProUGUI>();
+
+        var go = new GameObject(childName);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        go.AddComponent<CanvasRenderer>();
+        var tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.text = "";
+        tmp.fontSize = 24;
+        tmp.color = Color.white;
+        tmp.alignment = TextAlignmentOptions.TopLeft;
+        tmp.enableWordWrapping = true;
+        tmp.raycastTarget = false;
+        return tmp;
     }
 }
 

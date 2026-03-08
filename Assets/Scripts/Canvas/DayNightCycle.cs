@@ -160,8 +160,7 @@ namespace Scripts.Canvas
                 float total = Mathf.Max(0.01f, cycleSeconds);
                 _startTime = TimeNow() - (t * total);
                 _pausedT01 = t;
-                if (_isPlaying)
-                    ApplyColor(EvaluateColor(t));
+                ApplyColor(EvaluateColor(t));
             }
         }
 
@@ -184,7 +183,11 @@ namespace Scripts.Canvas
             }
 
             if (playOnEnable) StartCycle();
-            else ApplyColor(EvaluateColor(CurrentTime01()));
+            else
+            {
+                RandomizePhaseKeys();
+                ApplyColor(EvaluateColor(CurrentTime01()));
+            }
         }
 
         /// <summary>Stops the cycle and restores original sprite colors.</summary>
