@@ -11,6 +11,16 @@
 - Hub (town): Party, Shop, Blacksmith, Medical, Residence, Training, Equip, Inventory, BattlePrep
 - Overworld: Top-down exploration with encounter transitions
 
+### Scene Scaffold System
+- Every scene (except Game and Overworld) is **fully reproducible from code** via `Assets/Editor/Scaffolds/`
+- Menu: **Tools › Scenes › {SceneName} › Create Scaffolding / Clear Scene / Clear & Recreate**
+- All menu items auto-switch to the correct `.unity` scene before operating
+- `SceneScaffoldHelper.cs` provides shared `Ensure*()` methods — idempotent, Undo-registered
+- To add new UI objects: edit the scaffold `.cs`, run Create Scaffolding, save scene
+- Authoritative hierarchy data: `Documentation/Scaffolds/SceneHierarchies.txt`
+- Full documentation: `Documentation/Scaffolds/README.md`
+- Parser tool: `Tools/ParseScene.ps1` regenerates hierarchy data from `.unity` files
+
 ## Code Style
 
 ### Documentation

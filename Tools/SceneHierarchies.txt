@@ -1,0 +1,452 @@
+
+=== SplashScreen.unity ===
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + CameraManager + UniversalAdditionalCameraData + UniversalAdditionalCameraData
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Camera, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-700,-1632)} :: CanvasRenderer + Image + FadeOverlayInstance
+  Full [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.5,0.5)} :: CanvasRenderer + RawImage
+  CanvasParticleEmitter [L=5] {a=(0.5,0.5...0.5,0.5) sz=(100,100) pos=(-500,0)} :: CanvasRenderer + Image + CanvasParticleEmitter
+  Window [L=5] {a=(0.5,0.5...0.5,0.5) sz=(108.5,172.29) pos=(135,-431.4) pv=(1,0.5)} :: CanvasRenderer + Image + SwingingWindow
+EventSystem :: EventSystem + StandaloneInputModule
+SplashScreenManager :: SplashScreenManager
+
+=== TitleScreen.unity ===
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.5,0.5)} :: CanvasRenderer + Image + FadeOverlayInstance
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+  Panel {a=(0,0.5...1,0.5) sz=(0,600)} :: MonoBehaviour(59f81469)
+    ContinueButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+    PartyManagerButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+    CreditsButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+    Backdrop [OFF] {a=(0.5,0.5...0.5,0.5) sz=(600,600)} :: CanvasRenderer + Image
+    SettingsButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+    LoadGameButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+    EndlessModeButton {a=(0,0...0,0) sz=(512,128)} :: CanvasRenderer + Image + Button
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+  ProfileButton {a=(0.5,0...0.5,0) sz=(64,64) pos=(0,110)} :: CanvasRenderer + Image + Button
+    Label {a=(0.5,1...0.5,1) sz=(64,0) pos=(0,-100)} :: CanvasRenderer + TextMeshProUGUI
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + CameraManager + UniversalAdditionalCameraData + UniversalAdditionalCameraData
+EventSystem :: EventSystem + StandaloneInputModule
+TitleScreenManager :: TitleScreenManager
+
+=== ProfileSelect.unity ===
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+ProfileSelectManager :: ProfileSelectManager
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.5,0.5)} :: CanvasRenderer + Image + FadeOverlayInstance
+  ScrollView [L=5] {a=(0,0...1,1) sz=(0,-512)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Scrollbar Vertical [L=5] {a=(1,0...1,1) sz=(20,-17) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Scrollbar Horizontal [L=5] {a=(0,0...1,0) sz=(-17,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Viewport [L=5] {a=(0,0...1,1) sz=(-17,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pv=(0,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-128)} :: CanvasRenderer + TextMeshProUGUI
+  BackButton [L=5] {a=(0,1...0,1) sz=(200,64) pos=(120,-200)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5) sz=(64,64)} :: CanvasRenderer + TextMeshProUGUI
+EventSystem :: EventSystem + StandaloneInputModule
+
+=== ProfileCreate.unity ===
+EventSystem :: EventSystem + StandaloneInputModule
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener
+ProfileCreateManager :: ProfileCreateManager
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  CutoutOverlay [L=5] {a=(0,0...1,1) sz=(-90,-194.76904) pos=(0.00012207031,0)} :: CutoutOverlay
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+  BackButton [L=5] [OFF] {a=(0.5,0.5...0.5,0.5) sz=(48,48) pos=(-435,1220)} :: CanvasRenderer + Image + Button
+    Text (TMP) [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-371,-801.7179) pos=(-0.73132324,0.7312012)} :: CanvasRenderer + Image + FadeOverlayInstance
+
+=== SaveFileSelect.unity ===
+EventSystem :: EventSystem + StandaloneInputModule
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+SaveFileSelectManager :: SaveFileSelectManager
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+  BackButton [L=5] {a=(0,1...0,1) sz=(200,64) pos=(119.999985,-199.99976)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5) sz=(64,64)} :: CanvasRenderer + TextMeshProUGUI
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.5,0.5)} :: CanvasRenderer + Image + FadeOverlayInstance
+  ScrollView [L=5] {a=(0,0...1,1) sz=(0,-512)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Scrollbar Vertical [L=5] {a=(1,0...1,1) sz=(20,-17) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Scrollbar Horizontal [L=5] {a=(0,0...1,0) sz=(-17,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Viewport [L=5] {a=(0,0...1,1) sz=(-17,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pos=(0,0.0008428751) pv=(0,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-128)} :: CanvasRenderer + TextMeshProUGUI
+
+=== StageSelect.unity ===
+EventSystem :: EventSystem + StandaloneInputModule
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  ScrollView [L=5] {a=(0,0...1,1) sz=(0,-512)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Scrollbar Vertical [L=5] {a=(1,0...1,0) sz=(20,0) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Scrollbar Horizontal [L=5] {a=(0,0...0,0) sz=(0,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Viewport [L=5] {a=(0,0...0,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pos=(0,-0.0003515798) pv=(0,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+  BackButton [L=5] {a=(0,1...0,1) sz=(200,64) pos=(119.999985,-199.99976)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5) sz=(64,64)} :: CanvasRenderer + TextMeshProUGUI
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-128)} :: CanvasRenderer + TextMeshProUGUI
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-371,-801.7179) pos=(-0.73132324,0.7312012)} :: CanvasRenderer + Image + FadeOverlayInstance
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+StageSelectManager :: StageSelectManager
+
+=== LoadingScreen.unity ===
+EventSystem :: EventSystem + StandaloneInputModule
+LoadingScreen [L=5] {a=(0.5,0.5...0.5,0.5) sz=(100,100) pos=(585,1266)} :: LoadingScreenManager
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-91,-195.76904) pos=(-0.541626,0.54174805)} :: CanvasRenderer + Image + FadeOverlayInstance
+  ProgressPanel [L=5] {stretch} :: CanvasRenderer + CanvasGroup
+    ProgressLabel [L=5] {a=(0.5,0.5...0.5,0.5) sz=(200,50) pos=(0,-50)} :: CanvasRenderer + TextMeshProUGUI
+    ProgressBar [L=5] {a=(0.5,0.5...0.5,0.5) sz=(1000,64)} :: MonoBehaviour(67db9e8f)
+      Fill Area [L=5] {a=(0,0.25...1,0.75) sz=(-20,0) pos=(-5,0)}
+        Fill [L=5] {a=(0,0...0,0) sz=(10,0)} :: CanvasRenderer + Image
+      Background [L=5] {a=(0,0.25...1,0.75)} :: CanvasRenderer + Image
+      Handle Slide Area [L=5] {a=(0,0...1,1) sz=(-20,0)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,0)} :: CanvasRenderer + Image
+  LoreText [L=5] {a=(0.5,0...0.5,1) sz=(1024,-2506) pos=(0,499.92004)} :: CanvasRenderer + TextMeshProUGUI + LoadingScreenLore
+  FadePanel [L=5] {stretch} :: CanvasRenderer + Image + CanvasGroup
+SceneLoader :: SceneLoader
+
+=== Hub.unity ===
+Canvas {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster
+  ContentPanel {a=(0,0...1,1) sz=(0,-80) pos=(0,-40)} :: CanvasRenderer + Image
+    MedicalPanel {stretch} :: CanvasRenderer + Image + MedicalSectionController
+      DetailLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      HeroList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      GoldLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+    PartyPanel {stretch} :: CanvasRenderer + Image + PartySectionController + TiltParallax
+      PartyList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      GoldLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      RosterList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      DetailLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+    ResidencePanel {stretch} :: CanvasRenderer + Image + ResidenceSectionController
+      RecruitList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      DetailLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      ActionList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      GoldLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+    BlacksmithPanel {stretch} :: CanvasRenderer + Image + BlacksmithSectionController
+      SalvageTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      GoldLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      DetailLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      SellTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      ItemList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      CraftTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      BuyTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      RepairTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+    ShopPanel {stretch} :: CanvasRenderer + Image + ShopSectionController
+      SellTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      BuyTab [L=5] {a=(0.5,0.5...0.5,0.5) sz=(140,48)} :: CanvasRenderer + Image + Button
+        Label [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      DetailLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+      ItemList [L=5] {stretch} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+      GoldLabel [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+  CutoutOverlay [L=5] {a=(0,0...1,1) sz=(-840,-1817.8464) pos=(0.000061035156,0)} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+  Output {a=(0.5,0.5...0.5,0.5) sz=(1000,1000) pos=(0,1000)} :: CanvasRenderer + TextMeshProUGUI
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1211,-2619.5645) pos=(-1.3002319,1.3000488)} :: CanvasRenderer + Image + FadeOverlayInstance
+  NavBar {a=(0,1...1,1) sz=(0,80) pos=(0,-257.67) pv=(0.5,1)} :: CanvasRenderer + Image + MonoBehaviour(30649d3a)
+    OverworldButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    PartyButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    ShopButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    BlacksmithButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    BattleButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    MedicalButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+    ResidenceButton {a=(0,0...0,0) sz=(200,60)} :: CanvasRenderer + Image + Button
+      Text {stretch} :: CanvasRenderer + TextMeshProUGUI
+EventSystem :: EventSystem + StandaloneInputModule
+HubManager :: HubManager
+
+=== PostBattleScreen.unity ===
+Background [OFF] :: SpriteRenderer + BackgroundInstance
+EventSystem :: EventSystem + StandaloneInputModule
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster
+  Background {a=(0,0...1,1) sz=(840,1817.8464)} :: CanvasRenderer + Image
+  Title {a=(0,1...1,1) sz=(0,64) pos=(0,-200) pv=(0.5,1)} :: CanvasRenderer + TextMeshProUGUI
+  BottomBar {a=(0,0...1,0) sz=(840,110) pos=(0,225)} :: CanvasRenderer + Image
+    NextButton {a=(1,0.5...1,0.5) sz=(260,64) pos=(-40,0) pv=(1,0.5)} :: Button + CanvasRenderer + Image
+      Label {stretch} :: CanvasRenderer + TextMeshProUGUI
+  ScrollView [L=5] {a=(0,0...1,1) sz=(0,-512) pos=(0,-256) pv=(0.5,1)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Viewport [L=5] {a=(0,0...1,1) sz=(-17,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pos=(0.000006914139,0.00013494492) pv=(0,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+    Scrollbar Horizontal [L=5] {a=(0,0...1,0) sz=(-17,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Scrollbar Vertical [L=5] {a=(1,0...1,1) sz=(20,-17) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-371,-801.71814) pos=(-0.7313843,0.7312012)} :: CanvasRenderer + Image + FadeOverlayInstance
+PostBattleManager :: PostBattleManager
+
+=== Settings.unity ===
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener
+EventSystem :: EventSystem + StandaloneInputModule
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.50006104,0.49975586)} :: CanvasRenderer + Image + FadeOverlayInstance
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+  DefaultsButton [L=5] {a=(0.5,0.5...0.5,0.5) sz=(128,64) pos=(-467.31,-968.7)} :: CanvasRenderer + Image + Button
+    Text (TMP) [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+  SaveButton [L=5] {a=(0.5,0.5...0.5,0.5) sz=(128,64) pos=(460.2,-968.7)} :: CanvasRenderer + Image + Button
+    Text (TMP) [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+  ScrollView [L=5] {a=(0,0...1,1) sz=(-0.000030517578,-512)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Scrollbar Vertical [L=5] {a=(1,0...1,0) sz=(20,0) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Viewport [L=5] {a=(0,0...0,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pos=(0,-0.000091552734) pv=(0.5,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+    Scrollbar Horizontal [L=5] {a=(0,0...0,0) sz=(0,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+  BackButton [L=5] {a=(0,1...0,1) sz=(200,64) pos=(120,-200)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5) sz=(64,64)} :: CanvasRenderer + TextMeshProUGUI
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-128)} :: CanvasRenderer + TextMeshProUGUI
+SettingsManager :: SettingsManager
+
+=== Credits.unity ===
+EventSystem :: EventSystem + StandaloneInputModule
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+CreditsManager :: CreditsManager
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  ScrollView [L=5] {a=(0,0...1,1) sz=(0,-512) pos=(0,-256) pv=(0.5,1)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+    Scrollbar Vertical [L=5] {a=(1,0...1,1) sz=(20,-17) pv=(1,1)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Scrollbar Horizontal [L=5] {a=(0,0...1,0) sz=(-17,20) pv=(0,0)} :: CanvasRenderer + Image + Image
+      Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+        Handle [L=5] {a=(0,0...0,0) sz=(20,20)} :: CanvasRenderer + Image
+    Viewport [L=5] {a=(0,0...1,1) sz=(-17,0) pv=(0,1)} :: CanvasRenderer + Image + ScrollRect
+      Content [L=5] {a=(0,1...1,1) pos=(0.000006914139,0.00013494492) pv=(0,1)} :: MonoBehaviour(59f81469) + HorizontalLayoutGroup
+        Textarea [L=5] {a=(0,1...0,1) sz=(1100,0) pos=(531.5,-150)} :: CanvasRenderer + TextMeshProUGUI
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-128)} :: CanvasRenderer + TextMeshProUGUI
+  BackButton [L=5] {a=(0,1...0,1) sz=(200,64) pos=(120,-200)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5) sz=(64,64)} :: CanvasRenderer + TextMeshProUGUI
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-1,-1) pos=(-0.5,0.5)} :: CanvasRenderer + Image + FadeOverlayInstance
+
+=== PartyManager.unity ===
+Canvas [L=5] {a=(0,0...0,0) pv=(0,0)} :: Canvas(mode=Overlay, sort=0) + CanvasScaler + GraphicRaycaster + CanvasRenderer + Image
+  AddRemovePartyMemberButton [L=5] {a=(0.5,0.5...0.5,0.5) sz=(560,128)} :: CanvasRenderer + Image + Button + ScalableControl
+    TopLeft [L=5] {a=(0,1...0,1) sz=(16,16) pv=(0,1)} :: CanvasRenderer + Image
+    BottomLeft [L=5] {a=(0,0...0,0) sz=(16,16) pv=(0,0)} :: CanvasRenderer + Image
+    TopRight [L=5] {a=(1,1...1,1) sz=(16,16) pv=(1,1)} :: CanvasRenderer + Image
+    Label [L=5] {a=(0.028571429,0.125...0.9714286,0.875)} :: CanvasRenderer + TextMeshProUGUI
+    Right [L=5] {a=(1,0.125...1,0.875) sz=(16,0) pv=(1,0.5)} :: CanvasRenderer + Image
+    Left [L=5] {a=(0,0.125...0,0.875) sz=(16,0) pv=(0,0.5)} :: CanvasRenderer + Image
+    Bottom [L=5] {a=(0.028571429,0...0.9714286,0) sz=(0,16) pv=(0.5,0)} :: CanvasRenderer + Image
+    BottomRight [L=5] {a=(1,0...1,0) sz=(16,16) pv=(1,0)} :: CanvasRenderer + Image
+    Background [L=5] {a=(0.00952381,0.041666668...0.9904762,0.9583333)} :: CanvasRenderer + Image
+    Top [L=5] {a=(0.028571429,1...0.9714286,1) sz=(0,16) pv=(0.5,1)} :: CanvasRenderer + Image
+  Title [L=5] {a=(0.5,1...0.5,1) pos=(0,-1300)} :: CanvasRenderer + TextMeshProUGUI
+  BackButton [L=5] {a=(0,1...0,1) sz=(128,64) pos=(137.63,-171.1)} :: CanvasRenderer + Image + Button
+    Label [L=5] {a=(0.5,0.5...0.5,0.5)} :: CanvasRenderer + TextMeshProUGUI
+  PartyMemberCountLabel [L=5] {a=(1,1...1,1) sz=(120,120) pos=(-70.5,-162.1)} :: CanvasRenderer + TextMeshProUGUI
+  RosterCarousel [L=5] {a=(0,0...1,0) sz=(0,1000) pos=(0,1000) pv=(0.5,1)} :: CanvasRenderer + Image
+    Panel [L=5] {stretch} :: CanvasRenderer + Image
+  TestTooltip [L=5] {a=(0.5,0.5...0.5,0.5) sz=(160,30) pos=(0,137.53)} :: CanvasRenderer + Image + Button
+    Text (TMP) [L=5] {stretch} :: CanvasRenderer + TextMeshProUGUI
+  EquipmentDisplay [L=5] {a=(0.5,0.5...0.5,0.5) sz=(400,400) pos=(256,600)} :: CanvasRenderer + ScalableControl
+    Left [L=5] {a=(0,0.04...0,0.96) sz=(16,0) pv=(0,0.5)} :: CanvasRenderer + Image
+    Right [L=5] {a=(1,0.04...1,0.96) sz=(16,0) pv=(1,0.5)} :: CanvasRenderer + Image
+    Background [L=5] {a=(0.013333334,0.013333334...0.9866667,0.9866667)} :: CanvasRenderer + Image
+    TopRight [L=5] {a=(1,1...1,1) sz=(16,16) pv=(1,1)} :: CanvasRenderer + Image
+    Top [L=5] {a=(0.04,1...0.96,1) sz=(0,16) pv=(0.5,1)} :: CanvasRenderer + Image
+    TopLeft [L=5] {a=(0,1...0,1) sz=(16,16) pv=(0,1)} :: CanvasRenderer + Image
+    BottomRight [L=5] {a=(1,0...1,0) sz=(16,16) pv=(1,0)} :: CanvasRenderer + Image
+    Panel [L=5] {a=(0,1...0,1) pos=(-32,0)} :: CanvasRenderer + Image
+      Armor [L=5] {a=(0,1...0,1) sz=(213.91,128) pos=(48,-215) pv=(0,0.5)} :: CanvasRenderer
+        Label [L=5] {a=(0,1...0,1) sz=(200,50) pos=(105,12)} :: CanvasRenderer + TextMeshProUGUI
+        Dropdown [L=5] {a=(0,1...0,1) sz=(370,48) pos=(4,-16) pv=(0,0.5)} :: CanvasRenderer + Image + MonoBehaviour(7b743370)
+          Template [L=5] [OFF] {a=(0,0...1,0) sz=(0,512) pos=(0,2) pv=(0.5,1)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+            Viewport [L=5] {a=(0,0...1,1) sz=(-18,0) pv=(0,1)} :: ScrollRect + CanvasRenderer + Image
+              Content [L=5] {a=(0,1...1,1) sz=(0,48) pv=(0.5,1)}
+                Item [L=5] {a=(0,0.5...1,0.5) sz=(0,48)} :: MonoBehaviour(9085046f)
+                  Item Label [L=5] {a=(0,0.5...0,0.5) sz=(300,48) pos=(210,0)} :: CanvasRenderer + TextMeshProUGUI
+                  Item Checkmark [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(20,20) pos=(10,0)} :: CanvasRenderer + Image
+                  Item Background [L=5] {stretch} :: CanvasRenderer + Image
+                  Item Icon [L=5] {a=(0,0.5...0,0.5) sz=(32,32) pos=(32,2)} :: CanvasRenderer + Image
+            Scrollbar [L=5] {a=(1,0...1,1) sz=(20,0) pv=(1,1)} :: CanvasRenderer + Image + Image
+              Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+                Handle [L=5] {a=(0,0...1,0.2) sz=(20,20)} :: CanvasRenderer + Image
+          Label [L=5] {a=(0,0...1,1) sz=(-35,-13) pos=(-7.5000153,-0.5)} :: CanvasRenderer + TextMeshProUGUI
+          Arrow [L=5] {a=(1,0.5...1,0.5) sz=(20,20) pos=(-15,0)} :: CanvasRenderer + Image
+      Weapons [L=5] {a=(0,1...0,1) sz=(213.91,128) pos=(48,-128) pv=(0,0.5)} :: CanvasRenderer
+        Dropdown [L=5] {a=(0,1...0,1) sz=(370,48) pos=(4,-16) pv=(0,0.5)} :: CanvasRenderer + Image + MonoBehaviour(7b743370)
+          Template [L=5] [OFF] {a=(0,0...1,0) sz=(0,512) pos=(0,2) pv=(0.5,1)} :: CanvasRenderer + Image + MonoBehaviour(1aa08ab6)
+            Scrollbar [L=5] {a=(1,0...1,1) sz=(20,0) pv=(1,1)} :: CanvasRenderer + Image + Image
+              Sliding Area [L=5] {a=(0,0...1,1) sz=(-20,-20)}
+                Handle [L=5] {a=(0,0...1,0.2) sz=(20,20)} :: CanvasRenderer + Image
+            Viewport [L=5] {a=(0,0...1,1) sz=(-18,0) pv=(0,1)} :: ScrollRect + CanvasRenderer + Image
+              Content [L=5] {a=(0,1...1,1) sz=(0,48) pv=(0.5,1)}
+                Item [L=5] {a=(0,0.5...1,0.5) sz=(0,48)} :: MonoBehaviour(9085046f)
+                  Item Label [L=5] {a=(0,0.5...0,0.5) sz=(300,48) pos=(210,0)} :: CanvasRenderer + TextMeshProUGUI
+                  Item Icon [L=5] {a=(0,0.5...0,0.5) sz=(32,32) pos=(32,2)} :: CanvasRenderer + Image
+                  Item Background [L=5] {stretch} :: CanvasRenderer + Image
+                  Item Checkmark [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(20,20) pos=(10,0)} :: CanvasRenderer + Image
+          Arrow [L=5] {a=(1,0.5...1,0.5) sz=(20,20) pos=(-15,0)} :: CanvasRenderer + Image
+          Label [L=5] {a=(0,0...1,1) sz=(-35,-13) pos=(-7.5000153,-0.5)} :: CanvasRenderer + TextMeshProUGUI
+        Label [L=5] {a=(0,1...0,1) sz=(200,50) pos=(105,12)} :: CanvasRenderer + TextMeshProUGUI
+    Bottom [L=5] {a=(0.04,0...0.96,0) sz=(0,16) pv=(0.5,0)} :: CanvasRenderer + Image
+    BottomLeft [L=5] {a=(0,0...0,0) sz=(16,16) pv=(0,0)} :: CanvasRenderer + Image
+  CutoutOverlay [L=5] {stretch} :: CutoutOverlay
+    Bottom [OFF] {a=(0,0...1,0) sz=(0,94.15384) pv=(0.5,0)} :: CanvasRenderer + Image
+    Top {a=(0,1...1,1) sz=(0,130.15384) pv=(0.5,1)} :: CanvasRenderer + Image
+      LeftPane {a=(0,0...0.3333333,1) pv=(0,0.5)} :: MonoBehaviour(30649d3a)
+      CenterPane {a=(0.3333333,0...0.6666667,1) sz=(0,-0.0000076293945)} :: MonoBehaviour(30649d3a)
+      RightPane {a=(0.6666667,0...1,1) pv=(1,0.5)} :: MonoBehaviour(30649d3a)
+  FadeOverlay [L=5] {a=(0,0...1,1) sz=(-371,-801.71814) pos=(-0.7313843,0.7312012)} :: CanvasRenderer + Image + FadeOverlayInstance
+  StatsDisplay [L=5] {a=(0.5,0.5...0.5,0.5) sz=(400,400) pos=(-256,600)} :: CanvasRenderer + ScalableControl
+    Bottom [L=5] {a=(0.04,0...0.96,0) sz=(0,16) pv=(0.5,0)} :: CanvasRenderer + Image
+    TopRight [L=5] {a=(1,1...1,1) sz=(16,16) pv=(1,1)} :: CanvasRenderer + Image
+    Right [L=5] {a=(1,0.04...1,0.96) sz=(16,0) pv=(1,0.5)} :: CanvasRenderer + Image
+    Panel [L=5] {a=(0.5,0.5...0.5,0.5) pos=(-32,153.09)} :: CanvasRenderer + Image
+      WIS [L=5] {a=(0,1...0,1) pos=(0,-250)}
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+      VIT [L=5] {a=(0,1...0,1) pos=(0,-150)}
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+      AGI [L=5] {a=(0,1...0,1) pos=(0,-200)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+      SPD [L=5] {a=(0,1...0,1) pos=(0,-250)}
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+      LCK [L=5] {a=(0,1...0,1) pos=(0,-300)}
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+      STR [L=5] {a=(0,1...0,1) pos=(0,-100)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+      STA [L=5] {a=(0,1...0,1) pos=(0,-250)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+      LVL [L=5] {a=(0,1...0,1)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+      INT [L=5] {a=(0,1...0,1) pos=(0,-250)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+      HP [L=5] {a=(0,1...0,1) pos=(0,-50)}
+        Label [L=5] {a=(0,1...0,1) sz=(100,32) pos=(-100,-2)} :: CanvasRenderer + TextMeshProUGUI
+        Value [L=5] {a=(0,1...0,1) sz=(100,32) pos=(165,0)} :: CanvasRenderer + TextMeshProUGUI
+        Bar [L=5] {a=(0,1...0,1) sz=(100,32)} :: CanvasRenderer
+          Front [L=5] [OFF] {a=(0,0.5...0,0.5) sz=(200,32) pos=(0,16) pv=(0,0.5)} :: CanvasRenderer + Image
+          Back [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+          Fill [L=5] {a=(0,0.5...0,0.5) sz=(200,32) pv=(0,0.5)} :: CanvasRenderer + Image
+    Left [L=5] {a=(0,0.04...0,0.96) sz=(16,0) pv=(0,0.5)} :: CanvasRenderer + Image
+    Top [L=5] {a=(0.04,1...0.96,1) sz=(0,16) pv=(0.5,1)} :: CanvasRenderer + Image
+    BottomLeft [L=5] {a=(0,0...0,0) sz=(16,16) pv=(0,0)} :: CanvasRenderer + Image
+    TopLeft [L=5] {a=(0,1...0,1) sz=(16,16) pv=(0,1)} :: CanvasRenderer + Image
+    BottomRight [L=5] {a=(1,0...1,0) sz=(16,16) pv=(1,0)} :: CanvasRenderer + Image
+    Background [L=5] {a=(0.013333334,0.013333334...0.9866667,0.9866667)} :: CanvasRenderer + Image
+Main Camera :: Camera(ortho=1, size=5, depth=-1) + AudioListener + UniversalAdditionalCameraData
+Background [OFF] :: SpriteRenderer + BackgroundInstance
+EventSystem :: EventSystem + StandaloneInputModule
+PartyManager :: PartyManager
+
