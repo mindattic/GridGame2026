@@ -5,7 +5,7 @@ using UnityEditor;
 using TMPro;
 
 /// <summary>
-/// SCENESCAFFOLDHELPER - Shared utilities for scene scaffold editor tools.
+/// CAFFOLDHELPER - Shared utilities for scene scaffold editor tools.
 ///
 /// PURPOSE:
 /// Provides reusable building blocks used by all scene scaffold scripts
@@ -47,7 +47,7 @@ using TMPro;
 /// - HubSceneValidator.cs: Similar pattern for Hub section panel children
 /// - GameObjectHelper.cs: Path constants these objects must match
 /// </summary>
-public static class ScaffoldHelper
+public static class SceneScaffoldHelper
 {
     // ===================== Root-Level Objects =====================
 

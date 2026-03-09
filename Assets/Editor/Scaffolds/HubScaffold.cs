@@ -75,12 +75,12 @@ public static class HubScaffold
     //[MenuItem("Tools/Scenes/Hub/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        ScaffoldHelper.EnsureEmptyGameObject("HubManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        SceneScaffoldHelper.EnsureEmptyGameObject("HubManager", ref created, ref found);
 
         // Canvas — no background image on Canvas itself
         var canvasGO = GameObject.Find("Canvas");
@@ -109,7 +109,7 @@ public static class HubScaffold
         if (canvas != null)
         {
             // ContentPanel — stretch with 80px top inset for NavBar
-            var content = ScaffoldHelper.EnsureImage(canvas, "ContentPanel", false, ref created, ref found);
+            var content = SceneScaffoldHelper.EnsureImage(canvas, "ContentPanel", false, ref created, ref found);
             if (content != null)
             {
                 content.anchorMin = Vector2.zero;
@@ -120,15 +120,15 @@ public static class HubScaffold
                 // Section panels — stretch-fill inside ContentPanel
                 foreach (var panel in SectionPanels)
                 {
-                    var p = ScaffoldHelper.EnsureImage(content, panel, true, ref created, ref found);
+                    var p = SceneScaffoldHelper.EnsureImage(content, panel, true, ref created, ref found);
                     // Children (ItemList, GoldLabel, etc.) are created by HubSceneValidator
                 }
             }
 
-            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
 
             // Output — debug label, positioned off-screen above
-            var output = ScaffoldHelper.EnsureLabel(canvas, "Output", "", ref created, ref found);
+            var output = SceneScaffoldHelper.EnsureLabel(canvas, "Output", "", ref created, ref found);
             if (output != null)
             {
                 output.anchorMin = output.anchorMax = new Vector2(0.5f, 0.5f);
@@ -137,7 +137,7 @@ public static class HubScaffold
             }
 
             // NavBar — anchored to top, 80px tall, with HorizontalLayoutGroup
-            var navBar = ScaffoldHelper.EnsureImage(canvas, "NavBar", false, ref created, ref found);
+            var navBar = SceneScaffoldHelper.EnsureImage(canvas, "NavBar", false, ref created, ref found);
             if (navBar != null)
             {
                 navBar.anchorMin = new Vector2(0f, 1f);
@@ -158,10 +158,10 @@ public static class HubScaffold
                     CreateNavButton(navBar, btnName, ref created, ref found);
             }
 
-            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        ScaffoldHelper.LogResults(SceneName, created, found);
+        SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
     /// <summary>Creates a 200×60 nav button with "Text" child (Hub uses "Text" not "Label").</summary>
@@ -207,15 +207,15 @@ public static class HubScaffold
     //[MenuItem("Tools/Scenes/Hub/Clear Scene")]
     public static void ClearScene()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
-        ScaffoldHelper.ClearAllRootObjects();
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        SceneScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Hub/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
-        ScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

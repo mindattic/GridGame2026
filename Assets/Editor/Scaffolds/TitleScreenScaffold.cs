@@ -63,22 +63,22 @@ public static class TitleScreenScaffold
     //[MenuItem("Tools/Scenes/Title Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        ScaffoldHelper.EnsureEmptyGameObject("TitleScreenManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        SceneScaffoldHelper.EnsureEmptyGameObject("TitleScreenManager", ref created, ref found);
 
-        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
             // CutoutOverlay
-            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
 
             // Panel — vertically centered, 600px tall, VerticalLayoutGroup
-            var panel = ScaffoldHelper.EnsureRectChild(canvas, "Panel", ref created, ref found);
+            var panel = SceneScaffoldHelper.EnsureRectChild(canvas, "Panel", ref created, ref found);
             if (panel != null)
             {
                 panel.anchorMin = new Vector2(0f, 0.5f);
@@ -97,7 +97,7 @@ public static class TitleScreenScaffold
                 }
 
                 // Backdrop (inactive decorative background)
-                var backdrop = ScaffoldHelper.EnsureImage(panel, "Backdrop", false, ref created, ref found);
+                var backdrop = SceneScaffoldHelper.EnsureImage(panel, "Backdrop", false, ref created, ref found);
                 if (backdrop != null)
                 {
                     backdrop.anchorMin = backdrop.anchorMax = new Vector2(0.5f, 0.5f);
@@ -111,7 +111,7 @@ public static class TitleScreenScaffold
             }
 
             // ProfileButton — bottom-center
-            var profile = ScaffoldHelper.EnsureButton(canvas, "ProfileButton", "Profile", ref created, ref found);
+            var profile = SceneScaffoldHelper.EnsureButton(canvas, "ProfileButton", "Profile", ref created, ref found);
             if (profile != null)
             {
                 profile.anchorMin = profile.anchorMax = new Vector2(0.5f, 0f);
@@ -129,10 +129,10 @@ public static class TitleScreenScaffold
             }
 
             // FadeOverlay
-            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        ScaffoldHelper.LogResults(SceneName, created, found);
+        SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
     private static void CreateMenuButton(RectTransform parent, string name, string label, ref int created, ref int found)
@@ -177,15 +177,15 @@ public static class TitleScreenScaffold
     //[MenuItem("Tools/Scenes/Title Screen/Clear Scene")]
     public static void ClearScene()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
-        ScaffoldHelper.ClearAllRootObjects();
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        SceneScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Title Screen/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!ScaffoldHelper.OpenScene(SceneName)) return;
-        ScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }
