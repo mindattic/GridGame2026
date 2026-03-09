@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// PROFILESELECTSCAFFOLD - Editor tool to scaffold the ProfileSelect scene.
@@ -43,7 +44,8 @@ public static class ProfileSelectScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("ProfileSelectManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("ProfileSelectManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<ProfileSelectManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)

@@ -38,7 +38,6 @@ public static class LoadingScreenScaffold
 {
     private const string SceneName = "LoadingScreen";
 
-    //[MenuItem("Tools/Scenes/Loading Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -148,7 +147,6 @@ public static class LoadingScreenScaffold
         SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    //[MenuItem("Tools/Scenes/Loading Screen/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;

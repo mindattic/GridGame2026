@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// SETTINGSSCAFFOLD - Editor tool to scaffold the Settings scene.
@@ -41,7 +42,8 @@ public static class SettingsScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SettingsManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("SettingsManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<SettingsManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)

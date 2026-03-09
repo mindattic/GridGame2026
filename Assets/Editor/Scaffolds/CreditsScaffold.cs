@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// CREDITSSCAFFOLD - Editor tool to scaffold the Credits scene.
@@ -35,7 +36,6 @@ public static class CreditsScaffold
 {
     private const string SceneName = "Credits";
 
-    //[MenuItem("Tools/Scenes/Credits/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -44,7 +44,8 @@ public static class CreditsScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("CreditsManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("CreditsManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<CreditsManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
@@ -85,7 +86,6 @@ public static class CreditsScaffold
         SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    //[MenuItem("Tools/Scenes/Credits/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;

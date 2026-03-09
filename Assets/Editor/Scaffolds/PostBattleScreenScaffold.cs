@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
+using Scripts.Instances;
 
 /// <summary>
 /// POSTBATTLESCREENSCAFFOLD - Editor tool to scaffold the PostBattleScreen scene.
@@ -36,7 +38,6 @@ public static class PostBattleScreenScaffold
 {
     private const string SceneName = "PostBattleScreen";
 
-    //[MenuItem("Tools/Scenes/Post Battle Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -53,12 +54,14 @@ public static class PostBattleScreenScaffold
         {
             bgGO = new GameObject("Background");
             bgGO.AddComponent<SpriteRenderer>();
+            bgGO.AddComponent<BackgroundInstance>();
             bgGO.SetActive(false);
             Undo.RegisterCreatedObjectUndo(bgGO, "Create Background");
             created++;
         }
 
-        SceneScaffoldHelper.EnsureEmptyGameObject("PostBattleManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("PostBattleManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<PostBattleManager>(mgr);
 
         // Canvas — no background image on Canvas itself in this scene
         var canvasGO = GameObject.Find("Canvas");
@@ -139,7 +142,6 @@ public static class PostBattleScreenScaffold
         SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Post Battle Screen/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;

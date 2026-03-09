@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Hub;
 
 /// <summary>
 /// HUBSCAFFOLD - Editor tool to scaffold the Hub scene.
@@ -72,7 +73,6 @@ public static class HubScaffold
         "PartyPanel", "ShopPanel", "MedicalPanel", "ResidencePanel", "BlacksmithPanel"
     };
 
-    //[MenuItem("Tools/Scenes/Hub/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -80,7 +80,8 @@ public static class HubScaffold
         int found = 0;
 
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("HubManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("HubManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<HubManager>(mgr);
 
         // Canvas — no background image on Canvas itself
         var canvasGO = GameObject.Find("Canvas");
@@ -204,7 +205,6 @@ public static class HubScaffold
         created++;
     }
 
-    //[MenuItem("Tools/Scenes/Hub/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;

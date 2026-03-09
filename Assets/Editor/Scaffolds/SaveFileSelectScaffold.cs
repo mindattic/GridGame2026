@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// SAVEFILESELECTSCAFFOLD - Editor tool to scaffold the SaveFileSelect scene.
@@ -37,7 +38,8 @@ public static class SaveFileSelectScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SaveFileSelectManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("SaveFileSelectManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<SaveFileSelectManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)

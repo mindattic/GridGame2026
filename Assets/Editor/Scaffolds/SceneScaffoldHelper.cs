@@ -3,6 +3,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
 using TMPro;
+using Scripts.Canvas;
+using Scripts.Managers;
+using Scripts.Instances;
+using Scripts.Hub;
 
 /// <summary>
 /// CAFFOLDHELPER - Shared utilities for scene scaffold editor tools.
@@ -82,15 +86,29 @@ public static class SceneScaffoldHelper
         created++;
     }
 
-    /// <summary>Creates a plain empty GameObject (for manager scripts attached in-scene).</summary>
-    public static void EnsureEmptyGameObject(string name, ref int created, ref int found)
+    /// <summary>Creates a plain empty GameObject. Returns it so callers can add components.</summary>
+    public static GameObject EnsureEmptyGameObject(string name, ref int created, ref int found)
     {
         var existing = GameObject.Find(name);
-        if (existing != null) { found++; return; }
+        if (existing != null) { found++; return existing; }
 
         var go = new GameObject(name);
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
         created++;
+        return go;
+    }
+
+    /// <summary>
+    /// Ensures a MonoBehaviour of type T is attached to the given GameObject.
+    /// Idempotent — skips if already present. Used after EnsureEmptyGameObject
+    /// to attach scene manager scripts (e.g. CreditsManager, HubManager).
+    /// </summary>
+    public static T EnsureScript<T>(GameObject go) where T : MonoBehaviour
+    {
+        if (go == null) return null;
+        var existing = go.GetComponent<T>();
+        if (existing != null) return existing;
+        return go.AddComponent<T>();
     }
 
     // ===================== Canvas =====================
@@ -159,6 +177,9 @@ public static class SceneScaffoldHelper
         rt.SetAsLastSibling();
         Undo.RegisterCreatedObjectUndo(go, "Create FadeOverlay");
         created++;
+
+        // Attach FadeOverlayInstance script
+        go.AddComponent<FadeOverlayInstance>();
     }
 
     /// <summary>
@@ -176,6 +197,9 @@ public static class SceneScaffoldHelper
         if (canvas == null) return;
         var cutout = EnsureRectChild(canvas, "CutoutOverlay", ref created, ref found);
         if (cutout == null) return;
+
+        // Attach CutoutOverlay MonoBehaviour
+        EnsureScript<CutoutOverlay>(cutout.gameObject);
 
         // Top bar — anchored to top of parent, 130px tall
         var top = FindOrCreateUI(cutout, "Top", ref created, ref found);

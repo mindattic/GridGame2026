@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// TITLESCREENSCAFFOLD - Editor tool to scaffold the TitleScreen scene.
@@ -69,7 +70,8 @@ public static class TitleScreenScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("TitleScreenManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("TitleScreenManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<TitleScreenManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)

@@ -74,7 +74,6 @@ public static class PartyManagerScaffold
         ("LVL", 0f),
     };
 
-    //[MenuItem("Tools/Scenes/Party Manager/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -305,7 +304,6 @@ public static class PartyManagerScaffold
         created++;
     }
 
-    //[MenuItem("Tools/Scenes/Party Manager/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;

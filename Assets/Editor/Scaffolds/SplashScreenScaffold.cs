@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// SPLASHSCREENSCAFFOLD - Editor tool to scaffold the SplashScreen scene.
@@ -48,7 +49,8 @@ public static class SplashScreenScaffold
         // ── Root Objects ──
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SplashScreenManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("SplashScreenManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<SplashScreenManager>(mgr);
 
         // ── Canvas (Camera mode for this scene) ──
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);

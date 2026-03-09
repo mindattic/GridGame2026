@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
 
 /// <summary>
 /// PROFILECREATESCAFFOLD - Editor tool to scaffold the ProfileCreate scene.
@@ -32,7 +33,6 @@ public static class ProfileCreateScaffold
 {
     private const string SceneName = "ProfileCreate";
 
-    //[MenuItem("Tools/Scenes/Profile Create/Create Scaffolding")]
     public static void CreateScaffolding()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -41,7 +41,8 @@ public static class ProfileCreateScaffold
 
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("ProfileCreateManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("ProfileCreateManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<ProfileCreateManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
@@ -64,7 +65,6 @@ public static class ProfileCreateScaffold
         SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    //[MenuItem("Tools/Scenes/Profile Create/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
