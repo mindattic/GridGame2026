@@ -47,7 +47,7 @@ using TMPro;
 /// - HubSceneValidator.cs: Similar pattern for Hub section panel children
 /// - GameObjectHelper.cs: Path constants these objects must match
 /// </summary>
-public static class SceneScaffoldHelper
+public static class ScaffoldHelper
 {
     // ===================== Root-Level Objects =====================
 

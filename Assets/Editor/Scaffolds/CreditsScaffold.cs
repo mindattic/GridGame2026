@@ -35,25 +35,25 @@ public static class CreditsScaffold
 {
     private const string SceneName = "Credits";
 
-    [MenuItem("Tools/Scenes/Credits/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Credits/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("CreditsManager", ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("CreditsManager", ref created, ref found);
 
-        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureTitle(canvas, "Credits", ref created, ref found);
+            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureTitle(canvas, "Credits", ref created, ref found);
 
             // ScrollView — slightly offset for credits layout
-            var sv = SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
+            var sv = ScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
             if (sv != null)
             {
                 sv.pivot = new Vector2(0.5f, 1f);
@@ -66,7 +66,7 @@ public static class CreditsScaffold
                     var content = viewport.Find("Content");
                     if (content != null)
                     {
-                        var textarea = SceneScaffoldHelper.EnsureLabel(
+                        var textarea = ScaffoldHelper.EnsureLabel(
                             content.GetComponent<RectTransform>(), "Textarea", "", ref created, ref found);
                         if (textarea != null)
                         {
@@ -78,25 +78,25 @@ public static class CreditsScaffold
                 }
             }
 
-            SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Credits/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Credits/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Credits/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

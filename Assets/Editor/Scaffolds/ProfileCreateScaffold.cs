@@ -32,24 +32,24 @@ public static class ProfileCreateScaffold
 {
     private const string SceneName = "ProfileCreate";
 
-    [MenuItem("Tools/Scenes/Profile Create/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Profile Create/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("ProfileCreateManager", ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("ProfileCreateManager", ref created, ref found);
 
-        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
 
             // BackButton — starts inactive, centered with offset
-            var backBtn = SceneScaffoldHelper.EnsureButton(canvas, "BackButton", "Back", ref created, ref found);
+            var backBtn = ScaffoldHelper.EnsureButton(canvas, "BackButton", "Back", ref created, ref found);
             if (backBtn != null)
             {
                 backBtn.anchorMin = backBtn.anchorMax = new Vector2(0.5f, 0.5f);
@@ -58,24 +58,24 @@ public static class ProfileCreateScaffold
                 backBtn.gameObject.SetActive(false);
             }
 
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Profile Create/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Profile Create/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Profile Create/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

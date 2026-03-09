@@ -34,42 +34,42 @@ public static class ProfileSelectScaffold
 {
     private const string SceneName = "ProfileSelect";
 
-    [MenuItem("Tools/Scenes/Profile Select/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Profile Select/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("ProfileSelectManager", ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("ProfileSelectManager", ref created, ref found);
 
-        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureTitle(canvas, "Select Profile", ref created, ref found);
-            SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureTitle(canvas, "Select Profile", ref created, ref found);
+            ScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Profile Select/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Profile Select/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Profile Select/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

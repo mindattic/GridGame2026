@@ -38,18 +38,18 @@ public static class LoadingScreenScaffold
 {
     private const string SceneName = "LoadingScreen";
 
-    [MenuItem("Tools/Scenes/Loading Screen/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Loading Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
 
         // LoadingScreen manager GO (off-screen, holds LoadingScreenManager)
-        SceneScaffoldHelper.EnsureEmptyGameObject("LoadingScreen", ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SceneLoader", ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("LoadingScreen", ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("SceneLoader", ref created, ref found);
 
         // Canvas — no background Image in this scene
         var canvasGO = GameObject.Find("Canvas");
@@ -78,14 +78,14 @@ public static class LoadingScreenScaffold
         if (canvas != null)
         {
             // ProgressPanel — stretch, CanvasGroup for fade
-            var progressPanel = SceneScaffoldHelper.EnsureRectChild(canvas, "ProgressPanel", ref created, ref found);
+            var progressPanel = ScaffoldHelper.EnsureRectChild(canvas, "ProgressPanel", ref created, ref found);
             if (progressPanel != null)
             {
                 if (progressPanel.GetComponent<CanvasRenderer>() == null) progressPanel.gameObject.AddComponent<CanvasRenderer>();
                 if (progressPanel.GetComponent<CanvasGroup>() == null) progressPanel.gameObject.AddComponent<CanvasGroup>();
 
                 // ProgressLabel
-                var pLabel = SceneScaffoldHelper.EnsureLabel(progressPanel, "ProgressLabel", "Loading...", ref created, ref found);
+                var pLabel = ScaffoldHelper.EnsureLabel(progressPanel, "ProgressLabel", "Loading...", ref created, ref found);
                 if (pLabel != null)
                 {
                     pLabel.anchorMin = pLabel.anchorMax = new Vector2(0.5f, 0.5f);
@@ -94,40 +94,40 @@ public static class LoadingScreenScaffold
                 }
 
                 // ProgressBar — Slider with fill/handle
-                var pBar = SceneScaffoldHelper.EnsureRectChild(progressPanel, "ProgressBar", ref created, ref found);
+                var pBar = ScaffoldHelper.EnsureRectChild(progressPanel, "ProgressBar", ref created, ref found);
                 if (pBar != null)
                 {
                     pBar.anchorMin = pBar.anchorMax = new Vector2(0.5f, 0.5f);
                     pBar.sizeDelta = new Vector2(1000f, 64f);
                     pBar.anchoredPosition = Vector2.zero;
 
-                    var bg = SceneScaffoldHelper.EnsureImage(pBar, "Background", false, ref created, ref found);
+                    var bg = ScaffoldHelper.EnsureImage(pBar, "Background", false, ref created, ref found);
                     if (bg != null) { bg.anchorMin = new Vector2(0f, 0.25f); bg.anchorMax = new Vector2(1f, 0.75f); bg.sizeDelta = Vector2.zero; bg.anchoredPosition = Vector2.zero; }
 
-                    var fillArea = SceneScaffoldHelper.EnsureRectChild(pBar, "Fill Area", ref created, ref found);
+                    var fillArea = ScaffoldHelper.EnsureRectChild(pBar, "Fill Area", ref created, ref found);
                     if (fillArea != null)
                     {
                         fillArea.anchorMin = new Vector2(0f, 0.25f);
                         fillArea.anchorMax = new Vector2(1f, 0.75f);
                         fillArea.sizeDelta = new Vector2(-20f, 0f);
                         fillArea.anchoredPosition = new Vector2(-5f, 0f);
-                        var fill = SceneScaffoldHelper.EnsureImage(fillArea, "Fill", false, ref created, ref found);
+                        var fill = ScaffoldHelper.EnsureImage(fillArea, "Fill", false, ref created, ref found);
                         if (fill != null) { fill.anchorMin = fill.anchorMax = Vector2.zero; fill.sizeDelta = new Vector2(10f, 0f); }
                     }
 
-                    var handleArea = SceneScaffoldHelper.EnsureRectChild(pBar, "Handle Slide Area", ref created, ref found);
+                    var handleArea = ScaffoldHelper.EnsureRectChild(pBar, "Handle Slide Area", ref created, ref found);
                     if (handleArea != null)
                     {
                         handleArea.anchorMin = Vector2.zero; handleArea.anchorMax = Vector2.one;
                         handleArea.sizeDelta = new Vector2(-20f, 0f); handleArea.anchoredPosition = Vector2.zero;
-                        var handle = SceneScaffoldHelper.EnsureImage(handleArea, "Handle", false, ref created, ref found);
+                        var handle = ScaffoldHelper.EnsureImage(handleArea, "Handle", false, ref created, ref found);
                         if (handle != null) { handle.anchorMin = handle.anchorMax = Vector2.zero; handle.sizeDelta = new Vector2(20f, 0f); }
                     }
                 }
             }
 
             // LoreText
-            var lore = SceneScaffoldHelper.EnsureLabel(canvas, "LoreText", "", ref created, ref found);
+            var lore = ScaffoldHelper.EnsureLabel(canvas, "LoreText", "", ref created, ref found);
             if (lore != null)
             {
                 lore.anchorMin = new Vector2(0.5f, 0f);
@@ -137,29 +137,29 @@ public static class LoadingScreenScaffold
             }
 
             // FadePanel — stretch, Image + CanvasGroup
-            var fadePanel = SceneScaffoldHelper.EnsureImage(canvas, "FadePanel", true, ref created, ref found);
+            var fadePanel = ScaffoldHelper.EnsureImage(canvas, "FadePanel", true, ref created, ref found);
             if (fadePanel != null && fadePanel.GetComponent<CanvasGroup>() == null)
                 fadePanel.gameObject.AddComponent<CanvasGroup>();
 
             // FadeOverlay
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Loading Screen/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Loading Screen/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Loading Screen/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

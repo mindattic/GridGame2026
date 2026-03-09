@@ -74,15 +74,15 @@ public static class PartyManagerScaffold
         ("LVL", 0f),
     };
 
-    [MenuItem("Tools/Scenes/Party Manager/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Party Manager/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
 
         // Background (SpriteRenderer, starts inactive)
         var bgGO = GameObject.Find("Background");
@@ -96,19 +96,19 @@ public static class PartyManagerScaffold
             created++;
         }
 
-        SceneScaffoldHelper.EnsureEmptyGameObject("PartyManager", ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("PartyManager", ref created, ref found);
 
-        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
 
             // Title — offset far down
-            var title = SceneScaffoldHelper.EnsureTitle(canvas, "Party Manager", ref created, ref found);
+            var title = ScaffoldHelper.EnsureTitle(canvas, "Party Manager", ref created, ref found);
             if (title != null) title.anchoredPosition = new Vector2(0f, -1300f);
 
             // RosterCarousel — bottom-anchored, 1000px tall
-            var carousel = SceneScaffoldHelper.EnsureImage(canvas, "RosterCarousel", false, ref created, ref found);
+            var carousel = ScaffoldHelper.EnsureImage(canvas, "RosterCarousel", false, ref created, ref found);
             if (carousel != null)
             {
                 carousel.anchorMin = Vector2.zero;
@@ -116,19 +116,19 @@ public static class PartyManagerScaffold
                 carousel.pivot = new Vector2(0.5f, 1f);
                 carousel.sizeDelta = new Vector2(0f, 1000f);
                 carousel.anchoredPosition = new Vector2(0f, 1000f);
-                var panel = SceneScaffoldHelper.EnsureImage(carousel, "Panel", true, ref created, ref found);
+                var panel = ScaffoldHelper.EnsureImage(carousel, "Panel", true, ref created, ref found);
             }
 
             // StatsDisplay
-            var statsDisplay = SceneScaffoldHelper.EnsureRectChild(canvas, "StatsDisplay", ref created, ref found);
+            var statsDisplay = ScaffoldHelper.EnsureRectChild(canvas, "StatsDisplay", ref created, ref found);
             if (statsDisplay != null)
             {
                 statsDisplay.anchorMin = statsDisplay.anchorMax = new Vector2(0.5f, 0.5f);
                 statsDisplay.sizeDelta = new Vector2(400f, 400f);
                 statsDisplay.anchoredPosition = new Vector2(-256f, 600f);
                 if (statsDisplay.GetComponent<CanvasRenderer>() == null) statsDisplay.gameObject.AddComponent<CanvasRenderer>();
-                SceneScaffoldHelper.EnsureNineSliceFrame(statsDisplay, ref created, ref found);
-                var statsPanel = SceneScaffoldHelper.EnsureImage(statsDisplay, "Panel", false, ref created, ref found);
+                ScaffoldHelper.EnsureNineSliceFrame(statsDisplay, ref created, ref found);
+                var statsPanel = ScaffoldHelper.EnsureImage(statsDisplay, "Panel", false, ref created, ref found);
                 if (statsPanel != null)
                 {
                     statsPanel.anchorMin = statsPanel.anchorMax = new Vector2(0.5f, 0.5f);
@@ -140,15 +140,15 @@ public static class PartyManagerScaffold
             }
 
             // EquipmentDisplay
-            var equipDisplay = SceneScaffoldHelper.EnsureRectChild(canvas, "EquipmentDisplay", ref created, ref found);
+            var equipDisplay = ScaffoldHelper.EnsureRectChild(canvas, "EquipmentDisplay", ref created, ref found);
             if (equipDisplay != null)
             {
                 equipDisplay.anchorMin = equipDisplay.anchorMax = new Vector2(0.5f, 0.5f);
                 equipDisplay.sizeDelta = new Vector2(400f, 400f);
                 equipDisplay.anchoredPosition = new Vector2(256f, 600f);
                 if (equipDisplay.GetComponent<CanvasRenderer>() == null) equipDisplay.gameObject.AddComponent<CanvasRenderer>();
-                SceneScaffoldHelper.EnsureNineSliceFrame(equipDisplay, ref created, ref found);
-                var equipPanel = SceneScaffoldHelper.EnsureImage(equipDisplay, "Panel", false, ref created, ref found);
+                ScaffoldHelper.EnsureNineSliceFrame(equipDisplay, ref created, ref found);
+                var equipPanel = ScaffoldHelper.EnsureImage(equipDisplay, "Panel", false, ref created, ref found);
                 if (equipPanel != null)
                 {
                     equipPanel.anchorMin = equipPanel.anchorMax = new Vector2(0f, 1f);
@@ -160,17 +160,17 @@ public static class PartyManagerScaffold
             }
 
             // AddRemovePartyMemberButton — 560×128, center
-            var addRemove = SceneScaffoldHelper.EnsureButton(canvas, "AddRemovePartyMemberButton", "Add to Party", ref created, ref found);
+            var addRemove = ScaffoldHelper.EnsureButton(canvas, "AddRemovePartyMemberButton", "Add to Party", ref created, ref found);
             if (addRemove != null)
             {
                 addRemove.anchorMin = addRemove.anchorMax = new Vector2(0.5f, 0.5f);
                 addRemove.sizeDelta = new Vector2(560f, 128f);
                 addRemove.anchoredPosition = Vector2.zero;
-                SceneScaffoldHelper.EnsureNineSliceFrame(addRemove, ref created, ref found);
+                ScaffoldHelper.EnsureNineSliceFrame(addRemove, ref created, ref found);
             }
 
             // PartyMemberCountLabel — top-right
-            var countLabel = SceneScaffoldHelper.EnsureLabel(canvas, "PartyMemberCountLabel", "Party: 0/4", ref created, ref found);
+            var countLabel = ScaffoldHelper.EnsureLabel(canvas, "PartyMemberCountLabel", "Party: 0/4", ref created, ref found);
             if (countLabel != null)
             {
                 countLabel.anchorMin = countLabel.anchorMax = new Vector2(1f, 1f);
@@ -179,7 +179,7 @@ public static class PartyManagerScaffold
             }
 
             // TestTooltip — debug
-            var tooltip = SceneScaffoldHelper.EnsureButton(canvas, "TestTooltip", "", ref created, ref found);
+            var tooltip = ScaffoldHelper.EnsureButton(canvas, "TestTooltip", "", ref created, ref found);
             if (tooltip != null)
             {
                 tooltip.anchorMin = tooltip.anchorMax = new Vector2(0.5f, 0.5f);
@@ -188,7 +188,7 @@ public static class PartyManagerScaffold
             }
 
             // BackButton — 128×64 at top-left
-            var back = SceneScaffoldHelper.EnsureButton(canvas, "BackButton", "Back", ref created, ref found);
+            var back = ScaffoldHelper.EnsureButton(canvas, "BackButton", "Back", ref created, ref found);
             if (back != null)
             {
                 back.anchorMin = back.anchorMax = new Vector2(0f, 1f);
@@ -196,10 +196,10 @@ public static class PartyManagerScaffold
                 back.anchoredPosition = new Vector2(137.63f, -171.1f);
             }
 
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
     /// <summary>Creates a stat row: Label + Value + Bar (Back/Fill/Front[OFF]).</summary>
@@ -305,18 +305,18 @@ public static class PartyManagerScaffold
         created++;
     }
 
-    [MenuItem("Tools/Scenes/Party Manager/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Party Manager/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Party Manager/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

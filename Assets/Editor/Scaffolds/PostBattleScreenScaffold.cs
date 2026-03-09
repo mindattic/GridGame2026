@@ -36,15 +36,15 @@ public static class PostBattleScreenScaffold
 {
     private const string SceneName = "PostBattleScreen";
 
-    [MenuItem("Tools/Scenes/Post Battle Screen/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Post Battle Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
 
         // Background GO (SpriteRenderer, starts inactive)
         var bgGO = GameObject.Find("Background");
@@ -58,7 +58,7 @@ public static class PostBattleScreenScaffold
             created++;
         }
 
-        SceneScaffoldHelper.EnsureEmptyGameObject("PostBattleManager", ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("PostBattleManager", ref created, ref found);
 
         // Canvas — no background image on Canvas itself in this scene
         var canvasGO = GameObject.Find("Canvas");
@@ -87,7 +87,7 @@ public static class PostBattleScreenScaffold
         if (canvas != null)
         {
             // Background (UI) — canvas child with Image
-            var uiBg = SceneScaffoldHelper.EnsureImage(canvas, "Background", false, ref created, ref found);
+            var uiBg = ScaffoldHelper.EnsureImage(canvas, "Background", false, ref created, ref found);
             if (uiBg != null)
             {
                 uiBg.anchorMin = Vector2.zero; uiBg.anchorMax = Vector2.one;
@@ -96,7 +96,7 @@ public static class PostBattleScreenScaffold
             }
 
             // Title — anchored to top, full width, 64px tall
-            var title = SceneScaffoldHelper.EnsureLabel(canvas, "Title", "Battle Results", ref created, ref found);
+            var title = ScaffoldHelper.EnsureLabel(canvas, "Title", "Battle Results", ref created, ref found);
             if (title != null)
             {
                 title.anchorMin = new Vector2(0f, 1f); title.anchorMax = new Vector2(1f, 1f);
@@ -106,7 +106,7 @@ public static class PostBattleScreenScaffold
             }
 
             // ScrollView
-            var sv = SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
+            var sv = ScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
             if (sv != null)
             {
                 sv.pivot = new Vector2(0.5f, 1f);
@@ -114,7 +114,7 @@ public static class PostBattleScreenScaffold
             }
 
             // BottomBar with NextButton
-            var bottomBar = SceneScaffoldHelper.EnsureImage(canvas, "BottomBar", false, ref created, ref found);
+            var bottomBar = ScaffoldHelper.EnsureImage(canvas, "BottomBar", false, ref created, ref found);
             if (bottomBar != null)
             {
                 bottomBar.anchorMin = Vector2.zero;
@@ -122,7 +122,7 @@ public static class PostBattleScreenScaffold
                 bottomBar.sizeDelta = new Vector2(840f, 110f);
                 bottomBar.anchoredPosition = new Vector2(0f, 225f);
 
-                var next = SceneScaffoldHelper.EnsureButton(bottomBar, "NextButton", "Next", ref created, ref found);
+                var next = ScaffoldHelper.EnsureButton(bottomBar, "NextButton", "Next", ref created, ref found);
                 if (next != null)
                 {
                     next.anchorMin = next.anchorMax = new Vector2(1f, 0.5f);
@@ -132,25 +132,25 @@ public static class PostBattleScreenScaffold
                 }
             }
 
-            SceneScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
     [MenuItem("Tools/Scenes/Post Battle Screen/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Post Battle Screen/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }

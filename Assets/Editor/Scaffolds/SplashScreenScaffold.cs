@@ -38,24 +38,24 @@ public static class SplashScreenScaffold
 {
     private const string SceneName = "SplashScreen";
 
-    [MenuItem("Tools/Scenes/Splash Screen/Create Scaffolding")]
+    //[MenuItem("Tools/Scenes/Splash Screen/Create Scaffolding")]
     public static void CreateScaffolding()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
         int created = 0;
         int found = 0;
 
         // ── Root Objects ──
-        SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
-        SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SplashScreenManager", ref created, ref found);
+        ScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
+        ScaffoldHelper.EnsureEventSystem(ref created, ref found);
+        ScaffoldHelper.EnsureEmptyGameObject("SplashScreenManager", ref created, ref found);
 
         // ── Canvas (Camera mode for this scene) ──
-        var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
+        var canvas = ScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
             // Full — full-screen splash graphic (RawImage)
-            var full = SceneScaffoldHelper.EnsureRectChild(canvas, "Full", ref created, ref found);
+            var full = ScaffoldHelper.EnsureRectChild(canvas, "Full", ref created, ref found);
             if (full != null)
             {
                 full.anchorMin = Vector2.zero;
@@ -67,7 +67,7 @@ public static class SplashScreenScaffold
             }
 
             // Window — swinging animated window
-            var window = SceneScaffoldHelper.EnsureImage(canvas, "Window", false, ref created, ref found);
+            var window = ScaffoldHelper.EnsureImage(canvas, "Window", false, ref created, ref found);
             if (window != null)
             {
                 window.anchorMin = window.anchorMax = new Vector2(0.5f, 0.5f);
@@ -77,7 +77,7 @@ public static class SplashScreenScaffold
             }
 
             // CanvasParticleEmitter — particle overlay
-            var emitter = SceneScaffoldHelper.EnsureImage(canvas, "CanvasParticleEmitter", false, ref created, ref found);
+            var emitter = ScaffoldHelper.EnsureImage(canvas, "CanvasParticleEmitter", false, ref created, ref found);
             if (emitter != null)
             {
                 emitter.anchorMin = emitter.anchorMax = new Vector2(0.5f, 0.5f);
@@ -86,24 +86,24 @@ public static class SplashScreenScaffold
             }
 
             // FadeOverlay
-            SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+            ScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
-        SceneScaffoldHelper.LogResults(SceneName, created, found);
+        ScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    [MenuItem("Tools/Scenes/Splash Screen/Clear Scene")]
+    //[MenuItem("Tools/Scenes/Splash Screen/Clear Scene")]
     public static void ClearScene()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjects();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjects();
     }
 
     [MenuItem("Tools/Scenes/Splash Screen/Clear && Recreate")]
     public static void ClearAndRecreate()
     {
-        if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        if (!ScaffoldHelper.OpenScene(SceneName)) return;
+        ScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
     }
 }
