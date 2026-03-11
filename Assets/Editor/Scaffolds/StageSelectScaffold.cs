@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -48,6 +49,13 @@ public static class StageSelectScaffold
             SceneScaffoldHelper.EnsureTitle(canvas, "Select Stage", ref created, ref found);
             SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
             SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+
+            // Wire BackButton → StageSelectManager.OnBackButtonClicked
+            var backBtn = canvas.Find("BackButton")?.GetComponent<Button>();
+            var stageSelectManager = mgr.GetComponent<StageSelectManager>();
+            if (backBtn != null && stageSelectManager != null)
+                SceneScaffoldHelper.WireOnClick(backBtn, new UnityAction(stageSelectManager.OnBackButtonClicked));
+
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
@@ -61,9 +69,14 @@ public static class StageSelectScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Stage Select/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Stage Select/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the StageSelect scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

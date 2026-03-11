@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using UnityEditor.Events;
 using TMPro;
 using Scripts.Canvas;
 using Scripts.Managers;
@@ -53,6 +55,66 @@ using Scripts.Hub;
 /// </summary>
 public static class SceneScaffoldHelper
 {
+    // ===================== Sprite Asset Paths =====================
+
+    /// <summary>Standard sprite asset paths used across all scaffolded scenes.</summary>
+    public static class SpritePaths
+    {
+        public const string GunMetal     = "Assets/Sprites/GunMetal16x16.png";
+        public const string Black        = "Assets/Sprites/Black32x32.png";
+        public const string GreenButton  = "Assets/Sprites/GUI/Green-Button.png";
+        public const string Back512      = "Assets/Sprites/GUI/Back.512x128.png";
+        public const string Button128    = "Assets/Sprites/GUI/Button.128x64.png";
+        public const string UserIcon     = "Assets/Sprites/UserIconWhite.png";
+        public const string SplashWindow = "Assets/Sprites/SplashScreen-Window.png";
+    }
+
+    /// <summary>TMP font asset paths used across all scaffolded scenes.</summary>
+    public static class FontPaths
+    {
+        public const string Attic    = "Assets/Fonts/Attic.asset";
+        public const string Consolas = "Assets/Fonts/Consolas.asset";
+    }
+
+    /// <summary>Loads a TMP_FontAsset from the AssetDatabase by path.</summary>
+    public static TMP_FontAsset LoadFont(string assetPath)
+    {
+        if (string.IsNullOrEmpty(assetPath)) return null;
+        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(assetPath);
+        if (font == null)
+            Debug.LogWarning($"[SceneScaffold] Font not found: {assetPath}");
+        return font;
+    }
+
+    /// <summary>Loads a Sprite from the AssetDatabase by path (e.g. "Assets/Sprites/Foo.png").</summary>
+    public static Sprite LoadSprite(string assetPath)
+    {
+        if (string.IsNullOrEmpty(assetPath)) return null;
+        var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+        if (sprite == null)
+            Debug.LogWarning($"[SceneScaffold] Sprite not found: {assetPath}");
+        return sprite;
+    }
+
+    /// <summary>Loads a Unity built-in UI sprite (UISprite, UIMask, Background, Knob, etc.).</summary>
+    public static Sprite LoadBuiltinSprite(string name = "UISprite")
+    {
+        return AssetDatabase.GetBuiltinExtraResource<Sprite>($"UI/Skin/{name}.psd");
+    }
+
+    /// <summary>
+    /// Wires a persistent onClick listener on a Button to call a void method.
+    /// Clears existing persistent listeners first to avoid duplicates on re-scaffold.
+    /// The UnityAction must target a method on a UnityEngine.Object (e.g. MonoBehaviour).
+    /// </summary>
+    public static void WireOnClick(Button button, UnityAction action)
+    {
+        if (button == null || action == null) return;
+        for (int i = button.onClick.GetPersistentEventCount() - 1; i >= 0; i--)
+            UnityEventTools.RemovePersistentListener(button.onClick, i);
+        UnityEventTools.AddVoidPersistentListener(button.onClick, action);
+    }
+
     // ===================== Root-Level Objects =====================
 
     /// <summary>Creates an orthographic Camera if it does not already exist.</summary>
@@ -144,7 +206,8 @@ public static class SceneScaffoldHelper
         go.AddComponent<CanvasRenderer>();
 
         var bgImg = go.AddComponent<Image>();
-        bgImg.color = Color.black;
+        bgImg.sprite = LoadSprite(SpritePaths.GunMetal);
+        bgImg.color = Color.white;
         bgImg.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
@@ -171,6 +234,7 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
+        img.sprite = LoadSprite(SpritePaths.Black);
         img.color = Color.black;
         img.raycastTarget = true;
 
@@ -205,6 +269,9 @@ public static class SceneScaffoldHelper
         var top = FindOrCreateUI(cutout, "Top", ref created, ref found);
         if (top != null)
         {
+            var topImg = top.GetComponent<Image>();
+            if (topImg != null) topImg.sprite = LoadSprite(SpritePaths.Black);
+
             var topRT = top.GetComponent<RectTransform>();
             topRT.anchorMin = new Vector2(0f, 1f);
             topRT.anchorMax = Vector2.one;
@@ -229,6 +296,9 @@ public static class SceneScaffoldHelper
         var bottom = FindOrCreateUI(cutout, "Bottom", ref created, ref found);
         if (bottom != null)
         {
+            var btmImg = bottom.GetComponent<Image>();
+            if (btmImg != null) btmImg.sprite = LoadSprite(SpritePaths.Black);
+
             var btmRT = bottom.GetComponent<RectTransform>();
             btmRT.anchorMin = Vector2.zero;
             btmRT.anchorMax = new Vector2(1f, 0f);
@@ -260,11 +330,13 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.font = LoadFont(FontPaths.Attic);
         tmp.text = text;
-        tmp.fontSize = 36;
+        tmp.fontSize = 64;
         tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
+        tmp.alignment = TextAlignmentOptions.Top;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, "Create Title");
         created++;
@@ -293,7 +365,8 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+        img.sprite = LoadSprite(SpritePaths.GreenButton);
+        img.color = Color.white;
         img.raycastTarget = true;
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
@@ -307,11 +380,13 @@ public static class SceneScaffoldHelper
         labelRT.anchoredPosition = Vector2.zero;
         labelGO.AddComponent<CanvasRenderer>();
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+        tmp.font = LoadFont(FontPaths.Attic);
         tmp.text = "Back";
-        tmp.fontSize = 24;
+        tmp.fontSize = 32;
         tmp.color = Color.white;
         tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, "Create BackButton");
         created++;
@@ -342,7 +417,8 @@ public static class SceneScaffoldHelper
 
         svGO.AddComponent<CanvasRenderer>();
         var svImg = svGO.AddComponent<Image>();
-        svImg.color = new Color(0.1f, 0.1f, 0.12f, 0.5f);
+        svImg.color = new Color(1f, 1f, 1f, 0f);
+        svImg.type = Image.Type.Sliced;
         svImg.raycastTarget = true;
 
         // Viewport — stretch with -17px right for scrollbar, Mask + ScrollRect
@@ -357,6 +433,8 @@ public static class SceneScaffoldHelper
         vpRT.anchoredPosition = Vector2.zero;
         vpGO.AddComponent<CanvasRenderer>();
         var vpImg = vpGO.AddComponent<Image>();
+        vpImg.sprite = LoadBuiltinSprite("UIMask");
+        vpImg.type = Image.Type.Sliced;
         vpImg.raycastTarget = true;
         var mask = vpGO.AddComponent<Mask>();
         mask.showMaskGraphic = false;
@@ -431,8 +509,9 @@ public static class SceneScaffoldHelper
         return rt;
     }
 
-    /// <summary>Creates an Image child. If stretch is true, fills the parent.</summary>
-    public static RectTransform EnsureImage(RectTransform parent, string name, bool stretch, ref int created, ref int found)
+    /// <summary>Creates an Image child. If stretch is true, fills the parent.
+    /// Optionally accepts a sprite asset path.</summary>
+    public static RectTransform EnsureImage(RectTransform parent, string name, bool stretch, ref int created, ref int found, string spritePath = null)
     {
         if (parent == null) return null;
         var existing = parent.Find(name);
@@ -446,6 +525,8 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
+        if (!string.IsNullOrEmpty(spritePath))
+            img.sprite = LoadSprite(spritePath);
         img.color = Color.white;
         img.raycastTarget = false;
 
@@ -454,8 +535,9 @@ public static class SceneScaffoldHelper
         return rt;
     }
 
-    /// <summary>Creates a Button with an Image background and a TMP Label child.</summary>
-    public static RectTransform EnsureButton(RectTransform parent, string name, string label, ref int created, ref int found)
+    /// <summary>Creates a Button with an Image background and a TMP Label child.
+    /// Optionally accepts a sprite asset path for the Image source.</summary>
+    public static RectTransform EnsureButton(RectTransform parent, string name, string label, ref int created, ref int found, string spritePath = null)
     {
         if (parent == null) return null;
         var existing = parent.Find(name);
@@ -470,7 +552,15 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+        if (!string.IsNullOrEmpty(spritePath))
+        {
+            img.sprite = LoadSprite(spritePath);
+            img.color = Color.white;
+        }
+        else
+        {
+            img.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+        }
         img.raycastTarget = true;
 
         var btn = go.AddComponent<Button>();
@@ -484,18 +574,21 @@ public static class SceneScaffoldHelper
         StretchFill(labelRT);
         labelGO.AddComponent<CanvasRenderer>();
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+        tmp.font = LoadFont(FontPaths.Attic);
         tmp.text = label;
         tmp.fontSize = 24;
         tmp.color = Color.white;
         tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
         created++;
         return rt;
     }
 
-    /// <summary>Creates a TMP label child.</summary>
+    /// <summary>Creates a TMP label child. Uses Attic font, Top alignment, no-wrap by default.
+    /// Callers can override font/alignment/wrapping on the returned RectTransform's TMP component.</summary>
     public static RectTransform EnsureLabel(RectTransform parent, string name, string text, ref int created, ref int found)
     {
         if (parent == null) return null;
@@ -510,12 +603,13 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var tmp = go.AddComponent<TextMeshProUGUI>();
+        tmp.font = LoadFont(FontPaths.Attic);
         tmp.text = text;
         tmp.fontSize = 24;
         tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.TopLeft;
-        tmp.enableWordWrapping = true;
-        tmp.raycastTarget = false;
+        tmp.alignment = TextAlignmentOptions.Top;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
         created++;
@@ -697,7 +791,9 @@ public static class SceneScaffoldHelper
 
         go.AddComponent<CanvasRenderer>();
         var bgImg = go.AddComponent<Image>();
-        bgImg.color = new Color(0.15f, 0.15f, 0.18f, 0.5f);
+        bgImg.sprite = LoadBuiltinSprite("Background");
+        bgImg.type = Image.Type.Sliced;
+        bgImg.color = vertical ? Color.white : new Color(1f, 1f, 1f, 0f);
 
         var scrollbar = go.AddComponent<Scrollbar>();
         scrollbar.direction = vertical ? Scrollbar.Direction.BottomToTop : Scrollbar.Direction.LeftToRight;
@@ -717,7 +813,9 @@ public static class SceneScaffoldHelper
         StretchFill(hRT);
         hGO.AddComponent<CanvasRenderer>();
         var hImg = hGO.AddComponent<Image>();
-        hImg.color = new Color(0.4f, 0.4f, 0.45f, 0.8f);
+        hImg.sprite = LoadBuiltinSprite("UISprite");
+        hImg.type = Image.Type.Sliced;
+        hImg.color = Color.white;
 
         scrollbar.handleRect = hRT;
         scrollbar.targetGraphic = hImg;

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
@@ -148,9 +148,14 @@ public static class PostBattleScreenScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Post Battle Screen/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Post Battle Screen/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the PostBattleScreen scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

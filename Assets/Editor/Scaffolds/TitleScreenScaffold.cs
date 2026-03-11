@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -113,7 +114,7 @@ public static class TitleScreenScaffold
             }
 
             // ProfileButton — bottom-center
-            var profile = SceneScaffoldHelper.EnsureButton(canvas, "ProfileButton", "Profile", ref created, ref found);
+            var profile = SceneScaffoldHelper.EnsureButton(canvas, "ProfileButton", "Profile", ref created, ref found, SceneScaffoldHelper.SpritePaths.UserIcon);
             if (profile != null)
             {
                 profile.anchorMin = profile.anchorMax = new Vector2(0.5f, 0f);
@@ -132,6 +133,39 @@ public static class TitleScreenScaffold
 
             // FadeOverlay
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+
+            // Wire onClick events
+            var titleManager = mgr.GetComponent<TitleScreenManager>();
+            if (titleManager != null)
+            {
+                var continueBtn = canvas.Find("Panel/ContinueButton")?.GetComponent<Button>();
+                if (continueBtn != null)
+                    SceneScaffoldHelper.WireOnClick(continueBtn, new UnityAction(titleManager.OnContinueButtonClicked));
+
+                var loadBtn = canvas.Find("Panel/LoadGameButton")?.GetComponent<Button>();
+                if (loadBtn != null)
+                    SceneScaffoldHelper.WireOnClick(loadBtn, new UnityAction(titleManager.OnLoadGameButtonClicked));
+
+                var settingsBtn = canvas.Find("Panel/SettingsButton")?.GetComponent<Button>();
+                if (settingsBtn != null)
+                    SceneScaffoldHelper.WireOnClick(settingsBtn, new UnityAction(titleManager.OnSettingsButtonClicked));
+
+                var creditsBtn = canvas.Find("Panel/CreditsButton")?.GetComponent<Button>();
+                if (creditsBtn != null)
+                    SceneScaffoldHelper.WireOnClick(creditsBtn, new UnityAction(titleManager.OnCreditsButtonClicked));
+
+                var endlessBtn = canvas.Find("Panel/EndlessModeButton")?.GetComponent<Button>();
+                if (endlessBtn != null)
+                    SceneScaffoldHelper.WireOnClick(endlessBtn, new UnityAction(titleManager.OnEndlessModeClicked));
+
+                var partyBtn = canvas.Find("Panel/PartyManagerButton")?.GetComponent<Button>();
+                if (partyBtn != null)
+                    SceneScaffoldHelper.WireOnClick(partyBtn, new UnityAction(titleManager.OnPartyManagerClicked));
+
+                var profileBtn = canvas.Find("ProfileButton")?.GetComponent<Button>();
+                if (profileBtn != null)
+                    SceneScaffoldHelper.WireOnClick(profileBtn, new UnityAction(titleManager.OnChangeProfileButtonClicked));
+            }
         }
 
         SceneScaffoldHelper.LogResults(SceneName, created, found);
@@ -151,7 +185,8 @@ public static class TitleScreenScaffold
 
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+        img.sprite = SceneScaffoldHelper.LoadSprite(SceneScaffoldHelper.SpritePaths.Back512);
+        img.color = Color.white;
         img.raycastTarget = true;
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
@@ -166,11 +201,13 @@ public static class TitleScreenScaffold
         labelRT.offsetMax = Vector2.zero;
         labelGO.AddComponent<CanvasRenderer>();
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+        tmp.font = SceneScaffoldHelper.LoadFont(SceneScaffoldHelper.FontPaths.Attic);
         tmp.text = label;
         tmp.fontSize = 32;
         tmp.color = Color.white;
         tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
+        tmp.enableWordWrapping = false;
+        tmp.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
         created++;
@@ -183,9 +220,14 @@ public static class TitleScreenScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Title Screen/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Title Screen/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the TitleScreen scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -54,6 +55,13 @@ public static class ProfileSelectScaffold
             SceneScaffoldHelper.EnsureTitle(canvas, "Select Profile", ref created, ref found);
             SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
             SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+
+            // Wire BackButton → ProfileSelectManager.OnBackButtonClicked
+            var backBtn = canvas.Find("BackButton")?.GetComponent<Button>();
+            var profileSelectManager = mgr.GetComponent<ProfileSelectManager>();
+            if (backBtn != null && profileSelectManager != null)
+                SceneScaffoldHelper.WireOnClick(backBtn, new UnityAction(profileSelectManager.OnBackButtonClicked));
+
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
@@ -67,9 +75,14 @@ public static class ProfileSelectScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Profile Select/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Profile Select/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the ProfileSelect scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

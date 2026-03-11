@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -48,6 +49,13 @@ public static class SaveFileSelectScaffold
             SceneScaffoldHelper.EnsureTitle(canvas, "Load Game", ref created, ref found);
             SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
             SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+
+            // Wire BackButton → SaveFileSelectManager.OnBackButtonClicked
+            var backBtn = canvas.Find("BackButton")?.GetComponent<Button>();
+            var saveFileSelectManager = mgr.GetComponent<SaveFileSelectManager>();
+            if (backBtn != null && saveFileSelectManager != null)
+                SceneScaffoldHelper.WireOnClick(backBtn, new UnityAction(saveFileSelectManager.OnBackButtonClicked));
+
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
@@ -61,9 +69,14 @@ public static class SaveFileSelectScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Save File Select/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Save File Select/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the SaveFileSelect scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -60,6 +61,15 @@ public static class CreditsScaffold
                 sv.pivot = new Vector2(0.5f, 1f);
                 sv.anchoredPosition = new Vector2(0f, -256f);
 
+                // Vertical scrollbar handle — red accent color from scene YAML: rgba(1, 0, 0.2, 1)
+                var vBarHandle = sv.Find("Scrollbar Vertical/Sliding Area/Handle");
+                if (vBarHandle != null)
+                {
+                    var handleImg = vBarHandle.GetComponent<Image>();
+                    if (handleImg != null)
+                        handleImg.color = new Color(1f, 0f, 0.2f, 1f);
+                }
+
                 // Textarea inside Content
                 var viewport = sv.Find("Viewport");
                 if (viewport != null)
@@ -71,15 +81,32 @@ public static class CreditsScaffold
                             content.GetComponent<RectTransform>(), "Textarea", "", ref created, ref found);
                         if (textarea != null)
                         {
-                            textarea.anchorMin = textarea.anchorMax = new Vector2(0f, 1f);
+                            textarea.anchorMin = textarea.anchorMax = Vector2.zero;
                             textarea.sizeDelta = new Vector2(1100f, 0f);
-                            textarea.anchoredPosition = new Vector2(531.5f, -150f);
+                            textarea.anchoredPosition = Vector2.zero;
+
+                            // Override defaults: Consolas font, size 36, wrapping on
+                            var textTMP = textarea.GetComponent<TextMeshProUGUI>();
+                            if (textTMP != null)
+                            {
+                                textTMP.font = SceneScaffoldHelper.LoadFont(SceneScaffoldHelper.FontPaths.Consolas);
+                                textTMP.fontSize = 36;
+                                textTMP.alignment = TextAlignmentOptions.Top;
+                                textTMP.enableWordWrapping = true;
+                            }
                         }
                     }
                 }
             }
 
             SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
+
+            // Wire BackButton → CreditsManager.OnBackButtonClicked
+            var backBtn = canvas.Find("BackButton")?.GetComponent<Button>();
+            var creditsManager = mgr.GetComponent<CreditsManager>();
+            if (backBtn != null && creditsManager != null)
+                SceneScaffoldHelper.WireOnClick(backBtn, new UnityAction(creditsManager.OnBackButtonClicked));
+
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         }
 
@@ -92,9 +119,14 @@ public static class CreditsScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Credits/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Credits/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the Credits scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

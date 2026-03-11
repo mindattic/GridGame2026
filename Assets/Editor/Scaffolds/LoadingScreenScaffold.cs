@@ -1,7 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using Scripts.Instances;
+using Scripts.Utilities;
 
 /// <summary>
 /// LOADINGSCREENSCAFFOLD - Editor tool to scaffold the LoadingScreen scene.
@@ -47,8 +49,10 @@ public static class LoadingScreenScaffold
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
 
         // LoadingScreen manager GO (off-screen, holds LoadingScreenManager)
-        SceneScaffoldHelper.EnsureEmptyGameObject("LoadingScreen", ref created, ref found);
-        SceneScaffoldHelper.EnsureEmptyGameObject("SceneLoader", ref created, ref found);
+        var loadingGO = SceneScaffoldHelper.EnsureEmptyGameObject("LoadingScreen", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<LoadingScreenManager>(loadingGO);
+        var sceneLoaderGO = SceneScaffoldHelper.EnsureEmptyGameObject("SceneLoader", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<SceneLoader>(sceneLoaderGO);
 
         // Canvas — no background Image in this scene
         var canvasGO = GameObject.Find("Canvas");
@@ -153,9 +157,14 @@ public static class LoadingScreenScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Loading Screen/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Loading Screen/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the LoadingScreen scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

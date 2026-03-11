@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
 using Scripts.Managers;
@@ -53,7 +54,7 @@ public static class SettingsScaffold
             SceneScaffoldHelper.EnsureScrollView(canvas, ref created, ref found);
 
             // DefaultsButton — bottom-left area
-            var defaults = SceneScaffoldHelper.EnsureButton(canvas, "DefaultsButton", "Defaults", ref created, ref found);
+            var defaults = SceneScaffoldHelper.EnsureButton(canvas, "DefaultsButton", "Defaults", ref created, ref found, SceneScaffoldHelper.SpritePaths.Button128);
             if (defaults != null)
             {
                 defaults.anchorMin = defaults.anchorMax = new Vector2(0.5f, 0.5f);
@@ -62,7 +63,7 @@ public static class SettingsScaffold
             }
 
             // SaveButton — bottom-right area
-            var save = SceneScaffoldHelper.EnsureButton(canvas, "SaveButton", "Save", ref created, ref found);
+            var save = SceneScaffoldHelper.EnsureButton(canvas, "SaveButton", "Save", ref created, ref found, SceneScaffoldHelper.SpritePaths.Button128);
             if (save != null)
             {
                 save.anchorMin = save.anchorMax = new Vector2(0.5f, 0.5f);
@@ -72,6 +73,23 @@ public static class SettingsScaffold
 
             SceneScaffoldHelper.EnsureBackButton(canvas, ref created, ref found);
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+
+            // Wire onClick events
+            var settingsManager = mgr.GetComponent<SettingsManager>();
+            if (settingsManager != null)
+            {
+                var defaultsBtn = canvas.Find("DefaultsButton")?.GetComponent<Button>();
+                if (defaultsBtn != null)
+                    SceneScaffoldHelper.WireOnClick(defaultsBtn, new UnityAction(settingsManager.OnDefaultsButtonClick));
+
+                var saveBtn = canvas.Find("SaveButton")?.GetComponent<Button>();
+                if (saveBtn != null)
+                    SceneScaffoldHelper.WireOnClick(saveBtn, new UnityAction(settingsManager.OnSaveButtonClicked));
+
+                var backBtn = canvas.Find("BackButton")?.GetComponent<Button>();
+                if (backBtn != null)
+                    SceneScaffoldHelper.WireOnClick(backBtn, new UnityAction(settingsManager.OnBackButtonClicked));
+            }
         }
 
         SceneScaffoldHelper.LogResults(SceneName, created, found);
@@ -84,9 +102,14 @@ public static class SettingsScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Settings/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Settings/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the Settings scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();

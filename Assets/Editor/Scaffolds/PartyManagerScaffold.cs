@@ -1,7 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
+using Scripts.Managers;
+using Scripts.Instances;
 
 /// <summary>
 /// PARTYMANAGERSCAFFOLD - Editor tool to scaffold the PartyManager scene.
@@ -90,12 +93,14 @@ public static class PartyManagerScaffold
         {
             bgGO = new GameObject("Background");
             bgGO.AddComponent<SpriteRenderer>();
+            bgGO.AddComponent<BackgroundInstance>();
             bgGO.SetActive(false);
             Undo.RegisterCreatedObjectUndo(bgGO, "Create Background");
             created++;
         }
 
-        SceneScaffoldHelper.EnsureEmptyGameObject("PartyManager", ref created, ref found);
+        var mgr = SceneScaffoldHelper.EnsureEmptyGameObject("PartyManager", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<PartyManager>(mgr);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
@@ -196,6 +201,19 @@ public static class PartyManagerScaffold
             }
 
             SceneScaffoldHelper.EnsureFadeOverlay(canvas, ref created, ref found);
+
+            // Wire onClick events
+            var partyManager = mgr.GetComponent<PartyManager>();
+            if (partyManager != null)
+            {
+                var tooltipBtn = canvas.Find("TestTooltip")?.GetComponent<Button>();
+                if (tooltipBtn != null)
+                    SceneScaffoldHelper.WireOnClick(tooltipBtn, new UnityAction(partyManager.OnEquipmentTooltipAnchorClicked));
+
+                var backButton = canvas.Find("BackButton")?.GetComponent<Button>();
+                if (backButton != null)
+                    SceneScaffoldHelper.WireOnClick(backButton, new UnityAction(partyManager.OnBackButtonClicked));
+            }
         }
 
         SceneScaffoldHelper.LogResults(SceneName, created, found);
@@ -310,9 +328,14 @@ public static class PartyManagerScaffold
         SceneScaffoldHelper.ClearAllRootObjects();
     }
 
-    [MenuItem("Tools/Scenes/Party Manager/Clear && Recreate")]
-    public static void ClearAndRecreate()
+    [MenuItem("Tools/Scenes/Party Manager/Load")]
+    public static void Load()
     {
+        if (!EditorUtility.DisplayDialog("Load",
+            "Clear the PartyManager scene and recreate all GameObjects from the scaffold?\n\n" +
+            "Any unsaved scene changes will be lost.",
+            "Load", "Cancel"))
+            return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
         SceneScaffoldHelper.ClearAllRootObjectsSilent();
         CreateScaffolding();
