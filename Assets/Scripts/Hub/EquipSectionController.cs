@@ -111,12 +111,12 @@ public class EquipSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Left column — party members with equipped slot count
-        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
-        // Right-top — 6 equipment slot rows (Weapon/Armor/Helmet/Boots/Ring/Amulet)
-        slotListContainer = rt.Find(GameObjectHelper.Hub.SlotList)?.GetComponent<RectTransform>();
-        // Right-bottom — inventory items matching the browsed slot
-        itemPickerContainer = rt.Find(GameObjectHelper.Hub.ItemPicker)?.GetComponent<RectTransform>();
+        // Left column — party members (inside HeroScrollView/Viewport)
+        heroListContainer = rt.Find("HeroScrollView/Viewport/" + GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Right-top — 6 equipment slot rows (inside SlotScrollView/Viewport)
+        slotListContainer = rt.Find("SlotScrollView/Viewport/" + GameObjectHelper.Hub.SlotList)?.GetComponent<RectTransform>();
+        // Right-bottom — inventory items matching the browsed slot (inside ItemPickerScrollView/Viewport)
+        itemPickerContainer = rt.Find("ItemPickerScrollView/Viewport/" + GameObjectHelper.Hub.ItemPicker)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Right-middle — base stats + equipment bonuses + totals

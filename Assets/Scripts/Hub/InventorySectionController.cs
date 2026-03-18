@@ -114,8 +114,8 @@ public class InventorySectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Left column — scrollable filtered/sorted item rows + summary row
-        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Left column — scrollable filtered item rows (inside ItemScrollView/Viewport)
+        itemListContainer = rt.Find("ItemScrollView/Viewport/" + GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Right column — full item detail (rarity, type, stats, durability, salvage)

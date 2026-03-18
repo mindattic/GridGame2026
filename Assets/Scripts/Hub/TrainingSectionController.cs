@@ -80,10 +80,10 @@ public class TrainingSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Left column — party members with learned skill count
-        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
-        // Right column — available trainings for selected hero
-        trainingListContainer = rt.Find(GameObjectHelper.Hub.TrainingList)?.GetComponent<RectTransform>();
+        // Left column — party members (inside HeroScrollView/Viewport)
+        heroListContainer = rt.Find("HeroScrollView/Viewport/" + GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Right column — available trainings for selected hero (inside TrainingScrollView/Viewport)
+        trainingListContainer = rt.Find("TrainingScrollView/Viewport/" + GameObjectHelper.Hub.TrainingList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Right header — "Training for: {hero}"

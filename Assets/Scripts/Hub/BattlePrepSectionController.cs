@@ -123,10 +123,10 @@ public class BattlePrepSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Top section — full hero cards (portrait, level, HP, stats, gear, skills)
-        partyListContainer = rt.Find(GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
-        // Middle section — consumable items with toggle selection for battle
-        itemListContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Top section — full hero cards (inside PartyScrollView/Viewport)
+        partyListContainer = rt.Find("PartyScrollView/Viewport/" + GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
+        // Middle section — consumable items (inside ItemScrollView/Viewport)
+        itemListContainer = rt.Find("ItemScrollView/Viewport/" + GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Bottom — aggregate party power summary (total STR/VIT/AGI, avg level)

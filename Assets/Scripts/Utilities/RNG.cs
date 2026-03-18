@@ -1,5 +1,4 @@
 using Scripts.Helpers;
-using Scripts.Helpers;
 using Scripts.Libraries;
 using Scripts.Instances.Actor;
 using System;
@@ -69,7 +68,8 @@ namespace Scripts.Utilities
 /// </summary>
 static class RNG
 {
-    [ThreadStatic] public static System.Random rng = new System.Random();
+    [ThreadStatic] private static System.Random _rng;
+    private static System.Random Rng => _rng ??= new System.Random();
 
     #region Collection Selection
 
@@ -134,13 +134,13 @@ static class RNG
         #region Numeric Ranges
 
         /// <summary>Random integer in inclusive range [min, max].</summary>
-        public static int Int(int min, int max) => rng.Next(min, max + 1);
+        public static int Int(int min, int max) => Rng.Next(min, max + 1);
 
         /// <summary>Random float in range [min, max).</summary>
-        public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
+        public static float Float(float min = 0f, float max = 1f) => (float)Rng.NextDouble() * (max - min) + min;
 
         /// <summary>Random percentage in [0, 1).</summary>
-        public static float Percent => (float)rng.NextDouble();
+        public static float Percent => (float)Rng.NextDouble();
 
         /// <summary>
         /// Random offset in [-amount, +amount] using two independent draws.
@@ -148,13 +148,11 @@ static class RNG
     public static float Range(float amount) => (-amount * Percent) + (amount * Percent);
 
     /// <summary>
-    /// Returns a random float in [minInclusive, maxInclusive] using two independent draws.
+    /// Returns a random float in [minInclusive, maxInclusive].
     /// </summary>
     public static float Range(float minInclusive, float maxInclusive)
     {
-        float lower = minInclusive * Percent;
-        float upper = maxInclusive * Percent;
-        return lower + upper;
+        return Float(minInclusive, maxInclusive);
     }
 
     /// <summary>Random boolean.</summary>

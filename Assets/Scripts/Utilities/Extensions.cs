@@ -338,14 +338,22 @@ public static class ListExtensions
         return list == null || list.Count == 0;
     }
 
+    // Fisher-Yates shuffle
     public static List<T> Shuffle<T>(this List<T> list)
     {
-        return list.OrderBy(x => Guid.NewGuid()).ToList();
+        var result = new List<T>(list);
+        for (int i = result.Count - 1; i > 0; i--)
+        {
+            int j = RNG.Int(0, i);
+            (result[i], result[j]) = (result[j], result[i]);
+        }
+        return result;
     }
 
     public static T ShuffleFirst<T>(this List<T> list)
     {
-        return list.OrderBy(x => Guid.NewGuid()).First();
+        if (list == null || list.Count == 0) return default;
+        return list[RNG.Int(0, list.Count - 1)];
     }
 
     public static void Set<T>(this List<T> list, T item)
@@ -375,9 +383,15 @@ public static class IEnumerableExtensions
         return source == null || !source.Any();
     }
 
-    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> list)
+    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
     {
-        return list.OrderBy(x => Guid.NewGuid());
+        var list = source.ToList();
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = RNG.Int(0, i);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
+        return list;
     }
 }
 
@@ -385,12 +399,19 @@ public static class ArrayExtensions
 {
     public static T[] Shuffle<T>(this T[] array)
     {
-        return array.OrderBy(x => Guid.NewGuid()).ToArray();
+        var result = (T[])array.Clone();
+        for (int i = result.Length - 1; i > 0; i--)
+        {
+            int j = RNG.Int(0, i);
+            (result[i], result[j]) = (result[j], result[i]);
+        }
+        return result;
     }
 
     public static T ShuffleFirst<T>(this T[] array)
     {
-        return array.OrderBy(x => Guid.NewGuid()).First();
+        if (array == null || array.Length == 0) return default;
+        return array[RNG.Int(0, array.Length - 1)];
     }
 }
 /// <summary>

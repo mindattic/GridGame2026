@@ -92,8 +92,8 @@ public class MedicalSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Center — scrollable list of hero HP rows + heal-all + potion rows
-        heroListContainer = rt.Find(GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
+        // Center — scrollable list of hero HP rows (inside HeroScrollView/Viewport)
+        heroListContainer = rt.Find("HeroScrollView/Viewport/" + GameObjectHelper.Hub.HeroList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Top-center — contextual heading

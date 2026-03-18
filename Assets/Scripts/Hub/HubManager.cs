@@ -113,6 +113,7 @@ public class HubManager : MonoBehaviour
         AttachTiltParallax();
         InitializeSections();
         WireButtonListeners();
+        ApplyDayNightTint();
 
         // Ensure a clean start state: disable all panels then show Party.
         GoToPartySection();
@@ -363,6 +364,33 @@ public class HubManager : MonoBehaviour
                 p.gameObject.SetActive(enable);
         }
         activePanel = panel;
+        UpdateNavHighlight(panel);
+    }
+
+    // ===================== Nav Highlight =====================
+
+    private static readonly Color NavActiveColor   = new Color(0.28f, 0.40f, 0.68f, 1.00f);
+    private static readonly Color NavInactiveColor = new Color(0.12f, 0.16f, 0.27f, 0.90f);
+
+    /// <summary>Tints the nav button that owns the active panel bright blue; dims all others.</summary>
+    private void UpdateNavHighlight(RectTransform panel)
+    {
+        void Set(Button btn, bool isActive)
+        {
+            if (btn == null) return;
+            var img = btn.targetGraphic as Image;
+            if (img != null) img.color = isActive ? NavActiveColor : NavInactiveColor;
+        }
+        Set(partyButton,      panel == partyPanel);
+        Set(shopButton,       panel == shopPanel);
+        Set(medicalButton,    panel == medicalPanel);
+        Set(residenceButton,  panel == residencePanel);
+        Set(blacksmithButton, panel == blacksmithPanel);
+        Set(trainingButton,   panel == trainingPanel);
+        Set(equipButton,      panel == equipPanel);
+        Set(inventoryButton,  panel == inventoryPanel);
+        Set(battlePrepButton, panel == battlePrepPanel);
+        // overworldButton and battleButton are never highlighted
     }
 
     // ===================== Section Navigation =====================

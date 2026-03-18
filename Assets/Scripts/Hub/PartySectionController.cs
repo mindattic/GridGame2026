@@ -89,10 +89,10 @@ public class PartySectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Left column — scrollable list of roster heroes not yet in party
-        rosterContainer = rt.Find(GameObjectHelper.Hub.RosterList)?.GetComponent<RectTransform>();
-        // Right column — scrollable list of active party members (max 4)
-        partyContainer = rt.Find(GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
+        // Left column — scrollable roster (inside RosterScrollView/Viewport)
+        rosterContainer = rt.Find("RosterScrollView/Viewport/" + GameObjectHelper.Hub.RosterList)?.GetComponent<RectTransform>();
+        // Right column — active party members (inside PartyScrollView/Viewport)
+        partyContainer = rt.Find("PartyScrollView/Viewport/" + GameObjectHelper.Hub.PartyList)?.GetComponent<RectTransform>();
         // Right side — multi-line stat block for the selected hero
         detailLabel = rt.Find(GameObjectHelper.Hub.DetailLabel)?.GetComponent<TextMeshProUGUI>();
         // Top-right — current gold display
@@ -117,7 +117,15 @@ public class PartySectionController : MonoBehaviour
         if (partyContainer == null) return;
 
         var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
-        if (party == null) return;
+        if (party == null || party.Count == 0)
+        {
+            var emptyGo = HubItemRowFactory.Create(partyContainer);
+            HubItemRowFactory.SetLabel(emptyGo, "No active party");
+            HubItemRowFactory.SetSubLabel(emptyGo, "Add heroes from the roster on the left");
+            var emptyBtn = emptyGo.GetComponent<Button>();
+            if (emptyBtn != null) emptyBtn.interactable = false;
+            return;
+        }
 
         foreach (var member in party)
         {
@@ -201,10 +209,20 @@ public class PartySectionController : MonoBehaviour
         if (rosterContainer == null) return;
 
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
-        if (save?.Roster?.Members == null) return;
+        if (save?.Roster?.Members == null || save.Roster.Members.Count == 0)
+        {
+            var emptyGo = HubItemRowFactory.Create(rosterContainer);
+            HubItemRowFactory.SetLabel(emptyGo, "Roster is empty");
+            HubItemRowFactory.SetSubLabel(emptyGo, "Heroes join your roster through play");
+            var emptyBtn = emptyGo.GetComponent<Button>();
+            if (emptyBtn != null) emptyBtn.interactable = false;
+            return;
+        }
 
         var partySet = new HashSet<CharacterClass>(
             save.Party?.Members?.Select(m => m.CharacterClass) ?? Enumerable.Empty<CharacterClass>());
+
+        int rowsAdded = 0;
 
         foreach (var member in save.Roster.Members)
         {
@@ -214,6 +232,7 @@ public class PartySectionController : MonoBehaviour
 
             var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, member.TotalXP));
             int level = Mathf.Max(1, derived.level);
+            rowsAdded++;
 
             var go = HubItemRowFactory.Create(rosterContainer);
 
@@ -246,9 +265,16 @@ public class PartySectionController : MonoBehaviour
                 });
             }
         }
-    }
 
-    // ===================== Party Management =====================
+        if (rowsAdded == 0)
+        {
+            var emptyGo = HubItemRowFactory.Create(rosterContainer);
+            HubItemRowFactory.SetLabel(emptyGo, "All heroes in party");
+            HubItemRowFactory.SetSubLabel(emptyGo, "Remove a hero from the party to free a roster slot");
+            var emptyBtn = emptyGo.GetComponent<Button>();
+            if (emptyBtn != null) emptyBtn.interactable = false;
+        }
+    }
 
     /// <summary>Adds a hero from the roster to the active party.</summary>
     public void AddToParty(CharacterClass hero)

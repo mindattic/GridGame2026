@@ -108,12 +108,21 @@ public class ShopSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Center — scrollable list used for menu, buy list, and sell list
-        itemListContainer = EnsureContainer(rt, GameObjectHelper.Hub.ItemList);
+        // Center — scrollable list (inside ItemScrollView/Viewport)
+        var itemListTr = rt.Find("ItemScrollView/Viewport/" + GameObjectHelper.Hub.ItemList);
+        itemListContainer = itemListTr != null
+            ? itemListTr.GetComponent<RectTransform>()
+            : EnsureContainer(rt, GameObjectHelper.Hub.ItemList);
         // Top-right — current gold display
-        goldLabel = EnsureLabel(rt, GameObjectHelper.Hub.GoldLabel);
+        var goldTr = rt.Find(GameObjectHelper.Hub.GoldLabel);
+        goldLabel = goldTr != null
+            ? goldTr.GetComponent<TextMeshProUGUI>()
+            : EnsureLabel(rt, GameObjectHelper.Hub.GoldLabel);
         // Top-center — heading text (changes per mode)
-        detailLabel = EnsureLabel(rt, GameObjectHelper.Hub.DetailLabel);
+        var detailTr = rt.Find(GameObjectHelper.Hub.DetailLabel);
+        detailLabel = detailTr != null
+            ? detailTr.GetComponent<TextMeshProUGUI>()
+            : EnsureLabel(rt, GameObjectHelper.Hub.DetailLabel);
     }
 
     /// <summary>Loads shop catalog from item libraries.</summary>

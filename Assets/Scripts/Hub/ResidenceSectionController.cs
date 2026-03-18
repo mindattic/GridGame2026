@@ -114,10 +114,10 @@ public class ResidenceSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Left column — rest button + current party members (tap for lore)
-        actionListContainer = rt.Find(GameObjectHelper.Hub.ActionList)?.GetComponent<RectTransform>();
-        // Left column below — recruitable heroes not in party
-        recruitListContainer = rt.Find(GameObjectHelper.Hub.RecruitList)?.GetComponent<RectTransform>();
+        // Left column — rest actions + current party (inside ActionScrollView/Viewport)
+        actionListContainer = rt.Find("ActionScrollView/Viewport/" + GameObjectHelper.Hub.ActionList)?.GetComponent<RectTransform>();
+        // Right column — recruitable heroes (inside RecruitScrollView/Viewport)
+        recruitListContainer = rt.Find("RecruitScrollView/Viewport/" + GameObjectHelper.Hub.RecruitList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Right column — hero lore/backstory text

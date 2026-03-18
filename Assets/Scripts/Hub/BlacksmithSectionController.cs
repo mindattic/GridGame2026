@@ -91,8 +91,8 @@ public class BlacksmithSectionController : MonoBehaviour
         var rt = GetComponent<RectTransform>();
         if (rt == null) return;
 
-        // Center — scrollable list; content changes per mode (buy/sell/craft/repair/salvage)
-        listContainer = rt.Find(GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
+        // Center — scrollable list (inside ItemScrollView/Viewport); content changes per mode
+        listContainer = rt.Find("ItemScrollView/Viewport/" + GameObjectHelper.Hub.ItemList)?.GetComponent<RectTransform>();
         // Top-right — current gold display
         goldLabel = rt.Find(GameObjectHelper.Hub.GoldLabel)?.GetComponent<TextMeshProUGUI>();
         // Top-center — shows current mode name
