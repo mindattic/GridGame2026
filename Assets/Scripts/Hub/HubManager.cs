@@ -108,12 +108,14 @@ public class HubManager : MonoBehaviour
     /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
+        // Build the entire scene hierarchy from code if not already present.
+        if (GameObject.Find("Canvas") == null)
+            HubSceneFactory.Build();
+
         LoadFromSave();
         ResolveSceneObjects();
-        AttachTiltParallax();
         InitializeSections();
         WireButtonListeners();
-        ApplyDayNightTint();
 
         // Ensure a clean start state: disable all panels then show Party.
         GoToPartySection();
@@ -198,30 +200,6 @@ public class HubManager : MonoBehaviour
         battlePrepPanel = GameObject.Find(GameObjectHelper.Hub.BattlePrepPanel)?.GetComponent<RectTransform>();
     }
 
-    /// <summary>Attach tilt parallax.</summary>
-    private void AttachTiltParallax()
-    {
-        void Ensure(RectTransform rt)
-        {
-            if (rt == null) return;
-            var t = rt.GetComponent<TiltParallax>();
-            if (t == null) t = rt.gameObject.AddComponent<TiltParallax>();
-            t.amplitude = 12f;
-            t.smoothing = 6f;
-            t.deadzone = 0.015f;
-            t.writeToOutput = false;
-        }
-        Ensure(partyPanel);
-        Ensure(shopPanel);
-        Ensure(medicalPanel);
-        Ensure(residencePanel);
-        Ensure(blacksmithPanel);
-        Ensure(trainingPanel);
-        Ensure(equipPanel);
-        Ensure(inventoryPanel);
-        Ensure(battlePrepPanel);
-    }
-
     /// <summary>Collect all section panels (non-null) for iteration.</summary>
     private IEnumerable<RectTransform> AllPanels()
     {
@@ -234,69 +212,6 @@ public class HubManager : MonoBehaviour
         if (equipPanel != null) yield return equipPanel;
         if (inventoryPanel != null) yield return inventoryPanel;
         if (battlePrepPanel != null) yield return battlePrepPanel;
-    }
-
-    // ===================== Day/Night Tint =====================
-
-    /// <summary>
-    /// Creates a frozen DayNightCycle overlay on the Hub canvas.
-    /// Reads the cycle position from save data or the static snapshot,
-    /// applies the matching color, and pauses so the tint stays fixed
-    /// for the entire Hub visit.
-    /// </summary>
-    private void ApplyDayNightTint()
-    {
-        var canvas = GameObject.Find("Canvas");
-        if (canvas == null) return;
-
-        // Create overlay GameObject — start inactive so Awake/OnEnable
-        // don't fire until configuration is complete.
-        var go = new GameObject("DayNightCycle");
-        go.SetActive(false);
-        go.layer = LayerMask.NameToLayer("UI");
-        go.transform.SetParent(canvas.transform, false);
-        go.transform.SetAsLastSibling();
-
-        // Stretch to fill screen
-        var rt = go.AddComponent<RectTransform>();
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
-
-        // Image is the tint overlay (raycast disabled so it doesn't block input)
-        var img = go.AddComponent<Image>();
-        img.raycastTarget = false;
-
-        // Configure cycle: overlay-only mode, frozen (not playing).
-        // Because the GO is inactive, AddComponent won't trigger Awake/OnEnable
-        // so these values are in place before the first lifecycle callbacks.
-        var dnc = go.AddComponent<DayNightCycle>();
-        dnc.overlayImage = img;
-        dnc.applyMode = DayNightCycle.ApplyMode.OverlayImage;
-        dnc.playOnEnable = false;
-
-        // Determine the T01 to use: prefer static snapshot, fall back to save data
-        float t01 = -1f;
-        if (DayNightState.HasSnapshot)
-        {
-            t01 = DayNightState.T01;
-        }
-        else
-        {
-            var ow = ProfileHelper.CurrentProfile?.CurrentSave?.Overworld;
-            if (ow != null) t01 = ow.DayNightT01;
-        }
-
-        // Activate — Awake and OnEnable now run with correct configuration
-        go.SetActive(true);
-
-        // Default to midday (minimal tint) when no saved time exists
-        if (t01 < 0f)
-            t01 = dnc.GetPhaseMidpointT01(DayNightCycle.DayPhase.Day);
-
-        // Jump to the saved position (frozen because playOnEnable is false)
-        dnc.CycleTime01 = t01;
     }
 
     /// <summary>Wire button listeners.</summary>
@@ -351,10 +266,6 @@ public class HubManager : MonoBehaviour
     private void Activate(RectTransform panel)
     {
         if (panel == null) return;
-
-        // Auto-save state when switching sections
-        WriteToSave();
-        ProfileHelper.Save(false);
 
         foreach (var p in AllPanels())
         {

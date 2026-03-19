@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find D:/Projects/Unity/GridGame2026/Assets -name *.scene)",
+      "Bash(find D:/Projects/Unity/GridGame2026/Assets/Scripts/Utilities -type f -name *.cs)",
+      "Bash(grep -v \"m_Name: $\")",
+      "Bash(find D:/Projects/Unity/GridGame2026/Assets/Scripts/Data/Skills -type f -name *.cs)",
+      "Bash(find D:/Projects/Unity/GridGame2026/Assets/Scripts/Models -type f -name *.cs)",
+      "Bash(xargs grep:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

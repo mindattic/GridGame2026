@@ -134,14 +134,34 @@ public enum AbilityEffect
     Smite,
     // Item usage
     UseItem,
+    // Offensive magic
+    Fire,
+    Ice,
+    Thunder,
+    Fireball,
+    Fira,
+    // Support magic
+    GroupHeal,
+    Esuna,
+    Protect,
+    Regen,
     // Passive effects - Attack
     DoubleAttack,
     TripleAttack,
     // Passive effects - Movement
     DoubleMove,
     TripleMove,
+    // Passive effects - Stat upgrades
+    ArmorUp,
+    CritUp,
+    Focus,
+    EvasionUp,
+    HPUp,
     // Reactive effects
-    CounterAttack
+    CounterAttack,
+    Cover,
+    // Utility
+    Strike,
 }
 
 public enum AbilityTargetingMode

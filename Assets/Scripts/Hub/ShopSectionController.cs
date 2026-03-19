@@ -130,9 +130,20 @@ public class ShopSectionController : MonoBehaviour
     {
         buyCatalog.Clear();
 
-        // Consumables
+        // Consumables — Basic
         buyCatalog.Add(ItemData_Healing.BasicHealingPotion);
         buyCatalog.Add(ItemData_Healing.ManaPotion);
+        // Consumables — Expanded
+        buyCatalog.Add(ItemData_Consumables.HiPotion);
+        buyCatalog.Add(ItemData_Consumables.XPotion);
+        buyCatalog.Add(ItemData_Consumables.Ether);
+        buyCatalog.Add(ItemData_Consumables.HiEther);
+        buyCatalog.Add(ItemData_Consumables.PhoenixDown);
+        buyCatalog.Add(ItemData_Consumables.Antidote);
+        buyCatalog.Add(ItemData_Consumables.EyeDrops);
+        buyCatalog.Add(ItemData_Consumables.Remedy);
+        buyCatalog.Add(ItemData_Consumables.SmokeBomb);
+        buyCatalog.Add(ItemData_Consumables.Tent);
 
         // Vendor-purchasable materials
         foreach (var mat in ItemLibrary.VendorMaterials())

@@ -51,16 +51,49 @@ public static class TrainingLibrary
         if (initialized) return;
         initialized = true;
 
-        // Also register the skills themselves into SkillLibrary
+        // Register the skills themselves into SkillLibrary
+        // -- Offensive magic
+        SkillLibrary.RegisterExternal(SkillData_Training.Fire);
+        SkillLibrary.RegisterExternal(SkillData_Training.Ice);
+        SkillLibrary.RegisterExternal(SkillData_Training.Thunder);
         SkillLibrary.RegisterExternal(SkillData_Training.Fireball);
+        SkillLibrary.RegisterExternal(SkillData_Training.Fira);
+        // -- Support magic
         SkillLibrary.RegisterExternal(SkillData_Training.GroupHeal);
+        SkillLibrary.RegisterExternal(SkillData_Training.Esuna);
+        SkillLibrary.RegisterExternal(SkillData_Training.Protect);
+        SkillLibrary.RegisterExternal(SkillData_Training.Regen);
+        // -- Passives
         SkillLibrary.RegisterExternal(SkillData_Training.ArmorUp);
         SkillLibrary.RegisterExternal(SkillData_Training.CritChanceUp);
+        SkillLibrary.RegisterExternal(SkillData_Training.Focus);
+        SkillLibrary.RegisterExternal(SkillData_Training.EvasionUp);
+        SkillLibrary.RegisterExternal(SkillData_Training.HPUp);
+        // -- Reactive
+        SkillLibrary.RegisterExternal(SkillData_Training.Counter);
+        SkillLibrary.RegisterExternal(SkillData_Training.Cover);
 
+        // Register training wrappers
+        // -- Offensive magic
+        Register(SkillData_Training.TrainFire);
+        Register(SkillData_Training.TrainIce);
+        Register(SkillData_Training.TrainThunder);
         Register(SkillData_Training.TrainFireball);
+        Register(SkillData_Training.TrainFira);
+        // -- Support magic
         Register(SkillData_Training.TrainGroupHeal);
+        Register(SkillData_Training.TrainEsuna);
+        Register(SkillData_Training.TrainProtect);
+        Register(SkillData_Training.TrainRegen);
+        // -- Passives
         Register(SkillData_Training.TrainArmorUp);
         Register(SkillData_Training.TrainCritUp);
+        Register(SkillData_Training.TrainFocus);
+        Register(SkillData_Training.TrainEvasionUp);
+        Register(SkillData_Training.TrainHPUp);
+        // -- Reactive
+        Register(SkillData_Training.TrainCounter);
+        Register(SkillData_Training.TrainCover);
     }
 
     /// <summary>Registers a training definition.</summary>

@@ -647,6 +647,25 @@ namespace Scripts.Helpers
             /// <summary>Button to filter QuestItem items.</summary>
             public const string FilterQuest = "FilterQuest";
 
+            // ── Party Panel — Ability Bar Children ──
+
+            /// <summary>Container for the 5 equipped ability slots. RectTransform + VerticalLayoutGroup.</summary>
+            public const string AbilityBarList = "AbilityBarList";
+
+            /// <summary>Container for available abilities to assign. RectTransform + VerticalLayoutGroup.</summary>
+            public const string AbilityPicker = "AbilityPicker";
+
+            // ── Party Panel — Sub-Tab Buttons ──
+
+            /// <summary>Sub-tab: Status (hero stats, gear summary, read-only).</summary>
+            public const string PartyStatusTab = "PartyStatusTab";
+
+            /// <summary>Sub-tab: Equip (inline equipment management).</summary>
+            public const string PartyEquipTab = "PartyEquipTab";
+
+            /// <summary>Sub-tab: Abilities (ability bar assign/remove).</summary>
+            public const string PartyAbilityTab = "PartyAbilityTab";
+
             // ── BattlePrep Panel Children ──
             // Uses PartyList, ItemList, GoldLabel, DetailLabel (shared names above)
 

@@ -58,6 +58,18 @@ public static class ItemLibrary
         Register(ItemData_Equipment.RustySword);
         Register(ItemData_Equipment.LeatherArmor);
 
+        // Expanded consumables
+        Register(ItemData_Consumables.HiPotion);
+        Register(ItemData_Consumables.XPotion);
+        Register(ItemData_Consumables.Ether);
+        Register(ItemData_Consumables.HiEther);
+        Register(ItemData_Consumables.PhoenixDown);
+        Register(ItemData_Consumables.Antidote);
+        Register(ItemData_Consumables.EyeDrops);
+        Register(ItemData_Consumables.Remedy);
+        Register(ItemData_Consumables.SmokeBomb);
+        Register(ItemData_Consumables.Tent);
+
         // Weapons
         Register(ItemData_Weapons.IronSword);
         Register(ItemData_Weapons.SteelSword);

@@ -80,6 +80,7 @@ public class FadeOverlayInstance : MonoBehaviour
     {
         image = GetComponent<Image>();
         image.sprite = SpriteLibrary.Sprites["Black32x32"];
+        image.raycastTarget = false; // must never block input — even when fully opaque
         SetAlpha(1f);
     }
 

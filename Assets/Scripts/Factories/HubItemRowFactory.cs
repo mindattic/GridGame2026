@@ -213,12 +213,38 @@ public static class HubItemRowFactory
         if (label != null) label.color = color;
     }
 
-    /// <summary>Sets the background to the selected highlight color.</summary>
+    /// <summary>Sets the background to the selected highlight color and shows a ▶ arrow cursor.</summary>
     public static void SetSelected(GameObject row, bool selected)
     {
         if (row == null) return;
         var img = row.GetComponent<Image>();
         if (img != null) img.color = selected ? SelectedRowColor : RowBackgroundColor;
+
+        // Show/hide selection arrow indicator
+        var arrowTr = row.transform.Find("SelectArrow");
+        if (selected && arrowTr == null)
+        {
+            var arrow = new GameObject("SelectArrow");
+            arrow.layer = LayerMask.NameToLayer("UI");
+            var arrowRT = arrow.AddComponent<RectTransform>();
+            arrowRT.SetParent(row.transform, false);
+            arrowRT.anchorMin = new Vector2(0f, 0.5f);
+            arrowRT.anchorMax = new Vector2(0f, 0.5f);
+            arrowRT.pivot = new Vector2(0f, 0.5f);
+            arrowRT.anchoredPosition = new Vector2(2f, 0f);
+            arrowRT.sizeDelta = new Vector2(20f, 24f);
+            arrow.AddComponent<CanvasRenderer>();
+            var arrowTmp = arrow.AddComponent<TextMeshProUGUI>();
+            arrowTmp.text = "\u25B6";
+            arrowTmp.fontSize = 18;
+            arrowTmp.color = new Color(1f, 0.85f, 0.35f, 1f);
+            arrowTmp.alignment = TextAlignmentOptions.Center;
+            arrowTmp.raycastTarget = false;
+        }
+        else if (!selected && arrowTr != null)
+        {
+            Object.Destroy(arrowTr.gameObject);
+        }
     }
 
     /// <summary>Sets the icon sprite from an ItemDefinition (uses PlaceholderIconFactory).</summary>
