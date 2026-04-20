@@ -261,6 +261,42 @@ public static class CliEntryPoints
         }
     }
 
+    // ===================== Scaffold Save (scene → code) =====================
+
+    /// <summary>
+    /// Batchmode-friendly wrapper around SceneScaffoldGenerator.GenerateForScene.
+    /// Accepts one or more -scene args (e.g. -scene Game -scene Overworld) or falls
+    /// back to every entry in ScaffoldedScenes. Exits 1 if any scene fails to save.
+    /// </summary>
+    public static void SaveSceneScaffolds()
+    {
+        try
+        {
+            var scenes = GetArgs("-scene");
+            if (scenes.Length == 0) scenes = ScaffoldedScenes;
+            int ok = 0, failed = 0;
+            foreach (var scene in scenes)
+            {
+                if (SceneScaffoldGenerator.GenerateForScene(scene, interactive: false))
+                {
+                    Debug.Log($"[Cli] Saved scaffold: {scene}");
+                    ok++;
+                }
+                else
+                {
+                    failed++;
+                }
+            }
+            Debug.Log($"[Cli] SaveSceneScaffolds: ok={ok} failed={failed}");
+            EditorApplication.Exit(failed > 0 ? 1 : 0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] SaveSceneScaffolds failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
     // ===================== Build =====================
 
     public static void BuildStandaloneWindows()
@@ -303,5 +339,15 @@ public static class CliEntryPoints
         for (int i = 0; i < args.Length - 1; i++)
             if (args[i] == name) return args[i + 1];
         return null;
+    }
+
+    /// <summary>Returns every value following each occurrence of `name` in the command line.</summary>
+    private static string[] GetArgs(string name)
+    {
+        var args = Environment.GetCommandLineArgs();
+        var result = new System.Collections.Generic.List<string>();
+        for (int i = 0; i < args.Length - 1; i++)
+            if (args[i] == name) result.Add(args[i + 1]);
+        return result.ToArray();
     }
 }

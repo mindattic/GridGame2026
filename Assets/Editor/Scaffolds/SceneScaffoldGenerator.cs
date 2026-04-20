@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -118,22 +119,31 @@ public static class SceneScaffoldGenerator
 
     // ===================== Main Entry =====================
 
-    static void GenerateForScene(string sceneName)
+    static void GenerateForScene(string sceneName) => GenerateForScene(sceneName, interactive: true);
+
+    /// <summary>
+    /// Parses the scene YAML and overwrites the scaffold C# file. When interactive
+    /// is false (batchmode), skips the editor confirmation dialog.
+    /// </summary>
+    public static bool GenerateForScene(string sceneName, bool interactive)
     {
         var scenePath = $"Assets/Scenes/{sceneName}.unity";
         var fullPath = Path.Combine(Application.dataPath, "..", scenePath);
         if (!File.Exists(fullPath))
         {
-            EditorUtility.DisplayDialog("Save",
-                $"Scene file not found:\n{scenePath}\n\nSave the scene first.", "OK");
-            return;
+            if (interactive)
+                EditorUtility.DisplayDialog("Save",
+                    $"Scene file not found:\n{scenePath}\n\nSave the scene first.", "OK");
+            else
+                Debug.LogError($"[SceneScaffoldGenerator] Scene file not found: {scenePath}");
+            return false;
         }
 
-        if (!EditorUtility.DisplayDialog("Save",
+        if (interactive && !EditorUtility.DisplayDialog("Save",
             $"Overwrite {sceneName}Scaffold.cs with the current scene state?\n\n" +
             $"This will replace the existing scaffold file.",
             "Save", "Cancel"))
-            return;
+            return false;
 
         var text = File.ReadAllText(fullPath);
 
@@ -157,12 +167,12 @@ public static class SceneScaffoldGenerator
         // Build variable name map (clean names with collision counter)
         var varNames = BuildVarNames(gameObjects);
 
-        // Collect custom using namespaces from resolved script names
-        var customNamespaces = CollectNamespaces(components, fullPath);
+        // Build script name → namespace map for fully-qualified emission
+        s_scriptNamespaces = CollectScriptNamespaces(components);
 
         // Generate code
         var code = GenerateCode(sceneName, roots, gameObjects, rtDataMap,
-            components, onClicks, varNames, customNamespaces);
+            components, onClicks, varNames);
 
         // Write output — overwrites the hand-written scaffold
         var outputPath = $"Assets/Editor/Scaffolds/{sceneName}Scaffold.cs";
@@ -171,13 +181,15 @@ public static class SceneScaffoldGenerator
 
         Debug.Log($"[SceneScaffoldGenerator] Saved {outputPath} " +
             $"({gameObjects.Count} GOs, {components.Count} components, {onClicks.Count} onClick events)");
-        EditorUtility.DisplayDialog("Save",
-            $"Scaffold saved for '{sceneName}'.\n\n" +
-            $"GameObjects: {gameObjects.Count}\n" +
-            $"Components: {components.Count}\n" +
-            $"onClick events: {onClicks.Count}\n\n" +
-            $"Output: {outputPath}",
-            "OK");
+        if (interactive)
+            EditorUtility.DisplayDialog("Save",
+                $"Scaffold saved for '{sceneName}'.\n\n" +
+                $"GameObjects: {gameObjects.Count}\n" +
+                $"Components: {components.Count}\n" +
+                $"onClick events: {onClicks.Count}\n\n" +
+                $"Output: {outputPath}",
+                "OK");
+        return true;
     }
 
     // ===================== Variable Name Builder =====================
@@ -206,30 +218,57 @@ public static class SceneScaffoldGenerator
 
     // ===================== Namespace Collection =====================
 
-    static HashSet<string> CollectNamespaces(List<ComponentData> components, string scenePath)
+    // Populated at the start of GenerateCode; consulted by Qualify() from every component emitter.
+    // Maps short script type name → its declared namespace (or empty string if none).
+    static Dictionary<string, string> s_scriptNamespaces = new Dictionary<string, string>();
+
+    /// <summary>
+    /// Scans Assets/Scripts for each resolved custom script and returns a map:
+    /// scriptName → namespace. Used to emit fully-qualified type names in generated
+    /// scaffold code so custom types (e.g. Scripts.Overworld.TreeInstance) do not
+    /// collide with UnityEngine types (e.g. UnityEngine.TreeInstance).
+    /// </summary>
+    static Dictionary<string, string> CollectScriptNamespaces(List<ComponentData> components)
     {
-        var namespaces = new HashSet<string>();
-        var assetsDir = Path.Combine(Path.GetDirectoryName(scenePath), "..", "Assets", "Scripts");
-        if (!Directory.Exists(assetsDir)) return namespaces;
+        var result = new Dictionary<string, string>();
+        var assetsDir = Path.Combine(Application.dataPath, "Scripts");
+        if (!Directory.Exists(assetsDir)) return result;
 
         foreach (var cd in components)
         {
-            if (cd.ScriptName == null || BuiltinScriptMap.ContainsValue(cd.ScriptName)) continue;
-            // Search for the script file to find its namespace
+            if (cd.ScriptName == null) continue;
+            if (BuiltinScriptMap.ContainsValue(cd.ScriptName)) continue;
+            if (cd.ScriptName.StartsWith("Unknown_")) continue;
+            if (result.ContainsKey(cd.ScriptName)) continue;
+
             foreach (var csFile in Directory.GetFiles(assetsDir, $"{cd.ScriptName}.cs", SearchOption.AllDirectories))
             {
                 try
                 {
                     var code = File.ReadAllText(csFile);
                     var nsMatch = Regex.Match(code, @"namespace\s+([\w.]+)");
-                    if (nsMatch.Success)
-                        namespaces.Add(nsMatch.Groups[1].Value);
+                    result[cd.ScriptName] = nsMatch.Success ? nsMatch.Groups[1].Value : "";
                 }
-                catch { }
+                catch { result[cd.ScriptName] = ""; }
                 break;
             }
+            if (!result.ContainsKey(cd.ScriptName))
+                result[cd.ScriptName] = "";
         }
-        return namespaces;
+        return result;
+    }
+
+    /// <summary>
+    /// Returns the fully-qualified name for a custom script type, or the input unchanged
+    /// for builtin Unity types and unresolved scripts. Called from every place the
+    /// generator emits a C# type reference.
+    /// </summary>
+    static string Qualify(string scriptName)
+    {
+        if (string.IsNullOrEmpty(scriptName)) return scriptName;
+        if (s_scriptNamespaces.TryGetValue(scriptName, out var ns) && !string.IsNullOrEmpty(ns))
+            return ns + "." + scriptName;
+        return scriptName;
     }
 
     // ===================== onClick Parsing =====================
@@ -252,7 +291,10 @@ public static class SceneScaffoldGenerator
             var yaml = cd.RawYAML;
 
             var methodMatch = Regex.Match(yaml, @"m_MethodName:\s+(\S+)");
-            var targetMatch = Regex.Match(yaml, @"m_TargetAssemblyTypeName:\s+(\w+),");
+            // m_TargetAssemblyTypeName is usually "Namespace.Type, Assembly-CSharp" — capture the
+            // full namespace-qualified type so we can strip to the short name (for Qualify lookup)
+            // or reuse the full form directly.
+            var targetMatch = Regex.Match(yaml, @"m_TargetAssemblyTypeName:\s+([\w.]+)\s*,");
             var targetFileIDMatch = Regex.Match(yaml, @"m_Target:\s*\{fileID:\s*(\d+)");
             var callStateMatch = Regex.Match(yaml, @"m_CallState:\s*(\d+)");
 
@@ -264,10 +306,16 @@ public static class SceneScaffoldGenerator
             if (compToGo.ContainsKey(targetCompFileID))
                 targetGoFileID = compToGo[targetCompFileID];
 
+            // Normalize to short type name so OnClickTargetIsValid and Qualify both work.
+            var fullTargetName = targetMatch.Groups[1].Value;
+            var shortTargetName = fullTargetName.Contains('.')
+                ? fullTargetName.Substring(fullTargetName.LastIndexOf('.') + 1)
+                : fullTargetName;
+
             result.Add(new OnClickData
             {
                 ButtonGoFileID = cd.GoFileID,
-                TargetTypeName = targetMatch.Groups[1].Value,
+                TargetTypeName = shortTargetName,
                 MethodName = methodMatch.Groups[1].Value,
                 TargetGoFileID = targetGoFileID
             });
@@ -280,7 +328,7 @@ public static class SceneScaffoldGenerator
     static string GenerateCode(string sceneName, List<GOData> roots,
         Dictionary<string, GOData> allGOs, Dictionary<string, RTData> rtDataMap,
         List<ComponentData> components, List<OnClickData> onClicks,
-        Dictionary<string, string> varNames, HashSet<string> customNamespaces)
+        Dictionary<string, string> varNames)
     {
         // Build component lookup: goFileID → ordered list
         var compsByGO = new Dictionary<string, List<ComponentData>>();
@@ -325,9 +373,10 @@ public static class SceneScaffoldGenerator
         sb.AppendLine("using UnityEditor;");
         sb.AppendLine("using TMPro;");
         sb.AppendLine();
-        foreach (var ns in customNamespaces.OrderBy(n => n))
-            sb.AppendLine($"using {ns};");
-        if (customNamespaces.Count > 0) sb.AppendLine();
+        // NOTE: Custom script namespaces are intentionally NOT emitted as using
+        // directives. The generator fully-qualifies every custom type reference via
+        // Qualify() so names like Scripts.Overworld.TreeInstance do not collide
+        // with UnityEngine.TreeInstance.
 
         sb.AppendLine($"public static class {sceneName}Scaffold");
         sb.AppendLine("{");
@@ -406,9 +455,18 @@ public static class SceneScaffoldGenerator
 
                 var btnVar = varNames[oc.ButtonGoFileID];
                 var targetVar = varNames[oc.TargetGoFileID];
+
+                // Skip if the target type or method no longer exists — scene YAML
+                // can reference deleted scripts or renamed methods.
+                if (!OnClickTargetIsValid(oc.TargetTypeName, oc.MethodName))
+                {
+                    sb.AppendLine($"        // TODO: unresolved onClick — go_{btnVar} → {oc.TargetTypeName}.{oc.MethodName}");
+                    continue;
+                }
+
                 sb.AppendLine($"        SceneScaffoldHelper.WireOnClick(");
                 sb.AppendLine($"            go_{btnVar}.GetComponent<Button>(),");
-                sb.AppendLine($"            new UnityAction(go_{targetVar}.GetComponent<{oc.TargetTypeName}>().{oc.MethodName}));");
+                sb.AppendLine($"            new UnityAction(go_{targetVar}.GetComponent<{Qualify(oc.TargetTypeName)}>().{oc.MethodName}));");
             }
             sb.AppendLine();
         }
@@ -587,60 +645,67 @@ public static class SceneScaffoldGenerator
     {
         switch (cd.ScriptName)
         {
-            case "Canvas":         GenerateCanvas(sb, cd, goVar, indent); break;
-            case "CanvasScaler":   GenerateCanvasScaler(sb, cd, goVar, indent); break;
+            case "Canvas":         GenerateCanvas(sb, cd, goVar, varName, indent); break;
+            case "CanvasScaler":   GenerateCanvasScaler(sb, cd, goVar, varName, indent); break;
             case "CanvasRenderer": sb.AppendLine($"{indent}{goVar}.AddComponent<CanvasRenderer>();"); break;
             case "GraphicRaycaster": sb.AppendLine($"{indent}{goVar}.AddComponent<GraphicRaycaster>();"); break;
-            case "CanvasGroup":    GenerateCanvasGroup(sb, cd, goVar, indent); break;
+            case "CanvasGroup":    GenerateCanvasGroup(sb, cd, goVar, varName, indent); break;
             case "Image":          GenerateImage(sb, cd, goVar, varName, spriteMap, indent); break;
             case "Button":         GenerateButton(sb, cd, goVar, varName, indent); break;
             case "TextMeshProUGUI": GenerateTMP(sb, cd, goVar, varName, fontMap, indent); break;
             case "Scrollbar":      GenerateScrollbar(sb, cd, goVar, varName, indent); break;
             case "ScrollRect":     sb.AppendLine($"{indent}{goVar}.AddComponent<ScrollRect>();"); break;
-            case "Mask":           GenerateMask(sb, cd, goVar, indent); break;
-            case "VerticalLayoutGroup":   GenerateLayoutGroup(sb, cd, goVar, indent, "VerticalLayoutGroup", "vlg"); break;
-            case "HorizontalLayoutGroup": GenerateLayoutGroup(sb, cd, goVar, indent, "HorizontalLayoutGroup", "hlg"); break;
-            case "ContentSizeFitter":     GenerateCSF(sb, cd, goVar, indent); break;
-            case "Camera":         GenerateCamera(sb, cd, goVar, indent); break;
+            case "Mask":           GenerateMask(sb, cd, goVar, varName, indent); break;
+            case "VerticalLayoutGroup":   GenerateLayoutGroup(sb, cd, goVar, varName, indent, "VerticalLayoutGroup", "vlg"); break;
+            case "HorizontalLayoutGroup": GenerateLayoutGroup(sb, cd, goVar, varName, indent, "HorizontalLayoutGroup", "hlg"); break;
+            case "ContentSizeFitter":     GenerateCSF(sb, cd, goVar, varName, indent); break;
+            case "Camera":         GenerateCamera(sb, cd, goVar, varName, indent); break;
             case "AudioListener":  sb.AppendLine($"{indent}{goVar}.AddComponent<AudioListener>();"); break;
             case "EventSystem":    sb.AppendLine($"{indent}{goVar}.AddComponent<EventSystem>();"); break;
             case "StandaloneInputModule": sb.AppendLine($"{indent}{goVar}.AddComponent<StandaloneInputModule>();"); break;
             default:
-                sb.AppendLine($"{indent}{goVar}.AddComponent<{cd.ScriptName}>();");
+                // Skip unresolved scripts (typically removed from the project but still referenced in scene YAML).
+                if (string.IsNullOrEmpty(cd.ScriptName) || cd.ScriptName.StartsWith("Unknown_"))
+                    sb.AppendLine($"{indent}// TODO: unresolved script GUID={cd.ScriptGUID} — component skipped.");
+                else
+                    sb.AppendLine($"{indent}{goVar}.AddComponent<{Qualify(cd.ScriptName)}>();");
                 break;
         }
     }
 
-    static void GenerateCanvas(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateCanvas(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var renderMode = ExtractInt(cd.RawYAML, "m_RenderMode", 0);
         var sortOrder = ExtractInt(cd.RawYAML, "m_SortingOrder", 0);
-        sb.AppendLine($"{indent}var canvas = {goVar}.AddComponent<Canvas>();");
-        sb.AppendLine($"{indent}canvas.renderMode = (RenderMode){renderMode};");
+        var v = $"canvas_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<Canvas>();");
+        sb.AppendLine($"{indent}{v}.renderMode = (RenderMode){renderMode};");
         if (sortOrder != 0)
-            sb.AppendLine($"{indent}canvas.sortingOrder = {sortOrder};");
+            sb.AppendLine($"{indent}{v}.sortingOrder = {sortOrder};");
     }
 
-    static void GenerateCanvasScaler(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateCanvasScaler(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var mode = ExtractInt(cd.RawYAML, "m_UiScaleMode", 0);
         ParseVector2(cd.RawYAML, "m_ReferenceResolution", out var rx, out var ry);
         var match = ExtractFloat(cd.RawYAML, "m_MatchWidthOrHeight", 0f);
-        sb.AppendLine($"{indent}var scaler = {goVar}.AddComponent<CanvasScaler>();");
-        sb.AppendLine($"{indent}scaler.uiScaleMode = (CanvasScaler.ScaleMode){mode};");
-        sb.AppendLine($"{indent}scaler.referenceResolution = new Vector2({F(rx)}, {F(ry)});");
-        sb.AppendLine($"{indent}scaler.matchWidthOrHeight = {F(match)};");
+        var v = $"scaler_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<CanvasScaler>();");
+        sb.AppendLine($"{indent}{v}.uiScaleMode = (CanvasScaler.ScaleMode){mode};");
+        sb.AppendLine($"{indent}{v}.referenceResolution = new Vector2({F(rx)}, {F(ry)});");
+        sb.AppendLine($"{indent}{v}.matchWidthOrHeight = {F(match)};");
     }
 
-    static void GenerateCanvasGroup(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateCanvasGroup(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var alpha = ExtractFloat(cd.RawYAML, "m_Alpha", 1f);
         var interactable = ExtractInt(cd.RawYAML, "m_Interactable", 1);
         var blocksRaycasts = ExtractInt(cd.RawYAML, "m_BlocksRaycasts", 1);
-        sb.AppendLine($"{indent}var canvasGroup = {goVar}.AddComponent<CanvasGroup>();");
-        if (alpha != 1f) sb.AppendLine($"{indent}canvasGroup.alpha = {F(alpha)};");
-        if (interactable != 1) sb.AppendLine($"{indent}canvasGroup.interactable = false;");
-        if (blocksRaycasts != 1) sb.AppendLine($"{indent}canvasGroup.blocksRaycasts = false;");
+        var v = $"canvasGroup_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<CanvasGroup>();");
+        if (alpha != 1f) sb.AppendLine($"{indent}{v}.alpha = {F(alpha)};");
+        if (interactable != 1) sb.AppendLine($"{indent}{v}.interactable = false;");
+        if (blocksRaycasts != 1) sb.AppendLine($"{indent}{v}.blocksRaycasts = false;");
     }
 
     static void GenerateImage(StringBuilder sb, ComponentData cd, string goVar, string varName,
@@ -720,14 +785,15 @@ public static class SceneScaffoldGenerator
         sb.AppendLine($"{indent}scrollbar_{varName}.direction = (Scrollbar.Direction){dir};");
     }
 
-    static void GenerateMask(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateMask(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var showGraphic = ExtractInt(cd.RawYAML, "m_ShowMaskGraphic", 1);
-        sb.AppendLine($"{indent}var mask = {goVar}.AddComponent<Mask>();");
-        sb.AppendLine($"{indent}mask.showMaskGraphic = {(showGraphic == 1 ? "true" : "false")};");
+        var v = $"mask_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<Mask>();");
+        sb.AppendLine($"{indent}{v}.showMaskGraphic = {(showGraphic == 1 ? "true" : "false")};");
     }
 
-    static void GenerateLayoutGroup(StringBuilder sb, ComponentData cd, string goVar, string indent,
+    static void GenerateLayoutGroup(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent,
         string typeName, string varPrefix)
     {
         var spacing = ExtractFloat(cd.RawYAML, "m_Spacing", 0f);
@@ -737,25 +803,27 @@ public static class SceneScaffoldGenerator
         var forceW = ExtractInt(cd.RawYAML, "m_ChildForceExpandWidth", 1) == 1;
         var forceH = ExtractInt(cd.RawYAML, "m_ChildForceExpandHeight", 1) == 1;
 
-        sb.AppendLine($"{indent}var {varPrefix} = {goVar}.AddComponent<{typeName}>();");
-        sb.AppendLine($"{indent}{varPrefix}.spacing = {F(spacing)};");
-        sb.AppendLine($"{indent}{varPrefix}.childAlignment = (TextAnchor){childAlign};");
-        sb.AppendLine($"{indent}{varPrefix}.childControlWidth = {(ctrlW ? "true" : "false")};");
-        sb.AppendLine($"{indent}{varPrefix}.childControlHeight = {(ctrlH ? "true" : "false")};");
-        sb.AppendLine($"{indent}{varPrefix}.childForceExpandWidth = {(forceW ? "true" : "false")};");
-        sb.AppendLine($"{indent}{varPrefix}.childForceExpandHeight = {(forceH ? "true" : "false")};");
+        var v = $"{varPrefix}_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<{typeName}>();");
+        sb.AppendLine($"{indent}{v}.spacing = {F(spacing)};");
+        sb.AppendLine($"{indent}{v}.childAlignment = (TextAnchor){childAlign};");
+        sb.AppendLine($"{indent}{v}.childControlWidth = {(ctrlW ? "true" : "false")};");
+        sb.AppendLine($"{indent}{v}.childControlHeight = {(ctrlH ? "true" : "false")};");
+        sb.AppendLine($"{indent}{v}.childForceExpandWidth = {(forceW ? "true" : "false")};");
+        sb.AppendLine($"{indent}{v}.childForceExpandHeight = {(forceH ? "true" : "false")};");
     }
 
-    static void GenerateCSF(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateCSF(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var vFit = ExtractInt(cd.RawYAML, "m_VerticalFit", 0);
         var hFit = ExtractInt(cd.RawYAML, "m_HorizontalFit", 0);
-        sb.AppendLine($"{indent}var csf = {goVar}.AddComponent<ContentSizeFitter>();");
-        if (vFit != 0) sb.AppendLine($"{indent}csf.verticalFit = (ContentSizeFitter.FitMode){vFit};");
-        if (hFit != 0) sb.AppendLine($"{indent}csf.horizontalFit = (ContentSizeFitter.FitMode){hFit};");
+        var v = $"csf_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<ContentSizeFitter>();");
+        if (vFit != 0) sb.AppendLine($"{indent}{v}.verticalFit = (ContentSizeFitter.FitMode){vFit};");
+        if (hFit != 0) sb.AppendLine($"{indent}{v}.horizontalFit = (ContentSizeFitter.FitMode){hFit};");
     }
 
-    static void GenerateCamera(StringBuilder sb, ComponentData cd, string goVar, string indent)
+    static void GenerateCamera(StringBuilder sb, ComponentData cd, string goVar, string varName, string indent)
     {
         var ortho = ExtractInt(cd.RawYAML, "orthographic", 0) == 1;
         var orthoSize = ExtractFloat(cd.RawYAML, "orthographic size", 5f);
@@ -763,12 +831,13 @@ public static class SceneScaffoldGenerator
         var clearFlags = ExtractInt(cd.RawYAML, "m_ClearFlags", 1);
         ExtractColor(cd.RawYAML, "m_BackGroundColor", out var cr, out var cg, out var cb, out var ca);
 
-        sb.AppendLine($"{indent}var cam = {goVar}.AddComponent<Camera>();");
-        sb.AppendLine($"{indent}cam.orthographic = {(ortho ? "true" : "false")};");
-        sb.AppendLine($"{indent}cam.orthographicSize = {F(orthoSize)};");
-        sb.AppendLine($"{indent}cam.depth = {F(depth)};");
-        sb.AppendLine($"{indent}cam.clearFlags = (CameraClearFlags){clearFlags};");
-        sb.AppendLine($"{indent}cam.backgroundColor = new Color({F(cr)}, {F(cg)}, {F(cb)}, {F(ca)});");
+        var v = $"cam_{varName}";
+        sb.AppendLine($"{indent}var {v} = {goVar}.AddComponent<Camera>();");
+        sb.AppendLine($"{indent}{v}.orthographic = {(ortho ? "true" : "false")};");
+        sb.AppendLine($"{indent}{v}.orthographicSize = {F(orthoSize)};");
+        sb.AppendLine($"{indent}{v}.depth = {F(depth)};");
+        sb.AppendLine($"{indent}{v}.clearFlags = (CameraClearFlags){clearFlags};");
+        sb.AppendLine($"{indent}{v}.backgroundColor = new Color({F(cr)}, {F(cg)}, {F(cb)}, {F(ca)});");
     }
 
     // ===================== Parsing =====================
@@ -857,10 +926,33 @@ public static class SceneScaffoldGenerator
         return comps;
     }
 
+    /// <summary>
+    /// Returns true when the scene's onClick target resolves to a type currently
+    /// loaded in the editor AND that type has a public zero-arg method of the
+    /// given name. Scene YAML can outlive deleted scripts and renamed methods —
+    /// emitting their wire-up would break compile.
+    /// </summary>
+    static bool OnClickTargetIsValid(string typeName, string methodName)
+    {
+        if (string.IsNullOrEmpty(typeName) || string.IsNullOrEmpty(methodName)) return false;
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            Type t = null;
+            try { t = asm.GetTypes().FirstOrDefault(x => x.Name == typeName); }
+            catch { continue; }
+            if (t == null) continue;
+            var mi = t.GetMethod(methodName,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static,
+                null, Type.EmptyTypes, null);
+            if (mi != null) return true;
+        }
+        return false;
+    }
+
     static void ResolveScriptNames(List<ComponentData> comps, string scenePath)
     {
         var customScripts = new Dictionary<string, string>();
-        var assetsDir = Path.Combine(Path.GetDirectoryName(scenePath), "..", "Assets");
+        var assetsDir = Application.dataPath; // absolute path to <project>/Assets
         foreach (var meta in Directory.GetFiles(assetsDir, "*.cs.meta", SearchOption.AllDirectories))
         {
             try
