@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -29,33 +30,7 @@ namespace Scripts.Instances.SynergyLine
 {
 public class SynergySpark
 {
-    // Spawn window on the path
-    [SerializeField] private float minT = 0.01f;
-    [SerializeField] private float maxT = 0.08f;
-
-    // Motion
-    [SerializeField] private float minBaseSpeed = 0.2f;
-    [SerializeField] private float maxBaseSpeed = 0.6f;
-    [SerializeField] private float revActiveSpeedMul = 1.2f;
-
-    // Size and lifetime
-    [SerializeField] private float minSize = 0.10f;
-    [SerializeField] private float maxSize = 0.16f;
-    [SerializeField] private float minLifetime = 0.40f;
-    [SerializeField] private float maxLifetime = 2.0f;
-
-    // Offset jitter along the local perpendicular
-    [SerializeField] private float minOffsetJitter = -1f;
-    [SerializeField] private float maxOffsetJitter = 1f;
-
-    // Rate and speed randomization
-    [SerializeField] private float spawnRateMin = 10f;
-    [SerializeField] private float spawnRateMax = 16f;
-    [SerializeField] private float speedMulMin = 0.85f;
-    [SerializeField] private float speedMulMax = 1.35f;
-
-    // Sprite library key
-    [SerializeField] private string textureKey = "SynergySpark";
+    // All tuning values live in Scripts.Data.Config.SynergySparkConfig.
 
     // Particle system objects
     private ParticleSystem sparks;
@@ -95,7 +70,7 @@ public class SynergySpark
         if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         var mat = new Material(shader);
 
-        string key = string.IsNullOrEmpty(spriteKeyOverride) ? textureKey : spriteKeyOverride;
+        string key = string.IsNullOrEmpty(spriteKeyOverride) ? SynergySparkConfig.TextureKey : spriteKeyOverride;
         if (SpriteLibrary.Sprites != null && SpriteLibrary.Sprites.ContainsKey(key))
         {
             mat.mainTexture = SpriteLibrary.Sprites[key].texture;
@@ -150,8 +125,8 @@ public class SynergySpark
             )
         );
 
-        spawnRateR = RNG.Float(spawnRateMin, spawnRateMax);
-        speedMulR = RNG.Float(speedMulMin, speedMulMax);
+        spawnRateR = RNG.Float(SynergySparkConfig.SpawnRateMin, SynergySparkConfig.SpawnRateMax);
+        speedMulR = RNG.Float(SynergySparkConfig.SpeedMulMin, SynergySparkConfig.SpeedMulMax);
 
         sparks.Play(true);
     }
@@ -233,20 +208,20 @@ public class SynergySpark
     private void Spawn(bool revActiveFlag)
     {
         var s = new SynergyLineSpark();
-        s.t = RNG.Float(minT, maxT);
+        s.t = RNG.Float(SynergySparkConfig.MinT, SynergySparkConfig.MaxT);
 
-        float baseSpeed = RNG.Float(minBaseSpeed, maxBaseSpeed) * speedMulR;
-        s.speed = baseSpeed * (revActiveFlag ? revActiveSpeedMul : 1.0f);
+        float baseSpeed = RNG.Float(SynergySparkConfig.MinBaseSpeed, SynergySparkConfig.MaxBaseSpeed) * speedMulR;
+        s.speed = baseSpeed * (revActiveFlag ? SynergySparkConfig.RevActiveSpeedMul : 1.0f);
 
-        s.size = RNG.Float(minSize, maxSize);
+        s.size = RNG.Float(SynergySparkConfig.MinSize, SynergySparkConfig.MaxSize);
 
         float travelT = 1f - s.t;
         float timeNeeded = travelT / Mathf.Max(0.001f, s.speed);
         float padding = timeNeeded * RNG.Float(0.10f, 0.35f);
-        s.lifetime = Mathf.Clamp(timeNeeded + padding, minLifetime, maxLifetime);
+        s.lifetime = Mathf.Clamp(timeNeeded + padding, SynergySparkConfig.MinLifetime, SynergySparkConfig.MaxLifetime);
 
         s.age = 0f;
-        s.offsetJitter = RNG.Float(minOffsetJitter, maxOffsetJitter);
+        s.offsetJitter = RNG.Float(SynergySparkConfig.MinOffsetJitter, SynergySparkConfig.MaxOffsetJitter);
 
         active.Add(s);
     }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -24,44 +25,14 @@ namespace Scripts.Utilities
 {
 public class Demo_FreeCam : MonoBehaviour
 {
-    [Header("Focus Object")]
-    [SerializeField, Tooltip("Enable double-click to focus on objects?")]
-    private bool doFocus = false;
-    [SerializeField] private float focusLimit = 100f;
-    [SerializeField] private float minFocusDistance = 5.0f;
+    // All tuning values live in Scripts.Data.Config.DemoFreeCamConfig.
+
     private float doubleClickTime = .15f;
     private float cooldown = 0;
-    [Header("Undo - Only undoes the Focus Object - The keys must be pressed in order.")]
-    [SerializeField] private KeyCode firstUndoKey = KeyCode.LeftControl;
-    [SerializeField] private KeyCode secondUndoKey = KeyCode.Z;
-
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 1.0f;
-    [SerializeField] private float rotationSpeed = 10.0f;
-    [SerializeField] private float zoomSpeed = 10.0f;
 
     //Cache last pos and rot be able to undo last focus object action.
     Quaternion prevRot = new Quaternion();
     Vector3 prevPos = new Vector3();
-
-    [Header("Axes Names")]
-    [SerializeField, Tooltip("Otherwise known as the vertical axis")] private string mouseY = "Mouse Y";
-    [SerializeField, Tooltip("AKA horizontal axis")] private string mouseX = "Mouse X";
-    [SerializeField, Tooltip("The axis you want to use for zoom.")] private string zoomAxis = "Mouse ScrollWheel";
-
-    [Header("Move Keys")]
-    [SerializeField] private KeyCode forwardKey = KeyCode.W;
-    [SerializeField] private KeyCode backKey = KeyCode.S;
-    [SerializeField] private KeyCode leftKey = KeyCode.A;
-    [SerializeField] private KeyCode rightKey = KeyCode.D;
-
-    [Header("Flat Move"), Tooltip("Instead of going where the camera is pointed, the camera moves only on the horizontal plane (Assuming you are working in 3D with default preferences).")]
-    [SerializeField] private KeyCode flatMoveKey = KeyCode.LeftShift;
-
-    [Header("Anchored Movement"), Tooltip("By default in scene-view, this is done by right-clicking for rotation or middle mouse clicking for up and down")]
-    [SerializeField] private KeyCode anchoredMoveKey = KeyCode.Mouse2;
-
-    [SerializeField] private KeyCode anchoredRotateKey = KeyCode.Mouse1;
 
     /// <summary>Performs initial setup after all Awake calls complete.</summary>
     private void Start()
@@ -71,19 +42,19 @@ public class Demo_FreeCam : MonoBehaviour
 
     void Update()
     {
-        if (!doFocus)
+        if (!DemoFreeCamConfig.DoFocus)
             return;
 
-        //Double click for focus 
+        //Double click for focus
         if (cooldown > 0 && Input.GetKeyDown(KeyCode.Mouse0))
             FocusObject();
         if (Input.GetKeyDown(KeyCode.Mouse0))
             cooldown = doubleClickTime;
 
         //--------UNDO FOCUS---------
-        if (Input.GetKey(firstUndoKey))
+        if (Input.GetKey(DemoFreeCamConfig.FirstUndoKey))
         {
-            if (Input.GetKeyDown(secondUndoKey))
+            if (Input.GetKeyDown(DemoFreeCamConfig.SecondUndoKey))
                 GoBackToLastPosition();
         }
 
@@ -97,17 +68,17 @@ public class Demo_FreeCam : MonoBehaviour
 
         //Move and rotate the camera
 
-        if (Input.GetKey(forwardKey))
-            move += Vector3.forward * moveSpeed;
-        if (Input.GetKey(backKey))
-            move += Vector3.back * moveSpeed;
-        if (Input.GetKey(leftKey))
-            move += Vector3.left * moveSpeed;
-        if (Input.GetKey(rightKey))
-            move += Vector3.right * moveSpeed;
+        if (Input.GetKey(DemoFreeCamConfig.ForwardKey))
+            move += Vector3.forward * DemoFreeCamConfig.MoveSpeed;
+        if (Input.GetKey(DemoFreeCamConfig.BackKey))
+            move += Vector3.back * DemoFreeCamConfig.MoveSpeed;
+        if (Input.GetKey(DemoFreeCamConfig.LeftKey))
+            move += Vector3.left * DemoFreeCamConfig.MoveSpeed;
+        if (Input.GetKey(DemoFreeCamConfig.RightKey))
+            move += Vector3.right * DemoFreeCamConfig.MoveSpeed;
 
         //By far the simplest solution I could come up with for moving only on the Horizontal plane - no rotation, just cache y
-        if (Input.GetKey(flatMoveKey))
+        if (Input.GetKey(DemoFreeCamConfig.FlatMoveKey))
         {
             float origY = transform.position.y;
 
@@ -117,28 +88,28 @@ public class Demo_FreeCam : MonoBehaviour
             return;
         }
 
-        float mouseMoveY = Input.GetAxis(mouseY);
-        float mouseMoveX = Input.GetAxis(mouseX);
+        float mouseMoveY = Input.GetAxis(DemoFreeCamConfig.MouseY);
+        float mouseMoveX = Input.GetAxis(DemoFreeCamConfig.MouseX);
 
         //Move the camera when anchored
-        if (Input.GetKey(anchoredMoveKey))
+        if (Input.GetKey(DemoFreeCamConfig.AnchoredMoveKey))
         {
-            move += Vector3.up * mouseMoveY * -moveSpeed;
-            move += Vector3.right * mouseMoveX * -moveSpeed;
+            move += Vector3.up * mouseMoveY * -DemoFreeCamConfig.MoveSpeed;
+            move += Vector3.right * mouseMoveX * -DemoFreeCamConfig.MoveSpeed;
         }
 
         //Rotate the camera when anchored
-        if (Input.GetKey(anchoredRotateKey))
+        if (Input.GetKey(DemoFreeCamConfig.AnchoredRotateKey))
         {
-            transform.RotateAround(transform.position, transform.right, mouseMoveY * -rotationSpeed);
-            transform.RotateAround(transform.position, Vector3.up, mouseMoveX * rotationSpeed);
+            transform.RotateAround(transform.position, transform.right, mouseMoveY * -DemoFreeCamConfig.RotationSpeed);
+            transform.RotateAround(transform.position, Vector3.up, mouseMoveX * DemoFreeCamConfig.RotationSpeed);
         }
 
         transform.Translate(move);
 
         //Scroll to zoom
-        float mouseScroll = Input.GetAxis(zoomAxis);
-        transform.Translate(Vector3.forward * mouseScroll * zoomSpeed);
+        float mouseScroll = Input.GetAxis(DemoFreeCamConfig.ZoomAxis);
+        transform.Translate(Vector3.forward * mouseScroll * DemoFreeCamConfig.ZoomSpeed);
     }
 
     /// <summary>Focus object.</summary>
@@ -151,7 +122,7 @@ public class Demo_FreeCam : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, focusLimit))
+        if (Physics.Raycast(ray, out hit, DemoFreeCamConfig.FocusLimit))
         {
             GameObject target = hit.collider.gameObject;
             Vector3 targetPos = target.transform.position;
@@ -183,7 +154,7 @@ public class Demo_FreeCam : MonoBehaviour
         Vector3 dirToTarget = targetPos - transform.position;
 
         float focusDistance = Mathf.Max(targetSize.x, targetSize.z);
-        focusDistance = Mathf.Clamp(focusDistance, minFocusDistance, focusDistance);
+        focusDistance = Mathf.Clamp(focusDistance, DemoFreeCamConfig.MinFocusDistance, focusDistance);
 
         return -dirToTarget.normalized * focusDistance;
     }

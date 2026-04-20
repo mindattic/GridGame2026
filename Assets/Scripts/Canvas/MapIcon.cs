@@ -1,5 +1,6 @@
 using UnityEngine;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -56,21 +57,15 @@ public class MapIcon : MonoBehaviour
 {
     public enum HoverMode { Static, Hover }
 
-    [Header("Mode")]
-    [SerializeField] private HoverMode mode = HoverMode.Hover;
-
-    [Header("Hover Settings")]
-    [SerializeField] private float amplitude = 8f;      // pixels or local units
-    [SerializeField] private float speed = 1.2f;        // cycles per second
-    [SerializeField] private float phaseOffset = 0f;    // radians
-    [SerializeField] private bool useUnscaledTime = true;
+    // Runtime field — SetHoverEnabled() mutates this. All other tuning lives in MapIconConfig.
+    private HoverMode mode = MapIconConfig.DefaultHoverEnabled ? HoverMode.Hover : HoverMode.Static;
 
     private RectTransform rect;
     private bool isUI;
     private Vector3 baseLocalPos;
     private Vector2 baseAnchoredPos;
 
-    private float TimeNow => useUnscaledTime ? Time.unscaledTime : Time.time;
+    private float TimeNow => MapIconConfig.UseUnscaledTime ? Time.unscaledTime : Time.time;
 
     /// <summary>Caches the RectTransform and determines whether this is a UI element.</summary>
     private void Awake()
@@ -99,7 +94,7 @@ public class MapIcon : MonoBehaviour
             return;
         }
 
-        float yOffset = Mathf.Sin((TimeNow * speed * Mathf.PI * 2f) + phaseOffset) * amplitude;
+        float yOffset = Mathf.Sin((TimeNow * MapIconConfig.Speed * Mathf.PI * 2f) + MapIconConfig.PhaseOffset) * MapIconConfig.Amplitude;
 
         if (isUI)
         {

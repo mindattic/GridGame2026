@@ -1,6 +1,7 @@
 using UnityEngine;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -22,20 +23,30 @@ using Scripts.Utilities;
 
 namespace Scripts.Serialization
 {
-    // Attach to a scene object and point to the Props root and map path.
+    // Attach to a scene object and set PropsRoot programmatically. MapPath,
+    // LoadOnStart, and ClearExisting are compile-time constants from
+    // MapPropEditorConfig; PropMapHotkeys reads PropsRoot / MapPath via the
+    // public properties below rather than reflecting into private fields.
     public sealed class MapPropEditorBootstrapper : MonoBehaviour
     {
-        [SerializeField] private Transform propsRoot;
-        [SerializeField] private string mapPath = "Maps/Test/Test";
-        [SerializeField] private bool loadOnStart = true;
-        [SerializeField] private bool clearExisting = true;
+        private Transform propsRoot;
+
+        /// <summary>Programmatic access to the props hierarchy root.</summary>
+        public Transform PropsRoot
+        {
+            get => propsRoot;
+            set => propsRoot = value;
+        }
+
+        /// <summary>Resources path of the props map JSON.</summary>
+        public string MapPath => MapPropEditorConfig.MapPath;
 
         /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
-            if (loadOnStart && propsRoot != null && !string.IsNullOrWhiteSpace(mapPath))
+            if (MapPropEditorConfig.LoadOnStart && propsRoot != null && !string.IsNullOrWhiteSpace(MapPropEditorConfig.MapPath))
             {
-                PropMapIO.LoadInto(propsRoot, mapPath, clearExisting);
+                PropMapIO.LoadInto(propsRoot, MapPropEditorConfig.MapPath, MapPropEditorConfig.ClearExisting);
             }
         }
 
@@ -44,7 +55,7 @@ namespace Scripts.Serialization
         private void LoadNow()
         {
             if (propsRoot == null) return;
-            PropMapIO.LoadInto(propsRoot, mapPath, clearExisting: true);
+            PropMapIO.LoadInto(propsRoot, MapPropEditorConfig.MapPath, clearExisting: true);
         }
     }
 }

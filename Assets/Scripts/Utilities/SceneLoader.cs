@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using scene = Scripts.Helpers.SceneHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -50,7 +51,7 @@ namespace Scripts.Utilities
     /// 
     /// EDITOR BOOTSTRAP:
     /// If game starts on LoadingScreen, auto-loads
-    /// bootstrapScene (default: TitleScreen).
+    /// SceneLoaderConfig.BootstrapScene (default: TitleScreen).
     /// 
     /// USAGE:
     /// ```csharp
@@ -64,29 +65,13 @@ namespace Scripts.Utilities
     /// </summary>
     public sealed class SceneLoader : MonoBehaviour
     {
-        [Header("UI Elements")]
-        [SerializeField] private Slider progressBar;
-        [SerializeField] private TextMeshProUGUI progressLabel;
-
-        [Header("Overlay Groups")]
-        [Tooltip("Fullscreen black overlay CanvasGroup that fades from 1 to 0.")]
-        [SerializeField] private CanvasGroup fadePanel;
-        [Tooltip("Container CanvasGroup for progress UI that fades from 0 to 1.")]
-        [SerializeField] private CanvasGroup progressPanel;
-
-        [Header("Timings")]
-        [SerializeField] private float fadeInDuration = 0.4f;
-        [SerializeField] private float uiShowDelay = 1.0f;
-        [SerializeField] private float minimumVisibleTime = 0.5f;
-
-        [Header("Behavior")]
-        [SerializeField] private bool activateWhenReady = true;
-
-        [Header("Editor Bootstrap")]
-        [Tooltip("If true and the game starts on the LoadingScreen, automatically load Bootstrap Scene.")]
-        [SerializeField] private bool autoLoadWhenLaunchedDirectly = true;
-        [Tooltip("Scene to load automatically when LoadingScreen is launched directly.")]
-        [SerializeField] private string bootstrapScene = "TitleScreen";
+        // All tuning values live in Scripts.Data.Config.SceneLoaderConfig.
+        // UI refs below are resolved in Start() via transform.Find against the
+        // LoadingScreen scaffold, not Inspector drag-drop.
+        private Slider progressBar;
+        private TextMeshProUGUI progressLabel;
+        private CanvasGroup fadePanel;
+        private CanvasGroup progressPanel;
 
         private static string targetSceneName;
         private static LoadSceneMode targetLoadMode = LoadSceneMode.Single;
@@ -158,6 +143,8 @@ namespace Scripts.Utilities
         /// </summary>
         private void Start()
         {
+            ResolveUIReferences();
+
             // Prepare overlay groups
             if (fadePanel != null)
             {
@@ -180,13 +167,13 @@ namespace Scripts.Utilities
             // If we pressed Play on LoadingScreen directly and no target is set, bootstrap once without reloading LoadingScreen
             if (string.IsNullOrEmpty(targetSceneName))
             {
-                if (autoLoadWhenLaunchedDirectly && !string.IsNullOrWhiteSpace(bootstrapScene))
+                if (SceneLoaderConfig.AutoLoadWhenLaunchedDirectly && !string.IsNullOrWhiteSpace(SceneLoaderConfig.BootstrapScene))
                 {
                     // Set up a normal load for the bootstrap scene and continue as if it had been requested
                     previousScene = scene.LoadingScreen;
-                    currentScene = bootstrapScene;
+                    currentScene = SceneLoaderConfig.BootstrapScene;
 
-                    targetSceneName = bootstrapScene;
+                    targetSceneName = SceneLoaderConfig.BootstrapScene;
                     targetLoadMode = LoadSceneMode.Single;
                     onLoadedCallback = null;
 
@@ -205,9 +192,33 @@ namespace Scripts.Utilities
             }
 
             // Normal loading behavior
-            StartCoroutine(FadeFromBlackRoutine(fadeInDuration));
-            StartCoroutine(ShowUIAfterDelay(uiShowDelay, fadeInDuration));
+            StartCoroutine(FadeFromBlackRoutine(SceneLoaderConfig.FadeInDuration));
+            StartCoroutine(ShowUIAfterDelay(SceneLoaderConfig.UIShowDelay, SceneLoaderConfig.FadeInDuration));
             StartCoroutine(LoadRoutine());
+        }
+
+        /// <summary>
+        /// Find the progress bar, label, fade panel, and progress panel by path
+        /// under the scene's root Canvas.
+        /// </summary>
+        private void ResolveUIReferences()
+        {
+            var canvasGO = GameObject.Find(SceneLoaderConfig.CanvasName);
+            if (canvasGO == null) return;
+
+            var canvas = canvasGO.transform;
+
+            var fadeT = canvas.Find(SceneLoaderConfig.FadePanelPath);
+            if (fadeT != null) fadePanel = fadeT.GetComponent<CanvasGroup>();
+
+            var panelT = canvas.Find(SceneLoaderConfig.ProgressPanelPath);
+            if (panelT != null) progressPanel = panelT.GetComponent<CanvasGroup>();
+
+            var barT = canvas.Find(SceneLoaderConfig.ProgressBarPath);
+            if (barT != null) progressBar = barT.GetComponent<Slider>();
+
+            var labelT = canvas.Find(SceneLoaderConfig.ProgressLabelPath);
+            if (labelT != null) progressLabel = labelT.GetComponent<TextMeshProUGUI>();
         }
 
         /// <summary>
@@ -306,11 +317,11 @@ namespace Scripts.Utilities
 
             // Guarantee a minimum on-screen time
             float elapsed = Time.realtimeSinceStartup - startTime;
-            if (elapsed < minimumVisibleTime)
-                yield return new WaitForSecondsRealtime(minimumVisibleTime - elapsed);
+            if (elapsed < SceneLoaderConfig.MinimumVisibleTime)
+                yield return new WaitForSecondsRealtime(SceneLoaderConfig.MinimumVisibleTime - elapsed);
 
             // Activate
-            if (activateWhenReady)
+            if (SceneLoaderConfig.ActivateWhenReady)
                 op.allowSceneActivation = true;
 
             while (!op.isDone)

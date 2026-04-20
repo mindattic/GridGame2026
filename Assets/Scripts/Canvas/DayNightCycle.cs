@@ -113,9 +113,8 @@ namespace Scripts.Canvas
         [Tooltip("Intensity multiplier for per-sprite multiply effect (1 = default, >1 = more vibrant).")]
         [Range(0f, 5f)] public float multiplyVibrance = 1f;
 
-        [Header("Inspector Controls (runtime)")]
-        [Tooltip("Shows the current virtual time of day (derived from cycle progress).")]
-        [SerializeField] private string virtualTime = "--:--";
+        // Runtime-only debug display; formerly [SerializeField] for Inspector.
+        private string virtualTime = "--:--";
 
         // Runtime state
         private float _startTime;

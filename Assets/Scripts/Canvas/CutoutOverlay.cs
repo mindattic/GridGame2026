@@ -61,12 +61,12 @@ namespace Scripts.Canvas
 [RequireComponent(typeof(RectTransform))]
 public sealed class CutoutOverlay : MonoBehaviour
 {
-    [Header("Hierarchy (auto-assigned if null)")]
-    [SerializeField] private RectTransform topRoot;        // "Top" container with Image
-    [SerializeField] private RectTransform leftPane;       // "LeftPane" under Top
-    [SerializeField] private RectTransform centerPane;     // "CenterPane" under Top
-    [SerializeField] private RectTransform rightPane;      // "RightPane" under Top
-    [SerializeField] private RectTransform bottomRoot;     // "Bottom" container with Image
+    // Hierarchy (auto-assigned in Awake from GameObjectHelper or AutoAssignOrCreateChildren()).
+    private RectTransform topRoot;        // "Top" container with Image
+    private RectTransform leftPane;       // "LeftPane" under Top
+    private RectTransform centerPane;     // "CenterPane" under Top
+    private RectTransform rightPane;      // "RightPane" under Top
+    private RectTransform bottomRoot;     // "Bottom" container with Image
 
     private RectTransform _rect;
     private UnityEngine.Canvas _rootCanvas;

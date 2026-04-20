@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -26,10 +27,12 @@ namespace Scripts.Managers
 {
 public class CylinderManager : MonoBehaviour
 {
-    //Fields
-    [SerializeField] public float Ceiling = 1f;
-    [SerializeField] public float Floor = -1f;
-    [SerializeField] public float Focus = 0.05f;
+    // Mutated every FixedUpdate by RNG; seeded from CylinderManagerConfig
+    // defaults so the Inspector-authored values are gone but runtime state
+    // still starts with the same baseline.
+    public float Ceiling = CylinderManagerConfig.DefaultCeiling;
+    public float Floor = CylinderManagerConfig.DefaultFloor;
+    public float Focus = CylinderManagerConfig.DefaultFocus;
     private bool isRising = true;
 
 

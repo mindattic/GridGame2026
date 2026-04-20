@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -42,15 +43,15 @@ namespace Scripts.Instances.SynergyLine
 /// ```
 /// 
 /// MULTI-STRAND SYSTEM:
-/// - waveformCount: Number of parallel strands (default 4)
+/// - SynergyLineInstanceConfig.WaveformCount: Number of parallel strands (default 4)
 /// - Each strand has slightly different wave parameters
 /// - Creates ethereal, flowing appearance
 /// 
 /// CONFIGURATION:
-/// - baseRadius: Spread of strands from center line
-/// - baseWidth: Thickness of each strand
-/// - fadeInTime/fadeOutTime: Animation durations
-/// - strandSegmentCount: Resolution of each strand curve
+/// - SynergyLineInstanceConfig.BaseRadius: Spread of strands from center line
+/// - SynergyLineInstanceConfig.BaseWidth: Thickness of each strand
+/// - SynergyLineInstanceConfig.FadeInTime/SynergyLineInstanceConfig.FadeOutTime: Animation durations
+/// - SynergyLineInstanceConfig.StrandSegmentCount: Resolution of each strand curve
 /// 
 /// ANCHOR SYSTEM:
 /// Uses separate anchor transforms that follow tile positions,
@@ -59,7 +60,7 @@ namespace Scripts.Instances.SynergyLine
 /// LIFECYCLE:
 /// 1. Spawn() called with two actors
 /// 2. Strands created via SynergyStrandFactory
-/// 3. Fades in over fadeInTime
+/// 3. Fades in over SynergyLineInstanceConfig.FadeInTime
 /// 4. Animates continuously while active
 /// 5. Despawn() fades out and destroys
 /// 
@@ -71,21 +72,7 @@ namespace Scripts.Instances.SynergyLine
 /// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
-    #region Configuration
-
-    [SerializeField] private int waveformCount = 4;
-    [SerializeField] private float baseRadius = 0.07f;
-    [SerializeField] private float baseWidth = 0.012f;
-
-    [SerializeField] private float fadeInTime = 0.20f;
-    [SerializeField] private float fadeOutTime = 0.20f;
-
-    [SerializeField] private int orderOffsetPerWave = 1;
-    [SerializeField] private int extraFrontBias = -2;
-
-    [SerializeField] private int strandSegmentCount = 32;
-
-    #endregion
+    // All tuning values live in Scripts.Data.Config.SynergyLineInstanceConfig.
 
     #region Runtime State
 
@@ -184,7 +171,7 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
-        // Normalize 7 weights to [0..1] and mirror to waveformCount slots
+        // Normalize 7 weights to [0..1] and mirror to SynergyLineInstanceConfig.WaveformCount slots
         float[] w = new float[7]
         {
             Mathf.Max(0.0001f, weights.Strength),
@@ -200,10 +187,10 @@ public class SynergyLineInstance : MonoBehaviour
         for (int i = 0; i < 7; i++) if (w[i] > max) max = w[i];
         if (max <= 0f) max = 1f;
 
-        if (wNormPerStrand == null || wNormPerStrand.Length != waveformCount)
-            wNormPerStrand = new float[waveformCount];
+        if (wNormPerStrand == null || wNormPerStrand.Length != SynergyLineInstanceConfig.WaveformCount)
+            wNormPerStrand = new float[SynergyLineInstanceConfig.WaveformCount];
 
-        for (int i = 0; i < waveformCount; i++)
+        for (int i = 0; i < SynergyLineInstanceConfig.WaveformCount; i++)
             wNormPerStrand[i] = w[i % 7] / max;
 
         ApplySettingsToStrands();
@@ -226,10 +213,10 @@ public class SynergyLineInstance : MonoBehaviour
     private IEnumerator LoopRoutine()
     {
         float t = 0f;
-        while (t < fadeInTime)
+        while (t < SynergyLineInstanceConfig.FadeInTime)
         {
             t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / fadeInTime);
+            float k = Mathf.Clamp01(t / SynergyLineInstanceConfig.FadeInTime);
             SetFadeAll(k);
             TickAll();
             yield return null;
@@ -242,10 +229,10 @@ public class SynergyLineInstance : MonoBehaviour
         }
 
         t = 0f;
-        while (t < fadeOutTime)
+        while (t < SynergyLineInstanceConfig.FadeOutTime)
         {
             t += Time.deltaTime;
-            float k = 1f - Mathf.Clamp01(t / fadeOutTime);
+            float k = 1f - Mathf.Clamp01(t / SynergyLineInstanceConfig.FadeOutTime);
             SetFadeAll(k);
             TickAll();
             yield return null;
@@ -270,20 +257,20 @@ public class SynergyLineInstance : MonoBehaviour
         // Set anchors to current tiles before configuring, so positions are correct from frame 0
         UpdateAnchorsToTiles();
 
-        float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, waveformCount);
+        float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, SynergyLineInstanceConfig.WaveformCount);
 
         string layerName;
         int baseOrder;
         ResolveSortingForSynergyLayer(out layerName, out baseOrder);
 
-        EnsureStrands(waveformCount);
+        EnsureStrands(SynergyLineInstanceConfig.WaveformCount);
 
-        for (int i = 0; i < waveformCount; i++)
+        for (int i = 0; i < SynergyLineInstanceConfig.WaveformCount; i++)
         {
             float wNorm = wNormPerStrand != null && i < wNormPerStrand.Length ? wNormPerStrand[i] : 0.5f;
 
-            float widthForStrand = Mathf.Lerp(0.75f, 1.25f, wNorm) * baseWidth;
-            float radiusForStrand = Mathf.Lerp(0.75f, 1.25f, wNorm) * baseRadius;
+            float widthForStrand = Mathf.Lerp(0.75f, 1.25f, wNorm) * SynergyLineInstanceConfig.BaseWidth;
+            float radiusForStrand = Mathf.Lerp(0.75f, 1.25f, wNorm) * SynergyLineInstanceConfig.BaseRadius;
             float phase = phaseStep * i;
 
             var strand = strands[i];
@@ -295,17 +282,17 @@ public class SynergyLineInstance : MonoBehaviour
                 radiusForStrand,
                 phase,
                 layerName,
-                baseOrder + extraFrontBias + (i * orderOffsetPerWave),
+                baseOrder + SynergyLineInstanceConfig.ExtraFrontBias + (i * SynergyLineInstanceConfig.OrderOffsetPerWave),
                 i,
                 wNorm,
-                strandSegmentCount
+                SynergyLineInstanceConfig.StrandSegmentCount
             );
 
             strand.SetFade(0f);
             strand.Tick();
         }
 
-        for (int i = waveformCount; i < strands.Count; i++)
+        for (int i = SynergyLineInstanceConfig.WaveformCount; i < strands.Count; i++)
             strands[i].gameObject.SetActive(false);
     }
 
@@ -335,7 +322,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     private void SetFadeAll(float k)
     {
-        int n = Mathf.Min(waveformCount, strands.Count);
+        int n = Mathf.Min(SynergyLineInstanceConfig.WaveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].SetFade(k);
     }
 
@@ -355,7 +342,7 @@ public class SynergyLineInstance : MonoBehaviour
         int baseOrder;
         ResolveSortingForSynergyLayer(out layerName, out baseOrder);
 
-        int n = Mathf.Min(waveformCount, strands.Count);
+        int n = Mathf.Min(SynergyLineInstanceConfig.WaveformCount, strands.Count);
         for (int i = 0; i < n; i++)
         {
             strands[i].SetSortingLayer(layerName);
@@ -368,7 +355,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     private void ClearAll()
     {
-        int n = Mathf.Min(waveformCount, strands.Count);
+        int n = Mathf.Min(SynergyLineInstanceConfig.WaveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].Clear();
     }
 
@@ -427,7 +414,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     public void SetSorting(string sortingLayer)
     {
-        int n = Mathf.Min(waveformCount, strands.Count);
+        int n = Mathf.Min(SynergyLineInstanceConfig.WaveformCount, strands.Count);
         for (int i = 0; i < n; i++)
         {
             strands[i].SetSortingLayer(sortingLayer);

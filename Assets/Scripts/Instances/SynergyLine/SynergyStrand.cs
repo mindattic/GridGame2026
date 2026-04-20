@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -27,29 +28,31 @@ namespace Scripts.Instances.SynergyLine
 {
 /// <summary>
 /// SYNERGYSTRAND - Single animated strand of a synergy line (alternate version).
-/// 
+///
 /// PURPOSE:
 /// Renders one waveform strand with sine wave motion, Perlin noise
 /// jitter, halo glow, and rev burst effects.
-/// 
+///
 /// VISUAL EFFECT:
 /// ```
 /// [Anchor A] ≈≈≈≈≈≈≈≈≈≈≈≈≈ [Anchor B]
 ///            ↑ animated wave
 /// ```
-/// 
+///
 /// FEATURES:
 /// - Sine wave motion with configurable frequency
 /// - Perlin noise jitter for organic feel
 /// - Halo glow with pulse animation
 /// - Rev bursts (random amplitude spikes)
 /// - Prewarm for instant visual feedback
-/// 
-/// NOTE:
-/// Similar to SynergyLineStrand but may have different parameters
-/// or be used in different contexts.
-/// 
+///
+/// TUNING:
+/// All tuning values live in <see cref="Scripts.Data.Config.SynergyStrandConfig"/>.
+/// Formerly [SerializeField] on this MonoBehaviour; converted to compile-time config
+/// so the strand needs no Inspector authoring.
+///
 /// RELATED FILES:
+/// - SynergyStrandConfig.cs: Static tuning values (was Inspector fields)
 /// - SynergyLineStrand.cs: Primary strand implementation
 /// - SynergyLineInstance.cs: Parent multi-strand line
 /// - SynergyLineManager.cs: Manages all synergy lines
@@ -57,42 +60,6 @@ namespace Scripts.Instances.SynergyLine
 [RequireComponent(typeof(LineRenderer))]
 public class SynergyStrand : MonoBehaviour
 {
-    #region Core Settings
-
-    [SerializeField] private float coreAlpha = 0.55f;
-
-    #endregion
-
-    #region Halo Settings
-
-    [SerializeField] private bool haloRandomize = true;
-    [SerializeField] private Vector2 haloWidthScaleRange = new Vector2(2.2f, 3.1f);
-    [SerializeField] private Vector2 haloAlphaRange = new Vector2(0.14f, 0.26f);
-    [SerializeField] private Vector2 haloPulseAmpRange = new Vector2(0.22f, 0.36f);
-    [SerializeField] private Vector2 haloPulseSpeedMultRange = new Vector2(0.75f, 1.25f);
-    [SerializeField] private Vector2 haloHDRBoostRange = new Vector2(1.10f, 1.60f);
-    [SerializeField] private Vector2 haloPhaseOffsetRange = new Vector2(0.0f, 6.283185f);
-
-    #endregion
-
-    #region Rev Burst Settings
-
-    [SerializeField] private float revChancePerSecond = 0.12f;
-    [SerializeField] private float revPeakMultiplier = 2.2f;
-    [SerializeField] private float revAccelTime = 0.20f;
-    [SerializeField] private float revDecelTime = 0.60f;
-    [SerializeField] private float revCooldownMin = 0.60f;
-    [SerializeField] private float revCooldownMax = 1.60f;
-
-    #endregion
-
-    #region Prewarm Settings
-
-    [SerializeField] private float prewarmSeconds = 0.25f;
-    [SerializeField] private int prewarmSteps = 16;
-
-    #endregion
-
     #region Components
 
     private LineRenderer line;
@@ -107,54 +74,19 @@ public class SynergyStrand : MonoBehaviour
 
     #endregion
 
-    #region Strand Parameters
+    #region Per-Instance State
 
     private float phaseOffset;
     private float widthAbs;
     private float radiusAbs;
-
-    #endregion
-
-    #region Geometry Settings
-
-    [SerializeField] private float frequency = 2.2f;
-    [SerializeField] private float noiseAmplitude = 0.015f;
-    [SerializeField] private float noiseScale = 2.5f;
-    [SerializeField] private float noiseSpeed = 0.18f;
-    [SerializeField] private AnimationCurve radiusOverT = AnimationCurve.Linear(0f, 1f, 1f, 1f);
-
     private float fade;
     private float noiseSeed;
     private bool configured;
 
-    // Tropical tint state
     private int strandIndex;
     private float weightNorm;
-    [SerializeField] private float hueSpeed = 0.06f;
-    [SerializeField] private float huePhase = 0.12f;
-    [SerializeField] private float hueRange = 0.06f;
-    [SerializeField] private float satBase = 0.90f;
-    [SerializeField] private float satRange = 0.08f;
-    [SerializeField] private float valBase = 1.00f;
-    [SerializeField] private float valPulseAmp = 0.08f;
-    [SerializeField] private float valPulseSpeed = 0.70f;
 
-    // Base green in HSV
-    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f);
-    private static float BaseHue = 0.42f;
-    private static float BaseSat = 0.9f;
-    private static float BaseVal = 1.0f;
-    private static bool BaseHSVInit = false;
-
-    // Halo controls (inputs)
-    [SerializeField] private bool useHalo = true;
-    [SerializeField] private float glowWidthScale = 2.6f;
-    [SerializeField] private float glowAlpha = 0.20f;
-    [SerializeField] private float glowPulseAmp = 0.28f;
-    [SerializeField] private float glowPulseSpeed = 0.90f;
-    [SerializeField] private float glowHDRBoost = 1.35f;
-
-    // Halo randomized instance values
+    // Halo randomized instance values (picked once at Configure time)
     private float glowWidthScaleR;
     private float glowAlphaR;
     private float glowPulseAmpR;
@@ -168,10 +100,6 @@ public class SynergyStrand : MonoBehaviour
     // Geometry
     private int segmentCount = 32;
 
-    // Shader property ids
-    private static int idBaseColor = -1;
-    private static int idColor = -1;
-
     // Rev state
     private float pathTime;
     private bool revActive;
@@ -180,6 +108,23 @@ public class SynergyStrand : MonoBehaviour
 
     // External spark system
     private SynergySpark sparkSystem = new SynergySpark();
+
+    #endregion
+
+    #region Static Shader Cache
+
+    // Base green in HSV
+    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f);
+    private static float BaseHue = 0.42f;
+    private static float BaseSat = 0.9f;
+    private static float BaseVal = 1.0f;
+    private static bool BaseHSVInit = false;
+
+    // Shader property ids
+    private static int idBaseColor = -1;
+    private static int idColor = -1;
+
+    #endregion
 
     /// <summary>
     /// Sets up renderers, shader ids, HSV base, rev cooldown, and spark system.
@@ -212,7 +157,7 @@ public class SynergyStrand : MonoBehaviour
             BaseHSVInit = true;
         }
 
-        revCooldown = RNG.Float(revCooldownMin, revCooldownMax);
+        revCooldown = RNG.Float(SynergyStrandConfig.RevCooldownMin, SynergyStrandConfig.RevCooldownMax);
     }
 
     /// <summary>
@@ -231,7 +176,7 @@ public class SynergyStrand : MonoBehaviour
 
     /// <summary>
     /// Configure per-strand values that actually vary between instances.
-    /// Leaves color, noise, halo, and waveform resolution to this class defaults.
+    /// Color, noise, halo, and waveform resolution come from SynergyStrandConfig.
     /// </summary>
     public void Configure(
         Transform start,
@@ -260,23 +205,23 @@ public class SynergyStrand : MonoBehaviour
         line.positionCount = segmentCount;
         glow.positionCount = segmentCount;
 
-        if (haloRandomize)
+        if (SynergyStrandConfig.HaloRandomize)
         {
-            glowWidthScaleR = RNG.Float(haloWidthScaleRange.x, haloWidthScaleRange.y);
-            glowAlphaR = RNG.Float(haloAlphaRange.x, haloAlphaRange.y);
-            glowPulseAmpR = RNG.Float(haloPulseAmpRange.x, haloPulseAmpRange.y);
-            float speedMult = RNG.Float(haloPulseSpeedMultRange.x, haloPulseSpeedMultRange.y);
-            glowPulseSpeedR = glowPulseSpeed * speedMult;
-            glowHDRBoostR = RNG.Float(haloHDRBoostRange.x, haloHDRBoostRange.y);
-            glowPhaseOffsetR = RNG.Float(haloPhaseOffsetRange.x, haloPhaseOffsetRange.y);
+            glowWidthScaleR = RNG.Float(SynergyStrandConfig.HaloWidthScaleRange.x, SynergyStrandConfig.HaloWidthScaleRange.y);
+            glowAlphaR = RNG.Float(SynergyStrandConfig.HaloAlphaRange.x, SynergyStrandConfig.HaloAlphaRange.y);
+            glowPulseAmpR = RNG.Float(SynergyStrandConfig.HaloPulseAmpRange.x, SynergyStrandConfig.HaloPulseAmpRange.y);
+            float speedMult = RNG.Float(SynergyStrandConfig.HaloPulseSpeedMultRange.x, SynergyStrandConfig.HaloPulseSpeedMultRange.y);
+            glowPulseSpeedR = SynergyStrandConfig.GlowPulseSpeed * speedMult;
+            glowHDRBoostR = RNG.Float(SynergyStrandConfig.HaloHDRBoostRange.x, SynergyStrandConfig.HaloHDRBoostRange.y);
+            glowPhaseOffsetR = RNG.Float(SynergyStrandConfig.HaloPhaseOffsetRange.x, SynergyStrandConfig.HaloPhaseOffsetRange.y);
         }
         else
         {
-            glowWidthScaleR = glowWidthScale;
-            glowAlphaR = glowAlpha;
-            glowPulseAmpR = glowPulseAmp;
-            glowPulseSpeedR = glowPulseSpeed;
-            glowHDRBoostR = glowHDRBoost;
+            glowWidthScaleR = SynergyStrandConfig.GlowWidthScale;
+            glowAlphaR = SynergyStrandConfig.GlowAlpha;
+            glowPulseAmpR = SynergyStrandConfig.GlowPulseAmp;
+            glowPulseSpeedR = SynergyStrandConfig.GlowPulseSpeed;
+            glowHDRBoostR = SynergyStrandConfig.GlowHDRBoost;
             glowPhaseOffsetR = 0f;
         }
 
@@ -291,7 +236,7 @@ public class SynergyStrand : MonoBehaviour
 
         configured = true;
 
-        Prewarm(prewarmSeconds, prewarmSteps);
+        Prewarm(SynergyStrandConfig.PrewarmSeconds, SynergyStrandConfig.PrewarmSteps);
     }
 
     /// <summary>
@@ -313,7 +258,7 @@ public class SynergyStrand : MonoBehaviour
         Color greenTint = ComputeTintedGreen();
 
         Color core = greenTint;
-        core.a *= fade * coreAlpha;
+        core.a *= fade * SynergyStrandConfig.CoreAlpha;
 
         Color haloC = greenTint;
         float alphaPulse = 0.65f + 0.35f * Mathf.Sin(Time.time * glowAlphaPulseSpeed + strandIndex + glowPhaseOffsetR);
@@ -321,7 +266,7 @@ public class SynergyStrand : MonoBehaviour
         Color haloHDR = haloC * glowHDRBoostR;
 
         ApplyColor(line, core);
-        if (useHalo) ApplyColor(glow, haloHDR);
+        if (SynergyStrandConfig.UseHalo) ApplyColor(glow, haloHDR);
 
         var sparkTint = greenTint * 1.35f;
         sparkTint.a = 0.9f;
@@ -353,7 +298,7 @@ public class SynergyStrand : MonoBehaviour
 
         float envelope = 1f + Mathf.Sin(Time.time * 0.35f + phaseOffset * 0.7f) * 0.35f;
 
-        if (useHalo)
+        if (SynergyStrandConfig.UseHalo)
         {
             float haloWidthPulse = 1f + Mathf.Sin(Time.time * glowPulseSpeedR + strandIndex + glowPhaseOffsetR) * glowPulseAmpR;
             glow.widthMultiplier = widthAbs * glowWidthScaleR * haloWidthPulse;
@@ -371,7 +316,7 @@ public class SynergyStrand : MonoBehaviour
         }
 
         System.Func<float, Vector3> sampler = (t) => EvaluatePathPoint(start, end, perp, envelope, twoPi, t);
-        System.Func<float, float> radiusSampler = (t) => radiusAbs * radiusOverT.Evaluate(t) * envelope;
+        System.Func<float, float> radiusSampler = (t) => radiusAbs * SynergyStrandConfig.RadiusOverT.Evaluate(t) * envelope;
 
         sparkSystem.Tick(
             fade,
@@ -419,7 +364,7 @@ public class SynergyStrand : MonoBehaviour
             }
 
             System.Func<float, Vector3> sampler = (t) => EvaluatePathPoint(start, end, perp, env, twoPi, t);
-            System.Func<float, float> radiusSampler = (t) => radiusAbs * radiusOverT.Evaluate(t) * env;
+            System.Func<float, float> radiusSampler = (t) => radiusAbs * SynergyStrandConfig.RadiusOverT.Evaluate(t) * env;
 
             sparkSystem.Prewarm(dt, 1, revActive, sampler, radiusSampler);
         }
@@ -455,13 +400,13 @@ public class SynergyStrand : MonoBehaviour
     {
         float t = Time.time;
 
-        float hueOffset = Mathf.Sin(t * hueSpeed + strandIndex * huePhase) * hueRange;
+        float hueOffset = Mathf.Sin(t * SynergyStrandConfig.HueSpeed + strandIndex * SynergyStrandConfig.HuePhase) * SynergyStrandConfig.HueRange;
         float h = Mathf.Repeat(BaseHue + hueOffset, 1f);
 
-        float s = Mathf.Clamp01(satBase + satRange * weightNorm);
+        float s = Mathf.Clamp01(SynergyStrandConfig.SatBase + SynergyStrandConfig.SatRange * weightNorm);
 
-        float vPulse = Mathf.Sin(t * valPulseSpeed + strandIndex * 0.4f);
-        float v = Mathf.Clamp01(valBase + valPulseAmp * vPulse);
+        float vPulse = Mathf.Sin(t * SynergyStrandConfig.ValPulseSpeed + strandIndex * 0.4f);
+        float v = Mathf.Clamp01(SynergyStrandConfig.ValBase + SynergyStrandConfig.ValPulseAmp * vPulse);
 
         return Color.HSVToRGB(h, s, v);
     }
@@ -474,7 +419,7 @@ public class SynergyStrand : MonoBehaviour
             revCooldown -= dt;
             if (revCooldown <= 0f)
             {
-                if (RNG.Percent < revChancePerSecond * dt)
+                if (RNG.Percent < SynergyStrandConfig.RevChancePerSecond * dt)
                 {
                     revActive = true;
                     revElapsed = 0f;
@@ -486,8 +431,8 @@ public class SynergyStrand : MonoBehaviour
 
         revElapsed += dt;
 
-        float acc = Mathf.Max(0.0001f, revAccelTime);
-        float dec = Mathf.Max(0.0001f, revDecelTime);
+        float acc = Mathf.Max(0.0001f, SynergyStrandConfig.RevAccelTime);
+        float dec = Mathf.Max(0.0001f, SynergyStrandConfig.RevDecelTime);
         float total = acc + dec;
 
         float k;
@@ -504,21 +449,21 @@ public class SynergyStrand : MonoBehaviour
         else
         {
             revActive = false;
-            revCooldown = RNG.Float(revCooldownMin, revCooldownMax);
+            revCooldown = RNG.Float(SynergyStrandConfig.RevCooldownMin, SynergyStrandConfig.RevCooldownMax);
             return 1f;
         }
 
-        float peak = Mathf.Max(1f, revPeakMultiplier);
+        float peak = Mathf.Max(1f, SynergyStrandConfig.RevPeakMultiplier);
         return 1f + (peak - 1f) * k;
     }
 
     /// <summary>Evaluate path point.</summary>
     private Vector3 EvaluatePathPoint(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi, float t)
     {
-        float radius = radiusAbs * radiusOverT.Evaluate(t) * envelope;
+        float radius = radiusAbs * SynergyStrandConfig.RadiusOverT.Evaluate(t) * envelope;
 
-        float sin = Mathf.Sin(twoPi * frequency * t + phaseOffset + pathTime * 0.18f);
-        float n = (Mathf.PerlinNoise(noiseSeed + t * noiseScale, pathTime * noiseSpeed) - 0.5f) * 2f;
+        float sin = Mathf.Sin(twoPi * SynergyStrandConfig.Frequency * t + phaseOffset + pathTime * 0.18f);
+        float n = (Mathf.PerlinNoise(noiseSeed + t * SynergyStrandConfig.NoiseScale, pathTime * SynergyStrandConfig.NoiseSpeed) - 0.5f) * 2f;
 
         Vector3 basePos = Vector3.Lerp(start, end, t);
         Vector3 offset = perp * ((sin + n) * radius);
@@ -534,8 +479,6 @@ public class SynergyStrand : MonoBehaviour
         if (glow != null) glow.sortingLayerName = sortingLayer;
         sparkSystem.SetSorting(sortingLayer, (line != null ? line.sortingOrder : 0) + 2);
     }
-
-    #endregion
 }
 
 }

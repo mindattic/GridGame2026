@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -45,10 +46,10 @@ namespace Scripts.Canvas
 /// - Fades out when targeting ends
 /// 
 /// CONFIGURATION:
-/// - minAlpha: Fully transparent (0)
-/// - maxAlpha: Visible overlay alpha (0.33)
+/// - TargetModeOverlayConfig.MinAlpha: Fully transparent (0)
+/// - TargetModeOverlayConfig.MaxAlpha: Visible overlay alpha (0.33)
 /// - duration: Fade time in seconds
-/// - overlayColor: RGB color (default black)
+/// - TargetModeOverlayConfig.OverlayColor: RGB color (default black)
 /// 
 /// PENDING MODE:
 /// If mode change occurs while disabled, queues the change
@@ -71,18 +72,7 @@ public class TargetModeOverlay : MonoBehaviour
     private SpriteRenderer spriteRenderer;   // Overlay sprite we fade
     private Coroutine runningCoroutine;      // Active fade routine if any
 
-    // Fade parameters
-    [SerializeField] private float minAlpha = 0f;          // Fully transparent
-    [SerializeField] private float maxAlpha = 0.3333f;     // Visible overlay alpha
-    [SerializeField] private float duration = 0.1f;        // Fade time (unscaled)
-
-    // Overlay color (RGB); alpha is driven by fade
-    [SerializeField] private Color overlayColor = new Color(0f, 0f, 0f, 1f);
-
-    // Rendering order (to ensure it draws above the board tiles)
-    [Header("Rendering")]
-    [SerializeField] private string sortingLayerName = "Default";
-    [SerializeField] private int orderInLayer = 50;
+    // All tuning values live in Scripts.Data.Config.TargetModeOverlayConfig.
 
     // If a mode arrives while this component is disabled, store and apply on enable
     private bool hasPendingMode;         // Tracks if we queued a mode
@@ -103,7 +93,7 @@ public class TargetModeOverlay : MonoBehaviour
             // Apply sorting so we render on top of board tiles
             ApplySorting();
 
-            var c = overlayColor; // use configured RGB, zero alpha
+            var c = TargetModeOverlayConfig.OverlayColor; // use configured RGB, zero alpha
             c.a = 0f;
             spriteRenderer.color = c;
             spriteRenderer.enabled = true;
@@ -190,8 +180,8 @@ public class TargetModeOverlay : MonoBehaviour
 
         StopFade();
         float from = GetAlpha();
-        float to = targetVisible ? maxAlpha : minAlpha;
-        runningCoroutine = StartCoroutine(FadeRoutine(from, to, duration));
+        float to = targetVisible ? TargetModeOverlayConfig.MaxAlpha : TargetModeOverlayConfig.MinAlpha;
+        runningCoroutine = StartCoroutine(FadeRoutine(from, to, TargetModeOverlayConfig.Duration));
     }
 
     // ---------------------------------------------------------------------
@@ -224,11 +214,11 @@ public class TargetModeOverlay : MonoBehaviour
     private void ApplyInstant(InputMode mode)
     {
         bool visible = ShouldBeVisible(mode);
-        float targetAlpha = visible ? maxAlpha : minAlpha;
+        float targetAlpha = visible ? TargetModeOverlayConfig.MaxAlpha : TargetModeOverlayConfig.MinAlpha;
 
         if (spriteRenderer != null)
         {
-            var c = overlayColor;
+            var c = TargetModeOverlayConfig.OverlayColor;
             c.a = targetAlpha;
             spriteRenderer.color = c;
             spriteRenderer.enabled = true;
@@ -239,9 +229,9 @@ public class TargetModeOverlay : MonoBehaviour
     private void ApplySorting()
     {
         if (spriteRenderer == null) return;
-        if (!string.IsNullOrEmpty(sortingLayerName))
-            spriteRenderer.sortingLayerName = sortingLayerName;
-        spriteRenderer.sortingOrder = orderInLayer;
+        if (!string.IsNullOrEmpty(TargetModeOverlayConfig.SortingLayerName))
+            spriteRenderer.sortingLayerName = TargetModeOverlayConfig.SortingLayerName;
+        spriteRenderer.sortingOrder = TargetModeOverlayConfig.OrderInLayer;
     }
 
     /// <summary>
@@ -309,7 +299,7 @@ public class TargetModeOverlay : MonoBehaviour
     private void SetAlpha(float a)
     {
         if (spriteRenderer == null) return;
-        var c = overlayColor;
+        var c = TargetModeOverlayConfig.OverlayColor;
         c.a = a;
         spriteRenderer.color = c;
     }
@@ -319,14 +309,14 @@ public class TargetModeOverlay : MonoBehaviour
     /// <summary>Editor preview show.</summary>
     private void EditorPreviewShow()
     {
-        SetAlpha(maxAlpha);
+        SetAlpha(TargetModeOverlayConfig.MaxAlpha);
     }
 
     [ContextMenu("Preview Hide")]
     /// <summary>Editor preview hide.</summary>
     private void EditorPreviewHide()
     {
-        SetAlpha(minAlpha);
+        SetAlpha(TargetModeOverlayConfig.MinAlpha);
     }
 #endif
 }

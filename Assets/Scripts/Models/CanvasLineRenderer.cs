@@ -27,10 +27,14 @@ namespace Scripts.Models
 [RequireComponent(typeof(CanvasRenderer))]
 public class CanvasLineRenderer : Graphic
 {
-    [SerializeField] public List<Vector2> points = new List<Vector2>();
-    [SerializeField] public float thickness = 5f;
-    [SerializeField] public float dotSpacing = 20f;
-    [SerializeField] public RectTransform content; // Reference to the ScrollView's Content
+    // Plain public fields (Unity serializes public by default, [SerializeField]
+    // on public is redundant). Points and content are runtime state set via
+    // UpdateLine or externally; thickness/dotSpacing are tuning defaults that
+    // can still be overridden programmatically.
+    public List<Vector2> points = new List<Vector2>();
+    public float thickness = 5f;
+    public float dotSpacing = 20f;
+    public RectTransform content; // Reference to the ScrollView's Content
 
     /// <summary>Handles the populate mesh event.</summary>
     protected override void OnPopulateMesh(VertexHelper vh)

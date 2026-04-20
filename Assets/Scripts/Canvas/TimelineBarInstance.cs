@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using g = Scripts.Helpers.GameHelper;
 using c = Scripts.Helpers.CanvasHelper;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -51,12 +52,12 @@ namespace Scripts.Canvas
     /// KEY PROPERTIES:
     /// - activeTags: All TimelineTag instances currently on the bar
     /// - advancing: True while timeline is actively moving tags
-    /// - crossingTimeSeconds: Base time for Speed 10 enemy to cross bar
+    /// - TimelineBarConfig.CrossingTimeSeconds: Base time for Speed 10 enemy to cross bar
     /// 
     /// PUSHBACK SYSTEM:
     /// When enemies are hit, their tags are pushed back on the timeline.
-    /// - pushbackBase: Minimum pushback at far right
-    /// - pushbackMax: Maximum pushback at trigger point
+    /// - TimelineBarConfig.PushbackBase: Minimum pushback at far right
+    /// - TimelineBarConfig.PushbackMax: Maximum pushback at trigger point
     /// 
     /// INTEGRATION:
     /// - TurnManager calls OnEnemyTurnFinished() after enemy acts
@@ -74,39 +75,14 @@ namespace Scripts.Canvas
     [DisallowMultipleComponent]
     public sealed class TimelineBarInstance : MonoBehaviour
     {
-        #region Inspector Fields
+        #region Runtime Scene References
 
-        [Header("Parts")]
-        [SerializeField] private RectTransform barRect;
-        [SerializeField] private RectTransform tagsRoot;
-        [SerializeField] private TimelineTag tagPrefab;
-        [SerializeField] private RectTransform triggerPointRect;
-        [SerializeField] private RectTransform spawnPointRect;
-
-        [Header("Layout")]
-        [Tooltip("Percent of canvas width used for the timeline length.")]
-        [SerializeField] private float canvasPercent = 0.96f;
-
-        [Header("Tuning")]
-        [Tooltip("Base time in seconds for an enemy with Speed 10 to cross the full bar.")]
-        [SerializeField] private float crossingTimeSeconds = 8f;
-        [Tooltip("Maximum release delay in seconds for slowest enemies.")]
-        [SerializeField] private float maxReleaseDelay = 4f;
-        [Tooltip("Vertical spacing between duplicate tags.")]
-        [SerializeField] private float tagRowHeight = 14f;
-        [SerializeField] private bool debugLogs = false;
-
-        [Header("Pushback on Attack")]
-        [Tooltip("Minimum pushback when enemy is at the far right.")]
-        [SerializeField] private float pushbackBase = 0.05f;
-        [Tooltip("Maximum pushback when enemy is at the trigger point.")]
-        [SerializeField] private float pushbackMax = 0.4f;
-        [Tooltip("Base stun duration in seconds after pushback.")]
-        [SerializeField] private float baseStunDuration = 1f;
-
-        [Header("Queue Coordination")]
-        [Tooltip("Minimum time gap between enemy releases.")]
-        [SerializeField] private float minimumReleaseGap = 1.5f;
+        // All tuning values live in Scripts.Data.Config.TimelineBarConfig.
+        // These transforms are acquired/created in Awake, not Inspector-assigned.
+        private RectTransform barRect;
+        private RectTransform tagsRoot;
+        private RectTransform triggerPointRect;
+        private RectTransform spawnPointRect;
 
         #endregion
 
@@ -182,7 +158,7 @@ namespace Scripts.Canvas
             layoutReady = true;
             UpdateAllEndpoints();
             Recalculate();
-            if (debugLogs) Debug.Log($"[TimelineBar] LayoutReady left={LeftX:F1} right={RightX:F1} width={Width:F1}");
+            if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] LayoutReady left={LeftX:F1} right={RightX:F1} width={Width:F1}");
         }
 
         /// <summary>Called when the RectTransform dimensions change.</summary>
@@ -207,7 +183,7 @@ namespace Scripts.Canvas
         private void RebuildLayout()
         {
             if (c.CanvasRect == null || barRect == null) return;
-            float targetWidth = Mathf.Max(1f, c.CanvasRect.rect.width * canvasPercent);
+            float targetWidth = Mathf.Max(1f, c.CanvasRect.rect.width * TimelineBarConfig.CanvasPercent);
             // Preserve existing height
             Vector2 size = barRect.sizeDelta;
             size.x = targetWidth;
@@ -233,12 +209,12 @@ namespace Scripts.Canvas
         private float UnitsPerSecFromSpeed(int speed)
         {
             // Speed stat affects movement speed with gentler scaling for strategic play
-            // Speed 10 = baseline (crosses in crossingTimeSeconds = 8s)
+            // Speed 10 = baseline (crosses in TimelineBarConfig.CrossingTimeSeconds = 8s)
             // Speed 5  = 0.75x speed (crosses in ~10.7s) 
             // Speed 15 = 1.25x speed (crosses in ~6.4s)
             // Speed 20 = 1.5x speed (crosses in ~5.3s)
             // Formula: 0.5 + (speed / 20) gives range of 0.75x to 1.5x
-            float crossing = Mathf.Max(0.1f, crossingTimeSeconds);
+            float crossing = Mathf.Max(0.1f, TimelineBarConfig.CrossingTimeSeconds);
             float speedMultiplier = 0.5f + (speed / 20f);
             return Mathf.Max(0.01f, speedMultiplier / crossing);
         }
@@ -284,8 +260,8 @@ namespace Scripts.Canvas
             if (releaseInfo.Count == 0) return baseDelay;
             
             // New tag starts at u=1.0, so we need to check when it would arrive
-            // and ensure it doesn't release within minimumReleaseGap of others
-            float myMoveTime = crossingTimeSeconds; // Time to cross full bar
+            // and ensure it doesn't release within TimelineBarConfig.MinimumReleaseGap of others
+            float myMoveTime = TimelineBarConfig.CrossingTimeSeconds; // Time to cross full bar
             float myReleaseTime = baseDelay;
             float myArrivalTime = myReleaseTime + myMoveTime;
             
@@ -296,10 +272,10 @@ namespace Scripts.Canvas
             foreach (var (releaseTime, arrivalTime) in releaseInfo)
             {
                 // If our arrival would be within gap of theirs, delay our release
-                if (Mathf.Abs(myArrivalTime - arrivalTime) < minimumReleaseGap)
+                if (Mathf.Abs(myArrivalTime - arrivalTime) < TimelineBarConfig.MinimumReleaseGap)
                 {
-                    // Push our arrival to be minimumReleaseGap after theirs
-                    myArrivalTime = arrivalTime + minimumReleaseGap;
+                    // Push our arrival to be TimelineBarConfig.MinimumReleaseGap after theirs
+                    myArrivalTime = arrivalTime + TimelineBarConfig.MinimumReleaseGap;
                     myReleaseTime = myArrivalTime - myMoveTime;
                 }
             }
@@ -308,7 +284,7 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
-        /// Adjusts queue timers for all queued tags to prevent releases within minimumReleaseGap.
+        /// Adjusts queue timers for all queued tags to prevent releases within TimelineBarConfig.MinimumReleaseGap.
         /// Called periodically and after state changes.
         /// </summary>
         private void EnforceQueueSpacing()
@@ -359,7 +335,7 @@ namespace Scripts.Canvas
             
             foreach (var (tag, originalArrival) in queuedTags)
             {
-                float requiredArrival = lastArrivalTime + minimumReleaseGap;
+                float requiredArrival = lastArrivalTime + TimelineBarConfig.MinimumReleaseGap;
                 
                 if (originalArrival < requiredArrival)
                 {
@@ -370,7 +346,7 @@ namespace Scripts.Canvas
                     if (newQueueTime > tag.GetQueueTimer())
                     {
                         tag.SetQueueTimer(newQueueTime);
-                        if (debugLogs) Debug.Log($"[TimelineBar] Adjusted {tag.Owner?.name} queue timer to {newQueueTime:F2}s to prevent overlap");
+                        if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Adjusted {tag.Owner?.name} queue timer to {newQueueTime:F2}s to prevent overlap");
                     }
                     lastArrivalTime = requiredArrival;
                 }
@@ -522,7 +498,7 @@ namespace Scripts.Canvas
                 float coordinatedDelay = GetCoordinatedQueueDelay(baseDelay);
                 tag.SetQueueTimer(coordinatedDelay);
                 
-                if (debugLogs)
+                if (TimelineBarConfig.DebugLogs)
                     Debug.Log($"[TimelineBar] {enemy.name} requeued with coordinated delay {coordinatedDelay:F2}s");
             }
         }
@@ -547,8 +523,8 @@ namespace Scripts.Canvas
                     ? enemy.Stats.Agility.ToInt() 
                     : 10;
                 
-                tag.Pushback(pushbackBase, pushbackMax, strengthMultiplier, enemyAgility, baseStunDuration);
-                if (debugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
+                tag.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strengthMultiplier, enemyAgility, TimelineBarConfig.BaseStunDuration);
+                if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
             }
         }
 
@@ -686,7 +662,6 @@ namespace Scripts.Canvas
             float coordinatedDelay = GetCoordinatedQueueDelay(releaseDelay);
 
             var parent = tagsRoot != null ? tagsRoot : barRect;
-            // Use factory instead of Instantiate(tagPrefab)
             var tagGO = TimelineTagFactory.Create(parent);
             var tag = tagGO.GetComponent<TimelineTag>();
             tag.name = $"TimelineTag_{enemy.name}";
@@ -695,12 +670,12 @@ namespace Scripts.Canvas
             // Tag rect: left-edge pivot, anchored at center for symmetric X
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
             tr.pivot = new Vector2(0f, 0.5f);
-            tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * tagRowHeight);
+            tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * TimelineBarConfig.TagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
             tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, coordinatedDelay);
             activeTags.Add(tag);
 
-            if (debugLogs && coordinatedDelay != releaseDelay)
+            if (TimelineBarConfig.DebugLogs && coordinatedDelay != releaseDelay)
                 Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
         }
 

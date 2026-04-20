@@ -87,9 +87,9 @@ public class PortraitInstance : MonoBehaviour
     [Range(0.1f, 10f)]
     public float speedMultiplier = 1.75f;
 
-    // 3D/world helpers
-    [SerializeField] public float startTime;
-    [SerializeField] public Vector2 startPosition;
+    // 3D/world helpers (runtime state)
+    public float startTime;
+    public Vector2 startPosition;
     private float popInRotY = 0f;
     private Quaternion lastPopInRot = Quaternion.identity;
     private Vector3 popOutFrontRestorePos;

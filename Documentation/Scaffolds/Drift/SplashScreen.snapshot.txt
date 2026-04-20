@@ -1,0 +1,44 @@
+# Scaffold snapshot for scene: SplashScreen
+# Regenerate via CliEntryPoints.RegenerateScaffoldSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[Canvas] layer=UI
+      <missing script>
+  Canvas: mode=ScreenSpaceCamera, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1080,2400, match=0
+  GraphicRaycaster
+  RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=1080,810, pivot=0.5,0.5
+  [CanvasParticleEmitter] layer=UI
+    CanvasParticleEmitter
+    CanvasRenderer
+    Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=-500,0, size=100,100, pivot=0.5,0.5
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-700,-1632, pivot=0.5,0.5
+  [Full] layer=UI
+    CanvasRenderer
+    RawImage: tex=SplashScreen-Full, color=#FFFFFFFF, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=-0.5,0.5, size=-1,-1, pivot=0.5,0.5
+  [Window] layer=UI
+    CanvasRenderer
+    Image: sprite=SplashScreen-Window, color=#FFFFFFFF, type=Simple, raycast=False
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=135,-431.4, size=108.5,172.29, pivot=1,0.5
+    SwingingWindow
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera] tag=MainCamera
+  AudioListener
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#314D7900
+  CameraManager
+  PostProcessLayer
+  Transform: pos=0,0,-1, rot=0,0,0, scale=1,1,0
+  UniversalAdditionalCameraData
+[SplashScreenManager]
+  SplashScreenManager
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

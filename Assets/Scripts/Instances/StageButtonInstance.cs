@@ -39,7 +39,7 @@ namespace Scripts.Instances
 /// </summary>
 public class StageButtonInstance : MonoBehaviour
 {
-    [SerializeField] public string stageName;  
+    public string stageName;
 }
 
 }

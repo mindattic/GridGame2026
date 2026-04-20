@@ -89,8 +89,8 @@ public class ScreenShatter : MonoBehaviour
     public bool keepShardsOnPause = true;
     [Tooltip("Expose the captured frame in the inspector for debugging while paused.")]
     public bool exposeCaptureInInspector = true;
-    [SerializeField] private Texture2D debugCapturedFrame;
-    [SerializeField] private GameObject debugShardsGO;
+    private Texture2D debugCapturedFrame;
+    private GameObject debugShardsGO;
 
     private const string URPShaderPath = "Universal Render Pipeline/Unlit/ScreenShatter";
     private const string BuiltinShaderPath = "Unlit/ScreenShatter";

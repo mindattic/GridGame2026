@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -67,15 +68,11 @@ namespace Scripts.Canvas
     [RequireComponent(typeof(CanvasGroup))]
     public class AbilityBar : MonoBehaviour
     {
-        #region Inspector Fields
+        #region Runtime References
 
-        [Header("References")]
-        [SerializeField] private TextMeshProUGUI label;
-        [SerializeField] private CanvasGroup canvasGroup;
-
-        [Header("Settings")]
-        [SerializeField] private float displayDuration = 2f;
-        [SerializeField] private float fadeDuration = 0.5f;
+        // Resolved in Awake via GetComponent / GetComponentInChildren.
+        private TextMeshProUGUI label;
+        private CanvasGroup canvasGroup;
 
         #endregion
 
@@ -196,7 +193,7 @@ namespace Scripts.Canvas
         /// <summary>Coroutine that executes the auto hide sequence.</summary>
         private IEnumerator AutoHideRoutine()
         {
-            yield return new WaitForSeconds(displayDuration);
+            yield return new WaitForSeconds(AbilityBarConfig.DisplayDuration);
             yield return FadeOutRoutine();
         }
 
@@ -206,10 +203,10 @@ namespace Scripts.Canvas
             float startAlpha = canvasGroup.alpha;
             float elapsed = 0f;
 
-            while (elapsed < fadeDuration)
+            while (elapsed < AbilityBarConfig.FadeDuration)
             {
                 elapsed += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, elapsed / fadeDuration);
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, elapsed / AbilityBarConfig.FadeDuration);
                 yield return null;
             }
 

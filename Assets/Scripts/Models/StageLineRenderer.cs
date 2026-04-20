@@ -25,8 +25,18 @@ namespace Scripts.Models
 {
     public class StageLineRenderer : CanvasLineRenderer
     {
-        [SerializeField] private Button startButton;
-        [SerializeField] private Button endButton;
+        // Plain private fields — assigned programmatically when spawning the
+        // renderer (no Inspector authoring). Awake / callers must set both
+        // before Update reads them.
+        private Button startButton;
+        private Button endButton;
+
+        /// <summary>Assigns the buttons this line renderer tracks.</summary>
+        public void SetButtons(Button start, Button end)
+        {
+            startButton = start;
+            endButton = end;
+        }
 
         /// <summary>Runs per-frame update logic.</summary>
         private void Update()

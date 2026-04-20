@@ -227,7 +227,7 @@ public partial class ActorInstance : MonoBehaviour
     #region Core fields and modules
 
     // Keep your existing module objects and data.
-    [SerializeField] public AnimationCurve glowCurve;
+    public AnimationCurve glowCurve;
 
     public Vector2Int previousLocation;
     public Vector3 previousPosition;

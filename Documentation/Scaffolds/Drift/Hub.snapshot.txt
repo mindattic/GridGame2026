@@ -1,0 +1,865 @@
+# Scaffold snapshot for scene: Hub
+# Regenerate via CliEntryPoints.RegenerateScaffoldSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[Canvas] layer=UI
+  Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  GraphicRaycaster
+  Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
+  [ContentPanel] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=0,-35, size=0,-70, pivot=0.5,0.5
+    [BattlePrepPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [BattleButton] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#9E1F1AFF, type=Simple, raycast=True
+        RectTransform: anchor=(0.25,0)-(0.75,0), pos=0,90, size=0,72, pivot=0.5,0
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='ENTER BATTLE', size=22, color=#FFFFFFFF, align=Center, raycast=False
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [ItemScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(1,0.44), pos=0,87, size=-28,-186, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ItemList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [PartyScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0.44)-(1,1), pos=0,-33, size=-28,-78, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [PartyList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+    [BlacksmithPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [BuyTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0,1)-(0.2,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Buy', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [CraftTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.4,1)-(0.6,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Craft', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-104, size=0,2, pivot=0.5,1
+      [ItemScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(1,1), pos=0,-11, size=-28,-214, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ItemList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [RepairTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.6,1)-(0.8,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Repair', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [SalvageTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.8,1)-(1,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Salvage', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [SellTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.2,1)-(0.4,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Sell', size=16, color=#E0E6F2FF, align=Center, raycast=False
+    [EquipPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [HeroScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0.34,1), pos=5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [HeroList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [ItemPickerScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0.34,0)-(1,0.38), pos=-5.5,45, size=-17,-102, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ItemPicker] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [SlotScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0.34,0.42)-(1,1), pos=-5.5,-33, size=-17,-78, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [SlotList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [StatsLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.34,0.36)-(1,0.44), pos=-3.5,0, size=-21,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=14, color=#8C99ADFF, align=MidlineLeft, raycast=False
+    [InventoryPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FilterAll] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0,1)-(0.2,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='All', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [FilterCons] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.4,1)-(0.6,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Cons', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [FilterEquip] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.2,1)-(0.4,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Equip', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [FilterMats] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.6,1)-(0.8,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Mats', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [FilterQuest] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.8,1)-(1,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Quest', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-104, size=0,2, pivot=0.5,1
+      [ItemScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(1,1), pos=0,-11, size=-28,-214, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ItemList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+    [MedicalPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [HeroScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(1,1), pos=0,12, size=-28,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [HeroList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+    [PartyPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [PartyScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0.34,0)-(1,1), pos=-5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [PartyList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [RosterScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0.34,1), pos=5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [RosterList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+    [ResidencePanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [ActionScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0.34,1), pos=5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ActionList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [RecruitScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0.34,0)-(1,1), pos=-5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [RecruitList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+    [ShopPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [BuyTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0,1)-(0.5,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Buy', size=16, color=#E0E6F2FF, align=Center, raycast=False
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-104, size=0,2, pivot=0.5,1
+      [ItemScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(1,1), pos=0,-11, size=-28,-214, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [ItemList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [SellTab] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#1F2942E6, type=Simple, raycast=True
+        RectTransform: anchor=(0.5,1)-(1,1), pos=0,-58, size=-3,46, pivot=0.5,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='Sell', size=16, color=#E0E6F2FF, align=Center, raycast=False
+    [TrainingPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#0A0D17F7, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,0), pos=0,4, size=-28,74, pivot=0.5,0
+        TextMeshProUGUI: font=LiberationSans SDF, text='', size=16, color=#8C99ADFF, align=MidlineLeft, raycast=False
+      [FooterBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0D0F1CF2, type=Simple, raycast=False
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,82, pivot=0.5,0
+      [GoldLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0.55,1)-(1,1), pos=-14,0, size=-14,58, pivot=1,1
+        TextMeshProUGUI: font=LiberationSans SDF, text='Gold: 0', size=20, color=#FFD633FF, align=MidlineRight, raycast=False
+      [HeaderBg] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F1424F2, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,58, pivot=0.5,1
+      [HeaderSep] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#334266CC, type=Simple, raycast=False
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-58, size=0,2, pivot=0.5,1
+      [HeroScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0.34,1), pos=5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [HeroList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+      [TrainingScrollView] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#0F121FD9, type=Simple, raycast=True
+        RectTransform: anchor=(0.34,0)-(1,1), pos=-5.5,12, size=-17,-168, pivot=0.5,0.5
+        ScrollRect
+        [Scrollbar] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#141A2EB2, type=Simple, raycast=True
+          RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=18,0, pivot=1,0.5
+          Scrollbar: dir=BottomToTop
+          [Sliding Area] layer=UI
+            RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+            [Handle] layer=UI
+              CanvasRenderer
+              Image: sprite=<null>, color=#385285D9, type=Simple, raycast=True
+              RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Viewport] layer=UI
+          CanvasRenderer
+          Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+          Mask: showGraphic=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0.5,0.5
+          [TrainingList] layer=UI
+            CanvasRenderer
+            ContentSizeFitter: h=Unconstrained, v=PreferredSize
+            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
+            VerticalLayoutGroup: spacing=2, align=UpperCenter
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+  [NavBar] layer=UI
+    CanvasRenderer
+    HorizontalLayoutGroup: spacing=3, align=MiddleLeft
+    Image: sprite=<null>, color=#0A0A14FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,70, pivot=0.5,1
+    [BattleButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Battle', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [BattlePrepButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Battle Prep', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [BlacksmithButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Blacksmith', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [EquipButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Equip', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [InventoryButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Inventory', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [MedicalButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Medical', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [NavSpacer] layer=UI
+      LayoutElement: pref=(-1,-1), flex=(1,-1)
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=10,10, pivot=0.5,0.5
+    [OverworldButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Overworld', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [PartyButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Party', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [ResidenceButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Residence', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [ShopButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Shop', size=17, color=#E0E6F2FF, align=Center, raycast=False
+    [TrainingButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      [Text] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=LiberationSans SDF, text='Training', size=17, color=#E0E6F2FF, align=Center, raycast=False
+  [Output] layer=UI
+    CanvasRenderer
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,2000, size=1000,200, pivot=0.5,0.5
+    TextMeshProUGUI: font=Attic, text='', size=24, color=#FFFFFFFF, align=Top, raycast=True
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[HubManager]
+  HubManager
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

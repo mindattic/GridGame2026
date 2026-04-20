@@ -47,12 +47,13 @@ namespace Scripts.Canvas
     /// </summary>
     public class DebugButtonPanel : MonoBehaviour
     {
-        //Fields
-        [SerializeField] private RectTransform PanelRect;
-        [SerializeField] private Button ReloadStageButton;
-        [SerializeField] private Button PreviousStageButton;
-        [SerializeField] private Button NextStageButton;
-        [SerializeField] private Button SpawnRandomEnemyButton;
+        // Scene refs (not wired yet — DebugButtonPanel is not attached in any current scene;
+        // when scaffolded it should be initialized via a factory or Bind() method).
+        private RectTransform PanelRect;
+        private Button ReloadStageButton;
+        private Button PreviousStageButton;
+        private Button NextStageButton;
+        private Button SpawnRandomEnemyButton;
 
         /// <summary>Wires button click listeners on startup.</summary>
         private void Start()

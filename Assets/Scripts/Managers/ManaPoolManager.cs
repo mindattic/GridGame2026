@@ -56,9 +56,8 @@ namespace Scripts.Managers
 /// </summary>
 public class ManaPoolManager : MonoBehaviour
 {
-    [Header("Config")]
     public float maxMana = 100f;
-    [SerializeField] private float _heroMana = 0f;
+    private float _heroMana = 0f;
     public float enemyMana = 0f;
 
     public float heroMana

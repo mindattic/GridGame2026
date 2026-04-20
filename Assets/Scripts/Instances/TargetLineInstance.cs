@@ -5,6 +5,7 @@ using g = Scripts.Helpers.GameHelper;
 using Scripts.Helpers;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -65,10 +66,6 @@ public class TargetLineInstance : MonoBehaviour
     public Vector3 buttonPosition;
     public Vector3 cursorPosition;
 
-    [SerializeField] private float fadeDuration = 0.1f;
-    [SerializeField][Range(2, 100)] private int segments = 32;
-    [SerializeField] private float arcHeight = 1f;
-
     private float minAlpha = Opacity.Transparent;
     private float maxAlpha = Opacity.Percent50;
 
@@ -83,7 +80,7 @@ public class TargetLineInstance : MonoBehaviour
         lineRenderer.endWidth = width;
         lineRenderer.numCapVertices = 8;
         lineRenderer.alignment = LineAlignment.View;
-        lineRenderer.positionCount = segments + 1;
+        lineRenderer.positionCount = TargetLineInstanceConfig.Segments + 1;
         lineRenderer.useWorldSpace = true;
 
         sortingGroup.sortingLayerID = SortingLayer.NameToID("Actor");
@@ -99,9 +96,9 @@ public class TargetLineInstance : MonoBehaviour
     /// <summary>Updates the arc points.</summary>
     public void UpdateArcPoints(Vector3 start, Vector3 end)
     {
-        for (int i = 0; i <= segments; i++)
+        for (int i = 0; i <= TargetLineInstanceConfig.Segments; i++)
         {
-            float t = i / (float)segments;
+            float t = i / (float)TargetLineInstanceConfig.Segments;
             //float arc = 4f * arcHeight * t * (1f - t);
 
 
@@ -148,10 +145,10 @@ public class TargetLineInstance : MonoBehaviour
     private IEnumerator FadeRoutine(float from, float to)
     {
         float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        while (elapsed < TargetLineInstanceConfig.FadeDuration)
         {
             elapsed += Time.deltaTime;
-            alpha = Mathf.Lerp(from, to, elapsed / fadeDuration);
+            alpha = Mathf.Lerp(from, to, elapsed / TargetLineInstanceConfig.FadeDuration);
             UpdateLineAlpha(alpha);
             yield return Wait.None();
         }

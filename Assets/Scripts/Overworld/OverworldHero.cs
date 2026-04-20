@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -64,33 +65,28 @@ public partial class OverworldHero : MonoBehaviour
     //private MapTerrain collisionProvider;     // Central collision provider on Terrain
     private Camera worldCamera;               // Camera for screen->world and visibility tests
 
-    // Movement tuning (set in code)
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 2.5f;           // Units per second
-    [SerializeField] private float snapThreshold = 0.05f;      // Stop distance to consider goal reached
-    [SerializeField] private bool requireVisibleToMove = true; // Only move when visible in camera viewport
-    [SerializeField] private bool ignoreClicksWhenOffscreen = false;
-    [SerializeField] private bool allowVirtualJoystick = true; // Enable joystick/analog movement
-    [SerializeField] private bool idleWhileOffscreen = true;   // Idle when offscreen and movement gated
+    // Movement tuning (initialized from OverworldHeroConfig; preserves runtime-mutation setters)
+    private float moveSpeed                = OverworldHeroConfig.MoveSpeed;
+    private float snapThreshold            = OverworldHeroConfig.SnapThreshold;
+    private bool  requireVisibleToMove     = OverworldHeroConfig.RequireVisibleToMove;
+    private bool  ignoreClicksWhenOffscreen = OverworldHeroConfig.IgnoreClicksWhenOffscreen;
+    private bool  allowVirtualJoystick     = OverworldHeroConfig.AllowVirtualJoystick;
+    private bool  idleWhileOffscreen       = OverworldHeroConfig.IdleWhileOffscreen;
 
     // Collision toggle
-    [Header("Collision")]
-    [SerializeField] private bool enableCollision = false;     // When false, hero moves freely without casts
+    private bool enableCollision = OverworldHeroConfig.EnableCollision;
 
     // Leader/follower
-    [Header("Leader/Follow")]
-    [Tooltip("If true, this hero is controlled by input. If false, it follows its assigned Leader.")]
     public bool IsLeader = true;
-    [SerializeField, HideInInspector] private Transform leader;
-    [SerializeField] private float followSpeed = 2.3f;
-    [SerializeField] private float followDistance = 0.75f;
-    [SerializeField] private float arriveBuffer = 0.05f;
-    [SerializeField] private float catchupMultiplier = 2.0f;
-    [SerializeField] private float teleportIfBeyond = 25f;
+    private Transform leader;                  // runtime reference; set via SetLeader()
+    private float followSpeed        = OverworldHeroConfig.FollowSpeed;
+    private float followDistance     = OverworldHeroConfig.FollowDistance;
+    private float arriveBuffer       = OverworldHeroConfig.ArriveBuffer;
+    private float catchupMultiplier  = OverworldHeroConfig.CatchupMultiplier;
+    private float teleportIfBeyond   = OverworldHeroConfig.TeleportIfBeyond;
 
-    [Header("Party Collision")]
-    [Tooltip("Ignore collisions between all OverworldHero instances (party members).")]
-    [SerializeField] private bool ignorePartyCollisions = true;
+    // Party collision
+    private bool ignorePartyCollisions = OverworldHeroConfig.IgnorePartyCollisions;
 
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
@@ -132,24 +128,19 @@ public partial class OverworldHero : MonoBehaviour
     // Collision center and radius
     // Always sample collisions at the Animator/Sprite pivot (transform.position) plus an optional feet offset.
     private Vector2 feetOffset = Vector2.zero; // local-space offset from pivot to feet (e.g., Vector2.down * 0.05f)
-    [SerializeField, Min(0f)] private float collisionRadiusWorld = 0.1f;      // world units radius when fixed (adjust in inspector)
+    private float collisionRadiusWorld = OverworldHeroConfig.CollisionRadiusWorld;
 
-    // New: look-ahead coverage tunables
-    [Header("Collision Look-Ahead")]
-    [Tooltip("Block movement if forward probe coverage >= this fraction (0..1). 0.5 = 50%.")]
-    [SerializeField, Range(0f, 1f)] private float forwardCoverageBlockThreshold = 0.5f;
-    [Tooltip("Samples taken on the forward semicircle when computing coverage.")]
-    [SerializeField, Min(1)] private int forwardCoverageSamples = 16;
+    // Look-ahead coverage tunables
+    private float forwardCoverageBlockThreshold = OverworldHeroConfig.ForwardCoverageBlockThreshold;
+    private int   forwardCoverageSamples        = OverworldHeroConfig.ForwardCoverageSamples;
 
     // Destination marker prefab to spawn on click
     // Note: Now using DestinationMarkerFactory instead of prefab
 
-    // 2D physics-based cast-and-slide (optional)
-    [Header("Physics Collision (optional)")]
-    [SerializeField] private float skin = 0.01f;
-    [SerializeField] private int maxSlideIterations = 3;
-    [Tooltip("Max distance per cast step. Displacements larger than this are subdivided to prevent tunneling through thin walls.")]
-    [SerializeField] private float maxCastStepDistance = 0.25f;
+    // 2D physics-based cast-and-slide (optional). Awake() clamps skin/maxCastStepDistance.
+    private float skin                = OverworldHeroConfig.Skin;
+    private int   maxSlideIterations  = OverworldHeroConfig.MaxSlideIterations;
+    private float maxCastStepDistance = OverworldHeroConfig.MaxCastStepDistance;
     private Rigidbody2D rb;                      // Optional: if present, use shape cast to plan slides
     private ContactFilter2D contactFilter;       // Configured from object layer
     private RaycastHit2D[] hitBuffer;            // Reused hits buffer

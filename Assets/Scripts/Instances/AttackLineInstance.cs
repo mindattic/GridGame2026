@@ -5,6 +5,7 @@ using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -61,8 +62,6 @@ namespace Scripts.Instances
 
         // Fields
         public float alpha;
-
-        [SerializeField] private float fadeDuration = 0.5f;
 
         private Vector3 startPosition;
         private Vector3 endPosition;
@@ -132,10 +131,10 @@ namespace Scripts.Instances
             float targetAlpha = maxAlpha;
             float elapsedTime = 0f;
 
-            while (elapsedTime < fadeDuration)
+            while (elapsedTime < AttackLineInstanceConfig.FadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / AttackLineInstanceConfig.FadeDuration);
                 SetAlpha(alpha);
                 yield return Wait.None();
             }
@@ -159,10 +158,10 @@ namespace Scripts.Instances
             float elapsedTime = 0f;
 
             //During:
-            while (elapsedTime < fadeDuration)
+            while (elapsedTime < AttackLineInstanceConfig.FadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / AttackLineInstanceConfig.FadeDuration);
                 SetAlpha(alpha);
                 yield return Wait.None();
             }

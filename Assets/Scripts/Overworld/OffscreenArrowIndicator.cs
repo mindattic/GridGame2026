@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -53,10 +54,12 @@ namespace Scripts.Overworld
 /// </summary>
 public sealed class OffscreenArrowIndicator : MonoBehaviour
 {
-    [SerializeField] private Transform target;
-    [SerializeField] private Camera worldCamera;
-    [SerializeField] private float margin = 40f;
-    [SerializeField] private float fadeSpeed = 10f;
+    // Runtime state — target/worldCamera are set via public properties
+    // (OverworldManager assigns them); margin retains a public setter so it
+    // starts from OffscreenArrowIndicatorConfig.DefaultMargin but can be tuned.
+    private Transform target;
+    private Camera worldCamera;
+    private float margin = OffscreenArrowIndicatorConfig.DefaultMargin;
 
     private RectTransform arrowRect;
     private RectTransform canvasRect;
@@ -177,12 +180,12 @@ public sealed class OffscreenArrowIndicator : MonoBehaviour
         float dt = Application.isPlaying ? Time.deltaTime : 0f;
         if (canvasGroup != null)
         {
-            canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, fadeSpeed * dt);
+            canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, OffscreenArrowIndicatorConfig.FadeSpeed * dt);
         }
         else if (arrowGraphic != null)
         {
             var c = arrowGraphic.color;
-            float a = Mathf.MoveTowards(c.a, targetAlpha, fadeSpeed * dt);
+            float a = Mathf.MoveTowards(c.a, targetAlpha, OffscreenArrowIndicatorConfig.FadeSpeed * dt);
             arrowGraphic.color = new Color(c.r, c.g, c.b, a);
         }
     }

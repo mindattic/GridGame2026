@@ -53,10 +53,10 @@ public class CoinCounter : MonoBehaviour
 {
     #region Fields
 
-    [SerializeField] public AnimationCurve glowCurve;
-    [HideInInspector] public Image icon;
-    [HideInInspector] public Image glow;
-    [HideInInspector] public TextMeshProUGUI value;
+    public AnimationCurve glowCurve;
+    public Image icon;
+    public Image glow;
+    public TextMeshProUGUI value;
     private float maxGlowScale = 2f;
     private Camera mainCamera;
 
@@ -71,6 +71,15 @@ public class CoinCounter : MonoBehaviour
         glow = transform.GetChild("Glow").GetComponent<Image>();
         value = transform.GetChild("Value").GetComponent<TextMeshProUGUI>();
         mainCamera = Camera.main;
+
+        // Build a pulsing 0→1→0 loop curve — replaces former inspector-assigned AnimationCurve.
+        if (glowCurve == null || glowCurve.length == 0)
+        {
+            glowCurve = new AnimationCurve(
+                new Keyframe(0f, 0f),
+                new Keyframe(0.5f, 1f),
+                new Keyframe(1f, 0f));
+        }
     }
 
     #endregion

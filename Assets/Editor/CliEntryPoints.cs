@@ -183,6 +183,84 @@ public static class CliEntryPoints
         }
     }
 
+    // ===================== SerializedField Ban (Phase 0 guardrail) =====================
+
+    /// <summary>
+    /// Scans Assets/Scripts for [SerializeField] fields and fails if any are not present
+    /// in Assets/Editor/SerializedFieldAllowlist.txt. Exit 0 = clean, 1 = new offenders detected.
+    /// </summary>
+    public static void CheckSerializedFieldBan()
+    {
+        try
+        {
+            var offenders = SerializedFieldBan.Check();
+            EditorApplication.Exit(offenders > 0 ? 1 : 0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] CheckSerializedFieldBan failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    /// <summary>
+    /// Overwrites the allowlist with the current scan results. Run after intentionally
+    /// removing [SerializeField] fields (Phase 1+) or — rarely — after explicitly approving a new one.
+    /// </summary>
+    public static void RegenerateSerializedFieldAllowlist()
+    {
+        try
+        {
+            var count = SerializedFieldBan.Regenerate();
+            Debug.Log($"[Cli] Allowlist regenerated with {count} entr{(count == 1 ? "y" : "ies")}.");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] RegenerateSerializedFieldAllowlist failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    // ===================== Scaffold Drift (Phase 0 guardrail) =====================
+
+    /// <summary>
+    /// Opens each scaffolded scene, walks its hierarchy, and emits a canonical signature text file.
+    /// Compares against the committed snapshot in Documentation/Scaffolds/Drift/. Exits 1 on any diff.
+    /// </summary>
+    public static void VerifyScaffoldDrift()
+    {
+        try
+        {
+            int drifted = ScaffoldDriftChecker.Verify(ScaffoldedScenes);
+            EditorApplication.Exit(drifted > 0 ? 1 : 0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] VerifyScaffoldDrift failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    /// <summary>
+    /// Opens each scaffolded scene and writes a fresh canonical signature to
+    /// Documentation/Scaffolds/Drift/&lt;Scene&gt;.snapshot.txt. Commit the output as the new baseline.
+    /// </summary>
+    public static void RegenerateScaffoldSnapshots()
+    {
+        try
+        {
+            int ok = ScaffoldDriftChecker.Regenerate(ScaffoldedScenes);
+            Debug.Log($"[Cli] Wrote {ok} scaffold snapshot(s).");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] RegenerateScaffoldSnapshots failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
     // ===================== Build =====================
 
     public static void BuildStandaloneWindows()

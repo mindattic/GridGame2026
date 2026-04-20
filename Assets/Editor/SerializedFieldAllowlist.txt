@@ -1,0 +1,4 @@
+# SerializedFieldAllowlist — committed frozen set of known [SerializeField] fields.
+# Format: relative/path/File.cs:fieldName (one per line, sorted).
+# Do not hand-edit. Regenerate via CliEntryPoints.RegenerateSerializedFieldAllowlist
+# (after Phase 1 removes a field, or after explicitly approving a new one).

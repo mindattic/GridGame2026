@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -49,12 +50,10 @@ namespace Scripts.Canvas
 /// </summary>
 public class ScrollingImage : MonoBehaviour
 {
-    [Header("Scroll")]
-    [SerializeField] private Vector2 scrollSpeed = new Vector2(0.1f, 0.0f); // UV units per second
-    [SerializeField] private bool useUnscaledTime = true;
-
-    [Header("Material (for Image)")]
-    [SerializeField] private string textureProperty = "_MainTex"; // property to offset
+    // Mutated at runtime via SetScrollSpeed / SetScrollX / SetScrollY — seeded
+    // from ScrollingImageConfig.DefaultScrollSpeed so inspector authoring is gone
+    // but setter APIs keep working.
+    private Vector2 scrollSpeed = ScrollingImageConfig.DefaultScrollSpeed;
 
     private RawImage rawImage;
     private Image uiImage;
@@ -82,8 +81,8 @@ public class ScrollingImage : MonoBehaviour
             runtimeMaterial = new Material(sourceMat);
             uiImage.material = runtimeMaterial;
 
-            if (runtimeMaterial.HasProperty(textureProperty))
-                offset = runtimeMaterial.GetTextureOffset(textureProperty);
+            if (runtimeMaterial.HasProperty(ScrollingImageConfig.TextureProperty))
+                offset = runtimeMaterial.GetTextureOffset(ScrollingImageConfig.TextureProperty);
             else
                 offset = Vector2.zero;
         }
@@ -105,7 +104,7 @@ public class ScrollingImage : MonoBehaviour
     /// <summary>Advances the texture UV offset each frame based on scroll speed.</summary>
     private void Update()
     {
-        float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+        float dt = ScrollingImageConfig.UseUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
         var delta = scrollSpeed * dt;
 
         if (rawImage != null)
@@ -119,12 +118,12 @@ public class ScrollingImage : MonoBehaviour
             return;
         }
 
-        if (runtimeMaterial != null && runtimeMaterial.HasProperty(textureProperty))
+        if (runtimeMaterial != null && runtimeMaterial.HasProperty(ScrollingImageConfig.TextureProperty))
         {
             offset += delta;
             offset.x = Mathf.Repeat(offset.x, 1f);
             offset.y = Mathf.Repeat(offset.y, 1f);
-            runtimeMaterial.SetTextureOffset(textureProperty, offset);
+            runtimeMaterial.SetTextureOffset(ScrollingImageConfig.TextureProperty, offset);
         }
     }
 

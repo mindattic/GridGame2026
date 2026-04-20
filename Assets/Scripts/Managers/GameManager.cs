@@ -48,7 +48,7 @@ public class GameManager : Singleton<GameManager>
     public bool applyMovementTilt = false;
 
     // Selection behavior toggle for hero control during hero turns
-    [SerializeField] public TurnSelectionMode turnSelectionMode = TurnSelectionMode.FreeSelect;
+    public TurnSelectionMode turnSelectionMode = TurnSelectionMode.FreeSelect;
 
     //Debug
     public bool reloadThumbnailSettings = false;

@@ -49,8 +49,8 @@ namespace Scripts.Canvas
 /// </summary>
 public class LoadingScreenLore : MonoBehaviour
 {
-    // Reference to your TMP text element
-    [SerializeField] private TextMeshProUGUI loreText;
+    // Reference to your TMP text element — resolved in Awake() via GameObjectHelper.
+    private TextMeshProUGUI loreText;
 
     private List<string> lore = new List<string>();
 

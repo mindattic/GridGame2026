@@ -213,6 +213,30 @@ function Invoke-BuildPlayer {
     Invoke-Batchmode "Build Standalone Windows" "CliEntryPoints.BuildStandaloneWindows"
 }
 
+# ── 9. Check [SerializeField] ban (headless) ───────────────────────────────
+
+function Invoke-CheckFieldBan {
+    Invoke-Batchmode "Check [SerializeField] Ban" "CliEntryPoints.CheckSerializedFieldBan"
+}
+
+# ── 10. Regenerate [SerializeField] allowlist (headless) ───────────────────
+
+function Invoke-RegenFieldAllowlist {
+    Invoke-Batchmode "Regenerate [SerializeField] Allowlist" "CliEntryPoints.RegenerateSerializedFieldAllowlist"
+}
+
+# ── 11. Verify scaffold drift (headless) ───────────────────────────────────
+
+function Invoke-VerifyDrift {
+    Invoke-Batchmode "Verify Scaffold Drift" "CliEntryPoints.VerifyScaffoldDrift"
+}
+
+# ── 12. Regenerate scaffold snapshots (headless) ───────────────────────────
+
+function Invoke-RegenSnapshots {
+    Invoke-Batchmode "Regenerate Scaffold Snapshots" "CliEntryPoints.RegenerateScaffoldSnapshots"
+}
+
 # ── Batchmode runner ───────────────────────────────────────────────────────
 
 function Invoke-Batchmode($title, $method) {
@@ -252,26 +276,31 @@ function Invoke-Batchmode($title, $method) {
 
 # ── Main Menu ────────────────────────────────────────────────────────────────
 
-$mainMenu = @{
-    "1" = @{ Name = "Run Application";              Action = { Invoke-Run } }
-    "2" = @{ Name = "Commit and Sync";              Action = { Invoke-Commit } }
-    "3" = @{ Name = "Create Backup";                Action = { Invoke-Backup } }
-    "4" = @{ Name = "Setup";                        Action = { Invoke-Setup } }
-    "5" = @{ Name = "Scaffold All Scenes (headless)"; Action = { Invoke-ScaffoldAll } }
-    "6" = @{ Name = "Generate Documentation (headless)"; Action = { Invoke-GenerateDocs } }
-    "7" = @{ Name = "Run Tests (headless)";         Action = { Invoke-RunTests } }
-    "8" = @{ Name = "Build Player (headless)";      Action = { Invoke-BuildPlayer } }
+$mainMenu = [ordered]@{
+    "1"  = @{ Name = "Run Application";                         Action = { Invoke-Run } }
+    "2"  = @{ Name = "Commit and Sync";                         Action = { Invoke-Commit } }
+    "3"  = @{ Name = "Create Backup";                           Action = { Invoke-Backup } }
+    "4"  = @{ Name = "Setup";                                   Action = { Invoke-Setup } }
+    "5"  = @{ Name = "Scaffold All Scenes (headless)";          Action = { Invoke-ScaffoldAll } }
+    "6"  = @{ Name = "Generate Documentation (headless)";       Action = { Invoke-GenerateDocs } }
+    "7"  = @{ Name = "Run Tests (headless)";                    Action = { Invoke-RunTests } }
+    "8"  = @{ Name = "Build Player (headless)";                 Action = { Invoke-BuildPlayer } }
+    "9"  = @{ Name = "Check [SerializeField] Ban (headless)";   Action = { Invoke-CheckFieldBan } }
+    "10" = @{ Name = "Regenerate [SerializeField] Allowlist";   Action = { Invoke-RegenFieldAllowlist } }
+    "11" = @{ Name = "Verify Scaffold Drift (headless)";        Action = { Invoke-VerifyDrift } }
+    "12" = @{ Name = "Regenerate Scaffold Snapshots";           Action = { Invoke-RegenSnapshots } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"
 
 while ($true) {
     Write-Header "GridGame"
-    foreach ($key in ($mainMenu.Keys | Sort-Object)) {
-        Write-Host "    [$key]  $($mainMenu[$key].Name)" -ForegroundColor White
+    foreach ($key in $mainMenu.Keys) {
+        $padded = $key.PadLeft(2)
+        Write-Host "    [$padded]  $($mainMenu[$key].Name)" -ForegroundColor White
     }
     Write-Host ""
-    Write-Host "    [0]  Quit" -ForegroundColor DarkGray
+    Write-Host "    [ 0]  Quit" -ForegroundColor DarkGray
     Write-Host ""
 
     $choice = Read-MenuChoice

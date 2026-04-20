@@ -74,9 +74,9 @@ public class CoinInstance : MonoBehaviour
 {
     #region Animation Curves
 
-    [SerializeField] public AnimationCurve linearCurve;
-    [SerializeField] public AnimationCurve slopeCurve;
-    [SerializeField] public AnimationCurve sineCurve;
+    public AnimationCurve linearCurve;
+    public AnimationCurve slopeCurve;
+    public AnimationCurve sineCurve;
 
     #endregion
 

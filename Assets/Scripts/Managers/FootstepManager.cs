@@ -59,7 +59,7 @@ public class FootstepManager : MonoBehaviour
 {
     #region Fields
 
-    [SerializeField] Transform target;
+    public Transform target;
     Vector3 previousPosition;
     bool isRightFoot = false;
     float threshold;

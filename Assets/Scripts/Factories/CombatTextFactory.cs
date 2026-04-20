@@ -128,20 +128,12 @@ namespace Scripts.Factories
         /// <summary>Sets the rise curve.</summary>
         private static void SetRiseCurve(CombatTextInstance instance)
         {
-            // Access the riseCurve field via reflection since it's SerializeField
-            var riseCurveField = typeof(CombatTextInstance).GetField("riseCurve", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            
-            if (riseCurveField != null)
-            {
-                // Create the arc curve: starts at -1, peaks at 1 at midpoint, returns to -1
-                var riseCurve = new AnimationCurve(
-                    new Keyframe(0f, -1f, 0f, 0f),
-                    new Keyframe(0.5f, 1f, 0f, 0f) { inWeight = 0.33333334f, outWeight = 0.24990547f },
-                    new Keyframe(1f, -1f, 0f, 0f) { inWeight = 0.112100124f, outWeight = 0f }
-                );
-                riseCurveField.SetValue(instance, riseCurve);
-            }
+            // Create the arc curve: starts at -1, peaks at 1 at midpoint, returns to -1
+            instance.riseCurve = new AnimationCurve(
+                new Keyframe(0f, -1f, 0f, 0f),
+                new Keyframe(0.5f, 1f, 0f, 0f) { inWeight = 0.33333334f, outWeight = 0.24990547f },
+                new Keyframe(1f, -1f, 0f, 0f) { inWeight = 0.112100124f, outWeight = 0f }
+            );
         }
     }
 }

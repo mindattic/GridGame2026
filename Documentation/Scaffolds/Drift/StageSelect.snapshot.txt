@@ -1,0 +1,97 @@
+# Scaffold snapshot for scene: StageSelect
+# Regenerate via CliEntryPoints.RegenerateScaffoldSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[Canvas] layer=UI
+  Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1080,2400, match=0
+  GraphicRaycaster
+  Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1080,810, pivot=0.5,0.5
+  [BackButton] layer=UI
+    Button
+    CanvasRenderer
+    Image: sprite=Green-Button_0, color=#FFFFFFFF, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(0,1), pos=120,-199.9998, size=200,64, pivot=0.5,0.5
+    [Label] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=64,64, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='Back', size=32, color=#FFFFFFFF, align=Center, raycast=True
+  [CutoutOverlay] layer=UI
+    CutoutOverlay
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+    [Bottom] (inactive)
+      CanvasRenderer
+      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
+      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.1538, pivot=0.5,0
+    [Top]
+      CanvasRenderer
+      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
+      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.1538, pivot=0.5,1
+      [CenterPane]
+        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+        RectTransform: anchor=(0.3333,0)-(0.6667,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [LeftPane]
+        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+        RectTransform: anchor=(0,0)-(0.3333,1), pos=0,0, size=0,0, pivot=0,0.5
+      [RightPane]
+        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+        RectTransform: anchor=(0.6667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=-0.7313,0.7312, size=-371,-801.7179, pivot=0.5,0.5
+  [ScrollView] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#FFFFFF00, type=Sliced, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,-512, pivot=0.5,0.5
+    ScrollRect
+    [Scrollbar Horizontal] layer=UI
+      CanvasRenderer
+      Image: sprite=Background, color=#FFFFFF00, type=Sliced, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,20, pivot=0,0
+      Scrollbar: dir=LeftToRight
+      [Sliding Area] layer=UI
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-20,-20, pivot=0.5,0.5
+        [Handle] layer=UI
+          CanvasRenderer
+          Image: sprite=UISprite, color=#FFFFFFFF, type=Sliced, raycast=True
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=20,20, pivot=0.5,0.5
+    [Scrollbar Vertical] layer=UI
+      CanvasRenderer
+      Image: sprite=Background, color=#FFFFFFFF, type=Sliced, raycast=True
+      RectTransform: anchor=(1,0)-(1,0), pos=0,0, size=20,0, pivot=1,1
+      Scrollbar: dir=BottomToTop
+      [Sliding Area] layer=UI
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-20,-20, pivot=0.5,0.5
+        [Handle] layer=UI
+          CanvasRenderer
+          Image: sprite=UISprite, color=#FF0033FF, type=Sliced, raycast=True
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=20,20, pivot=0.5,0.5
+    [Viewport] layer=UI
+      CanvasRenderer
+      Image: sprite=UIMask, color=#FFFFFFFF, type=Sliced, raycast=True
+      Mask: showGraphic=False
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=0,0, pivot=0,1
+      [Content] layer=UI
+        ContentSizeFitter: h=Unconstrained, v=PreferredSize
+        RectTransform: anchor=(0,1)-(1,1), pos=0,-0.0004, size=0,0, pivot=0,1
+        VerticalLayoutGroup: spacing=10, align=UpperCenter
+  [Title] layer=UI
+    CanvasRenderer
+    RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-128, size=0,0, pivot=0.5,0.5
+    TextMeshProUGUI: font=Attic, text='Stage Select', size=64, color=#FFFFFFFF, align=Top, raycast=True
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera] tag=MainCamera
+  AudioListener
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=Skybox, bg=#314D7900
+  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
+  UniversalAdditionalCameraData
+[StageSelectManager]
+  StageSelectManager
+  Transform: pos=-0.8281,-1.0027,756.6724, rot=0,0,0, scale=1,1,1

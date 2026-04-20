@@ -82,7 +82,7 @@ public class OverworldManager : MonoBehaviour
     // Day/night cycle — snapshot and restore across scene transitions
     private DayNightCycle dayNightCycle;
 
-    [SerializeField] private bool hasRandomEncounters = false;
+    private bool hasRandomEncounters = false;
 
     // Random encounter
     private float encounterTimer;                       // accumulates only while moving

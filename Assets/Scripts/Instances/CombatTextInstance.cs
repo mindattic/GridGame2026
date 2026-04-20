@@ -66,7 +66,7 @@ public class CombatTextInstance : MonoBehaviour
 {
     #region Fields
 
-    [SerializeField] AnimationCurve riseCurve;
+    public AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
     public TextMotion style = TextMotion.Oscillate;

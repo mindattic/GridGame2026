@@ -47,7 +47,6 @@ namespace Scripts.Models
     [System.Serializable]
     public class ThumbnailSettings
     {
-        [SerializeField]
         private Vector2 offset;
         public Vector2 Offset => offset;
 

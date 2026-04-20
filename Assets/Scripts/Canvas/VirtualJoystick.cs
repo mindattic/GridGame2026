@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -63,10 +64,8 @@ namespace Scripts.Canvas
 /// </summary>
 public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    [SerializeField] private RectTransform handle;
-    [SerializeField] private float maxRadius = 60f;     // pixels from center to edge
-    [SerializeField] private float deadZone = 0.1f;     // normalized (0..1)
-
+    // Resolved in Awake via transform.Find("Handle").
+    private RectTransform handle;
     private RectTransform rect;
     private Vector2 pointerLocal;                       // last local pointer pos
     private Vector2 output;                             // -1..1 vector
@@ -100,12 +99,12 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
             return;
 
         // Local center is (0,0) with centered pivot/anchors
-        var clamped = Vector2.ClampMagnitude(pointerLocal, maxRadius);
+        var clamped = Vector2.ClampMagnitude(pointerLocal, VirtualJoystickConfig.MaxRadius);
         handle.anchoredPosition = clamped;
 
-        var raw = clamped / Mathf.Max(1f, maxRadius); // normalized -1..1
+        var raw = clamped / Mathf.Max(1f, VirtualJoystickConfig.MaxRadius); // normalized -1..1
         float mag = raw.magnitude;
-        if (mag < deadZone)
+        if (mag < VirtualJoystickConfig.DeadZone)
             output = Vector2.zero;
         else
             output = raw; // keep magnitude for analog speed

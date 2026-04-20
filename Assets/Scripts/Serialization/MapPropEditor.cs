@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -500,13 +501,19 @@ namespace Scripts.Serialization
 #endif
     }
 
-    // Attach anywhere in your scene during playtesting to enable Ctrl/Cmd+Alt+S save of Props JSON.
+    // Attach anywhere in your scene during playtesting to enable Ctrl/Cmd+Alt+S
+    // save of Props JSON. The loader reference is assigned programmatically
+    // (dev tooling; not Inspector-authored). Modifier/key bindings come from
+    // MapPropEditorConfig.
     public sealed class PropMapHotkeys : MonoBehaviour
     {
-        [SerializeField] private MapPropEditorBootstrapper loader;
-        [SerializeField] private KeyCode key = KeyCode.S;
-        [SerializeField] private bool requireCtrl = true;
-        [SerializeField] private bool requireAlt = true;
+        private MapPropEditorBootstrapper loader;
+
+        /// <summary>Assigns the bootstrapper this hotkey listener saves through.</summary>
+        public void SetLoader(MapPropEditorBootstrapper bootstrapper)
+        {
+            loader = bootstrapper;
+        }
 
 #if UNITY_EDITOR
         /// <summary>Runs per-frame update logic.</summary>
@@ -514,21 +521,16 @@ namespace Scripts.Serialization
         {
             if (loader == null) return;
 
-            if (Input.GetKeyDown(key))
+            if (Input.GetKeyDown(MapPropEditorConfig.SaveKey))
             {
                 bool ctrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) ||
                             Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand);
                 bool alt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 
-                if ((!requireCtrl || ctrl) && (!requireAlt || alt))
+                if ((!MapPropEditorConfig.RequireCtrl || ctrl) && (!MapPropEditorConfig.RequireAlt || alt))
                 {
-                    var root = loader.GetType()
-                        .GetField("propsRoot", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.GetValue(loader) as Transform;
-
-                    var mapPath = loader.GetType()
-                        .GetField("mapPath", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.GetValue(loader) as string;
+                    var root = loader.PropsRoot;
+                    var mapPath = loader.MapPath;
 
                     if (root != null && !string.IsNullOrEmpty(mapPath))
                     {

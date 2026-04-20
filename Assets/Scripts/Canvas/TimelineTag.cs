@@ -99,11 +99,13 @@ namespace Scripts.Canvas
     {
         #region Visual Elements
 
-        [Header("Parts")]
-        [SerializeField] private Image Tag;
-        [SerializeField] private Image Icon; 
-        [SerializeField] private TextMeshProUGUI Label;
-        [SerializeField] private CanvasGroup CanvasGroup;
+        // Resolved in Awake via transform.Find or GetComponentInChildren.
+        // TimelineTagFactory creates Tag / Icon / Label children before attaching
+        // the TimelineTag component, so Awake's lookup always succeeds.
+        private Image Tag;
+        private Image Icon;
+        private TextMeshProUGUI Label;
+        private CanvasGroup CanvasGroup;
 
         #endregion
 
