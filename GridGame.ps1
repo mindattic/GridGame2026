@@ -189,13 +189,78 @@ function Invoke-Setup {
     Wait-ForEnter
 }
 
+# ── 5. Scaffold all scenes (headless) ──────────────────────────────────────
+
+function Invoke-ScaffoldAll {
+    Invoke-Batchmode "Scaffold All Scenes" "CliEntryPoints.ScaffoldAllScenes"
+}
+
+# ── 6. Generate documentation (headless) ───────────────────────────────────
+
+function Invoke-GenerateDocs {
+    Invoke-Batchmode "Generate Documentation" "CliEntryPoints.GenerateDocs"
+}
+
+# ── 7. Run tests (headless) ────────────────────────────────────────────────
+
+function Invoke-RunTests {
+    Invoke-Batchmode "Run Edit Tests" "CliEntryPoints.RunEditTests"
+}
+
+# ── 8. Build player (headless) ─────────────────────────────────────────────
+
+function Invoke-BuildPlayer {
+    Invoke-Batchmode "Build Standalone Windows" "CliEntryPoints.BuildStandaloneWindows"
+}
+
+# ── Batchmode runner ───────────────────────────────────────────────────────
+
+function Invoke-Batchmode($title, $method) {
+    Write-Header "GridGame $title"
+
+    if (-not (Test-Path $unityEditor)) {
+        Write-Host "  Unity editor not found at:" -ForegroundColor Red
+        Write-Host "  $unityEditor" -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+
+    $logFile = Join-Path $root "Logs/cli-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
+    New-Item -ItemType Directory -Path (Split-Path $logFile) -Force | Out-Null
+
+    Write-Host "  Running: $method" -ForegroundColor Yellow
+    Write-Host "  Log:     $logFile" -ForegroundColor DarkGray
+    Write-Host ""
+
+    $unityArgs = @(
+        "-batchmode",
+        "-nographics",
+        "-projectPath", "`"$root`"",
+        "-executeMethod", $method,
+        "-quit",
+        "-logFile", "`"$logFile`""
+    )
+
+    $proc = Start-Process -FilePath $unityEditor -ArgumentList $unityArgs -PassThru -Wait -NoNewWindow
+    if ($proc.ExitCode -eq 0) {
+        Write-Host "  $title completed." -ForegroundColor Green
+    } else {
+        Write-Host "  $title FAILED (exit $($proc.ExitCode)). See log for details." -ForegroundColor Red
+    }
+    Wait-ForEnter
+}
+
 # ── Main Menu ────────────────────────────────────────────────────────────────
 
 $mainMenu = @{
-    "1" = @{ Name = "Run Application";  Action = { Invoke-Run } }
-    "2" = @{ Name = "Commit and Sync";  Action = { Invoke-Commit } }
-    "3" = @{ Name = "Create Backup";    Action = { Invoke-Backup } }
-    "4" = @{ Name = "Setup";            Action = { Invoke-Setup } }
+    "1" = @{ Name = "Run Application";              Action = { Invoke-Run } }
+    "2" = @{ Name = "Commit and Sync";              Action = { Invoke-Commit } }
+    "3" = @{ Name = "Create Backup";                Action = { Invoke-Backup } }
+    "4" = @{ Name = "Setup";                        Action = { Invoke-Setup } }
+    "5" = @{ Name = "Scaffold All Scenes (headless)"; Action = { Invoke-ScaffoldAll } }
+    "6" = @{ Name = "Generate Documentation (headless)"; Action = { Invoke-GenerateDocs } }
+    "7" = @{ Name = "Run Tests (headless)";         Action = { Invoke-RunTests } }
+    "8" = @{ Name = "Build Player (headless)";      Action = { Invoke-BuildPlayer } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"

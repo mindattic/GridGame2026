@@ -28,6 +28,35 @@ GridGame.ps1 → Option 3  (copies to R:\Backup\GridGame with date stamps)
 - Unity menu: **Tools › Scenes › {SceneName} › Create Scaffolding / Clear Scene / Clear & Recreate**
 - All menu items auto-switch to the correct `.unity` scene before operating
 
+**Headless CLI (terminal-only workflow):**
+```
+GridGame.ps1 → Option 5   Scaffold all scenes (batchmode)
+GridGame.ps1 → Option 6   Generate documentation (batchmode)
+GridGame.ps1 → Option 7   Run tests (batchmode)
+GridGame.ps1 → Option 8   Build standalone Windows (batchmode)
+```
+Direct invocation (portable to Linux/Mac CI):
+```
+Unity -batchmode -nographics -projectPath . \
+      -executeMethod CliEntryPoints.ScaffoldAllScenes -quit -logFile -
+```
+Entry points live in `Assets/Editor/CliEntryPoints.cs`. Each exits with code 0 on success, 1 on failure.
+
+## Code-only Workflow
+
+The project is authored to run without opening the Unity Editor UI. Every `.unity` scene except `Game` and `Overworld` is a deep-clone output of a corresponding `Assets/Editor/Scaffolds/*Scaffold.cs` file; `Game` and `Overworld` have minimal bootstrap scaffolds (run `Tools › Scenes › {Scene} › Save` to snapshot the current scene into its scaffold once populated).
+
+**Rules when adding new content:**
+- **New GameObjects** → add to the scene's scaffold, then run `Load`. Do not click in the hierarchy.
+- **New UI** → extend the existing factory pattern (`ActorFactory`, `HubItemRowFactory`, etc). Do not create new `.prefab` files.
+- **New assets** (sprite, font, audio) → register an Addressable address and load via `AssetHelper.LoadAssetAsync<T>(address)`. Do not add inspector drag-drop references.
+- **Avoid new `[SerializeField]`.** Initialize from data-layer statics (`ItemData_*`, `SkillData_*`, `ActorData_*`) or factory parameters.
+- **When inspector work is unavoidable** (editing an existing prefab / a legacy `[SerializeField]`): commit the `.prefab`/`.unity` change alongside the scaffold-code change that would rebuild it from scratch. The scaffold is the source of truth; the binary asset is a build artifact.
+
+**Bidirectional scaffold system:**
+- `Tools › Scenes › {Scene} › Load` — scaffold code → scene. Authoritative. Deletes and recreates root objects.
+- `Tools › Scenes › {Scene} › Save` — scene → scaffold code. Overwrites `{Scene}Scaffold.cs` with a deep-clone generated from the current scene YAML. Use after editor-based tuning to check the changes back into code review.
+
 ## Architecture
 
 ### Global Access Pattern
