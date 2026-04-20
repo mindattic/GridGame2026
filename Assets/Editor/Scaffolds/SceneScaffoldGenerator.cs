@@ -111,6 +111,10 @@ public static class SceneScaffoldGenerator
     static void Save_PartyManager() => GenerateForScene("PartyManager");
     [MenuItem("Tools/Scenes/Splash Screen/Save")]
     static void Save_SplashScreen() => GenerateForScene("SplashScreen");
+    [MenuItem("Tools/Scenes/Game/Save")]
+    static void Save_Game() => GenerateForScene("Game");
+    [MenuItem("Tools/Scenes/Overworld/Save")]
+    static void Save_Overworld() => GenerateForScene("Overworld");
 
     // ===================== Main Entry =====================
 
