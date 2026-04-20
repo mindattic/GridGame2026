@@ -1,0 +1,5 @@
+# ResourcesLoadAllowlist — committed frozen set of files containing Resources.Load calls.
+# Format: relative/path/File.cs (one per line, sorted).
+# Do not hand-edit. Regenerate via CliEntryPoints.RegenerateResourcesLoadAllowlist
+# (after migrating a file's Resources.Load calls to AssetHelper.LoadAsset).
+Assets/Scripts/Serialization/MapPropEditor.cs

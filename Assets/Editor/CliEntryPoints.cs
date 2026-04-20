@@ -222,6 +222,45 @@ public static class CliEntryPoints
         }
     }
 
+    // ===================== Resources.Load Ban (Phase 3 guardrail) =====================
+
+    /// <summary>
+    /// Scans Assets/Scripts for Resources.Load calls and fails if any file is not present
+    /// in Assets/Editor/ResourcesLoadAllowlist.txt. Exit 0 = clean, 1 = new offenders detected.
+    /// </summary>
+    public static void CheckResourcesLoadBan()
+    {
+        try
+        {
+            var offenders = ResourcesLoadBan.Check();
+            EditorApplication.Exit(offenders > 0 ? 1 : 0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] CheckResourcesLoadBan failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    /// <summary>
+    /// Overwrites the allowlist with the current scan results. Run after migrating a
+    /// file's Resources.Load calls to AssetHelper.LoadAsset (Phase 3+).
+    /// </summary>
+    public static void RegenerateResourcesLoadAllowlist()
+    {
+        try
+        {
+            var count = ResourcesLoadBan.Regenerate();
+            Debug.Log($"[Cli] ResourcesLoad allowlist regenerated with {count} entr{(count == 1 ? "y" : "ies")}.");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] RegenerateResourcesLoadAllowlist failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
     // ===================== Scaffold Drift (Phase 0 guardrail) =====================
 
     /// <summary>
