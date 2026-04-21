@@ -8,43 +8,44 @@ Unity 6000.3.2f1 tactical RPG — grid-based combat with 2D sprites on a 3D boar
 
 ## Common Commands
 
-**Run the game (Unity Editor):**
-```
-GridGame.Console.ps1 → Option 1
-```
-Or via Claude Code: `/Run` triggers Unity Play Mode in the Editor.
+The `GridGame.Console.ps1` menu is intentionally minimal — only the 6 operations the user runs by hand:
 
-**Commit and sync:**
-```
-GridGame.Console.ps1 → Option 2  (git add, commit, push)
-```
-
-**Backup project:**
-```
-GridGame.Console.ps1 → Option 3  (copies to R:\Backup\GridGame with date stamps)
-```
+| # | Operation | Notes |
+|---|---|---|
+| 1 | Run Application | Launches the Unity editor. `/Run` inside Claude Code triggers Play Mode. |
+| 2 | Commit and Sync | `git add -A`, commit, push. |
+| 3 | Create Backup | Copies the project to `R:\Backup\GridGame` with date-stamped folders. |
+| 4 | Setup | One-time (idempotent): clone/pull, activate pre-push hook, launch Unity for initial import. |
+| 5 | Build Player (headless) | `CliEntryPoints.BuildStandaloneWindows` in batchmode. |
+| 6 | Set Start Scene | Rewrites `StartSceneConfig.StartScene`; `StartSceneAuthority.[InitializeOnLoad]` applies to `playModeStartScene` + `EditorBuildSettings.scenes[0]`. |
 
 **Scene scaffolding** (rebuild a scene's hierarchy from code):
 - Unity menu: **Tools › Scenes › {SceneName} › Create Scaffolding / Clear Scene / Clear & Recreate**
 - All menu items auto-switch to the correct `.unity` scene before operating
 
-**Headless CLI (terminal-only workflow):**
-```
-GridGame.Console.ps1 → Option 5   Scaffold all scenes (batchmode)
-GridGame.Console.ps1 → Option 6   Generate documentation (batchmode)
-GridGame.Console.ps1 → Option 7   Run tests (batchmode)
-GridGame.Console.ps1 → Option 8   Build standalone Windows (batchmode)
-GridGame.Console.ps1 → Option 18  Check All Guardrails (CI smoke test)
-GridGame.Console.ps1 → Option 19  Install Git Hooks (pre-push enforcement)
-```
-Direct invocation (portable to Linux/Mac CI):
+### Claude's batchmode duties
+
+Everything else in `Assets/Editor/CliEntryPoints.cs` is Claude's responsibility. Run it directly — do not surface it as a menu entry:
+
 ```
 Unity -batchmode -nographics -projectPath . \
-      -executeMethod CliEntryPoints.ScaffoldAllScenes -quit -logFile -
+      -executeMethod CliEntryPoints.<Method> -quit -logFile -
 ```
-Entry points live in `Assets/Editor/CliEntryPoints.cs`. Each exits with code 0 on success, 1 on failure.
 
-**Guardrails (enforced pre-push via `.githooks/pre-push`):**
+Exit code `0` = success, `1` = failure. Fix failures before asking the user to commit.
+
+| After this change | Run |
+|---|---|
+| Edited any `Assets/Editor/Scaffolds/*Scaffold.cs` | `ScaffoldAllScenes` |
+| User reports editor-side scene hierarchy edits | `SaveSceneScaffolds` |
+| Scaffold drift is intentional (new object expected) | `RegenerateScaffoldSnapshots` |
+| Removed or added a `[SerializeField]` (Phase 1 work) | `RegenerateSerializedFieldAllowlist` |
+| Migrated a `Resources.Load` call-site to Addressables | `RegenerateResourcesLoadAllowlist` |
+| Moved an `Instantiate` call into a `*Factory.cs` | `RegenerateInstantiateAllowlist` |
+| Material scaffold / data-layer / architecture change | `GenerateDocs` |
+| About to hand work back for commit | `CheckAllGuardrails` + `RunEditTests` |
+
+**Guardrails (auto-enforced pre-push via `.githooks/pre-push`):**
 | Guardrail | What it blocks | Allowlist |
 |---|---|---|
 | `SerializedFieldBan` | new `[SerializeField]` fields in `Scripts/` | `Assets/Editor/SerializedFieldAllowlist.txt` |
@@ -52,7 +53,7 @@ Entry points live in `Assets/Editor/CliEntryPoints.cs`. Each exits with code 0 o
 | `InstantiateBan` | `Instantiate(` outside `*Factory.cs` | `Assets/Editor/InstantiateAllowlist.txt` |
 | `ScaffoldDriftChecker` | scene YAML drifting from its scaffold output | `Documentation/Scaffolds/Drift/*.snapshot.txt` |
 
-`CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session. Activate the pre-push hook with `GridGame.Console.ps1 → Option 19` (sets `core.hooksPath=.githooks`). Bypass for hotfixes with `git push --no-verify`.
+`CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session — run it before handing work back. The pre-push hook is activated automatically by **Setup (Option 4)**; bypass for hotfixes with `git push --no-verify`.
 
 ## Code-only Workflow
 

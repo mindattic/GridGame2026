@@ -205,10 +205,7 @@ public class ProjectileManager : MonoBehaviour
 
         // Node
         var root = GameObject.Find("Effects");
-        var nodeGo = new GameObject("ProjectileNode");
-        nodeGo.transform.position = start;
-        nodeGo.transform.SetParent(root.transform, true); // no parent, no inherited scale
-
+        var nodeGo = ProjectileFactory.Create(root.transform, start);
 
         var node = new ProjectileNode(nodeGo.transform, s);
 

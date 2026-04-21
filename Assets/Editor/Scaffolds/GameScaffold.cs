@@ -67,6 +67,7 @@ public static class GameScaffold
         // --- Background ---
         var go_Background = new GameObject("Background");
         go_Background.layer = 5;
+        go_Background.AddComponent<SpriteRenderer>();
         go_Background.AddComponent<Scripts.Instances.BackgroundInstance>();
         Undo.RegisterCreatedObjectUndo(go_Background, "Create Background");
 
@@ -78,6 +79,7 @@ public static class GameScaffold
 
         // --- BoardOverlay ---
         var go_BoardOverlay = new GameObject("BoardOverlay");
+        go_BoardOverlay.transform.SetParent(go_Board.transform, false);
         go_BoardOverlay.AddComponent<Scripts.Instances.Board.BoardOverlay>();
         Undo.RegisterCreatedObjectUndo(go_BoardOverlay, "Create BoardOverlay");
 
@@ -1173,21 +1175,9 @@ public static class GameScaffold
         Undo.RegisterCreatedObjectUndo(go_Line, "Create Line");
 
         // --- PauseMenu ---
-        var go_PauseMenu = new GameObject("PauseMenu");
-        go_PauseMenu.layer = 5;
-        var rt_PauseMenu = go_PauseMenu.AddComponent<RectTransform>();
-        rt_PauseMenu.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        rt_PauseMenu.anchorMin = new Vector2(0f, 0f);
-        rt_PauseMenu.anchorMax = new Vector2(1f, 1f);
-        rt_PauseMenu.pivot = new Vector2(0.5f, 0.5f);
-        rt_PauseMenu.sizeDelta = new Vector2(0f, 0f);
-        rt_PauseMenu.anchoredPosition = new Vector2(0f, 0f);
-        go_PauseMenu.AddComponent<CanvasRenderer>();
-        var img_PauseMenu = go_PauseMenu.AddComponent<Image>();
-        img_PauseMenu.sprite = SceneScaffoldHelper.LoadSprite(Sprite_Black32x32);
-        img_PauseMenu.color = new Color(0f, 0f, 0f, 0.7686275f);
-        img_PauseMenu.raycastTarget = false;
-        go_PauseMenu.AddComponent<Scripts.Managers.PauseMenu>();
+        var go_PauseMenu = Scripts.Factories.PauseMenuFactory.Create(
+            go_Canvas.GetComponent<RectTransform>(),
+            SceneScaffoldHelper.LoadSprite(Sprite_Black32x32));
         Undo.RegisterCreatedObjectUndo(go_PauseMenu, "Create PauseMenu");
 
         // --- ParallaxBackground ---
@@ -1777,12 +1767,16 @@ public static class GameScaffold
 
         // --- FocusIndicator ---
         var go_FocusIndicator = new GameObject("FocusIndicator");
+        go_FocusIndicator.transform.SetParent(go_Board.transform, false);
         go_FocusIndicator.layer = 10;
         go_FocusIndicator.AddComponent<Scripts.Instances.Board.FocusIndicator>();
         Undo.RegisterCreatedObjectUndo(go_FocusIndicator, "Create FocusIndicator");
 
         // --- Game ---
         var go_Game = new GameObject("Game");
+        // GameManager expects sources[0]=sound, sources[1]=music. Matches Game_Hierarchy.md.
+        go_Game.AddComponent<AudioSource>();
+        go_Game.AddComponent<AudioSource>();
         go_Game.AddComponent<Scripts.Managers.CameraManager>();
         go_Game.AddComponent<Scripts.Managers.TurnManager>();
         go_Game.AddComponent<Scripts.Managers.InputManager>();
@@ -1820,6 +1814,8 @@ public static class GameScaffold
 
         // --- Main Camera ---
         var go_Main_Camera = new GameObject("Main Camera");
+        go_Main_Camera.tag = "MainCamera";
+        go_Main_Camera.transform.position = new Vector3(0f, 0f, -10f);
         var cam_Main_Camera = go_Main_Camera.AddComponent<Camera>();
         cam_Main_Camera.orthographic = true;
         cam_Main_Camera.orthographicSize = 5f;
@@ -1828,24 +1824,22 @@ public static class GameScaffold
         cam_Main_Camera.backgroundColor = new Color(0.1921569f, 0.3019608f, 0.4745098f, 0f);
         go_Main_Camera.AddComponent<AudioListener>();
         go_Main_Camera.AddComponent<Scripts.Managers.CameraManager>();
-        // TODO: unresolved script GUID=948f4100a11a5c24981795d21301da5c — component skipped.
-        // TODO: unresolved script GUID=a79441f348de89743a2939f4d699eac1 — component skipped.
+        var urp_Main_Camera = go_Main_Camera.AddComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+        urp_Main_Camera.renderType = UnityEngine.Rendering.Universal.CameraRenderType.Base;
         Undo.RegisterCreatedObjectUndo(go_Main_Camera, "Create Main Camera");
-
-        // --- ManaPoolManager ---
-        var go_ManaPoolManager = new GameObject("ManaPoolManager");
-        go_ManaPoolManager.AddComponent<Scripts.Managers.ManaPoolManager>();
-        Undo.RegisterCreatedObjectUndo(go_ManaPoolManager, "Create ManaPoolManager");
 
         // --- Overlay Camera ---
         var go_Overlay_Camera = new GameObject("Overlay Camera");
+        go_Overlay_Camera.transform.position = new Vector3(0f, 0f, -10f);
         var cam_Overlay_Camera = go_Overlay_Camera.AddComponent<Camera>();
         cam_Overlay_Camera.orthographic = true;
         cam_Overlay_Camera.orthographicSize = 5f;
         cam_Overlay_Camera.depth = 1f;
         cam_Overlay_Camera.clearFlags = (CameraClearFlags)4;
         cam_Overlay_Camera.backgroundColor = new Color(0.1921569f, 0.3019608f, 0.4745098f, 0f);
-        // TODO: unresolved script GUID=a79441f348de89743a2939f4d699eac1 — component skipped.
+        var urp_Overlay_Camera = go_Overlay_Camera.AddComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+        urp_Overlay_Camera.renderType = UnityEngine.Rendering.Universal.CameraRenderType.Overlay;
+        urp_Main_Camera.cameraStack.Add(cam_Overlay_Camera);
         Undo.RegisterCreatedObjectUndo(go_Overlay_Camera, "Create Overlay Camera");
 
         // --- PostProcessing ---
@@ -1855,6 +1849,7 @@ public static class GameScaffold
 
         // --- TargetModeOverlay ---
         var go_TargetModeOverlay = new GameObject("TargetModeOverlay");
+        go_TargetModeOverlay.transform.SetParent(go_Board.transform, false);
         go_TargetModeOverlay.AddComponent<CanvasRenderer>();
         go_TargetModeOverlay.AddComponent<Scripts.Canvas.TargetModeOverlay>();
         Undo.RegisterCreatedObjectUndo(go_TargetModeOverlay, "Create TargetModeOverlay");

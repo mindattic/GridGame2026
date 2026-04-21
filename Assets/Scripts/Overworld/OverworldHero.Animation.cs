@@ -81,6 +81,7 @@ public partial class OverworldHero
     /// <summary>Applies the animator parameters.</summary>
     private void ApplyAnimatorParameters(Vector2 dir, float speed)
     {
+        if (animator == null || animator.runtimeAnimatorController == null) return;
         animator.SetFloat("MoveX", dir.x);
         animator.SetFloat("MoveY", dir.y);
         // Convert per-frame distance into units/second so transitions with Speed>0.1f work reliably

@@ -4,14 +4,23 @@
 
 [Background] layer=UI
   BackgroundInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Board] layer=Board
   BoardInstance
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[BoardOverlay]
-  BoardOverlay
-  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  [BoardOverlay]
+    BoardOverlay
+    SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  [FocusIndicator] layer=Actor
+    FocusIndicator
+    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  [TargetModeOverlay]
+    CanvasRenderer
+    SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=50, layer=Default
+    TargetModeOverlay
+    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
@@ -403,15 +412,14 @@
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[FocusIndicator] layer=Actor
-  FocusIndicator
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Game]
   AbilityButtonManager
   AbilityManager
   ActorManager
   AttackLineManager
   AudioManager
+  AudioSource
+  AudioSource
   BoardManager
   CameraManager
   CoinManager
@@ -441,21 +449,15 @@
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
   TurnManager
   VisualEffectManager
-[Main Camera]
+[Main Camera] tag=MainCamera
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#314D7900
   CameraManager
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[ManaPoolManager]
-  ManaPoolManager
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
+  UniversalAdditionalCameraData
 [Overlay Camera]
   Camera: ortho=True, size=5, fov=60, depth=1, clear=Nothing, bg=#314D7900
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
+  UniversalAdditionalCameraData
 [PostProcessing]
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[TargetModeOverlay]
-  CanvasRenderer
-  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=50, layer=Default
-  TargetModeOverlay
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

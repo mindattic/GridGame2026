@@ -138,6 +138,9 @@ public class ActorThumbnail : MonoBehaviour
         if (spriteRenderer.sprite != null)
         {
             spriteRenderer.material.SetTexture(MainTexId, spriteRenderer.sprite.texture);
+            // Sliced sprites auto-resize to the sprite's native size on assignment; force back to 1x1 unit so transform.scale fully controls visible region.
+            if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
+                spriteRenderer.size = Vector2.one;
         }
 
         settings = new ThumbnailSettings(actorData.ThumbnailSettings);
@@ -163,6 +166,10 @@ public class ActorThumbnail : MonoBehaviour
 
         transform.localPosition = off;
         transform.localScale = settings.Scale;
+
+        // Sliced renderers auto-resize to the sprite's native size on sprite assignment; force 1x1 so transform.scale alone controls visible region.
+        if (spriteRenderer != null && spriteRenderer.drawMode == SpriteDrawMode.Sliced && spriteRenderer.size != Vector2.one)
+            spriteRenderer.size = Vector2.one;
     }
 
     /// <summary>Runs per-frame update logic.</summary>

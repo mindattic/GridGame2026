@@ -1,9 +1,9 @@
-﻿$root = $PSScriptRoot
+$root = $PSScriptRoot
 $backupBase = "R:\Backup\GridGame"
 $repoUrl = "https://github.com/mindattic/GridGame2026.git"
 $unityEditor = "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe"
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# === Helpers ===============================================================
 
 function Write-Header($title) {
     Clear-Host
@@ -43,29 +43,25 @@ function Get-BackupFolder {
     return Join-Path $backupBase "${date}z"
 }
 
-# ── 1. Run Application ──────────────────────────────────────────────────────
+# === 1. Run Application ====================================================
 
 function Invoke-Run {
     Write-Header "GridGame Run"
-
     if (-not (Test-Path $unityEditor)) {
         Write-Host "  Unity editor not found at:" -ForegroundColor Red
         Write-Host "  $unityEditor" -ForegroundColor Red
         Wait-ForEnter
         return
     }
-
     Write-Host "  Launching Unity editor..." -ForegroundColor Green
     Start-Process $unityEditor -ArgumentList "-projectPath `"$root`""
-
     Wait-ForEnter
 }
 
-# ── 2. Commit and Sync ──────────────────────────────────────────────────────
+# === 2. Commit and Sync ====================================================
 
 function Invoke-Commit {
     Write-Header "GridGame Commit & Sync"
-
     $count = Get-GitStatus
     if ($count -gt 0) {
         Write-Host "  $count file(s) changed:" -ForegroundColor Yellow
@@ -77,19 +73,16 @@ function Invoke-Commit {
         Wait-ForEnter
         return
     }
-
     $message = Read-Host "  Commit message"
     if ([string]::IsNullOrWhiteSpace($message)) {
         Write-Host "  Aborted (empty message)." -ForegroundColor Red
         Wait-ForEnter
         return
     }
-
     Write-Host ""
     Write-Host "  Staging $count file(s)..." -NoNewline -ForegroundColor White
     git -C $root add -A 2>$null
     Write-Host " done" -ForegroundColor Green
-
     Write-Host "  Committing..." -NoNewline -ForegroundColor White
     git -C $root commit -m $message 2>$null | Out-Null
     if ($LASTEXITCODE -ne 0) {
@@ -98,7 +91,6 @@ function Invoke-Commit {
         return
     }
     Write-Host " committed" -ForegroundColor Green
-
     Write-Host "  Pushing..." -NoNewline -ForegroundColor White
     git -C $root push 2>$null | Out-Null
     if ($LASTEXITCODE -ne 0) {
@@ -107,13 +99,12 @@ function Invoke-Commit {
         return
     }
     Write-Host " synced" -ForegroundColor Green
-
     Write-Host ""
     Write-Host "  Done." -ForegroundColor Green
     Wait-ForEnter
 }
 
-# ── 3. Create Backup ────────────────────────────────────────────────────────
+# === 3. Create Backup ======================================================
 
 function Invoke-Backup {
     $dest = Get-BackupFolder
@@ -125,28 +116,26 @@ function Invoke-Backup {
     Write-Host ""
     Write-Host "  [0]  Back" -ForegroundColor DarkGray
     Write-Host ""
-
     $choice = Read-MenuChoice
     if ($choice -ne "1") { return }
-
     $dest = Get-BackupFolder
     Write-Host ""
     Write-Host "  Backing up project to:" -ForegroundColor Yellow
     Write-Host "  $dest" -ForegroundColor White
     Write-Host ""
-
     New-Item -ItemType Directory -Path $dest -Force | Out-Null
-
     Write-Host "  Copying project..." -NoNewline -ForegroundColor White
     Copy-Item $root $dest -Recurse -Force -Exclude @("Library", "Temp", "obj", "Logs")
     Write-Host " done" -ForegroundColor Green
-
     Write-Host ""
     Write-Host "  Backup complete." -ForegroundColor Green
     Wait-ForEnter
 }
 
-# ── 4. Setup ────────────────────────────────────────────────────────────────
+# === 4. Setup ==============================================================
+# One-time (idempotent): clone/pull repo, activate pre-push git hooks, and
+# launch Unity for the initial project import. Running it a second time is
+# safe -- pulls latest, re-confirms hook activation, relaunches Unity.
 
 function Invoke-Setup {
     Write-Header "GridGame Setup"
@@ -172,7 +161,21 @@ function Invoke-Setup {
         }
     }
 
-    # Open Unity to trigger initial import/build
+    # Activate pre-push git hook
+    $hooksDir = Join-Path $root ".githooks"
+    if (Test-Path $hooksDir) {
+        $current = git -C $root config --get core.hooksPath 2>$null
+        if ($current -ne ".githooks") {
+            git -C $root config core.hooksPath .githooks
+            Write-Host "  Git hooks activated (core.hooksPath -> .githooks)" -ForegroundColor Green
+        } else {
+            Write-Host "  Git hooks already active." -ForegroundColor DarkGray
+        }
+    } else {
+        Write-Host "  .githooks folder missing - skipping hook activation." -ForegroundColor Yellow
+    }
+
+    # Launch Unity for initial import
     Write-Host ""
     if (Test-Path $unityEditor) {
         Write-Host "  Launching Unity for initial project import..." -ForegroundColor Yellow
@@ -189,91 +192,17 @@ function Invoke-Setup {
     Wait-ForEnter
 }
 
-# ── 5. Scaffold all scenes (headless) ──────────────────────────────────────
-
-function Invoke-ScaffoldAll {
-    Invoke-Batchmode "Scaffold All Scenes" "CliEntryPoints.ScaffoldAllScenes"
-}
-
-# ── 6. Generate documentation (headless) ───────────────────────────────────
-
-function Invoke-GenerateDocs {
-    Invoke-Batchmode "Generate Documentation" "CliEntryPoints.GenerateDocs"
-}
-
-# ── 7. Run tests (headless) ────────────────────────────────────────────────
-
-function Invoke-RunTests {
-    Invoke-Batchmode "Run Edit Tests" "CliEntryPoints.RunEditTests"
-}
-
-# ── 8. Build player (headless) ─────────────────────────────────────────────
+# === 5. Build Player (headless) ============================================
 
 function Invoke-BuildPlayer {
     Invoke-Batchmode "Build Standalone Windows" "CliEntryPoints.BuildStandaloneWindows"
 }
 
-# ── 9. Check [SerializeField] ban (headless) ───────────────────────────────
-
-function Invoke-CheckFieldBan {
-    Invoke-Batchmode "Check [SerializeField] Ban" "CliEntryPoints.CheckSerializedFieldBan"
-}
-
-# ── 10. Regenerate [SerializeField] allowlist (headless) ───────────────────
-
-function Invoke-RegenFieldAllowlist {
-    Invoke-Batchmode "Regenerate [SerializeField] Allowlist" "CliEntryPoints.RegenerateSerializedFieldAllowlist"
-}
-
-# ── 11. Verify scaffold drift (headless) ───────────────────────────────────
-
-function Invoke-VerifyDrift {
-    Invoke-Batchmode "Verify Scaffold Drift" "CliEntryPoints.VerifyScaffoldDrift"
-}
-
-# ── 12. Regenerate scaffold snapshots (headless) ───────────────────────────
-
-function Invoke-RegenSnapshots {
-    Invoke-Batchmode "Regenerate Scaffold Snapshots" "CliEntryPoints.RegenerateScaffoldSnapshots"
-}
-
-# ── 13. Check Resources.Load ban (headless) ────────────────────────────────
-
-function Invoke-CheckResourcesLoadBan {
-    Invoke-Batchmode "Check Resources.Load Ban" "CliEntryPoints.CheckResourcesLoadBan"
-}
-
-# ── 14. Regenerate Resources.Load allowlist (headless) ─────────────────────
-
-function Invoke-RegenResourcesLoadAllowlist {
-    Invoke-Batchmode "Regenerate Resources.Load Allowlist" "CliEntryPoints.RegenerateResourcesLoadAllowlist"
-}
-
-# ── 15. Check Instantiate ban (headless) ───────────────────────────────────
-
-function Invoke-CheckInstantiateBan {
-    Invoke-Batchmode "Check Instantiate Ban" "CliEntryPoints.CheckInstantiateBan"
-}
-
-# ── 16. Regenerate Instantiate allowlist (headless) ────────────────────────
-
-function Invoke-RegenInstantiateAllowlist {
-    Invoke-Batchmode "Regenerate Instantiate Allowlist" "CliEntryPoints.RegenerateInstantiateAllowlist"
-}
-
-# ── 17. Save scene scaffolds (scene → code, headless) ──────────────────────
-
-function Invoke-SaveSceneScaffolds {
-    Invoke-Batchmode "Save Scene Scaffolds" "CliEntryPoints.SaveSceneScaffolds"
-}
-
-# ── 18. Check all guardrails (headless, one Unity launch) ──────────────────
-
-function Invoke-CheckAllGuardrails {
-    Invoke-Batchmode "Check All Guardrails" "CliEntryPoints.CheckAllGuardrails"
-}
-
-# ── 20. Set start scene (rewrites StartSceneConfig.cs) ─────────────────────
+# === 6. Set Start Scene ====================================================
+# Rewrites the StartScene constant in Assets/Scripts/Data/Config/StartSceneConfig.cs.
+# StartSceneAuthority.[InitializeOnLoad] applies the change to
+# EditorSceneManager.playModeStartScene and EditorBuildSettings.scenes[0] on
+# the next Unity domain reload.
 
 function Invoke-SetStartScene {
     Write-Header "GridGame Set Start Scene"
@@ -299,7 +228,6 @@ function Invoke-SetStartScene {
     $match = [regex]::Match($content, $rx)
     if (-not $match.Success) {
         Write-Host "  Could not find StartScene constant in StartSceneConfig.cs." -ForegroundColor Red
-        Write-Host "  Expected line: public const string StartScene = ""...""; " -ForegroundColor DarkGray
         Wait-ForEnter
         return
     }
@@ -363,48 +291,7 @@ function Invoke-SetStartScene {
     Wait-ForEnter
 }
 
-# ── 19. Install git hooks (point core.hooksPath at .githooks) ──────────────
-
-function Invoke-InstallGitHooks {
-    Write-Header "GridGame Install Git Hooks"
-
-    $hooksDir = Join-Path $root ".githooks"
-    if (-not (Test-Path $hooksDir)) {
-        Write-Host "  .githooks directory missing — expected at:" -ForegroundColor Red
-        Write-Host "  $hooksDir" -ForegroundColor Red
-        Wait-ForEnter
-        return
-    }
-
-    $current = git -C $root config --get core.hooksPath 2>$null
-    if ($current -eq ".githooks") {
-        Write-Host "  Already installed." -ForegroundColor Green
-        Write-Host "  core.hooksPath = " -NoNewline -ForegroundColor DarkGray
-        Write-Host $current -ForegroundColor White
-    } else {
-        if ($current) {
-            Write-Host "  Overwriting existing core.hooksPath:" -ForegroundColor Yellow
-            Write-Host "    was: $current" -ForegroundColor DarkGray
-        }
-        git -C $root config core.hooksPath .githooks
-        Write-Host "  Installed." -ForegroundColor Green
-        Write-Host "  core.hooksPath -> .githooks" -ForegroundColor White
-    }
-
-    Write-Host ""
-    Write-Host "  Active hooks:" -ForegroundColor DarkGray
-    Get-ChildItem $hooksDir -File | ForEach-Object {
-        Write-Host "    - $($_.Name)" -ForegroundColor White
-    }
-
-    Write-Host ""
-    Write-Host "  Bypass a hook for an urgent push with: " -NoNewline -ForegroundColor DarkGray
-    Write-Host "git push --no-verify" -ForegroundColor White
-
-    Wait-ForEnter
-}
-
-# ── Batchmode runner ───────────────────────────────────────────────────────
+# === Batchmode runner (used by Build) ======================================
 
 function Invoke-Batchmode($title, $method) {
     Write-Header "GridGame $title"
@@ -441,29 +328,15 @@ function Invoke-Batchmode($title, $method) {
     Wait-ForEnter
 }
 
-# ── Main Menu ────────────────────────────────────────────────────────────────
+# === Main Menu =============================================================
 
 $mainMenu = [ordered]@{
-    "1"  = @{ Name = "Run Application";                         Action = { Invoke-Run } }
-    "2"  = @{ Name = "Commit and Sync";                         Action = { Invoke-Commit } }
-    "3"  = @{ Name = "Create Backup";                           Action = { Invoke-Backup } }
-    "4"  = @{ Name = "Setup";                                   Action = { Invoke-Setup } }
-    "5"  = @{ Name = "Scaffold All Scenes (headless)";          Action = { Invoke-ScaffoldAll } }
-    "6"  = @{ Name = "Generate Documentation (headless)";       Action = { Invoke-GenerateDocs } }
-    "7"  = @{ Name = "Run Tests (headless)";                    Action = { Invoke-RunTests } }
-    "8"  = @{ Name = "Build Player (headless)";                 Action = { Invoke-BuildPlayer } }
-    "9"  = @{ Name = "Check [SerializeField] Ban (headless)";   Action = { Invoke-CheckFieldBan } }
-    "10" = @{ Name = "Regenerate [SerializeField] Allowlist";   Action = { Invoke-RegenFieldAllowlist } }
-    "11" = @{ Name = "Verify Scaffold Drift (headless)";        Action = { Invoke-VerifyDrift } }
-    "12" = @{ Name = "Regenerate Scaffold Snapshots";           Action = { Invoke-RegenSnapshots } }
-    "13" = @{ Name = "Check Resources.Load Ban (headless)";     Action = { Invoke-CheckResourcesLoadBan } }
-    "14" = @{ Name = "Regenerate Resources.Load Allowlist";     Action = { Invoke-RegenResourcesLoadAllowlist } }
-    "15" = @{ Name = "Check Instantiate Ban (headless)";        Action = { Invoke-CheckInstantiateBan } }
-    "16" = @{ Name = "Regenerate Instantiate Allowlist";        Action = { Invoke-RegenInstantiateAllowlist } }
-    "17" = @{ Name = "Save Scene Scaffolds (scene -> code)";    Action = { Invoke-SaveSceneScaffolds } }
-    "18" = @{ Name = "Check All Guardrails (CI smoke test)";    Action = { Invoke-CheckAllGuardrails } }
-    "19" = @{ Name = "Install Git Hooks (pre-push enforcement)"; Action = { Invoke-InstallGitHooks } }
-    "20" = @{ Name = "Set Start Scene";                         Action = { Invoke-SetStartScene } }
+    "1" = @{ Name = "Run Application";         Action = { Invoke-Run } }
+    "2" = @{ Name = "Commit and Sync";         Action = { Invoke-Commit } }
+    "3" = @{ Name = "Create Backup";           Action = { Invoke-Backup } }
+    "4" = @{ Name = "Setup";                   Action = { Invoke-Setup } }
+    "5" = @{ Name = "Build Player (headless)"; Action = { Invoke-BuildPlayer } }
+    "6" = @{ Name = "Set Start Scene";         Action = { Invoke-SetStartScene } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"

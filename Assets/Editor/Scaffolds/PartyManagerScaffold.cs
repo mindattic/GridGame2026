@@ -219,40 +219,14 @@ public static class PartyManagerScaffold
         SceneScaffoldHelper.LogResults(SceneName, created, found);
     }
 
-    /// <summary>Creates a stat row: Label + Value + Bar (Back/Fill/Front[OFF]).</summary>
+    /// <summary>Creates a stat row: Label + Value + Bar (Back/Fill/Front[OFF]). Delegates to StatRowFactory.</summary>
     private static void CreateStatRow(RectTransform parent, string statName, float yPos, ref int created, ref int found)
     {
         var existing = parent.Find(statName);
         if (existing != null) { found++; return; }
 
-        var go = new GameObject(statName);
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-        rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f);
-        rt.sizeDelta = Vector2.zero;
-        rt.anchoredPosition = new Vector2(0f, yPos);
-
-        // Label
-        CreateTMPChild(rt, "Label", statName, new Vector2(-100f, -2f), new Vector2(100f, 32f));
-        // Value
-        CreateTMPChild(rt, "Value", "0", new Vector2(165f, 0f), new Vector2(100f, 32f));
-        // Bar
-        var barGO = new GameObject("Bar");
-        barGO.layer = LayerMask.NameToLayer("UI");
-        var barRT = barGO.AddComponent<RectTransform>();
-        barRT.SetParent(rt, false);
-        barRT.anchorMin = barRT.anchorMax = new Vector2(0f, 1f);
-        barRT.sizeDelta = new Vector2(100f, 32f);
-        barRT.anchoredPosition = Vector2.zero;
-        barGO.AddComponent<CanvasRenderer>();
-
-        CreateBarImage(barRT, "Back", Vector2.zero);
-        CreateBarImage(barRT, "Fill", Vector2.zero);
-        var front = CreateBarImage(barRT, "Front", new Vector2(0f, 16f));
-        if (front != null) front.gameObject.SetActive(false);
-
-        Undo.RegisterCreatedObjectUndo(go, $"Create {statName}");
+        var rt = Scripts.Factories.StatRowFactory.Create(parent, statName, yPos);
+        Undo.RegisterCreatedObjectUndo(rt.gameObject, $"Create {statName}");
         created++;
     }
 

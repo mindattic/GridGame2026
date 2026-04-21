@@ -67,6 +67,20 @@ namespace Scripts.Factories
             sortingGroup.sortingLayerName = SortingLayerName;
             sortingGroup.sortingOrder = 0;
 
+            // Rigidbody2D — matches original ActorPrefab (Dynamic, no gravity, freeze rotation, continuous CD).
+            // Required so Physics2D.OverlapPointAll picks the moving collider efficiently without rebuilding the static-collider tree every transform change.
+            var rigidbody = root.AddComponent<Rigidbody2D>();
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            rigidbody.gravityScale = 0f;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+            // Collider2D for click/drag picking via Physics2D.OverlapPointAll (matches the original ActorPrefab BoxCollider2D)
+            var collider = root.AddComponent<BoxCollider2D>();
+            collider.isTrigger = true;
+            collider.offset = Vector2.zero;
+            collider.size = Vector2.one;
+
             // === FRONT CONTAINER ===
             var front = CreateChild(root, "Front");
 
@@ -130,7 +144,8 @@ namespace Scripts.Factories
             SpriteDrawMode drawMode = SpriteDrawMode.Sliced,
             Vector2? size = null,
             SpriteMaskInteraction maskInteraction = SpriteMaskInteraction.None,
-            SpriteSortPoint sortPoint = SpriteSortPoint.Center)
+            SpriteSortPoint sortPoint = SpriteSortPoint.Center,
+            bool enabled = true)
         {
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = sprite;
@@ -143,6 +158,7 @@ namespace Scripts.Factories
                 sr.size = size.Value;
             sr.maskInteraction = maskInteraction;
             sr.spriteSortPoint = sortPoint;
+            sr.enabled = enabled;
             return sr;
         }
 
@@ -208,7 +224,8 @@ namespace Scripts.Factories
         /// <summary>Creates the glow.</summary>
         private static void CreateGlow(GameObject parent)
         {
-            var go = CreateChild(parent, "Glow");
+            // TODO: Re-enable actor glow effect (currently disabled — washed out the portraits).
+            var go = CreateChild(parent, "Glow", isActive: false);
             go.transform.localScale = new Vector3(2.56f, 2.56f, 1f);
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["ThumbnailFade"],
@@ -570,7 +587,8 @@ namespace Scripts.Factories
                 "SpriteUnlitDefault",
                 27,
                 SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
+                new Vector2(1f, 1f),
+                enabled: false);
         }
 
         /// <summary>Creates the focus indicator.</summary>
@@ -583,7 +601,8 @@ namespace Scripts.Factories
                 "SpriteUnlitDefault",
                 28,
                 SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
+                new Vector2(1f, 1f),
+                enabled: false);
         }
 
         /// <summary>Creates the target indicator.</summary>
@@ -596,7 +615,8 @@ namespace Scripts.Factories
                 "SpriteUnlitDefault",
                 29,
                 SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
+                new Vector2(1f, 1f),
+                enabled: false);
         }
 
         #endregion
