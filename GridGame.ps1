@@ -237,6 +237,42 @@ function Invoke-RegenSnapshots {
     Invoke-Batchmode "Regenerate Scaffold Snapshots" "CliEntryPoints.RegenerateScaffoldSnapshots"
 }
 
+# ── 13. Check Resources.Load ban (headless) ────────────────────────────────
+
+function Invoke-CheckResourcesLoadBan {
+    Invoke-Batchmode "Check Resources.Load Ban" "CliEntryPoints.CheckResourcesLoadBan"
+}
+
+# ── 14. Regenerate Resources.Load allowlist (headless) ─────────────────────
+
+function Invoke-RegenResourcesLoadAllowlist {
+    Invoke-Batchmode "Regenerate Resources.Load Allowlist" "CliEntryPoints.RegenerateResourcesLoadAllowlist"
+}
+
+# ── 15. Check Instantiate ban (headless) ───────────────────────────────────
+
+function Invoke-CheckInstantiateBan {
+    Invoke-Batchmode "Check Instantiate Ban" "CliEntryPoints.CheckInstantiateBan"
+}
+
+# ── 16. Regenerate Instantiate allowlist (headless) ────────────────────────
+
+function Invoke-RegenInstantiateAllowlist {
+    Invoke-Batchmode "Regenerate Instantiate Allowlist" "CliEntryPoints.RegenerateInstantiateAllowlist"
+}
+
+# ── 17. Save scene scaffolds (scene → code, headless) ──────────────────────
+
+function Invoke-SaveSceneScaffolds {
+    Invoke-Batchmode "Save Scene Scaffolds" "CliEntryPoints.SaveSceneScaffolds"
+}
+
+# ── 18. Check all guardrails (headless, one Unity launch) ──────────────────
+
+function Invoke-CheckAllGuardrails {
+    Invoke-Batchmode "Check All Guardrails" "CliEntryPoints.CheckAllGuardrails"
+}
+
 # ── Batchmode runner ───────────────────────────────────────────────────────
 
 function Invoke-Batchmode($title, $method) {
@@ -289,6 +325,12 @@ $mainMenu = [ordered]@{
     "10" = @{ Name = "Regenerate [SerializeField] Allowlist";   Action = { Invoke-RegenFieldAllowlist } }
     "11" = @{ Name = "Verify Scaffold Drift (headless)";        Action = { Invoke-VerifyDrift } }
     "12" = @{ Name = "Regenerate Scaffold Snapshots";           Action = { Invoke-RegenSnapshots } }
+    "13" = @{ Name = "Check Resources.Load Ban (headless)";     Action = { Invoke-CheckResourcesLoadBan } }
+    "14" = @{ Name = "Regenerate Resources.Load Allowlist";     Action = { Invoke-RegenResourcesLoadAllowlist } }
+    "15" = @{ Name = "Check Instantiate Ban (headless)";        Action = { Invoke-CheckInstantiateBan } }
+    "16" = @{ Name = "Regenerate Instantiate Allowlist";        Action = { Invoke-RegenInstantiateAllowlist } }
+    "17" = @{ Name = "Save Scene Scaffolds (scene -> code)";    Action = { Invoke-SaveSceneScaffolds } }
+    "18" = @{ Name = "Check All Guardrails (CI smoke test)";    Action = { Invoke-CheckAllGuardrails } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"

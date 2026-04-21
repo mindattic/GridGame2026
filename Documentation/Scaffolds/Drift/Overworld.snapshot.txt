@@ -6,11 +6,213 @@
   ScreenGrabber
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
   ZoomEffect
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bush]
+  BushInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Bushes]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Canopy]
+  CanopyInstance
+  CanvasRenderer
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
-  CanvasScaler: mode=ScaleWithScreenSize, ref=1080,2400, match=0
+  CanvasScaler: mode=ConstantPixelSize, ref=0,0, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1080,810, pivot=0.5,0.5
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5
   [BackButton] layer=UI
     Button
     CanvasRenderer
@@ -32,7 +234,7 @@
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,-43.43, size=200,50, pivot=0.5,0.5
-      TextMeshProUGUI: font=Roboto, text='', size=20, color=#FFFFFFFF, align=Center, raycast=True
+      TextMeshProUGUI: font=Roboto, text='m_isRightToLeft: 0', size=20, color=#FFFFFFFF, align=Center, raycast=True
   [ChangeLeaderButton] layer=UI
     Button
     CanvasRenderer
@@ -45,7 +247,7 @@
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,-43.43, size=200,50, pivot=0.5,0.5
-      TextMeshProUGUI: font=Roboto, text='', size=20, color=#FFFFFFFF, align=Center, raycast=True
+      TextMeshProUGUI: font=Roboto, text='m_isRightToLeft: 0', size=20, color=#FFFFFFFF, align=Center, raycast=True
   [CutoutOverlay] layer=UI
     CutoutOverlay
     RectTransform: anchor=(0,0)-(1,1), pos=0.0001,0, size=0,0, pivot=0.5,0.5
@@ -94,1288 +296,787 @@
   [Title] layer=UI
     CanvasRenderer
     RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-128, size=0,0, pivot=0.5,0.5
-    TextMeshProUGUI: font=Attic, text='', size=64, color=#FFFFFFFF, align=Top, raycast=True
+    TextMeshProUGUI: font=Attic, text='m_isRightToLeft: 0', size=64, color=#FFFFFFFF, align=Top, raycast=True
+[Caravan]
+  CaravanInstance
+  CircleCollider2D
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Cloud]
+  CloudInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadow]
+  CloudShadowInstance
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[CloudShadows]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Clouds]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [EventSystem]
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[Main Camera] tag=MainCamera
+[FishingSpot] (inactive)
+  CanvasRenderer
+  MapIcon
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grass]
+  GrassInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Grasses]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Hero_00]
+  CanvasRenderer
+  OverworldHero
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Hero_01]
+  CanvasRenderer
+  OverworldHero
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Hero_02]
+  CanvasRenderer
+  OverworldHero
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Hero_03]
+  CanvasRenderer
+  OverworldHero
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Heroes]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera]
   AudioListener
   Camera: ortho=False, size=5, fov=45, depth=-1, clear=Skybox, bg=#314D7900
   Mode7CameraController
-  Transform: pos=0,-7.9853,-8.4853, rot=315,0,0, scale=1,1,1
-  UniversalAdditionalCameraData
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Map]
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-  [Canopy]
-    CanopyInstance
-    CanvasRenderer
-    RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=4096,4096, pivot=0.5,0.5
-    SpriteRenderer: sprite=Canopy, color=#FFFFFFFF, order=10000, layer=Default
-  [Caravan]
-    CaravanInstance
-    CircleCollider2D
-    SpriteRenderer: sprite=overworld-caravan, color=#FFFFFFFF, order=0, layer=Default
-    Transform: pos=-1.04,-1.87,0, rot=0,0,0, scale=0.1,0.1,1
-  [FishingSpot] (inactive)
-    CanvasRenderer
-    MapIcon
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=1258.281,-755.6974, size=100,100, pivot=0.5,0.5
-    SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=4, layer=Default
-  [Heroes]
-    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-    [Hero_00]
-      Animator
-      CanvasRenderer
-      CircleCollider2D
-      OverworldHero
-      Rigidbody2D: mass=1, gravity=0
-      SpriteRenderer: sprite=Alice_Idle_0, color=#FFFFFFFF, order=0, layer=Default
-      Transform: pos=0,0,0, rot=315,0,0, scale=1,1,1
-    [Hero_01]
-      Animator
-      CanvasRenderer
-      CircleCollider2D
-      OverworldHero
-      Rigidbody2D: mass=1, gravity=0
-      SpriteRenderer: sprite=Alice_Idle_0, color=#FFFFFFFF, order=0, layer=Default
-      Transform: pos=0,0,0, rot=315,0,0, scale=1,1,1
-    [Hero_02]
-      Animator
-      CanvasRenderer
-      CircleCollider2D
-      OverworldHero
-      Rigidbody2D: mass=1, gravity=0
-      SpriteRenderer: sprite=Alice_Idle_0, color=#FFFFFFFF, order=0, layer=Default
-      Transform: pos=0,0,0, rot=315,0,0, scale=1,1,1
-    [Hero_03]
-      Animator
-      CanvasRenderer
-      CircleCollider2D
-      OverworldHero
-      Rigidbody2D: mass=1, gravity=0
-      SpriteRenderer: sprite=Alice_Idle_0, color=#FFFFFFFF, order=0, layer=Default
-      Transform: pos=0,0,0, rot=315,0,0, scale=1,1,1
-  [Props]
-    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-    [Bushes]
-      Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.084,2.438,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.69,1.78,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.28,-0.77,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=7.56,2.86,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=5.4,-3.79,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=5.24,-0.35,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-0.04,-4.05,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-2.46,-2.05,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.88,1.91,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.36,4.56,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-8.06,4.24,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-9.34,9.05,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-8.78,5.68,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.98,-0.35,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-0.92,-2.54,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-3.7,6.49,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-6.62,8.66,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=5.07,-0.97,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=1.11,-2.87,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.77,-0.97,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-8.09,-0.38,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-2.03,1.71,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=2.16,-3.3,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-3.77,-1.79,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=6.58,3.55,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.74,4.86,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=19.49,4.06,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.67,7.84,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=16.34,0.86,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.804,0.698,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.985,3.179,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.088,1.709,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.374,2.308,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.42,1.204,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush05, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.868,1.212,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=10.92,4.024,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush05, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=8.515,-0.678,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=10.477,-0.256,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=3.219,-4.021,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-5.58,8.19,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-3.248,7.685,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.191,6.225,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-11.449,2.46,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=2.43,-4.81,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush04, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=4.835,-3.515,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=4.335,-0.695,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=3.892,-4.975,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush05, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=13.279,3.438,0, rot=315,0,0, scale=1,1,1
-      [Bush]
-        BushInstance
-        SpriteRenderer: sprite=Bush03, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.582,-2.488,0, rot=315,0,0, scale=1,1,1
-    [CloudShadows]
-      Transform: pos=-28.31,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud01, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [CloudShadow]
-        CloudShadowInstance
-        SpriteRenderer: sprite=Cloud00, color=#00000020, order=9998, layer=Default
-        Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-    [Clouds]
-      Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud01, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-      [Cloud]
-        CloudInstance
-        SpriteRenderer: sprite=Cloud00, color=#FFFFFF20, order=9999, layer=Default
-        Transform: pos=-28.86,0,0, rot=315,0,0, scale=1,1,1
-    [Grasses]
-      Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.229,-2.416,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=8.893,-0.344,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.661,-1.167,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-8.24,2.3,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-10.381,5.053,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-20.589,7.701,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-6.278,9.305,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-8.88,4.59,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.212,4.391,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-4.37,10.28,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=7.941,-0.426,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=14.096,4.363,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=7.402,-0.12,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=12.921,-0.904,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=17.38,-1.22,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=19.64,5.19,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=5.41,4.76,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=1.89,-5.05,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-0.57,0.99,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-2.73,3.25,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-3.46,5.39,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-6.37,-2.03,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-1.39,-2.508,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-6.587,-1.295,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-2.806,2.528,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=-3.24,-3.471,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=14.102,3.611,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=7.724,0.309,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.958,-2.038,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=8.901,-3.358,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.559,2.742,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.505,4.132,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=13.84,0.306,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=7.815,-1.403,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.071,-1.867,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=10.661,2.775,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=14.194,1.81,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=13.571,-0.782,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=10.18,4.535,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=11.278,-0.687,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass01, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=13.413,5.107,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass00, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.01,2.564,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=8.384,2.931,0, rot=315,0,0, scale=1,1,1
-      [Grass]
-        CircleCollider2D
-        GrassInstance
-        SpriteRenderer: sprite=Grass02, color=#FFFFFFFF, order=19, layer=Default
-        Transform: pos=9.132,3.103,0, rot=315,0,0, scale=1,1,1
-    [Rocks]
-      RockInstance
-      SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
-      Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock02_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-8.34,6.55,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-7.152,5.202,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock00_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-10.167,3.789,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-1.84,7.72,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-8.89,-1.95,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-1.56,-2.52,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock00_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=2.33,7.84,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock00_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=9.65,7.28,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock02_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=12.67,-1.66,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock00_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=7.75,13.09,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=10.21,7,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=7.81,4.93,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=14.23,0.02,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.15,5.16,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-10.41,-2.89,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-9.91,4.88,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=13.95,0.85,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=5.51,3.82,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=5.87,-1.36,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=11.06,8.65,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=14.64,4.93,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=18.79,4.08,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock02_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-13.41,10.15,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock02_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-10.95,5.86,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-2.54,2.14,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=2.55,-4.26,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-9.69,-0.6,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-16.38,-0.66,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=18.44,-1.46,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=9.06,8.03,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=2.89,12.67,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=5.41,5.06,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-2.71,3.23,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=2.89,-2.8863,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-5.35,-1.23,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-8.78,2.49,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-2.37,5.06,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=12.1,6.6,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-5.12,4.2,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock04_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.03,9.12,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=9.24,1.11,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.83,-3.06,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-8.43,3.17,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=11.93,-2.32,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock03_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=6.5,3.97,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-10.83,2.43,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock01_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=18.91,1.28,0, rot=315,0,0, scale=1,1,1
-      [Rock]
-        CircleCollider2D
-        SpriteRenderer: sprite=Rock05_0, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-9.7,3.1,0, rot=315,0,0, scale=1,1,1
-    [Trees]
-      Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree03, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=10.35,3.7,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree03, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=7.24,-0.88,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=10.63,-2.06,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=14.86,1.78,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=1.58,-3.75,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=0.322,-2.709,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=1.46,1.09,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.14,1.94,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=3.58,6.91,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=7.39,11.62,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-6.14,-4.27,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-0.01,-4.73,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.27,6.71,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=6.82,-3.57,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=15.43,4.43,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=11.2,4.43,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=9.62,3.3,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=2.91,6.53,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-12.1,1.67,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=6.47,-0.33,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=16.97,1.38,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=8.18,-2.63,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-6.09,-0.16,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-4.84,2.46,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-7.64,5.47,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-1.71,-4.03,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-2.74,6.66,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree01, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=5.05,11.95,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-7.31,-3.02,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=10.7968,3,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=7.06,6.22,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=8.09,8.74,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=3.34,-0.57,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-3.61,-0.93,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree02, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-5.19,8.79,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-9.75,6.55,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-11.18,9.33,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-      [Tree]
-        CircleCollider2D
-        SpriteRenderer: sprite=Tree00, color=#FFFFFFFF, order=30, layer=Default
-        Transform: pos=-13.45,-0.45,0, rot=315,0,0, scale=1,1,1
-        TreeInstance
-  [Soil]
-    CanvasRenderer
-    RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=4096,4096, pivot=0.5,0.5
-    SoilInstance
-    SpriteRenderer: sprite=Soil, color=#FFFFFFFF, order=-20007, layer=Default
-  [Surface]
-    CanvasRenderer
-    RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=4096,4096, pivot=0.5,0.5
-    SpriteRenderer: sprite=Surface, color=#FFFFFFFF, order=-20008, layer=Default
-  [Terrain]
-    CanvasRenderer
-    PolygonCollider2D
-    RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=4096,4096, pivot=0.5,0.5
-    SpriteRenderer: sprite=Terrain, color=#FFFFFFFF, order=-20010, layer=Default
 [OverworldManager]
   OverworldManager
-  Transform: pos=-0.8281,-1.0027,756.6724, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Props]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rock]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Rocks]
+  RockInstance
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Soil]
+  CanvasRenderer
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+  SoilInstance
+[Surface]
+  CanvasRenderer
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+[Terrain]
+  CanvasRenderer
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Tree]
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  TreeInstance
+[Trees]
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

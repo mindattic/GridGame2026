@@ -4,30 +4,20 @@
 
 [Background] layer=UI
   BackgroundInstance
-  SpriteRenderer: sprite=00, color=#FFFFFFFF, order=0, layer=Default
-  Transform: pos=-0.04,0,0, rot=0,0,0, scale=0.4975,0.658,1
-[Board] layer=Board tag=Board
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Board] layer=Board
   BoardInstance
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-  [BoardOverlay]
-    BoardOverlay
-    SpriteRenderer: sprite=Black32x32, color=#000000C4, order=100, layer=BoardOverlay
-    Transform: pos=0,0,0, rot=0,0,0, scale=9999,9999,1
-  [FocusIndicator] layer=Actor
-    FocusIndicator
-    SpriteRenderer: sprite=focus-indicator, color=#FFFFFFFF, order=100, layer=ActorAbove
-    Transform: pos=-1000,-1000,0, rot=0,0,0, scale=1,1,1
-  [TargetModeOverlay]
-    CanvasRenderer
-    SpriteRenderer: sprite=TargetOverlay-v1, color=#FFFFFFFF, order=50, layer=Default
-    TargetModeOverlay
-    Transform: pos=0,0,0, rot=0,0,0, scale=0.4,0.4,1
+[BoardOverlay]
+  BoardOverlay
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
-  CanvasScaler: mode=ScaleWithScreenSize, ref=1080,2400, match=0
+  CanvasScaler: mode=ConstantPixelSize, ref=0,0, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1080,810, pivot=0.5,0.5
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5
   [AbilityBar] layer=UI
     AbilityBar
     CanvasGroup
@@ -136,7 +126,7 @@
       [Text (TMP)] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=LiberationSans SDF, text='', size=24, color=#323232FF, align=Center, raycast=True
+        TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
     [ArrowRight] layer=UI
       Button
       CanvasRenderer
@@ -145,7 +135,7 @@
       [Text (TMP)] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=LiberationSans SDF, text='', size=24, color=#323232FF, align=Center, raycast=True
+        TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
     [Backdrop] layer=UI
       CanvasGroup
       CanvasRenderer
@@ -184,7 +174,6 @@
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=218.79,1023.68, size=100,100, pivot=0.5,0.5
     [Value] layer=Portrait
       CanvasRenderer
-      MeshRenderer: enabled=True
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=243.79,1053.65, size=20,5, pivot=0.5,0.5
       TextMeshProUGUI: font=Attic, text='0000000', size=48, color=#FFFFFFFF, align=TopLeft, raycast=True
   [CutoutOverlay] layer=UI
@@ -222,7 +211,7 @@
       [Label]
         CanvasRenderer
         RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=200,50, pivot=0.5,0.5
-        TextMeshProUGUI: font=Avenir, text='Bank\n', size=36, color=#FFFFFFFF, align=Top, raycast=True
+        TextMeshProUGUI: font=Avenir, text='\'Bank', size=36, color=#FFFFFFFF, align=Top, raycast=True
     [EnemyBar]
       RectTransform: anchor=(0,0.5)-(1,0.5), pos=72,-80, size=-176,0, pivot=0.5,0.5
       [Back]
@@ -251,7 +240,7 @@
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      TextMeshProUGUI: font=LiberationSans SDF, text='', size=24, color=#323232FF, align=Center, raycast=True
+      TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
   [PauseMenu] layer=UI
     CanvasRenderer
     Image: sprite=Black32x32, color=#000000C4, type=Simple, raycast=False
@@ -264,7 +253,6 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -274,7 +262,6 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -284,7 +271,6 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -294,17 +280,15 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
           RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Quit\n', size=64, color=#FFFFFFFF, align=Center, raycast=True
+          TextMeshProUGUI: font=Attic, text='\'Quit', size=64, color=#FFFFFFFF, align=Center, raycast=True
       [RestartStageButton] layer=UI
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -314,7 +298,6 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -324,7 +307,6 @@
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -341,7 +323,7 @@
         [Label] layer=UI
           CanvasRenderer
           RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Gameplay\n', size=36, color=#FFFFFFFF, align=Left, raycast=True
+          TextMeshProUGUI: font=Attic, text='\'Gameplay', size=36, color=#FFFFFFFF, align=Left, raycast=True
       [SectionOptions] layer=UI
         CanvasRenderer
         Image: sprite=<null>, color=#00000000, type=Simple, raycast=True
@@ -353,22 +335,20 @@
         [Label] layer=UI
           CanvasRenderer
           RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Options\n', size=36, color=#FFFFFFFF, align=Left, raycast=True
+          TextMeshProUGUI: font=Attic, text='\'Options', size=36, color=#FFFFFFFF, align=Left, raycast=True
       [SettingsButton] layer=UI
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
           RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Settings\n', size=64, color=#FFFFFFFF, align=Center, raycast=True
+          TextMeshProUGUI: font=Attic, text='\'Settings', size=64, color=#FFFFFFFF, align=Center, raycast=True
       [StageSelectButton] layer=UI
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        LayoutElement: pref=(512,128), flex=(-1,-1)
         RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
@@ -378,17 +358,14 @@
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
       [Slide1] layer=UI
         CanvasRenderer
-        RawImage: tex=circuitboard-01, color=#FFFFFF20, raycast=False
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
         ScrollingRawImage
       [Slide2] layer=UI
         CanvasRenderer
-        RawImage: tex=circuitboard-02, color=#FFFFFF20, raycast=False
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0
         ScrollingRawImage
       [Slide3] layer=UI
         CanvasRenderer
-        RawImage: tex=circuitboard-03, color=#FFFFFF20, raycast=False
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0
         ScrollingRawImage
   [Pointer] layer=UI
@@ -416,15 +393,18 @@
     [Tags]
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,16, size=100,100, pivot=0.5,0.5
 [Canvas3D]
-  Canvas: mode=WorldSpace, order=1, layer=DamageText
-  CanvasScaler: mode=ConstantPixelSize, ref=800,600, match=0
+  Canvas: mode=WorldSpace, order=1, layer=Default
+  CanvasScaler: mode=ConstantPixelSize, ref=0,0, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=828,1792, pivot=0.5,0.5
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
 [Effects]
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [EventSystem]
   EventSystem
   StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[FocusIndicator] layer=Actor
+  FocusIndicator
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Game]
   AbilityButtonManager
@@ -432,8 +412,6 @@
   ActorManager
   AttackLineManager
   AudioManager
-  AudioSource
-  AudioSource
   BoardManager
   CameraManager
   CoinManager
@@ -463,20 +441,21 @@
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
   TurnManager
   VisualEffectManager
-[Main Camera] tag=MainCamera
+[Main Camera]
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#314D7900
   CameraManager
-  PostProcessLayer
-  Transform: pos=0,0,-1, rot=0,0,0, scale=1,1,0
-  UniversalAdditionalCameraData
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [ManaPoolManager]
   ManaPoolManager
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Overlay Camera]
   Camera: ortho=True, size=5, fov=60, depth=1, clear=Nothing, bg=#314D7900
-  Transform: pos=0,0,-1, rot=0,0,0, scale=1,1,0
-  UniversalAdditionalCameraData
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [PostProcessing]
-  Transform: pos=423.315,1706.405,0, rot=0,0,0, scale=1,1,1
-  Volume
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[TargetModeOverlay]
+  CanvasRenderer
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=50, layer=Default
+  TargetModeOverlay
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

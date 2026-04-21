@@ -754,7 +754,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -763,7 +763,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -772,7 +772,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -781,7 +781,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -790,7 +790,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -799,19 +799,19 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         TextMeshProUGUI: font=LiberationSans SDF, text='Medical', size=17, color=#E0E6F2FF, align=Center, raycast=False
     [NavSpacer] layer=UI
       LayoutElement: pref=(-1,-1), flex=(1,-1)
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=10,10, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=10,10, pivot=0.5,0.5
     [OverworldButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -820,7 +820,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -829,7 +829,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -838,7 +838,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
@@ -847,7 +847,7 @@
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#1F2945E6, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=145,54, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=145,54, pivot=0.5,0.5
       [Text] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5

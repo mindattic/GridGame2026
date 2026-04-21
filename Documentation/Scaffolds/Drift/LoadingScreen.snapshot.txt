@@ -4,58 +4,56 @@
 
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
-  CanvasScaler: mode=ConstantPixelSize, ref=800,600, match=0
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
-    Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
-    RectTransform: anchor=(0,0)-(1,1), pos=-0.5416,0.5417, size=-91,-195.769, pivot=0.5,0.5
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
   [FadePanel] layer=UI
     CanvasGroup
     CanvasRenderer
-    Image: sprite=Black32x32, color=#00000064, type=Simple, raycast=True
+    Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
     RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
   [LoreText] layer=UI
     CanvasRenderer
-    LoadingScreenLore
     RectTransform: anchor=(0.5,0)-(0.5,1), pos=0,499.92, size=1024,-2506, pivot=0.5,0.5
-    TextMeshProUGUI: font=Attic, text='...', size=36, color=#FFFFFFFF, align=Left, raycast=True
+    TextMeshProUGUI: font=Attic, text='', size=24, color=#FFFFFFFF, align=Top, raycast=True
   [ProgressPanel] layer=UI
     CanvasGroup
     CanvasRenderer
     RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
     [ProgressBar] layer=UI
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=1000,64, pivot=0.5,0.5
-      Slider
       [Background] layer=UI
         CanvasRenderer
-        Image: sprite=Background, color=#000000FF, type=Sliced, raycast=True
+        Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
         RectTransform: anchor=(0,0.25)-(1,0.75), pos=0,0, size=0,0, pivot=0.5,0.5
       [Fill Area] layer=UI
         RectTransform: anchor=(0,0.25)-(1,0.75), pos=-5,0, size=-20,0, pivot=0.5,0.5
         [Fill] layer=UI
           CanvasRenderer
-          Image: sprite=UISprite, color=#FFFF00FF, type=Sliced, raycast=True
-          RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=10,0, pivot=0.5,0.5
+          Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=10,0, pivot=0.5,0.5
       [Handle Slide Area] layer=UI
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-20,0, pivot=0.5,0.5
         [Handle] layer=UI
           CanvasRenderer
-          Image: sprite=Knob, color=#FFFFFF00, type=Simple, raycast=True
-          RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=20,0, pivot=0.5,0.5
+          Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
+          RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=20,0, pivot=0.5,0.5
     [ProgressLabel] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,-50, size=200,50, pivot=0.5,0.5
-      TextMeshProUGUI: font=Attic, text='0%', size=48, color=#FFFFFFFF, align=Top, raycast=True
+      TextMeshProUGUI: font=Attic, text='Loading...', size=24, color=#FFFFFFFF, align=Top, raycast=True
 [EventSystem]
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[LoadingScreen] layer=UI
+[LoadingScreen]
   LoadingScreenManager
-  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=585,1266, size=100,100, pivot=0.5,0.5
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [SceneLoader]
   SceneLoader
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

@@ -376,6 +376,50 @@ public static class CliEntryPoints
         }
     }
 
+    // ===================== Check All Guardrails (CI smoke test) =====================
+
+    /// <summary>
+    /// Runs every guardrail check in one batchmode session and fails if any report offenders.
+    /// Covers: SerializedFieldBan (Phase 1), ResourcesLoadBan (Phase 3), InstantiateBan (Phase 4),
+    /// and ScaffoldDriftChecker (Phase 0/2). Intended as the pre-push / CI entry point —
+    /// four separate Unity launches collapse to one Editor warm-up.
+    /// </summary>
+    public static void CheckAllGuardrails()
+    {
+        int total = 0;
+        var failures = new System.Collections.Generic.List<string>();
+
+        void Run(string label, Func<int> check)
+        {
+            try
+            {
+                Debug.Log($"[Cli] ── {label} ─────────────────────────────────");
+                var n = check();
+                total += n;
+                if (n > 0) failures.Add($"{label} ({n})");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[Cli] {label} threw: {e.Message}\n{e.StackTrace}");
+                total += 1;
+                failures.Add($"{label} (exception)");
+            }
+        }
+
+        Run("SerializedFieldBan",  () => SerializedFieldBan.Check());
+        Run("ResourcesLoadBan",    () => ResourcesLoadBan.Check());
+        Run("InstantiateBan",      () => InstantiateBan.Check());
+        Run("ScaffoldDriftChecker", () => ScaffoldDriftChecker.Verify(ScaffoldedScenes));
+
+        Debug.Log($"[Cli] ── Summary ──────────────────────────────────────────");
+        if (failures.Count == 0)
+            Debug.Log("[Cli] CheckAllGuardrails: OK — every guardrail clean.");
+        else
+            Debug.LogError($"[Cli] CheckAllGuardrails: FAIL — {failures.Count} guardrail(s) reporting issues: {string.Join(", ", failures)}");
+
+        EditorApplication.Exit(total > 0 ? 1 : 0);
+    }
+
     // ===================== Build =====================
 
     public static void BuildStandaloneWindows()

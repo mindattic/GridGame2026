@@ -88,3 +88,6 @@ hidden_changes.conf
 #Manually ignored files
 /[Aa]ssets/[Ss]cripts/ExportedScripts.txt
 /ExportedScripts.txt
+
+# Scaffold drift diagnostic artifacts (regenerated on every VerifyScaffoldDrift run)
+/Documentation/Scaffolds/Drift/*.actual.txt

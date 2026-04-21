@@ -4,104 +4,100 @@
 
 [Background] (inactive)
   BackgroundInstance
-  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=-1, layer=Default
-  Transform: pos=-0.04,0,0, rot=0,0,0, scale=0.4975,0.658,1
+  SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
-  CanvasScaler: mode=ScaleWithScreenSize, ref=1080,2400, match=0
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1080,810, pivot=0.5,0.5
-  [Background]
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
+  [Background] layer=UI
     CanvasRenderer
-    Image: sprite=<null>, color=#0D1426F2, type=Simple, raycast=True
+    Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
     RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=840,1817.846, pivot=0.5,0.5
-  [BottomBar]
+  [BottomBar] layer=UI
     CanvasRenderer
-    Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
+    Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
     RectTransform: anchor=(0,0)-(1,0), pos=0,225, size=840,110, pivot=0.5,0.5
-    [NextButton]
+    [NextButton] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=<null>, color=#3373D9FF, type=Simple, raycast=True
+      Image: sprite=<null>, color=#333333CC, type=Simple, raycast=True
       RectTransform: anchor=(1,0.5)-(1,0.5), pos=-40,0, size=260,64, pivot=1,0.5
-      [Label]
+      [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=LiberationSans SDF, text='Next', size=36, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Attic, text='Next', size=24, color=#FFFFFFFF, align=Center, raycast=True
   [CutoutOverlay] layer=UI
     CutoutOverlay
     RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-    [Bottom] (inactive)
+    [Bottom] (inactive) layer=UI
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
       RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.1538, pivot=0.5,0
-    [Top]
+    [Top] layer=UI
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
       RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.1538, pivot=0.5,1
-      [CenterPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [CenterPane] layer=UI
         RectTransform: anchor=(0.3333,0)-(0.6667,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [LeftPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [LeftPane] layer=UI
         RectTransform: anchor=(0,0)-(0.3333,1), pos=0,0, size=0,0, pivot=0,0.5
-      [RightPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [RightPane] layer=UI
         RectTransform: anchor=(0.6667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
-    Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
-    RectTransform: anchor=(0,0)-(1,1), pos=-0.7314,0.7312, size=-371,-801.7181, pivot=0.5,0.5
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
   [ScrollView] layer=UI
     CanvasRenderer
-    Image: sprite=Background, color=#00000080, type=Sliced, raycast=True
+    Image: sprite=<null>, color=#FFFFFF00, type=Sliced, raycast=True
     RectTransform: anchor=(0,0)-(1,1), pos=0,-256, size=0,-512, pivot=0.5,1
-    ScrollRect
     [Scrollbar Horizontal] layer=UI
       CanvasRenderer
       Image: sprite=Background, color=#FFFFFF00, type=Sliced, raycast=True
-      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=-17,20, pivot=0,0
+      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,20, pivot=0,0
       Scrollbar: dir=LeftToRight
       [Sliding Area] layer=UI
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-20,-20, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         [Handle] layer=UI
           CanvasRenderer
           Image: sprite=UISprite, color=#FFFFFFFF, type=Sliced, raycast=True
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=20,20, pivot=0.5,0.5
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
     [Scrollbar Vertical] layer=UI
       CanvasRenderer
       Image: sprite=Background, color=#FFFFFFFF, type=Sliced, raycast=True
-      RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=20,-17, pivot=1,1
+      RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=20,0, pivot=1,1
       Scrollbar: dir=BottomToTop
       [Sliding Area] layer=UI
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-20,-20, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         [Handle] layer=UI
           CanvasRenderer
-          Image: sprite=UISprite, color=#FF0033FF, type=Sliced, raycast=True
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=20,20, pivot=0.5,0.5
+          Image: sprite=UISprite, color=#FFFFFFFF, type=Sliced, raycast=True
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
     [Viewport] layer=UI
       CanvasRenderer
       Image: sprite=UIMask, color=#FFFFFFFF, type=Sliced, raycast=True
       Mask: showGraphic=False
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=-17,0, pivot=0,1
+      ScrollRect
       [Content] layer=UI
         ContentSizeFitter: h=Unconstrained, v=PreferredSize
-        RectTransform: anchor=(0,1)-(1,1), pos=0,0.0001, size=0,0, pivot=0,1
-        VerticalLayoutGroup: spacing=10, align=UpperCenter
-  [Title]
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
+        VerticalLayoutGroup: spacing=4, align=UpperLeft
+  [Title] layer=UI
     CanvasRenderer
     RectTransform: anchor=(0,1)-(1,1), pos=0,-200, size=0,64, pivot=0.5,1
-    TextMeshProUGUI: font=Attic, text='Victory', size=64, color=#FFFFFFFF, align=Center, raycast=True
+    TextMeshProUGUI: font=Attic, text='Battle Results', size=24, color=#FFFFFFFF, align=Top, raycast=True
 [EventSystem]
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[Main Camera] tag=MainCamera
+[Main Camera]
   AudioListener
-  Camera: ortho=True, size=5, fov=60, depth=-1, clear=Skybox, bg=#314D7900
-  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
-  UniversalAdditionalCameraData
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [PostBattleManager]
   PostBattleManager
-  Transform: pos=-1056.858,1406.517,5.2478, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

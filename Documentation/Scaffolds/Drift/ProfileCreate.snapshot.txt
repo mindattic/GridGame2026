@@ -5,52 +5,49 @@
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
-  CanvasScaler: mode=ConstantPixelSize, ref=800,600, match=0
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
   Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
   [BackButton] (inactive) layer=UI
     Button
     CanvasRenderer
-    Image: sprite=<null>, color=#FFFFFF00, type=Simple, raycast=True
+    Image: sprite=<null>, color=#333333CC, type=Simple, raycast=True
     RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=-435,1220, size=48,48, pivot=0.5,0.5
-    [Text (TMP)] layer=UI
+    [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      TextMeshProUGUI: font=Attic, text='<', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      TextMeshProUGUI: font=Attic, text='Back', size=24, color=#FFFFFFFF, align=Center, raycast=True
   [CutoutOverlay] layer=UI
     CutoutOverlay
-    RectTransform: anchor=(0,0)-(1,1), pos=0.0001,0, size=-90,-194.769, pivot=0.5,0.5
-    [Bottom] (inactive)
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+    [Bottom] (inactive) layer=UI
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
       RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.1538, pivot=0.5,0
-    [Top]
+    [Top] layer=UI
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
       RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.1538, pivot=0.5,1
-      [CenterPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [CenterPane] layer=UI
         RectTransform: anchor=(0.3333,0)-(0.6667,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [LeftPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [LeftPane] layer=UI
         RectTransform: anchor=(0,0)-(0.3333,1), pos=0,0, size=0,0, pivot=0,0.5
-      [RightPane]
-        HorizontalLayoutGroup: spacing=0, align=MiddleCenter
+      [RightPane] layer=UI
         RectTransform: anchor=(0.6667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
-    Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
-    RectTransform: anchor=(0,0)-(1,1), pos=-0.7313,0.7312, size=-371,-801.7179, pivot=0.5,0.5
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
 [EventSystem]
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[Main Camera] tag=MainCamera
+[Main Camera]
   AudioListener
-  Camera: ortho=True, size=5, fov=60, depth=-1, clear=Skybox, bg=#314D7900
-  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [ProfileCreateManager]
   ProfileCreateManager
-  Transform: pos=-0.8281,-1.0027,756.6724, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
