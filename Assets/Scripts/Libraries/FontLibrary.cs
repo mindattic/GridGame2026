@@ -54,7 +54,7 @@ namespace Scripts.Libraries
     /// 
     /// FONT ASSIGNMENTS BY FACTORY:
     /// - CombatTextFactory: Attic
-    /// - TimelineTagFactory: Avenir
+    /// - TimelineIconFactory: Avenir
     /// - TooltipFactory: Chicago
     /// - MessageBoxFactory: Attic
     /// 

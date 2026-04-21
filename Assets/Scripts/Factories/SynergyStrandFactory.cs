@@ -89,7 +89,9 @@ namespace Scripts.Factories
             lineRenderer.sortingLayerName = "Default";
             lineRenderer.sortingOrder = 200;
 
-            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.material = MaterialLibrary.Materials.TryGetValue("SynergyAdditive", out var synergyMat) && synergyMat != null
+                ? synergyMat
+                : new Material(Shader.Find("Sprites/Default"));
 
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, Vector3.zero);

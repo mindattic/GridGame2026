@@ -57,8 +57,8 @@ namespace Scripts.Sequences
     /// ```
     /// 
     /// RELATED FILES:
-    /// - TimelineBarInstance.cs: Creates this when tag triggers
-    /// - TimelineTag.cs: Tag that reached trigger
+    /// - TimelineBarInstance.cs: Creates this when icon triggers
+    /// - TimelineIcon.cs: Icon that reached trigger
     /// - ForceHeroDropSequence.cs: Handles forced hero drop
     /// - TurnManager.cs: BeginEnemyTurn() method
     /// - SelectionManager.cs: IsHeroBeingMoved property

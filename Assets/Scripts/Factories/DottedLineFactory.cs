@@ -73,7 +73,7 @@ namespace Scripts.Factories
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("DottedLine");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("Tile");
             root.tag = "DottedLine";
 
             var transform = root.transform;
@@ -86,7 +86,7 @@ namespace Scripts.Factories
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.76862746f);
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
-            spriteRenderer.sortingLayerName = "Board";
+            spriteRenderer.sortingLayerName = "DottedLine";
             spriteRenderer.sortingOrder = 0;
             spriteRenderer.drawMode = SpriteDrawMode.Sliced;
             spriteRenderer.size = Vector2.one;

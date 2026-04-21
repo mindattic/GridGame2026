@@ -138,7 +138,7 @@ Assets/Scripts/
 │
 └── Canvas/             # UI components
     ├── TimelineBarInstance.cs
-    ├── TimelineTag.cs
+    ├── TimelineIcon.cs
     └── ...
 ```
 

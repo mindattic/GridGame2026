@@ -76,7 +76,7 @@ namespace Scripts.Factories
         {
             // Root GameObject
             var root = new GameObject("CombatText");
-            root.layer = 0; // Default layer
+            root.layer = LayerMask.NameToLayer("SupportLine");
 
             // RectTransform
             var rectTransform = root.AddComponent<RectTransform>();

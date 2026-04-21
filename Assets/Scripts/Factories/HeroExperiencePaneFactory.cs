@@ -78,16 +78,17 @@ namespace Scripts.Factories
             root.layer = 0;
 
             var rootRT = root.AddComponent<RectTransform>();
-            rootRT.anchorMin = new Vector2(0f, 0.5f);
-            rootRT.anchorMax = new Vector2(1f, 0.5f);
+            rootRT.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRT.anchorMax = new Vector2(0.5f, 0.5f);
             rootRT.anchoredPosition = Vector2.zero;
-            rootRT.sizeDelta = new Vector2(0f, 112f);
-            rootRT.pivot = new Vector2(0.5f, 0.5f);
+            rootRT.sizeDelta = new Vector2(1024f, 128f);
+            rootRT.pivot = new Vector2(0.5f, 1f);
 
             root.AddComponent<CanvasRenderer>();
 
             var panelImage = root.AddComponent<Image>();
-            panelImage.color = new Color(0.08f, 0.09f, 0.12f, 0.40f);
+            if (SpriteLibrary.Sprites.TryGetValue("White32x32", out var panelSprite)) panelImage.sprite = panelSprite;
+            panelImage.color = new Color(0.1f, 0.1f, 0.1f, 0.4f);
             panelImage.raycastTarget = true;
             panelImage.type = Image.Type.Sliced;
 
@@ -137,11 +138,11 @@ namespace Scripts.Factories
 
             var levelRT = levelObj.AddComponent<RectTransform>();
             levelRT.SetParent(rootRT, false);
-            levelRT.anchorMin = new Vector2(1f, 0.5f);
-            levelRT.anchorMax = new Vector2(1f, 0.5f);
-            levelRT.anchoredPosition = new Vector2(-32f, 32f);
-            levelRT.sizeDelta = new Vector2(100f, 32f);
-            levelRT.pivot = new Vector2(1f, 0.5f);
+            levelRT.anchorMin = new Vector2(0f, 0.5f);
+            levelRT.anchorMax = new Vector2(0f, 0.5f);
+            levelRT.anchoredPosition = new Vector2(120f, 0f);
+            levelRT.sizeDelta = new Vector2(240f, 28f);
+            levelRT.pivot = new Vector2(0f, 0.5f);
 
             levelObj.AddComponent<CanvasRenderer>();
 
@@ -149,7 +150,7 @@ namespace Scripts.Factories
             levelTMP.text = "Lvl. 1";
             levelTMP.fontSize = 24;
             levelTMP.color = Color.white;
-            levelTMP.alignment = TextAlignmentOptions.Right;
+            levelTMP.alignment = TextAlignmentOptions.Left;
             levelTMP.raycastTarget = true;
 
             // === CHILD: XPBar ===
@@ -179,8 +180,10 @@ namespace Scripts.Factories
             xpBg.AddComponent<CanvasRenderer>();
 
             var xpBgImage = xpBg.AddComponent<Image>();
+            if (SpriteLibrary.Sprites.TryGetValue("White32x32", out var xpBgSprite)) xpBgImage.sprite = xpBgSprite;
             xpBgImage.color = new Color(0f, 0f, 0f, 0.6f);
             xpBgImage.raycastTarget = true;
+            xpBgImage.type = Image.Type.Sliced;
 
             // === XPBar > Fill Area ===
             var fillArea = new GameObject("Fill Area");
@@ -209,8 +212,10 @@ namespace Scripts.Factories
             fill.AddComponent<CanvasRenderer>();
 
             var fillImage = fill.AddComponent<Image>();
+            if (SpriteLibrary.Sprites.TryGetValue("White32x32", out var fillSprite)) fillImage.sprite = fillSprite;
             fillImage.color = new Color(1f, 0.8431373f, 0f, 1f); // Gold XP color
             fillImage.raycastTarget = true;
+            fillImage.type = Image.Type.Sliced;
 
             // === Add Slider component ===
             var sliderComp = xpBar.AddComponent<Slider>();
@@ -230,11 +235,11 @@ namespace Scripts.Factories
 
             var xpTextRT = xpText.AddComponent<RectTransform>();
             xpTextRT.SetParent(rootRT, false);
-            xpTextRT.anchorMin = new Vector2(0f, 0.5f);
+            xpTextRT.anchorMin = new Vector2(1f, 0.5f);
             xpTextRT.anchorMax = new Vector2(1f, 0.5f);
-            xpTextRT.anchoredPosition = new Vector2(44f, -32.4f);
-            xpTextRT.sizeDelta = new Vector2(-152f, 32f);
-            xpTextRT.pivot = new Vector2(0.5f, 0.5f);
+            xpTextRT.anchoredPosition = new Vector2(-43f, 0f);
+            xpTextRT.sizeDelta = new Vector2(512f, 28f);
+            xpTextRT.pivot = new Vector2(1f, 0.5f);
 
             xpText.AddComponent<CanvasRenderer>();
 
@@ -242,31 +247,31 @@ namespace Scripts.Factories
             xpTextTMP.text = "0 / 100";
             xpTextTMP.fontSize = 18;
             xpTextTMP.color = Color.white;
-            xpTextTMP.alignment = TextAlignmentOptions.Center;
-            xpTextTMP.raycastTarget = false;
+            xpTextTMP.alignment = TextAlignmentOptions.Right;
+            xpTextTMP.raycastTarget = true;
 
             // === CHILD: LevelUp ===
+            // Stays active; HeroExperiencePane animates it via alpha (starts at 0).
             var levelUp = new GameObject("LevelUp");
             levelUp.layer = 0;
-            levelUp.SetActive(false); // Hidden by default
 
             var levelUpRT = levelUp.AddComponent<RectTransform>();
             levelUpRT.SetParent(rootRT, false);
             levelUpRT.anchorMin = new Vector2(1f, 0.5f);
             levelUpRT.anchorMax = new Vector2(1f, 0.5f);
-            levelUpRT.anchoredPosition = new Vector2(-32f, 0f);
-            levelUpRT.sizeDelta = new Vector2(150f, 32f);
+            levelUpRT.anchoredPosition = new Vector2(-40f, -10f);
+            levelUpRT.sizeDelta = new Vector2(200f, 50f);
             levelUpRT.pivot = new Vector2(1f, 0.5f);
 
             levelUp.AddComponent<CanvasRenderer>();
 
             var levelUpTMP = levelUp.AddComponent<TextMeshProUGUI>();
             levelUpTMP.text = "LEVEL UP!";
-            levelUpTMP.fontSize = 24;
-            levelUpTMP.color = new Color(1f, 0.8431373f, 0f, 1f); // Gold
+            levelUpTMP.fontSize = 26;
+            levelUpTMP.color = new Color(1f, 0.95f, 0.3f, 0f); // starts invisible, fades in
             levelUpTMP.alignment = TextAlignmentOptions.Right;
             levelUpTMP.fontStyle = FontStyles.Bold;
-            levelUpTMP.raycastTarget = false;
+            levelUpTMP.raycastTarget = true;
 
             // === Add HeroExperiencePane component and wire fields ===
             var paneComp = root.AddComponent<HeroExperiencePane>();

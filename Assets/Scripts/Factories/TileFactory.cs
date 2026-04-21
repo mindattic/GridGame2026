@@ -77,7 +77,7 @@ namespace Scripts.Factories
         {
             // Root GameObject
             var root = new GameObject("Tile");
-            root.layer = 0; // Default layer
+            root.layer = LayerMask.NameToLayer("Board");
             root.tag = "Tile";
 
             // Transform

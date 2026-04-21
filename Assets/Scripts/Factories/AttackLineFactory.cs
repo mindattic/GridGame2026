@@ -72,7 +72,7 @@ namespace Scripts.Factories
         {
             // Root GameObject
             var root = new GameObject("AttackLine");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("SupportLine");
             root.tag = "AttackLine";
 
             // Transform
@@ -95,8 +95,8 @@ namespace Scripts.Factories
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
             // Sorting
-            lineRenderer.sortingLayerName = "Default";
-            lineRenderer.sortingOrder = 500;
+            lineRenderer.sortingLayerName = "ActorBelow";
+            lineRenderer.sortingOrder = 9999;
 
             // Positions
             lineRenderer.positionCount = 2;
@@ -128,7 +128,7 @@ namespace Scripts.Factories
             lineRenderer.numCornerVertices = 0;
             lineRenderer.numCapVertices = 0;
             lineRenderer.alignment = LineAlignment.View;
-            lineRenderer.textureMode = LineTextureMode.Tile;
+            lineRenderer.textureMode = LineTextureMode.RepeatPerSegment;
             lineRenderer.textureScale = Vector2.one;
             lineRenderer.shadowBias = 0.5f;
             lineRenderer.generateLightingData = false;
@@ -141,7 +141,7 @@ namespace Scripts.Factories
 
             // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();
-            sortingGroup.sortingLayerName = "Board"; // SortingLayer 2
+            sortingGroup.sortingLayerName = "DottedLine"; // SortingLayer 2
             sortingGroup.sortingOrder = 0;
 
             // Parent if specified

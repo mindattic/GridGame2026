@@ -30,34 +30,34 @@ namespace Scripts.Canvas
 {
     /// <summary>
     /// TIMELINEBARINSTANCE - Visual turn order timeline UI component.
-    /// 
+    ///
     /// PURPOSE:
-    /// Displays the turn order as a horizontal bar with actor tags that move
-    /// from right to left. When a tag reaches the trigger point, that actor
-    /// takes their turn.
-    /// 
+    /// Displays the turn order as a horizontal bar with actor tags that "load"
+    /// from left to right. When a tag reaches the trigger point on the right,
+    /// that actor takes their turn.
+    ///
     /// VISUAL LAYOUT:
     /// ```
-    /// [Trigger] ←←←← [Enemy Tags Moving Left] ←←←← [Spawn Point]
-    ///    ↑                                              ↑
-    ///  LeftX                                         RightX
-    /// (tag reaches here = take turn)          (tags spawn here)
+    /// [Spawn Point] →→→→ [Enemy Tags Loading Right] →→→→ [Trigger]
+    ///      ↑                                                 ↑
+    ///    LeftX                                             RightX
+    /// (tags spawn here)                          (tag reaches here = take turn)
     /// ```
-    /// 
+    ///
     /// MOVEMENT SYSTEM:
     /// - Tags move at speed based on actor's Speed stat
     /// - Faster actors = tags move faster = act sooner
-    /// - When tag reaches LeftX (trigger point), that actor's turn begins
-    /// 
+    /// - When tag reaches RightX (trigger point), that actor's turn begins
+    ///
     /// KEY PROPERTIES:
-    /// - activeTags: All TimelineTag instances currently on the bar
+    /// - activeIcons: All TimelineIcon instances currently on the bar
     /// - advancing: True while timeline is actively moving tags
     /// - TimelineBarConfig.CrossingTimeSeconds: Base time for Speed 10 enemy to cross bar
-    /// 
+    ///
     /// PUSHBACK SYSTEM:
-    /// When enemies are hit, their tags are pushed back on the timeline.
-    /// - TimelineBarConfig.PushbackBase: Minimum pushback at far right
-    /// - TimelineBarConfig.PushbackMax: Maximum pushback at trigger point
+    /// When enemies are hit inside the rightmost Zone strip, their tags are pushed left.
+    /// - TimelineBarConfig.PushbackBase: Minimum pushback at far left (just spawned)
+    /// - TimelineBarConfig.PushbackMax: Maximum pushback at trigger point (right edge)
     /// 
     /// INTEGRATION:
     /// - TurnManager calls OnEnemyTurnFinished() after enemy acts
@@ -65,8 +65,8 @@ namespace Scripts.Canvas
     /// - StageManager calls AddEnemy() when spawning enemies
     /// 
     /// RELATED FILES:
-    /// - TimelineTag.cs: Individual actor tag on the timeline
-    /// - TimelineTagFactory.cs: Creates TimelineTag instances
+    /// - TimelineIcon.cs: Individual actor tag on the timeline
+    /// - TimelineIconFactory.cs: Creates TimelineIcon instances
     /// - TurnManager.cs: Turn flow control
     /// - TimelineTriggerSequence.cs: Handles tag trigger events
     /// 
@@ -80,15 +80,17 @@ namespace Scripts.Canvas
         // All tuning values live in Scripts.Data.Config.TimelineBarConfig.
         // These transforms are acquired/created in Awake, not Inspector-assigned.
         private RectTransform barRect;
-        private RectTransform tagsRoot;
+        private RectTransform iconsRoot;
         private RectTransform triggerPointRect;
         private RectTransform spawnPointRect;
+        private RectTransform zoneRect;
+        private Image zoneImage;
 
         #endregion
 
         #region Runtime State
 
-        private readonly List<TimelineTag> activeTags = new List<TimelineTag>();
+        private readonly List<TimelineIcon> activeIcons = new List<TimelineIcon>();
         private bool advancing;
 
         /// <summary>True while timeline is actively moving tags.</summary>
@@ -99,10 +101,10 @@ namespace Scripts.Canvas
         private bool layoutReady;
         private float halfWidth;
 
-        /// <summary>Left edge X position (trigger point).</summary>
+        /// <summary>Left edge X position (spawn point).</summary>
         private float LeftX => -halfWidth;
 
-        /// <summary>Right edge X position (spawn point).</summary>
+        /// <summary>Right edge X position (trigger point — loading complete).</summary>
         private float RightX => halfWidth;
 
         /// <summary>Total width of the timeline bar.</summary>
@@ -120,6 +122,18 @@ namespace Scripts.Canvas
                 barRect.anchorMin = barRect.anchorMax = new Vector2(0.5f, 0.5f);
             }
 
+            // Strategic pushback Zone strip — drawn first so tags render on top of it.
+            if (zoneRect == null && barRect != null)
+            {
+                var zgo = new GameObject("Zone", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                zoneRect = zgo.GetComponent<RectTransform>();
+                zoneRect.SetParent(barRect, false);
+                zoneRect.SetAsFirstSibling();
+                zoneImage = zgo.GetComponent<Image>();
+                zoneImage.color = TimelineBarConfig.ZoneFillColor;
+                zoneImage.raycastTarget = false;
+            }
+
             // Ensure trigger & spawn point objects exist for visual debugging / design hooks
             if (triggerPointRect == null && barRect != null)
             {
@@ -131,13 +145,13 @@ namespace Scripts.Canvas
                 spawnPointRect = new GameObject("SpawnPoint", typeof(RectTransform)).GetComponent<RectTransform>();
                 spawnPointRect.SetParent(barRect, false);
             }
-            if (tagsRoot == null && barRect != null)
+            if (iconsRoot == null && barRect != null)
             {
-                var go = new GameObject("Tags", typeof(RectTransform));
-                tagsRoot = go.GetComponent<RectTransform>();
-                tagsRoot.SetParent(barRect, false);
-                tagsRoot.anchorMin = tagsRoot.anchorMax = new Vector2(0.5f, 0.5f); // center reference frame
-                tagsRoot.pivot = new Vector2(0.5f, 0.5f);
+                var go = new GameObject("Icons", typeof(RectTransform));
+                iconsRoot = go.GetComponent<RectTransform>();
+                iconsRoot.SetParent(barRect, false);
+                iconsRoot.anchorMin = iconsRoot.anchorMax = new Vector2(0.5f, 0.5f); // center reference frame
+                iconsRoot.pivot = new Vector2(0.5f, 0.5f);
             }
             cachedLeftX = float.NaN; cachedRightX = float.NaN;
         }
@@ -173,7 +187,7 @@ namespace Scripts.Canvas
         private void Update()
         {
             // Periodically enforce queue spacing to prevent overlap
-            if (advancing && activeTags.Count > 1)
+            if (advancing && activeIcons.Count > 1)
             {
                 EnforceQueueSpacing();
             }
@@ -190,19 +204,50 @@ namespace Scripts.Canvas
             barRect.sizeDelta = size;
             halfWidth = targetWidth * 0.5f;
 
-            // Position trigger/spawn points
+            AnchorAboveBoard();
+
+            // Position trigger/spawn points (trigger is on the RIGHT, spawn is on the LEFT)
             if (triggerPointRect != null)
             {
                 triggerPointRect.anchorMin = triggerPointRect.anchorMax = new Vector2(0.5f, 0.5f);
                 triggerPointRect.pivot = new Vector2(0.5f, 0.5f);
-                triggerPointRect.anchoredPosition = new Vector2(LeftX, 0f);
+                triggerPointRect.anchoredPosition = new Vector2(RightX, 0f);
             }
             if (spawnPointRect != null)
             {
                 spawnPointRect.anchorMin = spawnPointRect.anchorMax = new Vector2(0.5f, 0.5f);
                 spawnPointRect.pivot = new Vector2(0.5f, 0.5f);
-                spawnPointRect.anchoredPosition = new Vector2(RightX, 0f);
+                spawnPointRect.anchoredPosition = new Vector2(LeftX, 0f);
             }
+
+            // Pushback Zone strip: rightmost ZoneU * Width (right-anchored, right-edge pivot).
+            if (zoneRect != null)
+            {
+                zoneRect.anchorMin = zoneRect.anchorMax = new Vector2(0.5f, 0.5f);
+                zoneRect.pivot = new Vector2(1f, 0.5f);
+                float zoneWidth = TimelineBarConfig.ZoneU * Width;
+                zoneRect.sizeDelta = new Vector2(zoneWidth, barRect.sizeDelta.y);
+                zoneRect.anchoredPosition = new Vector2(RightX, 0f);
+            }
+        }
+
+        /// <summary>Positions the bar just above the board's top edge, with the mana pool stacked between.</summary>
+        private void AnchorAboveBoard()
+        {
+            if (barRect == null || g.Board == null || c.CanvasRect == null) return;
+
+            var boardTopWorld = new Vector3(0f, g.Board.bounds.Top, 0f);
+            var boardTopCanvas = UnitConversionHelper.World.ToCanvas(c.CanvasRect, boardTopWorld);
+
+            const float padBoardToMana = 8f;
+            const float padManaToTimeline = 8f;
+            float manaHeight = ManaPoolManager.UiHeight;
+            float timelineHeight = barRect.sizeDelta.y;
+
+            float manaTop = boardTopCanvas.y + padBoardToMana + manaHeight;
+            float timelineY = manaTop + padManaToTimeline + timelineHeight * 0.5f;
+
+            barRect.anchoredPosition = new Vector2(0f, timelineY);
         }
 
         /// <summary>Units per sec from speed.</summary>
@@ -235,31 +280,31 @@ namespace Scripts.Canvas
         /// </summary>
         private float GetCoordinatedQueueDelay(float baseDelay)
         {
-            if (activeTags.Count == 0) return baseDelay;
+            if (activeIcons.Count == 0) return baseDelay;
             
             // Collect all tags that are queued or approaching, sorted by when they'll reach the trigger
             var releaseInfo = new List<(float releaseTime, float arrivalTime)>();
             
-            foreach (var t in activeTags)
+            foreach (var t in activeIcons)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
-                
-                float queueTime = t.Mode == TimelineTagMode.Queued ? t.GetQueueTimer() : 0f;
-                float moveTime = t.GetUPerSec() > 0f ? t.GetU() / t.GetUPerSec() : 0f;
-                
+
+                float queueTime = t.Mode == TimelineIconMode.Queued ? t.GetQueueTimer() : 0f;
+                float moveTime = t.GetUPerSec() > 0f ? (1f - t.GetU()) / t.GetUPerSec() : 0f;
+
                 // Add stun time if applicable
-                if (t.Mode == TimelineTagMode.Stunned)
+                if (t.Mode == TimelineIconMode.Stunned)
                 {
                     queueTime = t.GetSecondsRemaining() - moveTime;
                 }
-                
+
                 float arrivalTime = queueTime + moveTime;
                 releaseInfo.Add((queueTime, arrivalTime));
             }
-            
+
             if (releaseInfo.Count == 0) return baseDelay;
-            
-            // New tag starts at u=1.0, so we need to check when it would arrive
+
+            // New tag starts at u=0.0, so we need to check when it would arrive
             // and ensure it doesn't release within TimelineBarConfig.MinimumReleaseGap of others
             float myMoveTime = TimelineBarConfig.CrossingTimeSeconds; // Time to cross full bar
             float myReleaseTime = baseDelay;
@@ -290,20 +335,20 @@ namespace Scripts.Canvas
         private void EnforceQueueSpacing()
         {
             // Get all queued tags with their projected arrival times
-            var queuedTags = new List<(TimelineTag tag, float arrivalTime)>();
-            var approachingTags = new List<(TimelineTag tag, float arrivalTime)>();
+            var queuedTags = new List<(TimelineIcon tag, float arrivalTime)>();
+            var approachingTags = new List<(TimelineIcon tag, float arrivalTime)>();
             
-            foreach (var t in activeTags)
+            foreach (var t in activeIcons)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
                 
-                if (t.Mode == TimelineTagMode.Queued)
+                if (t.Mode == TimelineIconMode.Queued)
                 {
-                    float moveTime = t.GetUPerSec() > 0f ? t.GetU() / t.GetUPerSec() : 0f;
+                    float moveTime = t.GetUPerSec() > 0f ? (1f - t.GetU()) / t.GetUPerSec() : 0f;
                     float arrivalTime = t.GetQueueTimer() + moveTime;
                     queuedTags.Add((t, arrivalTime));
                 }
-                else if (t.Mode == TimelineTagMode.Approaching)
+                else if (t.Mode == TimelineIconMode.Approaching)
                 {
                     float arrivalTime = t.GetSecondsRemaining();
                     approachingTags.Add((t, arrivalTime));
@@ -340,7 +385,7 @@ namespace Scripts.Canvas
                 if (originalArrival < requiredArrival)
                 {
                     // Need to delay this tag
-                    float moveTime = tag.GetUPerSec() > 0f ? tag.GetU() / tag.GetUPerSec() : 0f;
+                    float moveTime = tag.GetUPerSec() > 0f ? (1f - tag.GetU()) / tag.GetUPerSec() : 0f;
                     float newQueueTime = requiredArrival - moveTime;
                     
                     if (newQueueTime > tag.GetQueueTimer())
@@ -361,11 +406,11 @@ namespace Scripts.Canvas
         private float GetInitialPositionFromSpeed(int speed, int maxSpeed, int minSpeed)
         {
             // Scatter enemies across timeline based on speed
-            // Fastest enemies start closer to left (lower u), slowest start at right (higher u)
+            // Fastest enemies start closer to the trigger (higher u), slowest start at spawn (lower u)
             if (maxSpeed <= minSpeed) return 0.5f;
             float t = (float)(maxSpeed - speed) / (maxSpeed - minSpeed);
-            // t=0 for fastest (start at u=0.2), t=1 for slowest (start at u=0.9)
-            return Mathf.Lerp(0.2f, 0.9f, t);
+            // t=0 for fastest (start at u=0.8, near trigger), t=1 for slowest (start at u=0.1, near spawn)
+            return Mathf.Lerp(0.8f, 0.1f, t);
         }
 
         /// <summary>Sorted enemies by speed desc.</summary>
@@ -377,8 +422,8 @@ namespace Scripts.Canvas
         /// <summary> clear..Groups[0].Value.ToUpper() lear.</summary>
         public void Clear()
         {
-            for (int i = activeTags.Count - 1; i >= 0; i--) if (activeTags[i] != null) Destroy(activeTags[i].gameObject);
-            activeTags.Clear();
+            for (int i = activeIcons.Count - 1; i >= 0; i--) if (activeIcons[i] != null) Destroy(activeIcons[i].gameObject);
+            activeIcons.Clear();
             isProcessingTrigger = false;
         }
 
@@ -395,20 +440,20 @@ namespace Scripts.Canvas
 
         /// <summary>
         /// Ensure all currently playing enemies have a tag.
-        /// If there are no tags yet, scatter across timeline by speed (fastest near left).
-        /// Otherwise, only add missing ones at the far right.
+        /// If there are no tags yet, scatter across timeline by speed (fastest near trigger on the right).
+        /// Otherwise, only add missing ones at the far left (fresh spawn).
         /// Also prunes tags whose owners are gone/inactive.
         /// </summary>
         public void EnsureTagsForAllEnemies(bool redistributeIfNone = true)
         {
             // Remove stale tags (dead or despawned)
-            for (int i = activeTags.Count - 1; i >= 0; i--)
+            for (int i = activeIcons.Count - 1; i >= 0; i--)
             {
-                var t = activeTags[i];
+                var t = activeIcons[i];
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying)
                 {
                     if (t != null) t.FadeAndDestroy(0.15f);
-                    activeTags.RemoveAt(i);
+                    activeIcons.RemoveAt(i);
                 }
             }
 
@@ -419,11 +464,11 @@ namespace Scripts.Canvas
             }
 
             // Add missing tags
-            var missing = playing.Where(e => !activeTags.Any(t => t != null && t.Owner == e)).ToList();
+            var missing = playing.Where(e => !activeIcons.Any(t => t != null && t.Owner == e)).ToList();
 
-            if (activeTags.Count == 0 && redistributeIfNone)
+            if (activeIcons.Count == 0 && redistributeIfNone)
             {
-                // Scatter enemies across timeline based on speed (fastest near left)
+                // Scatter enemies across timeline based on speed (fastest near trigger on the right)
                 int maxSpd = playing.Max(e => e.Stats.Speed.ToInt());
                 int minSpd = playing.Min(e => e.Stats.Speed.ToInt());
                 foreach (var enemy in playing)
@@ -436,12 +481,12 @@ namespace Scripts.Canvas
             }
             else
             {
-                // New enemies spawn at far right with speed-based queue delay
+                // New enemies spawn at far left (u=0, fresh / not loaded) with speed-based queue delay
                 foreach (var enemy in missing)
                 {
                     int spd = enemy.Stats.Speed.ToInt();
                     float delay = GetQueueDelayFromSpeed(spd);
-                    SpawnTag(enemy, 1f, delay);
+                    SpawnTag(enemy, 0f, delay);
                 }
             }
 
@@ -457,27 +502,27 @@ namespace Scripts.Canvas
 
         /// <summary>Pause all.</summary>
         private void PauseAll()
-        { foreach (var t in activeTags) t?.Pause(); advancing = false; }
+        { foreach (var t in activeIcons) t?.Pause(); advancing = false; }
         /// <summary>Resume all.</summary>
         private void ResumeAll()
-        { foreach (var t in activeTags) t?.Resume(); advancing = true; }
+        { foreach (var t in activeIcons) t?.Resume(); advancing = true; }
 
         /// <summary>Handles the hero start move event.</summary>
         public void OnHeroStartMove() { Recalculate(); EnforceQueueSpacing(); ResumeAll(); }
         /// <summary>Handles the hero stop move event.</summary>
         public void OnHeroStopMove() { PauseAll(); }
         /// <summary>Handles the enemy turn started event.</summary>
-        public void OnEnemyTurnStarted(ActorInstance enemy) { 
-            PauseAll(); 
-            // Lock any tags that are already at/past the left to the exact left position
+        public void OnEnemyTurnStarted(ActorInstance enemy) {
+            PauseAll();
+            // Lock any tags that are already at/past the trigger (right) to the exact right position
             UpdateAllEndpoints();
-            float left = LeftX;
-            foreach (var t in activeTags)
+            float right = RightX;
+            foreach (var t in activeIcons)
             {
                 if (t == null || t.Rect == null) continue;
-                if (t.Rect.anchoredPosition.x <= left + 0.25f)
+                if (t.Rect.anchoredPosition.x >= right - 0.25f)
                 {
-                    t.SetU(0f); // snaps exactly to LeftX via ApplyPosition clamp
+                    t.SetU(1f); // snaps exactly to RightX via ApplyPosition clamp
                     t.Pause();
                 }
             }
@@ -485,7 +530,7 @@ namespace Scripts.Canvas
         /// <summary>Handles the enemy turn finished event.</summary>
         public void OnEnemyTurnFinished(ActorInstance enemy)
         {
-            var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
+            var tag = activeIcons.FirstOrDefault(t => t != null && t.Owner == enemy);
             if (tag != null)
             {
                 UpdateAllEndpoints();
@@ -505,27 +550,87 @@ namespace Scripts.Canvas
 
 
         /// <summary>
-        /// Pushes the enemy's timeline tag to the right when attacked.
-        /// The closer the enemy is to the left (trigger point), the stronger the pushback.
+        /// Pushes the enemy's timeline tag back (toward spawn / left) when attacked.
+        /// The closer the enemy is to the right (trigger point), the stronger the pushback.
         /// Pushback scales with attacker's Strength, and stun recovery depends on enemy's Agility.
         /// </summary>
         public void PushbackOnAttack(ActorInstance enemy, int attackerStrength = 10)
         {
             if (enemy == null) return;
-            var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
-            if (tag != null)
+            var tag = activeIcons.FirstOrDefault(t => t != null && t.Owner == enemy);
+            if (tag == null) return;
+
+            // Zone gate: only enemies whose tag is inside the rightmost Zone strip are
+            // vulnerable to pushback. Damage is applied elsewhere; this method only
+            // controls the timeline-delay reaction.
+            float zoneStartU = 1f - TimelineBarConfig.ZoneU;
+            if (tag.GetEffectiveTargetU() < zoneStartU)
             {
-                // Strength of 10 = 1.0x multiplier (baseline)
-                float strengthMultiplier = attackerStrength / 10f;
-                
-                // Get enemy's agility for stun recovery calculation
-                int enemyAgility = enemy.Stats != null 
-                    ? enemy.Stats.Agility.ToInt() 
-                    : 10;
-                
-                tag.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strengthMultiplier, enemyAgility, TimelineBarConfig.BaseStunDuration);
-                if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
+                if (TimelineBarConfig.DebugLogs)
+                    Debug.Log($"[TimelineBar] {enemy.name} outside Zone (u={tag.GetU():F2} < {zoneStartU:F2}) — no pushback");
+                return;
             }
+
+            // Strength of 10 = 1.0x multiplier (baseline)
+            float strengthMultiplier = attackerStrength / 10f;
+
+            // Get enemy's agility for stun recovery calculation
+            int enemyAgility = enemy.Stats != null
+                ? enemy.Stats.Agility.ToInt()
+                : 10;
+
+            tag.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strengthMultiplier, enemyAgility, TimelineBarConfig.BaseStunDuration);
+            if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
+
+            ResolveSpatialOverlap();
+        }
+
+        /// <summary>
+        /// Re-spaces visible tags so none overlap on the bar. When a new icon spawns near an
+        /// existing icon's slot, the nearest overlapping icon to its left is pushed further left
+        /// (time added); if that push causes another overlap further left, it cascades like a train
+        /// until no more overlaps remain. Tags within MinSpatialGap of each other form a "cluster";
+        /// the cluster's rightmost tag keeps its position and each neighbor to the left is spaced
+        /// MinSpatialGap intervals further left — **order-preserving**, no speed-based reshuffle.
+        /// Tags that don't collide are left untouched.
+        /// </summary>
+        private void ResolveSpatialOverlap()
+        {
+            // Visible = anything currently rendered on the bar (queued tags are invisible until release)
+            var visible = new List<TimelineIcon>();
+            foreach (var t in activeIcons)
+            {
+                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
+                if (t.Mode == TimelineIconMode.Queued) continue;
+                visible.Add(t);
+            }
+            if (visible.Count <= 1) return;
+
+            // Sort by current effective u ascending so we can scan left-to-right for clusters.
+            visible.Sort((a, b) => a.GetEffectiveTargetU().CompareTo(b.GetEffectiveTargetU()));
+
+            float gap = TimelineBarConfig.MinSpatialGap;
+
+            // Single right-to-left pass: starting from the rightmost tag, ensure each tag to
+            // its left sits at least `gap` below it; if not, push it left by the shortfall,
+            // which may then shove the next one further left (the "train" cascade).
+            for (int k = visible.Count - 2; k >= 0; k--)
+            {
+                float rightU = visible[k + 1].GetEffectiveTargetU();
+                float leftU = visible[k].GetEffectiveTargetU();
+                float minAllowed = rightU - gap;
+                if (leftU > minAllowed)
+                {
+                    visible[k].SetTargetU(Mathf.Max(0f, minAllowed));
+                }
+            }
+        }
+
+        /// <summary>Returns the tag whose Owner is the given actor, or null if absent.</summary>
+        public TimelineIcon GetIconFor(ActorInstance actor)
+        {
+            if (actor == null) return null;
+            return activeIcons.FirstOrDefault(t => t != null && t.Owner == actor);
         }
 
         // Track if we're currently processing a trigger to prevent double-triggers
@@ -539,41 +644,41 @@ namespace Scripts.Canvas
             isProcessingTrigger = false;
         }
 
-        /// <summary>Handles the tag reached left event.</summary>
-        private void OnTagReachedLeft(TimelineTag tag)
+        /// <summary>Handles the tag reaching the trigger (right edge) event.</summary>
+        private void OnIconReachedTrigger(TimelineIcon tag)
         {
             if (tag == null) return;
-            
+
             // Prevent processing if already processing a trigger OR if enemy turn in progress
             if (isProcessingTrigger) return;
             if (g.TurnManager != null && g.TurnManager.IsEnemyTurn) return;
-            
+
             var triggeringEnemy = tag.Owner;
             if (triggeringEnemy == null || !triggeringEnemy.IsPlaying) return;
-            
+
             // SET FLAG IMMEDIATELY - don't reset until hero turn starts
             isProcessingTrigger = true;
-            
-            // Lock the arriving tag exactly at the trigger and pause all
-            tag.SetU(0f);
+
+            // Lock the arriving tag exactly at the trigger (right) and pause all
+            tag.SetU(1f);
             PauseAll();
-            
+
             // Disable input during transition
             g.InputManager.InputMode = InputMode.None;
-            
+
             // Queue the timeline trigger sequence
             g.SequenceManager.Add(new Scripts.Sequences.TimelineTriggerSequence(triggeringEnemy));
             g.SequenceManager.Execute();
         }
 
-        /// <summary>Gets the seconds until next enemy reaches left.</summary>
-        public float GetSecondsUntilNextEnemyReachesLeft()
+        /// <summary>Gets the seconds until the next enemy reaches the trigger (right edge).</summary>
+        public float GetSecondsUntilNextEnemyReachesTrigger()
         {
-            if (activeTags.Count == 0) 
+            if (activeIcons.Count == 0) 
                 return 0f;
 
             float min = float.PositiveInfinity;
-            foreach (var t in activeTags)
+            foreach (var t in activeIcons)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
                 float sec = t.GetSecondsRemaining();
@@ -588,17 +693,17 @@ namespace Scripts.Canvas
         public bool AdvanceBySeconds(float seconds)
         {
             seconds = Mathf.Max(0f, seconds);
-            if (seconds <= 0f || activeTags.Count == 0) return false;
+            if (seconds <= 0f || activeIcons.Count == 0) return false;
             bool anyReached = false;
-            foreach (var t in activeTags)
+            foreach (var t in activeIcons)
             {
                 if (t == null) continue;
                 float u = t.GetU();
                 float uPerSec = Mathf.Max(0.0001f, t.GetUPerSec());
-                float newU = Mathf.Max(0f, u - uPerSec * seconds);
+                float newU = Mathf.Min(1f, u + uPerSec * seconds);
                 t.SetU(newU);
-                // If moved to (or past) left edge, TimelineTag will invoke its callback next Update frame.
-                if (Mathf.Approximately(newU, 0f)) anyReached = true;
+                // If moved to (or past) right edge, TimelineIcon will invoke its callback next Update frame.
+                if (Mathf.Approximately(newU, 1f)) anyReached = true;
             }
             return anyReached;
         }
@@ -609,13 +714,13 @@ namespace Scripts.Canvas
         /// </summary>
         public (ActorInstance enemy, float secondsUsed) GetNextBankTarget()
         {
-            if (activeTags.Count == 0)
+            if (activeIcons.Count == 0)
                 return (null, 0f);
 
             // Find earliest tag by seconds remaining (next enemy to arrive)
-            TimelineTag earliest = null;
+            TimelineIcon earliest = null;
             float minSec = float.PositiveInfinity;
-            foreach (var t in activeTags)
+            foreach (var t in activeIcons)
             {
                 if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
                 if (!t.Owner.IsEnemy) continue;
@@ -642,11 +747,11 @@ namespace Scripts.Canvas
             // Advance all tags by the time skipped (visual movement)
             AdvanceBySeconds(seconds);
             
-            // Lock the arriving tag at the trigger point
-            var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
+            // Lock the arriving tag at the trigger point (right edge, u=1)
+            var tag = activeIcons.FirstOrDefault(t => t != null && t.Owner == enemy);
             if (tag != null)
             {
-                tag.SetU(0f);
+                tag.SetU(1f);
                 tag.Pause();
             }
             
@@ -661,29 +766,32 @@ namespace Scripts.Canvas
             // Coordinate the release delay to prevent overlap with existing tags
             float coordinatedDelay = GetCoordinatedQueueDelay(releaseDelay);
 
-            var parent = tagsRoot != null ? tagsRoot : barRect;
-            var tagGO = TimelineTagFactory.Create(parent);
-            var tag = tagGO.GetComponent<TimelineTag>();
-            tag.name = $"TimelineTag_{enemy.name}";
-            int dup = activeTags.Count(a => a != null && a.Owner == enemy);
+            var parent = iconsRoot != null ? iconsRoot : barRect;
+            var tagGO = TimelineIconFactory.Create(parent);
+            var tag = tagGO.GetComponent<TimelineIcon>();
+            tag.name = $"TimelineIcon_{enemy.name}";
+            int dup = activeIcons.Count(a => a != null && a.Owner == enemy);
             var tr = tag.GetComponent<RectTransform>();
-            // Tag rect: left-edge pivot, anchored at center for symmetric X
+            // Tag rect: right-edge pivot (leading edge moving toward trigger), anchored at center for symmetric X
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
-            tr.pivot = new Vector2(0f, 0.5f);
+            tr.pivot = new Vector2(1f, 0.5f);
             tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * TimelineBarConfig.TagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
-            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnTagReachedLeft, coordinatedDelay);
-            activeTags.Add(tag);
+            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnIconReachedTrigger, coordinatedDelay);
+            activeIcons.Add(tag);
 
             if (TimelineBarConfig.DebugLogs && coordinatedDelay != releaseDelay)
                 Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
+
+            // Re-space against existing tags so the new spawn doesn't land on top of one.
+            ResolveSpatialOverlap();
         }
 
         /// <summary>Updates the all endpoints.</summary>
         private void UpdateAllEndpoints()
         {
             float left = LeftX; float right = RightX;
-            foreach (var t in activeTags) t?.UpdateEndpoints(left, right);
+            foreach (var t in activeIcons) t?.UpdateEndpoints(left, right);
         }
 
         /// <summary>Recalculate.</summary>
@@ -693,15 +801,15 @@ namespace Scripts.Canvas
             if (float.IsNaN(cachedLeftX) || float.IsNaN(cachedRightX) || !Mathf.Approximately(left, cachedLeftX) || !Mathf.Approximately(right, cachedRightX))
             {
                 cachedLeftX = left; cachedRightX = right;
-                foreach (var t in activeTags)
+                foreach (var t in activeIcons)
                 {
                     if (t == null || t.Rect == null) continue;
                     t.UpdateEndpoints(left, right);
                     var p = t.Rect.anchoredPosition;
-                    // Only auto-loop tags that slipped past the left edge during HERO turns.
-                    // During enemy turns, keep the tag at LeftX until OnEnemyTurnFinished resets it.
+                    // Only auto-loop tags that slipped past the trigger (right edge) during HERO turns.
+                    // During enemy turns, keep the tag at RightX until OnEnemyTurnFinished resets it.
                     bool isHeroTurn = g.TurnManager == null || g.TurnManager.IsHeroTurn;
-                    if (isHeroTurn && p.x <= left) t.SetU(1f);
+                    if (isHeroTurn && p.x >= right) t.SetU(0f);
                 }
             }
         }

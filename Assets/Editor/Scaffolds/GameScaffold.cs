@@ -918,7 +918,10 @@ public static class GameScaffold
         var img_Fill = go_Fill.AddComponent<Image>();
         img_Fill.sprite = SceneScaffoldHelper.LoadSprite(Sprite_action_bar_1);
         img_Fill.color = new Color(1f, 1f, 1f, 1f);
-        img_Fill.type = (Image.Type)3;
+        img_Fill.type = Image.Type.Filled;
+        img_Fill.fillMethod = Image.FillMethod.Horizontal;
+        img_Fill.fillOrigin = (int)Image.OriginHorizontal.Left;
+        img_Fill.fillAmount = 0f;
         img_Fill.raycastTarget = false;
         Undo.RegisterCreatedObjectUndo(go_Fill, "Create Fill");
 
@@ -946,7 +949,10 @@ public static class GameScaffold
         var img_Fill2 = go_Fill2.AddComponent<Image>();
         img_Fill2.sprite = SceneScaffoldHelper.LoadSprite(Sprite_action_bar_1);
         img_Fill2.color = new Color(1f, 1f, 1f, 1f);
-        img_Fill2.type = (Image.Type)3;
+        img_Fill2.type = Image.Type.Filled;
+        img_Fill2.fillMethod = Image.FillMethod.Horizontal;
+        img_Fill2.fillOrigin = (int)Image.OriginHorizontal.Left;
+        img_Fill2.fillAmount = 0f;
         img_Fill2.raycastTarget = false;
         Undo.RegisterCreatedObjectUndo(go_Fill2, "Create Fill");
 

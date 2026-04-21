@@ -68,7 +68,7 @@ namespace Scripts.Factories
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("SupportLine");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("Actor");
             root.tag = "SupportLine";
 
             var transform = root.transform;
@@ -95,6 +95,22 @@ namespace Scripts.Factories
             lineRenderer.useWorldSpace = true;
 
             lineRenderer.widthCurve = AnimationCurve.Constant(0f, 1f, 0.515152f);
+
+            // Translucent green for the supporter→attacker connection.
+            var green = new Color(0.1882353f, 0.6313726f, 0.19215687f, 0.39215687f);
+            lineRenderer.colorGradient = new Gradient
+            {
+                colorKeys = new[]
+                {
+                    new GradientColorKey(green, 0f),
+                    new GradientColorKey(green, 1f),
+                },
+                alphaKeys = new[]
+                {
+                    new GradientAlphaKey(green.a, 0f),
+                    new GradientAlphaKey(green.a, 1f),
+                },
+            };
 
             root.AddComponent<SupportLineInstance>();
 

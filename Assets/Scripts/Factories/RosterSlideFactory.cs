@@ -126,13 +126,12 @@ namespace Scripts.Factories
 
             centerButton.AddComponent<CanvasRenderer>();
 
-            // Image (disabled by default)
+            // Image (disabled by default — serves as Button.targetGraphic for ColorTint feedback)
             var centerImage = centerButton.AddComponent<Image>();
             centerImage.enabled = false;
             centerImage.color = Color.white;
             centerImage.raycastTarget = true;
             centerImage.maskable = true;
-            centerImage.type = Image.Type.Sliced;
 
             // Button
             var centerBtn = centerButton.AddComponent<Button>();
@@ -157,6 +156,7 @@ namespace Scripts.Factories
             checkmark.AddComponent<CanvasRenderer>();
 
             var checkmarkImage = checkmark.AddComponent<Image>();
+            if (SpriteLibrary.Sprites.TryGetValue("Checkmark", out var checkSprite)) checkmarkImage.sprite = checkSprite;
             checkmarkImage.color = Color.white;
             checkmarkImage.raycastTarget = true;
             checkmarkImage.maskable = true;

@@ -25,19 +25,32 @@ namespace Scripts.Factories
     /// <summary>
     /// TREEFACTORY - Creates an Overworld Tree GameObject.
     /// <para>PURPOSE: Single programmatic entry point for an overworld decoration
-    /// tree (TreeInstance behaviour on a bare GameObject). The caller positions
-    /// and orients each tree after construction.</para>
+    /// tree. Adds SpriteRenderer (Tree00 sprite, sortingOrder=30), static
+    /// Rigidbody2D, and a CircleCollider2D matching the original prefab. The
+    /// caller positions and orients each tree after construction.</para>
     /// <para>CALLED BY: OverworldScaffold (edit-time) and any future runtime
     /// overworld builder.</para>
     /// <para>RELATED FILES: TreeInstance.cs, OverworldScaffold.cs</para>
     /// </summary>
     public static class TreeFactory
     {
-        /// <summary>Creates a new Tree GameObject with its TreeInstance component, optionally parented.</summary>
+        /// <summary>Creates a new Tree GameObject matching the original Tree prefab, optionally parented.</summary>
         public static GameObject Create(Transform parent = null)
         {
             var go = new GameObject("Tree");
+
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = AssetHelper.LoadAsset<Sprite>("Maps/Test/Tree");
+            sr.sortingOrder = 30;
+
+            var rb = go.AddComponent<Rigidbody2D>();
+            rb.bodyType = RigidbodyType2D.Static;
+
+            var collider = go.AddComponent<CircleCollider2D>();
+            collider.radius = 0.2f;
+
             go.AddComponent<Scripts.Overworld.TreeInstance>();
+
             if (parent != null) go.transform.SetParent(parent, false);
             return go;
         }

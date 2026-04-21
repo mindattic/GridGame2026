@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Scripts.Helpers;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,7 +13,6 @@ using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
 using Scripts.Factories;
-using Scripts.Helpers;
 using Scripts.Hub;
 using Scripts.Instances;
 using Scripts.Instances.Actor;
@@ -92,10 +92,10 @@ namespace Scripts.Serialization
                 return false;
             }
 
-            TextAsset json = Resources.Load<TextAsset>(mapPath);
+            TextAsset json = AssetHelper.LoadAsset<TextAsset>(mapPath);
             if (json == null)
             {
-                Debug.LogWarning($"PropMapIO.LoadInto: No JSON found at Resources path '{mapPath}'.");
+                Debug.LogWarning($"PropMapIO.LoadInto: No JSON found at Addressable address '{mapPath}'.");
                 return false;
             }
 
@@ -121,7 +121,7 @@ namespace Scripts.Serialization
             GameObject go;
             if (!string.IsNullOrEmpty(node.prefab))
             {
-                var prefab = Resources.Load<GameObject>(node.prefab);
+                var prefab = AssetHelper.LoadAsset<GameObject>(node.prefab);
                 if (prefab != null)
                 {
                     go = UnityEngine.Object.Instantiate(prefab, parent, false);
@@ -129,7 +129,7 @@ namespace Scripts.Serialization
                 }
                 else
                 {
-                    Debug.LogWarning($"PropMapIO: Prefab not found in Resources at '{node.prefab}'. Creating empty object instead.");
+                    Debug.LogWarning($"PropMapIO: Prefab not found at Addressable address '{node.prefab}'. Creating empty object instead.");
                     go = new GameObject(node.name);
                     go.transform.SetParent(parent, false);
                 }

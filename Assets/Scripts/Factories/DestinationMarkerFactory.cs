@@ -85,7 +85,7 @@ namespace Scripts.Factories
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
             spriteRenderer.sortingLayerName = "Default";
-            spriteRenderer.sortingOrder = 600;
+            spriteRenderer.sortingOrder = 99;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
             // DestinationMarker behavior

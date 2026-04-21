@@ -197,11 +197,11 @@
         RectTransform: anchor=(0,1)-(0,1), pos=0,-200, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -212,21 +212,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='AGI', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='AGI', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [HP] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-50, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -237,21 +237,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='HP', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='HP', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [INT] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-250, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -262,21 +262,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='INT', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='INT', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [LCK] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-300, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -287,21 +287,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='LCK', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='LCK', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [LVL] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -312,21 +312,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='LVL', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='LVL', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [SPD] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-250, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -337,21 +337,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='SPD', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='SPD', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [STA] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-250, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -362,21 +362,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='STA', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='STA', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [STR] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-100, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -387,21 +387,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='STR', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='STR', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [VIT] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-150, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -412,21 +412,21 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='VIT', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='VIT', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
       [WIS] layer=UI
         RectTransform: anchor=(0,1)-(0,1), pos=0,-250, size=0,0, pivot=0.5,0.5
         [Bar] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          RectTransform: anchor=(0,1)-(0,1), pos=130.83,0, size=200,32, pivot=0.5,0.5
           [Back] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,32, pivot=0,0.5
+            RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=200,2, pivot=0,0.5
           [Fill] layer=UI
             CanvasRenderer
             Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
@@ -437,12 +437,12 @@
             RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,16, size=200,32, pivot=0,0.5
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=-100,-2, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='WIS', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=0,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='WIS', size=36, color=#FFFFFFFF, align=Left, raycast=False
         [Value] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,1)-(0,1), pos=165,0, size=100,32, pivot=0.5,0.5
-          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=18, color=#FFFFFFFF, align=Left, raycast=False
+          RectTransform: anchor=(0,1)-(0,1), pos=300,0, size=100,32, pivot=0.5,0.5
+          TextMeshProUGUI: font=LiberationSans SDF, text='0', size=36, color=#FFFFFFFF, align=Left, raycast=False
     [Right] layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False

@@ -45,6 +45,8 @@ namespace Scripts.Overworld
 /// - OverworldManager.cs: Overworld scene
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CircleCollider2D))]
 public class TreeInstance : MonoBehaviour
 {
     [Header("Sorting")]
@@ -75,6 +77,18 @@ public class TreeInstance : MonoBehaviour
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer.sprite == null)
+        {
+            spriteRenderer.sprite = AssetHelper.LoadAsset<Sprite>("Maps/Test/Tree");
+            spriteRenderer.sortingOrder = 30;
+        }
+
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb.bodyType != RigidbodyType2D.Static) rb.bodyType = RigidbodyType2D.Static;
+
+        var col = GetComponent<CircleCollider2D>();
+        if (col.radius != 0.2f) col.radius = 0.2f;
+
         SetLocalEulerX(foldAngleX);
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f);

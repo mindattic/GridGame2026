@@ -25,18 +25,18 @@ using Scripts.Utilities;
 namespace Scripts.Factories
 {
     /// <summary>
-    /// TIMELINETAGFACTORY - Creates timeline tag UI elements.
+    /// TIMELINEICONFACTORY - Creates timeline icon UI elements.
     /// 
     /// PURPOSE:
-    /// Replaces TimelineTagPrefab.prefab with code-driven creation.
+    /// Replaces TimelineIconPrefab.prefab with code-driven creation.
     /// Creates actor representation tags for the timeline bar UI.
     /// 
     /// CREATED HIERARCHY:
     /// ```
-    /// TimelineTag (root)
+    /// TimelineIcon (root)
     /// ??? RectTransform (positioning)
     /// ??? CanvasGroup (fade animations)
-    /// ??? TimelineTag (component)
+    /// ??? TimelineIcon (component)
     /// ?
     /// ??? Tag (child)
     /// ?   ??? Image (background - team colored)
@@ -53,7 +53,7 @@ namespace Scripts.Factories
     /// Color indicates team (hero/enemy).
     /// 
     /// RUNTIME CONFIGURATION:
-    /// TimelineTag component sets:
+    /// TimelineIcon component sets:
     /// - Owner: ActorInstance this represents
     /// - Speed: Movement rate based on actor Speed stat
     /// - Mode: Queued/Approaching/PushedBack/Stunned
@@ -62,19 +62,19 @@ namespace Scripts.Factories
     /// - TimelineBarInstance when spawning enemy tags
     /// 
     /// RELATED FILES:
-    /// - TimelineTag.cs: Component attached to tag
+    /// - TimelineIcon.cs: Component attached to tag
     /// - TimelineBarInstance.cs: Parent container
     /// - SpriteLibrary.cs: Provides tag sprites
     /// </summary>
-    public static class TimelineTagFactory
+    public static class TimelineIconFactory
     {
         /// <summary>
         /// Creates a new timeline tag GameObject.
         /// </summary>
         public static GameObject Create(Transform parent = null)
         {
-            // === ROOT: TimelineTag ===
-            var root = new GameObject("TimelineTag");
+            // === ROOT: TimelineIcon ===
+            var root = new GameObject("TimelineIcon");
             root.layer = LayerMask.NameToLayer("Default");
 
             var rootRT = root.AddComponent<RectTransform>();
@@ -92,7 +92,7 @@ namespace Scripts.Factories
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            // NOTE: TimelineTag component is added AFTER children are created
+            // NOTE: TimelineIcon component is added AFTER children are created
             // so that Awake() can find Tag, Icon, and Label via transform.Find().
 
             // === CHILD: Tag (background image) ===
@@ -110,7 +110,8 @@ namespace Scripts.Factories
             tag.AddComponent<CanvasRenderer>();
 
             var tagImage = tag.AddComponent<Image>();
-            // sprite assigned at runtime by TimelineTag component
+            // Sprite asset on disk is still "TimelineTag" — only C# class names changed.
+            if (SpriteLibrary.Sprites.TryGetValue("TimelineTag", out var tagSprite)) tagImage.sprite = tagSprite;
             tagImage.color = Color.white;
             tagImage.raycastTarget = true;
                         tagImage.maskable = true;
@@ -167,8 +168,8 @@ namespace Scripts.Factories
                 rootRT.SetParent(parent, false);
             }
 
-            // Add TimelineTag AFTER all children exist so Awake() finds them
-            root.AddComponent<TimelineTag>();
+            // Add TimelineIcon AFTER all children exist so Awake() finds them
+            root.AddComponent<TimelineIcon>();
 
             return root;
         }

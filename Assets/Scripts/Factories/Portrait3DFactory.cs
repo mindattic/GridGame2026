@@ -72,7 +72,7 @@ namespace Scripts.Factories
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("Portrait3D");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("Portrait");
             root.tag = "Portrait";
 
             var transform = root.transform;

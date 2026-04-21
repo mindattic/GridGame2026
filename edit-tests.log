@@ -1,0 +1,538 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ryand" at "2026-04-21T12:54:56.579288Z"
+Built from '6000.3/staging' branch; Version is '6000.3.2f1 (a9779f353c9b) revision 11106207'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'en' Physical Memory: 32581 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-04-21T12:54:56Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe
+-batchmode
+-nographics
+-projectPath
+D:/Projects/MindAttic/GridGame2026
+-executeMethod
+CliEntryPoints.RunEditTests
+-quit
+-logFile
+D:/Projects/MindAttic/GridGame2026/edit-tests.log
+Successfully changed project path to: D:/Projects/MindAttic/GridGame2026
+D:/Projects/MindAttic/GridGame2026
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [73984]  Target information:
+
+Player connection [73984]  * "[IP] 100.72.14.170 [Port] 55504 [Flags] 2 [Guid] 3485181864 [EditorId] 3485181864 [Version] 1048832 [Id] WindowsEditor(7,SnowCrash) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [73984]  * "[IP] 192.168.64.1 [Port] 55504 [Flags] 2 [Guid] 3485181864 [EditorId] 3485181864 [Version] 1048832 [Id] WindowsEditor(7,SnowCrash) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [73984]  * "[IP] 192.168.163.1 [Port] 55504 [Flags] 2 [Guid] 3485181864 [EditorId] 3485181864 [Version] 1048832 [Id] WindowsEditor(7,SnowCrash) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [73984]  * "[IP] 192.168.114.1 [Port] 55504 [Flags] 2 [Guid] 3485181864 [EditorId] 3485181864 [Version] 1048832 [Id] WindowsEditor(7,SnowCrash) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [73984]  * "[IP] 172.29.0.1 [Port] 55504 [Flags] 2 [Guid] 3485181864 [EditorId] 3485181864 [Version] 1048832 [Id] WindowsEditor(7,SnowCrash) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [73984] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [73984] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-69648" after 0.2 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              6dc9e0b4d20d49a9811da99137f98999
+  Correlation Id:          7d51233190bbde8d68e208b4b0cd0439
+  External correlation Id: 8298596776869408776
+  Machine Id:              0vm6P9ssk9l6UZYbqgZwlyDmsNg=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ryand" (connect: 0.00s, validation: 0.00s, handshake: 0.84s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ryand-notifications" at "2026-04-21T12:54:57.4183783Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Module] Licensing Background thread has ended after 0.85s
+[Licensing::Module] Licensing is initialized (took 0.24s).
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 1.43 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.2f1 (a9779f353c9b)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Projects/MindAttic/GridGame2026/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56648
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/VisionOSPlayer/UnityEditor.VisionOS.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/AppleTVSupport/UnityEditor.AppleTV.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.010577 seconds.
+- Loaded All Assemblies, in  0.332 seconds
+Native extension for LinuxStandalone target not found
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+[usbmuxd] Send listen message
+Native extension for AppleTV target not found
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+[usbmuxd] Send listen message
+Native extension for iOS target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 2278 ms
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Failed to load: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/VisionOSPlayer\x64\UnityEditor.VisionOS.Native.dll
+Native extension for VisionOS target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+[Licensing::Client] Successfully resolved entitlement details
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.669 seconds
+Domain Reload Profiling: 3998ms
+	BeginReloadAssembly (104ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (4ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (45ms)
+	LoadAllAssembliesAndSetupDomain (142ms)
+		LoadAssemblies (100ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (137ms)
+			TypeCache.Refresh (136ms)
+				TypeCache.ScanAssembly (126ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (3669ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (3642ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2393ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (65ms)
+			ProcessInitializeOnLoadAttributes (101ms)
+			ProcessInitializeOnLoadMethodAttributes (1079ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-KZKA-CU54-F7AD-HFFX-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: Unlimited
+[Licensing::Module] License group:
+  Id: 3314803-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Package Manager] Registered 77 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.addressables@2.7.4 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.addressables@38fa2290d5f2)
+    com.unity.collab-proxy@2.10.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.collab-proxy@3351acaba9c9)
+    com.unity.device-simulator.devices@1.0.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.device-simulator.devices@2af643ceec84)
+    com.unity.ide.rider@3.0.38 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.25 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.ide.visualstudio@74aa435fc4bb)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.postprocessing@3.5.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.postprocessing@4a41da475b74)
+    com.unity.timeline@1.8.9 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.timeline@6b9e48457ddb)
+    com.unity.visualscripting@1.9.9 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.visualscripting@191c0d7e3b69)
+    com.unity.mobile.android-logcat@1.4.6 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.mobile.android-logcat@1552651bf770)
+    com.unity.mobile.notifications@2.4.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.mobile.notifications@790bff01702e)
+    com.unity.2d.animation@13.0.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.animation@3c53dae92956)
+    com.unity.2d.pixel-perfect@5.1.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.pixel-perfect@09d99455b901)
+    com.unity.2d.psdimporter@12.0.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.psdimporter@9abe0f7cac7e)
+    com.unity.2d.spriteshape@13.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.spriteshape@0738bab11647)
+    com.unity.2d.tilemap.extras@6.0.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.tilemap.extras@3dde84bf3867)
+    com.unity.2d.aseprite@3.0.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.aseprite@809e3a168ff7)
+    com.unity.2d.tooling@1.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.tooling@55ff0338cdce)
+    com.unity.profiling.core@1.0.3 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.profiling.core@8a49f7027d06)
+    com.unity.scriptablebuildpipeline@2.4.3 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.scriptablebuildpipeline@ca3e2d96aa2f)
+    com.unity.burst@1.8.26 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.burst@21aa83e7fd8f)
+    com.unity.mathematics@1.3.3 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.searcher@4.9.4 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.2d.common@12.0.1 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.common@51e9484895c4)
+    com.unity.nuget.mono-cecil@1.11.6 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.adaptiveperformance@6.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.adaptiveperformance@a1a7d681b600)
+    com.unity.feature.2d@2.0.2 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.feature.2d@0309d34ea7f2)
+    com.unity.feature.mobile@1.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.feature.mobile@00f8a2b6a6fb)
+    com.unity.render-pipelines.universal@17.3.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.render-pipelines.universal@66e99ffa09c7)
+    com.unity.test-framework@1.6.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.ugui@52e65280e89e)
+    com.unity.visualeffectgraph@17.3.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.visualeffectgraph@a6483769d4fc)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.hierarchycore)
+    com.unity.shadergraph@17.3.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.shadergraph@3cfe1d1f3f8c)
+    com.unity.render-pipelines.core@17.3.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.render-pipelines.core@ce86d16dfe9d)
+    com.unity.ext.nunit@2.0.5 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.2d.sprite@1.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.sprite@82f01c8c75ca)
+    com.unity.2d.tilemap@1.0.0 (location: D:\Projects\MindAttic\GridGame2026\Library\PackageCache\com.unity.2d.tilemap@28bd01071fd5)
+  Embedded packages:
+    com.bezi.sidekick@file:D:\Projects\MindAttic\GridGame2026\Packages\com.bezi.sidekick (location: D:\Projects\MindAttic\GridGame2026\Packages\com.bezi.sidekick)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: D:\Projects\MindAttic\GridGame2026\
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 27.6671ms
+Refreshing native plugins compatible for Editor in 2.75 ms, found 5 plugins.
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aEDbg.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: D:/Projects/MindAttic/GridGame2026
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly unityeditor.apple.extensions.common has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.Apple.Extensions.Common.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.Apple.Extensions.Common.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly unityeditor.ios.extensions.xcode has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.iOS.Extensions.Xcode.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly unityeditor.ios.extensions.xcode has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\MacStandaloneSupport\UnityEditor.iOS.Extensions.Xcode.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.iOS.Extensions.Xcode.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly unityeditor.apple.extensions.common has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\VisionOSPlayer\UnityEditor.Apple.Extensions.Common.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.Apple.Extensions.Common.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly unityeditor.ios.extensions.xcode has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\VisionOSPlayer\UnityEditor.iOS.Extensions.Xcode.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.iOS.Extensions.Xcode.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+DisplayProgressbar: Compiling Scripts
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@21aa83e7fd8f\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff\Mono.Cecil.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 84.1130ms
+ExitCode: 0 Duration: 0s367ms
+[ 934/1205  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.34 seconds), 1 items updated, 1205 evaluated
+AssetDatabase: script compilation time: 0.975230s
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  1.041 seconds
+Refreshing native plugins compatible for Editor in 2.59 ms, found 5 plugins.
+Native extension for LinuxStandalone target not found
+Native extension for AppleTV target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Failed to load: C:/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Data/PlaybackEngines/VisionOSPlayer\x64\UnityEditor.VisionOS.Native.dll
+Native extension for VisionOS target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.68 ms, found 5 plugins.
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  4.295 seconds
+Domain Reload Profiling: 5334ms
+	BeginReloadAssembly (250ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (8ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (148ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (730ms)
+		LoadAssemblies (442ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (358ms)
+			TypeCache.Refresh (290ms)
+				TypeCache.ScanAssembly (275ms)
+			BuildScriptInfoCaches (53ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (4296ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (4066ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (56ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (191ms)
+			ProcessInitializeOnLoadAttributes (3739ms)
+			ProcessInitializeOnLoadMethodAttributes (71ms)
+			AfterProcessingInitializeOnLoad (4ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (8ms)
+Asset Pipeline Refresh (id=7122bf5d3efb0354c8e31e72e1cbfa04): Total: 8.210 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=6058 ms
+		Asset DB Callback time: managed=22 ms, native=5 ms
+		Scripting: domain reloads=1, domain reload time=1042 ms, compile time=976 ms, other=104 ms
+		Project Asset Count: scripts=2049, non-scripts=9719
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 7.095ms
+	ApplyChangesToAssetFolders: 0.273ms
+	Scan: 1301.352ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 55.408ms
+	ProcessAssetsWithTransientArtifactChanges: 100.787ms
+	CategorizeAssets: 107.321ms
+	ImportOutOfDateAssets: 4309.346ms (3329.162ms without children)
+		CompileScripts: 976.369ms
+		ReloadNativeAssets: 0.042ms
+		UnloadImportedAssets: 1.486ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.277ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 1.011ms
+	PostProcessAllAssets: 23.025ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.002ms
+	UnloadStreamsBegin: 3.484ms
+	PersistCurrentRevisions: 0.400ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.493ms
+	Untracked: 2301.545ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 34.066ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GridGame
+Unloading 37 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 8521 unused Assets / (3.2 MB). Loaded Objects now: 9503.
+Memory consumption went from 262.8 MB to 259.6 MB.
+Total: 9.409900 ms (FindLiveObjects: 0.475200 ms CreateObjectMapping: 0.492400 ms MarkObjects: 6.227000 ms  DeleteObjects: 2.214100 ms)
+
+[Cli] TestRunnerApi reflection path is a stub. Wire concrete TestRunnerApi.Execute with ExecutionSettings when tests are authored.
+0x00007ff92bc2fd3e (Unity) StackWalker::ShowCallstack
+0x00007ff92d45e919 (Unity) PlatformStacktrace::GetStacktrace
+0x00007ff92d45f19e (Unity) Stacktrace::GetStacktrace
+0x00007ff92bbe0d4f (Unity) DebugStringToFile
+0x00007ff92ba99020 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x0000017d5f6404ae (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log_Injected (UnityEngine.LogType,UnityEngine.LogOption,UnityEngine.Bindings.ManagedSpanWrapper&,intptr)
+0x0000017d5f6402b3 (Mono JIT Code) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+0x0000017d577afd7b (Mono JIT Code) UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+0x0000017d577af1fe (Mono JIT Code) UnityEngine.Logger:Log (UnityEngine.LogType,object)
+0x0000017d577aee9d (Mono JIT Code) UnityEngine.Debug:LogWarning (object)
+0x0000017d577acf5b (Mono JIT Code) CliEntryPoints:RunTests (CliEntryPoints/TestModeEnum) (at D:/Projects/MindAttic/GridGame2026/Assets/Editor/CliEntryPoints.cs:175)
+0x0000017d577ac32b (Mono JIT Code) CliEntryPoints:RunEditTests () (at D:/Projects/MindAttic/GridGame2026/Assets/Editor/CliEntryPoints.cs:155)
+0x0000017cc3434d65 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void (object,intptr,intptr,intptr)
+0x00007ff935a46bfe (mono-2.0-bdwgc) mono_jit_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/mini/mini-runtime.c:3445)
+0x00007ff935988984 (mono-2.0-bdwgc) do_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/metadata/object.c:3068)
+0x00007ff935988a70 (mono-2.0-bdwgc) mono_runtime_invoke (at C:/build/output/Unity-Technologies/mono/mono/metadata/object.c:3115)
+0x00007ff92c465064 (Unity) scripting_method_invoke
+0x00007ff92c46bf23 (Unity) ScriptingInvocation::Invoke
+0x00007ff92cc9444a (Unity) Application::ParseARGVCommands
+0x00007ff92cc8a439 (Unity) Application::FinishLoadingProject
+0x00007ff92ca85a6c (Unity) UnityMain
+0x00007ff7c7f72f2a (Unity) __scrt_common_main_seh
+0x00007ffb19f6e8d7 (KERNEL32) BaseThreadInitThunk
+0x00007ffb1b5cc3fc (ntdll) RtlUserThreadStart
+
+Killing ADB server in 0.0383571 seconds.
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-ryand-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ryand channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+abort_threads: Failed aborting id: 000000000000E7C4, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000F6CC, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000E7C4, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000F6CC, mono_thread_manage will ignore it
+
+debugger-agent: Unable to listen on 3452
+[usbmuxd] Stop listen thread
+[usbmuxd] Error: 
+[usbmuxd] Listen thread exiting
+[usbmuxd] Stop listen thread
+[usbmuxd] Error: 
+[usbmuxd] Listen thread exiting
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1776776113072,"processId":69648,"allocatedMemory":27290522,"memoryLabels":[{"Default":29313},{"Permanent":15524},{"NewDelete":67843},{"Thread":4230384},{"Manager":36797},{"VertexData":8},{"Geometry":816},{"Texture":160},{"Shader":79358},{"Material":24},{"GfxDevice":55257},{"Animation":392},{"Audio":2664},{"FontEngine":256},{"Physics":2090},{"Physics2D":16},{"Input":14984},{"JobScheduler":33024},{"TextLib":192},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155060},{"BaseObject":1620912},{"Resource":1336},{"Renderer":3000},{"Transform":4685},{"File":1016},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":13845},{"DynamicArray":132755},{"HashMap":84074},{"Utility":2661766},{"Curl":2559},{"PoolAlloc":2152},{"AI":40},{"TypeTree":5341},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7792},{"Director":8240},{"CloudService":6480},{"WebRequest":845},{"VR":47994},{"SceneManager":504},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2113},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":384},{"Hierarchy":608},{"CoreStats":13000},{"Identifiers":12960},{"Gui":88},{"EditorUtility":137226},{"VersionControl":4},{"Undo":947},{"AssetDatabase":17387066},{"EditorGi":328},{"UnityConnect":29208},{"Upm":1896},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2876},{"Licensing":664},{"AssetReference":32},{"IPCStream":32}]}

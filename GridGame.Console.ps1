@@ -1,4 +1,17 @@
+$ErrorActionPreference = "Continue"
+trap {
+    Write-Host ""
+    Write-Host "  UNCAUGHT ERROR:" -ForegroundColor Red
+    Write-Host "  $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "  $($_.ScriptStackTrace)" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  Press Enter to exit..." -ForegroundColor Yellow
+    [void](Read-Host)
+    exit 1
+}
+
 $root = $PSScriptRoot
+if ([string]::IsNullOrWhiteSpace($root)) { $root = (Get-Location).Path }
 $backupBase = "R:\Backup\GridGame"
 $repoUrl = "https://github.com/mindattic/GridGame2026.git"
 $unityEditor = "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe"
@@ -22,8 +35,12 @@ function Read-MenuChoice {
 
 function Wait-ForEnter {
     Write-Host ""
-    Write-Host "  Press any key to continue..." -ForegroundColor DarkGray
-    $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | Out-Null
+    Write-Host "  Press Enter to continue..." -ForegroundColor DarkGray
+    try {
+        $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | Out-Null
+    } catch {
+        [void](Read-Host)
+    }
 }
 
 function Get-GitStatus {
@@ -355,8 +372,17 @@ while ($true) {
 
     if ($choice -eq "0") { break }
 
-    if ($mainMenu.ContainsKey($choice)) {
-        & $mainMenu[$choice].Action
+    if ($mainMenu.Contains($choice)) {
+        try {
+            & $mainMenu[$choice].Action
+        } catch {
+            Write-Host ""
+            Write-Host "  ERROR in $($mainMenu[$choice].Name):" -ForegroundColor Red
+            Write-Host "  $($_.Exception.Message)" -ForegroundColor Red
+            Write-Host ""
+            Write-Host "  $($_.ScriptStackTrace)" -ForegroundColor DarkGray
+            Wait-ForEnter
+        }
     } else {
         Write-Host "  Invalid choice." -ForegroundColor Red
         Start-Sleep -Seconds 1

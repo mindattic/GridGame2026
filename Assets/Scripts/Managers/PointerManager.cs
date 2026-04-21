@@ -22,6 +22,10 @@ using Scripts.Utilities;
 
 namespace Scripts.Managers
 {
+// Run before InputManager so the cached touchPosition2D/3D reflect this frame's pointer
+// state at the moment SelectionManager.Select() reads it. Without this, click-down frames
+// consume the previous frame's position and selection lags by one click.
+[DefaultExecutionOrder(-100)]
 public class PointerManager : MonoBehaviour
 {
     // Indicates if the current pointer (touch or mouse) is within the screen viewport [0..1].

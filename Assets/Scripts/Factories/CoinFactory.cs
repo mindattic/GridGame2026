@@ -73,7 +73,7 @@ namespace Scripts.Factories
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("Coin");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("DottedLine");
             root.tag = "Powerup";
 
             var transform = root.transform;
@@ -87,8 +87,8 @@ namespace Scripts.Factories
             spriteRenderer.color = new Color(1f, 0.8745098f, 0.003921569f, 1f);
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
-            spriteRenderer.sortingLayerName = "Props";
-            spriteRenderer.sortingOrder = 800;
+            spriteRenderer.sortingLayerName = "Coin";
+            spriteRenderer.sortingOrder = 999;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
             // NOTE: Animator removed - CoinInstance handles animation via curves
@@ -114,7 +114,7 @@ namespace Scripts.Factories
 
             // SortingGroup
             var sortingGroup = root.AddComponent<SortingGroup>();
-            sortingGroup.sortingLayerName = "Props";
+            sortingGroup.sortingLayerName = "Coin";
             sortingGroup.sortingOrder = 0;
 
             // Parent if specified
@@ -238,7 +238,7 @@ namespace Scripts.Factories
             renderer.maxParticleSize = 0.03f;
             renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
-            renderer.sortingLayerName = "Default";
+            renderer.sortingLayerName = "Coin";
             renderer.sortingOrder = 0;
 
             // Material - use default particle material or load custom

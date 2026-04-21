@@ -71,10 +71,16 @@ public class ActorCard : MonoBehaviour
     private RectTransform title;
     private RectTransform details;
 
+    private Image backdropImage;
     private CanvasGroup backdropCG;
     private CanvasGroup titleCG;
     private CanvasGroup detailsCG;
     private CanvasGroup portraitCG;
+
+    private Coroutine enemyFlickerRoutine;
+    private static readonly Color HeroBackdropColor = Color.white;
+    private static readonly Color EnemyBackdropBase = Color.black;
+    private static readonly Color EnemyBackdropPeak = new Color(0.55f, 0.04f, 0.04f, 1f);
 
     #endregion
 
@@ -102,6 +108,7 @@ public class ActorCard : MonoBehaviour
         title = GameObjectHelper.Game.Card.Title;
         details = GameObjectHelper.Game.Card.Details;
 
+        backdropImage = backdrop.GetComponent<Image>();
         backdropCG = EnsureCanvasGroup(backdrop);
         titleCG = EnsureCanvasGroup(title);
         detailsCG = EnsureCanvasGroup(details);
@@ -176,6 +183,45 @@ public class ActorCard : MonoBehaviour
         SetAlpha(portraitCG, 1f);
         SetAlpha(titleCG, 1f);
         SetAlpha(detailsCG, 1f);
+
+        ApplyBackdropFor(g.Actors.SelectedActor.IsEnemy);
+    }
+
+    /// <summary>Applies the backdrop look for the selected actor: white for heroes, black + red Quake-style flicker for enemies.</summary>
+    private void ApplyBackdropFor(bool isEnemy)
+    {
+        if (enemyFlickerRoutine != null)
+        {
+            StopCoroutine(enemyFlickerRoutine);
+            enemyFlickerRoutine = null;
+        }
+
+        if (backdropImage == null) return;
+
+        if (isEnemy)
+        {
+            backdropImage.color = EnemyBackdropBase;
+            enemyFlickerRoutine = StartCoroutine(EnemyFlickerRoutine());
+        }
+        else
+        {
+            backdropImage.color = HeroBackdropColor;
+        }
+    }
+
+    /// <summary>Coroutine that lerps the enemy backdrop between black and dark red using Quake's broken-fluorescent flicker pattern.</summary>
+    private IEnumerator EnemyFlickerRoutine()
+    {
+        float t0 = Time.time;
+        while (true)
+        {
+            float b = Scripts.Effects.QuakeLightFlicker.SampleSmooth(
+                Scripts.Effects.QuakeLightFlicker.FluorescentFlicker, Time.time - t0);
+            // Map brightness [0..2.083] to [0..1] for color lerp; clamp so peaks saturate.
+            float k = Mathf.Clamp01(b);
+            backdropImage.color = Color.Lerp(EnemyBackdropBase, EnemyBackdropPeak, k);
+            yield return Wait.None();
+        }
     }
 
     /// <summary>Immediately sets all card elements to full visibility without animation.</summary>
@@ -236,6 +282,8 @@ public class ActorCard : MonoBehaviour
     public void Clear()
     {
         StopAllCoroutines();
+        enemyFlickerRoutine = null;
+        if (backdropImage != null) backdropImage.color = HeroBackdropColor;
 
         // Keep everything active and visible
         backdrop.gameObject.SetActive(true);

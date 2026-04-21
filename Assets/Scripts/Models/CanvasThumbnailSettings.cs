@@ -36,7 +36,7 @@ namespace Scripts.Models
     /// 
     /// RELATED FILES:
     /// - ActorData.cs: Contains canvas thumbnail settings
-    /// - TimelineTag.cs: Uses for timeline portraits
+    /// - TimelineIcon.cs: Uses for timeline portraits
     /// </summary>
     [System.Serializable]
     public class CanvasThumbnailSettings

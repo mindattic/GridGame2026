@@ -83,7 +83,7 @@ namespace Scripts.Factories
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             spriteRenderer.receiveShadows = false;
             spriteRenderer.sortingLayerName = "Default";
-            spriteRenderer.sortingOrder = 50;
+            spriteRenderer.sortingOrder = 15;
             spriteRenderer.drawMode = SpriteDrawMode.Simple;
 
             root.AddComponent<FootstepInstance>();

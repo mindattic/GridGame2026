@@ -332,9 +332,72 @@ namespace Scripts.Factories
             itemToggle.targetGraphic = itemBgImage;
             itemToggle.graphic = itemCheckImage;
 
+            // === Template > Scrollbar Vertical ===
+            var scrollbar = new GameObject("Scrollbar Vertical");
+            scrollbar.layer = 0;
+
+            var scrollbarRT = scrollbar.AddComponent<RectTransform>();
+            scrollbarRT.SetParent(templateRT, false);
+            scrollbarRT.anchorMin = new Vector2(1f, 0f);
+            scrollbarRT.anchorMax = new Vector2(1f, 1f);
+            scrollbarRT.anchoredPosition = Vector2.zero;
+            scrollbarRT.sizeDelta = new Vector2(20f, 0f);
+            scrollbarRT.pivot = new Vector2(1f, 1f);
+
+            scrollbar.AddComponent<CanvasRenderer>();
+
+            var scrollbarImage = scrollbar.AddComponent<Image>();
+            scrollbarImage.color = Color.white;
+            scrollbarImage.type = Image.Type.Sliced;
+
+            // === Scrollbar Vertical > Sliding Area ===
+            var slidingArea = new GameObject("Sliding Area");
+            slidingArea.layer = 0;
+
+            var slidingAreaRT = slidingArea.AddComponent<RectTransform>();
+            slidingAreaRT.SetParent(scrollbarRT, false);
+            slidingAreaRT.anchorMin = Vector2.zero;
+            slidingAreaRT.anchorMax = Vector2.one;
+            slidingAreaRT.anchoredPosition = Vector2.zero;
+            slidingAreaRT.sizeDelta = new Vector2(-20f, -20f);
+            slidingAreaRT.pivot = new Vector2(0.5f, 0.5f);
+
+            // === Sliding Area > Handle ===
+            var handle = new GameObject("Handle");
+            handle.layer = 0;
+
+            var handleRT = handle.AddComponent<RectTransform>();
+            handleRT.SetParent(slidingAreaRT, false);
+            handleRT.anchorMin = new Vector2(0f, 0f);
+            handleRT.anchorMax = new Vector2(1f, 0.2f);
+            handleRT.anchoredPosition = Vector2.zero;
+            handleRT.sizeDelta = new Vector2(20f, 20f);
+            handleRT.pivot = new Vector2(0.5f, 0.5f);
+
+            handle.AddComponent<CanvasRenderer>();
+
+            var handleImage = handle.AddComponent<Image>();
+            handleImage.color = Color.white;
+            handleImage.type = Image.Type.Sliced;
+
+            var scrollbarComp = scrollbar.AddComponent<Scrollbar>();
+            scrollbarComp.interactable = true;
+            scrollbarComp.transition = Selectable.Transition.ColorTint;
+            scrollbarComp.colors = DefaultDropdownColors;
+            scrollbarComp.navigation = new Navigation { mode = Navigation.Mode.Automatic };
+            scrollbarComp.targetGraphic = handleImage;
+            scrollbarComp.handleRect = handleRT;
+            scrollbarComp.direction = Scrollbar.Direction.BottomToTop;
+            scrollbarComp.value = 0f;
+            scrollbarComp.size = 0.2f;
+            scrollbarComp.numberOfSteps = 0;
+
             // Wire up scrollRect
             scrollRect.viewport = viewportRT;
             scrollRect.content = contentRT;
+            scrollRect.verticalScrollbar = scrollbarComp;
+            scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+            scrollRect.verticalScrollbarSpacing = -3f;
 
             // === Add TMP_Dropdown component ===
             var dropdownComp = dropdown.AddComponent<TMP_Dropdown>();

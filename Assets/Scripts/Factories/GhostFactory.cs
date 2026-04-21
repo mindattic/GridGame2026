@@ -66,7 +66,7 @@ namespace Scripts.Factories
         {
             // === ROOT: Ghost ===
             var root = new GameObject("Ghost");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("DottedLine");
             root.tag = "Ghost";
 
             var rootTransform = root.transform;
@@ -78,7 +78,7 @@ namespace Scripts.Factories
 
             // === CHILD: Thumbnail (actor sprite) ===
             var thumbnail = new GameObject("Thumbnail");
-            thumbnail.layer = LayerMask.NameToLayer("Actors");
+            thumbnail.layer = LayerMask.NameToLayer("DottedLine");
             thumbnail.tag = "Ghost";
 
             var thumbnailTransform = thumbnail.transform;
@@ -86,8 +86,6 @@ namespace Scripts.Factories
             thumbnailTransform.localPosition = Vector3.zero;
             thumbnailTransform.localRotation = Quaternion.identity;
             thumbnailTransform.localScale = Vector3.one;
-
-            thumbnail.layer = 0;
 
             var thumbnailSR = thumbnail.AddComponent<SpriteRenderer>();
             thumbnailSR.color = Color.white;
@@ -100,7 +98,7 @@ namespace Scripts.Factories
 
             // === CHILD: Frame (optional border, inactive) ===
             var frame = new GameObject("Frame");
-            frame.layer = 0;
+            frame.layer = LayerMask.NameToLayer("DottedLine");
             frame.tag = "Portrait";
             frame.SetActive(false);
 

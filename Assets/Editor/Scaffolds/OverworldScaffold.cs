@@ -405,47 +405,7 @@ public static class OverworldScaffold
         img_Image2.raycastTarget = true;
         Undo.RegisterCreatedObjectUndo(go_Image2, "Create Image");
 
-        // --- EnterHubButton ---
-        var go_EnterHubButton = new GameObject("EnterHubButton");
-        go_EnterHubButton.layer = 5;
-        var rt_EnterHubButton = go_EnterHubButton.AddComponent<RectTransform>();
-        rt_EnterHubButton.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        rt_EnterHubButton.anchorMin = new Vector2(0.5f, 0.5f);
-        rt_EnterHubButton.anchorMax = new Vector2(0.5f, 0.5f);
-        rt_EnterHubButton.pivot = new Vector2(0.5f, 0.5f);
-        rt_EnterHubButton.sizeDelta = new Vector2(160f, 30f);
-        rt_EnterHubButton.anchoredPosition = new Vector2(0f, 0f);
-        go_EnterHubButton.AddComponent<CanvasRenderer>();
-        var img_EnterHubButton = go_EnterHubButton.AddComponent<Image>();
-        img_EnterHubButton.sprite = SceneScaffoldHelper.LoadBuiltinSprite();
-        img_EnterHubButton.color = new Color(1f, 1f, 1f, 1f);
-        img_EnterHubButton.type = (Image.Type)1;
-        img_EnterHubButton.raycastTarget = true;
-        var btn_EnterHubButton = go_EnterHubButton.AddComponent<Button>();
-        btn_EnterHubButton.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_EnterHubButton.targetGraphic = go_EnterHubButton.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_EnterHubButton, "Create EnterHubButton");
-
-        // --- Label ---
-        var go_Label4 = new GameObject("Label");
-        go_Label4.layer = 5;
-        var rt_Label4 = go_Label4.AddComponent<RectTransform>();
-        rt_Label4.SetParent(go_EnterHubButton.GetComponent<RectTransform>(), false);
-        rt_Label4.anchorMin = new Vector2(0f, 0f);
-        rt_Label4.anchorMax = new Vector2(1f, 1f);
-        rt_Label4.pivot = new Vector2(0.5f, 0.5f);
-        rt_Label4.sizeDelta = new Vector2(0f, 0f);
-        rt_Label4.anchoredPosition = new Vector2(0f, 0f);
-        go_Label4.AddComponent<CanvasRenderer>();
-        var tmp_Label4 = go_Label4.AddComponent<TextMeshProUGUI>();
-        tmp_Label4.font = SceneScaffoldHelper.LoadFont(Font_LiberationSans_SDF);
-        tmp_Label4.text = "Enter";
-        tmp_Label4.fontSize = 24f;
-        tmp_Label4.color = new Color(0.1960784f, 0.1960784f, 0.1960784f, 1f);
-        tmp_Label4.alignment = (TextAlignmentOptions)514;
-        tmp_Label4.enableWordWrapping = true;
-        tmp_Label4.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Label4, "Create Label");
+        // EnterHubButton is created at runtime by EnterHubButtonFactory via OverworldManager.
 
         // --- FadeOverlay ---
         var go_FadeOverlay = new GameObject("FadeOverlay");
@@ -1710,194 +1670,82 @@ public static class OverworldScaffold
         go_Terrain.AddComponent<CanvasRenderer>();
         Undo.RegisterCreatedObjectUndo(go_Terrain, "Create Terrain");
 
-        // --- Tree ---
-        var go_Tree = new GameObject("Tree");
-        go_Tree.AddComponent<Scripts.Overworld.TreeInstance>();
+        // --- Trees (via TreeFactory) ---
+        var go_Tree = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree2 = new GameObject("Tree");
-        go_Tree2.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree2 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree2, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree3 = new GameObject("Tree");
-        go_Tree3.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree3 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree3, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree4 = new GameObject("Tree");
-        go_Tree4.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree4 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree4, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree5 = new GameObject("Tree");
-        go_Tree5.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree5 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree5, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree6 = new GameObject("Tree");
-        go_Tree6.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree6 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree6, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree7 = new GameObject("Tree");
-        go_Tree7.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree7 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree7, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree8 = new GameObject("Tree");
-        go_Tree8.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree8 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree8, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree9 = new GameObject("Tree");
-        go_Tree9.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree9 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree9, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree10 = new GameObject("Tree");
-        go_Tree10.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree10 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree10, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree11 = new GameObject("Tree");
-        go_Tree11.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree11 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree11, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree12 = new GameObject("Tree");
-        go_Tree12.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree12 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree12, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree13 = new GameObject("Tree");
-        go_Tree13.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree13 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree13, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree14 = new GameObject("Tree");
-        go_Tree14.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree14 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree14, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree15 = new GameObject("Tree");
-        go_Tree15.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree15 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree15, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree16 = new GameObject("Tree");
-        go_Tree16.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree16 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree16, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree17 = new GameObject("Tree");
-        go_Tree17.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree17 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree17, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree18 = new GameObject("Tree");
-        go_Tree18.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree18 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree18, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree19 = new GameObject("Tree");
-        go_Tree19.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree19 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree19, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree20 = new GameObject("Tree");
-        go_Tree20.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree20 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree20, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree21 = new GameObject("Tree");
-        go_Tree21.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree21 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree21, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree22 = new GameObject("Tree");
-        go_Tree22.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree22 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree22, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree23 = new GameObject("Tree");
-        go_Tree23.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree23 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree23, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree24 = new GameObject("Tree");
-        go_Tree24.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree24 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree24, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree25 = new GameObject("Tree");
-        go_Tree25.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree25 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree25, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree26 = new GameObject("Tree");
-        go_Tree26.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree26 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree26, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree27 = new GameObject("Tree");
-        go_Tree27.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree27 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree27, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree28 = new GameObject("Tree");
-        go_Tree28.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree28 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree28, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree29 = new GameObject("Tree");
-        go_Tree29.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree29 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree29, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree30 = new GameObject("Tree");
-        go_Tree30.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree30 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree30, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree31 = new GameObject("Tree");
-        go_Tree31.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree31 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree31, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree32 = new GameObject("Tree");
-        go_Tree32.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree32 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree32, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree33 = new GameObject("Tree");
-        go_Tree33.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree33 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree33, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree34 = new GameObject("Tree");
-        go_Tree34.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree34 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree34, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree35 = new GameObject("Tree");
-        go_Tree35.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree35 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree35, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree36 = new GameObject("Tree");
-        go_Tree36.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree36 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree36, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree37 = new GameObject("Tree");
-        go_Tree37.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree37 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree37, "Create Tree");
-
-        // --- Tree ---
-        var go_Tree38 = new GameObject("Tree");
-        go_Tree38.AddComponent<Scripts.Overworld.TreeInstance>();
+        var go_Tree38 = Scripts.Factories.TreeFactory.Create();
         Undo.RegisterCreatedObjectUndo(go_Tree38, "Create Tree");
 
         // --- Trees ---

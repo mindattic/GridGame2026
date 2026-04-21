@@ -28,56 +28,56 @@ using Scripts.Utilities;
 namespace Scripts.Canvas
 {
     /// <summary>
-    /// TIMELINETAGMODE - State machine for timeline tag behavior.
-    /// 
+    /// TIMELINEICONMODE - State machine for timeline icon behavior.
+    ///
     /// States:
-    /// - Queued: At spawn point, waiting to be released (speed-based delay)
-    /// - Approaching: Moving left toward trigger point
-    /// - PushedBack: Being pushed right after taking damage (animated)
+    /// - Queued: At spawn point (left edge), waiting to be released (speed-based delay)
+    /// - Approaching: Moving right toward trigger point ("loading")
+    /// - PushedBack: Being pushed left toward spawn after taking damage (animated)
     /// - Stunned: Stopped after pushback, recovering (agility-based duration)
     /// </summary>
-    public enum TimelineTagMode
+    public enum TimelineIconMode
     {
-        /// <summary>Tag is at spawn point waiting to be released.</summary>
+        /// <summary>Icon is at spawn point (left edge) waiting to be released.</summary>
         Queued,
-        /// <summary>Tag is moving left toward the trigger point.</summary>
+        /// <summary>Icon is moving right toward the trigger point.</summary>
         Approaching,
-        /// <summary>Tag is being pushed back (animated with deceleration).</summary>
+        /// <summary>Icon is being pushed left (animated with deceleration).</summary>
         PushedBack,
-        /// <summary>Tag has stopped after pushback, recovering.</summary>
+        /// <summary>Icon has stopped after pushback, recovering.</summary>
         Stunned
     }
 
     /// <summary>
-    /// TIMELINETAG - Individual actor tag on the timeline bar.
+    /// TIMELINEICON - Individual actor icon on the timeline bar.
     /// 
     /// PURPOSE:
-    /// Represents one actor on the timeline UI. Tags move from right to left
-    /// at a speed determined by the actor's Speed stat. When a tag reaches
-    /// the trigger point (left edge), that actor's turn begins.
-    /// 
+    /// Represents one actor on the timeline UI. Icons move from left to right
+    /// ("loading") at a speed determined by the actor's Speed stat. When an icon
+    /// reaches the trigger point (right edge), that actor's turn begins.
+    ///
     /// MOVEMENT MODEL (Normalized Coordinates):
-    /// - u = 1.0: Right edge (spawn point)
-    /// - u = 0.0: Left edge (trigger point)
+    /// - u = 0.0: Left edge (spawn point, fresh / not loaded)
+    /// - u = 1.0: Right edge (trigger point, fully loaded — ready to fire)
     /// - uPerSec: Speed in u-units per second (based on actor Speed stat)
-    /// 
-    /// STATE MACHINE (TimelineTagMode):
+    ///
+    /// STATE MACHINE (TimelineIconMode):
     /// 1. Queued → Waiting at spawn point (queueDelay countdown)
-    /// 2. Approaching → Moving left at uPerSec speed
-    /// 3. PushedBack → Animated pushback after taking damage
-    /// 4. Stunned → Recovery period after pushback (agilityBased)
-    /// 
+    /// 2. Approaching → Moving right at uPerSec speed
+    /// 3. PushedBack → Animated pushback (toward spawn) after taking damage
+    /// 4. Stunned → Recovery period after pushback (agility-based)
+    ///
     /// PUSHBACK SYSTEM:
     /// When enemy is hit by pincer attack:
-    /// - Tag pushed right based on position (closer to trigger = more pushback)
+    /// - Icon pushed left based on position (closer to trigger = more pushback)
     /// - Pushback animates with deceleration (PushDeceleration)
     /// - After pushback, enters Stunned state
     /// - Stun duration based on actor's Agility stat
-    /// 
+    ///
     /// KEY PROPERTIES:
-    /// - Owner: ActorInstance this tag represents
-    /// - Mode: Current TimelineTagMode state
-    /// - u: Normalized position (0=trigger, 1=spawn)
+    /// - Owner: ActorInstance this icon represents
+    /// - Mode: Current TimelineIconMode state
+    /// - u: Normalized position (0=spawn/left, 1=trigger/right)
     /// 
     /// VISUAL ELEMENTS:
     /// - Tag: Background image (team colored)
@@ -87,21 +87,21 @@ namespace Scripts.Canvas
     /// 
     /// RELATED FILES:
     /// - TimelineBarInstance.cs: Parent container managing all tags
-    /// - TimelineTagFactory.cs: Creates tag GameObjects
+    /// - TimelineIconFactory.cs: Creates tag GameObjects
     /// - TurnManager.cs: Receives trigger callbacks
     /// - TimelineTriggerSequence.cs: Handles turn trigger
     /// 
-    /// CREATED BY: TimelineTagFactory.Create()
+    /// CREATED BY: TimelineIconFactory.Create()
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    public sealed class TimelineTag : MonoBehaviour, IPointerClickHandler
+    public sealed class TimelineIcon : MonoBehaviour, IPointerClickHandler
     {
         #region Visual Elements
 
         // Resolved in Awake via transform.Find or GetComponentInChildren.
-        // TimelineTagFactory creates Tag / Icon / Label children before attaching
-        // the TimelineTag component, so Awake's lookup always succeeds.
+        // TimelineIconFactory creates Tag / Icon / Label children before attaching
+        // the TimelineIcon component, so Awake's lookup always succeeds.
         private Image Tag;
         private Image Icon;
         private TextMeshProUGUI Label;
@@ -119,13 +119,13 @@ namespace Scripts.Canvas
         public RectTransform Rect { get; private set; }
 
         /// <summary>Current state machine mode.</summary>
-        public TimelineTagMode Mode { get; private set; } = TimelineTagMode.Queued;
+        public TimelineIconMode Mode { get; private set; } = TimelineIconMode.Queued;
 
         // Normalized motion state (resolution-independent)
-        private float leftX;      // bar-local x at u=0 (left edge)
-        private float rightX;     // bar-local x at u=1 (right edge)
-        private float u;          // normalized position [0..1], 1=right, 0=left
-        private float uPerSec;    // normalized speed per second
+        private float leftX;      // bar-local x at u=0 (left edge, spawn)
+        private float rightX;     // bar-local x at u=1 (right edge, trigger)
+        private float u;          // normalized position [0..1], 0=spawn (left), 1=trigger (right)
+        private float uPerSec;    // normalized speed per second (toward 1)
         private float queueDelay; // seconds to wait before moving
         private float queueTimer; // countdown for queue release
 
@@ -141,7 +141,7 @@ namespace Scripts.Canvas
 
         #endregion
 
-        private System.Action<TimelineTag> onReached;
+        private System.Action<TimelineIcon> onReached;
         private bool isFading;
         private bool paused;
         private bool fired;
@@ -168,7 +168,7 @@ namespace Scripts.Canvas
                 var tagTransform = transform.Find("Tag") ?? transform.Find("Image");
                 Tag = tagTransform != null ? tagTransform.GetComponent<Image>() : GetComponentInChildren<Image>(true);
                 if (Tag == null)
-                    Debug.LogWarning("TimelineTag: Child Tag Image not found. Add a Tag child or assign `Tag`.", this);
+                    Debug.LogWarning("TimelineIcon: Child Tag Image not found. Add a Tag child or assign `Tag`.", this);
             }
             if (Icon == null)
             {
@@ -188,11 +188,11 @@ namespace Scripts.Canvas
                 }
                 if (Icon == null)
                 {
-                    Debug.LogWarning("TimelineTag: Child Icon Image not found. Add an Icon child or assign `Icon`.", this);
+                    Debug.LogWarning("TimelineIcon: Child Icon Image not found. Add an Icon child or assign `Icon`.", this);
                 }
                 else
                 {
-                    Debug.Log($"TimelineTag: Icon Image found on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
+                    Debug.Log($"TimelineIcon: Icon Image found on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
                 }
             }
             if (Label == null)
@@ -200,7 +200,7 @@ namespace Scripts.Canvas
                 var LabelTransform = transform.Find("Label");
                 Label = LabelTransform != null ? LabelTransform.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
                 if (Label == null)
-                    Debug.LogWarning("TimelineTag: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `Label`.", this);
+                    Debug.LogWarning("TimelineIcon: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `Label`.", this);
             }
 
             // Enable clicks on the tag so taps select the associated actor
@@ -208,12 +208,14 @@ namespace Scripts.Canvas
             if (Icon != null) Icon.raycastTarget = false;
             if (Label != null) Label.raycastTarget = false;
 
-            // Left-edge pivot so anchoredPosition.x represents the tag's LEFT edge exactly
+            // Right-edge pivot so anchoredPosition.x represents the icon's RIGHT
+            // (leading) edge — i.e., the edge that hits the trigger first as the
+            // icon moves left→right. Reach detection compares this directly to rightX.
             if (Rect != null)
             {
                 Rect.anchorMin = new Vector2(0f,0.5f);
                 Rect.anchorMax = new Vector2(0f,0.5f);
-                Rect.pivot = new Vector2(0f,0.5f); // changed from0.5f to0f for precise alignment
+                Rect.pivot = new Vector2(1f,0.5f);
             }
             // Ignore layout so manual positioning is preserved
             var le = gameObject.GetComponent<LayoutElement>();
@@ -257,7 +259,7 @@ namespace Scripts.Canvas
 
         // Initialize using normalized coordinates and speed
         /// <summary>Initializes initialize normalized.</summary>
-        public void InitializeNormalized(ActorInstance owner, float leftX, float rightX, float startU, float uPerSec, System.Action<TimelineTag> onReached, float queueDelay = 0f)
+        public void InitializeNormalized(ActorInstance owner, float leftX, float rightX, float startU, float uPerSec, System.Action<TimelineIcon> onReached, float queueDelay = 0f)
         {
             Owner = owner;
             this.leftX = leftX;
@@ -269,10 +271,10 @@ namespace Scripts.Canvas
             this.queueTimer = this.queueDelay;
             
             // Start in Queued mode if there's a delay, otherwise go straight to Approaching
-            Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+            Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
             
             // Label is hidden in queue, visible when approaching
-            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
             
             if (CanvasGroup != null) CanvasGroup.alpha =1f;
@@ -314,7 +316,7 @@ namespace Scripts.Canvas
                 Icon.sprite = sprite;
                 Icon.enabled = sprite != null;
                 Icon.preserveAspect = true;
-                Debug.Log($"TimelineTag: Assigned icon '{(sprite != null ? sprite.name : "<null>")}' for actor '{Owner?.characterClass}' tags='{(data != null ? data.Tags.ToString() : "<no data>")}' on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
+                Debug.Log($"TimelineIcon: Assigned icon '{(sprite != null ? sprite.name : "<null>")}' for actor '{Owner?.characterClass}' tags='{(data != null ? data.Tags.ToString() : "<no data>")}' on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
             }
 
             ApplyPosition();
@@ -323,7 +325,7 @@ namespace Scripts.Canvas
 
         // Backward-compatible initializer
         /// <summary>Initializes initialize.</summary>
-        public void Initialize(ActorInstance owner, float leftEdgeX, float startX, float moveSpeedPxPerSec, System.Action<TimelineTag> onReached)
+        public void Initialize(ActorInstance owner, float leftEdgeX, float startX, float moveSpeedPxPerSec, System.Action<TimelineIcon> onReached)
         {
             float width = Mathf.Max(1f, rightX - leftEdgeX);
             float startU = Mathf.InverseLerp(leftEdgeX, rightX, startX);
@@ -349,16 +351,16 @@ namespace Scripts.Canvas
         public void SetAlpha(float a) { if (CanvasGroup != null) CanvasGroup.alpha = Mathf.Clamp01(a); }
 
         /// <summary>
-        /// Resets the tag to the spawn point (far right) and enters Queued mode.
+        /// Resets the tag to the spawn point (far left) and enters Queued mode.
         /// Called when an enemy's turn finishes. Assigns queue delay based on speed.
         /// </summary>
         public void ResetToSpawn()
         {
             fired = false;
-            
-            // IMPORTANT: Immediately snap u to 1.0 to prevent re-triggering while at left edge
+
+            // IMPORTANT: Immediately snap u to 0.0 to prevent re-triggering while at right edge
             // This fixes the double-trigger bug where the tag could fire again before animation completes
-            u = 1f;
+            u = 0f;
             ApplyPosition();
             
             // Assign queue delay based on speed: faster enemies wait less (1.5-4 seconds)
@@ -367,10 +369,10 @@ namespace Scripts.Canvas
             queueTimer = queueDelay;
             
             // Enter Queued mode (or Approaching if no delay)
-            Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+            Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
             
             // Hide label in queue, show if immediately approaching
-            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
             
             // Reset pushback/stun state
@@ -382,21 +384,21 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
-        /// Legacy reset - immediately snaps to spawn and waits in queue.
+        /// Legacy reset - immediately snaps to spawn (left) and waits in queue.
         /// </summary>
         public void ResetForNextCycle()
         {
             fired = false;
-            u = 1f;
+            u = 0f;
             ApplyPosition();
             // Assign queue delay based on speed (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
             queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
             queueTimer = queueDelay;
-            Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
+            Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
             
             // Hide label in queue, show if immediately approaching
-            labelAlpha = Mode == TimelineTagMode.Queued ? 0f : 1f;
+            labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
             
             pushVelocity = 0f;
@@ -404,14 +406,14 @@ namespace Scripts.Canvas
             UpdateLabel();
         }
 
-        // Set anchored x from normalized u (left-edge pivot guarantees alignment)
+        // Set anchored x from normalized u (right-edge pivot: anchoredPosition.x = leading edge)
         /// <summary>Applies the position.</summary>
         private void ApplyPosition()
         {
             if (Rect == null) return;
             float xPos = Mathf.Lerp(leftX, rightX, Mathf.Clamp01(u));
-            // Prevent ever going past the left; lock exactly at leftX when u<=0
-            if (xPos < leftX) xPos = leftX;
+            // Prevent ever going past the right (trigger); lock exactly at rightX when u>=1
+            if (xPos > rightX) xPos = rightX;
             var p = Rect.anchoredPosition;
             Rect.anchoredPosition = new Vector2(xPos, p.y);
         }
@@ -421,8 +423,8 @@ namespace Scripts.Canvas
         {
             if (Rect != null)
             {
-                // Clamp to never cross past the left
-                float clamped = Mathf.Max(leftX, xPos);
+                // Clamp to never cross past the right (trigger)
+                float clamped = Mathf.Min(rightX, xPos);
                 var p = Rect.anchoredPosition;
                 Rect.anchoredPosition = new Vector2(clamped, p.y);
                 u = (rightX - leftX) > 0.0001f ? Mathf.InverseLerp(leftX, rightX, clamped) : u;
@@ -430,7 +432,7 @@ namespace Scripts.Canvas
             else
             {
                 var lp = transform.localPosition;
-                float clamped = Mathf.Max(leftX, xPos);
+                float clamped = Mathf.Min(rightX, xPos);
                 transform.localPosition = new Vector3(clamped, lp.y, lp.z);
             }
             UpdateLabel();
@@ -448,6 +450,34 @@ namespace Scripts.Canvas
         public float GetU() => u;
         /// <summary>Gets the u per sec.</summary>
         public float GetUPerSec() => uPerSec;
+
+        /// <summary>
+        /// Returns the u this tag is heading toward — pushTargetU when in PushedBack mode,
+        /// the current u otherwise. Used by the bar's spatial overlap resolver.
+        /// </summary>
+        public float GetEffectiveTargetU()
+        {
+            return Mode == TimelineIconMode.PushedBack ? pushTargetU : u;
+        }
+
+        /// <summary>
+        /// Snaps the tag to a new u, or — if in PushedBack mode — retargets the pushback so the
+        /// tag finishes at <paramref name="targetU"/>. Used by the bar's overlap resolver to keep
+        /// pushed-back / spawned tags from stacking on the same slot.
+        /// </summary>
+        public void SetTargetU(float targetU)
+        {
+            targetU = Mathf.Clamp01(targetU);
+            if (Mode == TimelineIconMode.PushedBack)
+            {
+                pushTargetU = targetU;
+                pushVelocity = Mathf.Max(pushVelocity, Mathf.Abs(targetU - u) * 3f);
+            }
+            else
+            {
+                SetU(targetU);
+            }
+        }
         /// <summary>Gets the queue timer.</summary>
         public float GetQueueTimer() => queueTimer;
         
@@ -457,9 +487,9 @@ namespace Scripts.Canvas
         public void SetQueueTimer(float time)
         {
             queueTimer = Mathf.Max(0f, time);
-            if (Mode == TimelineTagMode.Queued && queueTimer <= 0f)
+            if (Mode == TimelineIconMode.Queued && queueTimer <= 0f)
             {
-                Mode = TimelineTagMode.Approaching;
+                Mode = TimelineIconMode.Approaching;
                 StartLabelFadeIn();
             }
             UpdateLabel();
@@ -468,19 +498,20 @@ namespace Scripts.Canvas
         /// <summary>Gets the seconds remaining.</summary>
         public float GetSecondsRemaining()
         {
-            float moveTime = uPerSec <= 0f ? 0f : Mathf.Max(0f, u / uPerSec);
+            // Time to travel from current u up to u=1 (trigger).
+            float moveTime = uPerSec <= 0f ? 0f : Mathf.Max(0f, (1f - u) / uPerSec);
             
             // Add wait time based on current mode
             float waitTime = 0f;
             switch (Mode)
             {
-                case TimelineTagMode.Queued:
+                case TimelineIconMode.Queued:
                     waitTime = Mathf.Max(0f, queueTimer);
                     break;
-                case TimelineTagMode.Stunned:
+                case TimelineIconMode.Stunned:
                     waitTime = Mathf.Max(0f, stunTimer);
                     break;
-                case TimelineTagMode.PushedBack:
+                case TimelineIconMode.PushedBack:
                     // Estimate time to finish pushback + any stun that will follow
                     waitTime = stunDuration;
                     break;
@@ -490,28 +521,28 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
-        /// Pushes the tag to the right with animated deceleration. 
-        /// The effect is stronger when closer to the left (trigger point) and scales with attacker's strength.
+        /// Pushes the tag to the left (away from the trigger) with animated deceleration.
+        /// The effect is stronger when closer to the right (trigger point) and scales with attacker's strength.
         /// After pushback completes, enters Stunned mode where recovery is based on enemy's Agility.
         /// </summary>
-        /// <param name="basePush">Minimum push amount at u=1.0 (far right)</param>
-        /// <param name="maxPush">Maximum push amount at u=0.0 (at trigger)</param>
+        /// <param name="basePush">Minimum push amount at u=0.0 (far left, just spawned)</param>
+        /// <param name="maxPush">Maximum push amount at u=1.0 (at trigger)</param>
         /// <param name="strengthMultiplier">Multiplier based on attacker's strength (1.0 = baseline)</param>
         /// <param name="enemyAgility">Enemy's agility stat - higher = faster stun recovery</param>
         /// <param name="baseStunDuration">Base stun duration in seconds at agility 10</param>
         public void Pushback(float basePush, float maxPush, float strengthMultiplier = 1f, int enemyAgility = 10, float baseStunDuration = 1f)
         {
-            // Calculate pushback: stronger when u is lower (closer to left/trigger)
-            // At u=0 (left), push = maxPush
-            // At u=1 (right), push = basePush
-            float proximity = 1f - u; // 0 at right, 1 at left
+            // Calculate pushback: stronger when u is higher (closer to right/trigger)
+            // At u=1 (right/trigger), push = maxPush
+            // At u=0 (left/spawn), push = basePush
+            float proximity = u; // 0 at left, 1 at right (at trigger)
             float pushAmount = Mathf.Lerp(basePush, maxPush, proximity);
-            
+
             // Scale by attacker's strength
             pushAmount *= Mathf.Max(0.1f, strengthMultiplier);
-            
-            // Set target position and initial velocity for animated pushback
-            pushTargetU = Mathf.Clamp01(u + pushAmount);
+
+            // Set target position and initial velocity for animated pushback (toward left / lower u)
+            pushTargetU = Mathf.Clamp01(u - pushAmount);
             pushVelocity = pushAmount * 3f; // Initial velocity proportional to push distance
             
             // Calculate stun duration based on enemy's agility
@@ -520,7 +551,7 @@ namespace Scripts.Canvas
             stunDuration = baseStunDuration * agilityMultiplier;
             
             // Enter pushback mode
-            Mode = TimelineTagMode.PushedBack;
+            Mode = TimelineIconMode.PushedBack;
         }
 
         /// <summary>Runs per-frame update logic.</summary>
@@ -531,24 +562,24 @@ namespace Scripts.Canvas
             // Process based on current mode
             switch (Mode)
             {
-                case TimelineTagMode.Queued:
+                case TimelineIconMode.Queued:
                     UpdateQueued();
                     break;
-                case TimelineTagMode.Approaching:
+                case TimelineIconMode.Approaching:
                     UpdateApproaching();
                     break;
-                case TimelineTagMode.PushedBack:
+                case TimelineIconMode.PushedBack:
                     UpdatePushedBack();
                     break;
-                case TimelineTagMode.Stunned:
+                case TimelineIconMode.Stunned:
                     UpdateStunned();
                     break;
             }
             
             // Ensure we never drift past the trigger point due to float jitter
-            if (Rect != null && Rect.anchoredPosition.x < leftX)
+            if (Rect != null && Rect.anchoredPosition.x > rightX)
             {
-                SetX(leftX);
+                SetX(rightX);
             }
 
             // Update label after we potentially moved this frame
@@ -557,9 +588,9 @@ namespace Scripts.Canvas
             // Update cast bar visualization
             UpdateCastBar();
 
-            // Left-edge strict check using anchoredPosition.x (left pivot)
+            // Right-edge strict check using anchoredPosition.x (right-edge pivot = leading edge)
             // Only trigger if in Approaching mode (not during pushback/stun)
-            if (!fired && Mode == TimelineTagMode.Approaching && Rect != null && Rect.anchoredPosition.x <= leftX + ReachTolerance)
+            if (!fired && Mode == TimelineIconMode.Approaching && Rect != null && Rect.anchoredPosition.x >= rightX - ReachTolerance)
             {
                 fired = true;
                 onReached?.Invoke(this);
@@ -576,7 +607,7 @@ namespace Scripts.Canvas
             if (queueTimer <= 0f)
             {
                 queueTimer = 0f;
-                Mode = TimelineTagMode.Approaching;
+                Mode = TimelineIconMode.Approaching;
                 StartLabelFadeIn();
             }
         }
@@ -585,9 +616,9 @@ namespace Scripts.Canvas
         private void UpdateApproaching()
         {
             if (paused) return;
-            
-            // Move toward left (u = 0)
-            u = Mathf.MoveTowards(u, 0f, uPerSec * Time.deltaTime);
+
+            // Move toward right / trigger (u = 1 — "loading complete")
+            u = Mathf.MoveTowards(u, 1f, uPerSec * Time.deltaTime);
             ApplyPosition();
         }
 
@@ -608,17 +639,17 @@ namespace Scripts.Canvas
             if (pushVelocity <= PushMinVelocity || Mathf.Approximately(u, pushTargetU))
             {
                 pushVelocity = 0f;
-                
-                // If we hit the far right during reset animation, go to Queued
-                if (u >= 0.99f)
+
+                // If we hit the far left during reset animation, go to Queued
+                if (u <= 0.01f)
                 {
-                    u = 1f;
+                    u = 0f;
                     ApplyPosition();
                     queueTimer = queueDelay;
-                    Mode = queueDelay > 0f ? TimelineTagMode.Queued : TimelineTagMode.Approaching;
-                    
+                    Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
+
                     // Hide label when entering queue
-                    if (Mode == TimelineTagMode.Queued)
+                    if (Mode == TimelineIconMode.Queued)
                     {
                         labelAlpha = 0f;
                         ApplyLabelAlpha();
@@ -628,12 +659,12 @@ namespace Scripts.Canvas
                 else if (stunDuration > 0f)
                 {
                     stunTimer = stunDuration;
-                    Mode = TimelineTagMode.Stunned;
+                    Mode = TimelineIconMode.Stunned;
                 }
                 else
                 {
                     // No stun, resume approaching
-                    Mode = TimelineTagMode.Approaching;
+                    Mode = TimelineIconMode.Approaching;
                 }
             }
         }
@@ -646,7 +677,7 @@ namespace Scripts.Canvas
             if (stunTimer <= 0f)
             {
                 stunTimer = 0f;
-                Mode = TimelineTagMode.Approaching;
+                Mode = TimelineIconMode.Approaching;
             }
         }
 

@@ -14,7 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   m_GroupName: Prefabs
   m_GUID: 764698fc62482f24687b22443d200806
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 43817f636140c244d8cf6c4215d46bdb
+    m_Address: PropsLibrary/_Baked/Trees_d93a7dc51667484892931e00348b9236
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b32000c3f8ec764488c31986a38bb09
+    m_Address: PropsLibrary/_Baked/CloudShadows_f75548aa016a45be975be36c4a6cccf0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f64f61f2bbed844d89f5efbff712575
+    m_Address: PropsLibrary/_Baked/Bushes_2ae73eba7eaf4d7db4663ba29ae296a3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
   m_SchemaSet:

@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Maps
   m_GUID: 63ca1ac6963effb4a831d76c108bea8c
   m_SerializeEntries:
+  - m_GUID: 0c8d5fd641c4f7140957b0007e0df7ab
+    m_Address: Maps/Test/Test
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38dca3bb31b86ee438957fd7b9c14d70
     m_Address: Maps/Test/Canopy
     m_ReadOnly: 0
@@ -42,6 +47,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db4613c1f2cc2e14d8fe1a7374499750
     m_Address: Maps/Test/Surface
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e865f35da1035cb41833c33f7e536ecc
+    m_Address: Maps/Test/Tree
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

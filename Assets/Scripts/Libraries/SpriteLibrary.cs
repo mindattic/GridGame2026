@@ -149,6 +149,7 @@ namespace Scripts.Libraries
                 // Status
                 { "StatusNone", AssetHelper.LoadAsset<Sprite>("Sprites/Statuses/status-none") },
                 // Health bars
+                { "HealthBar1", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-1") },
                 { "HealthBar5", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-5") },
                 { "HealthBarBack3", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-back-3") },
                 { "HealthBar3", AssetHelper.LoadAsset<Sprite>("Sprites/HealthBar/health-bar-3") },
@@ -211,6 +212,8 @@ namespace Scripts.Libraries
                 { "DestinationMarker", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/DestinationMarker") },
                 { "TimelineBlock", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TimelineBlock") },
                 { "TimelineDivider", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TimelineDivider") },
+                { "TimelineTag", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TimelineTag") },
+                { "Checkmark", AssetHelper.LoadAsset<Sprite>("Sprites/checkmark") },
             };
 
             leaves = new Dictionary<string, Sprite>

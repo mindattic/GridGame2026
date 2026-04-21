@@ -212,7 +212,7 @@ namespace Scripts.Factories
             // TextMeshProUGUI
             var labelTMP = label.AddComponent<TextMeshProUGUI>();
             labelTMP.font = FontLibrary.Fonts["Attic"];
-            labelTMP.text = "OK";
+            labelTMP.text = "Ok";
             labelTMP.fontSize = 48;
             labelTMP.color = Color.white;
             labelTMP.alignment = TextAlignmentOptions.Center;

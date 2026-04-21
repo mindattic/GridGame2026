@@ -46,7 +46,7 @@ namespace Scripts.Models
     ///
     /// RELATED FILES:
     /// - Ability.cs: CastTimeSeconds property
-    /// - TimelineTag.cs: Cast bar visualization
+    /// - TimelineIcon.cs: Cast bar visualization
     /// - EnemyAttackSequence.cs: Triggers interruption
     /// - AbilityManager.cs: Initiates casting
     /// </summary>

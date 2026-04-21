@@ -56,6 +56,9 @@ namespace Scripts.Managers
 /// </summary>
 public class ManaPoolManager : MonoBehaviour
 {
+    /// <summary>Canvas height of the mana pool container — referenced by TimelineBarInstance for stacking.</summary>
+    public const float UiHeight = 100f;
+
     public float maxMana = 100f;
     private float _heroMana = 0f;
     public float enemyMana = 0f;
@@ -77,6 +80,7 @@ public class ManaPoolManager : MonoBehaviour
     private Button BankButton;
     private Image HeroFill;
     private Image EnemyFill;
+    private RectTransform poolRect;
 
     /// <summary>Initializes component references and state.</summary>
     private void Awake()
@@ -87,11 +91,38 @@ public class ManaPoolManager : MonoBehaviour
         BankButton = GameObjectHelper.Game.ManaPool.BankButton;
         HeroFill = GameObjectHelper.Game.ManaPool.HeroFill;
         EnemyFill = GameObjectHelper.Game.ManaPool.EnemyFill;
+        poolRect = GameObject.Find("Canvas/ManaPool")?.GetComponent<RectTransform>();
 
         BankButton.onClick.AddListener(OnBankButtonClicked);
 
         ApplyBloomColor();
         RefreshUI();
+    }
+
+    /// <summary>Anchor the pool just above the board's top edge after the board is built.</summary>
+    private void Start()
+    {
+        StartCoroutine(AnchorAboveBoardWhenReady());
+    }
+
+    /// <summary>Coroutine that waits a frame for the board to compute its bounds, then anchors.</summary>
+    private System.Collections.IEnumerator AnchorAboveBoardWhenReady()
+    {
+        for (int i = 0; i < 2; i++) yield return null;
+        AnchorAboveBoard();
+    }
+
+    /// <summary>Computes the canvas Y of the board's top edge and positions the pool just above it.</summary>
+    private void AnchorAboveBoard()
+    {
+        if (poolRect == null || g.Board == null || CanvasHelper.CanvasRect == null) return;
+
+        var boardTopWorld = new Vector3(0f, g.Board.bounds.Top, 0f);
+        var boardTopCanvas = UnitConversionHelper.World.ToCanvas(CanvasHelper.CanvasRect, boardTopWorld);
+
+        const float padBoardToMana = 8f;
+        float manaY = boardTopCanvas.y + padBoardToMana + UiHeight * 0.5f;
+        poolRect.anchoredPosition = new Vector2(poolRect.anchoredPosition.x, manaY);
     }
 
     /// <summary>Cleans up resources when the object is destroyed.</summary>

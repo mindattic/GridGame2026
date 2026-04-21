@@ -65,7 +65,7 @@ namespace Scripts.Factories
         public static GameObject Create(Transform parent = null)
         {
             var root = new GameObject("TargetLine");
-            root.layer = 0;
+            root.layer = LayerMask.NameToLayer("Actor");
             root.tag = "SupportLine";
 
             var transform = root.transform;
@@ -92,6 +92,23 @@ namespace Scripts.Factories
             lineRenderer.useWorldSpace = true;
 
             lineRenderer.widthCurve = AnimationCurve.Constant(0f, 1f, 0.515152f);
+
+            // Cyan, fades to transparent along the line.
+            var cyan = new Color(0f, 1f, 1f, 1f);
+            var cyanClear = new Color(0f, 1f, 1f, 0f);
+            lineRenderer.colorGradient = new Gradient
+            {
+                colorKeys = new[]
+                {
+                    new GradientColorKey(cyan, 0f),
+                    new GradientColorKey(cyan, 1f),
+                },
+                alphaKeys = new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(0f, 1f),
+                },
+            };
 
             root.AddComponent<TargetLineInstance>();
 

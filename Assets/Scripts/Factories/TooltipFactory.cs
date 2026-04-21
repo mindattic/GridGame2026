@@ -105,6 +105,7 @@ namespace Scripts.Factories
             background.AddComponent<CanvasRenderer>();
 
             var bgImage = background.AddComponent<Image>();
+            if (SpriteLibrary.Sprites.TryGetValue("Black32x32", out var bgSprite)) bgImage.sprite = bgSprite;
             bgImage.color = new Color(1f, 1f, 1f, 0.9411765f);
             bgImage.raycastTarget = true;
             bgImage.maskable = true;

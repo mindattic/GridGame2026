@@ -179,7 +179,7 @@ namespace Scripts.Managers
  g.TimelineBar?.OnHeroStopMove();
 
  // Auto-bank if remaining time until next enemy is too short for player to act
- float remainingTime = g.TimelineBar?.GetSecondsUntilNextEnemyReachesLeft() ?? float.MaxValue;
+ float remainingTime = g.TimelineBar?.GetSecondsUntilNextEnemyReachesTrigger() ?? float.MaxValue;
  if (remainingTime < 0.1f)
  {
  g.ManaPoolManager?.OnBankButtonClicked();

@@ -75,9 +75,10 @@ namespace Scripts.Factories
     /// </summary>
     public static class KeyboardDialogFactory
     {
-        private const float KeySize = 64f;
-        private const float KeySpacing = 8f;
-        private const float RowSpacing = 8f;
+        // Prefab uses 105.3 px keys with 2.925 px gap (key origin step = 108.225). Match that.
+        private const float KeySize = 105.3f;
+        private const float KeySpacing = 2.925f;
+        private const float RowSpacing = 2.925f;
 
         /// <summary>Creates a new virtual keyboard dialog.</summary>
         public static GameObject Create(Transform parent = null)

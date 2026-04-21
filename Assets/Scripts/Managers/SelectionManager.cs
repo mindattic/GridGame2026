@@ -128,6 +128,7 @@ public class SelectionManager : MonoBehaviour
         if (g.Actors.SelectedActor == target)
         {
             g.Card.Assign();
+            SelectionLinkLine.Bind(target);
 #if UNITY_EDITOR
             GameManager.instance.reloadThumbnailSettings = true;
 #endif
@@ -136,6 +137,7 @@ public class SelectionManager : MonoBehaviour
 
         g.Actors.SelectedActor = target;
         g.SortingManager.OnActorFocus();
+        SelectionLinkLine.Bind(target);
 
         // Show abilities only when a hero is focused
         if (g.Actors.SelectedActor.IsHero)

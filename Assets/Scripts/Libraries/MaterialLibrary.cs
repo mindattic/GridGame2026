@@ -92,7 +92,8 @@ namespace Scripts.Libraries
                 { "PlayerParallax", AssetHelper.LoadAsset<Material>("Materials/PlayerParallax") },
                 { "RadialFill", AssetHelper.LoadAsset<Material>("Materials/RadialFill") },
                 { "SpriteOutline", AssetHelper.LoadAsset<Material>("Materials/SpriteOutline") },
-                { "SpritePan",     AssetHelper.LoadAsset<Material>("Materials/SpritePan") }
+                { "SpritePan",     AssetHelper.LoadAsset<Material>("Materials/SpritePan") },
+                { "SynergyAdditive", AssetHelper.LoadAsset<Material>("Materials/SynergyAdditive") }
             };
             isLoaded = true;
         }

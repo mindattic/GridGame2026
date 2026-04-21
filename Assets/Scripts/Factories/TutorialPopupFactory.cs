@@ -108,16 +108,16 @@ namespace Scripts.Factories
 
             var panelRT = panel.AddComponent<RectTransform>();
             panelRT.SetParent(rootRT, false);
-            panelRT.anchorMin = Vector2.zero;
-            panelRT.anchorMax = Vector2.one;
+            panelRT.anchorMin = new Vector2(0.5f, 0.5f);
+            panelRT.anchorMax = new Vector2(0.5f, 0.5f);
             panelRT.anchoredPosition = Vector2.zero;
-            panelRT.sizeDelta = Vector2.zero;
+            panelRT.sizeDelta = new Vector2(450f, 800f);
             panelRT.pivot = new Vector2(0.5f, 0.5f);
 
             panel.AddComponent<CanvasRenderer>();
 
             var panelImage = panel.AddComponent<Image>();
-            panelImage.color = new Color(0f, 0f, 0f, 0.85f);
+            panelImage.color = new Color(0.1764706f, 0.1764706f, 0.1764706f, 0.7686275f);
             panelImage.raycastTarget = true;
 
             // === GRANDCHILD: Title ===
@@ -150,8 +150,8 @@ namespace Scripts.Factories
             imageRT.SetParent(panelRT, false);
             imageRT.anchorMin = new Vector2(0.5f, 0.5f);
             imageRT.anchorMax = new Vector2(0.5f, 0.5f);
-            imageRT.anchoredPosition = new Vector2(0f, 50f);
-            imageRT.sizeDelta = new Vector2(300f, 200f);
+            imageRT.anchoredPosition = new Vector2(0f, 220f);
+            imageRT.sizeDelta = new Vector2(400f, 300f);
             imageRT.pivot = new Vector2(0.5f, 0.5f);
 
             imageObj.AddComponent<CanvasRenderer>();
@@ -169,8 +169,8 @@ namespace Scripts.Factories
             contentRT.SetParent(panelRT, false);
             contentRT.anchorMin = new Vector2(0.5f, 0.5f);
             contentRT.anchorMax = new Vector2(0.5f, 0.5f);
-            contentRT.anchoredPosition = new Vector2(0f, -200f);
-            contentRT.sizeDelta = new Vector2(400f, 150f);
+            contentRT.anchoredPosition = new Vector2(0f, -144.8f);
+            contentRT.sizeDelta = new Vector2(400f, 300f);
             contentRT.pivot = new Vector2(0.5f, 0.5f);
 
             contentObj.AddComponent<CanvasRenderer>();
@@ -190,7 +190,8 @@ namespace Scripts.Factories
             var nextButton = CreateButton("NextButton", ">", panelRT, new Vector2(170f, -340f));
 
             // === GRANDCHILD: CloseButton ===
-            var closeButton = CreateButton("CloseButton", "X", panelRT, new Vector2(0f, -340f));
+            // Overlaps NextButton intentionally — they're mutually exclusive (Close shows on last page).
+            var closeButton = CreateButton("CloseButton", "x", panelRT, new Vector2(170f, -340f));
 
             // Parent if specified
             if (parent != null)
@@ -218,9 +219,8 @@ namespace Scripts.Factories
             button.AddComponent<CanvasRenderer>();
 
             var buttonImage = button.AddComponent<Image>();
-            buttonImage.color = new Color(1f, 1f, 1f, 0f); // Transparent
+            buttonImage.color = new Color(1f, 1f, 1f, 0f); // Transparent — only raycast target is active
             buttonImage.raycastTarget = true;
-            buttonImage.type = Image.Type.Sliced;
 
             var buttonComp = button.AddComponent<Button>();
             buttonComp.interactable = true;
@@ -245,7 +245,7 @@ namespace Scripts.Factories
 
             var labelTMP = label.AddComponent<TextMeshProUGUI>();
             labelTMP.text = labelText;
-            labelTMP.fontSize = 32;
+            labelTMP.fontSize = 64;
             labelTMP.color = Color.white;
             labelTMP.alignment = TextAlignmentOptions.Center;
             labelTMP.raycastTarget = false;
