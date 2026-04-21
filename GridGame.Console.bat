@@ -10,4 +10,4 @@ wt -w 0 new-tab --title "5" --suppressApplicationTitle -d "%ROOT%." -- claude
 
 :: Run the GridGame menu in this tab
 title Main Menu
-powershell -ExecutionPolicy Bypass -File "%~dp0GridGame.ps1"
+powershell -ExecutionPolicy Bypass -File "%~dp0GridGame.Console.ps1"

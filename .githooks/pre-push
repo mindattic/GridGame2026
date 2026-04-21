@@ -6,7 +6,7 @@
 # covers all four (~30–60s cold, ~10–20s warm).
 #
 # Activation:  git config core.hooksPath .githooks
-#              (or run GridGame.ps1 -> Option 19)
+#              (or run GridGame.Console.ps1 -> Option 19)
 # Bypass:      git push --no-verify   (use only for urgent hotfixes)
 
 set -e

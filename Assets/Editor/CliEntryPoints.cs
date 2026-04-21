@@ -14,7 +14,7 @@ using UnityEngine;
 /// <para>USAGE:
 /// Unity -batchmode -nographics -projectPath . -executeMethod CliEntryPoints.ScaffoldAllScenes -quit -logFile -
 /// </para>
-/// <para>RELATED FILES: GridGame.ps1, SceneScaffoldHelper.cs, *Scaffold.cs</para>
+/// <para>RELATED FILES: GridGame.Console.ps1, SceneScaffoldHelper.cs, *Scaffold.cs</para>
 /// </summary>
 public static class CliEntryPoints
 {

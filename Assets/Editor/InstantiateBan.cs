@@ -20,7 +20,7 @@ using UnityEngine;
 /// (prefab-bound systems like MapPropEditor's prop loader, VisualEffectInstance's VFX
 /// clone) are frozen on InstantiateAllowlist.txt; new offenders fail Check().</para>
 /// <para>USAGE: CliEntryPoints.CheckInstantiateBan and
-/// CliEntryPoints.RegenerateInstantiateAllowlist, driven from GridGame.ps1.</para>
+/// CliEntryPoints.RegenerateInstantiateAllowlist, driven from GridGame.Console.ps1.</para>
 /// <para>RELATED FILES: CliEntryPoints.cs, Assets/Editor/InstantiateAllowlist.txt,
 /// SerializedFieldBan.cs, ResourcesLoadBan.cs</para>
 /// </summary>

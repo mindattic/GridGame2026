@@ -10,18 +10,18 @@ Unity 6000.3.2f1 tactical RPG — grid-based combat with 2D sprites on a 3D boar
 
 **Run the game (Unity Editor):**
 ```
-GridGame.ps1 → Option 1
+GridGame.Console.ps1 → Option 1
 ```
 Or via Claude Code: `/Run` triggers Unity Play Mode in the Editor.
 
 **Commit and sync:**
 ```
-GridGame.ps1 → Option 2  (git add, commit, push)
+GridGame.Console.ps1 → Option 2  (git add, commit, push)
 ```
 
 **Backup project:**
 ```
-GridGame.ps1 → Option 3  (copies to R:\Backup\GridGame with date stamps)
+GridGame.Console.ps1 → Option 3  (copies to R:\Backup\GridGame with date stamps)
 ```
 
 **Scene scaffolding** (rebuild a scene's hierarchy from code):
@@ -30,12 +30,12 @@ GridGame.ps1 → Option 3  (copies to R:\Backup\GridGame with date stamps)
 
 **Headless CLI (terminal-only workflow):**
 ```
-GridGame.ps1 → Option 5   Scaffold all scenes (batchmode)
-GridGame.ps1 → Option 6   Generate documentation (batchmode)
-GridGame.ps1 → Option 7   Run tests (batchmode)
-GridGame.ps1 → Option 8   Build standalone Windows (batchmode)
-GridGame.ps1 → Option 18  Check All Guardrails (CI smoke test)
-GridGame.ps1 → Option 19  Install Git Hooks (pre-push enforcement)
+GridGame.Console.ps1 → Option 5   Scaffold all scenes (batchmode)
+GridGame.Console.ps1 → Option 6   Generate documentation (batchmode)
+GridGame.Console.ps1 → Option 7   Run tests (batchmode)
+GridGame.Console.ps1 → Option 8   Build standalone Windows (batchmode)
+GridGame.Console.ps1 → Option 18  Check All Guardrails (CI smoke test)
+GridGame.Console.ps1 → Option 19  Install Git Hooks (pre-push enforcement)
 ```
 Direct invocation (portable to Linux/Mac CI):
 ```
@@ -52,7 +52,7 @@ Entry points live in `Assets/Editor/CliEntryPoints.cs`. Each exits with code 0 o
 | `InstantiateBan` | `Instantiate(` outside `*Factory.cs` | `Assets/Editor/InstantiateAllowlist.txt` |
 | `ScaffoldDriftChecker` | scene YAML drifting from its scaffold output | `Documentation/Scaffolds/Drift/*.snapshot.txt` |
 
-`CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session. Activate the pre-push hook with `GridGame.ps1 → Option 19` (sets `core.hooksPath=.githooks`). Bypass for hotfixes with `git push --no-verify`.
+`CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session. Activate the pre-push hook with `GridGame.Console.ps1 → Option 19` (sets `core.hooksPath=.githooks`). Bypass for hotfixes with `git push --no-verify`.
 
 ## Code-only Workflow
 

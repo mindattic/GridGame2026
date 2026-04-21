@@ -17,7 +17,7 @@ using UnityEngine;
 /// <para>INVARIANT: The allowlist is the upper bound, not a floor. Entries that no
 /// longer exist in code are dropped on Regenerate but are not errors on Check.</para>
 /// <para>USAGE: Called by CliEntryPoints.CheckResourcesLoadBan and
-/// CliEntryPoints.RegenerateResourcesLoadAllowlist, driven from GridGame.ps1.</para>
+/// CliEntryPoints.RegenerateResourcesLoadAllowlist, driven from GridGame.Console.ps1.</para>
 /// <para>RELATED FILES: CliEntryPoints.cs, Assets/Editor/ResourcesLoadAllowlist.txt, SerializedFieldBan.cs</para>
 /// </summary>
 public static class ResourcesLoadBan

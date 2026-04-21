@@ -16,7 +16,7 @@ using UnityEngine;
 /// <para>INVARIANT: The allowlist is the upper bound on allowed fields, not a floor. Entries
 /// that no longer exist in code are dropped on Regenerate but are not errors on Check.</para>
 /// <para>USAGE: Called by CliEntryPoints.CheckSerializedFieldBan and
-/// CliEntryPoints.RegenerateSerializedFieldAllowlist, driven from GridGame.ps1.</para>
+/// CliEntryPoints.RegenerateSerializedFieldAllowlist, driven from GridGame.Console.ps1.</para>
 /// <para>RELATED FILES: CliEntryPoints.cs, Assets/Editor/SerializedFieldAllowlist.txt</para>
 /// </summary>
 public static class SerializedFieldBan
