@@ -40,11 +40,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4f922b47447b0d245acc44d2545257a3
-    m_Address: Prefabs/ActorPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70ed2dcb9cfeb86489b788049c8eeb4c
     m_Address: Prefabs/CombatTextPrefab
     m_ReadOnly: 0
