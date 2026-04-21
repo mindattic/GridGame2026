@@ -1,4 +1,4 @@
-$root = $PSScriptRoot
+﻿$root = $PSScriptRoot
 $backupBase = "R:\Backup\GridGame"
 $repoUrl = "https://github.com/mindattic/GridGame2026.git"
 $unityEditor = "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe"
@@ -273,6 +273,96 @@ function Invoke-CheckAllGuardrails {
     Invoke-Batchmode "Check All Guardrails" "CliEntryPoints.CheckAllGuardrails"
 }
 
+# ── 20. Set start scene (rewrites StartSceneConfig.cs) ─────────────────────
+
+function Invoke-SetStartScene {
+    Write-Header "GridGame Set Start Scene"
+
+    $scenesRoot = Join-Path $root "Assets\Scenes"
+    $configPath = Join-Path $root "Assets\Scripts\Data\Config\StartSceneConfig.cs"
+
+    if (-not (Test-Path $configPath)) {
+        Write-Host "  StartSceneConfig.cs not found at:" -ForegroundColor Red
+        Write-Host "  $configPath" -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+    if (-not (Test-Path $scenesRoot)) {
+        Write-Host "  Scenes folder not found at:" -ForegroundColor Red
+        Write-Host "  $scenesRoot" -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+
+    $content = Get-Content $configPath -Raw
+    $rx = 'public const string StartScene = "([^"]*)";'
+    $match = [regex]::Match($content, $rx)
+    if (-not $match.Success) {
+        Write-Host "  Could not find StartScene constant in StartSceneConfig.cs." -ForegroundColor Red
+        Write-Host "  Expected line: public const string StartScene = ""...""; " -ForegroundColor DarkGray
+        Wait-ForEnter
+        return
+    }
+    $current = $match.Groups[1].Value
+
+    Write-Host "  Current start scene: " -NoNewline -ForegroundColor DarkGray
+    Write-Host $current -ForegroundColor White
+    Write-Host ""
+
+    $scenes = Get-ChildItem -Path $scenesRoot -Filter "*.unity" -Recurse | Sort-Object Name
+    if ($scenes.Count -eq 0) {
+        Write-Host "  No .unity files under $scenesRoot" -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+
+    Write-Host "  Available scenes:" -ForegroundColor DarkGray
+    for ($i = 0; $i -lt $scenes.Count; $i++) {
+        $name = [IO.Path]::GetFileNameWithoutExtension($scenes[$i].Name)
+        $padded = ($i + 1).ToString().PadLeft(2)
+        if ($name -eq $current) {
+            Write-Host "    [$padded]  $name  (current)" -ForegroundColor Green
+        } else {
+            Write-Host "    [$padded]  $name" -ForegroundColor White
+        }
+    }
+    Write-Host ""
+    Write-Host "    [ 0]  Back" -ForegroundColor DarkGray
+    Write-Host ""
+
+    $choice = Read-MenuChoice
+    if ($choice -eq "0" -or $choice -eq "") { return }
+
+    $idx = 0
+    if (-not [int]::TryParse($choice, [ref]$idx) -or $idx -lt 1 -or $idx -gt $scenes.Count) {
+        Write-Host "  Invalid choice." -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+
+    $picked = [IO.Path]::GetFileNameWithoutExtension($scenes[$idx - 1].Name)
+    if ($picked -eq $current) {
+        Write-Host ""
+        Write-Host "  Already set to $picked." -ForegroundColor DarkGray
+        Wait-ForEnter
+        return
+    }
+
+    $replacement = 'public const string StartScene = "' + $picked + '";'
+    $new = [regex]::Replace($content, $rx, $replacement)
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($configPath, $new, $utf8NoBom)
+
+    Write-Host ""
+    Write-Host "  Start scene: " -NoNewline -ForegroundColor White
+    Write-Host "$current -> $picked" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "  Unity applies the change on the next domain reload" -ForegroundColor DarkGray
+    Write-Host "  (editing any script / re-opening the editor)." -ForegroundColor DarkGray
+    Wait-ForEnter
+}
+
 # ── 19. Install git hooks (point core.hooksPath at .githooks) ──────────────
 
 function Invoke-InstallGitHooks {
@@ -373,6 +463,7 @@ $mainMenu = [ordered]@{
     "17" = @{ Name = "Save Scene Scaffolds (scene -> code)";    Action = { Invoke-SaveSceneScaffolds } }
     "18" = @{ Name = "Check All Guardrails (CI smoke test)";    Action = { Invoke-CheckAllGuardrails } }
     "19" = @{ Name = "Install Git Hooks (pre-push enforcement)"; Action = { Invoke-InstallGitHooks } }
+    "20" = @{ Name = "Set Start Scene";                         Action = { Invoke-SetStartScene } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"
