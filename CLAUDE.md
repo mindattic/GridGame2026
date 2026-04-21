@@ -34,6 +34,8 @@ GridGame.ps1 → Option 5   Scaffold all scenes (batchmode)
 GridGame.ps1 → Option 6   Generate documentation (batchmode)
 GridGame.ps1 → Option 7   Run tests (batchmode)
 GridGame.ps1 → Option 8   Build standalone Windows (batchmode)
+GridGame.ps1 → Option 18  Check All Guardrails (CI smoke test)
+GridGame.ps1 → Option 19  Install Git Hooks (pre-push enforcement)
 ```
 Direct invocation (portable to Linux/Mac CI):
 ```
@@ -41,6 +43,16 @@ Unity -batchmode -nographics -projectPath . \
       -executeMethod CliEntryPoints.ScaffoldAllScenes -quit -logFile -
 ```
 Entry points live in `Assets/Editor/CliEntryPoints.cs`. Each exits with code 0 on success, 1 on failure.
+
+**Guardrails (enforced pre-push via `.githooks/pre-push`):**
+| Guardrail | What it blocks | Allowlist |
+|---|---|---|
+| `SerializedFieldBan` | new `[SerializeField]` fields in `Scripts/` | `Assets/Editor/SerializedFieldAllowlist.txt` |
+| `ResourcesLoadBan` | new `Resources.Load*` call-sites | `Assets/Editor/ResourcesLoadAllowlist.txt` |
+| `InstantiateBan` | `Instantiate(` outside `*Factory.cs` | `Assets/Editor/InstantiateAllowlist.txt` |
+| `ScaffoldDriftChecker` | scene YAML drifting from its scaffold output | `Documentation/Scaffolds/Drift/*.snapshot.txt` |
+
+`CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session. Activate the pre-push hook with `GridGame.ps1 → Option 19` (sets `core.hooksPath=.githooks`). Bypass for hotfixes with `git push --no-verify`.
 
 ## Code-only Workflow
 

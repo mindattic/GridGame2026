@@ -273,6 +273,47 @@ function Invoke-CheckAllGuardrails {
     Invoke-Batchmode "Check All Guardrails" "CliEntryPoints.CheckAllGuardrails"
 }
 
+# ── 19. Install git hooks (point core.hooksPath at .githooks) ──────────────
+
+function Invoke-InstallGitHooks {
+    Write-Header "GridGame Install Git Hooks"
+
+    $hooksDir = Join-Path $root ".githooks"
+    if (-not (Test-Path $hooksDir)) {
+        Write-Host "  .githooks directory missing — expected at:" -ForegroundColor Red
+        Write-Host "  $hooksDir" -ForegroundColor Red
+        Wait-ForEnter
+        return
+    }
+
+    $current = git -C $root config --get core.hooksPath 2>$null
+    if ($current -eq ".githooks") {
+        Write-Host "  Already installed." -ForegroundColor Green
+        Write-Host "  core.hooksPath = " -NoNewline -ForegroundColor DarkGray
+        Write-Host $current -ForegroundColor White
+    } else {
+        if ($current) {
+            Write-Host "  Overwriting existing core.hooksPath:" -ForegroundColor Yellow
+            Write-Host "    was: $current" -ForegroundColor DarkGray
+        }
+        git -C $root config core.hooksPath .githooks
+        Write-Host "  Installed." -ForegroundColor Green
+        Write-Host "  core.hooksPath -> .githooks" -ForegroundColor White
+    }
+
+    Write-Host ""
+    Write-Host "  Active hooks:" -ForegroundColor DarkGray
+    Get-ChildItem $hooksDir -File | ForEach-Object {
+        Write-Host "    - $($_.Name)" -ForegroundColor White
+    }
+
+    Write-Host ""
+    Write-Host "  Bypass a hook for an urgent push with: " -NoNewline -ForegroundColor DarkGray
+    Write-Host "git push --no-verify" -ForegroundColor White
+
+    Wait-ForEnter
+}
+
 # ── Batchmode runner ───────────────────────────────────────────────────────
 
 function Invoke-Batchmode($title, $method) {
@@ -331,6 +372,7 @@ $mainMenu = [ordered]@{
     "16" = @{ Name = "Regenerate Instantiate Allowlist";        Action = { Invoke-RegenInstantiateAllowlist } }
     "17" = @{ Name = "Save Scene Scaffolds (scene -> code)";    Action = { Invoke-SaveSceneScaffolds } }
     "18" = @{ Name = "Check All Guardrails (CI smoke test)";    Action = { Invoke-CheckAllGuardrails } }
+    "19" = @{ Name = "Install Git Hooks (pre-push enforcement)"; Action = { Invoke-InstallGitHooks } }
 }
 
 $Host.UI.RawUI.WindowTitle = "Main Menu"
