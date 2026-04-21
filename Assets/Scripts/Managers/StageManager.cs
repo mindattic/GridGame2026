@@ -77,9 +77,6 @@ public class StageManager : MonoBehaviour
 
     #region Fields
 
-    /// <summary>Prefab used to instantiate actors.</summary>
-    private GameObject actorPrefab;
-
     /// <summary>Currently loaded stage definition.</summary>
     public Stage currentStage;
 
@@ -92,12 +89,6 @@ public class StageManager : MonoBehaviour
     #endregion
 
     #region Initialization
-
-    /// <summary>Loads actor prefab on awake.</summary>
-    public void Awake()
-    {
-        actorPrefab = PrefabLibrary.Prefabs["ActorPrefab"];
-    }
 
     /// <summary>
     /// Initializes the stage from the player's profile.
@@ -299,10 +290,10 @@ public class StageManager : MonoBehaviour
             return null;
         }
 
-        // Instantiate from prefab and parent under the board
-        var go = UnityEngine.Object.Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
+        // Build actor via factory (replaces ActorPrefab.prefab)
+        var go = ActorFactory.Create(g.Board.transform);
+        go.transform.localPosition = Vector3.zero;
         var instance = go.GetComponent<ActorInstance>();
-        instance.transform.SetParent(g.Board.transform, false);
         instance.name = $"{stageActor.CharacterClass}_{Guid.NewGuid():N}";
         instance.characterClass = stageActor.CharacterClass;
         instance.team = stageActor.Team;

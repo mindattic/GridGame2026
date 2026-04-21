@@ -261,6 +261,46 @@ public static class CliEntryPoints
         }
     }
 
+    // ===================== Instantiate Ban (Phase 4 guardrail) =====================
+
+    /// <summary>
+    /// Scans Assets/Scripts for Instantiate call-sites outside *Factory.cs files and fails
+    /// if any file is not present in Assets/Editor/InstantiateAllowlist.txt.
+    /// Exit 0 = clean, 1 = new offenders detected.
+    /// </summary>
+    public static void CheckInstantiateBan()
+    {
+        try
+        {
+            var offenders = InstantiateBan.Check();
+            EditorApplication.Exit(offenders > 0 ? 1 : 0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] CheckInstantiateBan failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    /// <summary>
+    /// Overwrites the allowlist with the current scan results. Run after migrating a
+    /// file's Instantiate calls into a *Factory.cs (Phase 4+).
+    /// </summary>
+    public static void RegenerateInstantiateAllowlist()
+    {
+        try
+        {
+            var count = InstantiateBan.Regenerate();
+            Debug.Log($"[Cli] Instantiate allowlist regenerated with {count} entr{(count == 1 ? "y" : "ies")}.");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] RegenerateInstantiateAllowlist failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
     // ===================== Scaffold Drift (Phase 0 guardrail) =====================
 
     /// <summary>

@@ -1,0 +1,7 @@
+# InstantiateAllowlist — committed frozen set of non-Factory files that call Instantiate.
+# Format: relative/path/File.cs (one per line, sorted).
+# *Factory.cs files are auto-excluded from the scan — not listed here.
+# Do not hand-edit. Regenerate via CliEntryPoints.RegenerateInstantiateAllowlist
+# (after migrating a file's Instantiate calls into a Factory).
+Assets/Scripts/Instances/VisualEffectInstance.cs
+Assets/Scripts/Serialization/MapPropEditor.cs

@@ -157,72 +157,6 @@ public sealed class CutoutOverlay : MonoBehaviour
     public RectTransform CenterPane => centerPane;
     public RectTransform RightPane => rightPane;
 
-    /// <summary>
-    /// Instantiates a prefab under LeftPane and stretches it if it is UI.
-    /// </summary>
-    public T AddToLeft<T>(T prefab) where T : Component
-    {
-        if (prefab == null || leftPane == null) return null;
-        var inst = Instantiate(prefab, leftPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
-    /// <summary>
-    /// Instantiates a prefab under CenterPane and stretches it if it is UI.
-    /// </summary>
-    public T AddToCenter<T>(T prefab) where T : Component
-    {
-        if (prefab == null || centerPane == null) return null;
-        var inst = Instantiate(prefab, centerPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
-    /// <summary>
-    /// Instantiates a prefab under RightPane and stretches it if it is UI.
-    /// </summary>
-    public T AddToRight<T>(T prefab) where T : Component
-    {
-        if (prefab == null || rightPane == null) return null;
-        var inst = Instantiate(prefab, rightPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
-    /// <summary>
-    /// Instantiates a prefab GameObject under LeftPane.
-    /// </summary>
-    public GameObject AddToLeft(GameObject prefab)
-    {
-        if (prefab == null || leftPane == null) return null;
-        var inst = Instantiate(prefab, leftPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
-    /// <summary>
-    /// Instantiates a prefab GameObject under CenterPane.
-    /// </summary>
-    public GameObject AddToCenter(GameObject prefab)
-    {
-        if (prefab == null || centerPane == null) return null;
-        var inst = Instantiate(prefab, centerPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
-    /// <summary>
-    /// Instantiates a prefab GameObject under RightPane.
-    /// </summary>
-    public GameObject AddToRight(GameObject prefab)
-    {
-        if (prefab == null || rightPane == null) return null;
-        var inst = Instantiate(prefab, rightPane, worldPositionStays: false);
-        StretchIfUI(inst.transform as RectTransform);
-        return inst;
-    }
-
     // ---------------------------------------------------------------------
     // Core layout
     // ---------------------------------------------------------------------
@@ -405,19 +339,6 @@ public sealed class CutoutOverlay : MonoBehaviour
         }
 
         return rt;
-    }
-
-    /// <summary>
-    /// Stretches a RectTransform to its parent if available.
-    /// </summary>
-    private void StretchIfUI(RectTransform rt)
-    {
-        if (rt == null) return;
-        rt.anchorMin = new Vector2(0f, 0f);
-        rt.anchorMax = new Vector2(1f, 1f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
     }
 
     /// <summary>
