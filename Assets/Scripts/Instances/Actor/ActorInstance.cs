@@ -393,8 +393,12 @@ public partial class ActorInstance : MonoBehaviour
             Render.SetParallaxSprite(SpriteLibrary.Seamless["RedFire1"]);
             Render.SetParallaxMaterial(MaterialLibrary.Materials["EnemyParallax"], Thumbnail.texture);
             Render.SetParallaxAlpha(Opacity.Percent50);
-            Render.SetFrameColor(ColorHelper.Solid.GunMetal);
             Vfx.Attack = VisualEffectLibrary.VisualEffects["DoubleClaw"];
+
+            // Enemy quality layer flickers between black and dark red using Quake's broken-
+            // fluorescent pattern — same effect ActorCard uses for the enemy backdrop, applied
+            // here to the per-actor quality overlay so enemies read as menacing at a glance.
+            StartCoroutine(EnemyQualityFlickerRoutine());
 
             // No TurnDelay assignment. Timeline seeds and displays countdowns.
             Render.SetTurnDelayText(-1);
@@ -430,6 +434,25 @@ public partial class ActorInstance : MonoBehaviour
             Flags.HasSpawned = true;
             Animation.FadeIn();
             Animation.Spin360();
+        }
+    }
+
+    /// <summary>
+    /// Lerps the enemy's Quality overlay between black and dark red using Quake's
+    /// FluorescentFlicker pattern (id Software, 1996). Stops automatically when
+    /// the actor leaves play (IsPlaying false) — caller does not need to cancel.
+    /// </summary>
+    private IEnumerator EnemyQualityFlickerRoutine()
+    {
+        var baseColor = new Color(0f, 0f, 0f, 0.6f);
+        var peakColor = new Color(0.55f, 0.04f, 0.04f, 0.85f);
+        float t0 = Time.time;
+        while (IsPlaying)
+        {
+            float b = QuakeLightFlicker.SampleSmooth(QuakeLightFlicker.FluorescentFlicker, Time.time - t0);
+            float k = Mathf.Clamp01(b);
+            Render.SetQualityColor(Color.Lerp(baseColor, peakColor, k));
+            yield return null;
         }
     }
 

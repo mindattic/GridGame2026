@@ -260,6 +260,7 @@ namespace Scripts.Libraries
                 { "White32x32", AssetHelper.LoadAsset<Sprite>("Sprites/White32x32") },
                 { "Transparent32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Transparent32x32") },
                 { "Tile", AssetHelper.LoadAsset<Sprite>("Sprites/Tiles/tile3") },
+                { "ChevronScroll", AssetHelper.LoadAsset<Sprite>("Sprites/ChevronScroll") },
             };
 
             weaponTypes = new Dictionary<string, Sprite>

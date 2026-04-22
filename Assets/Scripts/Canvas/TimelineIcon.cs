@@ -35,6 +35,7 @@ namespace Scripts.Canvas
     /// - Approaching: Moving right toward trigger point ("loading")
     /// - PushedBack: Being pushed left toward spawn after taking damage (animated)
     /// - Stunned: Stopped after pushback, recovering (agility-based duration)
+    /// - Resolving: Spell-cast icon parked at trigger while its effect resolves
     /// </summary>
     public enum TimelineIconMode
     {
@@ -45,7 +46,9 @@ namespace Scripts.Canvas
         /// <summary>Icon is being pushed left (animated with deceleration).</summary>
         PushedBack,
         /// <summary>Icon has stopped after pushback, recovering.</summary>
-        Stunned
+        Stunned,
+        /// <summary>Spell-cast icon parked at u=1 while its effect resolves (input suspended).</summary>
+        Resolving
     }
 
     /// <summary>
@@ -190,10 +193,6 @@ namespace Scripts.Canvas
                 {
                     Debug.LogWarning("TimelineIcon: Child Icon Image not found. Add an Icon child or assign `Icon`.", this);
                 }
-                else
-                {
-                    Debug.Log($"TimelineIcon: Icon Image found on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
-                }
             }
             if (Label == null)
             {
@@ -316,7 +315,6 @@ namespace Scripts.Canvas
                 Icon.sprite = sprite;
                 Icon.enabled = sprite != null;
                 Icon.preserveAspect = true;
-                Debug.Log($"TimelineIcon: Assigned icon '{(sprite != null ? sprite.name : "<null>")}' for actor '{Owner?.characterClass}' tags='{(data != null ? data.Tags.ToString() : "<no data>")}' on GameObject '{Icon.gameObject.name}' (path: {GetTransformPath(Icon.transform)})", this);
             }
 
             ApplyPosition();
@@ -574,6 +572,9 @@ namespace Scripts.Canvas
                 case TimelineIconMode.Stunned:
                     UpdateStunned();
                     break;
+                case TimelineIconMode.Resolving:
+                    // Icon is parked at u=1 while the cast resolves — no movement.
+                    break;
             }
             
             // Ensure we never drift past the trigger point due to float jitter
@@ -620,6 +621,15 @@ namespace Scripts.Canvas
             // Move toward right / trigger (u = 1 — "loading complete")
             u = Mathf.MoveTowards(u, 1f, uPerSec * Time.deltaTime);
             ApplyPosition();
+
+            // Spell icons: keep the cast state's elapsed-time in lockstep with the icon's u
+            // position so CastingState.Progress (and the time label) tracks the icon visually.
+            // Uses GetSecondsRemaining so the math is correct regardless of spawn-u.
+            if (IsSpellIcon && ActiveCast != null && ActiveCast.TotalCastTime > 0f)
+            {
+                float secondsRemaining = GetSecondsRemaining();
+                ActiveCast.ElapsedTime = Mathf.Max(0f, ActiveCast.TotalCastTime - secondsRemaining);
+            }
         }
 
         /// <summary>Updates the pushed back.</summary>
@@ -748,7 +758,41 @@ namespace Scripts.Canvas
             StartCoroutine(FadeOutAndDestroy(duration));
         }
 
-        // ===================== Cast Bar =====================
+        // ===================== Cast Bar / Spell Icon =====================
+
+        /// <summary>True when this icon represents an in-flight spell rather than an actor's own slot.</summary>
+        public bool IsSpellIcon { get; private set; }
+
+        /// <summary>
+        /// Parks this icon at u=1 in Resolving mode (no movement). Caller is the spell-icon
+        /// onReached closure — input is suspended elsewhere by TurnManager.IsResolvingCast.
+        /// </summary>
+        public void EnterResolvingMode()
+        {
+            SetU(1f);
+            Mode = TimelineIconMode.Resolving;
+        }
+
+        private System.Action onSpellInterrupted;
+
+        /// <summary>
+        /// Configures this icon as a spell-cast icon. Owner is the caster; uPerSec = 1/CastTime
+        /// so the icon's right edge reaches the trigger after exactly TotalCastTime seconds.
+        /// The icon's center represents the moment-in-time the cast resolves; train-cascade
+        /// in TimelineBarInstance.ResolveSpatialOverlap shoves overlapping neighbors leftward.
+        /// </summary>
+        public void InitializeForSpell(CastingState state, float leftX, float rightX, float uPerSec,
+                                       System.Action<TimelineIcon> onReached, System.Action onInterrupted = null)
+        {
+            IsSpellIcon = true;
+            onSpellInterrupted = onInterrupted;
+            // Spawn at u=0 (fresh, just started loading) — uPerSec drives the 0→1 trip.
+            InitializeNormalized(state?.Caster, leftX, rightX, 0f, uPerSec, onReached, queueDelay: 0f);
+            // Tint the tag so the player can see at a glance that this is a spell, not an enemy.
+            if (Tag != null) Tag.color = new Color(0.4f, 0.7f, 1f, 1f);
+            // Wire the cast-progress fill bar to this state.
+            BeginCast(state);
+        }
 
         /// <summary>Current casting state (null when not casting).</summary>
         public CastingState ActiveCast { get; private set; }
@@ -790,6 +834,14 @@ namespace Scripts.Canvas
                 castBarImage.color = new Color(1f, 0.3f, 0.3f, 0.8f); // red on interrupt
                 StartCoroutine(FadeCastBar());
                 ActiveCast = null;
+                // Spell icons live and die with their cast — fade and notify.
+                if (IsSpellIcon)
+                {
+                    var cb = onSpellInterrupted;
+                    onSpellInterrupted = null;
+                    cb?.Invoke();
+                    FadeAndDestroy(0.25f);
+                }
                 return;
             }
 

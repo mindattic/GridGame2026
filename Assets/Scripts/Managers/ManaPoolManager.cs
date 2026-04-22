@@ -82,6 +82,12 @@ public class ManaPoolManager : MonoBehaviour
     private Image EnemyFill;
     private RectTransform poolRect;
 
+    // Bank button pulse: glow halo scaled by an animation curve, mirroring CoinCounter.
+    private RectTransform bankButtonRect;
+    private RectTransform bankGlowRect;
+    private AnimationCurve bankGlowCurve;
+    private const float BankGlowMaxScale = 1.6f;
+
     /// <summary>Initializes component references and state.</summary>
     private void Awake()
     {
@@ -94,6 +100,15 @@ public class ManaPoolManager : MonoBehaviour
         poolRect = GameObject.Find("Canvas/ManaPool")?.GetComponent<RectTransform>();
 
         BankButton.onClick.AddListener(OnBankButtonClicked);
+
+        // Cache rects for the glow pulse — reuses CoinCounter's curve shape (0→1→0 loop).
+        bankButtonRect = BankButton != null ? BankButton.GetComponent<RectTransform>() : null;
+        var glow = GameObjectHelper.Game.ManaPool.BankButtonGlow;
+        bankGlowRect = glow != null ? glow.rectTransform : null;
+        bankGlowCurve = new AnimationCurve(
+            new Keyframe(0f, 0f),
+            new Keyframe(0.5f, 1f),
+            new Keyframe(1f, 0f));
 
         ApplyBloomColor();
         RefreshUI();
@@ -141,6 +156,19 @@ public class ManaPoolManager : MonoBehaviour
             heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
             RefreshUI();
         }
+
+        UpdateBankGlow();
+    }
+
+    /// <summary>Pulses the bank-button glow halo using the same animation-curve loop as CoinCounter.</summary>
+    private void UpdateBankGlow()
+    {
+        if (bankGlowRect == null || bankButtonRect == null || bankGlowCurve == null || bankGlowCurve.length == 0) return;
+        float scale = BankGlowMaxScale * bankGlowCurve.Evaluate(Time.time % bankGlowCurve.length);
+        bankGlowRect.localScale = new Vector3(
+            bankButtonRect.localScale.x * scale,
+            bankButtonRect.localScale.y * scale,
+            1f);
     }
 
     /// <summary>

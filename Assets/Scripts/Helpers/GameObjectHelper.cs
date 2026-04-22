@@ -223,6 +223,8 @@ namespace Scripts.Helpers
 
                 public static RectTransform Root => GameObject.Find("Canvas/ManaPool").GetComponent<RectTransform>();
                 public static Button BankButton => GameObject.Find("Canvas/ManaPool/BankButton").GetComponent<Button>();
+                // Pulsing halo behind the bank button (created by GameScaffold).
+                public static Image BankButtonGlow => GameObject.Find("Canvas/ManaPool/BankButton/Glow")?.GetComponent<Image>();
 
                 // Hero bar uses an Image set to Filled (Horizontal, Left).
                 // Back is a static background image that never changes.

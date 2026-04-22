@@ -670,6 +670,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e83fb21c70cfce44f84f6b1fdd33c2ca
+    m_Address: Sprites/ChevronScroll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9a768e7cc448e64c893a1d3a069f20d
     m_Address: Sprites/WeaponTypes/Grenade
     m_ReadOnly: 0

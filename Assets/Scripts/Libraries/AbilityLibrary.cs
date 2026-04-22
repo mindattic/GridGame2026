@@ -163,6 +163,7 @@ namespace Scripts.Libraries
             Effect = AbilityEffect.Heal,
             TargetingMode = AbilityTargetingMode.AnyActor,
             ManaCost = 15,
+            CastTimeSeconds = 3f,
             Description = "Launches a healing spark that flies to the target and restores HP."
         };
 

@@ -886,7 +886,7 @@ public static class GameScaffold
         rt_HeroBar.anchorMax = new Vector2(1f, 0.5f);
         rt_HeroBar.pivot = new Vector2(0.5f, 0.5f);
         rt_HeroBar.sizeDelta = new Vector2(-176f, 64f);
-        rt_HeroBar.anchoredPosition = new Vector2(72f, 0f);
+        rt_HeroBar.anchoredPosition = new Vector2(-72f, 0f);
         Undo.RegisterCreatedObjectUndo(go_HeroBar, "Create HeroBar");
 
         // --- Back ---
@@ -933,7 +933,7 @@ public static class GameScaffold
         rt_EnemyBar.anchorMax = new Vector2(1f, 0.5f);
         rt_EnemyBar.pivot = new Vector2(0.5f, 0.5f);
         rt_EnemyBar.sizeDelta = new Vector2(-176f, 0f);
-        rt_EnemyBar.anchoredPosition = new Vector2(72f, -80f);
+        rt_EnemyBar.anchoredPosition = new Vector2(-72f, -80f);
         Undo.RegisterCreatedObjectUndo(go_EnemyBar, "Create EnemyBar");
 
         // --- Fill ---
@@ -972,24 +972,45 @@ public static class GameScaffold
         img_Back4.raycastTarget = false;
         Undo.RegisterCreatedObjectUndo(go_Back4, "Create Back");
 
-        // --- BankButton ---
+        // --- BankButton (blue circle, pulsing glow — anchored to RIGHT side now that
+        //     the timeline runs left → right and the bank "fast-forwards" the load.) ---
         var go_BankButton = new GameObject("BankButton");
         var rt_BankButton = go_BankButton.AddComponent<RectTransform>();
         rt_BankButton.SetParent(go_ManaPool.GetComponent<RectTransform>(), false);
-        rt_BankButton.anchorMin = new Vector2(0f, 0.5f);
-        rt_BankButton.anchorMax = new Vector2(0f, 0.5f);
+        rt_BankButton.anchorMin = new Vector2(1f, 0.5f);
+        rt_BankButton.anchorMax = new Vector2(1f, 0.5f);
         rt_BankButton.pivot = new Vector2(0.5f, 0.5f);
-        rt_BankButton.sizeDelta = new Vector2(128f, 64f);
-        rt_BankButton.anchoredPosition = new Vector2(86.8f, 0f);
+        rt_BankButton.sizeDelta = new Vector2(96f, 96f);
+        rt_BankButton.anchoredPosition = new Vector2(-86.8f, 0f);
         go_BankButton.AddComponent<CanvasRenderer>();
         var img_BankButton = go_BankButton.AddComponent<Image>();
-        img_BankButton.sprite = SceneScaffoldHelper.LoadSprite(Sprite_Button_128x64);
-        img_BankButton.color = new Color(1f, 1f, 1f, 1f);
+        // Reuse the round Coin sprite as a circular shape; tinted blue/cyan to read as mana/bank.
+        img_BankButton.sprite = SceneScaffoldHelper.LoadSprite(Sprite_Coin);
+        img_BankButton.color = new Color(0.25f, 0.55f, 1f, 1f);
+        img_BankButton.preserveAspect = true;
         img_BankButton.raycastTarget = true;
         var btn_BankButton = go_BankButton.AddComponent<Button>();
         btn_BankButton.navigation = new Navigation { mode = (Navigation.Mode)3 };
         btn_BankButton.targetGraphic = go_BankButton.GetComponent<Image>();
         Undo.RegisterCreatedObjectUndo(go_BankButton, "Create BankButton");
+
+        // --- Glow (pulsing halo behind the bank button — duplicates CoinCounter pulse) ---
+        var go_BankGlow = new GameObject("Glow");
+        var rt_BankGlow = go_BankGlow.AddComponent<RectTransform>();
+        rt_BankGlow.SetParent(go_BankButton.GetComponent<RectTransform>(), false);
+        rt_BankGlow.anchorMin = new Vector2(0.5f, 0.5f);
+        rt_BankGlow.anchorMax = new Vector2(0.5f, 0.5f);
+        rt_BankGlow.pivot = new Vector2(0.5f, 0.5f);
+        rt_BankGlow.sizeDelta = new Vector2(96f, 96f);
+        rt_BankGlow.anchoredPosition = new Vector2(0f, 0f);
+        rt_BankGlow.SetAsFirstSibling();
+        go_BankGlow.AddComponent<CanvasRenderer>();
+        var img_BankGlow = go_BankGlow.AddComponent<Image>();
+        img_BankGlow.sprite = SceneScaffoldHelper.LoadSprite(Sprite_Coin);
+        img_BankGlow.color = new Color(0.4f, 0.7f, 1f, 0.6f);
+        img_BankGlow.preserveAspect = true;
+        img_BankGlow.raycastTarget = false;
+        Undo.RegisterCreatedObjectUndo(go_BankGlow, "Create Bank Glow");
 
         // --- Label ---
         var go_Label2 = new GameObject("Label");
@@ -1003,12 +1024,12 @@ public static class GameScaffold
         go_Label2.AddComponent<CanvasRenderer>();
         var tmp_Label2 = go_Label2.AddComponent<TextMeshProUGUI>();
         tmp_Label2.font = SceneScaffoldHelper.LoadFont(Font_Avenir);
-        tmp_Label2.text = "'Bank";
-        tmp_Label2.fontSize = 36f;
+        tmp_Label2.text = "Bank";
+        tmp_Label2.fontSize = 28f;
         tmp_Label2.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Label2.alignment = (TextAlignmentOptions)258;
-        tmp_Label2.enableWordWrapping = true;
-        tmp_Label2.raycastTarget = true;
+        tmp_Label2.alignment = (TextAlignmentOptions)514;
+        tmp_Label2.enableWordWrapping = false;
+        tmp_Label2.raycastTarget = false;
         Undo.RegisterCreatedObjectUndo(go_Label2, "Create Label");
 
         // --- Clock ---

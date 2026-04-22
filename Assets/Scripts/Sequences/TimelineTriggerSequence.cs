@@ -78,8 +78,6 @@ namespace Scripts.Sequences
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
-            UnityEngine.Debug.Log($"[TimelineTriggerSequence] ProcessRoutine for {triggeringEnemy?.name ?? "null"}");
-
             if (triggeringEnemy == null || !triggeringEnemy.IsPlaying)
                 yield break;
 

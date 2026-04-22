@@ -409,6 +409,21 @@ public static class Formulas
     {
         return CritPercent(attacker.Stats);
     }
+
+    /// <summary>
+    /// Effective cast time for a spell with raw <paramref name="baseSeconds"/> on a caster
+    /// with the given Wisdom and Intelligence. Higher WIS+INT makes the cast finish faster.
+    /// Floor at 25% of baseSeconds so even the best caster can't make a long ritual instant.
+    /// Shape: actual = base × 50 / (50 + (wis+intel)×0.5). Cleric ~10/10 → ~0.83×; 50/50 → ~0.5×; 200/200 → 0.20× (floored to 0.25×).
+    /// </summary>
+    public static float CastTime(float baseSeconds, float wisdom, float intelligence)
+    {
+        if (baseSeconds <= 0f) return 0f;
+        float skill = Mathf.Max(0f, wisdom + intelligence);
+        float scale = 50f / (50f + skill * 0.5f);
+        float floor = baseSeconds * 0.25f;
+        return Mathf.Max(floor, baseSeconds * scale);
+    }
 }
 
 /// <summary>

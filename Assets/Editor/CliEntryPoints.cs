@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -452,6 +454,107 @@ public static class CliEntryPoints
             Debug.LogError($"[Cli] BuildStandaloneWindows failed: {e.Message}\n{e.StackTrace}");
             EditorApplication.Exit(1);
         }
+    }
+
+    // ===================== Generated Sprite Assets =====================
+
+    /// <summary>
+    /// Generates Assets/Sprites/ChevronScroll.png — a single-chevron-wide tileable strip (black
+    /// stroke on transparent background) used by TimelineBarInstance as a UV-scrolling motion
+    /// indicator. Registers the PNG as addressable under "Sprites/ChevronScroll" so SpriteLibrary
+    /// can load it the same way as any hand-made sprite. Re-running the method overwrites the PNG
+    /// and updates the addressable entry; swap with a designer-made replacement any time.
+    /// </summary>
+    public static void GenerateChevronScroll()
+    {
+        try
+        {
+            const string assetPath = "Assets/Sprites/ChevronScroll.png";
+            const string address = "Sprites/ChevronScroll";
+            const int W = 80;   // tile width (one chevron period)
+            const int H = 40;   // tile height
+            const float strokeHalfWidth = 4.5f; // 9px stroke
+            const float aa = 1.0f;              // anti-alias edge width
+            // Apex sits at ~75% of the tile — leaves breathing space between chevrons when tiled.
+            var apex = new Vector2(W * 0.72f, H * 0.5f);
+            var topLeft = new Vector2(0f, 0f);
+            var bottomLeft = new Vector2(0f, H);
+            // Next tile's chevron left-edge starts at x=W, so its segments project into our tile
+            // as `(W, 0)→(W+apex.x, H/2)` and `(W, H)→(W+apex.x, H/2)`. Sample those too so the
+            // stroke wraps cleanly across the tile seam.
+            var nextTopLeft = new Vector2(W, 0f);
+            var nextBottomLeft = new Vector2(W, H);
+            var nextApex = new Vector2(W + apex.x, H * 0.5f);
+
+            var pixels = new Color32[W * H];
+            for (int y = 0; y < H; y++)
+            {
+                for (int x = 0; x < W; x++)
+                {
+                    var p = new Vector2(x + 0.5f, y + 0.5f);
+                    float d = Mathf.Min(
+                        DistanceToSegment(p, topLeft, apex),
+                        DistanceToSegment(p, apex, bottomLeft),
+                        DistanceToSegment(p, nextTopLeft, nextApex),
+                        DistanceToSegment(p, nextApex, nextBottomLeft));
+                    float coverage = 1f - Mathf.Clamp01((d - (strokeHalfWidth - aa)) / aa);
+                    byte a = (byte)Mathf.RoundToInt(Mathf.Clamp01(coverage) * 255f);
+                    pixels[y * W + x] = new Color32(0, 0, 0, a);
+                }
+            }
+
+            var tex = new Texture2D(W, H, TextureFormat.RGBA32, mipChain: false);
+            tex.SetPixels32(pixels);
+            tex.Apply();
+            var bytes = tex.EncodeToPNG();
+            UnityEngine.Object.DestroyImmediate(tex);
+
+            var dir = Path.GetDirectoryName(assetPath);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            File.WriteAllBytes(assetPath, bytes);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+
+            var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+            if (importer == null)
+                throw new Exception($"Could not get TextureImporter for {assetPath}");
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.wrapMode = TextureWrapMode.Repeat;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.alphaIsTransparency = true;
+            importer.mipmapEnabled = false;
+            importer.SaveAndReimport();
+
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            if (settings == null)
+                throw new Exception("AddressableAssetSettings not found — project may be missing Addressables configuration.");
+            var spritesGroup = settings.groups.FirstOrDefault(g => g != null && g.Name == "Sprites")
+                               ?? settings.DefaultGroup;
+            if (spritesGroup == null)
+                throw new Exception("No 'Sprites' addressable group and no default group — cannot register entry.");
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            var entry = settings.CreateOrMoveEntry(guid, spritesGroup);
+            entry.address = address;
+            settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, postEvent: true);
+            AssetDatabase.SaveAssets();
+
+            Debug.Log($"[Cli] GenerateChevronScroll: wrote {assetPath} ({W}x{H}) and registered '{address}' in group '{spritesGroup.Name}'.");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] GenerateChevronScroll failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
+    private static float DistanceToSegment(Vector2 p, Vector2 a, Vector2 b)
+    {
+        var ab = b - a;
+        float lenSq = ab.sqrMagnitude;
+        if (lenSq < 1e-6f) return Vector2.Distance(p, a);
+        float t = Mathf.Clamp01(Vector2.Dot(p - a, ab) / lenSq);
+        return Vector2.Distance(p, a + t * ab);
     }
 
     // ===================== Command-line arg helper =====================

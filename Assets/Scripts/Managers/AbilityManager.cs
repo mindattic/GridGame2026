@@ -215,6 +215,19 @@ namespace Scripts.Managers
             if (currentAbility == null || currentUser == null) return;
             if (targetList.Count == 0) return;
 
+            // Cast-time branch: ability has CastTimeSeconds > 0 → defer the resolution
+            // behind a spell icon on the timeline. The icon's center represents the moment
+            // of resolution; train-cascade in TimelineBar.SpawnSpellIcon handles overlaps.
+            // Item abilities and multi-target casts stay on the instant path for now.
+            if (currentAbility.CastTimeSeconds > 0f
+                && currentAbility.SourceItem == null
+                && targetList.Count == 1
+                && g.TimelineBar != null)
+            {
+                BeginCastTimeAbility();
+                return;
+            }
+
             if (!g.ManaPoolManager.Spend(currentUser.IsHero ? Team.Hero : Team.Enemy, currentAbility.ManaCost))
                 return;
 
@@ -268,6 +281,86 @@ namespace Scripts.Managers
             g.SequenceManager.Execute();
         }
 
+        /// <summary>
+        /// Spawns a spell icon on the timeline that takes CastTimeSeconds to traverse 0→1.
+        /// When it reaches the trigger, the deferred resolution closure runs and ends the turn.
+        /// Player stays in PlayerTurn state during the cast — other heroes can still be moved.
+        /// </summary>
+        private void BeginCastTimeAbility()
+        {
+            if (!g.ManaPoolManager.Spend(currentUser.IsHero ? Team.Hero : Team.Enemy, currentAbility.ManaCost))
+                return;
+
+            // Capture by value — the targeting state gets cleared below.
+            var caster = currentUser;
+            var ability = currentAbility;
+            var target = targetList[0];
+            var castStart = g.Card.PortraitWorldPosition();
+
+            g.AbilityBar?.Show(caster, ability);
+
+            var state = new CastingState(caster, ability, target);
+
+            // Cyan cast arc: bound caster (actor) → target (actor). Color picks the
+            // targeting kind out of the visual mix (red=enemy-select, cyan=heal/buff).
+            // Hidden on cast resolution and on interrupt — both paths converge below.
+            var castArcKey = "cast:" + caster.name;
+            g.TargetLineManager?.Show(castArcKey,
+                Models.TargetPoint.Actor(caster),
+                Models.TargetPoint.Actor(target),
+                Color.cyan);
+
+            g.TimelineBar.SpawnSpellIcon(state,
+                onComplete: spellIcon =>
+                {
+                    // Cast resolved — icon is parked at u=1 in Resolving mode, input is
+                    // suspended via TurnManager.IsResolvingCast. Run the same effect path
+                    // as the instant cast, then fade the spell icon and clear the gate.
+                    switch (ability.Effect)
+                    {
+                        case AbilityEffect.Heal:
+                            g.SequenceManager.Add(new HealAbilitySequence(castStart, target));
+                            break;
+                        default:
+                            g.SequenceManager.Add(new SequenceCallback(() => ability.Activate(caster, target)));
+                            break;
+                    }
+                    g.SequenceManager.Add(new EndTurnSequence());
+                    g.SequenceManager.Add(new SequenceCallback(() =>
+                    {
+                        spellIcon?.FadeAndDestroy(0.25f);
+                        g.TargetLineManager?.Hide(castArcKey);
+                        g.TurnManager?.EndCastResolution();
+                    }));
+                    g.SequenceManager.Execute();
+                },
+                onInterrupted: () =>
+                {
+                    // Future-proofing: interrupt path isn't wired yet (see CLAUDE.md "cast
+                    // interruption — fail/pushback/clutch"), but when it lights up the arc
+                    // must vanish with the spell icon. Idempotent — safe if already hidden.
+                    g.TargetLineManager?.Hide(castArcKey);
+                });
+
+            // Hide the cast-confirm UI but keep the player in their turn — caster is busy
+            // mid-cast, but the other heroes can still be planned with.
+            g.AbilityCastConfirm.FadeOut();
+            CancelTargetingInternal();
+            ClearFocusAndUI();
+
+            // Restore PlayerTurn input — BeginTargeting flipped us into AnyTarget /
+            // LinearTarget, and CancelTargetingInternal does NOT reset InputMode (only
+            // CancelTargeting does, which would undo other state too). Without this
+            // the player is locked out of all input until cast resolution.
+            g.InputManager.InputMode = InputMode.PlayerTurn;
+            g.InputManager.RequireTouchRelease();
+
+            // The cast can only resolve if the timeline keeps loading. Resume the bar
+            // immediately so the spell icon advances — BeginHeroWindow paused it at
+            // turn start, and the player has no other hero movement to trigger it.
+            g.TimelineBar?.OnHeroStartMove();
+        }
+
         /// <summary> clear focus and ui..Groups[0].Value.ToUpper() lear focus and ui.</summary>
         private void ClearFocusAndUI()
         {
@@ -277,6 +370,8 @@ namespace Scripts.Managers
                 a.Render.SetFocusIndicatorEnabled(false);
             g.AbilityButtonManager.Hide();
             g.Card.Clear();
+            // Selection has been wiped — drop the red enemy-select arc with it.
+            g.SelectionManager?.HideEnemySelectArc();
         }
 
         /// <summary>

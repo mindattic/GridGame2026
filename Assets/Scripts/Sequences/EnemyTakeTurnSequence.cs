@@ -49,8 +49,6 @@ namespace Scripts.Sequences
         /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
-            UnityEngine.Debug.Log($"[EnemyTakeTurnSequence] ProcessRoutine started for {enemy?.name ?? "null"}");
-
             // If this enemy died/despawned before acting, just end turn.
             if (enemy == null || !enemy.IsPlaying)
             {
@@ -63,7 +61,6 @@ namespace Scripts.Sequences
             yield return Wait.None();
 
             // Queue sequences: move once, attack once
-            UnityEngine.Debug.Log($"[EnemyTakeTurnSequence] Adding attack sequence for {enemy.name}");
             g.SequenceManager.Add(new EnemyMoveSequence(enemy));
             g.SequenceManager.Add(new EnemyPreAttackSequence(enemy));
             g.SequenceManager.Add(new EnemyAttackSequence(enemy));

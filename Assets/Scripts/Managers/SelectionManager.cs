@@ -128,7 +128,6 @@ public class SelectionManager : MonoBehaviour
         if (g.Actors.SelectedActor == target)
         {
             g.Card.Assign();
-            SelectionLinkLine.Bind(target);
 #if UNITY_EDITOR
             GameManager.instance.reloadThumbnailSettings = true;
 #endif
@@ -137,13 +136,16 @@ public class SelectionManager : MonoBehaviour
 
         g.Actors.SelectedActor = target;
         g.SortingManager.OnActorFocus();
-        SelectionLinkLine.Bind(target);
 
         // Show abilities only when a hero is focused
         if (g.Actors.SelectedActor.IsHero)
             g.AbilityButtonManager.Show(g.Actors.SelectedActor);
         else
             g.AbilityButtonManager.Hide();
+
+        // Enemy-select arc: red curve from the enemy's TimelineIcon (canvas) → enemy
+        // actor (world). Switches off cleanly when selection moves to a hero / null.
+        UpdateEnemySelectArc(g.Actors.SelectedActor);
 
         g.TouchOffset = g.Actors.SelectedActor.Position - g.TouchPosition3D;
 
@@ -344,6 +346,49 @@ public class SelectionManager : MonoBehaviour
  public void ResetState()
  {
  selectedState = SelectedActorState.Idle;
+ }
+
+ // Persistent-arc key for the enemy-select indicator. Single key — only one
+ // selected enemy at a time.
+ private const string EnemySelectArcKey = "enemy-select";
+
+ /// <summary>
+ /// Shows the red enemy-select arc when <paramref name="actor"/> is an enemy with
+ /// a live TimelineIcon; hides it otherwise. Idempotent — safe to call every selection change.
+ /// </summary>
+ private void UpdateEnemySelectArc(ActorInstance actor)
+ {
+ if (g.TargetLineManager == null) return;
+
+ if (actor == null || !actor.IsEnemy || !actor.IsPlaying)
+ {
+ g.TargetLineManager.Hide(EnemySelectArcKey);
+ return;
+ }
+
+ var icon = g.TimelineBar != null ? g.TimelineBar.GetIconFor(actor) : null;
+ if (icon == null || icon.Rect == null)
+ {
+ // Enemy is selected but its icon isn't on the bar (queued / stunned in some
+ // states) — fall back to actor↔actor so the arc still reads. Arc origin is
+ // the enemy itself, which loops visually but still flags "this is the target".
+ g.TargetLineManager.Show(EnemySelectArcKey,
+     Models.TargetPoint.Actor(actor),
+     Models.TargetPoint.Actor(actor),
+     Color.red);
+ return;
+ }
+
+ g.TargetLineManager.Show(EnemySelectArcKey,
+     Models.TargetPoint.Canvas(icon.Rect),
+     Models.TargetPoint.Actor(actor),
+     Color.red);
+ }
+
+ /// <summary>Hides the enemy-select arc. Call from external clear paths (e.g., AbilityManager.ClearFocusAndUI).</summary>
+ public void HideEnemySelectArc()
+ {
+ g.TargetLineManager?.Hide(EnemySelectArcKey);
  }
 
  #endregion

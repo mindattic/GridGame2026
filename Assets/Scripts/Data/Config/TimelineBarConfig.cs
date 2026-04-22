@@ -48,7 +48,15 @@ namespace Scripts.Data.Config
 
         // Translucent fill color for the Zone strip on the bar.
         public static readonly UnityEngine.Color ZoneFillColor =
-            new UnityEngine.Color(0.85f, 0.10f, 0.10f, 0.18f);
+            new UnityEngine.Color(0.85f, 0.10f, 0.10f, 0.32f);
+
+        // Solid line color for the Zone's left edge — marks the threshold where
+        // pushback becomes possible. Brighter than the fill so it reads as a wall.
+        public static readonly UnityEngine.Color ZoneEdgeColor =
+            new UnityEngine.Color(1f, 0.25f, 0.25f, 0.85f);
+
+        // Width of the Zone's left-edge line in pixels.
+        public const float ZoneEdgeWidth = 2f;
 
         // ── Queue Coordination ───────────────────────────────────────────────
         // Minimum time gap between enemy releases.

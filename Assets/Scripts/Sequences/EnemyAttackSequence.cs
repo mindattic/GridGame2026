@@ -83,8 +83,6 @@ namespace Scripts.Sequences
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
-            UnityEngine.Debug.Log($"[EnemyAttackSequence] ProcessRoutine started for {attacker?.name ?? "null"}");
-
             if (attacker == null || !attacker.IsPlaying)
                 yield break;
 
@@ -107,8 +105,6 @@ namespace Scripts.Sequences
 
             if (opponent.IsPlaying && !opponent.IsDying && !opponent.IsDead)
             {
-                UnityEngine.Debug.Log($"[EnemyAttackSequence] {attacker.name} attacking {opponent.name} NOW");
-
                 // Check if the target hero is casting - if so, interrupt them
                 InterruptCastingHero(opponent);
 
@@ -126,14 +122,17 @@ namespace Scripts.Sequences
             attacker.ActionBar.Reset();
         }
 
-        /// <summary>Interrupts a hero's active cast if they have one on the timeline.</summary>
+        /// <summary>
+        /// Interrupts a hero's active cast(s) if they have one on the timeline.
+        /// Phase 1 (Fail outcome only): unconditionally calls Interrupt() — MP stays
+        /// consumed, the spell effect does NOT apply, and the spell icon fades out.
+        /// Phase 2 will replace this with a CastInterruptResolver returning
+        /// {Fail | Pushback | Clutch} based on caster Luck / Wisdom / Intelligence.
+        /// </summary>
         private void InterruptCastingHero(ActorInstance hero)
         {
             if (hero == null || g.TimelineBar == null) return;
-
-            // Timeline tags are for enemies, but casting state is tracked on hero tags
-            // We check all active tags for a cast targeting this hero
-            // For now, check the global casting state via AbilityManager
+            g.TimelineBar.InterruptCastsByOwner(hero);
         }
     }
 }

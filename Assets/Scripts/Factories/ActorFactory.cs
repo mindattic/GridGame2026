@@ -198,7 +198,7 @@ namespace Scripts.Factories
         /// <summary>Creates the opaque.</summary>
         private static void CreateOpaque(GameObject parent)
         {
-            var go = CreateChild(parent, "Opaque");
+            var go = CreateChild(parent, "Opaque", isActive: false);
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["Mask4"],
                 new Color(1f, 1f, 1f, 1f),
@@ -274,7 +274,7 @@ namespace Scripts.Factories
         /// <summary>Creates the gradient.</summary>
         private static void CreateGradient(GameObject parent)
         {
-            var go = CreateChild(parent, "Gradient");
+            var go = CreateChild(parent, "Gradient", isActive: false);
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["Gradient"],
                 new Color(1f, 1f, 1f, 1f),
@@ -287,7 +287,7 @@ namespace Scripts.Factories
         /// <summary>Creates the frame.</summary>
         private static void CreateFrame(GameObject parent)
         {
-            var go = CreateChild(parent, "Frame", isActive: false);
+            var go = CreateChild(parent, "Frame", isActive: true);
             go.transform.localScale = new Vector3(0.390625f, 0.390625f, 1f);
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["Frame4"],
@@ -482,7 +482,7 @@ namespace Scripts.Factories
         /// <summary>Creates the turn delay text.</summary>
         private static void CreateTurnDelayText(GameObject parent)
         {
-            var go = CreateChild(parent, "TurnDelayText");
+            var go = CreateChild(parent, "TurnDelayText", isActive: false);
             go.transform.localPosition = new Vector3(0.4f, 0.36f, 0f);
             AddTextMeshPro(go, "Attic", 3f,
                 new Color(1f, 1f, 1f, 1f),

@@ -1,4 +1,5 @@
 using Scripts.Canvas;
+using Scripts.Data.Config;
 using Scripts.Libraries;
 using TMPro;
 using UnityEngine;
@@ -172,6 +173,27 @@ namespace Scripts.Factories
             root.AddComponent<TimelineIcon>();
 
             return root;
+        }
+
+        /// <summary>
+        /// Creates a spell-cast icon variant: same hierarchy as Create(), but the GameObject
+        /// is named after the caster + ability and the RectTransform is pre-positioned at
+        /// startU on the bar. Caller (TimelineBarInstance.SpawnSpellIcon) still wires up
+        /// the cast state and lifecycle via TimelineIcon.InitializeForSpell.
+        /// </summary>
+        public static GameObject CreateForCast(Transform parent, CastingState state, float leftX, float rightX, float startU, int dupRow)
+        {
+            var go = Create(parent);
+            var icon = go.GetComponent<TimelineIcon>();
+            icon.name = $"TimelineIcon_Cast_{state.Caster.name}_{state.Ability?.name}";
+
+            // Right-edge pivot (leading edge moving toward trigger), centered vertically by row.
+            var tr = go.GetComponent<RectTransform>();
+            tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
+            tr.pivot = new Vector2(1f, 0.5f);
+            tr.anchoredPosition = new Vector2(Mathf.Lerp(leftX, rightX, startU), -dupRow * TimelineBarConfig.TagRowHeight);
+
+            return go;
         }
     }
 }

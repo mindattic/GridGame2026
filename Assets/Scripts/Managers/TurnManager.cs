@@ -76,6 +76,13 @@ namespace Scripts.Managers
         /// <summary>The actor currently taking their turn (for UI highlighting).</summary>
         public ActorInstance ActiveActor { get; private set; }
 
+        /// <summary>
+        /// True while a spell cast is mid-resolution (icon parked at u=1, effect playing out).
+        /// Acts as a third turn state alongside hero/enemy turns — input is suspended
+        /// (InputMode = None) regardless of whose window owned the cast.
+        /// </summary>
+        public bool IsResolvingCast { get; private set; }
+
         #endregion
 
         #region Queued Enemy State
@@ -195,7 +202,6 @@ namespace Scripts.Managers
  /// <summary>Begin enemy turn.</summary>
  public void BeginEnemyTurn(ActorInstance enemy)
  {
- UnityEngine.Debug.Log($"[TurnManager] BeginEnemyTurn called for {enemy?.name ?? "null"}, IsEnemyTurn={IsEnemyTurn}");
  if (enemy == null || !enemy.IsPlaying) return;
  // Prevent starting another enemy turn if already in an enemy turn (any enemy)
  if (IsEnemyTurn) return;
@@ -226,6 +232,27 @@ namespace Scripts.Managers
  public void NotifyEnemyTurnFinished()
  {
  if (lastEnemy != null) g.TimelineBar?.OnEnemyTurnFinished(lastEnemy);
+ }
+
+ /// <summary>
+ /// Marks the start of a cast-resolution window: input is suspended and the spell icon
+ /// is parked at u=1 while effect sequences play out. Caller is the spell-icon onReached
+ /// closure in TimelineBarInstance.SpawnSpellIcon.
+ /// </summary>
+ public void BeginCastResolution()
+ {
+ IsResolvingCast = true;
+ if (g.InputManager != null) g.InputManager.InputMode = InputMode.None;
+ }
+
+ /// <summary>
+ /// Marks the end of a cast-resolution window. Subsequent BeginHeroWindow /
+ /// BeginEnemyTurn restores the appropriate InputMode — this just clears the flag
+ /// so other systems stop treating the bar as suspended.
+ /// </summary>
+ public void EndCastResolution()
+ {
+ IsResolvingCast = false;
  }
 
  /// <summary>Handle hero turn focus.</summary>

@@ -85,6 +85,15 @@ namespace Scripts.Canvas
         private RectTransform spawnPointRect;
         private RectTransform zoneRect;
         private Image zoneImage;
+        private RectTransform zoneEdgeRect;
+        private Image zoneEdgeImage;
+        private RectTransform chevronScrollRect;
+        private RawImage chevronScrollImage;
+        private float chevronScrollOffset;
+        // Scroll speed in tile-widths per second. ~0.5 reads as "moving" without feeling frantic.
+        private const float ChevronScrollSpeed = 0.5f;
+        // Number of chevron tiles tiled across the bar width.
+        private const float ChevronTileCount = 45f;
 
         #endregion
 
@@ -134,6 +143,43 @@ namespace Scripts.Canvas
                 zoneImage.raycastTarget = false;
             }
 
+            // Solid bright edge line at the Zone's left boundary — visually announces
+            // the "if you can land a pincer that lands an enemy past this line, they
+            // get pushed back" threshold.
+            if (zoneEdgeRect == null && barRect != null)
+            {
+                var ego = new GameObject("ZoneEdge", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                zoneEdgeRect = ego.GetComponent<RectTransform>();
+                zoneEdgeRect.SetParent(barRect, false);
+                zoneEdgeRect.SetAsFirstSibling();
+                zoneEdgeImage = ego.GetComponent<Image>();
+                zoneEdgeImage.color = TimelineBarConfig.ZoneEdgeColor;
+                zoneEdgeImage.raycastTarget = false;
+            }
+
+            // Scrolling chevron motion texture — sits behind everything else so icons / zone
+            // fill read on top. UV-scrolls rightward while the bar is advancing (IsAdvancing);
+            // freezes when the timeline is paused (hero window pause, cast resolution, etc.).
+            if (chevronScrollRect == null && barRect != null)
+            {
+                var cgo = new GameObject("ChevronScroll", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                chevronScrollRect = cgo.GetComponent<RectTransform>();
+                chevronScrollRect.SetParent(barRect, false);
+                chevronScrollRect.SetAsFirstSibling();
+                chevronScrollImage = cgo.GetComponent<RawImage>();
+                chevronScrollImage.raycastTarget = false;
+                // Cyan tint to match the mana bar's HDR cyan; needs enough alpha to actually
+                // read against the dark bar background — earlier 0.22 was effectively invisible.
+                chevronScrollImage.color = new Color(0.35f, 0.9f, 1.2f, 0.55f);
+                var chevronSprite = SpriteLibrary.Sprites != null && SpriteLibrary.Sprites.TryGetValue("ChevronScroll", out var s) ? s : null;
+                if (chevronSprite != null && chevronSprite.texture != null)
+                {
+                    var tex = chevronSprite.texture;
+                    tex.wrapMode = TextureWrapMode.Repeat;
+                    chevronScrollImage.texture = tex;
+                }
+            }
+
             // Ensure trigger & spawn point objects exist for visual debugging / design hooks
             if (triggerPointRect == null && barRect != null)
             {
@@ -159,7 +205,9 @@ namespace Scripts.Canvas
         /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
-            RebuildLayout();
+            // Defer all layout to the coroutine — RebuildLayout reaches AnchorAboveBoard
+            // which dereferences g.Board.bounds. BoardInstance assigns bounds in its own
+            // Start, so we wait until those are populated before doing any layout work.
             StartCoroutine(EnsureLayoutThenReposition());
             PauseAll();
         }
@@ -167,8 +215,20 @@ namespace Scripts.Canvas
         /// <summary>Ensure layout then reposition.</summary>
         private System.Collections.IEnumerator EnsureLayoutThenReposition()
         {
+            // Wait for the board to publish its bounds (BoardInstance.AssignBounds runs
+            // in its Start). Cap at ~2s so we never hang the scene if Board is missing.
+            float waited = 0f;
+            while ((g.Board == null || g.Board.bounds == null) && waited < 2f)
+            {
+                waited += Time.unscaledDeltaTime;
+                yield return null;
+            }
+
+            // Standard 2-frame settle for canvas layout.
             for (int i = 0; i < 2; i++) yield return null;
+
             if (barRect != null) LayoutRebuilder.ForceRebuildLayoutImmediate(barRect);
+            RebuildLayout();
             layoutReady = true;
             UpdateAllEndpoints();
             Recalculate();
@@ -190,6 +250,16 @@ namespace Scripts.Canvas
             if (advancing && activeIcons.Count > 1)
             {
                 EnforceQueueSpacing();
+            }
+
+            // Scroll the chevron motion texture rightward whenever the bar is advancing —
+            // pauses in lockstep with the icons so the UI tells a consistent motion story.
+            if (advancing && chevronScrollImage != null && chevronScrollImage.texture != null)
+            {
+                chevronScrollOffset += ChevronScrollSpeed * Time.deltaTime;
+                if (chevronScrollOffset > 1f) chevronScrollOffset -= 1f;
+                var r = chevronScrollImage.uvRect;
+                chevronScrollImage.uvRect = new Rect(chevronScrollOffset, r.y, r.width, r.height);
             }
         }
 
@@ -229,12 +299,39 @@ namespace Scripts.Canvas
                 zoneRect.sizeDelta = new Vector2(zoneWidth, barRect.sizeDelta.y);
                 zoneRect.anchoredPosition = new Vector2(RightX, 0f);
             }
+
+            // Bright thin line at the Zone's left boundary (u = 1 - ZoneU).
+            if (zoneEdgeRect != null)
+            {
+                zoneEdgeRect.anchorMin = zoneEdgeRect.anchorMax = new Vector2(0.5f, 0.5f);
+                zoneEdgeRect.pivot = new Vector2(0.5f, 0.5f);
+                zoneEdgeRect.sizeDelta = new Vector2(TimelineBarConfig.ZoneEdgeWidth, barRect.sizeDelta.y);
+                float edgeX = Mathf.Lerp(LeftX, RightX, 1f - TimelineBarConfig.ZoneU);
+                zoneEdgeRect.anchoredPosition = new Vector2(edgeX, 0f);
+            }
+
+            // Chevron scroll strip spans the full bar; uvRect.width tiles the texture across
+            // the bar so each tile stays at its native aspect regardless of bar width.
+            if (chevronScrollRect != null)
+            {
+                chevronScrollRect.anchorMin = chevronScrollRect.anchorMax = new Vector2(0.5f, 0.5f);
+                chevronScrollRect.pivot = new Vector2(0.5f, 0.5f);
+                chevronScrollRect.sizeDelta = new Vector2(Width, 24f);
+                chevronScrollRect.anchoredPosition = Vector2.zero;
+                if (chevronScrollImage != null)
+                {
+                    float tileCount = ChevronTileCount;
+                    chevronScrollImage.uvRect = new Rect(chevronScrollOffset, 0f, tileCount, 1f);
+                }
+            }
         }
 
         /// <summary>Positions the bar just above the board's top edge, with the mana pool stacked between.</summary>
         private void AnchorAboveBoard()
         {
-            if (barRect == null || g.Board == null || c.CanvasRect == null) return;
+            // BoardInstance.bounds is a RectFloat (class) populated in AssignBounds();
+            // during scene startup we may run before that, so guard the dereference.
+            if (barRect == null || g.Board == null || g.Board.bounds == null || c.CanvasRect == null) return;
 
             var boardTopWorld = new Vector3(0f, g.Board.bounds.Top, 0f);
             var boardTopCanvas = UnitConversionHelper.World.ToCanvas(c.CanvasRect, boardTopWorld);
@@ -648,6 +745,9 @@ namespace Scripts.Canvas
         private void OnIconReachedTrigger(TimelineIcon tag)
         {
             if (tag == null) return;
+            // Spell icons own their own onReached closure (set in SpawnSpellIcon) —
+            // never queue an enemy turn from one.
+            if (tag.IsSpellIcon) return;
 
             // Prevent processing if already processing a trigger OR if enemy turn in progress
             if (isProcessingTrigger) return;
@@ -785,6 +885,94 @@ namespace Scripts.Canvas
 
             // Re-space against existing tags so the new spawn doesn't land on top of one.
             ResolveSpatialOverlap();
+        }
+
+        /// <summary>
+        /// Spawns a spell-cast icon on the timeline. The icon spawns "N seconds out from
+        /// the right" (where N = state.TotalCastTime) using the bar's canonical pace
+        /// (UnitsPerSecFromSpeed(10) = 1/CrossingTime). Newly-spawned icon may collide
+        /// with existing neighbors — ResolveSpatialOverlap shoves overlapping icons
+        /// leftward (train cascade). onComplete fires when the icon reaches u=1; the
+        /// icon parks in Resolving mode and is destroyed by the caller's cleanup.
+        /// onInterrupted fires if state.IsInterrupted flips before completion.
+        /// Returns the spawned TimelineIcon so the caller can fade/destroy it after
+        /// the resolution sequences finish.
+        /// </summary>
+        public TimelineIcon SpawnSpellIcon(CastingState state, System.Action<TimelineIcon> onComplete, System.Action onInterrupted = null)
+        {
+            if (state == null || state.Caster == null || state.TotalCastTime <= 0f) return null;
+
+            // Canonical bar pace: an enemy of Speed 10 traverses the whole bar in
+            // CrossingTimeSeconds. Spell icons use this same pace so "3s remaining"
+            // visually matches "3s remaining" on any other actor's icon.
+            float uSpeed = UnitsPerSecFromSpeed(10);
+            float startU = Mathf.Clamp01(1f - state.TotalCastTime * uSpeed);
+
+            var parent = iconsRoot != null ? iconsRoot : barRect;
+            var iconGO = TimelineIconFactory.CreateForCast(parent, state, LeftX, RightX, startU, activeIcons.Count);
+            var icon = iconGO.GetComponent<TimelineIcon>();
+
+            System.Action<TimelineIcon> onReached = (TimelineIcon self) =>
+            {
+                // Park icon at u=1 in Resolving mode and suspend input — the cast is
+                // about to play out as a third turn state (neither hero nor enemy).
+                // The icon stays visible during resolution; the caller's cleanup
+                // callback fades it once the resolution sequences finish.
+                if (self.ActiveCast != null) self.ActiveCast.ElapsedTime = self.ActiveCast.TotalCastTime;
+                self.EnterResolvingMode();
+                self.Pause();
+                g.TurnManager?.BeginCastResolution();
+                activeIcons.Remove(self);
+                onComplete?.Invoke(self);
+            };
+
+            icon.InitializeForSpell(state, LeftX, RightX, uSpeed, onReached, onInterrupted: () =>
+            {
+                activeIcons.Remove(icon);
+                // Defensive: if interrupt fires after the icon already entered Resolving
+                // (race), clear the flag so input isn't left suspended.
+                g.TurnManager?.EndCastResolution();
+                onInterrupted?.Invoke();
+            });
+
+            // Spawn at startU rather than 0 so the visual position reads as
+            // "TotalCastTime seconds remaining" at the bar's canonical pace.
+            icon.SetU(startU);
+
+            activeIcons.Add(icon);
+
+            // Match the bar's current pause state — casts only advance when the timeline does.
+            if (advancing) icon.Resume(); else icon.Pause();
+
+            // Train-cascade: if the freshly-spawned icon's center collides with an existing
+            // neighbor, shove that neighbor leftward by the shortfall. May cascade further.
+            ResolveSpatialOverlap();
+
+            if (TimelineBarConfig.DebugLogs)
+                Debug.Log($"[TimelineBar] Spawned spell icon for {state.Caster.name} casting {state.Ability?.name} ({state.TotalCastTime:F1}s, startU={startU:F2}, uPerSec={uSpeed:F3})");
+
+            return icon;
+        }
+
+        /// <summary>
+        /// Interrupts any in-flight spell casts owned by <paramref name="hero"/>.
+        /// Looks through active spell icons, calls Interrupt() on each matching cast —
+        /// the icon's own UpdateCastBar will pick up IsInterrupted next frame and
+        /// fire its onInterrupted callback (which removes it from activeIcons).
+        /// Returns the number of casts interrupted (0 if hero wasn't casting).
+        /// </summary>
+        public int InterruptCastsByOwner(ActorInstance hero)
+        {
+            if (hero == null) return 0;
+            int count = 0;
+            // Snapshot the list — Interrupt may indirectly mutate activeIcons.
+            var snapshot = activeIcons.Where(i => i != null && i.IsSpellIcon && i.Owner == hero && i.ActiveCast != null && !i.ActiveCast.IsInterrupted && !i.ActiveCast.IsComplete).ToList();
+            foreach (var icon in snapshot)
+            {
+                icon.ActiveCast.Interrupt();
+                count++;
+            }
+            return count;
         }
 
         /// <summary>Updates the all endpoints.</summary>

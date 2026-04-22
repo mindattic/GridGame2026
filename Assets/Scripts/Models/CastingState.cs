@@ -85,7 +85,10 @@ namespace Scripts.Models
             Caster = caster;
             Ability = ability;
             Target = target;
-            TotalCastTime = ability?.CastTimeSeconds ?? 0f;
+            float baseCast = ability?.CastTimeSeconds ?? 0f;
+            float wis = caster?.Stats?.Wisdom ?? 0f;
+            float intel = caster?.Stats?.Intelligence ?? 0f;
+            TotalCastTime = Scripts.Utilities.Formulas.CastTime(baseCast, wis, intel);
             ElapsedTime = 0f;
             IsInterrupted = false;
         }
