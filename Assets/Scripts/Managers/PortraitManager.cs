@@ -29,82 +29,62 @@ namespace Scripts.Managers
 {
 /// <summary>
 /// PORTRAITMANAGER - Spawns actor portraits for combat feedback.
-/// 
-/// PURPOSE:
-/// Displays large actor portraits during combat sequences to show
-/// who is attacking. Supports both 2D (UI Image) and 3D (SpriteRenderer)
-/// portrait modes.
-/// 
-/// PORTRAIT TYPES:
-/// - 2D Portraits: UI Images in Canvas (for UI overlays)
-/// - 3D Portraits: World-space sprites (for in-game display)
-/// 
-/// VISUAL APPEARANCE:
-/// ```
-/// ┌─────────────────────────────────┐
-/// │ [Hero A]          [Hero B]      │ ← Portraits slide in
-/// │    ↘                 ↙          │
-/// │       [Combat Area]             │
-/// └─────────────────────────────────┘
-/// ```
-/// 
-/// ANIMATION:
-/// - SlideIn: Portraits slide from off-screen
-/// - SlideOut: Portraits exit after combat
-/// - SpawnPair: Two portraits for pincer attackers
-/// 
-/// USAGE:
-/// ```csharp
-/// yield return g.PortraitManager.SpawnPair3DRoutine(actorPair);
-/// yield return g.PortraitManager.SlideIn2DRoutine(hero, Direction.Left);
-/// ```
-/// 
-/// RELATED FILES:
-/// - Portrait2DFactory.cs: Creates UI portraits
-/// - Portrait3DFactory.cs: Creates world portraits
-/// - PortraitInstance.cs: Portrait behavior component
-/// - PincerAttackSequence.cs: Uses portraits during attacks
-/// - ActorLibrary.cs: Provides portrait sprites
-/// 
-/// ACCESS: g.PortraitManager
+/// <para>PURPOSE: Displays large actor portraits during combat sequences to show who's
+/// attacking. Routes between two rendering modes:
+/// <list type="bullet">
+/// <item>2D portraits (Portrait2DInstance) — ScreenSpaceOverlay Canvas Images; draw on top
+/// of the HUD. Used for pincer slide-ins and anywhere the portrait must visually dominate.</item>
+/// <item>3D portraits (Portrait3DInstance) — world-space SpriteRenderers; draw beneath
+/// overlay UI. Used for in-world dissolve / pop-in effects anchored to an actor sprite.</item>
+/// </list>
+/// </para>
+/// <para>USAGE:
+/// <code>
+/// yield return g.PortraitManager.SpawnPair2DRoutine(actorPair);   // on-top pincer reveal
+/// yield return g.PortraitManager.PopInRoutine(actor);             // in-world pop above actor
+/// </code>
+/// </para>
+/// <para>RELATED FILES: Portrait2DFactory.cs, Portrait3DFactory.cs, Portrait2DInstance.cs,
+/// Portrait3DInstance.cs, PincerAttackSequence.cs, ActorLibrary.cs</para>
+/// <para>ACCESS: g.PortraitManager</para>
 /// </summary>
 public class PortraitManager : MonoBehaviour
 {
-    /// <summary>All spawned portrait instances.</summary>
-    private readonly List<PortraitInstance> portraits = new List<PortraitInstance>();
+    private readonly List<Portrait2DInstance> portraits2D = new List<Portrait2DInstance>();
+    private readonly List<Portrait3DInstance> portraits3D = new List<Portrait3DInstance>();
 
-    #region 2D Portraits (UI Image)
+    #region 2D Portraits (canvas — on top of HUD)
 
-    /// <summary>Slides in a 2D portrait from the specified direction.</summary>
+    /// <summary>Slides in a canvas-space portrait from the specified direction.</summary>
     public void SlideIn2D(ActorInstance actor, Direction direction, float? fixedX = null, float? fixedY = null)
     {
         StartCoroutine(SlideIn2DRoutine(actor, direction, fixedX, fixedY));
     }
 
-    /// <summary>Coroutine to slide in a 2D portrait.</summary>
+    /// <summary>Coroutine to slide in a canvas-space portrait.</summary>
     public IEnumerator SlideIn2DRoutine(ActorInstance actor, Direction direction, float? fixedX = null, float? fixedY = null)
     {
         var go = Portrait2DFactory.Create();
         go.transform.position = Vector3.zero;
         go.transform.rotation = Quaternion.identity;
-        var instance = go.GetComponent<PortraitInstance>();
+        var instance = go.GetComponent<Portrait2DInstance>();
         instance.actor = actor;
         instance.direction = direction;
-        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.name = $"Portrait2D_{Guid.NewGuid():N}";
         instance.parent = g.PortraitsContainer;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
         if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, Opacity.Translucent.Alpha196);
 
-        // lanes
+        // Lane locking keeps paired slide-ins on consistent axes.
         instance.fixedX = fixedX;
         instance.fixedY = fixedY;
 
-        portraits.Add(instance);
+        portraits2D.Add(instance);
         yield return instance.SlideInRoutine();
     }
 
-    /// <summary>Spawns a pair of 2D portraits for pincer attackers.</summary>
+    /// <summary>Spawns a pair of canvas-space portraits for pincer attackers.</summary>
     public IEnumerator SpawnPair2DRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
@@ -142,24 +122,24 @@ public class PortraitManager : MonoBehaviour
 
     #endregion
 
-    #region 3D Portraits (World Sprite)
+    #region 3D Portraits (world space — beneath overlay UI)
 
-    /// <summary>Slides in a 3D world-space portrait.</summary>
+    /// <summary>Slides in a world-space portrait.</summary>
     public void SlideIn3D(ActorInstance actor, Direction direction)
     {
         StartCoroutine(SlideIn3DRoutine(actor, direction));
     }
 
-    /// <summary>Coroutine to slide in a 3D portrait.</summary>
+    /// <summary>Coroutine to slide in a world-space portrait.</summary>
     public IEnumerator SlideIn3DRoutine(ActorInstance actor, Direction direction)
     {
         var go = Portrait3DFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
-        var instance = go.GetComponent<PortraitInstance>();
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.direction = direction;
-        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
@@ -167,26 +147,25 @@ public class PortraitManager : MonoBehaviour
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Translucent.Alpha196);
         instance.startTime = Time.time;
 
-        portraits.Add(instance);
+        portraits3D.Add(instance);
         yield return instance.SlideIn();
     }
 
-    /// <summary>Pop in out.</summary>
+    /// <summary>Pop-in followed by hold followed by pop-out — world-space only.</summary>
     public void PopInOut(ActorInstance actor, float scale = 0.1666f)
     {
         StartCoroutine(PopInOutRoutine(actor, scale));
     }
 
-    /// <summary>Coroutine that executes the pop in out sequence.</summary>
+    /// <summary>Coroutine for the pop-in + hold + pop-out flourish.</summary>
     public IEnumerator PopInOutRoutine(ActorInstance actor, float scale = 0.1666f)
     {
-        // Use factory instead of Instantiate(prefab)
         var go = Portrait3DFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
-        var instance = go.GetComponent<PortraitInstance>();
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
-        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
@@ -195,25 +174,24 @@ public class PortraitManager : MonoBehaviour
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
         instance.startTime = Time.time;
 
-        portraits.Add(instance);
+        portraits3D.Add(instance);
         yield return instance.PopInOut();
     }
 
-    /// <summary>Coroutine that executes the pop in sequence.</summary>
+    /// <summary>Coroutine for the pop-in-only flourish (PopOut is expected to finish the pair).</summary>
     public IEnumerator PopInRoutine(ActorInstance actor, float scale = 0.1666f)
     {
-        var existing = portraits.FirstOrDefault(x => x != null && x.actor == actor);
+        var existing = portraits3D.FirstOrDefault(x => x != null && x.actor == actor);
         if (existing != null)
         {
             Destroy(existing.gameObject);
-            portraits.Remove(existing);
+            portraits3D.Remove(existing);
         }
 
-        // Use factory instead of Instantiate(prefab)
         var go = Portrait3DFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
-        var instance = go.GetComponent<PortraitInstance>();
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
@@ -224,30 +202,29 @@ public class PortraitManager : MonoBehaviour
         instance.actor = actor;
         instance.startTime = Time.time;
 
-        portraits.Add(instance);
+        portraits3D.Add(instance);
         yield return instance.PopIn();
     }
 
-    /// <summary>Coroutine that executes the pop out sequence.</summary>
+    /// <summary>Coroutine for the matching pop-out on the existing portrait for this actor.</summary>
     public IEnumerator PopOutRoutine(ActorInstance actor)
     {
-        var instance = portraits.FirstOrDefault(x => x != null && x.actor == actor);
+        var instance = portraits3D.FirstOrDefault(x => x != null && x.actor == actor);
         if (instance != null)
         {
             yield return instance.PopOut();
         }
     }
 
-    /// <summary>Dissolve.</summary>
+    /// <summary>Spawns a world-space dissolve portrait at the actor's position (used on death).</summary>
     public void Dissolve(ActorInstance actor, IEnumerator routine = null)
     {
-        // Use factory instead of Instantiate(prefab)
         var go = Portrait3DFactory.Create();
         go.transform.position = Vector2.zero;
         go.transform.rotation = Quaternion.identity;
-        var instance = go.GetComponent<PortraitInstance>();
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
-        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
@@ -256,11 +233,11 @@ public class PortraitManager : MonoBehaviour
         instance.position = actor.Position;
         instance.startPosition = actor.Position;
 
-        portraits.Add(instance);
+        portraits3D.Add(instance);
         StartCoroutine(instance.DissolveRoutine(routine));
     }
 
-    /// <summary>Coroutine that executes the spawn pair3 d sequence.</summary>
+    /// <summary>Spawns a pair of world-space portraits for pincer attackers.</summary>
     public IEnumerator SpawnPair3DRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
@@ -276,7 +253,9 @@ public class PortraitManager : MonoBehaviour
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
     }
 
-    // ============================ Utils ============================
+    #endregion
+
+    #region Utils
 
     private (Direction, Direction) GetDirections(ActorPair pair)
     {
@@ -302,12 +281,22 @@ public class PortraitManager : MonoBehaviour
         return (-lane, lane);
     }
 
-    /// <summary>Removes and destroys a portrait instance.</summary>
-    public void Despawn(PortraitInstance portrait)
+    /// <summary>Removes and destroys a canvas-space portrait.</summary>
+    public void Despawn(Portrait2DInstance portrait)
     {
-        if (portrait != null && portraits.Contains(portrait))
+        if (portrait != null && portraits2D.Contains(portrait))
         {
-            portraits.Remove(portrait);
+            portraits2D.Remove(portrait);
+            Destroy(portrait.gameObject);
+        }
+    }
+
+    /// <summary>Removes and destroys a world-space portrait.</summary>
+    public void Despawn(Portrait3DInstance portrait)
+    {
+        if (portrait != null && portraits3D.Contains(portrait))
+        {
+            portraits3D.Remove(portrait);
             Destroy(portrait.gameObject);
         }
     }

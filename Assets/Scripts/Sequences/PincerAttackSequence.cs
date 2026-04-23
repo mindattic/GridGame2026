@@ -93,8 +93,8 @@ namespace Scripts.Sequences
             if (pair.attackResults1?.Any() != true || pair.attackResults2?.Any() != true)
                 yield break;
 
-            // Display attackers portraits
-            yield return g.PortraitManager.SpawnPair3DRoutine(
+            // Display attackers portraits — canvas-space so they render on top of the HUD.
+            yield return g.PortraitManager.SpawnPair2DRoutine(
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 

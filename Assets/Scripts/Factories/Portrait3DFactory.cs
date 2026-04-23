@@ -44,8 +44,8 @@ namespace Scripts.Factories
     /// Portrait3D (root)
     /// ├── Transform (scaled 0.5x)
     /// ├── SpriteRenderer (portrait sprite)
-    /// ├── SortingGroup (ActorAbove layer)
-    /// └── PortraitInstance (animation behavior)
+    /// ├── SortingGroup (Portrait layer)
+    /// └── Portrait3DInstance (slide/pop/dissolve behavior)
     /// ```
     /// 
     /// VS PORTRAIT2D:
@@ -62,8 +62,8 @@ namespace Scripts.Factories
     /// - PortraitManager.SlideIn3DRoutine()
     /// 
     /// RELATED FILES:
-    /// - Portrait2DFactory.cs: UI-space variant
-    /// - PortraitInstance.cs: Animation behavior
+    /// - Portrait2DFactory.cs: UI-space variant (renders on top of HUD)
+    /// - Portrait3DInstance.cs: World-space animation behavior
     /// - PortraitManager.cs: Manages portraits
     /// </summary>
     public static class Portrait3DFactory
@@ -94,8 +94,8 @@ namespace Scripts.Factories
             sortingGroup.sortingLayerName = "Portrait";
             sortingGroup.sortingOrder = 0;
 
-            // PortraitInstance
-            var portraitInstance = root.AddComponent<PortraitInstance>();
+            // Portrait3DInstance — SpriteRenderer-based slide/pop/dissolve behavior.
+            var portraitInstance = root.AddComponent<Portrait3DInstance>();
             portraitInstance.direction = Direction.None;
             portraitInstance.speedMultiplier = 1.75f;
             portraitInstance.startTime = 0f;

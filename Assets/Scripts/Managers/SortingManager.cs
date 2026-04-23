@@ -209,8 +209,8 @@ public class SortingManager : MonoBehaviour
         synergyLineInstance.SetSorting(layer);
     }
 
-    /// <summary>Handles the portrait pop in event.</summary>
-    public void OnPortraitPopIn(PortraitInstance portrait)
+    /// <summary>Handles the portrait pop in event — world-space portraits only.</summary>
+    public void OnPortraitPopIn(Portrait3DInstance portrait)
     {
         portrait.SetSorting(SortingHelper.Layer.PortraitPopIn, SortingHelper.Order.Max);
     }

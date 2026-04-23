@@ -45,7 +45,7 @@ namespace Scripts.Factories
     /// ├── RectTransform (1024x1024)
     /// ├── CanvasRenderer (UI rendering)
     /// ├── Image (portrait sprite)
-    /// └── PortraitInstance (animation behavior)
+    /// └── Portrait2DInstance (slide-in behavior)
     /// ```
     /// 
     /// VS PORTRAIT3D:
@@ -60,8 +60,8 @@ namespace Scripts.Factories
     /// - PortraitManager.SlideIn2DRoutine()
     /// 
     /// RELATED FILES:
-    /// - Portrait3DFactory.cs: World-space variant
-    /// - PortraitInstance.cs: Animation behavior
+    /// - Portrait3DFactory.cs: World-space variant (renders beneath overlay UI)
+    /// - Portrait2DInstance.cs: Canvas slide-in behavior
     /// - PortraitManager.cs: Manages portraits
     /// </summary>
     public static class Portrait2DFactory
@@ -88,7 +88,7 @@ namespace Scripts.Factories
             image.type = Image.Type.Simple;
             image.preserveAspect = false;
 
-            var portraitInstance = root.AddComponent<PortraitInstance>();
+            var portraitInstance = root.AddComponent<Portrait2DInstance>();
             portraitInstance.direction = Direction.None;
             portraitInstance.speedMultiplier = 1.75f;
             portraitInstance.startTime = 0f;
