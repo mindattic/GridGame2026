@@ -43,7 +43,6 @@ namespace Scripts.Libraries
     /// ```
     /// 
     /// RELATED FILES:
-    /// - ActorParallax.cs: Uses parallax materials
     /// - Resources/Materials/: Material assets
     /// </summary>
     public static class MaterialLibrary

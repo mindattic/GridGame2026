@@ -218,7 +218,6 @@ public class SelectionManager : MonoBehaviour
 
  g.Card.Clear();
  g.AudioManager.Play("Click");
- g.ActorManager.CheckEnemyAP();
  }
  }
 
@@ -372,14 +371,14 @@ public class SelectionManager : MonoBehaviour
  // Enemy is selected but its icon isn't on the bar (queued / stunned in some
  // states) — fall back to actor↔actor so the arc still reads. Arc origin is
  // the enemy itself, which loops visually but still flags "this is the target".
- g.TargetLineManager.Show(EnemySelectArcKey,
+ g.TargetLineManager.Show2D(EnemySelectArcKey,
      Models.TargetPoint.Actor(actor),
      Models.TargetPoint.Actor(actor),
      Color.red);
  return;
  }
 
- g.TargetLineManager.Show(EnemySelectArcKey,
+ g.TargetLineManager.Show2D(EnemySelectArcKey,
      Models.TargetPoint.Canvas(icon.Rect),
      Models.TargetPoint.Actor(actor),
      Color.red);

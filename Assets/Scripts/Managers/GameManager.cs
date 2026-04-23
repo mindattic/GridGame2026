@@ -101,6 +101,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public VisualEffectManager visualEffectManager;
     [HideInInspector] public CoinManager coinManager;
+    [HideInInspector] public ItemPickupManager itemPickupManager;
     [HideInInspector] public PauseMenu pauseMenu;
     [HideInInspector] public DebugManager debugManager;
     [HideInInspector] public ConsoleManager consoleManager;
@@ -312,6 +313,7 @@ public class GameManager : Singleton<GameManager>
             logManager = gameRoot.GetComponent<LogManager>();
             visualEffectManager = gameRoot.GetComponent<VisualEffectManager>();
             coinManager = gameRoot.GetComponent<CoinManager>();
+            itemPickupManager = gameRoot.GetComponent<ItemPickupManager>();
             dottedLineManager = gameRoot.GetComponent<DottedLineManager>();
             projectileManager = gameRoot.GetComponent<ProjectileManager>();
             sequenceManager = gameRoot.GetComponent<SequenceManager>();

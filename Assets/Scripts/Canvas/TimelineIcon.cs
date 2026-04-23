@@ -7,6 +7,7 @@ using g = Scripts.Helpers.GameHelper;
 using TMPro;
 using Scripts.Libraries;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -154,6 +155,10 @@ namespace Scripts.Canvas
         private Coroutine labelFadeCoroutine;
         private float labelAlpha;
 
+        // Icon fade-in state — entire CanvasGroup hidden while Queued, fades in on release.
+        private const float IconFadeDuration = 0.35f;
+        private Coroutine iconFadeCoroutine;
+
         // Tolerance for deciding a tag reached the left edge (in local pixels)
         private const float ReachTolerance =0.25f;
 
@@ -275,8 +280,10 @@ namespace Scripts.Canvas
             // Label is hidden in queue, visible when approaching
             labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
-            
-            if (CanvasGroup != null) CanvasGroup.alpha =1f;
+
+            // Whole icon is invisible while Queued (fades in on release); fully visible otherwise.
+            if (CanvasGroup != null) CanvasGroup.alpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
+            if (iconFadeCoroutine != null) { StopCoroutine(iconFadeCoroutine); iconFadeCoroutine = null; }
             isFading = false;
             paused = true; // start paused; TimelineBar controls advance
             fired = false;
@@ -360,24 +367,31 @@ namespace Scripts.Canvas
             // This fixes the double-trigger bug where the tag could fire again before animation completes
             u = 0f;
             ApplyPosition();
-            
+
             // Assign queue delay based on speed: faster enemies wait less (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
             queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
             queueTimer = queueDelay;
-            
+
             // Enter Queued mode (or Approaching if no delay)
             Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
-            
+
             // Hide label in queue, show if immediately approaching
             labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
-            
+
+            // Snap the whole icon out of view while waiting; the next release fades it back in.
+            if (Mode == TimelineIconMode.Queued)
+            {
+                if (iconFadeCoroutine != null) { StopCoroutine(iconFadeCoroutine); iconFadeCoroutine = null; }
+                if (CanvasGroup != null) CanvasGroup.alpha = 0f;
+            }
+
             // Reset pushback/stun state
             pushVelocity = 0f;
             stunTimer = 0f;
             stunDuration = 0f;
-            
+
             UpdateLabel();
         }
 
@@ -394,11 +408,18 @@ namespace Scripts.Canvas
             queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
             queueTimer = queueDelay;
             Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
-            
+
             // Hide label in queue, show if immediately approaching
             labelAlpha = Mode == TimelineIconMode.Queued ? 0f : 1f;
             ApplyLabelAlpha();
-            
+
+            // Snap the whole icon out of view while waiting; the next release fades it back in.
+            if (Mode == TimelineIconMode.Queued)
+            {
+                if (iconFadeCoroutine != null) { StopCoroutine(iconFadeCoroutine); iconFadeCoroutine = null; }
+                if (CanvasGroup != null) CanvasGroup.alpha = 0f;
+            }
+
             pushVelocity = 0f;
             stunTimer = 0f;
             UpdateLabel();
@@ -458,24 +479,6 @@ namespace Scripts.Canvas
             return Mode == TimelineIconMode.PushedBack ? pushTargetU : u;
         }
 
-        /// <summary>
-        /// Snaps the tag to a new u, or — if in PushedBack mode — retargets the pushback so the
-        /// tag finishes at <paramref name="targetU"/>. Used by the bar's overlap resolver to keep
-        /// pushed-back / spawned tags from stacking on the same slot.
-        /// </summary>
-        public void SetTargetU(float targetU)
-        {
-            targetU = Mathf.Clamp01(targetU);
-            if (Mode == TimelineIconMode.PushedBack)
-            {
-                pushTargetU = targetU;
-                pushVelocity = Mathf.Max(pushVelocity, Mathf.Abs(targetU - u) * 3f);
-            }
-            else
-            {
-                SetU(targetU);
-            }
-        }
         /// <summary>Gets the queue timer.</summary>
         public float GetQueueTimer() => queueTimer;
         
@@ -489,6 +492,7 @@ namespace Scripts.Canvas
             {
                 Mode = TimelineIconMode.Approaching;
                 StartLabelFadeIn();
+                StartIconFadeIn();
             }
             UpdateLabel();
         }
@@ -496,9 +500,23 @@ namespace Scripts.Canvas
         /// <summary>Gets the seconds remaining.</summary>
         public float GetSecondsRemaining()
         {
-            // Time to travel from current u up to u=1 (trigger).
-            float moveTime = uPerSec <= 0f ? 0f : Mathf.Max(0f, (1f - u) / uPerSec);
-            
+            // Two-phase trip: race outside the Zone at uPerSec, then crawl through
+            // the Zone at the fixed ZonePaceUPerSec. Compute both legs separately.
+            float zoneStartU = 1f - TimelineBarConfig.ZoneU;
+            float zonePace = Mathf.Max(0.0001f, TimelineBarConfig.ZonePaceUPerSec);
+            float moveTime;
+            if (u >= zoneStartU)
+            {
+                moveTime = (1f - u) / zonePace;
+            }
+            else
+            {
+                float raceLeg = uPerSec > 0f ? (zoneStartU - u) / uPerSec : 0f;
+                float zoneLeg = TimelineBarConfig.ZoneU / zonePace;
+                moveTime = raceLeg + zoneLeg;
+            }
+            moveTime = Mathf.Max(0f, moveTime);
+
             // Add wait time based on current mode
             float waitTime = 0f;
             switch (Mode)
@@ -602,7 +620,7 @@ namespace Scripts.Canvas
         private void UpdateQueued()
         {
             if (paused) return;
-            
+
             // Countdown queue timer
             queueTimer -= Time.deltaTime;
             if (queueTimer <= 0f)
@@ -610,6 +628,7 @@ namespace Scripts.Canvas
                 queueTimer = 0f;
                 Mode = TimelineIconMode.Approaching;
                 StartLabelFadeIn();
+                StartIconFadeIn();
             }
         }
 
@@ -618,8 +637,14 @@ namespace Scripts.Canvas
         {
             if (paused) return;
 
-            // Move toward right / trigger (u = 1 — "loading complete")
-            u = Mathf.MoveTowards(u, 1f, uPerSec * Time.deltaTime);
+            // Race outside the Zone at the actor's stat-derived pace; once inside
+            // the Zone (final stretch), every icon crawls at the same fixed rate
+            // so the player has a coordination window to land an in-Zone pincer.
+            float effectiveUPerSec = u >= (1f - TimelineBarConfig.ZoneU)
+                ? TimelineBarConfig.ZonePaceUPerSec
+                : uPerSec;
+
+            u = Mathf.MoveTowards(u, 1f, effectiveUPerSec * Time.deltaTime);
             ApplyPosition();
 
             // Spell icons: keep the cast state's elapsed-time in lockstep with the icon's u
@@ -750,6 +775,30 @@ namespace Scripts.Canvas
             labelFadeCoroutine = null;
         }
 
+        /// <summary>Fades the entire icon (CanvasGroup) up from its current alpha to 1.</summary>
+        private void StartIconFadeIn()
+        {
+            if (CanvasGroup == null) return;
+            if (iconFadeCoroutine != null) StopCoroutine(iconFadeCoroutine);
+            iconFadeCoroutine = StartCoroutine(IconFadeInRoutine());
+        }
+
+        /// <summary>Coroutine that executes the icon fade-in sequence.</summary>
+        private IEnumerator IconFadeInRoutine()
+        {
+            float startAlpha = CanvasGroup != null ? CanvasGroup.alpha : 1f;
+            float elapsed = 0f;
+            while (elapsed < IconFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                if (CanvasGroup != null)
+                    CanvasGroup.alpha = Mathf.Lerp(startAlpha, 1f, elapsed / IconFadeDuration);
+                yield return null;
+            }
+            if (CanvasGroup != null) CanvasGroup.alpha = 1f;
+            iconFadeCoroutine = null;
+        }
+
         /// <summary>Fade and destroy.</summary>
         public void FadeAndDestroy(float duration =0.25f)
         {
@@ -778,8 +827,6 @@ namespace Scripts.Canvas
         /// <summary>
         /// Configures this icon as a spell-cast icon. Owner is the caster; uPerSec = 1/CastTime
         /// so the icon's right edge reaches the trigger after exactly TotalCastTime seconds.
-        /// The icon's center represents the moment-in-time the cast resolves; train-cascade
-        /// in TimelineBarInstance.ResolveSpatialOverlap shoves overlapping neighbors leftward.
         /// </summary>
         public void InitializeForSpell(CastingState state, float leftX, float rightX, float uPerSec,
                                        System.Action<TimelineIcon> onReached, System.Action onInterrupted = null)

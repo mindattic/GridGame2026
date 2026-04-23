@@ -41,6 +41,7 @@ namespace Scripts.Libraries
     /// - Consolas: Monospace (debug/console)
     /// - Roboto: Clean sans-serif
     /// - Segoe: Windows-style font
+    /// - Outfit: Geometric sans-serif
     /// 
     /// USAGE:
     /// ```csharp
@@ -112,6 +113,7 @@ namespace Scripts.Libraries
                 { "Consolas", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Consolas") },
                 { "Roboto", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Roboto") },
                 { "Segoe", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Segoe") },
+                { "Outfit", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Outfit") },
             };
 
             isLoaded = true;

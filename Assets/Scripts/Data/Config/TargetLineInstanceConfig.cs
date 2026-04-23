@@ -1,11 +1,12 @@
 namespace Scripts.Data.Config
 {
     /// <summary>
-    /// TARGETLINEINSTANCECONFIG - Static tuning values for TargetLineInstance.
+    /// TARGETLINEINSTANCECONFIG - Static tuning values for both TargetLine3DInstance and TargetLine2DInstance.
     /// <para>PURPOSE: Compile-time constants for the FFXII-style targeting-arc visuals —
-    /// curve resolution, glow halo, tapered ends, and the traveling direction bead.</para>
-    /// <para>USAGE: Referenced from TargetLineInstance + TargetLineFactory.</para>
-    /// <para>RELATED FILES: TargetLineInstance.cs, TargetLineFactory.cs</para>
+    /// curve resolution, glow halo, tapered ends, and the traveling direction bead. 3D values
+    /// are in world units; 2D values are in canvas pixels.</para>
+    /// <para>USAGE: Referenced from TargetLine3DInstance/Factory + TargetLine2DInstance/Factory.</para>
+    /// <para>RELATED FILES: TargetLine3DInstance.cs, TargetLine3DFactory.cs, TargetLine2DInstance.cs, TargetLine2DFactory.cs</para>
     /// </summary>
     public static class TargetLineInstanceConfig
     {
@@ -19,7 +20,7 @@ namespace Scripts.Data.Config
         // the chord's midpoint along the screen-perpendicular. Bigger = more pronounced bow.
         public const float ArcHeightFraction = 0.55f;
 
-        // ---- FFXII-style visual tuning ----
+        // ---- FFXII-style visual tuning (3D / world-space) ----
 
         // Core stroke width (world units) at the thickest point. Tapered ends go to 0.
         public const float CoreWidth = 0.04f;
@@ -33,7 +34,7 @@ namespace Scripts.Data.Config
         // Width curve shape for tapered ends: 0 at both ends, peak in the middle.
         // Implemented via AnimationCurve with (0,0)(0.5,1)(1,0) quadratic-ish shape.
 
-        // ---- Direction bead (source → destination) ----
+        // ---- Direction bead (source → destination, 3D / world-space) ----
 
         // Bead travel speed along the normalized arc (loops per second).
         public const float BeadLoopsPerSecond = 0.8f;
@@ -46,5 +47,17 @@ namespace Scripts.Data.Config
 
         // Bead pulse frequency in Hz.
         public const float BeadPulseHz = 4.0f;
+
+        // ---- 2D / canvas-space overrides (pixels) ----
+
+        // Core stroke width at the thickest point, in canvas pixels.
+        public const float CoreWidth2D = 8f;
+
+        // Glow halo peak width in canvas pixels. Kept as an explicit constant (not derived
+        // from CoreWidth2D × GlowWidthMultiplier) so 2D tuning can drift independently of 3D.
+        public const float GlowWidth2D = 20f;
+
+        // Bead diameter in canvas pixels.
+        public const float BeadSize2D = 40f;
     }
 }

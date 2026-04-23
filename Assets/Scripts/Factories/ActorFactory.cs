@@ -85,24 +85,14 @@ namespace Scripts.Factories
             var front = CreateChild(root, "Front");
 
             // === FRONT CHILDREN ===
-            CreateOpaque(front);
-            CreateQuality(front);
-            CreateGlow(front);
-            CreateParallax(front);
+            // Visual stack (back→front): Backdrop, Thumbnail, Frame, Mask, ...
+            CreateBackdrop(front);
             CreateThumbnail(front);
-            CreateGradient(front);
             CreateFrame(front);
-            CreateStatusIcon(front);
-            CreateHealthBar(front);
-            CreateActionBar(front);
             CreateMask(front);
-            CreateRadialBack(front);
-            CreateRadialFill(front);
-            CreateRadialText(front);
-            CreateTurnDelayText(front);
+            CreateGradient(front);
             CreateNameTagText(front);
-            CreateWeaponIcon(front);
-            CreateArmor(front);
+            CreateHealthText(front);
             CreateActiveIndicator(front);
             CreateFocusIndicator(front);
             CreateTargetIndicator(front);
@@ -111,11 +101,7 @@ namespace Scripts.Factories
             CreateBack(root);
 
             // === ADD ACTORINSTANCE LAST ===
-            var actorInstance = root.AddComponent<ActorInstance>();
-            actorInstance.glowCurve = new AnimationCurve(
-                new Keyframe(0f, 0f, 0f, 0f),
-                new Keyframe(1f, 0.25f, 0f, 0f)
-            );
+            root.AddComponent<ActorInstance>();
 
             return root;
         }
@@ -195,10 +181,10 @@ namespace Scripts.Factories
 
         #region Front Children
 
-        /// <summary>Creates the opaque.</summary>
-        private static void CreateOpaque(GameObject parent)
+        /// <summary>Creates the backdrop.</summary>
+        private static void CreateBackdrop(GameObject parent)
         {
-            var go = CreateChild(parent, "Opaque", isActive: false);
+            var go = CreateChild(parent, "Backdrop", isActive: true);
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["Mask4"],
                 new Color(1f, 1f, 1f, 1f),
@@ -208,46 +194,17 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
-        /// <summary>Creates the quality.</summary>
-        private static void CreateQuality(GameObject parent)
+        /// <summary>Creates the frame.</summary>
+        private static void CreateFrame(GameObject parent)
         {
-            var go = CreateChild(parent, "Quality");
+            var go = CreateChild(parent, "Frame");
             AddSpriteRenderer(go,
                 SpriteLibrary.Actor["Base4"],
                 new Color(1f, 1f, 1f, 0f),
                 "SpritesDefault",
-                2,
+                5,
                 SpriteDrawMode.Sliced,
                 new Vector2(1f, 1f));
-        }
-
-        /// <summary>Creates the glow.</summary>
-        private static void CreateGlow(GameObject parent)
-        {
-            // TODO: Re-enable actor glow effect (currently disabled — washed out the portraits).
-            var go = CreateChild(parent, "Glow", isActive: false);
-            go.transform.localScale = new Vector3(2.56f, 2.56f, 1f);
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["ThumbnailFade"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                11,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-        }
-
-        /// <summary>Creates the parallax.</summary>
-        private static void CreateParallax(GameObject parent)
-        {
-            var go = CreateChild(parent, "Parallax", isActive: false);
-            AddSpriteRenderer(go,
-                null,
-                new Color(1f, 1f, 1f, 0.5019608f),
-                "PlayerParallax",
-                4,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f),
-                SpriteMaskInteraction.VisibleInsideMask);
         }
 
         /// <summary>Creates the thumbnail.</summary>
@@ -258,7 +215,7 @@ namespace Scripts.Factories
                 null, // Set dynamically
                 new Color(1f, 1f, 1f, 1f),
                 "SpritePan",
-                5,
+                2,
                 SpriteDrawMode.Sliced,
                 new Vector2(1f, 1f),
                 SpriteMaskInteraction.VisibleInsideMask);
@@ -271,158 +228,36 @@ namespace Scripts.Factories
             thumbnail.pauseRampDuration = 0.5f;
         }
 
-        /// <summary>Creates the gradient.</summary>
-        private static void CreateGradient(GameObject parent)
-        {
-            var go = CreateChild(parent, "Gradient", isActive: false);
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["Gradient"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpriteUnlitDefault",
-                6,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-        }
+        #endregion
 
-        /// <summary>Creates the frame.</summary>
-        private static void CreateFrame(GameObject parent)
-        {
-            var go = CreateChild(parent, "Frame", isActive: true);
-            go.transform.localScale = new Vector3(0.390625f, 0.390625f, 1f);
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["Frame4"],
-                new Color(1f, 1f, 1f, 0.2509804f),
-                "SpritesDefault",
-                6,
-                SpriteDrawMode.Simple);
-        }
+        #region Health Text
 
-        /// <summary>Creates the status icon.</summary>
-        private static void CreateStatusIcon(GameObject parent)
+        /// <summary>Creates the right-aligned HP readout in the actor's top-right corner.</summary>
+        private static void CreateHealthText(GameObject parent)
         {
-            var go = CreateChild(parent, "StatusIcon", isActive: false);
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["StatusNone"],
-                new Color(1f, 1f, 1f, 0f),
-                "SpritesDefault",
-                7,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
+            var go = CreateChild(parent, "HealthText");
+            go.transform.localPosition = new Vector3(0.425f, -0.25f, 0f);
+
+            var rt = go.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(1f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(1f, 1f);
+            rt.sizeDelta = Vector2.zero;
+
+            var tmp = go.AddComponent<TextMeshPro>();
+            tmp.font = FontLibrary.Get("Attic");
+            tmp.fontSize = 1.5f;
+            tmp.color = new Color(1f, 1f, 1f, 1f);
+            tmp.alignment = TextAlignmentOptions.TopRight;
+            tmp.textWrappingMode = TextWrappingModes.NoWrap;
+            tmp.text = "";
+            tmp.sortingLayerID = UnityEngine.SortingLayer.NameToID(SortingLayerName);
+            tmp.sortingOrder = 12;
         }
 
         #endregion
 
-        #region Health Bar
-
-        /// <summary>Creates the health bar.</summary>
-        private static void CreateHealthBar(GameObject parent)
-        {
-            var healthBar = CreateChild(parent, "HealthBar");
-            healthBar.transform.localPosition = new Vector3(-0.25f, -0.4f, 0f);
-            healthBar.transform.localScale = new Vector3(1f, 0.1f, 1f);
-
-            // Back
-            var back = CreateChild(healthBar, "HealthBarBack");
-            AddSpriteRenderer(back,
-                SpriteLibrary.Actor["HealthBar5"],
-                new Color(0f, 0f, 0f, 1f),
-                "SpritesDefault",
-                8,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.5f, 0.5f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Drain
-            var drain = CreateChild(healthBar, "HealthBarDrain");
-            AddSpriteRenderer(drain,
-                SpriteLibrary.Actor["HealthBar5"],
-                new Color(0.9014806f, 0.9433962f, 0.07564971f, 1f),
-                "SpritesDefault",
-                9,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.5f, 0.5f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Fill
-            var fill = CreateChild(healthBar, "HealthBarFill");
-            AddSpriteRenderer(fill,
-                SpriteLibrary.Actor["HealthBar5"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                10,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.5f, 0.5f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Text
-            var text = CreateChild(healthBar, "HealthBarText");
-            AddTextMeshPro(text, "Consolas", 1f,
-                new Color(1f, 1f, 1f, 0f),
-                TextAlignmentOptions.Left,
-                11, "100", enabled: false);
-        }
-
-        #endregion
-
-        #region Action Bar
-
-        /// <summary>Creates the action bar.</summary>
-        private static void CreateActionBar(GameObject parent)
-        {
-            var actionBar = CreateChild(parent, "ActionBar", isActive: false);
-            actionBar.transform.localPosition = new Vector3(-0.45f, -0.38f, 0f);
-            actionBar.transform.localScale = new Vector3(0.75f, 1f, 1f);
-
-            // Back
-            var back = CreateChild(actionBar, "ActionBarBack");
-            AddSpriteRenderer(back,
-                SpriteLibrary.Actor["HealthBarBack3"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                13,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.3333f, 0.03333f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Drain
-            var drain = CreateChild(actionBar, "ActionBarDrain");
-            AddSpriteRenderer(drain,
-                SpriteLibrary.Actor["HealthBar3"],
-                new Color(1f, 0f, 0f, 1f),
-                "SpritesDefault",
-                14,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.3333f, 0.03333f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Fill
-            var fill = CreateChild(actionBar, "ActionBarFill");
-            AddSpriteRenderer(fill,
-                SpriteLibrary.Actor["ActionBar2"],
-                new Color(0f, 0.7686275f, 1f, 1f),
-                "SpritesDefault",
-                15,
-                SpriteDrawMode.Sliced,
-                new Vector2(0.3333f, 0.03333f),
-                SpriteMaskInteraction.None,
-                SpriteSortPoint.Pivot);
-
-            // Text
-            var text = CreateChild(actionBar, "ActionBarText");
-            AddTextMeshPro(text, "Consolas", 1f,
-                new Color(1f, 1f, 1f, 0f),
-                TextAlignmentOptions.Left,
-                16, "0%", enabled: false);
-        }
-
-        #endregion
-
-        #region Mask & Radial
+        #region Mask
 
         /// <summary>Creates the mask.</summary>
         private static void CreateMask(GameObject parent)
@@ -434,61 +269,26 @@ namespace Scripts.Factories
             mask.alphaCutoff = 0.1f;
         }
 
-        /// <summary>Creates the radial back.</summary>
-        private static void CreateRadialBack(GameObject parent)
+        #endregion
+
+        #region Gradient
+
+        /// <summary>Creates the Gradient overlay sprite. Inherits layer switching via the root SortingGroup.</summary>
+        private static void CreateGradient(GameObject parent)
         {
-            var go = CreateChild(parent, "RadialBack", isActive: false);
-            go.transform.localPosition = new Vector3(-0.3333f, 0.3333f, 0f);
-            go.transform.localScale = new Vector3(0.25f, 0.25f, 1f);
+            var go = CreateChild(parent, ActorLayer.Name.Gradient);
             AddSpriteRenderer(go,
-                SpriteLibrary.Actor["RingBack1"],
+                SpriteLibrary.Actor["Gradient"],
                 new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                17,
+                "SpriteUnlitDefault",
+                ActorLayer.Value.Gradient,
                 SpriteDrawMode.Sliced,
                 new Vector2(1f, 1f));
-        }
-
-        /// <summary>Creates the radial fill.</summary>
-        private static void CreateRadialFill(GameObject parent)
-        {
-            var go = CreateChild(parent, "RadialFill", isActive: false);
-            go.transform.localPosition = new Vector3(-0.3333f, 0.3333f, 0f);
-            go.transform.localScale = new Vector3(0.25f, 0.25f, 1f);
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["Ring1"],
-                new Color(1f, 1f, 1f, 0.5019608f),
-                "RadialFill",
-                18,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-        }
-
-        /// <summary>Creates the radial text.</summary>
-        private static void CreateRadialText(GameObject parent)
-        {
-            var go = CreateChild(parent, "RadialText", isActive: false);
-            go.transform.localPosition = new Vector3(-0.3333f, 0.3333f, 0f);
-            AddTextMeshPro(go, "Roboto", 1f,
-                new Color(1f, 1f, 1f, 0f),
-                TextAlignmentOptions.Center,
-                29, "", enabled: true);
         }
 
         #endregion
 
         #region Text Elements
-
-        /// <summary>Creates the turn delay text.</summary>
-        private static void CreateTurnDelayText(GameObject parent)
-        {
-            var go = CreateChild(parent, "TurnDelayText", isActive: false);
-            go.transform.localPosition = new Vector3(0.4f, 0.36f, 0f);
-            AddTextMeshPro(go, "Attic", 3f,
-                new Color(1f, 1f, 1f, 1f),
-                TextAlignmentOptions.Center,
-                10, "", enabled: true);
-        }
 
         /// <summary>Creates the name tag text.</summary>
         private static void CreateNameTagText(GameObject parent)
@@ -510,67 +310,6 @@ namespace Scripts.Factories
             tmp.text = "";
             tmp.sortingOrder = 21;
             tmp.enabled = false;
-        }
-
-        /// <summary>Creates the weapon icon.</summary>
-        private static void CreateWeaponIcon(GameObject parent)
-        {
-            var go = CreateChild(parent, "WeaponIcon", isActive: false);
-            go.transform.localPosition = new Vector3(0.35f, 0.35f, 0f);
-            go.transform.localRotation = Quaternion.Euler(0f, 0f, 315f);
-            go.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
-            AddSpriteRenderer(go,
-                null,
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                22,
-                SpriteDrawMode.Simple);
-        }
-
-        #endregion
-
-        #region Armor
-
-        /// <summary>Creates the armor.</summary>
-        private static void CreateArmor(GameObject parent)
-        {
-            var armor = CreateChild(parent, "Armor", isActive: false);
-
-            var north = CreateChild(armor, "ArmorNorth");
-            AddSpriteRenderer(north,
-                SpriteLibrary.Actor["ArmorNorth"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                23,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-
-            var east = CreateChild(armor, "ArmorEast");
-            AddSpriteRenderer(east,
-                SpriteLibrary.Actor["ArmorEast"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                24,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-
-            var south = CreateChild(armor, "ArmorSouth");
-            AddSpriteRenderer(south,
-                SpriteLibrary.Actor["ArmorSouth"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                25,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
-
-            var west = CreateChild(armor, "ArmorWest");
-            AddSpriteRenderer(west,
-                SpriteLibrary.Actor["ArmorWest"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpritesDefault",
-                26,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
         }
 
         #endregion

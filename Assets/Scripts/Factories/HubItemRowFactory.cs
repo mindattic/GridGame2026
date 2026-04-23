@@ -63,18 +63,11 @@ public static class HubItemRowFactory
         fadeDuration = 0.1f
     };
 
-    /// <summary>Returns a color based on item rarity for label tinting.</summary>
+    /// <summary>Returns a color based on item rarity for label tinting.
+    /// Delegates to <see cref="Scripts.Data.Items.ItemRarityColors.Get"/> so hub rows and on-map
+    /// loot pickups share the same WoW-style palette.</summary>
     public static Color RarityColor(Scripts.Data.Items.ItemRarity rarity)
-    {
-        switch (rarity)
-        {
-            case Scripts.Data.Items.ItemRarity.Uncommon: return new Color(0.30f, 0.85f, 0.30f, 1f);
-            case Scripts.Data.Items.ItemRarity.Rare: return new Color(0.30f, 0.55f, 1.00f, 1f);
-            case Scripts.Data.Items.ItemRarity.Epic: return new Color(0.70f, 0.30f, 0.90f, 1f);
-            case Scripts.Data.Items.ItemRarity.Legendary: return new Color(1.00f, 0.65f, 0.00f, 1f);
-            default: return Color.white;
-        }
-    }
+        => Scripts.Data.Items.ItemRarityColors.Get(rarity);
 
     private const float IconSize = 56f;
     private const float IconPadding = 8f;
@@ -290,6 +283,74 @@ public static class HubItemRowFactory
         iconImg.sprite = PlaceholderIconFactory.GetFallback();
         iconImg.color = color;
         iconImg.enabled = true;
+    }
+
+    /// <summary>
+    /// Draws a thin fill bar along the bottom of the row, scaled from 0 → 1.
+    /// Use for time-gated crafting, casting, etc. A fraction of 1f shows a "full" bar in the
+    /// "ready" tint; any fraction less than 1f shows the in-progress tint. Pass fraction = -1f
+    /// (or don't call this method on a freshly created row) to omit the bar entirely.
+    /// </summary>
+    public static void SetProgress(GameObject row, float fraction01)
+    {
+        if (row == null) return;
+        var existing = row.transform.Find("ProgressBar");
+        if (fraction01 < 0f)
+        {
+            if (existing != null) Object.Destroy(existing.gameObject);
+            return;
+        }
+        float f = Mathf.Clamp01(fraction01);
+        bool ready = f >= 1f - 0.0001f;
+        var tint = ready ? new Color(0.30f, 0.85f, 0.30f, 0.95f) : new Color(1.00f, 0.65f, 0.00f, 0.95f);
+        var track = ready ? new Color(0f, 0f, 0f, 0.25f) : new Color(0f, 0f, 0f, 0.35f);
+
+        RectTransform barRT;
+        RectTransform fillRT;
+        Image trackImg;
+        Image fillImg;
+
+        if (existing == null)
+        {
+            var bar = new GameObject("ProgressBar");
+            bar.layer = LayerMask.NameToLayer("UI");
+            barRT = bar.AddComponent<RectTransform>();
+            barRT.SetParent(row.transform, false);
+            barRT.anchorMin = new Vector2(0f, 0f);
+            barRT.anchorMax = new Vector2(1f, 0f);
+            barRT.pivot = new Vector2(0.5f, 0f);
+            barRT.sizeDelta = new Vector2(-LabelLeftOffset - 16f, 5f);
+            barRT.anchoredPosition = new Vector2((LabelLeftOffset - 16f) / 2f, 4f);
+            bar.AddComponent<CanvasRenderer>();
+            trackImg = bar.AddComponent<Image>();
+            trackImg.raycastTarget = false;
+
+            var fill = new GameObject("Fill");
+            fill.layer = LayerMask.NameToLayer("UI");
+            fillRT = fill.AddComponent<RectTransform>();
+            fillRT.SetParent(barRT, false);
+            fillRT.anchorMin = new Vector2(0f, 0f);
+            fillRT.anchorMax = new Vector2(0f, 1f);
+            fillRT.pivot = new Vector2(0f, 0.5f);
+            fillRT.offsetMin = Vector2.zero;
+            fillRT.offsetMax = Vector2.zero;
+            fill.AddComponent<CanvasRenderer>();
+            fillImg = fill.AddComponent<Image>();
+            fillImg.raycastTarget = false;
+        }
+        else
+        {
+            barRT = existing as RectTransform;
+            trackImg = existing.GetComponent<Image>();
+            var fillTr = existing.Find("Fill");
+            fillRT = fillTr as RectTransform;
+            fillImg = fillTr.GetComponent<Image>();
+        }
+
+        trackImg.color = track;
+        fillImg.color = tint;
+        // Fill via anchor stretch (width = parent * f)
+        fillRT.anchorMax = new Vector2(f, 1f);
     }
 }
 

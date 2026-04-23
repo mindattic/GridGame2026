@@ -68,12 +68,12 @@ public class AbilityButton : MonoBehaviour
     /// <summary>Initializes initialize.</summary>
     public void Initialize(Ability ability, System.Action onClick)
     {
+        this.ability = ability;
+
         if (label != null)
-            label.text = ability.name;
+            label.text = BuildLabel(ability);
         else
             Debug.LogError("AbilityButton.label is null");
-
-        this.ability = ability;
 
         if (button != null)
         {
@@ -90,14 +90,14 @@ public class AbilityButton : MonoBehaviour
 
     #region State
 
-    /// <summary>Updates the interactable based on mana availability and item stock.</summary>
+    /// <summary>Updates the interactable based on mana availability, item stock, and per-battle use cap.</summary>
     public void UpdateInteractable(float currentMana)
     {
         if (ability == null || button == null) return;
 
         bool canAfford = currentMana >= ability.ManaCost;
 
-        // For item-backed abilities, also check inventory stock
+        // For item-backed abilities, also check inventory stock + per-battle use cap
         if (ability.IsItemAbility && ability.SourceItem != null)
         {
             var save = ProfileHelper.CurrentProfile?.CurrentSave;
@@ -110,9 +110,31 @@ public class AbilityButton : MonoBehaviour
             {
                 canAfford = false;
             }
+
+            canAfford = canAfford && ability.HasUsesRemaining;
         }
 
         button.interactable = canAfford;
+
+        // Refresh label so the "N/M" badge updates after each cast
+        if (label != null)
+            label.text = BuildLabel(ability);
+    }
+
+    /// <summary>
+    /// Builds the button label. For item-backed abilities with a per-battle cap,
+    /// appends a small "(remaining/max)" badge so the player can see at a glance
+    /// how many more times they can pull the tactical trigger this battle.
+    /// </summary>
+    private static string BuildLabel(Ability ability)
+    {
+        if (ability == null) return string.Empty;
+        if (!ability.IsItemAbility || ability.MaxUsesPerBattle <= 0)
+            return ability.name;
+
+        int remaining = Mathf.Max(0, ability.MaxUsesPerBattle - ability.UsesThisBattle);
+        string color = remaining > 0 ? "#CCCCCC" : "#FF6666";
+        return $"{ability.name} <size=70%><color={color}>({remaining}/{ability.MaxUsesPerBattle})</color></size>";
     }
 
     /// <summary>World position.</summary>
@@ -202,8 +224,21 @@ public class Ability
     // Source item for consumable-backed abilities (null for normal abilities)
     public ItemDefinition SourceItem;
 
+    /// <summary>Number of times this ability has been cast during the current battle.
+    /// Reset to 0 each battle — abilities are rebuilt from the loadout on scene load.</summary>
+    public int UsesThisBattle = 0;
+
     /// <summary>True if this ability is backed by a consumable item.</summary>
     public bool IsItemAbility => SourceItem != null;
+
+    /// <summary>Per-battle usage cap sourced from the underlying item (0 = unlimited).</summary>
+    public int MaxUsesPerBattle => SourceItem != null ? SourceItem.MaxUsesPerBattle : 0;
+
+    /// <summary>True when this ability still has a per-battle use remaining (or is unlimited).</summary>
+    public bool HasUsesRemaining => MaxUsesPerBattle == 0 || UsesThisBattle < MaxUsesPerBattle;
+
+    /// <summary>Remaining uses this battle. -1 if unlimited.</summary>
+    public int UsesRemaining => MaxUsesPerBattle == 0 ? -1 : Mathf.Max(0, MaxUsesPerBattle - UsesThisBattle);
 
     public bool IsActive => category == AbilityCategory.Active;
     public bool IsPassive => category == AbilityCategory.Passive;

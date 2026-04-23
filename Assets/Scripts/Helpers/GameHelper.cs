@@ -169,6 +169,9 @@ namespace Scripts.Helpers
         /// <summary>Spawns and manages coin pickup effects.</summary>
         public static CoinManager CoinManager => gm != null ? gm.coinManager : null;
 
+        /// <summary>Spawns rarity-tinted crafting-material pickup visuals on enemy death.</summary>
+        public static ItemPickupManager ItemPickupManager => gm != null ? gm.itemPickupManager : null;
+
         /// <summary>Debug tools and cheat flags.</summary>
         public static DebugManager DebugManager => gm != null ? gm.debugManager : null;
 

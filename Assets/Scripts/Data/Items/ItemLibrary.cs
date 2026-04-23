@@ -70,6 +70,10 @@ public static class ItemLibrary
         Register(ItemData_Consumables.SmokeBomb);
         Register(ItemData_Consumables.Tent);
 
+        // Themed / offensive consumables
+        Register(ItemData_ThemedConsumables.HolyWater);
+        Register(ItemData_ThemedConsumables.FlameOil);
+
         // Weapons
         Register(ItemData_Weapons.IronSword);
         Register(ItemData_Weapons.SteelSword);
@@ -111,17 +115,37 @@ public static class ItemLibrary
         Register(ItemData_Relics.SunfireAmulet);
         Register(ItemData_Relics.CrownOfStars);
 
-        // Crafting Materials
+        // Crafting Materials — Junk
+        Register(ItemData_CraftingMaterials.BrokenBlade);
+        Register(ItemData_CraftingMaterials.CrackedFang);
+        Register(ItemData_CraftingMaterials.TatteredCloth);
+        // Crafting Materials — Common
         Register(ItemData_CraftingMaterials.IronOre);
         Register(ItemData_CraftingMaterials.Leather);
         Register(ItemData_CraftingMaterials.Cloth);
         Register(ItemData_CraftingMaterials.WoodPlank);
-        Register(ItemData_CraftingMaterials.ArcaneDust);
         Register(ItemData_CraftingMaterials.SlimeGel);
         Register(ItemData_CraftingMaterials.WolfPelt);
+        Register(ItemData_CraftingMaterials.GoblinEar);
+        // Crafting Materials — Uncommon
+        Register(ItemData_CraftingMaterials.ArcaneDust);
         Register(ItemData_CraftingMaterials.UndeadBone);
+        Register(ItemData_CraftingMaterials.EnchantedFeather);
+        // Crafting Materials — Rare
         Register(ItemData_CraftingMaterials.TrollHide);
+        Register(ItemData_CraftingMaterials.NagaScale);
+        Register(ItemData_CraftingMaterials.WerewolfFang);
+        // Crafting Materials — Epic
         Register(ItemData_CraftingMaterials.DemonShard);
+        Register(ItemData_CraftingMaterials.GhostlyEctoplasm);
+        // Crafting Materials — Legendary
+        Register(ItemData_CraftingMaterials.DragonScale);
+
+        // Elemental Essences (Enchanter inputs)
+        Register(ItemData_Essences.FlameEssence);
+        Register(ItemData_Essences.FrostEssence);
+        Register(ItemData_Essences.SparkEssence);
+        Register(ItemData_Essences.ShadowEssence);
 
         // Auto-assign salvage components to equipment that has none defined
         AssignDefaultSalvageComponents();
@@ -185,6 +209,13 @@ public static class ItemLibrary
     {
         if (def == null || string.IsNullOrEmpty(def.Id)) return;
         if (!items.ContainsKey(def.Id)) items.Add(def.Id, def);
+    }
+
+    /// <summary>Registers an item from outside the library (e.g. runtime-generated upgrade variants). Safe to call repeatedly.</summary>
+    public static void RegisterExternal(ItemDefinition def)
+    {
+        Ensure();
+        Register(def);
     }
 
     /// <summary>Gets an item by Id or null if not found.</summary>

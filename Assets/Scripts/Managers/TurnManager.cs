@@ -235,14 +235,16 @@ namespace Scripts.Managers
  }
 
  /// <summary>
- /// Marks the start of a cast-resolution window: input is suspended and the spell icon
- /// is parked at u=1 while effect sequences play out. Caller is the spell-icon onReached
- /// closure in TimelineBarInstance.SpawnSpellIcon.
+ /// Marks the start of a cast-resolution window: input is suspended, the timeline is
+ /// frozen (all other icons stop marching, mana accrual halts, no enemy triggers can
+ /// fire), and the spell icon is parked at u=1 while effect sequences play out. Caller
+ /// is the spell-icon onReached closure in TimelineBarInstance.SpawnSpellIcon.
  /// </summary>
  public void BeginCastResolution()
  {
  IsResolvingCast = true;
  if (g.InputManager != null) g.InputManager.InputMode = InputMode.None;
+ g.TimelineBar?.PauseForCastResolution();
  }
 
  /// <summary>

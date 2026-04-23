@@ -135,18 +135,6 @@ public static class Increment
     public const float OneSeventh = 0.14285715f;
     public const float OneEighth = 0.125f;
     public const float OneNinth = 0.11111111f;
-
-    /// <summary>Health bar drain rate constants.</summary>
-    public static class HealthBar
-    {
-        public const float Drain = 1.0f;
-    }
-
-    /// <summary>Action bar drain rate constants.</summary>
-    public static class ActionBar
-    {
-        public const float Drain = 1.0f;
-    }
 }
 
 /// <summary>
@@ -185,16 +173,6 @@ public static class Intermission
         {
             public static float SlideIn = 0;
         }
-
-        public static class HealthBar
-        {
-            public static float Drain = Interval.QuarterSecond;
-        }
-
-        public static class ActionBar
-        {
-            public static float Drain = 0;
-        }
     }
 
     /// <summary>Delays after actions complete.</summary>
@@ -203,11 +181,6 @@ public static class Intermission
         public static class Player
         {
             public static float Attack = 0;
-        }
-
-        public static class HealthBar
-        {
-            public static float Empty = 0;
         }
     }
 }

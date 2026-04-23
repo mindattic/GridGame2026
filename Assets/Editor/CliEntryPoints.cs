@@ -56,7 +56,8 @@ public static class CliEntryPoints
             }
             catch (Exception e)
             {
-                Debug.LogError($"[Cli] Scaffold failed for {scene}: {e.Message}\n{e.StackTrace}");
+                var inner = e.InnerException ?? e;
+                Debug.LogError($"[Cli] Scaffold failed for {scene}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
                 failed++;
             }
         }
@@ -84,7 +85,8 @@ public static class CliEntryPoints
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Cli] ScaffoldScene failed for {sceneName}: {e.Message}\n{e.StackTrace}");
+            var inner = e.InnerException ?? e;
+            Debug.LogError($"[Cli] ScaffoldScene failed for {sceneName}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
             EditorApplication.Exit(1);
         }
     }

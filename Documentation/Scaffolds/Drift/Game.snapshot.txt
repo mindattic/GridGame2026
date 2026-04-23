@@ -215,14 +215,14 @@
     [BankButton]
       Button
       CanvasRenderer
-      Image: sprite=Button.128x64, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=86.8,0, size=128,64, pivot=0.5,0.5
-      [Label]
+      Image: sprite=Coin, color=#408CFFFF, type=Simple, raycast=True
+      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-86.8,0, size=96,96, pivot=0.5,0.5
+      [Glow]
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=200,50, pivot=0.5,0.5
-        TextMeshProUGUI: font=Avenir, text='\'Bank', size=36, color=#FFFFFFFF, align=Top, raycast=True
+        Image: sprite=Coin, color=#66B2FF99, type=Simple, raycast=False
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=96,96, pivot=0.5,0.5
     [EnemyBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=72,-80, size=-176,0, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,-80, size=-176,0, pivot=0.5,0.5
       [Back]
         CanvasRenderer
         Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
@@ -232,7 +232,7 @@
         Image: sprite=action-bar-1, color=#FFFFFFFF, type=Filled, raycast=False
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
     [HeroBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=72,0, size=-176,64, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,0, size=-176,64, pivot=0.5,0.5
       [Back]
         CanvasRenderer
         Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
@@ -385,7 +385,7 @@
   [Portraits] layer=UI
     RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
   [TimelineBar]
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,840, size=889.5,8, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,930, size=889.5,8, pivot=0.5,0.5
     TimelineBarInstance
     [Left]
       CanvasRenderer
@@ -433,6 +433,7 @@
   GhostManager
   HeroManager
   InputManager
+  ItemPickupManager
   LogManager
   ManaPoolManager
   PincerAttackManager

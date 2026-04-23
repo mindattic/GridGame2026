@@ -80,11 +80,7 @@ namespace Scripts.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings
-                {
-                    PixelPosition = new Vector2Int(512, 140),
-                    Scale = new Vector3(1f, 1f, 0f)
-                },
+                ThumbnailSettings = new ThumbnailSettings(new Vector2(0.52f, -1.37f), new Vector2(5f, 5f)),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 

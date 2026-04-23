@@ -261,6 +261,13 @@ namespace Scripts.Managers
                 case AbilityEffect.UseItem:
                     if (currentAbility.SourceItem != null)
                     {
+                        // Per-battle use cap: consumables can be equipped instead of abilities,
+                        // but unlike mana-powered skills they have a limited supply per battle
+                        // (tactical pick-and-choose). Gate + count here so the button badge
+                        // and UpdateInteractable see the increment.
+                        if (!currentAbility.HasUsesRemaining) break;
+                        currentAbility.UsesThisBattle += 1;
+
                         // Show ability bar announcement
                         g.AbilityBar?.Show(currentUser, currentAbility.SourceItem);
                         foreach (var t in targetList)
@@ -305,7 +312,7 @@ namespace Scripts.Managers
             // targeting kind out of the visual mix (red=enemy-select, cyan=heal/buff).
             // Hidden on cast resolution and on interrupt — both paths converge below.
             var castArcKey = "cast:" + caster.name;
-            g.TargetLineManager?.Show(castArcKey,
+            g.TargetLineManager?.Show2D(castArcKey,
                 Models.TargetPoint.Actor(caster),
                 Models.TargetPoint.Actor(target),
                 Color.cyan);

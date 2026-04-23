@@ -55,6 +55,7 @@ public static class ItemData_Consumables
         BaseCost = 75,
         MaxStack = 10,
         BaseHealing = 150,
+        MaxUsesPerBattle = 3,
     };
 
     public static readonly ItemDefinition XPotion = new ItemDefinition
@@ -67,6 +68,7 @@ public static class ItemData_Consumables
         BaseCost = 250,
         MaxStack = 5,
         BaseHealing = 500,
+        MaxUsesPerBattle = 2,
     };
 
     // ============== MANA ==============
@@ -80,6 +82,7 @@ public static class ItemData_Consumables
         BaseCost = 50,
         MaxStack = 10,
         BaseHealing = 0, // MP restore handled by effect logic
+        MaxUsesPerBattle = 2,
     };
 
     public static readonly ItemDefinition HiEther = new ItemDefinition
@@ -92,6 +95,7 @@ public static class ItemData_Consumables
         BaseCost = 150,
         MaxStack = 5,
         BaseHealing = 0,
+        MaxUsesPerBattle = 2,
     };
 
     // ============== REVIVAL ==============
@@ -106,6 +110,7 @@ public static class ItemData_Consumables
         BaseCost = 300,
         MaxStack = 5,
         BaseHealing = 50, // revival amount
+        MaxUsesPerBattle = 2,
     };
 
     // ============== STATUS CURES ==============
@@ -119,6 +124,7 @@ public static class ItemData_Consumables
         BaseCost = 20,
         MaxStack = 15,
         BaseHealing = 0,
+        MaxUsesPerBattle = 3,
     };
 
     public static readonly ItemDefinition EyeDrops = new ItemDefinition
@@ -130,6 +136,7 @@ public static class ItemData_Consumables
         BaseCost = 20,
         MaxStack = 15,
         BaseHealing = 0,
+        MaxUsesPerBattle = 3,
     };
 
     public static readonly ItemDefinition Remedy = new ItemDefinition
@@ -142,6 +149,7 @@ public static class ItemData_Consumables
         BaseCost = 150,
         MaxStack = 5,
         BaseHealing = 0,
+        MaxUsesPerBattle = 2,
     };
 
     // ============== UTILITY ==============

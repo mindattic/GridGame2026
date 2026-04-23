@@ -118,8 +118,6 @@ namespace Scripts.Sequences
                 }
             }
 
-            // Reset AP after attacking
-            attacker.ActionBar.Reset();
         }
 
         /// <summary>

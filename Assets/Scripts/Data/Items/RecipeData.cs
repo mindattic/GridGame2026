@@ -213,6 +213,185 @@ public static class RecipeData
             new RecipeIngredient("mat_undead_bone", 2),
         }
     };
+
+    // ===================================================================
+    // Alchemy — extended consumable recipes (see AlchemistSection)
+    // Any recipe whose ResultItemId resolves to a Consumable is shown at
+    // the Alchemist. Everything else routes to the Blacksmith UI.
+    // ===================================================================
+
+    public static readonly CraftingRecipe HiPotionRecipe = new CraftingRecipe
+    {
+        Id = "recipe_potion_hi",
+        DisplayName = "Brew Hi-Potion",
+        ResultItemId = "hi_potion",
+        ResultCount = 2,
+        GoldCost = 60,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_slime_gel", 5),
+            new RecipeIngredient("mat_arcane_dust", 2),
+        }
+    };
+
+    public static readonly CraftingRecipe XPotionRecipe = new CraftingRecipe
+    {
+        Id = "recipe_potion_x",
+        DisplayName = "Brew X-Potion",
+        ResultItemId = "x_potion",
+        ResultCount = 1,
+        GoldCost = 200,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_slime_gel", 10),
+            new RecipeIngredient("mat_arcane_dust", 5),
+            new RecipeIngredient("mat_demon_shard", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe EtherRecipe = new CraftingRecipe
+    {
+        Id = "recipe_ether",
+        DisplayName = "Brew Ether",
+        ResultItemId = "ether",
+        ResultCount = 2,
+        GoldCost = 40,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 3),
+        }
+    };
+
+    public static readonly CraftingRecipe HiEtherRecipe = new CraftingRecipe
+    {
+        Id = "recipe_ether_hi",
+        DisplayName = "Brew Hi-Ether",
+        ResultItemId = "hi_ether",
+        ResultCount = 1,
+        GoldCost = 120,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 6),
+            new RecipeIngredient("mat_undead_bone", 2),
+        }
+    };
+
+    public static readonly CraftingRecipe PhoenixDownRecipe = new CraftingRecipe
+    {
+        Id = "recipe_phoenix_down",
+        DisplayName = "Bind Phoenix Down",
+        ResultItemId = "phoenix_down",
+        ResultCount = 1,
+        GoldCost = 180,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_enchanted_feather", 2),
+            new RecipeIngredient("mat_ghost_ectoplasm", 1),
+            new RecipeIngredient("mat_arcane_dust", 4),
+        }
+    };
+
+    public static readonly CraftingRecipe AntidoteRecipe = new CraftingRecipe
+    {
+        Id = "recipe_antidote",
+        DisplayName = "Brew Antidote",
+        ResultItemId = "antidote",
+        ResultCount = 3,
+        GoldCost = 15,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_slime_gel", 1),
+            new RecipeIngredient("mat_arcane_dust", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe EyeDropsRecipe = new CraftingRecipe
+    {
+        Id = "recipe_eye_drops",
+        DisplayName = "Mix Eye Drops",
+        ResultItemId = "eye_drops",
+        ResultCount = 3,
+        GoldCost = 15,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_enchanted_feather", 1),
+            new RecipeIngredient("mat_cloth", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe RemedyRecipe = new CraftingRecipe
+    {
+        Id = "recipe_remedy",
+        DisplayName = "Compound Remedy",
+        ResultItemId = "remedy",
+        ResultCount = 1,
+        GoldCost = 100,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 3),
+            new RecipeIngredient("mat_enchanted_feather", 1),
+            new RecipeIngredient("mat_undead_bone", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe SmokeBombRecipe = new CraftingRecipe
+    {
+        Id = "recipe_smoke_bomb",
+        DisplayName = "Assemble Smoke Bomb",
+        ResultItemId = "smoke_bomb",
+        ResultCount = 2,
+        GoldCost = 40,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 2),
+            new RecipeIngredient("mat_cloth", 2),
+            new RecipeIngredient("mat_cracked_fang", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe TentRecipe = new CraftingRecipe
+    {
+        Id = "recipe_tent",
+        DisplayName = "Sew Tent",
+        ResultItemId = "tent",
+        ResultCount = 1,
+        GoldCost = 120,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_leather", 4),
+            new RecipeIngredient("mat_wood_plank", 3),
+            new RecipeIngredient("mat_cloth", 2),
+        }
+    };
+
+    // Themed / offensive consumables — biome-specific tactical picks.
+    public static readonly CraftingRecipe HolyWaterRecipe = new CraftingRecipe
+    {
+        Id = "recipe_holy_water",
+        DisplayName = "Bless Holy Water",
+        ResultItemId = "holy_water",
+        ResultCount = 2,
+        GoldCost = 60,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 2),
+            new RecipeIngredient("mat_enchanted_feather", 1),
+        }
+    };
+
+    public static readonly CraftingRecipe FlameOilRecipe = new CraftingRecipe
+    {
+        Id = "recipe_flame_oil",
+        DisplayName = "Distill Flame Oil",
+        ResultItemId = "flame_oil",
+        ResultCount = 2,
+        GoldCost = 50,
+        Ingredients =
+        {
+            new RecipeIngredient("mat_arcane_dust", 2),
+            new RecipeIngredient("mat_cracked_fang", 1),
+        }
+    };
 }
 
 }

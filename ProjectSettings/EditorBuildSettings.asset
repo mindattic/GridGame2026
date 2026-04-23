@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Hub.unity
+    guid: 35948df1a0a5dfe489771140756f66b8
+  - enabled: 1
     path: Assets/Scenes/TitleScreen.unity
     guid: 707585cc10c691c4abdfd4099b573194
   - enabled: 1
@@ -44,9 +47,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PostBattleScreen.unity
     guid: 3317a56c433dd734581d8a1ad26bd171
-  - enabled: 1
-    path: Assets/Scenes/Hub.unity
-    guid: 35948df1a0a5dfe489771140756f66b8
   m_configObjects:
     com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 29211708ed7c6c74285d0bb75534fd4c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d2635e6bd816c834798f0eb915bff615, type: 2}

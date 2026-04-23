@@ -1012,26 +1012,6 @@ public static class GameScaffold
         img_BankGlow.raycastTarget = false;
         Undo.RegisterCreatedObjectUndo(go_BankGlow, "Create Bank Glow");
 
-        // --- Label ---
-        var go_Label2 = new GameObject("Label");
-        var rt_Label2 = go_Label2.AddComponent<RectTransform>();
-        rt_Label2.SetParent(go_BankButton.GetComponent<RectTransform>(), false);
-        rt_Label2.anchorMin = new Vector2(0.5f, 0.5f);
-        rt_Label2.anchorMax = new Vector2(0.5f, 0.5f);
-        rt_Label2.pivot = new Vector2(0.5f, 0.5f);
-        rt_Label2.sizeDelta = new Vector2(200f, 50f);
-        rt_Label2.anchoredPosition = new Vector2(0f, 0f);
-        go_Label2.AddComponent<CanvasRenderer>();
-        var tmp_Label2 = go_Label2.AddComponent<TextMeshProUGUI>();
-        tmp_Label2.font = SceneScaffoldHelper.LoadFont(Font_Avenir);
-        tmp_Label2.text = "Bank";
-        tmp_Label2.fontSize = 28f;
-        tmp_Label2.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Label2.alignment = (TextAlignmentOptions)514;
-        tmp_Label2.enableWordWrapping = false;
-        tmp_Label2.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_Label2, "Create Label");
-
         // --- Clock ---
         var go_Clock = new GameObject("Clock");
         var rt_Clock = go_Clock.AddComponent<RectTransform>();
@@ -1141,7 +1121,7 @@ public static class GameScaffold
         rt_TimelineBar.anchorMax = new Vector2(0.5f, 0.5f);
         rt_TimelineBar.pivot = new Vector2(0.5f, 0.5f);
         rt_TimelineBar.sizeDelta = new Vector2(889.5f, 8f);
-        rt_TimelineBar.anchoredPosition = new Vector2(0f, 840f);
+        rt_TimelineBar.anchoredPosition = new Vector2(0f, 930f);
         go_TimelineBar.AddComponent<Scripts.Canvas.TimelineBarInstance>();
         Undo.RegisterCreatedObjectUndo(go_TimelineBar, "Create TimelineBar");
 
@@ -1823,6 +1803,7 @@ public static class GameScaffold
         go_Game.AddComponent<Scripts.Managers.AudioManager>();
         go_Game.AddComponent<Scripts.Managers.VisualEffectManager>();
         go_Game.AddComponent<Scripts.Managers.CoinManager>();
+        go_Game.AddComponent<Scripts.Managers.ItemPickupManager>();
         go_Game.AddComponent<Scripts.Managers.DebugManager>();
         go_Game.AddComponent<Scripts.Managers.ConsoleManager>();
         go_Game.AddComponent<Scripts.Managers.LogManager>();

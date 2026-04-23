@@ -411,6 +411,18 @@ public static class Formulas
     }
 
     /// <summary>
+    /// Real-world seconds required for a vendor (Blacksmith / Alchemist) to process a craft
+    /// job. Scales gently with gold + material volume — small jobs finish in ~30s for playtest
+    /// feel, big legendary jobs run to roughly an hour. Short-circuited to a hard cap so no
+    /// single order can lock gear away forever. Future MTX can reduce this value at collect time.
+    /// </summary>
+    public static float CraftDurationSeconds(int goldCost, int totalMaterialCount)
+    {
+        float baseSeconds = 30f + goldCost * 0.5f + totalMaterialCount * 10f;
+        return Mathf.Clamp(baseSeconds, 30f, 3600f);
+    }
+
+    /// <summary>
     /// Effective cast time for a spell with raw <paramref name="baseSeconds"/> on a caster
     /// with the given Wisdom and Intelligence. Higher WIS+INT makes the cast finish faster.
     /// Floor at 25% of baseSeconds so even the best caster can't make a long ritual instant.

@@ -72,6 +72,16 @@ public class ItemDefinition
     public int Durability;
     public int BaseHealing;
 
+    /// <summary>Flat damage dealt on use. Only relevant for offensive consumables (Holy Water, Flame Oil).</summary>
+    public int BaseDamage;
+
+    /// <summary>If the target carries any of these tag bits, damage is multiplied by <see cref="BonusDamageMultiplier"/>.
+    /// Example: HolyWater sets Undead → 2.0× damage vs undead targets.</summary>
+    public ActorTag BonusDamageVsTag = ActorTag.None;
+
+    /// <summary>Multiplier applied to BaseDamage when the target matches BonusDamageVsTag. 1.0 = no bonus.</summary>
+    public float BonusDamageMultiplier = 1f;
+
     /// <summary>Max uses of this consumable per battle (0 = unlimited). Only relevant for Consumable type.</summary>
     public int MaxUsesPerBattle;
 

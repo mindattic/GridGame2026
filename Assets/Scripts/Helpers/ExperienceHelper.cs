@@ -116,7 +116,7 @@ namespace Scripts.Helpers
                         PreviousHP = next.MaxHP
                     };
 
-                    actor.HealthBar.Update();
+                    actor.HealthText.Refresh();
 
                     g.CombatTextManager?.Spawn("Level Up!", actor.Position, "Heal");
                     if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))

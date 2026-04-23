@@ -54,6 +54,7 @@ namespace Scripts.Models
         {
             Name = other.Name;
             Description = other.Description;
+            Biome = other.Biome;
             CompletionCondition = other.CompletionCondition;
             CompletionValue = other.CompletionValue;
             Tutorials = other.Tutorials != null ? new List<string>(other.Tutorials) : new List<string>();
@@ -66,6 +67,7 @@ namespace Scripts.Models
 
         public string Name;
         public string Description;
+        public Scripts.Libraries.Biome Biome;
         public string CompletionCondition;
         public int CompletionValue;
         public List<string> Tutorials;

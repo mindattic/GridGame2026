@@ -63,6 +63,22 @@ public static class RecipeLibrary
         Register(RecipeData.PlateArmorRecipe);
         Register(RecipeData.HunterBowRecipe);
         Register(RecipeData.JadeAmuletRecipe);
+
+        // Alchemy — extended consumables
+        Register(RecipeData.HiPotionRecipe);
+        Register(RecipeData.XPotionRecipe);
+        Register(RecipeData.EtherRecipe);
+        Register(RecipeData.HiEtherRecipe);
+        Register(RecipeData.PhoenixDownRecipe);
+        Register(RecipeData.AntidoteRecipe);
+        Register(RecipeData.EyeDropsRecipe);
+        Register(RecipeData.RemedyRecipe);
+        Register(RecipeData.SmokeBombRecipe);
+        Register(RecipeData.TentRecipe);
+
+        // Themed / offensive consumables
+        Register(RecipeData.HolyWaterRecipe);
+        Register(RecipeData.FlameOilRecipe);
     }
 
     /// <summary>Registers a recipe.</summary>

@@ -23,11 +23,17 @@ namespace Scripts.Data.Items
 {
 /// <summary>
 /// DROPTABLEDATA - Static drop table definitions per enemy type.
-/// 
+///
 /// PURPOSE:
-/// Assigns loot tables to enemy CharacterClasses so players
-/// can farm specific ingredients from specific enemies.
-/// 
+/// Assigns loot tables to enemy CharacterClasses so players can farm specific
+/// ingredients from specific enemies. Rarity of the dropped item determines
+/// the on-map pickup tint (see <see cref="ItemRarityColors"/>).
+///
+/// FARM PROFILES:
+/// - Early mobs (slimes, wolves): mostly junk + common mats, tiny uncommon chance.
+/// - Mid-tier elites (trolls, naga, werewolves): rare/epic mats at elite rates.
+/// - Rare spawns (DemonLord, Cyclops): guaranteed epic mats + small legendary roll.
+///
 /// RELATED FILES:
 /// - DropTableLibrary.cs: Registers these tables
 /// - DropTable.cs: Drop table data structure
@@ -40,6 +46,7 @@ public static class DropTableData
         Enemy = CharacterClass.Slime00,
         Entries =
         {
+            new DropEntry("mat_tattered_cloth", 40f, 1, 2),
             new DropEntry("mat_slime_gel", 60f, 1, 3),
             new DropEntry("mat_arcane_dust", 10f, 1, 1),
         }
@@ -50,6 +57,7 @@ public static class DropTableData
         Enemy = CharacterClass.Slime01,
         Entries =
         {
+            new DropEntry("mat_tattered_cloth", 35f, 1, 2),
             new DropEntry("mat_slime_gel", 65f, 1, 4),
             new DropEntry("mat_arcane_dust", 15f, 1, 1),
         }
@@ -60,6 +68,7 @@ public static class DropTableData
         Enemy = CharacterClass.Wolf00,
         Entries =
         {
+            new DropEntry("mat_cracked_fang", 45f, 1, 2),
             new DropEntry("mat_wolf_pelt", 50f, 1, 2),
             new DropEntry("mat_leather", 30f, 1, 1),
         }
@@ -70,6 +79,7 @@ public static class DropTableData
         Enemy = CharacterClass.Wolf01,
         Entries =
         {
+            new DropEntry("mat_cracked_fang", 40f, 1, 2),
             new DropEntry("mat_wolf_pelt", 55f, 1, 3),
             new DropEntry("mat_leather", 35f, 1, 2),
         }
@@ -80,6 +90,7 @@ public static class DropTableData
         Enemy = CharacterClass.Undead00,
         Entries =
         {
+            new DropEntry("mat_tattered_cloth", 40f, 1, 2),
             new DropEntry("mat_undead_bone", 45f, 1, 2),
             new DropEntry("mat_cloth", 20f, 1, 1),
         }
@@ -90,6 +101,7 @@ public static class DropTableData
         Enemy = CharacterClass.Undead01,
         Entries =
         {
+            new DropEntry("mat_tattered_cloth", 45f, 1, 2),
             new DropEntry("mat_undead_bone", 50f, 1, 3),
             new DropEntry("mat_cloth", 25f, 1, 2),
             new DropEntry("mat_arcane_dust", 10f, 1, 1),
@@ -101,8 +113,10 @@ public static class DropTableData
         Enemy = CharacterClass.MountainTroll,
         Entries =
         {
+            new DropEntry("mat_broken_blade", 30f, 1, 2),
             new DropEntry("mat_troll_hide", 35f, 1, 1),
             new DropEntry("mat_iron_ore", 25f, 1, 2),
+            new DropEntry("mat_dragon_scale", 0.5f, 1, 1), // ultra-rare "legendary dream" drop
         }
     };
 
@@ -111,9 +125,10 @@ public static class DropTableData
         Enemy = CharacterClass.DemonLord,
         Entries =
         {
-            new DropEntry("mat_demon_shard", 40f, 1, 1),
+            new DropEntry("mat_demon_shard", 100f, 1, 2),   // guaranteed boss loot
             new DropEntry("mat_arcane_dust", 60f, 2, 4),
             new DropEntry("mat_iron_ore", 50f, 1, 3),
+            new DropEntry("mat_dragon_scale", 5f, 1, 1),    // rare chance at legendary
         }
     };
 
@@ -124,6 +139,7 @@ public static class DropTableData
         {
             new DropEntry("mat_slime_gel", 40f, 1, 2),
             new DropEntry("mat_leather", 20f, 1, 1),
+            new DropEntry("mat_cracked_fang", 20f, 1, 1),
         }
     };
 
@@ -132,6 +148,8 @@ public static class DropTableData
         Enemy = CharacterClass.GoblinThug00,
         Entries =
         {
+            new DropEntry("mat_broken_blade", 50f, 1, 2),
+            new DropEntry("mat_goblin_ear", 80f, 1, 2),    // near-guaranteed turn-in item
             new DropEntry("mat_iron_ore", 35f, 1, 2),
             new DropEntry("mat_cloth", 30f, 1, 1),
             new DropEntry("mat_wood_plank", 25f, 1, 2),
@@ -145,6 +163,7 @@ public static class DropTableData
         {
             new DropEntry("mat_wood_plank", 55f, 2, 4),
             new DropEntry("mat_leather", 15f, 1, 1),
+            new DropEntry("mat_enchanted_feather", 12f, 1, 1), // nature-flavored uncommon
         }
     };
 
@@ -153,9 +172,11 @@ public static class DropTableData
         Enemy = CharacterClass.Cyclops00,
         Entries =
         {
+            new DropEntry("mat_broken_blade", 60f, 1, 3),
             new DropEntry("mat_iron_ore", 40f, 2, 3),
             new DropEntry("mat_troll_hide", 20f, 1, 1),
             new DropEntry("mat_demon_shard", 5f, 1, 1),
+            new DropEntry("mat_dragon_scale", 1f, 1, 1),
         }
     };
 
@@ -164,6 +185,7 @@ public static class DropTableData
         Enemy = CharacterClass.Scorpion,
         Entries =
         {
+            new DropEntry("mat_cracked_fang", 50f, 1, 2),
             new DropEntry("mat_leather", 45f, 1, 2),
             new DropEntry("mat_arcane_dust", 15f, 1, 1),
         }
@@ -174,6 +196,7 @@ public static class DropTableData
         Enemy = CharacterClass.Naga00,
         Entries =
         {
+            new DropEntry("mat_naga_scale", 55f, 1, 2),     // signature farm mat
             new DropEntry("mat_arcane_dust", 40f, 1, 2),
             new DropEntry("mat_cloth", 35f, 1, 2),
             new DropEntry("mat_demon_shard", 8f, 1, 1),
@@ -187,6 +210,8 @@ public static class DropTableData
         {
             new DropEntry("mat_arcane_dust", 50f, 1, 3),
             new DropEntry("mat_undead_bone", 30f, 1, 1),
+            new DropEntry("mat_ghost_ectoplasm", 20f, 1, 1), // signature farm mat
+            new DropEntry("mat_enchanted_feather", 8f, 1, 1),
         }
     };
 
@@ -195,6 +220,7 @@ public static class DropTableData
         Enemy = CharacterClass.Werewolf00,
         Entries =
         {
+            new DropEntry("mat_werewolf_fang", 35f, 1, 1),  // signature farm mat
             new DropEntry("mat_wolf_pelt", 60f, 2, 3),
             new DropEntry("mat_troll_hide", 15f, 1, 1),
             new DropEntry("mat_leather", 40f, 1, 2),

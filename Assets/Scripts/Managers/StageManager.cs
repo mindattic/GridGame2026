@@ -317,6 +317,19 @@ public class StageManager : MonoBehaviour
                     instance.Stats.TotalXP = Mathf.Max(0, entry.TotalXP);
                 }
             }
+
+            // Apply equipped-gear stat bonuses so upgraded weapons & armor actually matter in battle.
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Equipment?.Heroes != null)
+            {
+                var heroSave = save.Equipment.Heroes.FirstOrDefault(h => h != null && h.CharacterClass == stageActor.CharacterClass);
+                if (heroSave != null)
+                {
+                    var loadout = new HeroLoadout { CharacterClass = stageActor.CharacterClass };
+                    loadout.LoadFromSave(heroSave);
+                    Formulas.ApplyEquipmentBonus(instance.Stats, loadout);
+                }
+            }
         }
 
         instance.transform.localScale = GameManager.instance.tileScale;

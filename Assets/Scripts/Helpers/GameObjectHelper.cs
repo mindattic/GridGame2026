@@ -45,7 +45,7 @@ namespace Scripts.Helpers
     /// var title = GameObject.Find(GameObjectHelper.StageSelect.Title);
     /// 
     /// // Actor child lookup
-    /// var healthBar = actor.transform.Find(GameObjectHelper.Actor.Front.HealthBar.Fill);
+    /// var thumbnail = actor.transform.Find(GameObjectHelper.Actor.Front.Thumbnail);
     /// ```
     /// 
     /// PATH FORMAT:
@@ -74,25 +74,7 @@ namespace Scripts.Helpers
                 public const string Thumbnail = Root + "/Thumbnail";
                 public const string Frame = Root + "/Frame";
                 public const string StatusIcon = Root + "/StatusIcon";
-
-                public static class HealthBar
-                {
-                    public const string Root = Front.Root + "/HealthBar";
-                    public const string Back = Root + "/HealthBarBack";
-                    public const string Drain = Root + "/HealthBarDrain";
-                    public const string Fill = Root + "/HealthBarFill";
-                    public const string Text = Root + "/HealthBarText";
-                }
-
-                public static class ActionBar
-                {
-                    public const string Root = Front.Root + "/ActionBar";
-                    public const string Mask = Root + "/Mask";
-                    public const string RadialBack = Root + "/RadialBack";
-                    public const string RadialFill = Root + "/RadialFill";
-                    public const string RadialText = Root + "/RadialText";
-                    public const string TurnDelayText = Root + "/TurnDelayText";
-                }
+                public const string HealthText = Root + "/HealthText";
             }
 
             public const string Armor = "Armor";
@@ -542,27 +524,43 @@ namespace Scripts.Helpers
 
             public const string PartyButton = "PartyButton";
             public const string ShopButton = "ShopButton";
+            public const string AlchemistButton = "AlchemistButton";
             public const string MedicalButton = "MedicalButton";
             public const string ResidenceButton = "ResidenceButton";
             public const string BlacksmithButton = "BlacksmithButton";
+            public const string EnchanterButton = "EnchanterButton";
+            public const string SalvageButton = "SalvageButton";
             public const string TrainingButton = "TrainingButton";
             public const string EquipButton = "EquipButton";
             public const string InventoryButton = "InventoryButton";
             public const string BattlePrepButton = "BattlePrepButton";
+            public const string PlacesButton = "PlacesButton";
+            public const string BountyButton = "BountyButton";
             public const string OverworldButton = "OverworldButton";
             public const string BattleButton = "BattleButton";
+
+            // ── Hamburger Menu ──
+            public const string MenuButton = "MenuButton";
+            public const string MenuDropdown = "MenuDropdown";
+            public const string MenuBackdrop = "MenuBackdrop";
+            public const string MenuPanel = "MenuPanel";
 
             // ── Section Panels (siblings under ContentPanel) ──
 
             public const string PartyPanel = "PartyPanel";
             public const string ShopPanel = "ShopPanel";
+            public const string AlchemistPanel = "AlchemistPanel";
             public const string MedicalPanel = "MedicalPanel";
             public const string ResidencePanel = "ResidencePanel";
             public const string BlacksmithPanel = "BlacksmithPanel";
+            public const string EnchanterPanel = "EnchanterPanel";
+            public const string SalvagePanel = "SalvagePanel";
             public const string TrainingPanel = "TrainingPanel";
             public const string EquipPanel = "EquipPanel";
             public const string InventoryPanel = "InventoryPanel";
             public const string BattlePrepPanel = "BattlePrepPanel";
+            public const string PlacesPanel = "PlacesPanel";
+            public const string BountyPanel = "BountyPanel";
 
             // ── Shared Child Names (reused across multiple panels) ──
 

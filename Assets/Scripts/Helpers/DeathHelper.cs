@@ -38,9 +38,6 @@ namespace Scripts.Helpers
             if (dyingActors.IsNullOrEmpty())
                 yield break;
 
-            // wait until all their HP‐bars are empty
-            //yield return new WaitUntil(() => dyingActors.All(x => x.HealthBar.isEmpty));
-
             // now actually kill them
             foreach (var actor in dyingActors)
             {

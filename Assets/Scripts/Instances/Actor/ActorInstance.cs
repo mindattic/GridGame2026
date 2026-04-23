@@ -64,9 +64,7 @@ namespace Scripts.Instances.Actor
 /// - Render: SpriteRenderer references (ActorRenderers)
 /// - Animation: Animation state machine (ActorAnimation)
 /// - Move: Position lerping (ActorMovement)
-/// - HealthBar: HP bar UI (ActorHealthBar)
-/// - ActionBar: AP bar UI (ActorActionBar)
-/// - Glow: Selection glow effect (ActorGlow)
+/// - HealthText: HP readout text (ActorHealthText)
 /// - Weapon: Weapon sprite/type (ActorWeapon)
 /// - Vfx: Particle effects (ActorVFX)
 /// - Thumbnail: Portrait display (ActorThumbnail)
@@ -227,7 +225,6 @@ public partial class ActorInstance : MonoBehaviour
     #region Core fields and modules
 
     // Keep your existing module objects and data.
-    public AnimationCurve glowCurve;
 
     public Vector2Int previousLocation;
     public Vector3 previousPosition;
@@ -243,10 +240,7 @@ public partial class ActorInstance : MonoBehaviour
     public ActorWeapon Weapon = new ActorWeapon();
     public ActorAnimation Animation = new ActorAnimation();
     public ActorMovement Move = new ActorMovement();
-    public ActorHealthBar HealthBar = new ActorHealthBar();
-    public ActorActionBar ActionBar = new ActorActionBar();
-    public ActorGlow Glow = new ActorGlow();
-    public ActorParallax Parallax = new ActorParallax();
+    public ActorHealthText HealthText = new ActorHealthText();
     public ActorThumbnail Thumbnail;
     public List<Ability> Abilities = new List<Ability>();
 
@@ -340,10 +334,7 @@ public partial class ActorInstance : MonoBehaviour
         Render.Initialize(this);
         Animation.Initialize(this);
         Move.Initialize(this);
-        HealthBar.Initialize(this);
-        ActionBar.Initialize(this);
-        Glow.Initialize(this);
-        Parallax.Initialize(this);
+        HealthText.Initialize(this);
 
         Thumbnail = transform.Find(GameObjectHelper.Actor.Front.Thumbnail)
                              .GetComponent<ActorThumbnail>();
@@ -375,40 +366,26 @@ public partial class ActorInstance : MonoBehaviour
 
         if (IsHero)
         {
-            Render.SetOpaqueColor(ColorHelper.Solid.White);
-            Render.SetQualityColor(ColorHelper.Solid.White);
-            Render.SetGlowColor(ColorHelper.Solid.White);
-            Render.SetParallaxSprite(SpriteLibrary.Seamless["WhiteFire2"]);
-            Render.SetParallaxMaterial(MaterialLibrary.Materials["PlayerParallax"], Thumbnail.texture);
-            Render.SetParallaxAlpha(Opacity.Percent50);
+            Render.SetBackdropColor(ColorHelper.Solid.White);
+            Render.SetFrameColor(ColorHelper.Solid.White);
             Vfx.Attack = VisualEffectLibrary.VisualEffects["BlueSlash1"];
-            Render.SetTurnDelayTextAlpha(Opacity.Transparent);
-            Render.SetTurnDelayText(-1);
         }
         else if (IsEnemy)
         {
-            Render.SetOpaqueColor(ColorHelper.Solid.GunMetal);
-            Render.SetQualityColor(ColorHelper.Solid.White);
-            Render.SetGlowColor(ColorHelper.Solid.White);
-            Render.SetParallaxSprite(SpriteLibrary.Seamless["RedFire1"]);
-            Render.SetParallaxMaterial(MaterialLibrary.Materials["EnemyParallax"], Thumbnail.texture);
-            Render.SetParallaxAlpha(Opacity.Percent50);
+            Render.SetBackdropColor(ColorHelper.Solid.GunMetal);
+            Render.SetFrameColor(ColorHelper.Solid.White);
             Vfx.Attack = VisualEffectLibrary.VisualEffects["DoubleClaw"];
 
-            // Enemy quality layer flickers between black and dark red using Quake's broken-
-            // fluorescent pattern — same effect ActorCard uses for the enemy backdrop, applied
-            // here to the per-actor quality overlay so enemies read as menacing at a glance.
-            StartCoroutine(EnemyQualityFlickerRoutine());
-
-            // No TurnDelay assignment. Timeline seeds and displays countdowns.
-            Render.SetTurnDelayText(-1);
+            // Enemy frame flickers between black and dark red using Quake's broken-fluorescent
+            // pattern — same effect ActorCard uses for the enemy backdrop, applied here to the
+            // per-actor frame overlay so enemies read as menacing at a glance.
+            StartCoroutine(EnemyBackdropFlickerRoutine());
         }
 
         Render.SetNameTagText(characterClass.ToString());
         Render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
-        HealthBar.Update();
-        ActionBar.Reset();
+        HealthText.Refresh();
 
         if (IsSpawnable)
         {
@@ -438,11 +415,11 @@ public partial class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Lerps the enemy's Quality overlay between black and dark red using Quake's
+    /// Lerps the enemy's Backdrop overlay between black and dark red using Quake's
     /// FluorescentFlicker pattern (id Software, 1996). Stops automatically when
     /// the actor leaves play (IsPlaying false) — caller does not need to cancel.
     /// </summary>
-    private IEnumerator EnemyQualityFlickerRoutine()
+    private IEnumerator EnemyBackdropFlickerRoutine()
     {
         var baseColor = new Color(0f, 0f, 0f, 0.6f);
         var peakColor = new Color(0.55f, 0.04f, 0.04f, 0.85f);
@@ -451,7 +428,7 @@ public partial class ActorInstance : MonoBehaviour
         {
             float b = QuakeLightFlicker.SampleSmooth(QuakeLightFlicker.FluorescentFlicker, Time.time - t0);
             float k = Mathf.Clamp01(b);
-            Render.SetQualityColor(Color.Lerp(baseColor, peakColor, k));
+            Render.SetBackdropColor(Color.Lerp(baseColor, peakColor, k));
             yield return null;
         }
     }
@@ -549,7 +526,7 @@ public partial class ActorInstance : MonoBehaviour
         {
             Stats.PreviousHP = Stats.HP;
             Stats.HP = Mathf.Clamp(Stats.HP + amount, 0, Stats.MaxHP);
-            HealthBar.Update();
+            HealthText.Refresh();
         }
 
         g.CombatTextManager.Spawn(amount.ToString(), Position, "Heal");
@@ -573,7 +550,7 @@ public partial class ActorInstance : MonoBehaviour
         {
             Stats.PreviousHP = Stats.HP;
             Stats.HP = Mathf.Clamp(Stats.HP - attackResult.Damage, 0, Stats.MaxHP);
-            HealthBar.Update();
+            HealthText.Refresh();
 
             if (Stats.HP <= 0 && attackResult != null && attackResult.Attacker != null)
             {
@@ -612,8 +589,8 @@ public partial class ActorInstance : MonoBehaviour
         var alpha = 1f;
         Render.SetAlpha(alpha);
 
-        if (HealthBar.isDraining)
-            yield return new WaitUntil(() => HealthBar.isEmpty);
+        if (HealthText.IsAnimating)
+            yield return new WaitUntil(() => HealthText.IsEmpty);
 
         // Award XP only when an enemy dies
         if (this.IsEnemy)
@@ -649,6 +626,13 @@ public partial class ActorInstance : MonoBehaviour
             // Roll drop table and track loot
             var drops = Scripts.Data.Items.DropTableLibrary.RollDrops(this.characterClass);
             Scripts.Managers.LootTracker.AddDropResults(drops);
+
+            // Celebratory on-map pickup burst (rarity-tinted, purely visual — loot already booked above)
+            if (drops != null && drops.Count > 0)
+                g.ItemPickupManager?.SpawnBurst(Position, drops);
+
+            // Record toward the player's active bounty contract, if any
+            Scripts.Helpers.BountyHelper.RecordKill(this.characterClass);
         }
 
         g.PortraitManager.Dissolve(this);
@@ -776,7 +760,6 @@ public partial class ActorInstance : MonoBehaviour
 
         Stats.AP = Stats.MaxAP;
         Stats.PreviousAP = Stats.MaxAP;
-        ActionBar.Update();
     }
 
     #endregion

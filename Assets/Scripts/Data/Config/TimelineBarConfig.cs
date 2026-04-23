@@ -9,7 +9,8 @@ namespace Scripts.Data.Config
     /// Scene object references (barRect, iconsRoot, triggerPointRect, spawnPointRect)
     /// are now plain runtime fields — Awake() creates or caches them.</para>
     /// <para>USAGE: Referenced from TimelineBarInstance.RebuildLayout /
-    /// UnitsPerSecFromSpeed / SpawnTag / PushbackOnAttack / EnforceQueueSpacing.</para>
+    /// UnitsPerSecFromSpeed / SpawnTag / PushbackOnAttack and TimelineIcon's
+    /// per-frame zone-pace calculation.</para>
     /// <para>RELATED FILES: TimelineBarInstance.cs, TimelineIcon.cs,
     /// TimelineIconFactory.cs, TimelineTriggerSequence.cs</para>
     /// </summary>
@@ -56,14 +57,22 @@ namespace Scripts.Data.Config
             new UnityEngine.Color(1f, 0.25f, 0.25f, 0.85f);
 
         // Width of the Zone's left-edge line in pixels.
-        public const float ZoneEdgeWidth = 2f;
+        public const float ZoneEdgeWidth = 4f;
 
-        // ── Queue Coordination ───────────────────────────────────────────────
-        // Minimum time gap between enemy releases.
-        public const float MinimumReleaseGap = 1.5f;
+        // Height of the Zone fill strip in pixels.
+        public const float ZoneHeight = 12f;
 
-        // Minimum u-distance between two visible tags before they're considered overlapping
-        // and need to be re-spaced. ~6% of the bar's full width.
-        public const float MinSpatialGap = 0.06f;
+        // Height of the Zone's left-edge line in pixels.
+        public const float ZoneEdgeHeight = 16f;
+
+        // ── Zone Pace (Grandia-style "final stretch") ────────────────────────
+        // Once an icon enters the Zone (u >= 1 - ZoneU), every icon moves at the
+        // same slow fixed pace regardless of Speed stat. The race outside the
+        // Zone is stat-driven; the in-Zone crawl gives the player a window to
+        // coordinate a pincer that lands the enemy past the threshold.
+        public const float ZoneCrossingTimeSeconds = 5f;
+
+        // Derived: u-units per second through the Zone strip.
+        public const float ZonePaceUPerSec = ZoneU / ZoneCrossingTimeSeconds;
     }
 }

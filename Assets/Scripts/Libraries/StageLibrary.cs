@@ -33,6 +33,20 @@ namespace Scripts.Libraries
     }
 
     /// <summary>
+    /// Biome identifiers for the Places hub selection.
+    /// Each biome hunts a themed enemy pool that drops biome-specific materials.
+    /// </summary>
+    public enum Biome
+    {
+        None = 0,
+        Field,   // open grassland — slimes, frogs, scorpions
+        Forest,  // wooded — wolves, werewolves, tree golems
+        Ruins,   // crumbling structures — undead, ceramic knights, ghosts
+        Cave,    // dark tunnels — cyclops, trolls, lurkers, yetis
+        Boss,    // bespoke boss stages
+    }
+
+    /// <summary>
     /// STAGELIBRARY - Registry of all game stages/levels.
     /// 
     /// PURPOSE:
@@ -80,7 +94,8 @@ namespace Scripts.Libraries
                 { $"{Map.GreenValley}-00", new Stage
                     {
                         Name = $"{Map.GreenValley}-00",
-                        Description = "DefeatAllEnemies",
+                        Description = "Clear the grassland of slimes.",
+                        Biome = Biome.Field,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = GenerateWaves(1, new List<CharacterClass> {
@@ -94,7 +109,8 @@ namespace Scripts.Libraries
                 { $"{Map.GreenValley}-01", new Stage
                     {
                         Name = $"{Map.GreenValley}-01",
-                        Description = "DefeatAllEnemies",
+                        Description = "Hunt the wolf pack stalking the tree line.",
+                        Biome = Biome.Forest,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = GenerateWaves(1, new List<CharacterClass> {
@@ -105,10 +121,65 @@ namespace Scripts.Libraries
                         })
                     }
                 },
+                { $"{Map.GreenValley}-02", new Stage
+                    {
+                        Name = $"{Map.GreenValley}-02",
+                        Description = "Something stirs among the broken stones.",
+                        Biome = Biome.Ruins,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = GenerateWaves(1, new List<CharacterClass> {
+                            CharacterClass.Undead00,
+                            CharacterClass.Undead01,
+                            CharacterClass.Undead02,
+                            CharacterClass.Skelepede00,
+                            CharacterClass.Ghost,
+                        })
+                    }
+                },
+                { $"{Map.GreenValley}-03", new Stage
+                    {
+                        Name = $"{Map.GreenValley}-03",
+                        Description = "The cave mouth yawns open. Torches lit.",
+                        Biome = Biome.Cave,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = GenerateWaves(1, new List<CharacterClass> {
+                            CharacterClass.Lurker00,
+                            CharacterClass.Cyclops00,
+                            CharacterClass.MountainTroll,
+                            CharacterClass.Yeti,
+                        })
+                    }
+                },
+                { $"{Map.GreenValley}-Boss", new Stage
+                    {
+                        Name = $"{Map.GreenValley}-Boss",
+                        Description = "The Vampire Lord awaits in the deepest crypt.",
+                        Biome = Biome.Boss,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave
+                            {
+                                WaveID = 1,
+                                Actors = new List<StageActor>
+                                {
+                                    new StageActor { CharacterClass = CharacterClass.Undead00, Team = Team.Enemy },
+                                    new StageActor { CharacterClass = CharacterClass.Undead01, Team = Team.Enemy },
+                                    new StageActor { CharacterClass = CharacterClass.Ghost, Team = Team.Enemy },
+                                    new StageActor { CharacterClass = CharacterClass.Vampire, Level = 10, Team = Team.Enemy },
+                                }
+                            }
+                        }
+                    }
+                },
                 { $"{Map.Test}-00", new Stage
                     {
                         Name = $"{Map.Test}-00",
                         Description = "Intro Battle",
+                        Biome = Biome.Field,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = new List<StageWave>
@@ -188,6 +259,7 @@ namespace Scripts.Libraries
                     {
                         Name = $"{Map.Test}-01",
                         Description = "DefeatAllEnemies",
+                        Biome = Biome.Field,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = GenerateWaves(4, new List<CharacterClass> { CharacterClass.Slime00, CharacterClass.Scorpion, CharacterClass.Bat00 })
@@ -208,6 +280,27 @@ namespace Scripts.Libraries
                 return null;
             }
             return new Stage(stages[name]);
+        }
+
+        /// <summary>Returns all stages tagged with the given biome (fresh copies).</summary>
+        public static List<Stage> GetByBiome(Biome biome)
+        {
+            if (!isLoaded) Load();
+            var list = new List<Stage>();
+            foreach (var kv in stages)
+                if (kv.Value.Biome == biome)
+                    list.Add(new Stage(kv.Value));
+            return list;
+        }
+
+        /// <summary>Returns the first stage tagged with the given biome, or null.</summary>
+        public static Stage GetFirstByBiome(Biome biome)
+        {
+            if (!isLoaded) Load();
+            foreach (var kv in stages)
+                if (kv.Value.Biome == biome)
+                    return new Stage(kv.Value);
+            return null;
         }
 
         /// <summary>Generate waves.</summary>

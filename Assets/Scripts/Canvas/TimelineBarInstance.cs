@@ -87,14 +87,6 @@ namespace Scripts.Canvas
         private Image zoneImage;
         private RectTransform zoneEdgeRect;
         private Image zoneEdgeImage;
-        private RectTransform chevronScrollRect;
-        private RawImage chevronScrollImage;
-        private float chevronScrollOffset;
-        // Scroll speed in tile-widths per second. ~0.5 reads as "moving" without feeling frantic.
-        private const float ChevronScrollSpeed = 0.5f;
-        // Number of chevron tiles tiled across the bar width.
-        private const float ChevronTileCount = 45f;
-
         #endregion
 
         #region Runtime State
@@ -157,29 +149,6 @@ namespace Scripts.Canvas
                 zoneEdgeImage.raycastTarget = false;
             }
 
-            // Scrolling chevron motion texture — sits behind everything else so icons / zone
-            // fill read on top. UV-scrolls rightward while the bar is advancing (IsAdvancing);
-            // freezes when the timeline is paused (hero window pause, cast resolution, etc.).
-            if (chevronScrollRect == null && barRect != null)
-            {
-                var cgo = new GameObject("ChevronScroll", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-                chevronScrollRect = cgo.GetComponent<RectTransform>();
-                chevronScrollRect.SetParent(barRect, false);
-                chevronScrollRect.SetAsFirstSibling();
-                chevronScrollImage = cgo.GetComponent<RawImage>();
-                chevronScrollImage.raycastTarget = false;
-                // Cyan tint to match the mana bar's HDR cyan; needs enough alpha to actually
-                // read against the dark bar background — earlier 0.22 was effectively invisible.
-                chevronScrollImage.color = new Color(0.35f, 0.9f, 1.2f, 0.55f);
-                var chevronSprite = SpriteLibrary.Sprites != null && SpriteLibrary.Sprites.TryGetValue("ChevronScroll", out var s) ? s : null;
-                if (chevronSprite != null && chevronSprite.texture != null)
-                {
-                    var tex = chevronSprite.texture;
-                    tex.wrapMode = TextureWrapMode.Repeat;
-                    chevronScrollImage.texture = tex;
-                }
-            }
-
             // Ensure trigger & spawn point objects exist for visual debugging / design hooks
             if (triggerPointRect == null && barRect != null)
             {
@@ -205,9 +174,6 @@ namespace Scripts.Canvas
         /// <summary>Performs initial setup after all Awake calls complete.</summary>
         private void Start()
         {
-            // Defer all layout to the coroutine — RebuildLayout reaches AnchorAboveBoard
-            // which dereferences g.Board.bounds. BoardInstance assigns bounds in its own
-            // Start, so we wait until those are populated before doing any layout work.
             StartCoroutine(EnsureLayoutThenReposition());
             PauseAll();
         }
@@ -243,26 +209,6 @@ namespace Scripts.Canvas
             Recalculate();
         }
 
-        /// <summary>Runs per-frame update logic.</summary>
-        private void Update()
-        {
-            // Periodically enforce queue spacing to prevent overlap
-            if (advancing && activeIcons.Count > 1)
-            {
-                EnforceQueueSpacing();
-            }
-
-            // Scroll the chevron motion texture rightward whenever the bar is advancing —
-            // pauses in lockstep with the icons so the UI tells a consistent motion story.
-            if (advancing && chevronScrollImage != null && chevronScrollImage.texture != null)
-            {
-                chevronScrollOffset += ChevronScrollSpeed * Time.deltaTime;
-                if (chevronScrollOffset > 1f) chevronScrollOffset -= 1f;
-                var r = chevronScrollImage.uvRect;
-                chevronScrollImage.uvRect = new Rect(chevronScrollOffset, r.y, r.width, r.height);
-            }
-        }
-
         /// <summary>Rebuild layout.</summary>
         private void RebuildLayout()
         {
@@ -274,7 +220,7 @@ namespace Scripts.Canvas
             barRect.sizeDelta = size;
             halfWidth = targetWidth * 0.5f;
 
-            AnchorAboveBoard();
+            // Fixed Y from GameScaffold.cs — keep the bar at the scaffold-authored position.
 
             // Position trigger/spawn points (trigger is on the RIGHT, spawn is on the LEFT)
             if (triggerPointRect != null)
@@ -296,7 +242,7 @@ namespace Scripts.Canvas
                 zoneRect.anchorMin = zoneRect.anchorMax = new Vector2(0.5f, 0.5f);
                 zoneRect.pivot = new Vector2(1f, 0.5f);
                 float zoneWidth = TimelineBarConfig.ZoneU * Width;
-                zoneRect.sizeDelta = new Vector2(zoneWidth, barRect.sizeDelta.y);
+                zoneRect.sizeDelta = new Vector2(zoneWidth, TimelineBarConfig.ZoneHeight);
                 zoneRect.anchoredPosition = new Vector2(RightX, 0f);
             }
 
@@ -305,46 +251,10 @@ namespace Scripts.Canvas
             {
                 zoneEdgeRect.anchorMin = zoneEdgeRect.anchorMax = new Vector2(0.5f, 0.5f);
                 zoneEdgeRect.pivot = new Vector2(0.5f, 0.5f);
-                zoneEdgeRect.sizeDelta = new Vector2(TimelineBarConfig.ZoneEdgeWidth, barRect.sizeDelta.y);
+                zoneEdgeRect.sizeDelta = new Vector2(TimelineBarConfig.ZoneEdgeWidth, TimelineBarConfig.ZoneEdgeHeight);
                 float edgeX = Mathf.Lerp(LeftX, RightX, 1f - TimelineBarConfig.ZoneU);
                 zoneEdgeRect.anchoredPosition = new Vector2(edgeX, 0f);
             }
-
-            // Chevron scroll strip spans the full bar; uvRect.width tiles the texture across
-            // the bar so each tile stays at its native aspect regardless of bar width.
-            if (chevronScrollRect != null)
-            {
-                chevronScrollRect.anchorMin = chevronScrollRect.anchorMax = new Vector2(0.5f, 0.5f);
-                chevronScrollRect.pivot = new Vector2(0.5f, 0.5f);
-                chevronScrollRect.sizeDelta = new Vector2(Width, 24f);
-                chevronScrollRect.anchoredPosition = Vector2.zero;
-                if (chevronScrollImage != null)
-                {
-                    float tileCount = ChevronTileCount;
-                    chevronScrollImage.uvRect = new Rect(chevronScrollOffset, 0f, tileCount, 1f);
-                }
-            }
-        }
-
-        /// <summary>Positions the bar just above the board's top edge, with the mana pool stacked between.</summary>
-        private void AnchorAboveBoard()
-        {
-            // BoardInstance.bounds is a RectFloat (class) populated in AssignBounds();
-            // during scene startup we may run before that, so guard the dereference.
-            if (barRect == null || g.Board == null || g.Board.bounds == null || c.CanvasRect == null) return;
-
-            var boardTopWorld = new Vector3(0f, g.Board.bounds.Top, 0f);
-            var boardTopCanvas = UnitConversionHelper.World.ToCanvas(c.CanvasRect, boardTopWorld);
-
-            const float padBoardToMana = 8f;
-            const float padManaToTimeline = 8f;
-            float manaHeight = ManaPoolManager.UiHeight;
-            float timelineHeight = barRect.sizeDelta.y;
-
-            float manaTop = boardTopCanvas.y + padBoardToMana + manaHeight;
-            float timelineY = manaTop + padManaToTimeline + timelineHeight * 0.5f;
-
-            barRect.anchoredPosition = new Vector2(0f, timelineY);
         }
 
         /// <summary>Units per sec from speed.</summary>
@@ -372,142 +282,34 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
-        /// Calculate the earliest safe release time that won't cause overlap with other tags.
-        /// Returns the queue delay needed to maintain minimum spacing.
+        /// Speed-derived wait scaled by a per-spawn random multiplier so enemies of the
+        /// same Speed don't release in lockstep. Multiplier range [0.7, 1.4] keeps the
+        /// stagger feeling natural without ever zeroing out the wait.
         /// </summary>
-        private float GetCoordinatedQueueDelay(float baseDelay)
+        private float GetRandomizedQueueDelay(int speed)
         {
-            if (activeIcons.Count == 0) return baseDelay;
-            
-            // Collect all tags that are queued or approaching, sorted by when they'll reach the trigger
-            var releaseInfo = new List<(float releaseTime, float arrivalTime)>();
-            
-            foreach (var t in activeIcons)
-            {
-                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
-
-                float queueTime = t.Mode == TimelineIconMode.Queued ? t.GetQueueTimer() : 0f;
-                float moveTime = t.GetUPerSec() > 0f ? (1f - t.GetU()) / t.GetUPerSec() : 0f;
-
-                // Add stun time if applicable
-                if (t.Mode == TimelineIconMode.Stunned)
-                {
-                    queueTime = t.GetSecondsRemaining() - moveTime;
-                }
-
-                float arrivalTime = queueTime + moveTime;
-                releaseInfo.Add((queueTime, arrivalTime));
-            }
-
-            if (releaseInfo.Count == 0) return baseDelay;
-
-            // New tag starts at u=0.0, so we need to check when it would arrive
-            // and ensure it doesn't release within TimelineBarConfig.MinimumReleaseGap of others
-            float myMoveTime = TimelineBarConfig.CrossingTimeSeconds; // Time to cross full bar
-            float myReleaseTime = baseDelay;
-            float myArrivalTime = myReleaseTime + myMoveTime;
-            
-            // Sort existing tags by arrival time
-            releaseInfo.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
-            
-            // Check each existing tag and ensure our release doesn't conflict
-            foreach (var (releaseTime, arrivalTime) in releaseInfo)
-            {
-                // If our arrival would be within gap of theirs, delay our release
-                if (Mathf.Abs(myArrivalTime - arrivalTime) < TimelineBarConfig.MinimumReleaseGap)
-                {
-                    // Push our arrival to be TimelineBarConfig.MinimumReleaseGap after theirs
-                    myArrivalTime = arrivalTime + TimelineBarConfig.MinimumReleaseGap;
-                    myReleaseTime = myArrivalTime - myMoveTime;
-                }
-            }
-            
-            return Mathf.Max(baseDelay, myReleaseTime);
+            float baseDelay = GetQueueDelayFromSpeed(speed);
+            float multiplier = UnityEngine.Random.Range(0.7f, 1.4f);
+            return baseDelay * multiplier;
         }
 
         /// <summary>
-        /// Adjusts queue timers for all queued tags to prevent releases within TimelineBarConfig.MinimumReleaseGap.
-        /// Called periodically and after state changes.
+        /// Initial battle-start position: u = (normalizedSpeed × 0.6) × random(0.5, 1.0),
+        /// clamped to never spawn inside the Zone. Faster enemies spawn closer to the
+        /// trigger on average, but the random multiplier prevents same-speed lockstep
+        /// and lets a slower enemy sometimes get a head start. Once moving, the natural
+        /// speed gap takes over and faster enemies overtake again after a respawn.
         /// </summary>
-        private void EnforceQueueSpacing()
-        {
-            // Get all queued tags with their projected arrival times
-            var queuedTags = new List<(TimelineIcon tag, float arrivalTime)>();
-            var approachingTags = new List<(TimelineIcon tag, float arrivalTime)>();
-            
-            foreach (var t in activeIcons)
-            {
-                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
-                
-                if (t.Mode == TimelineIconMode.Queued)
-                {
-                    float moveTime = t.GetUPerSec() > 0f ? (1f - t.GetU()) / t.GetUPerSec() : 0f;
-                    float arrivalTime = t.GetQueueTimer() + moveTime;
-                    queuedTags.Add((t, arrivalTime));
-                }
-                else if (t.Mode == TimelineIconMode.Approaching)
-                {
-                    float arrivalTime = t.GetSecondsRemaining();
-                    approachingTags.Add((t, arrivalTime));
-                }
-            }
-            
-            if (queuedTags.Count == 0) return;
-            
-            // Sort queued tags by arrival time (earliest first)
-            queuedTags.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
-            
-            // Get the earliest arrival time among approaching tags (these can't be adjusted)
-            float earliestApproachingArrival = float.MaxValue;
-            foreach (var (_, arrival) in approachingTags)
-            {
-                if (arrival < earliestApproachingArrival)
-                    earliestApproachingArrival = arrival;
-            }
-            
-            // Process queued tags to ensure spacing
-            float lastArrivalTime = 0f;
-            
-            // If there are approaching tags, use the earliest as our baseline
-            if (approachingTags.Count > 0)
-            {
-                approachingTags.Sort((a, b) => a.arrivalTime.CompareTo(b.arrivalTime));
-                lastArrivalTime = approachingTags[approachingTags.Count - 1].arrivalTime;
-            }
-            
-            foreach (var (tag, originalArrival) in queuedTags)
-            {
-                float requiredArrival = lastArrivalTime + TimelineBarConfig.MinimumReleaseGap;
-                
-                if (originalArrival < requiredArrival)
-                {
-                    // Need to delay this tag
-                    float moveTime = tag.GetUPerSec() > 0f ? (1f - tag.GetU()) / tag.GetUPerSec() : 0f;
-                    float newQueueTime = requiredArrival - moveTime;
-                    
-                    if (newQueueTime > tag.GetQueueTimer())
-                    {
-                        tag.SetQueueTimer(newQueueTime);
-                        if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Adjusted {tag.Owner?.name} queue timer to {newQueueTime:F2}s to prevent overlap");
-                    }
-                    lastArrivalTime = requiredArrival;
-                }
-                else
-                {
-                    lastArrivalTime = originalArrival;
-                }
-            }
-        }
-
-        /// <summary>Gets the initial position from speed.</summary>
         private float GetInitialPositionFromSpeed(int speed, int maxSpeed, int minSpeed)
         {
-            // Scatter enemies across timeline based on speed
-            // Fastest enemies start closer to the trigger (higher u), slowest start at spawn (lower u)
-            if (maxSpeed <= minSpeed) return 0.5f;
-            float t = (float)(maxSpeed - speed) / (maxSpeed - minSpeed);
-            // t=0 for fastest (start at u=0.8, near trigger), t=1 for slowest (start at u=0.1, near spawn)
-            return Mathf.Lerp(0.8f, 0.1f, t);
+            float speedT = (maxSpeed > minSpeed)
+                ? (float)(speed - minSpeed) / (maxSpeed - minSpeed)
+                : 1f;
+            float multiplier = UnityEngine.Random.Range(0.5f, 1.0f);
+            float startU = speedT * 0.6f * multiplier;
+            // Cap below the Zone start so no one begins in the danger strip.
+            float maxStartU = (1f - TimelineBarConfig.ZoneU) - 0.05f;
+            return Mathf.Clamp(startU, 0f, maxStartU);
         }
 
         /// <summary>Sorted enemies by speed desc.</summary>
@@ -582,12 +384,12 @@ namespace Scripts.Canvas
                 foreach (var enemy in missing)
                 {
                     int spd = enemy.Stats.Speed.ToInt();
-                    float delay = GetQueueDelayFromSpeed(spd);
+                    float delay = GetRandomizedQueueDelay(spd);
                     SpawnTag(enemy, 0f, delay);
                 }
             }
 
-            if (!layoutReady) StartCoroutine(EnsureLayoutThenReposition()); else { UpdateAllEndpoints(); Recalculate(); EnforceQueueSpacing(); }
+            if (!layoutReady) StartCoroutine(EnsureLayoutThenReposition()); else { UpdateAllEndpoints(); Recalculate(); }
             PauseAll(); // Start paused until hero moves
         }
 
@@ -605,9 +407,19 @@ namespace Scripts.Canvas
         { foreach (var t in activeIcons) t?.Resume(); advancing = true; }
 
         /// <summary>Handles the hero start move event.</summary>
-        public void OnHeroStartMove() { Recalculate(); EnforceQueueSpacing(); ResumeAll(); }
+        public void OnHeroStartMove() { Recalculate(); ResumeAll(); }
         /// <summary>Handles the hero stop move event.</summary>
         public void OnHeroStopMove() { PauseAll(); }
+
+        /// <summary>
+        /// Freezes the timeline while a cast is resolving — called by TurnManager.BeginCastResolution.
+        /// Halts all icon advancement (other enemies stop marching), which in turn stops
+        /// ManaPoolManager accrual (gated on IsAdvancing) and prevents any new enemy triggers
+        /// from queuing mid-heal. Unfreeze is implicit: EndCastResolution flows into
+        /// EndTurnSequence → NextTurn → BeginHeroWindow/BeginEnemyTurn, each of which sets
+        /// the bar's pause state to match the new window.
+        /// </summary>
+        public void PauseForCastResolution() { PauseAll(); }
         /// <summary>Handles the enemy turn started event.</summary>
         public void OnEnemyTurnStarted(ActorInstance enemy) {
             PauseAll();
@@ -628,21 +440,13 @@ namespace Scripts.Canvas
         public void OnEnemyTurnFinished(ActorInstance enemy)
         {
             var tag = activeIcons.FirstOrDefault(t => t != null && t.Owner == enemy);
-            if (tag != null)
-            {
-                UpdateAllEndpoints();
-                // Reset the tag to spawn position
-                tag.ResetToSpawn();
-                
-                // Coordinate the queue timer to prevent overlap with other tags
-                int speed = enemy.Stats?.Speed.ToInt() ?? 10;
-                float baseDelay = GetQueueDelayFromSpeed(speed);
-                float coordinatedDelay = GetCoordinatedQueueDelay(baseDelay);
-                tag.SetQueueTimer(coordinatedDelay);
-                
-                if (TimelineBarConfig.DebugLogs)
-                    Debug.Log($"[TimelineBar] {enemy.name} requeued with coordinated delay {coordinatedDelay:F2}s");
-            }
+            if (tag == null) return;
+
+            UpdateAllEndpoints();
+            tag.ResetToSpawn();
+
+            int speed = enemy.Stats?.Speed.ToInt() ?? 10;
+            tag.SetQueueTimer(GetRandomizedQueueDelay(speed));
         }
 
 
@@ -678,49 +482,6 @@ namespace Scripts.Canvas
 
             tag.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strengthMultiplier, enemyAgility, TimelineBarConfig.BaseStunDuration);
             if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
-
-            ResolveSpatialOverlap();
-        }
-
-        /// <summary>
-        /// Re-spaces visible tags so none overlap on the bar. When a new icon spawns near an
-        /// existing icon's slot, the nearest overlapping icon to its left is pushed further left
-        /// (time added); if that push causes another overlap further left, it cascades like a train
-        /// until no more overlaps remain. Tags within MinSpatialGap of each other form a "cluster";
-        /// the cluster's rightmost tag keeps its position and each neighbor to the left is spaced
-        /// MinSpatialGap intervals further left — **order-preserving**, no speed-based reshuffle.
-        /// Tags that don't collide are left untouched.
-        /// </summary>
-        private void ResolveSpatialOverlap()
-        {
-            // Visible = anything currently rendered on the bar (queued tags are invisible until release)
-            var visible = new List<TimelineIcon>();
-            foreach (var t in activeIcons)
-            {
-                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
-                if (t.Mode == TimelineIconMode.Queued) continue;
-                visible.Add(t);
-            }
-            if (visible.Count <= 1) return;
-
-            // Sort by current effective u ascending so we can scan left-to-right for clusters.
-            visible.Sort((a, b) => a.GetEffectiveTargetU().CompareTo(b.GetEffectiveTargetU()));
-
-            float gap = TimelineBarConfig.MinSpatialGap;
-
-            // Single right-to-left pass: starting from the rightmost tag, ensure each tag to
-            // its left sits at least `gap` below it; if not, push it left by the shortfall,
-            // which may then shove the next one further left (the "train" cascade).
-            for (int k = visible.Count - 2; k >= 0; k--)
-            {
-                float rightU = visible[k + 1].GetEffectiveTargetU();
-                float leftU = visible[k].GetEffectiveTargetU();
-                float minAllowed = rightU - gap;
-                if (leftU > minAllowed)
-                {
-                    visible[k].SetTargetU(Mathf.Max(0f, minAllowed));
-                }
-            }
         }
 
         /// <summary>Returns the tag whose Owner is the given actor, or null if absent.</summary>
@@ -794,15 +555,36 @@ namespace Scripts.Canvas
         {
             seconds = Mathf.Max(0f, seconds);
             if (seconds <= 0f || activeIcons.Count == 0) return false;
+            float zoneStartU = 1f - TimelineBarConfig.ZoneU;
+            float zonePace = Mathf.Max(0.0001f, TimelineBarConfig.ZonePaceUPerSec);
             bool anyReached = false;
             foreach (var t in activeIcons)
             {
                 if (t == null) continue;
                 float u = t.GetU();
                 float uPerSec = Mathf.Max(0.0001f, t.GetUPerSec());
-                float newU = Mathf.Min(1f, u + uPerSec * seconds);
+                float remaining = seconds;
+                float newU = u;
+                if (newU < zoneStartU)
+                {
+                    float distToZone = zoneStartU - newU;
+                    float timeToZone = distToZone / uPerSec;
+                    if (remaining <= timeToZone)
+                    {
+                        newU += uPerSec * remaining;
+                        remaining = 0f;
+                    }
+                    else
+                    {
+                        newU = zoneStartU;
+                        remaining -= timeToZone;
+                    }
+                }
+                if (remaining > 0f)
+                {
+                    newU = Mathf.Min(1f, newU + zonePace * remaining);
+                }
                 t.SetU(newU);
-                // If moved to (or past) right edge, TimelineIcon will invoke its callback next Update frame.
                 if (Mathf.Approximately(newU, 1f)) anyReached = true;
             }
             return anyReached;
@@ -863,38 +645,27 @@ namespace Scripts.Canvas
         {
             if (enemy == null || !enemy.IsEnemy) return;
 
-            // Coordinate the release delay to prevent overlap with existing tags
-            float coordinatedDelay = GetCoordinatedQueueDelay(releaseDelay);
-
             var parent = iconsRoot != null ? iconsRoot : barRect;
             var tagGO = TimelineIconFactory.Create(parent);
             var tag = tagGO.GetComponent<TimelineIcon>();
             tag.name = $"TimelineIcon_{enemy.name}";
             int dup = activeIcons.Count(a => a != null && a.Owner == enemy);
             var tr = tag.GetComponent<RectTransform>();
-            // Tag rect: right-edge pivot (leading edge moving toward trigger), anchored at center for symmetric X
+            // Tag rect: centered pivot so the box straddles the bar line, anchored at center for symmetric X
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
-            tr.pivot = new Vector2(1f, 0.5f);
+            tr.pivot = new Vector2(0.5f, 0.5f);
             tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * TimelineBarConfig.TagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
-            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnIconReachedTrigger, coordinatedDelay);
+            tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnIconReachedTrigger, releaseDelay);
             activeIcons.Add(tag);
-
-            if (TimelineBarConfig.DebugLogs && coordinatedDelay != releaseDelay)
-                Debug.Log($"[TimelineBar] Spawned {enemy.name} with coordinated delay {coordinatedDelay:F2}s (base was {releaseDelay:F2}s)");
-
-            // Re-space against existing tags so the new spawn doesn't land on top of one.
-            ResolveSpatialOverlap();
         }
 
         /// <summary>
         /// Spawns a spell-cast icon on the timeline. The icon spawns "N seconds out from
         /// the right" (where N = state.TotalCastTime) using the bar's canonical pace
-        /// (UnitsPerSecFromSpeed(10) = 1/CrossingTime). Newly-spawned icon may collide
-        /// with existing neighbors — ResolveSpatialOverlap shoves overlapping icons
-        /// leftward (train cascade). onComplete fires when the icon reaches u=1; the
-        /// icon parks in Resolving mode and is destroyed by the caller's cleanup.
-        /// onInterrupted fires if state.IsInterrupted flips before completion.
+        /// (UnitsPerSecFromSpeed(10) = 1/CrossingTime). onComplete fires when the icon
+        /// reaches u=1; the icon parks in Resolving mode and is destroyed by the caller's
+        /// cleanup. onInterrupted fires if state.IsInterrupted flips before completion.
         /// Returns the spawned TimelineIcon so the caller can fade/destroy it after
         /// the resolution sequences finish.
         /// </summary>
@@ -943,10 +714,6 @@ namespace Scripts.Canvas
 
             // Match the bar's current pause state — casts only advance when the timeline does.
             if (advancing) icon.Resume(); else icon.Pause();
-
-            // Train-cascade: if the freshly-spawned icon's center collides with an existing
-            // neighbor, shove that neighbor leftward by the shortfall. May cascade further.
-            ResolveSpatialOverlap();
 
             if (TimelineBarConfig.DebugLogs)
                 Debug.Log($"[TimelineBar] Spawned spell icon for {state.Caster.name} casting {state.Ability?.name} ({state.TotalCastTime:F1}s, startU={startU:F2}, uPerSec={uSpeed:F3})");

@@ -23,19 +23,19 @@ using Scripts.Utilities;
 namespace Scripts.Models
 {
     /// <summary>
-    /// TARGETPOINT - Coordinate-space agnostic endpoint for TargetLineInstance arcs.
+    /// TARGETPOINT - Coordinate-space agnostic endpoint for TargetLine2D/3D instance arcs.
     /// <para>PURPOSE: Lets a targeting arc connect any combination of world and canvas positions
     /// (world↔world, world↔canvas, canvas↔canvas). Canvas overlay endpoints are unprojected
     /// into world space at arc-render time via the main camera.</para>
     /// <para>USAGE:
     /// <code>
-    /// TargetLineManager.Show("enemy-select",
+    /// TargetLineManager.Show2D("enemy-select",
     ///     TargetPoint.Canvas(icon.Rect),
     ///     TargetPoint.Actor(enemy),
     ///     Color.red);
     /// </code>
     /// </para>
-    /// <para>RELATED FILES: TargetLineInstance.cs, TargetLineManager.cs</para>
+    /// <para>RELATED FILES: TargetLine2DInstance.cs, TargetLine3DInstance.cs, TargetLineManager.cs</para>
     /// </summary>
     public readonly struct TargetPoint
     {

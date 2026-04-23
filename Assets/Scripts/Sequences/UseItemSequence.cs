@@ -105,6 +105,34 @@ namespace Scripts.Sequences
 
                 yield return new FireProjectileSequence(healSettings).ProcessRoutine();
             }
+            else if (item.BaseDamage > 0 && effectTarget != user)
+            {
+                // Offensive consumable (Holy Water, Flame Oil, ...): projectile + damage with tag bonus.
+                int damage = item.BaseDamage;
+                var targetData = ActorLibrary.Get(effectTarget.characterClass);
+                if (item.BonusDamageVsTag != ActorTag.None && targetData != null
+                    && (targetData.Tags & item.BonusDamageVsTag) != ActorTag.None)
+                {
+                    damage = Mathf.RoundToInt(item.BaseDamage * item.BonusDamageMultiplier);
+                }
+
+                string vfxKey = (item.BonusDamageVsTag & ActorTag.Undead) != ActorTag.None ? "BuffLife" : "FireBurst";
+                var result = new AttackResult(user, effectTarget, damage, HitOutcome.Normal);
+                var damageSettings = new ProjectileSettings
+                {
+                    friendlyName = item.DisplayName,
+                    startPosition = user.Position,
+                    target = effectTarget,
+                    projectileVfxKey = "GreenSparkle",
+                    impactVfxKey = vfxKey,
+                    motionStyle = MotionStyle.LobbedArc,
+                    travelSeconds = 0.6f,
+                    arriveRadiusTiles = 0.1f,
+                    routine = effectTarget.DamageRoutine(result)
+                };
+
+                yield return new FireProjectileSequence(damageSettings).ProcessRoutine();
+            }
             else
             {
                 // Generic item: just show combat text

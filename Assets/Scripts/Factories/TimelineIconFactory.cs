@@ -83,7 +83,7 @@ namespace Scripts.Factories
             rootRT.anchorMax = new Vector2(0.5f, 0.5f);
             rootRT.anchoredPosition = Vector2.zero;
             rootRT.sizeDelta = Vector2.zero;
-            rootRT.pivot = new Vector2(0.5f, 1f);
+            rootRT.pivot = new Vector2(0.5f, 0.5f);
 
             root.AddComponent<CanvasRenderer>();
 
@@ -187,10 +187,10 @@ namespace Scripts.Factories
             var icon = go.GetComponent<TimelineIcon>();
             icon.name = $"TimelineIcon_Cast_{state.Caster.name}_{state.Ability?.name}";
 
-            // Right-edge pivot (leading edge moving toward trigger), centered vertically by row.
+            // Centered pivot so the box straddles the bar line, centered vertically by row.
             var tr = go.GetComponent<RectTransform>();
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
-            tr.pivot = new Vector2(1f, 0.5f);
+            tr.pivot = new Vector2(0.5f, 0.5f);
             tr.anchoredPosition = new Vector2(Mathf.Lerp(leftX, rightX, startU), -dupRow * TimelineBarConfig.TagRowHeight);
 
             return go;

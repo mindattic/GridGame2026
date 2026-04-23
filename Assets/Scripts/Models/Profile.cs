@@ -124,6 +124,8 @@ namespace Scripts.Models
         public InventorySaveData Inventory;
         public EquipmentSaveData Equipment;
         public TrainingSaveData Training;
+        public BountySaveData Bounty;
+        public List<CraftJob> CraftJobs = new List<CraftJob>();
 
         public SaveState() { }
         public SaveState(SaveState other)
@@ -139,6 +141,11 @@ namespace Scripts.Models
             this.Inventory = other.Inventory != null ? new InventorySaveData(other.Inventory) : new InventorySaveData();
             this.Equipment = other.Equipment != null ? new EquipmentSaveData(other.Equipment) : new EquipmentSaveData();
             this.Training = other.Training != null ? new TrainingSaveData(other.Training) : new TrainingSaveData();
+            this.Bounty = other.Bounty != null ? new BountySaveData(other.Bounty) : new BountySaveData();
+            this.CraftJobs = new List<CraftJob>();
+            if (other.CraftJobs != null)
+                foreach (var j in other.CraftJobs)
+                    if (j != null) this.CraftJobs.Add(new CraftJob(j));
         }
         public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, RosterSaveData roster, PartySaveData party)
         {
@@ -153,6 +160,7 @@ namespace Scripts.Models
             Inventory = new InventorySaveData();
             Equipment = new EquipmentSaveData();
             Training = new TrainingSaveData();
+            Bounty = new BountySaveData();
         }
         public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, RosterSaveData roster, PartySaveData party, OverworldSaveData overworld)
         {
@@ -167,6 +175,7 @@ namespace Scripts.Models
             Inventory = new InventorySaveData();
             Equipment = new EquipmentSaveData();
             Training = new TrainingSaveData();
+            Bounty = new BountySaveData();
         }
     }
 
@@ -486,6 +495,25 @@ namespace Scripts.Models
         {
             CharacterClass = other.CharacterClass;
             LearnedTrainingIds = new List<string>(other.LearnedTrainingIds);
+        }
+    }
+
+    /// <summary>
+    /// BOUNTYSAVEDATA - Persisted bounty contract state.
+    /// <para>One bounty at a time. ActiveBountyId is empty when none is accepted;
+    /// Progress counts kills against the bounty's TargetClass since acceptance.</para>
+    /// </summary>
+    [Serializable]
+    public class BountySaveData
+    {
+        public string ActiveBountyId = "";
+        public int Progress;
+
+        public BountySaveData() { }
+        public BountySaveData(BountySaveData other)
+        {
+            ActiveBountyId = other.ActiveBountyId ?? "";
+            Progress = other.Progress;
         }
     }
 }

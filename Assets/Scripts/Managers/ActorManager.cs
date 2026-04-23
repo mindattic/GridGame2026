@@ -41,7 +41,6 @@ namespace Scripts.Managers
     /// 
     /// KEY METHODS:
     /// - Clear(): Destroys all actors (scene cleanup)
-    /// - CheckEnemyAP(): Fills AP for enemies ready to act
     /// 
     /// SNAP THRESHOLD:
     /// Used for position snapping during drag operations.
@@ -66,16 +65,6 @@ namespace Scripts.Managers
         private void Awake()
         {
             snapTheshold = g.TileSize * 0.125f * 1.01f;
-        }
-
-        /// <summary>
-        /// Fills AP for all playing enemies that don't have max AP.
-        /// Called at turn transitions to charge enemy abilities.
-        /// </summary>
-        public void CheckEnemyAP()
-        {
-            var enemies = g.Actors.Enemies.Where(x => x.IsPlaying && !x.HasMaxAP).ToList();
-            enemies.ForEach(x => x.ActionBar.Fill());
         }
 
         /// <summary>
