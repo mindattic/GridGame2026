@@ -66,6 +66,10 @@ public class ItemDefinition
     public ItemType Type;
     public ItemRarity Rarity = ItemRarity.Common;
     public EquipmentSlot Slot = EquipmentSlot.None;
+
+    /// <summary>For weapons (Slot == Weapon): subtype that drives class proficiency
+    /// (Sword vs Greatsword vs Wand, etc). None for non-weapons or unclassified weapons.</summary>
+    public WeaponType WeaponType = WeaponType.None;
     public int BaseCost;
     public int SellValue = -1; // -1 means auto-compute as BaseCost / 2
     public int MaxStack = 99;

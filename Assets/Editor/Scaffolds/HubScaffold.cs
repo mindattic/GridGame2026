@@ -238,8 +238,17 @@ public static class HubScaffold
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;
 
+        // Resize the dropdown to fit only the enabled sections so it doesn't show a tall empty
+        // panel while most features are flagged off.
+        int enabledCount = 0;
+        foreach (var e in Sections) if (HubFeatureFlags.IsEnabled(e.sectionType)) enabledCount++;
+        const float buttonH = 48f, spacing = 4f, vpad = 16f;
+        float dropdownH = enabledCount > 0 ? (enabledCount * buttonH + (enabledCount - 1) * spacing + vpad) : 64f;
+        panel.sizeDelta = new Vector2(260f, dropdownH);
+
         foreach (var entry in Sections)
         {
+            if (!HubFeatureFlags.IsEnabled(entry.sectionType)) continue;
             var btn = MakeButton(panel, entry.buttonName, entry.label);
             var le = btn.gameObject.GetComponent<LayoutElement>() ?? btn.gameObject.AddComponent<LayoutElement>();
             le.minHeight = 44f;
@@ -337,6 +346,7 @@ public static class HubScaffold
     {
         foreach (var entry in Sections)
         {
+            if (!HubFeatureFlags.IsEnabled(entry.sectionType)) continue;
             var panel = FindOrMake(content, entry.panelName, ref created, ref found);
             panel.anchorMin = Vector2.zero;
             panel.anchorMax = Vector2.one;
@@ -346,19 +356,19 @@ public static class HubScaffold
             AddGoldLabel(panel);
         }
 
-        // Specialised children per section:
-        PopulateParty(content.Find(GameObjectHelper.Hub.PartyPanel) as RectTransform);
-        PopulateShop(content.Find(GameObjectHelper.Hub.ShopPanel) as RectTransform);
-        PopulateAlchemist(content.Find(GameObjectHelper.Hub.AlchemistPanel) as RectTransform);
-        PopulateInn(content.Find(GameObjectHelper.Hub.ResidencePanel) as RectTransform);
-        PopulateBlacksmith(content.Find(GameObjectHelper.Hub.BlacksmithPanel) as RectTransform);
-        PopulateTraining(content.Find(GameObjectHelper.Hub.TrainingPanel) as RectTransform);
-        PopulateEquip(content.Find(GameObjectHelper.Hub.EquipPanel) as RectTransform);
-        PopulateInventory(content.Find(GameObjectHelper.Hub.InventoryPanel) as RectTransform);
-        PopulateEnchanter(content.Find(GameObjectHelper.Hub.EnchanterPanel) as RectTransform);
-        PopulateSalvage(content.Find(GameObjectHelper.Hub.SalvagePanel) as RectTransform);
-        PopulatePlaces(content.Find(GameObjectHelper.Hub.PlacesPanel) as RectTransform);
-        PopulateBounty(content.Find(GameObjectHelper.Hub.BountyPanel) as RectTransform);
+        // Specialised children — only populate panels for enabled sections.
+        if (HubFeatureFlags.Party)      PopulateParty(content.Find(GameObjectHelper.Hub.PartyPanel) as RectTransform);
+        if (HubFeatureFlags.Shop)       PopulateShop(content.Find(GameObjectHelper.Hub.ShopPanel) as RectTransform);
+        if (HubFeatureFlags.Alchemist)  PopulateAlchemist(content.Find(GameObjectHelper.Hub.AlchemistPanel) as RectTransform);
+        if (HubFeatureFlags.Inn)        PopulateInn(content.Find(GameObjectHelper.Hub.ResidencePanel) as RectTransform);
+        if (HubFeatureFlags.Blacksmith) PopulateBlacksmith(content.Find(GameObjectHelper.Hub.BlacksmithPanel) as RectTransform);
+        if (HubFeatureFlags.Training)   PopulateTraining(content.Find(GameObjectHelper.Hub.TrainingPanel) as RectTransform);
+        if (HubFeatureFlags.Equip)      PopulateEquip(content.Find(GameObjectHelper.Hub.EquipPanel) as RectTransform);
+        if (HubFeatureFlags.Inventory)  PopulateInventory(content.Find(GameObjectHelper.Hub.InventoryPanel) as RectTransform);
+        if (HubFeatureFlags.Enchanter)  PopulateEnchanter(content.Find(GameObjectHelper.Hub.EnchanterPanel) as RectTransform);
+        if (HubFeatureFlags.Salvage)    PopulateSalvage(content.Find(GameObjectHelper.Hub.SalvagePanel) as RectTransform);
+        if (HubFeatureFlags.Places)     PopulatePlaces(content.Find(GameObjectHelper.Hub.PlacesPanel) as RectTransform);
+        if (HubFeatureFlags.Bounty)     PopulateBounty(content.Find(GameObjectHelper.Hub.BountyPanel) as RectTransform);
     }
 
     private static void PopulateBounty(RectTransform panel)
@@ -402,11 +412,19 @@ public static class HubScaffold
     private static void PopulateParty(RectTransform panel)
     {
         if (panel == null) return;
+        // Single rich list of every unlocked hero (roster) on the left, profile pane on the right.
+        // Per-row [Add]/[Remove] buttons keep party-management inline and one-click. The roster
+        // list reuses the RosterList GameObjectHelper name (PartyList is no longer needed).
         MakeNamedScrollView(panel, GameObjectHelper.Hub.RosterList,
-            new Vector2(0f, 0f), new Vector2(0.33f, 1f));
-        MakeNamedScrollView(panel, GameObjectHelper.Hub.PartyList,
-            new Vector2(0.33f, 0f), new Vector2(0.66f, 1f));
-        MakeDetail(panel, new Vector2(0.66f, 0f), new Vector2(1f, 1f));
+            new Vector2(0f, 0f), new Vector2(0.60f, 1f));
+
+        // Profile column: stats label fills top, Manage Equipment button at bottom.
+        MakeDetail(panel, new Vector2(0.60f, 0.12f), new Vector2(1f, 1f));
+        var equipBtn = MakeButton(panel, "ManageEquipmentButton", "Manage Equipment");
+        equipBtn.anchorMin = new Vector2(0.60f, 0f); equipBtn.anchorMax = new Vector2(1f, 0.12f);
+        equipBtn.offsetMin = new Vector2(16f, 8f); equipBtn.offsetMax = new Vector2(-16f, -8f);
+        var equipImg = equipBtn.GetComponent<Image>();
+        if (equipImg != null) equipImg.color = HubTheme.Accent;
     }
 
     private static void PopulateShop(RectTransform panel)
@@ -447,7 +465,13 @@ public static class HubScaffold
     private static void PopulateBlacksmith(RectTransform panel)
     {
         if (panel == null) return;
-        MakeNamedScrollView(panel, "ItemList", new Vector2(0f, 0f), new Vector2(0.60f, 1f));
+        // Left column: damaged-equipment list with a "Repair All" convenience action under it.
+        MakeNamedScrollView(panel, "ItemList", new Vector2(0f, 0.12f), new Vector2(0.60f, 1f));
+        var repairAll = MakeButton(panel, "RepairAllButton", "Repair All");
+        repairAll.anchorMin = new Vector2(0f, 0f); repairAll.anchorMax = new Vector2(0.60f, 0.12f);
+        repairAll.offsetMin = new Vector2(16f, 8f); repairAll.offsetMax = new Vector2(-8f, -4f);
+
+        // Right column: detail + per-row repair confirm.
         MakeDetail(panel, new Vector2(0.60f, 0.12f), new Vector2(1f, 1f));
         MakeConfirm(panel, new Vector2(0.60f, 0f), new Vector2(1f, 0.12f));
     }
@@ -464,14 +488,48 @@ public static class HubScaffold
     private static void PopulateEquip(RectTransform panel)
     {
         if (panel == null) return;
-        MakeNamedScrollView(panel, GameObjectHelper.Hub.HeroList,   new Vector2(0f, 0f),    new Vector2(0.25f, 1f));
-        MakeNamedScrollView(panel, GameObjectHelper.Hub.SlotList,   new Vector2(0.25f, 0f), new Vector2(0.50f, 1f));
-        MakeNamedScrollView(panel, GameObjectHelper.Hub.ItemPicker, new Vector2(0.50f, 0f), new Vector2(0.75f, 1f));
+
+        // Left column 45 %: large hero portrait + name/Lv + live stats + Back button.
+        var portrait = FindOrMake(panel, "HeroPortrait", ref _ignoreCreated, ref _ignoreFound);
+        portrait.anchorMin = new Vector2(0.02f, 0.55f);
+        portrait.anchorMax = new Vector2(0.20f, 0.95f);
+        portrait.offsetMin = Vector2.zero; portrait.offsetMax = Vector2.zero;
+        var portImg = portrait.GetComponent<Image>() ?? portrait.gameObject.AddComponent<Image>();
+        portImg.color = new Color(1f, 1f, 1f, 1f);
+        portImg.preserveAspect = true;
+        portImg.raycastTarget = false;
+
+        var name = MakeLabel(panel, "HeroNameLabel", "");
+        name.anchorMin = new Vector2(0.21f, 0.85f);
+        name.anchorMax = new Vector2(0.45f, 0.95f);
+        name.offsetMin = new Vector2(8f, 0f); name.offsetMax = new Vector2(-8f, 0f);
+        var nameTmp = name.GetComponent<TextMeshProUGUI>();
+        if (nameTmp != null) { nameTmp.fontSize = 32; nameTmp.fontStyle = FontStyles.Bold; nameTmp.alignment = TextAlignmentOptions.MidlineLeft; }
+
         var stats = MakeLabel(panel, GameObjectHelper.Hub.StatsLabel, "");
-        stats.anchorMin = new Vector2(0.75f, 0f);
-        stats.anchorMax = new Vector2(1f, 1f);
-        stats.offsetMin = new Vector2(16f, 16f); stats.offsetMax = new Vector2(-16f, -16f);
+        stats.anchorMin = new Vector2(0.02f, 0.18f);
+        stats.anchorMax = new Vector2(0.45f, 0.85f);
+        stats.offsetMin = new Vector2(8f, 8f); stats.offsetMax = new Vector2(-8f, -8f);
+
+        var back = MakeButton(panel, "BackToPartyButton", "← Back to Party");
+        back.anchorMin = new Vector2(0.02f, 0.05f); back.anchorMax = new Vector2(0.45f, 0.16f);
+        back.offsetMin = new Vector2(8f, 4f); back.offsetMax = new Vector2(-8f, -4f);
+
+        // Right column 55 %: slot tabs + scrollable item picker.
+        // Tab strip — five buttons across the top of the right column.
+        MakeTab(panel, "SlotTab_Weapon", "Weapon", new Vector2(0.46f, 0.92f), new Vector2(0.56f, 1f));
+        MakeTab(panel, "SlotTab_Armor",  "Armor",  new Vector2(0.56f, 0.92f), new Vector2(0.66f, 1f));
+        MakeTab(panel, "SlotTab_Relic1", "Relic 1", new Vector2(0.66f, 0.92f), new Vector2(0.76f, 1f));
+        MakeTab(panel, "SlotTab_Relic2", "Relic 2", new Vector2(0.76f, 0.92f), new Vector2(0.86f, 1f));
+        MakeTab(panel, "SlotTab_Relic3", "Relic 3", new Vector2(0.86f, 0.92f), new Vector2(0.96f, 1f));
+
+        // The scroll view reuses the GameObjectHelper.Hub.ItemPicker name so existing helpers
+        // (FindList) keep resolving.
+        MakeNamedScrollView(panel, GameObjectHelper.Hub.ItemPicker,
+            new Vector2(0.46f, 0.05f), new Vector2(0.98f, 0.92f));
     }
+    private static int _ignoreCreated;
+    private static int _ignoreFound;
 
     private static void PopulateSalvage(RectTransform panel)
     {

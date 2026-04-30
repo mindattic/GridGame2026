@@ -271,19 +271,20 @@ public class PostBattleManager : MonoBehaviour
     /// <summary>Handles the next event — transitions from XP phase to Loot phase.</summary>
     private void OnNext()
     {
-        // Apply XP gains to save data
+        // Apply XP gains to save data — mirror to BOTH party and roster entries so a hero
+        // benched after combat keeps the XP they earned, and a hero added to the party next
+        // session inherits the post-battle level (single source of truth: the higher value wins).
         var save = ProfileHelper.CurrentProfile.CurrentSave;
         if (save != null)
         {
             foreach (var kv in ExperienceTracker.AllGains)
             {
-                var id = kv.Key; 
+                var id = kv.Key;
                 var gained = kv.Value;
-                var entry = save.Party.Members.FirstOrDefault(m => m.CharacterClass == id) ?? save.Roster.Members.FirstOrDefault(m => m.CharacterClass == id);
-                if (entry != null)
-                {
-                    entry.TotalXP = Mathf.Max(0, entry.TotalXP + gained);
-                }
+                var partyEntry = save.Party?.Members?.FirstOrDefault(m => m.CharacterClass == id);
+                var rosterEntry = save.Roster?.Members?.FirstOrDefault(m => m.CharacterClass == id);
+                if (partyEntry != null)  partyEntry.TotalXP  = Mathf.Max(0, partyEntry.TotalXP + gained);
+                if (rosterEntry != null) rosterEntry.TotalXP = Mathf.Max(0, rosterEntry.TotalXP + gained);
             }
             ProfileHelper.Save(true);
         }

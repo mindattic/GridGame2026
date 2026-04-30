@@ -40,12 +40,13 @@ namespace Scripts.Inventory
 /// </summary>
 public class PlayerInventory
 {
-    /// <summary>Single inventory entry with stack count and durability.</summary>
+    /// <summary>Single inventory entry with stack count, durability, and repair history.</summary>
     public class Entry
     {
         public ItemDefinition Definition;
         public int Count;
         public int CurrentDurability;
+        public int RepairCount;
     }
 
     private Dictionary<string, Entry> entries = new Dictionary<string, Entry>();
@@ -136,12 +137,14 @@ public class PlayerInventory
         var save = new InventorySaveData { Gold = Gold, Items = new List<InventoryEntrySave>() };
         foreach (var kvp in entries)
         {
-            save.Items.Add(new InventoryEntrySave(kvp.Key, kvp.Value.Count, kvp.Value.CurrentDurability));
+            save.Items.Add(new InventoryEntrySave(kvp.Key, kvp.Value.Count, kvp.Value.CurrentDurability, kvp.Value.RepairCount));
         }
         return save;
     }
 
-    /// <summary>Imports inventory state from save data.</summary>
+    /// <summary>Imports inventory state from save data. Treats CurrentDurability == 0 as
+    /// "fresh / never used" and resets to the item's max — saves authored before the durability
+    /// system landed (or the starter pack) want to load with full-strength weapons.</summary>
     public void LoadFromSaveData(InventorySaveData save)
     {
         entries.Clear();
@@ -152,11 +155,14 @@ public class PlayerInventory
         {
             var def = ItemLibrary.Get(e.ItemId);
             if (def == null) continue;
+            int durability = e.CurrentDurability;
+            if (durability <= 0 && def.Durability > 0) durability = def.Durability;
             entries[e.ItemId] = new Entry
             {
                 Definition = def,
                 Count = e.Count,
-                CurrentDurability = e.CurrentDurability
+                CurrentDurability = durability,
+                RepairCount = e.RepairCount,
             };
         }
     }

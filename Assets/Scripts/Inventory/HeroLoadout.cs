@@ -56,6 +56,47 @@ public class HeroLoadout
     // Slot-based equipment
     public Dictionary<EquipmentSlot, ItemDefinition> EquippedSlots = new Dictionary<EquipmentSlot, ItemDefinition>();
 
+    /// <summary>Per-slot remaining durability for the equipped piece. Missing key = full durability.</summary>
+    public Dictionary<EquipmentSlot, int> SlotDurability = new Dictionary<EquipmentSlot, int>();
+    /// <summary>Per-slot lifetime repair count for the equipped piece. Drives the Blacksmith's escalating cost.</summary>
+    public Dictionary<EquipmentSlot, int> SlotRepairCount = new Dictionary<EquipmentSlot, int>();
+
+    /// <summary>Current durability of the equipped piece in <paramref name="slot"/>, or the item's
+    /// max durability if untracked (treated as fresh).</summary>
+    public int GetDurability(EquipmentSlot slot)
+    {
+        var item = GetEquipped(slot);
+        if (item == null) return 0;
+        if (SlotDurability.TryGetValue(slot, out var d) && d > 0) return d;
+        return item.Durability;
+    }
+
+    /// <summary>Number of times the equipped piece in <paramref name="slot"/> has been repaired.</summary>
+    public int GetRepairCount(EquipmentSlot slot)
+    {
+        return SlotRepairCount.TryGetValue(slot, out var c) ? c : 0;
+    }
+
+    /// <summary>Decrements the equipped weapon's durability by <paramref name="amount"/>. Returns
+    /// true and clears the slot if the weapon broke (durability hit zero).</summary>
+    public bool DecrementDurability(EquipmentSlot slot, int amount = 1)
+    {
+        var item = GetEquipped(slot);
+        if (item == null || item.Durability <= 0) return false;
+        int cur = GetDurability(slot);
+        cur = UnityEngine.Mathf.Max(0, cur - amount);
+        SlotDurability[slot] = cur;
+        if (cur <= 0)
+        {
+            // Weapon broke — remove it. RepairCount is also discarded since the piece is destroyed.
+            EquippedSlots.Remove(slot);
+            SlotDurability.Remove(slot);
+            SlotRepairCount.Remove(slot);
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>Gets the item in a specific slot, or null.</summary>
     public ItemDefinition GetEquipped(EquipmentSlot slot)
     {
@@ -148,6 +189,12 @@ public class HeroLoadout
         TryEquipFromIdToSlot(save.Relic2Id, EquipmentSlot.Relic2);
         TryEquipFromIdToSlot(save.Relic3Id, EquipmentSlot.Relic3);
 
+        // Per-slot durability + repair history. Treat 0 as untracked (use item max).
+        if (save.WeaponDurability > 0) SlotDurability[EquipmentSlot.Weapon] = save.WeaponDurability;
+        if (save.WeaponRepairCount > 0) SlotRepairCount[EquipmentSlot.Weapon] = save.WeaponRepairCount;
+        if (save.ArmorDurability > 0)  SlotDurability[EquipmentSlot.Armor] = save.ArmorDurability;
+        if (save.ArmorRepairCount > 0) SlotRepairCount[EquipmentSlot.Armor] = save.ArmorRepairCount;
+
         // Load ability bar slots in save order
         EquippedAbilities.Clear();
         if (save.AbilityBarSlots != null)
@@ -178,6 +225,10 @@ public class HeroLoadout
     /// <summary>Exports equipment to save data.</summary>
     public HeroEquipmentSave ToSave()
     {
+        SlotDurability.TryGetValue(EquipmentSlot.Weapon, out var wDur);
+        SlotRepairCount.TryGetValue(EquipmentSlot.Weapon, out var wRep);
+        SlotDurability.TryGetValue(EquipmentSlot.Armor, out var aDur);
+        SlotRepairCount.TryGetValue(EquipmentSlot.Armor, out var aRep);
         var save = new HeroEquipmentSave
         {
             CharacterClass = CharacterClass,
@@ -186,6 +237,10 @@ public class HeroLoadout
             Relic1Id = GetEquipped(EquipmentSlot.Relic1)?.Id,
             Relic2Id = GetEquipped(EquipmentSlot.Relic2)?.Id,
             Relic3Id = GetEquipped(EquipmentSlot.Relic3)?.Id,
+            WeaponDurability  = wDur,
+            WeaponRepairCount = wRep,
+            ArmorDurability   = aDur,
+            ArmorRepairCount  = aRep,
         };
 
         // Export ability bar slots in order

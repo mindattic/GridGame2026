@@ -47,6 +47,10 @@ namespace Scripts.Hub
         public PlayerInventory Inventory { get; private set; }
         public PartyLoadout Loadout { get; private set; }
 
+        /// <summary>Cross-section handoff: when PartySection routes the player to EquipSection,
+        /// it stuffs the chosen hero here. EquipSection reads + clears on its next OnActivated.</summary>
+        public CharacterClass PendingEquipHero = CharacterClass.None;
+
         private readonly List<HubSection> sections = new List<HubSection>();
         private HubSection current;
 
@@ -74,6 +78,13 @@ namespace Scripts.Hub
         private void Start()
         {
             scene.FadeIn();
+            // Drain post-battle notifications (broken weapons, etc.) into the toast strip so the
+            // player sees them when they get back to town instead of having them silently swallowed.
+            // Toast overwrites on rapid Show() calls, so collapse the batch into one multi-line toast.
+            if (BattleEventTracker.HasMessages)
+            {
+                HubToast.Show(string.Join("\n", BattleEventTracker.Drain()));
+            }
         }
 
         // ---------- Save Round-trip ----------
@@ -118,6 +129,12 @@ namespace Scripts.Hub
 
         public void Show<TSection>() where TSection : HubSection
         {
+            // While most sections are flagged off, redirect to Party rather than warning.
+            if (!HubFeatureFlags.IsEnabled<TSection>() && typeof(TSection) != typeof(PartySection))
+            {
+                ShowParty();
+                return;
+            }
             var next = FindSection<TSection>();
             if (next == null)
             {
@@ -266,7 +283,19 @@ namespace Scripts.Hub
 
         public void ExitToBattle()
         {
+            // Refuse to enter combat with an empty party — the player would lose instantly with
+            // nothing to control. Bounce them to Party so they can fix it.
+            var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+            if (party == null || party.Count == 0)
+            {
+                HubToast.Show("Add at least one hero to your party before heading to battle.");
+                Show<PartySection>();
+                return;
+            }
             PersistAndRefresh();
+            // After victory or defeat, the post-battle screen routes back here so XP/levels are
+            // visible on the same Hub the player came from.
+            ExperienceTracker.NextSceneAfterPostBattleScreen = scene.Hub;
             scene.Fade.ToGame();
         }
 

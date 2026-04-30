@@ -139,11 +139,34 @@ namespace Scripts.Helpers
             HeroDirection = "Idle"
         };
 
+        // Starter inventory: a representative sample of every weapon archetype + a couple of armor
+        // pieces and helms so the player can experiment with equip / unequip and run into the
+        // class-proficiency rules right out of the gate (Cleric vs. Greatsword, Paladin vs. Wand).
         public static InventorySaveData DefaultInventory = new InventorySaveData
         {
             Gold = 200,
             Items = new List<InventoryEntrySave>
             {
+                // Weapons — one of each WeaponType so proficiency rules are reachable
+                new InventoryEntrySave("eq_sword_iron",     2, 0),
+                new InventoryEntrySave("eq_sword_steel",    1, 0),
+                new InventoryEntrySave("eq_dagger_bronze",  2, 0),
+                new InventoryEntrySave("eq_bow_hunter",     1, 0),
+                new InventoryEntrySave("eq_hammer_war",     1, 0),
+                new InventoryEntrySave("eq_axe_rune",       1, 0),
+                new InventoryEntrySave("eq_mace_starfall",  1, 0),
+                new InventoryEntrySave("eq_spear_serpent",  1, 0),
+                new InventoryEntrySave("eq_staff_mystic",   1, 0),
+                new InventoryEntrySave("eq_wand_crystal",   1, 0),
+                new InventoryEntrySave("eq_sword_shadow",   1, 0), // Greatsword
+
+                // Armor + relics
+                new InventoryEntrySave("eq_armor_chain",    2, 0),
+                new InventoryEntrySave("eq_armor_plate",    1, 0),
+                new InventoryEntrySave("eq_helm_iron",      2, 0),
+                new InventoryEntrySave("eq_boots_leather",  2, 0),
+
+                // Consumables
                 new InventoryEntrySave("healing_potion_basic", 3, 0),
             }
         };
@@ -328,6 +351,10 @@ namespace Scripts.Helpers
                     new PartySaveData(ProfileHelper.DefaultParty),
                     new OverworldSaveData(DefaultOverworld)
                 );
+                // The SaveState ctor allocates an empty Inventory/Equipment — replace with the
+                // starter pack so a fresh profile has weapons + armor to experiment with.
+                newSave.Inventory = new InventorySaveData(DefaultInventory);
+                newSave.Equipment = new EquipmentSaveData(DefaultEquipment);
 
                 newProfile.SaveStates.Add(newSave);
                 profiles[key] = newProfile;
@@ -497,6 +524,8 @@ namespace Scripts.Helpers
                     new RosterSaveData(DefaultRoster),
                     new PartySaveData(DefaultParty),
                     new OverworldSaveData(DefaultOverworld));
+                newSave.Inventory = new InventorySaveData(DefaultInventory);
+                newSave.Equipment = new EquipmentSaveData(DefaultEquipment);
 
                 profile.SaveStates.Add(newSave);
                 profile.CurrentSave = newSave;
@@ -703,6 +732,12 @@ namespace Scripts.Helpers
                     CurrentProfile.CurrentSave.Roster,
                     CurrentProfile.CurrentSave.Party,
                     CurrentProfile.CurrentSave.Overworld ?? new OverworldSaveData(DefaultOverworld));
+                // The SaveState ctor allocates fresh Inventory/Equipment; preserve the live ones
+                // so a quicksave doesn't wipe gear / collected items.
+                if (CurrentProfile.CurrentSave.Inventory != null)
+                    newSave.Inventory = new InventorySaveData(CurrentProfile.CurrentSave.Inventory);
+                if (CurrentProfile.CurrentSave.Equipment != null)
+                    newSave.Equipment = new EquipmentSaveData(CurrentProfile.CurrentSave.Equipment);
 
                 string savesDir = Path.Combine(CurrentProfile.Folder, "Saves");
                 Directory.CreateDirectory(savesDir);
@@ -770,7 +805,14 @@ namespace Scripts.Helpers
             if (party.Any(hero => hero.CharacterClass == characterClass ))
                 return;
 
-            party.Add(new CharacterLevelPair(characterClass));
+            // Inherit accumulated XP from the roster entry — otherwise sliding a Lv 5 hero
+            // into the party would reset them to Lv 1, erasing all their progress.
+            int seedXP = 0;
+            var roster = CurrentProfile.CurrentSave.Roster?.Members;
+            var rosterEntry = roster?.FirstOrDefault(m => m.CharacterClass == characterClass);
+            if (rosterEntry != null) seedXP = rosterEntry.TotalXP;
+
+            party.Add(new CharacterLevelPair(characterClass, seedXP));
             Save(true);
         }
 
@@ -785,6 +827,17 @@ namespace Scripts.Helpers
             var party = CurrentProfile.CurrentSave.Party?.Members;
             if (party == null)
                 return;
+
+            // Mirror the party entry's TotalXP back into the roster before removing — otherwise
+            // any XP earned while the hero was in the party would vanish on shelving.
+            var partyEntry = party.FirstOrDefault(h => h.CharacterClass == characterClass);
+            if (partyEntry != null)
+            {
+                var roster = CurrentProfile.CurrentSave.Roster?.Members;
+                var rosterEntry = roster?.FirstOrDefault(m => m.CharacterClass == characterClass);
+                if (rosterEntry != null) rosterEntry.TotalXP = Mathf.Max(rosterEntry.TotalXP, partyEntry.TotalXP);
+                else if (roster != null) roster.Add(new CharacterLevelPair(characterClass, partyEntry.TotalXP));
+            }
 
             if (party.RemoveAll(hero => hero.CharacterClass == characterClass) > 0)
                 Save(true);

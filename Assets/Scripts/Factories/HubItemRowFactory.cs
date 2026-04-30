@@ -49,8 +49,11 @@ namespace Scripts.Factories
 /// </summary>
 public static class HubItemRowFactory
 {
-    private static readonly Color RowBackgroundColor = new Color(0.12f, 0.12f, 0.16f, 0.85f);
-    private static readonly Color SelectedRowColor = new Color(0.20f, 0.22f, 0.30f, 0.92f);
+    // Rows need to read against HubTheme.PanelBg (~(0.06, 0.08, 0.14)). The previous row
+    // background was so close in luminance the rows were effectively invisible — the player
+    // could click them but couldn't see them. Push the row tone up to a clear separator step.
+    private static readonly Color RowBackgroundColor = new Color(0.20f, 0.24f, 0.34f, 1f);
+    private static readonly Color SelectedRowColor   = new Color(0.36f, 0.50f, 0.78f, 1f);
 
     private static readonly ColorBlock RowButtonColors = new ColorBlock
     {

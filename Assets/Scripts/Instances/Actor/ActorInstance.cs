@@ -627,6 +627,9 @@ public partial class ActorInstance : MonoBehaviour
             var drops = Scripts.Data.Items.DropTableLibrary.RollDrops(this.characterClass);
             Scripts.Managers.LootTracker.AddDropResults(drops);
 
+            // Humanoid enemies have a chance to drop equipment they were "wearing".
+            Scripts.Helpers.EnemyGearDropHelper.RollFor(this);
+
             // Celebratory on-map pickup burst (rarity-tinted, purely visual — loot already booked above)
             if (drops != null && drops.Count > 0)
                 g.ItemPickupManager?.SpawnBurst(Position, drops);

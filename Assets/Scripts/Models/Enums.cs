@@ -573,13 +573,46 @@ public enum VFX
 
 public enum WeaponType
 {
-    Dagger,
-    Hammer,
-    Katana,
-    Mace,
-    Spear,
+    None,
     Sword,
-    Wand
+    Greatsword,
+    Dagger,
+    Axe,
+    Hammer,
+    Mace,
+    Bow,
+    Spear,
+    Staff,
+    Wand,
+    Katana,
+}
+
+public static class WeaponTypeHelper
+{
+    /// <summary>Player-facing label for a weapon type.</summary>
+    public static string DisplayName(WeaponType t)
+    {
+        switch (t)
+        {
+            case WeaponType.Sword:      return "Sword";
+            case WeaponType.Greatsword: return "Greatsword";
+            case WeaponType.Dagger:     return "Dagger";
+            case WeaponType.Axe:        return "Axe";
+            case WeaponType.Hammer:     return "Hammer";
+            case WeaponType.Mace:       return "Mace";
+            case WeaponType.Bow:        return "Bow";
+            case WeaponType.Spear:      return "Spear";
+            case WeaponType.Staff:      return "Staff";
+            case WeaponType.Wand:       return "Wand";
+            case WeaponType.Katana:     return "Katana";
+            default:                    return "Weapon";
+        }
+    }
+
+    /// <summary>True if this weapon's damage scales off Intelligence rather than Strength
+    /// (Wand, Staff). Used to label damage type in the UI and pick the right offense formula.</summary>
+    public static bool IsMagical(WeaponType t)
+        => t == WeaponType.Wand || t == WeaponType.Staff;
 }
 
 public enum TargetFrameRate

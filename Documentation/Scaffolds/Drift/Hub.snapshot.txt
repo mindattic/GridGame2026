@@ -13,42 +13,6 @@
     CanvasRenderer
     Image: sprite=<null>, color=#00000000, type=Simple, raycast=True
     RectTransform: anchor=(0,0)-(1,1), pos=0,-68, size=-32,-168, pivot=0.5,0.5
-    [AlchemistPanel] layer=UI
-      AlchemistSection
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.6,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
     [BlacksmithPanel] layer=UI
       BlacksmithSection
       CanvasRenderer
@@ -74,7 +38,7 @@
       [ItemList] layer=UI
         CanvasRenderer
         Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.6,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
+        RectTransform: anchor=(0,0.12)-(0.6,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
         [Viewport] layer=UI
           CanvasRenderer
           Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
@@ -85,114 +49,45 @@
             ContentSizeFitter: h=Unconstrained, v=PreferredSize
             RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
             VerticalLayoutGroup: spacing=4, align=UpperLeft
-    [BountyPanel] layer=UI
-      BountySection
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [AbandonButton] layer=UI
+      [RepairAllButton] layer=UI
         Button
         CanvasRenderer
         Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0)-(1,0.12), pos=0,2, size=-32,-12, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(0.6,0.12), pos=4,2, size=-24,-12, pivot=0.5,0.5
         [Label] layer=UI
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Abandon', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0.12)-(1,0.24), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0.24)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.6,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
-    [EnchanterPanel] layer=UI
-      CanvasRenderer
-      EnchantSection
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.5,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.5,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.5,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
+          TextMeshProUGUI: font=Attic, text='Repair All', size=26, color=#FFFFFFFF, align=Center, raycast=False
     [EquipPanel] layer=UI
       CanvasRenderer
       EquipSection
       Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [BackToPartyButton] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.02,0.05)-(0.45,0.16), pos=0,0, size=-16,-8, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='← Back to Party', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [GoldLabel] layer=UI
         CanvasRenderer
         RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
         TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [HeroList] layer=UI
+      [HeroNameLabel] layer=UI
         CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.25,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
+        RectTransform: anchor=(0.21,0.85)-(0.45,0.95), pos=0,0, size=-16,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='', size=32, color=#FFFFFFFF, align=MidlineLeft, raycast=False
+      [HeroPortrait] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False
+        RectTransform: anchor=(0.02,0.55)-(0.2,0.95), pos=0,0, size=0,0, pivot=0.5,0.5
       [ItemPicker] layer=UI
         CanvasRenderer
         Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0.5,0)-(0.75,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
+        RectTransform: anchor=(0.46,0.05)-(0.98,0.92), pos=0,0, size=-16,-16, pivot=0.5,0.5
         [Viewport] layer=UI
           CanvasRenderer
           Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
@@ -203,87 +98,55 @@
             ContentSizeFitter: h=Unconstrained, v=PreferredSize
             RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
             VerticalLayoutGroup: spacing=4, align=UpperLeft
-      [SlotList] layer=UI
+      [SlotTab_Armor] layer=UI
+        Button
         CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0.25,0)-(0.5,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.56,0.92)-(0.66,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+        [Label] layer=UI
           CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Armor', size=26, color=#FFFFFFFF, align=Center, raycast=False
+      [SlotTab_Relic1] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.66,0.92)-(0.76,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Relic 1', size=26, color=#FFFFFFFF, align=Center, raycast=False
+      [SlotTab_Relic2] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.76,0.92)-(0.86,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Relic 2', size=26, color=#FFFFFFFF, align=Center, raycast=False
+      [SlotTab_Relic3] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.86,0.92)-(0.96,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Relic 3', size=26, color=#FFFFFFFF, align=Center, raycast=False
+      [SlotTab_Weapon] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.46,0.92)-(0.56,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Weapon', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [StatsLabel] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.75,0)-(1,1), pos=0,0, size=-32,-32, pivot=0.5,0.5
+        RectTransform: anchor=(0.02,0.18)-(0.45,0.85), pos=0,0, size=-16,-16, pivot=0.5,0.5
         TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-    [InventoryPanel] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      InventorySection
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [FilterAll] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0.88)-(0.15,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='All', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterCons] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.3,0.88)-(0.45,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Potions', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterEquip] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.15,0.88)-(0.3,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Gear', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterMats] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.45,0.88)-(0.6,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Materials', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.6,0.88), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
     [PartyPanel] layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
@@ -291,295 +154,25 @@
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
       [DetailLabel] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.66,0)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
+        RectTransform: anchor=(0.6,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
         TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
       [GoldLabel] layer=UI
         CanvasRenderer
         RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
         TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [PartyList] layer=UI
+      [ManageEquipmentButton] layer=UI
+        Button
         CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0.33,0)-(0.66,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
+        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.6,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
+        [Label] layer=UI
           CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Manage Equipment', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [RosterList] layer=UI
         CanvasRenderer
         Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.33,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
-    [PlacesPanel] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      PlacesSection
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [BossButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.02,0.06)-(0.58,0.24), pos=0,0, size=-12,-12, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Boss', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [CaveButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.02,0.24)-(0.58,0.42), pos=0,0, size=-12,-12, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Cave', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0.04)-(0.98,0.16), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0.16)-(0.98,0.96), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [FieldButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.02,0.78)-(0.58,0.96), pos=0,0, size=-12,-12, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Field', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ForestButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.02,0.6)-(0.58,0.78), pos=0,0, size=-12,-12, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Forest', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [RuinsButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.02,0.42)-(0.58,0.6), pos=0,0, size=-12,-12, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Ruins', size=26, color=#FFFFFFFF, align=Center, raycast=False
-    [ResidencePanel] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      InnSection
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.1,0.3)-(0.9,0.9), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [RestButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.35,0.1)-(0.65,0.2), pos=0,0, size=0,0, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Rest', size=26, color=#FFFFFFFF, align=Center, raycast=False
-    [SalvagePanel] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      SalvageSection
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
         RectTransform: anchor=(0,0)-(0.6,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
-    [ShopPanel] layer=UI
-      CanvasRenderer
-      GeneralStoreSection
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      [BuyTab] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0.88)-(0.3,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Buy', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.6,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.6,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [FilterAll] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0.78)-(0.15,0.88), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='All', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterCons] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.3,0.78)-(0.45,0.88), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Potions', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterEquip] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.15,0.78)-(0.3,0.88), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Gear', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [FilterMats] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.45,0.78)-(0.6,0.88), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Materials', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [ItemList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.6,0.78), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
-      [SellTab] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.3,0.88)-(0.6,1), pos=0,0, size=-4,-4, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Sell', size=26, color=#FFFFFFFF, align=Center, raycast=False
-    [TrainingPanel] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-      TrainingSection
-      [ConfirmButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-        RectTransform: anchor=(0.65,0)-(1,0.12), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Confirm', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [DetailLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0.65,0.12)-(1,1), pos=0,0, size=-32,-16, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
-      [GoldLabel] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(1,1)-(1,1), pos=-16,-8, size=300,40, pivot=1,1
-        TextMeshProUGUI: font=Attic, text='Gold: 0g', size=22, color=#FFC747FF, align=TopRight, raycast=False
-      [HeroList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0.3,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
-        [Viewport] layer=UI
-          CanvasRenderer
-          Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-          Mask: showGraphic=False
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          ScrollRect
-          [Content] layer=UI
-            ContentSizeFitter: h=Unconstrained, v=PreferredSize
-            RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-            VerticalLayoutGroup: spacing=4, align=UpperLeft
-      [TrainingList] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-        RectTransform: anchor=(0.3,0)-(0.65,1), pos=0,0, size=-16,-16, pivot=0.5,0.5
         [Viewport] layer=UI
           CanvasRenderer
           Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
@@ -625,18 +218,8 @@
     [MenuPanel] layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,1)-(0,1), pos=12,-152, size=260,640, pivot=0,1
+      RectTransform: anchor=(0,1)-(0,1), pos=12,-152, size=260,168, pivot=0,1
       VerticalLayoutGroup: spacing=4, align=UpperCenter
-      [AlchemistButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Alchemist', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [BlacksmithButton] layer=UI
         Button
         CanvasRenderer
@@ -647,26 +230,6 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
           TextMeshProUGUI: font=Attic, text='Blacksmith', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [BountyButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Bounty', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [EnchanterButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Enchanter', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [EquipButton] layer=UI
         Button
         CanvasRenderer
@@ -677,16 +240,6 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
           TextMeshProUGUI: font=Attic, text='Equip', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [InventoryButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Inventory', size=26, color=#FFFFFFFF, align=Center, raycast=False
       [PartyButton] layer=UI
         Button
         CanvasRenderer
@@ -697,56 +250,6 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
           TextMeshProUGUI: font=Attic, text='Party', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [PlacesButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Places', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ResidenceButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Inn', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [SalvageButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Salvage', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [ShopButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Store', size=26, color=#FFFFFFFF, align=Center, raycast=False
-      [TrainingButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-        LayoutElement: pref=(-1,48), flex=(1,0)
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Training', size=26, color=#FFFFFFFF, align=Center, raycast=False
   [NavBar] layer=UI
     CanvasRenderer
     HorizontalLayoutGroup: spacing=12, align=MiddleLeft

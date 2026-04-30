@@ -294,11 +294,14 @@ static class RNG
     }
 
     /// <summary>
-    /// Random Weapon type.
+    /// Random Weapon type. Skips <see cref="Scripts.Models.WeaponType.None"/> so callers always get a real weapon.
     /// </summary>
     public static WeaponType WeaponType()
     {
-        return EnumValue<WeaponType>();
+        WeaponType picked;
+        int safety = 8;
+        do { picked = EnumValue<WeaponType>(); } while (picked == Scripts.Models.WeaponType.None && --safety > 0);
+        return picked;
     }
 
     /// <summary>

@@ -116,6 +116,12 @@ namespace Scripts.Sequences
                     p.attackResults2.AddRange(attacker2Order.Select(opp => Formulas.CalculateAttackResult(p.attacker2, opp)));
                 }
 
+                // FE-style weapon attrition: each pincer counts as one swing per attacker. The
+                // helper writes the new durability straight to the save data so a broken weapon
+                // is reflected when the player gets back to the Hub.
+                WeaponDurabilityHelper.OnHeroAttacked(p.attacker1);
+                WeaponDurabilityHelper.OnHeroAttacked(p.attacker2);
+
                 g.SequenceManager.Add(new PincerAttackSequence(p));
             }
 

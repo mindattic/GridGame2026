@@ -306,13 +306,15 @@ namespace Scripts.Models
         }
     }
 
-    /// <summary>Single persisted inventory entry.</summary>
+    /// <summary>Single persisted inventory entry. Durability and RepairCount track the wear-and-tear
+    /// state of the stack — both fields apply to weapons (FireEmblem-style attrition) and to armor.</summary>
     [Serializable]
     public class InventoryEntrySave
     {
         public string ItemId;
         public int Count;
         public int CurrentDurability;
+        public int RepairCount;
 
         public InventoryEntrySave() { }
         public InventoryEntrySave(InventoryEntrySave other)
@@ -320,12 +322,14 @@ namespace Scripts.Models
             ItemId = other.ItemId;
             Count = other.Count;
             CurrentDurability = other.CurrentDurability;
+            RepairCount = other.RepairCount;
         }
-        public InventoryEntrySave(string itemId, int count, int durability = 0)
+        public InventoryEntrySave(string itemId, int count, int durability = 0, int repairCount = 0)
         {
             ItemId = itemId;
             Count = count;
             CurrentDurability = durability;
+            RepairCount = repairCount;
         }
     }
 
@@ -359,7 +363,9 @@ namespace Scripts.Models
         }
     }
 
-    /// <summary>Equipment assignments and ability bar layout for a single hero.</summary>
+    /// <summary>Equipment assignments and ability bar layout for a single hero. Per-equipped-piece
+    /// durability and repair-count travel with the hero (independent of any leftover inventory stack)
+    /// so the Blacksmith can charge an escalating cost to keep this specific weapon in service.</summary>
     [Serializable]
     public class HeroEquipmentSave
     {
@@ -369,6 +375,12 @@ namespace Scripts.Models
         public string Relic1Id;
         public string Relic2Id;
         public string Relic3Id;
+
+        /// <summary>Current durability of the equipped weapon. 0 = use ItemDefinition.Durability (fresh-equip default).</summary>
+        public int WeaponDurability;
+        public int WeaponRepairCount;
+        public int ArmorDurability;
+        public int ArmorRepairCount;
 
         /// <summary>Ordered ability bar slots assigned in the Hub. Each entry is either
         /// an ability name or a consumable item ID. Null/empty entries are empty slots.</summary>
@@ -383,6 +395,10 @@ namespace Scripts.Models
             Relic1Id = other.Relic1Id;
             Relic2Id = other.Relic2Id;
             Relic3Id = other.Relic3Id;
+            WeaponDurability = other.WeaponDurability;
+            WeaponRepairCount = other.WeaponRepairCount;
+            ArmorDurability = other.ArmorDurability;
+            ArmorRepairCount = other.ArmorRepairCount;
             AbilityBarSlots = new List<AbilityBarSlotSave>();
             if (other.AbilityBarSlots != null)
             {
