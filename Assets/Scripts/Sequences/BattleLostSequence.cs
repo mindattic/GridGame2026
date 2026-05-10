@@ -60,8 +60,8 @@ namespace Scripts.Sequences
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);
-            // Ensure the next scene after PostBattle is Hub
-            ExperienceTracker.NextSceneAfterPostBattleScreen = scene.Hub;
+            // Ensure the next scene after PostBattle is StageSelect (campaign home post-slice 9).
+            ExperienceTracker.NextSceneAfterPostBattleScreen = scene.StageSelect;
             // Route to PostBattleScreen so XP is awarded on defeat
             scene.Fade.ToPostBattleScreen();
         }

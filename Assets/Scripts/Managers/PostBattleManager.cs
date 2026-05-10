@@ -407,10 +407,10 @@ public class PostBattleManager : MonoBehaviour
     {
         LootTracker.Clear();
 
-        // Route to Overworld instead of Hub after loot is collected
+        // After loot, return to the campaign gateway (StageSelect) post-slice 9.
         string destination = ExperienceTracker.NextSceneAfterPostBattleScreen;
         if (string.IsNullOrEmpty(destination))
-            destination = SceneHelper.Overworld;
+            destination = SceneHelper.StageSelect;
 
         SceneHelper.Fade.To(destination);
     }
