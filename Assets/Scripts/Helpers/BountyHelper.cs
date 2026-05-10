@@ -81,7 +81,8 @@ namespace Scripts.Helpers
             var def = ActiveBounty();
             if (def == null) return;
             if (def.TargetClass != killedClass) return;
-            var save = ProfileHelper.CurrentProfile.CurrentSave;
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Bounty == null) return;
             if (save.Bounty.Progress >= def.RequiredCount) return;
             save.Bounty.Progress += 1;
         }

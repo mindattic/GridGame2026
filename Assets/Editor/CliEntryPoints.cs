@@ -36,6 +36,12 @@ public static class CliEntryPoints
         "TitleScreen",
         "Game",
         "Overworld",
+        "Store",
+        "Alchemist",
+        "Party",
+        "Abilities",
+        "Equip",
+        "Blacksmith",
     };
 
     // ===================== Scaffolding =====================

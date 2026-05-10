@@ -82,6 +82,12 @@ namespace Scripts.Helpers
         public const string TitleScreen = "TitleScreen";
         public const string PostBattleScreen = "PostBattleScreen";
         public const string Hub = "Hub";
+        public const string Store = "Store";
+        public const string Alchemist = "Alchemist";
+        public const string Party = "Party";
+        public const string Abilities = "Abilities";
+        public const string Equip = "Equip";
+        public const string Blacksmith = "Blacksmith";
 
         #endregion
 
@@ -207,6 +213,18 @@ namespace Scripts.Helpers
             public static void ToPostBattleScreen() => To(PostBattleScreen);
             /// <summary>To hub.</summary>
             public static void ToHub() => To(Hub); // new helper
+            /// <summary>To store.</summary>
+            public static void ToStore() => To(Store);
+            /// <summary>To alchemist.</summary>
+            public static void ToAlchemist() => To(Alchemist);
+            /// <summary>To party.</summary>
+            public static void ToParty() => To(Party);
+            /// <summary>To abilities.</summary>
+            public static void ToAbilities() => To(Abilities);
+            /// <summary>To equip.</summary>
+            public static void ToEquip() => To(Equip);
+            /// <summary>To blacksmith.</summary>
+            public static void ToBlacksmith() => To(Blacksmith);
         }
 
         /// <summary>
@@ -266,7 +284,19 @@ namespace Scripts.Helpers
             /// <summary>To post battle screen.</summary>
             public static void ToPostBattleScreen() => To(PostBattleScreen);
             /// <summary>To hub.</summary>
-            public static void ToHub() => To(Hub); 
+            public static void ToHub() => To(Hub);
+            /// <summary>To store.</summary>
+            public static void ToStore() => To(Store);
+            /// <summary>To alchemist.</summary>
+            public static void ToAlchemist() => To(Alchemist);
+            /// <summary>To party.</summary>
+            public static void ToParty() => To(Party);
+            /// <summary>To abilities.</summary>
+            public static void ToAbilities() => To(Abilities);
+            /// <summary>To equip.</summary>
+            public static void ToEquip() => To(Equip);
+            /// <summary>To blacksmith.</summary>
+            public static void ToBlacksmith() => To(Blacksmith);
         }
 
         #endregion

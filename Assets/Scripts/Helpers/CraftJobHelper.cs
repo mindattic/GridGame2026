@@ -29,6 +29,8 @@ namespace Scripts.Helpers
                 var save = ProfileHelper.CurrentProfile?.CurrentSave;
                 if (save == null) return null;
                 if (save.CraftJobs == null) save.CraftJobs = new List<CraftJob>();
+                // Scrub nulls that may slip in from deserialized saves so callers can trust the list.
+                else if (save.CraftJobs.Contains(null)) save.CraftJobs.RemoveAll(j => j == null);
                 return save.CraftJobs;
             }
         }

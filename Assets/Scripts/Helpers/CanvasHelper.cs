@@ -122,7 +122,9 @@ namespace Scripts.Helpers
             canvas = null;
             canvasRect = null;
 
-            // Subscribe to scene change events
+            // Subscribe to scene change events. Unsubscribe first so repeated
+            // [RuntimeInitializeOnLoadMethod] runs (Disable Domain Reload) don't stack handlers.
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneLoaded += OnSceneLoaded;
 
             // Cache immediately for the first active scene
