@@ -129,6 +129,16 @@
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         TextMeshProUGUI: font=Attic, text='Equip', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_InnButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Inn', size=22, color=#FFFFFFFF, align=Center, raycast=False
     [VendorNavBar_OverworldButton] layer=UI
       Button
       CanvasRenderer

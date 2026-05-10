@@ -42,6 +42,7 @@ public static class CliEntryPoints
         "Abilities",
         "Equip",
         "Blacksmith",
+        "Inn",
     };
 
     // ===================== Scaffolding =====================

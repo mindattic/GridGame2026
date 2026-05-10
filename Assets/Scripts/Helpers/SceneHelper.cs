@@ -88,6 +88,7 @@ namespace Scripts.Helpers
         public const string Abilities = "Abilities";
         public const string Equip = "Equip";
         public const string Blacksmith = "Blacksmith";
+        public const string Inn = "Inn";
 
         #endregion
 
@@ -225,6 +226,8 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
+            /// <summary>To inn.</summary>
+            public static void ToInn() => To(Inn);
         }
 
         /// <summary>
@@ -297,6 +300,8 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
+            /// <summary>To inn.</summary>
+            public static void ToInn() => To(Inn);
         }
 
         #endregion

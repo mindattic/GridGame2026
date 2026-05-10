@@ -1,4 +1,4 @@
-# Scaffold snapshot for scene: Store
+# Scaffold snapshot for scene: Inn
 # Regenerate via CliEntryPoints.RegenerateScaffoldSnapshots.
 # Deterministic — diff this file to see scene drift.
 
@@ -22,33 +22,23 @@
     CanvasRenderer
     Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
     RectTransform: anchor=(0,0)-(1,1), pos=0,-32, size=-48,-256, pivot=0.5,0.5
-    [BuyButton] layer=UI
+    [DetailLabel] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0.4)-(1,1), pos=0,0, size=-96,-16, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='', size=28, color=#FFFFFFFF, align=Center, raycast=False
+    [FlashLabel] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0.2)-(1,0.38), pos=0,0, size=-96,-8, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='', size=30, color=#FFFFFFFF, align=Center, raycast=False
+    [RestButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-      RectTransform: anchor=(0.6,0)-(1,0.18), pos=6,0, size=-12,-16, pivot=0.5,0.5
+      RectTransform: anchor=(0.3,0)-(0.7,0.18), pos=0,0, size=0,-16, pivot=0.5,0.5
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='Buy', size=32, color=#000000FF, align=Center, raycast=False
-    [DetailLabel] layer=UI
-      CanvasRenderer
-      RectTransform: anchor=(0.6,0.18)-(1,1), pos=6,0, size=-12,-16, pivot=0.5,0.5
-      TextMeshProUGUI: font=Attic, text='', size=24, color=#FFFFFFFF, align=TopLeft, raycast=False
-    [ItemList] layer=UI
-      CanvasRenderer
-      Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0.6,1), pos=-6,0, size=-12,0, pivot=0.5,0.5
-      [Viewport] layer=UI
-        CanvasRenderer
-        Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
-        Mask: showGraphic=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
-        ScrollRect
-        [Content] layer=UI
-          ContentSizeFitter: h=Unconstrained, v=PreferredSize
-          RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
-          VerticalLayoutGroup: spacing=4, align=UpperLeft
+        TextMeshProUGUI: font=Attic, text='Rest', size=32, color=#000000FF, align=Center, raycast=False
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
@@ -64,8 +54,8 @@
       TextMeshProUGUI: font=Attic, text='Gold: 0g', size=36, color=#FFC747FF, align=MidlineRight, raycast=False
     [Title] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,0, size=400,72, pivot=0,0.5
-      TextMeshProUGUI: font=Attic, text='Store', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,0, size=500,72, pivot=0,0.5
+      TextMeshProUGUI: font=Attic, text='Inn', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
   [VendorNavBar] layer=UI
     CanvasRenderer
     HorizontalLayoutGroup: spacing=8, align=MiddleLeft
@@ -166,10 +156,10 @@
   EventSystem
   StandaloneInputModule
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[InnManagerGO]
+  InnManager
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
 [Main Camera]
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[StoreManagerGO]
-  StoreManager
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

@@ -48,6 +48,7 @@ namespace Scripts.Vendor
         public const string AbilitiesButtonName = "VendorNavBar_AbilitiesButton";
         public const string EquipButtonName = "VendorNavBar_EquipButton";
         public const string BlacksmithButtonName = "VendorNavBar_BlacksmithButton";
+        public const string InnButtonName = "VendorNavBar_InnButton";
         public const string OverworldButtonName = "VendorNavBar_OverworldButton";
         public const string BattleButtonName = "VendorNavBar_BattleButton";
 
@@ -61,6 +62,7 @@ namespace Scripts.Vendor
             (PartyButtonName,      scene.Party,      "Party"),
             (AbilitiesButtonName,  scene.Abilities,  "Abilities"),
             (EquipButtonName,      scene.Equip,      "Equip"),
+            (InnButtonName,        scene.Inn,        "Inn"),
             (OverworldButtonName,  scene.Overworld,  "Overworld"),
             (BattleButtonName,     scene.Game,       "Battle"),
         };
