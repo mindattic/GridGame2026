@@ -130,7 +130,7 @@ namespace Scripts.Vendor.Store
             if (backBtn != null)
             {
                 backBtn.onClick.RemoveAllListeners();
-                backBtn.onClick.AddListener(() => { PersistInventory(); scene.Fade.ToOverworld(); });
+                backBtn.onClick.AddListener(() => { PersistInventory(); scene.Fade.ToStageSelect(); });
             }
         }
 

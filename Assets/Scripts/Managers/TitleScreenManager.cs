@@ -85,7 +85,7 @@ public class TitleScreenManager : MonoBehaviour
     /// <summary>Handles the party manager clicked event.</summary>
     public void OnPartyManagerClicked()
     {
-        scene.Fade.ToPartyManager();
+        scene.Fade.ToParty();
     }
 
     /// <summary>Handles the settings button clicked event.</summary>

@@ -114,7 +114,7 @@ namespace Scripts.Vendor.Inn
             if (backBtn != null)
             {
                 backBtn.onClick.RemoveAllListeners();
-                backBtn.onClick.AddListener(() => { PersistInventory(); scene.Fade.ToOverworld(); });
+                backBtn.onClick.AddListener(() => { PersistInventory(); scene.Fade.ToStageSelect(); });
             }
         }
 

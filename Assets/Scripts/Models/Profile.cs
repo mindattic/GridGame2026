@@ -197,11 +197,17 @@ namespace Scripts.Models
         public string CurrentStage;
         public int CurrentWave;
 
+        // Highest stage index in CampaignStages.Order that the player has cleared.
+        // -1 = nothing cleared yet (only stage 0 unlocked). Stage N is unlocked when
+        // HighestClearedStageIndex >= N - 1.
+        public int HighestClearedStageIndex = -1;
+
         public StageSaveData() { }
         public StageSaveData(StageSaveData other)
         {
             this.CurrentStage = other.CurrentStage;
             this.CurrentWave = other.CurrentWave;
+            this.HighestClearedStageIndex = other.HighestClearedStageIndex;
         }
     }
 

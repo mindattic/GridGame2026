@@ -72,7 +72,6 @@ namespace Scripts.Helpers
         public const string Game = "Game";
         public const string LoadingScreen = "LoadingScreen";
         public const string Overworld = "Overworld";
-        public const string PartyManager = "PartyManager";
         public const string ProfileCreate = "ProfileCreate";
         public const string ProfileSelect = "ProfileSelect";
         public const string SaveFileSelect = "SaveFileSelect";
@@ -192,10 +191,8 @@ namespace Scripts.Helpers
             public static void ToCredits() => To(Credits);
             /// <summary>To game.</summary>
             public static void ToGame() => To(Game);
-            /// <summary>To overworld.</summary>
+            /// <summary>To overworld. Disabled in slice 9 — kept for parked code that still references it.</summary>
             public static void ToOverworld() => To(Overworld);
-            /// <summary>To party manager.</summary>
-            public static void ToPartyManager() => To(PartyManager);
             /// <summary>To profile create.</summary>
             public static void ToProfileCreate() => To(ProfileCreate);
             /// <summary>To profile select.</summary>
@@ -266,10 +263,8 @@ namespace Scripts.Helpers
             public static void ToCredits() => To(Credits);
             /// <summary>To game.</summary>
             public static void ToGame() => To(Game);
-            /// <summary>To overworld.</summary>
+            /// <summary>To overworld. Disabled in slice 9 — kept for parked code.</summary>
             public static void ToOverworld() => To(Overworld);
-            /// <summary>To party manager.</summary>
-            public static void ToPartyManager() => To(PartyManager);
             /// <summary>To profile create.</summary>
             public static void ToProfileCreate() => To(ProfileCreate);
             /// <summary>To profile select.</summary>

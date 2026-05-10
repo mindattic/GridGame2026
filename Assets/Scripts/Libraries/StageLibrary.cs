@@ -33,17 +33,23 @@ namespace Scripts.Libraries
     }
 
     /// <summary>
-    /// Biome identifiers for the Places hub selection.
-    /// Each biome hunts a themed enemy pool that drops biome-specific materials.
+    /// Biome identifiers. Used both by the campaign (CampaignStages.Themes) and by parked
+    /// Places/Bounty code from the legacy Hub. The first six values are the legacy set;
+    /// GreenValley / Desert / Swamp / CityRuins were added in slice 9 for the themed campaign.
     /// </summary>
     public enum Biome
     {
         None = 0,
-        Field,   // open grassland — slimes, frogs, scorpions
-        Forest,  // wooded — wolves, werewolves, tree golems
-        Ruins,   // crumbling structures — undead, ceramic knights, ghosts
-        Cave,    // dark tunnels — cyclops, trolls, lurkers, yetis
-        Boss,    // bespoke boss stages
+        Field,        // legacy — open grassland
+        Forest,       // legacy — wooded
+        Ruins,        // legacy — crumbling structures
+        Cave,         // dark tunnels — cyclops, trolls, lurkers, yetis (used by both legacy + campaign)
+        Boss,         // bespoke boss stages
+        // Campaign themes added 2026-05-10. Each is a distinct theme spanning 3 campaign stages.
+        GreenValley,  // tutorial pastures — slimes, wolves, bats
+        Desert,       // arid raider country — scorpions, vultures, soldiers
+        Swamp,        // marshy fens — lurkers, frogs, hags, marsh shamblers
+        CityRuins,    // urban ruins — undead, ghosts, vampires, phantoms
     }
 
     /// <summary>
@@ -91,87 +97,371 @@ namespace Scripts.Libraries
             stages = new Dictionary<string, Stage>
             {
 
-                { $"{Map.GreenValley}-00", new Stage
+                // ============================================================
+                // CAMPAIGN — 5 themes × 3 stages, sawtooth difficulty curve.
+                // Each new theme starts a notch easier than the previous theme's peak,
+                // so the player can read new enemy compositions before the climb resumes.
+                // Difficulty score = total enemy count across all waves.
+                // ============================================================
+
+                // ── Theme 1: Green Valley ─────────────────────────── (2 → 3 → 4 enemies)
+                { "GreenValley-01", new Stage
                     {
-                        Name = $"{Map.GreenValley}-00",
-                        Description = "Clear the grassland of slimes.",
-                        Biome = Biome.Field,
+                        Name = "GreenValley-01",
+                        Description = "A quiet meadow — but slimes are gathering. Clear the field.",
+                        Biome = Biome.GreenValley,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
-                        Waves = GenerateWaves(1, new List<CharacterClass> {
-                            CharacterClass.Slime00,
-                            CharacterClass.Slime01,
-                            CharacterClass.Slime02,
-                            CharacterClass.Slime03,
-                        })
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Slime00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Slime01, Team = Team.Enemy },
+                            }},
+                        }
                     }
                 },
-                { $"{Map.GreenValley}-01", new Stage
+                { "GreenValley-02", new Stage
                     {
-                        Name = $"{Map.GreenValley}-01",
-                        Description = "Hunt the wolf pack stalking the tree line.",
-                        Biome = Biome.Forest,
+                        Name = "GreenValley-02",
+                        Description = "Wolves circle the trail. Three of them, hungry.",
+                        Biome = Biome.GreenValley,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
-                        Waves = GenerateWaves(1, new List<CharacterClass> {
-                            CharacterClass.Wolf00,
-                            CharacterClass.Wolf01,
-                            CharacterClass.Wolf02,
-                            CharacterClass.Wolf03,
-                        })
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Wolf00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Wolf01, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Bat00,  Team = Team.Enemy },
+                            }},
+                        }
                     }
                 },
-                { $"{Map.GreenValley}-02", new Stage
+                { "GreenValley-03", new Stage
                     {
-                        Name = $"{Map.GreenValley}-02",
-                        Description = "Something stirs among the broken stones.",
-                        Biome = Biome.Ruins,
+                        Name = "GreenValley-03",
+                        Description = "Two waves at the woodland edge. Slimes flank, wolves close.",
+                        Biome = Biome.GreenValley,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
-                        Waves = GenerateWaves(1, new List<CharacterClass> {
-                            CharacterClass.Undead00,
-                            CharacterClass.Undead01,
-                            CharacterClass.Undead02,
-                            CharacterClass.Skelepede00,
-                            CharacterClass.Ghost,
-                        })
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Slime02, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Slime03, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Wolf02, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Wolf03, Team = Team.Enemy },
+                            }},
+                        }
                     }
                 },
-                { $"{Map.GreenValley}-03", new Stage
+
+                // ── Theme 2: Sandsea Reaches (Desert) ─────────────── DIP → 3 → 4 → 5
+                { "Desert-01", new Stage
                     {
-                        Name = $"{Map.GreenValley}-03",
-                        Description = "The cave mouth yawns open. Torches lit.",
+                        Name = "Desert-01",
+                        Description = "Dunes ripple. Scorpions and a vulture wait at the well.",
+                        Biome = Biome.Desert,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Scorpion, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Scorpion, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Vulture,  Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "Desert-02", new Stage
+                    {
+                        Name = "Desert-02",
+                        Description = "Raider patrol. Two waves — scout, then the muscle.",
+                        Biome = Biome.Desert,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Vulture,   Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Soldier00, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.SandMaw,   Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Soldier01, Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "Desert-03", new Stage
+                    {
+                        Name = "Desert-03",
+                        Description = "A captain has rallied the dune-runners. Cut the snake's head.",
+                        Biome = Biome.Desert,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Soldier02, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Soldier03, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Soldier00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Soldier01, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Captain,   Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+
+                // ── Theme 3: Mireholt Fens (Swamp) ────────────────── DIP → 4 → 5 → 6
+                { "Swamp-01", new Stage
+                    {
+                        Name = "Swamp-01",
+                        Description = "Reeds rustle. Lurkers slide between bog islands.",
+                        Biome = Biome.Swamp,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Lurker00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Frog00,   Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.MarshShambler00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Toad00,          Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "Swamp-02", new Stage
+                    {
+                        Name = "Swamp-02",
+                        Description = "Hag laughter rises through the fog. Don't follow it.",
+                        Biome = Biome.Swamp,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Lurker01,        Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.MarshShambler01, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Hag00,    Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Naga00,   Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Lurker02, Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "Swamp-03", new Stage
+                    {
+                        Name = "Swamp-03",
+                        Description = "The mistress of the marsh stands among her servants. Three waves.",
+                        Biome = Biome.Swamp,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Frog01, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Toad00, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Hag01,           Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.MarshShambler03, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 3, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.SwampMistress00, Level = 5, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Lurker02,        Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+
+                // ── Theme 4: Frostmaw Caverns (Cave) ──────────────── DIP → 5 → 6 → 7
+                { "Cave-01", new Stage
+                    {
+                        Name = "Cave-01",
+                        Description = "Goblins in the entrance shaft. Cyclops ahead.",
                         Biome = Biome.Cave,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
-                        Waves = GenerateWaves(1, new List<CharacterClass> {
-                            CharacterClass.Lurker00,
-                            CharacterClass.Cyclops00,
-                            CharacterClass.MountainTroll,
-                            CharacterClass.Yeti,
-                        })
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.GoblinThug00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.GoblinThug00, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Cyclops00,     Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.MountainTroll, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Skelepede00,   Team = Team.Enemy },
+                            }},
+                        }
                     }
                 },
-                { $"{Map.GreenValley}-Boss", new Stage
+                { "Cave-02", new Stage
                     {
-                        Name = $"{Map.GreenValley}-Boss",
-                        Description = "The Vampire Lord awaits in the deepest crypt.",
+                        Name = "Cave-02",
+                        Description = "Ice cracks underfoot. Yetis descend.",
+                        Biome = Biome.Cave,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Cyclops01,    Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.GoblinThug00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Skelepede01,  Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Yeti,          Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.IceMauler,     Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.MountainTroll, Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "Cave-03", new Stage
+                    {
+                        Name = "Cave-03",
+                        Description = "Three waves into the deeps. The mountain itself fights back.",
+                        Biome = Biome.Cave,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.GoblinThug00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Skelepede00,  Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Cyclops02,    Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.MountainTroll, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 3, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Yeti,       Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.IceMauler,  Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Cyclops00,  Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+
+                // ── Theme 5: Veshker Ruins (CityRuins) ─────────────── DIP → 6 → 7 → 8 (boss)
+                { "CityRuins-01", new Stage
+                    {
+                        Name = "CityRuins-01",
+                        Description = "Toppled walls, restless dead. Two waves through the plaza.",
+                        Biome = Biome.CityRuins,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Undead00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead01, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Ghost,    Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Phantom,  Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Bat00,    Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead02, Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "CityRuins-02", new Stage
+                    {
+                        Name = "CityRuins-02",
+                        Description = "A reaper has joined the dead. Three waves; do not fall.",
+                        Biome = Biome.CityRuins,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Undead00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead01, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Ghost,   Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Phantom, Team = Team.Enemy },
+                            }},
+                            new StageWave { WaveID = 3, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Reaper,   Level = 6, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead04, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Bat01,    Team = Team.Enemy },
+                            }},
+                        }
+                    }
+                },
+                { "CityRuins-03", new Stage
+                    {
+                        Name = "CityRuins-03",
+                        Description = "The Vampire Lord holds the spire. End it.",
                         Biome = Biome.Boss,
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = new List<StageWave>
                         {
-                            new StageWave
+                            // Warmup — restless dead.
+                            new StageWave { WaveID = 1, Actors = new List<StageActor>
                             {
-                                WaveID = 1,
-                                Actors = new List<StageActor>
-                                {
-                                    new StageActor { CharacterClass = CharacterClass.Undead00, Team = Team.Enemy },
-                                    new StageActor { CharacterClass = CharacterClass.Undead01, Team = Team.Enemy },
-                                    new StageActor { CharacterClass = CharacterClass.Ghost, Team = Team.Enemy },
-                                    new StageActor { CharacterClass = CharacterClass.Vampire, Level = 10, Team = Team.Enemy },
-                                }
-                            }
+                                new StageActor { CharacterClass = CharacterClass.Undead00, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead01, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Ghost,    Team = Team.Enemy },
+                            }},
+                            // Mid-fight — the crypt swarms.
+                            new StageWave { WaveID = 2, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Bat00,        Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Bat01,        Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Phantom,     Team = Team.Enemy },
+                            }},
+                            // Final wave — the Vampire Lord with two escorts.
+                            new StageWave { WaveID = 3, Actors = new List<StageActor>
+                            {
+                                new StageActor { CharacterClass = CharacterClass.Vampire,  Level = 10, Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Reaper,   Level = 6,  Team = Team.Enemy },
+                                new StageActor { CharacterClass = CharacterClass.Undead04, Team = Team.Enemy },
+                            }},
                         }
                     }
                 },

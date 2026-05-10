@@ -439,6 +439,7 @@ public class StageManager : MonoBehaviour
 
     /// <summary>
     /// Handles what happens when all waves of a stage are completed.
+    /// Updates campaign progression so the next stage unlocks in StageSelect.
     /// </summary>
     private void CheckBattleWon()
     {
@@ -448,6 +449,10 @@ public class StageManager : MonoBehaviour
         bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
         if (!allEnemiesDead)
             return;
+
+        // Mark this stage as cleared in the save so StageSelect unlocks the next one.
+        // No-op when the stage isn't in the campaign (Test stages, etc.).
+        Scripts.Libraries.CampaignStages.MarkCleared(currentStage.Name);
 
         g.SequenceManager.Add(new BattleWonSequence());
         g.SequenceManager.Execute();

@@ -187,12 +187,12 @@ public class PauseMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>Abandons the current battle and returns to overworld. Saves progress first.</summary>
+    /// <summary>Abandons the current battle and returns to StageSelect. Saves progress first.</summary>
     private void Runaway()
     {
         Time.timeScale = 1f;
         ProfileHelper.Save(true);
-        scene.Fade.ToOverworld();
+        scene.Fade.ToStageSelect();
     }
 
     /// <summary>Handles the pause button clicked event.</summary>
@@ -227,7 +227,7 @@ public class PauseMenu : MonoBehaviour
     public void OnPartyManagerButtonClicked()
     {
         Time.timeScale = 1f;
-        scene.Fade.ToPartyManager();
+        scene.Fade.ToParty();
     }
 
     /// <summary>Handles the stage select button clicked event.</summary>

@@ -8,17 +8,19 @@ using Scripts.Vendor.Blacksmith;
 /// <summary>
 /// BLACKSMITHSCAFFOLD - Editor tool that builds the Blacksmith scene from code.
 ///
-/// SCENE HIERARCHY: Mirrors AlchemistScaffold (same shape, different recipe filter).
+/// SCENE HIERARCHY: Forge / Salvage tabs over the left list (slice 9 update).
 /// ```
 /// Main Camera / EventSystem / BlacksmithManagerGO / Canvas
 ///   ├── Header                Title + GoldLabel
 ///   ├── VendorNavBar
 ///   ├── Body
-///   │   ├── ItemList          Equipment recipes (left 60%)
-///   │   ├── DetailLabel       Selected recipe's ingredient cost (right, top)
-///   │   ├── FlashLabel        Forge result line (right, mid)
-///   │   └── ForgeButton       Gold accent (right, bottom)
-///   ├── BackButton            ← Overworld
+///   │   ├── ForgeTab          Mode tab (top-left)
+///   │   ├── SalvageTab        Mode tab (top-left, right of Forge)
+///   │   ├── ItemList          Recipes (Forge) or Equipment (Salvage), left 60%
+///   │   ├── DetailLabel       Selected row preview (right, top)
+///   │   ├── FlashLabel        Action result line (right, mid)
+///   │   └── ForgeButton       Gold accent action button — label flips Forge ⇄ Salvage at runtime
+///   ├── BackButton            ← StageSelect
 ///   └── FadeOverlay
 /// ```
 ///
@@ -112,10 +114,32 @@ public static class BlacksmithScaffold
         var bodyImg = body.GetComponent<Image>();
         if (bodyImg != null) bodyImg.raycastTarget = false;
 
+        BuildModeTabs(body, ref created, ref found);
         BuildItemList(body, ref created, ref found);
         BuildDetail(body, ref created, ref found);
         BuildFlash(body, ref created, ref found);
         BuildForgeButton(body, ref created, ref found);
+    }
+
+    private static void BuildModeTabs(RectTransform body, ref int created, ref int found)
+    {
+        var forge = MakeButton(body, "ForgeTab", "Forge");
+        forge.anchorMin = new Vector2(0f,    0.92f);
+        forge.anchorMax = new Vector2(0.30f, 1f);
+        forge.offsetMin = Vector2.zero; forge.offsetMax = new Vector2(-4f, 0f);
+        var fImg = forge.GetComponent<Image>();
+        if (fImg != null) fImg.color = HubTheme.NavActive;
+        var fLbl = forge.GetComponentInChildren<TextMeshProUGUI>();
+        if (fLbl != null) { fLbl.fontSize = 24; fLbl.fontStyle = FontStyles.Bold; }
+
+        var salvage = MakeButton(body, "SalvageTab", "Salvage");
+        salvage.anchorMin = new Vector2(0.30f, 0.92f);
+        salvage.anchorMax = new Vector2(0.60f, 1f);
+        salvage.offsetMin = new Vector2(4f, 0f); salvage.offsetMax = new Vector2(-12f, 0f);
+        var sImg = salvage.GetComponent<Image>();
+        if (sImg != null) sImg.color = HubTheme.NavIdle;
+        var sLbl = salvage.GetComponentInChildren<TextMeshProUGUI>();
+        if (sLbl != null) { sLbl.fontSize = 24; sLbl.fontStyle = FontStyles.Bold; }
     }
 
     private static void BuildItemList(RectTransform body, ref int created, ref int found)
@@ -128,9 +152,9 @@ public static class BlacksmithScaffold
         var rootRT = rootGO.AddComponent<RectTransform>();
         rootRT.SetParent(body, false);
         rootRT.anchorMin = new Vector2(0f, 0f);
-        rootRT.anchorMax = new Vector2(0.6f, 1f);
+        rootRT.anchorMax = new Vector2(0.6f, 0.92f);
         rootRT.offsetMin = new Vector2(0f, 0f);
-        rootRT.offsetMax = new Vector2(-12f, 0f);
+        rootRT.offsetMax = new Vector2(-12f, -4f);
         rootGO.AddComponent<CanvasRenderer>();
         var rootImg = rootGO.AddComponent<Image>();
         rootImg.color = new Color(0f, 0f, 0f, 0.35f);

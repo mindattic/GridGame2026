@@ -1,137 +1,334 @@
-using Scripts.Helpers;
-using Scripts.Helpers;
-using Scripts.Factories;
-using Scripts.Libraries;
-using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using Button = UnityEngine.UI.Button;
-using scene = Scripts.Helpers.SceneHelper;
+using TMPro;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
+using Scripts.Factories;
+using Scripts.Helpers;
 using Scripts.Hub;
 using Scripts.Instances;
 using Scripts.Instances.Actor;
 using Scripts.Instances.Board;
 using Scripts.Instances.SynergyLine;
 using Scripts.Inventory;
+using Scripts.Libraries;
 using Scripts.Models;
 using Scripts.Models.Actor;
 using Scripts.Overworld;
 using Scripts.Sequences;
 using Scripts.Serialization;
 using Scripts.Utilities;
+using scene = Scripts.Helpers.SceneHelper;
 
 namespace Scripts.Managers
 {
-/// <summary>
-/// STAGESELECTMANAGER - Manages the stage/level selection screen.
-/// 
-/// PURPOSE:
-/// Displays available stages and allows the player to select which
-/// stage to play. Shows unlocked stages based on profile progress.
-/// 
-/// VISUAL LAYOUT:
-/// ```
-/// ┌─────────────────────────────────────┐
-/// │         Select Stage                │
-/// ├─────────────────────────────────────┤
-/// │  ┌─────────────────────────────┐   │
-/// │  │  Stage 1 - Forest          │   │ ← Unlocked
-/// │  └─────────────────────────────┘   │
-/// │  ┌─────────────────────────────┐   │
-/// │  │  Stage 2 - Castle          │   │ ← Unlocked
-/// │  └─────────────────────────────┘   │
-/// │  ┌─────────────────────────────┐   │
-/// │  │  Stage 3 - 🔒 Locked       │   │ ← Locked
-/// │  └─────────────────────────────┘   │
-/// └─────────────────────────────────────┘
-/// ```
-/// 
-/// STAGE LOADING:
-/// Stages loaded from StageLibrary. Each button triggers
-/// scene transition to the selected stage.
-/// 
-/// RELATED FILES:
-/// - ScreenWidthButtonFactory.cs: Creates stage buttons
-/// - StageLibrary.cs: Stage definitions
-/// - StageManager.cs: Stage gameplay logic
-/// - ProfileManager.cs: Progress tracking
-/// 
-/// ACCESS: Scene-based manager (StageSelect scene)
-/// </summary>
-public class StageSelectManager : MonoBehaviour
-{
-    #region UI References
-
-    private TextMeshProUGUI header;
-    private RectTransform scrollView;
-    private Transform content;
-    private VerticalLayoutGroup verticalLayoutGroup;
-    private float screenWidth;
-    private float screenHeight;
-    private float buttonWidth;
-    private float buttonHeight;
-    private float spacing;
-
-    #endregion
-
-    #region Initialization
-
-    /// <summary>Initializes component references and state.</summary>
-    private void Awake()
+    /// <summary>
+    /// STAGESELECTMANAGER - Runtime controller for the StageSelect scene.
+    /// <para>PURPOSE: Top-level gateway for the campaign. Lists every stage in
+    /// <see cref="CampaignStages.Order"/> down the left side; clicking one populates a
+    /// right-side detail panel (biome, wave count, enemy roster) with Confirm / Cancel
+    /// buttons. Confirm writes the stage name to <c>StageSaveData.CurrentStage</c> and
+    /// fades to Game. Cancel clears the selection and resets the panel.</para>
+    /// <para>UNLOCK GATING: Stage 0 is always selectable. Stage N requires
+    /// <c>HighestClearedStageIndex &gt;= N - 1</c> in the save. Locked rows are dimmed
+    /// and not clickable. Cleared rows show a star prefix.</para>
+    /// <para>NO BACK BUTTON — StageSelect is the campaign home. Players reach vendors
+    /// via the persistent VendorNavBar; combat launches by Confirming a stage.</para>
+    /// <para>RELATED FILES: StageSelectScaffold.cs, CampaignStages.cs, StageLibrary.cs</para>
+    /// </summary>
+    public class StageSelectManager : MonoBehaviour
     {
-        content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
+        public const string ListContentPath = "Body/StageList/Viewport/Content";
+        public const string DetailLabelName = "Body/DetailPanel/DetailLabel";
+        public const string ConfirmButtonName = "Body/DetailPanel/ConfirmButton";
+        public const string CancelButtonName = "Body/DetailPanel/CancelButton";
 
-        // Create button for each stage
-        foreach (var stage in StageLibrary.Stages)
+        private RectTransform listContent;
+        private TextMeshProUGUI detailLabel;
+        private Button confirmButton;
+        private Button cancelButton;
+
+        private int selectedIndex = -1;
+
+        private void Awake()
         {
-            AddButton(stage.Value.Name);
+            BootstrapProfile();
+            CacheUiReferences();
+            WireButtons();
+        }
+
+        private void Start()
+        {
+            scene.FadeIn();
+            Refresh();
+        }
+
+        private static void BootstrapProfile()
+        {
+            if (ProfileHelper.CurrentProfile == null) ProfileHelper.Load();
+            if (!ProfileHelper.HasCurrentSave) ProfileHelper.CreateProfile("Dev");
+        }
+
+        private void CacheUiReferences()
+        {
+            var canvas = GameObject.Find("Canvas");
+            if (canvas == null) { Debug.LogError("[StageSelectManager] Canvas not found."); return; }
+
+            var contentT = canvas.transform.Find(ListContentPath);
+            listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
+
+            detailLabel = FindLabel(canvas.transform, DetailLabelName);
+
+            var confirmT = canvas.transform.Find(ConfirmButtonName);
+            confirmButton = confirmT != null ? confirmT.GetComponent<Button>() : null;
+
+            var cancelT = canvas.transform.Find(CancelButtonName);
+            cancelButton = cancelT != null ? cancelT.GetComponent<Button>() : null;
+        }
+
+        private void WireButtons()
+        {
+            if (confirmButton != null)
+            {
+                confirmButton.onClick.RemoveAllListeners();
+                confirmButton.onClick.AddListener(ConfirmLaunch);
+            }
+            if (cancelButton != null)
+            {
+                cancelButton.onClick.RemoveAllListeners();
+                cancelButton.onClick.AddListener(ClearSelection);
+            }
+        }
+
+        private void Refresh()
+        {
+            RebuildList();
+            UpdateDetail();
+            UpdateButtons();
+        }
+
+        private void RebuildList()
+        {
+            if (listContent == null) return;
+            for (int i = listContent.childCount - 1; i >= 0; i--)
+                Object.Destroy(listContent.GetChild(i).gameObject);
+
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            int highestCleared = save?.Stage?.HighestClearedStageIndex ?? -1;
+
+            int globalIndex = 0;
+            foreach (var theme in CampaignStages.Themes)
+            {
+                CreateThemeHeader(theme);
+                foreach (var stageName in theme.StageNames)
+                {
+                    CreateStageRow(globalIndex, highestCleared);
+                    globalIndex++;
+                }
+            }
+        }
+
+        private void CreateThemeHeader(CampaignTheme theme)
+        {
+            var go = new GameObject($"ThemeHeader_{theme.Id}");
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(listContent, false);
+            rt.sizeDelta = new Vector2(0f, 44f);
+
+            go.AddComponent<CanvasRenderer>();
+            var bg = go.AddComponent<Image>();
+            bg.color = new Color(0.10f, 0.14f, 0.24f, 1f);
+            bg.raycastTarget = false;
+
+            var le = go.AddComponent<LayoutElement>();
+            le.minHeight = 44f; le.preferredHeight = 44f; le.flexibleWidth = 1f;
+
+            var labelGO = new GameObject("Label");
+            labelGO.layer = LayerMask.NameToLayer("UI");
+            var labelRT = labelGO.AddComponent<RectTransform>();
+            labelRT.SetParent(rt, false);
+            labelRT.anchorMin = Vector2.zero; labelRT.anchorMax = Vector2.one;
+            labelRT.offsetMin = new Vector2(16f, 0f); labelRT.offsetMax = new Vector2(-16f, 0f);
+            labelGO.AddComponent<CanvasRenderer>();
+            var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.text = $"<color=#ffcc44>{theme.DisplayName}</color>";
+            tmp.fontSize = 22;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.color = HubTheme.Accent;
+            tmp.alignment = TextAlignmentOptions.MidlineLeft;
+            tmp.enableWordWrapping = false;
+            tmp.richText = true;
+            tmp.raycastTarget = false;
+        }
+
+        private void CreateStageRow(int globalIndex, int highestCleared)
+        {
+            string stageName = CampaignStages.Order[globalIndex];
+            var stage = StageLibrary.Get(stageName);
+            bool unlocked = CampaignStages.IsUnlocked(globalIndex, highestCleared);
+            bool cleared = highestCleared >= globalIndex;
+            bool selected = selectedIndex == globalIndex;
+
+            var go = new GameObject($"Row_{globalIndex:D2}_{stageName}");
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(listContent, false);
+            rt.sizeDelta = new Vector2(0f, 56f);
+
+            go.AddComponent<CanvasRenderer>();
+            var bg = go.AddComponent<Image>();
+            if (selected)        bg.color = new Color(0.36f, 0.50f, 0.78f, 1f);
+            else if (!unlocked)  bg.color = new Color(0.10f, 0.12f, 0.16f, 1f);
+            else                 bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
+            bg.raycastTarget = true;
+
+            var btn = go.AddComponent<Button>();
+            btn.targetGraphic = bg;
+            btn.interactable = unlocked;
+            int captured = globalIndex;
+            btn.onClick.AddListener(() => OnRowClicked(captured));
+
+            var le = go.AddComponent<LayoutElement>();
+            le.minHeight = 56f; le.preferredHeight = 56f; le.flexibleWidth = 1f;
+
+            var labelGO = new GameObject("Label");
+            labelGO.layer = LayerMask.NameToLayer("UI");
+            var labelRT = labelGO.AddComponent<RectTransform>();
+            labelRT.SetParent(rt, false);
+            labelRT.anchorMin = Vector2.zero; labelRT.anchorMax = Vector2.one;
+            labelRT.offsetMin = new Vector2(28f, 4f); labelRT.offsetMax = new Vector2(-20f, -4f);
+            labelGO.AddComponent<CanvasRenderer>();
+            var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+
+            string starPrefix = cleared ? "<color=#ffcc44>★</color> " : "  ";
+            string lockSuffix = unlocked ? "" : "  <color=#888888>(locked)</color>";
+            int waveCount = stage?.Waves?.Count ?? 0;
+            int enemyCount = 0;
+            if (stage?.Waves != null)
+                foreach (var w in stage.Waves) enemyCount += w.Actors?.Count ?? 0;
+
+            string label = $"{starPrefix}<b>{CampaignStages.LabelFor(globalIndex)}</b>   <color=#aaaaaa>{waveCount}w / {enemyCount}e</color>{lockSuffix}";
+
+            tmp.text = label;
+            tmp.fontSize = 24;
+            tmp.color = unlocked ? Color.white : new Color(0.55f, 0.55f, 0.60f, 1f);
+            tmp.alignment = TextAlignmentOptions.MidlineLeft;
+            tmp.enableWordWrapping = false;
+            tmp.richText = true;
+            tmp.raycastTarget = false;
+        }
+
+        private void OnRowClicked(int index)
+        {
+            selectedIndex = index;
+            Refresh();
+        }
+
+        private void ClearSelection()
+        {
+            selectedIndex = -1;
+            Refresh();
+        }
+
+        private void UpdateDetail()
+        {
+            if (detailLabel == null) return;
+
+            if (selectedIndex < 0)
+            {
+                detailLabel.text = "<b>Campaign</b>\n\nSelect a stage on the left to preview wave count and enemy composition. Press Confirm to deploy.";
+                return;
+            }
+
+            string stageName = CampaignStages.Order[selectedIndex];
+            var stage = StageLibrary.Get(stageName);
+            if (stage == null)
+            {
+                detailLabel.text = $"<color=#cc3333>Stage `{stageName}` missing from StageLibrary.</color>";
+                return;
+            }
+
+            int totalEnemies = stage.Waves != null
+                ? stage.Waves.Sum(w => w.Actors?.Count ?? 0)
+                : 0;
+
+            var sb = new StringBuilder();
+            sb.Append("<b>").Append(CampaignStages.LabelFor(selectedIndex)).Append(": ").Append(stage.Biome).Append("</b>\n");
+            if (!string.IsNullOrEmpty(stage.Description))
+                sb.Append("<i>").Append(stage.Description).Append("</i>\n\n");
+
+            sb.Append("Waves: ").Append(stage.Waves?.Count ?? 0).Append('\n');
+            sb.Append("Enemies: ").Append(totalEnemies).Append("\n\n");
+
+            if (stage.Waves != null)
+            {
+                for (int w = 0; w < stage.Waves.Count; w++)
+                {
+                    var wave = stage.Waves[w];
+                    sb.Append("<color=#ffcc44>Wave ").Append(w + 1).Append(":</color>\n");
+                    if (wave.Actors == null || wave.Actors.Count == 0)
+                    {
+                        sb.Append("  (none)\n");
+                        continue;
+                    }
+                    foreach (var group in wave.Actors.GroupBy(a => a.CharacterClass))
+                    {
+                        int count = group.Count();
+                        string suffix = count > 1 ? $" ×{count}" : "";
+                        sb.Append("  • ").Append(group.Key).Append(suffix).Append('\n');
+                    }
+                }
+            }
+
+            detailLabel.text = sb.ToString();
+        }
+
+        private void UpdateButtons()
+        {
+            bool hasSelection = selectedIndex >= 0;
+            if (confirmButton != null) confirmButton.interactable = hasSelection;
+            if (cancelButton != null) cancelButton.interactable = hasSelection;
+        }
+
+        private void ConfirmLaunch()
+        {
+            if (selectedIndex < 0) return;
+
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save == null) return;
+
+            // Empty-party guard — combat would lose instantly.
+            var party = save.Party?.Members;
+            if (party == null || party.Count == 0)
+            {
+                Debug.LogWarning("[StageSelectManager] Launch aborted — empty party. Visit the Party vendor to add heroes.");
+                if (detailLabel != null)
+                    detailLabel.text = "<color=#cc6666>Your party is empty. Visit the Party vendor (top bar) to recruit heroes before deploying.</color>";
+                return;
+            }
+
+            string stageName = CampaignStages.Order[selectedIndex];
+            save.Stage.CurrentStage = stageName;
+            save.Stage.CurrentWave = 0;
+            ProfileHelper.Save(overwrite: true);
+
+            // Post-battle returns the player to StageSelect (the new gateway).
+            ExperienceTracker.NextSceneAfterPostBattleScreen = scene.StageSelect;
+
+            scene.Fade.ToGame();
+        }
+
+        private static TextMeshProUGUI FindLabel(Transform root, string path)
+        {
+            var t = root.Find(path);
+            return t != null ? t.GetComponent<TextMeshProUGUI>() : null;
         }
     }
-
-    /// <summary>Performs initial setup after all Awake calls complete.</summary>
-    private void Start()
-    {
-        scene.FadeIn();
-    }
-
-    #endregion
-
-    #region Button Creation
-
-    /// <summary>Creates a stage selection button.</summary>
-    public void AddButton(string stageName)
-    {
-        GameObject instance = ScreenWidthButtonFactory.Create(content);
-        instance.name = $"Button_{stageName}";
-
-        //Show the button's click event
-        Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
-
-        //Show the button textarea
-        TextMeshProUGUI label = instance.GetComponentInChildren<TextMeshProUGUI>();
-        label.text = stageName;
-    }
-
-    /// <summary>Handles the stage select button clicked event.</summary>
-    private void OnStageSelectButtonClicked(string stageName)
-    {
-        ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        scene.Fade.ToGame();
-    }
-
-    /// <summary>Handles the back button clicked event.</summary>
-    public void OnBackButtonClicked()
-    {
-        scene.Fade.ToPreviousScene();
-    }
-
-    #endregion
-}
-
 }

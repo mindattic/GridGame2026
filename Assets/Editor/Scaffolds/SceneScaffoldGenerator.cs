@@ -108,8 +108,6 @@ public static class SceneScaffoldGenerator
     static void Save_Hub() => GenerateForScene("Hub");
     [MenuItem("Tools/Scenes/Post Battle Screen/Save")]
     static void Save_PostBattleScreen() => GenerateForScene("PostBattleScreen");
-    [MenuItem("Tools/Scenes/Party Manager/Save")]
-    static void Save_PartyManager() => GenerateForScene("PartyManager");
     [MenuItem("Tools/Scenes/Splash Screen/Save")]
     static void Save_SplashScreen() => GenerateForScene("SplashScreen");
     [MenuItem("Tools/Scenes/Game/Save")]
@@ -1038,7 +1036,6 @@ public static class SceneScaffoldGenerator
             "StageSelect" => "Stage Select",
             "LoadingScreen" => "Loading Screen",
             "PostBattleScreen" => "Post Battle Screen",
-            "PartyManager" => "Party Manager",
             "SplashScreen" => "Splash Screen",
             _ => sceneName
         };

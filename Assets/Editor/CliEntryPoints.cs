@@ -25,7 +25,6 @@ public static class CliEntryPoints
         "Credits",
         "Hub",
         "LoadingScreen",
-        "PartyManager",
         "PostBattleScreen",
         "ProfileCreate",
         "ProfileSelect",

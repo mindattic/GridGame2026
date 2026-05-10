@@ -140,7 +140,7 @@ namespace Scripts.Vendor.Party
             if (backBtn != null)
             {
                 backBtn.onClick.RemoveAllListeners();
-                backBtn.onClick.AddListener(() => scene.Fade.ToOverworld());
+                backBtn.onClick.AddListener(() => scene.Fade.ToStageSelect());
             }
         }
 
