@@ -29,24 +29,24 @@ using scene = Scripts.Helpers.SceneHelper;
 namespace Scripts.Vendor
 {
     /// <summary>
-    /// VENDORNAVBAR - Persistent top-edge navigation strip shared by every vendor scene
-    /// AND by StageSelect (the campaign gateway).
-    /// <para>PURPOSE: Lets the player hop Store ⇄ Alchemist ⇄ ... ⇄ StageSelect without
-    /// any intermediate scene, so traversing the town feels like one continuous space.
-    /// The active scene's button is highlighted; clicking another fades to that scene.</para>
-    /// <para>SLICE 9 CHANGE: The dedicated Battle button was removed — combat now launches
-    /// from StageSelect's Confirm button, which sets the active stage and fades to Game.
-    /// The StageSelect entry on this bar is the StageSelect-as-home affordance.</para>
-    /// <para>WIRING: Each scaffold calls VendorNavBarScaffold.Build(canvas) which creates
-    /// the strip + buttons and attaches this script. On Awake the script binds onClick
-    /// handlers by GameObject name (no SerializeField).</para>
+    /// VENDORNAVBAR - Hamburger-menu navigation shared by every vendor scene AND by StageSelect.
+    /// <para>PURPOSE: Lets the player hop Vendor ⇄ Alchemist ⇄ ... ⇄ StageSelect without
+    /// any intermediate scene. A floating hamburger button at the upper-right opens a dropdown
+    /// listing every scene; the active scene's row is highlighted and inert.</para>
+    /// <para>WIRING: Each scaffold calls VendorNavBarScaffold.Build(canvas) which creates the
+    /// hamburger, backdrop, and dropdown, then attaches this script. On Awake the script binds
+    /// click handlers by GameObject name (no SerializeField) and hoists itself to the top of
+    /// the render stack so the dropdown paints above the Body.</para>
     /// <para>RELATED FILES: VendorNavBarScaffold.cs, SceneHelper.cs, StageSelectManager.cs</para>
     /// </summary>
     public class VendorNavBar : MonoBehaviour
     {
         // GameObject names — Scaffold and runtime must agree.
         public const string RootName = "VendorNavBar";
-        public const string StoreButtonName = "VendorNavBar_StoreButton";
+        public const string HamburgerButtonName = "VendorNavBar_Hamburger";
+        public const string DropdownName = "VendorNavBar_Dropdown";
+        public const string BackdropName = "VendorNavBar_Backdrop";
+        public const string VendorButtonName = "VendorNavBar_VendorButton";
         public const string AlchemistButtonName = "VendorNavBar_AlchemistButton";
         public const string PartyButtonName = "VendorNavBar_PartyButton";
         public const string AbilitiesButtonName = "VendorNavBar_AbilitiesButton";
@@ -55,11 +55,11 @@ namespace Scripts.Vendor
         public const string InnButtonName = "VendorNavBar_InnButton";
         public const string StageSelectButtonName = "VendorNavBar_StageSelectButton";
 
-        // Single source of truth for the buttons that exist on the bar.
+        // Single source of truth for the buttons that exist in the dropdown.
         // When new vendor scenes ship, append to this list and re-scaffold.
         public static readonly List<(string buttonName, string sceneName, string label)> Entries = new()
         {
-            (StoreButtonName,       scene.Store,       "Store"),
+            (VendorButtonName,      scene.Vendor,      "Merchant"),
             (AlchemistButtonName,   scene.Alchemist,   "Alchemist"),
             (BlacksmithButtonName,  scene.Blacksmith,  "Blacksmith"),
             (PartyButtonName,       scene.Party,       "Party"),
@@ -73,28 +73,68 @@ namespace Scripts.Vendor
         private static readonly Color IdleTint   = new Color(0.14f, 0.18f, 0.28f, 1f);
         private static readonly Color HomeTint   = new Color(0.36f, 0.50f, 0.78f, 1f);
 
+        private GameObject dropdown;
+        private GameObject backdrop;
+
         private void Awake()
         {
+            HoistAboveBody();
+
+            dropdown = transform.Find(DropdownName)?.gameObject;
+            backdrop = transform.Find(BackdropName)?.gameObject;
+
+            WireHamburger();
+            WireBackdrop();
+
             string activeScene = SceneManager.GetActiveScene().name;
-            foreach (var entry in Entries) Wire(entry.buttonName, entry.sceneName, activeScene);
+            foreach (var entry in Entries) WireEntry(entry.buttonName, entry.sceneName, activeScene);
+
+            SetOpen(false);
         }
 
-        private void Wire(string buttonName, string targetScene, string activeScene)
+        // Move this nav under FadeOverlay (or to the end if there isn't one) so the dropdown
+        // paints above Body/BackButton/etc. without each scaffold needing to reorder siblings.
+        private void HoistAboveBody()
         {
-            var t = transform.Find(buttonName);
+            var parent = transform.parent;
+            if (parent == null) return;
+            var fade = parent.Find("FadeOverlay");
+            if (fade != null) transform.SetSiblingIndex(fade.GetSiblingIndex());
+            else              transform.SetAsLastSibling();
+        }
+
+        private void WireHamburger()
+        {
+            var btnT = transform.Find(HamburgerButtonName);
+            var btn = btnT != null ? btnT.GetComponent<Button>() : null;
+            if (btn == null) return;
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(Toggle);
+        }
+
+        private void WireBackdrop()
+        {
+            if (backdrop == null) return;
+            var btn = backdrop.GetComponent<Button>();
+            if (btn == null) return;
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => SetOpen(false));
+        }
+
+        private void WireEntry(string buttonName, string targetScene, string activeScene)
+        {
+            if (dropdown == null) return;
+            var t = dropdown.transform.Find(buttonName);
             if (t == null) return;
             var btn = t.GetComponent<Button>();
             if (btn == null) return;
 
             var img = btn.GetComponent<Image>();
             bool isCampaignHome = targetScene == scene.StageSelect;
-            // The Campaign home button gets a slightly brighter tint so it reads as the
-            // top-of-hierarchy affordance, not just another lateral vendor link.
             if (img != null) img.color = (targetScene == activeScene) ? ActiveTint
                                        : isCampaignHome              ? HomeTint
                                                                      : IdleTint;
 
-            // The active scene's button stays inert — clicking it would fade to itself.
             if (targetScene == activeScene)
             {
                 btn.interactable = false;
@@ -102,7 +142,19 @@ namespace Scripts.Vendor
             }
 
             btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() => scene.Fade.To(targetScene));
+            btn.onClick.AddListener(() =>
+            {
+                SetOpen(false);
+                scene.Fade.To(targetScene);
+            });
+        }
+
+        public void Toggle() => SetOpen(dropdown != null && !dropdown.activeSelf);
+
+        public void SetOpen(bool open)
+        {
+            if (dropdown != null) dropdown.SetActive(open);
+            if (backdrop != null) backdrop.SetActive(open);
         }
     }
 }

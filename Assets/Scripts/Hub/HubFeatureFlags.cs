@@ -58,7 +58,7 @@ namespace Scripts.Hub
         {
             var t = typeof(TSection);
             if (t == typeof(PartySection))         return Party;
-            if (t == typeof(GeneralStoreSection))  return Shop;
+            if (t == typeof(VendorSection))  return Shop;
             if (t == typeof(AlchemistSection))     return Alchemist;
             if (t == typeof(InnSection))           return Inn;
             if (t == typeof(BlacksmithSection))    return Blacksmith;
@@ -76,7 +76,7 @@ namespace Scripts.Hub
         public static bool IsEnabled(System.Type sectionType)
         {
             if (sectionType == typeof(PartySection))         return Party;
-            if (sectionType == typeof(GeneralStoreSection))  return Shop;
+            if (sectionType == typeof(VendorSection))  return Shop;
             if (sectionType == typeof(AlchemistSection))     return Alchemist;
             if (sectionType == typeof(InnSection))           return Inn;
             if (sectionType == typeof(BlacksmithSection))    return Blacksmith;

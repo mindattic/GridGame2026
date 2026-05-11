@@ -161,7 +161,7 @@ namespace Scripts.Hub
         private void WireNavBar()
         {
             WireNav<PartySection>(GameObjectHelper.Hub.PartyButton);
-            WireNav<GeneralStoreSection>(GameObjectHelper.Hub.ShopButton);
+            WireNav<VendorSection>(GameObjectHelper.Hub.ShopButton);
             WireNav<AlchemistSection>(GameObjectHelper.Hub.AlchemistButton);
             WireNav<InnSection>(GameObjectHelper.Hub.ResidenceButton);
             WireNav<BlacksmithSection>(GameObjectHelper.Hub.BlacksmithButton);
@@ -314,7 +314,7 @@ namespace Scripts.Hub
         // ---------- Nav button helpers (wired by scaffold via UnityEvent for inspector compat) ----------
 
         public void ShowParty() => Show<PartySection>();
-        public void ShowGeneralStore() => Show<GeneralStoreSection>();
+        public void ShowVendor() => Show<VendorSection>();
         public void ShowAlchemist() => Show<AlchemistSection>();
         public void ShowInn() => Show<InnSection>();
         public void ShowBlacksmith() => Show<BlacksmithSection>();

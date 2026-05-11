@@ -35,7 +35,7 @@ public static class CliEntryPoints
         "TitleScreen",
         "Game",
         "Overworld",
-        "Store",
+        "Vendor",
         "Alchemist",
         "Party",
         "Abilities",
@@ -45,6 +45,57 @@ public static class CliEntryPoints
     };
 
     // ===================== Scaffolding =====================
+
+    [MenuItem("Tools/Scenes/All Scenes/Load")]
+    public static void LoadAllScenesMenu()
+    {
+        if (!EditorUtility.DisplayDialog("Load All Scenes",
+            $"Clear and rebuild all {ScaffoldedScenes.Length} scaffolded scenes from code?\n\n" +
+            "Each scene will be opened, cleared, scaffolded, and saved. Any unsaved changes will be lost.",
+            "Load All", "Cancel"))
+            return;
+
+        int ok = 0, failed = 0;
+        var failedScenes = new System.Collections.Generic.List<string>();
+        try
+        {
+            for (int i = 0; i < ScaffoldedScenes.Length; i++)
+            {
+                var scene = ScaffoldedScenes[i];
+                EditorUtility.DisplayProgressBar("Load All Scenes",
+                    $"({i + 1}/{ScaffoldedScenes.Length}) {scene}",
+                    (float)i / ScaffoldedScenes.Length);
+                try
+                {
+                    InvokeScaffoldCreate(scene);
+                    var active = EditorSceneManager.GetActiveScene();
+                    EditorSceneManager.MarkSceneDirty(active);
+                    EditorSceneManager.SaveScene(active, $"Assets/Scenes/{scene}.unity");
+                    Debug.Log($"[Cli] Scaffolded + saved: {scene}");
+                    ok++;
+                }
+                catch (Exception e)
+                {
+                    var inner = e.InnerException ?? e;
+                    Debug.LogError($"[Cli] Scaffold failed for {scene}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
+                    failed++;
+                    failedScenes.Add(scene);
+                }
+            }
+        }
+        finally
+        {
+            EditorUtility.ClearProgressBar();
+        }
+
+        Debug.Log($"[Cli] LoadAllScenesMenu: {ok} ok, {failed} failed.");
+        if (failed == 0)
+            EditorUtility.DisplayDialog("Load All Scenes", $"Rebuilt {ok} scene(s) cleanly.", "OK");
+        else
+            EditorUtility.DisplayDialog("Load All Scenes",
+                $"Rebuilt {ok} scene(s). {failed} failed:\n  - {string.Join("\n  - ", failedScenes)}\n\nSee Console for details.",
+                "OK");
+    }
 
     public static void ScaffoldAllScenes()
     {

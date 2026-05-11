@@ -20,7 +20,7 @@ using Scripts.Helpers;
 ///   ├── NavBar                 Hamburger MenuButton + Overworld/Battle exits
 ///   ├── ContentPanel
 ///   │   ├── PartyPanel         PartySection — RosterList / PartyList / DetailLabel
-///   │   ├── ShopPanel          GeneralStoreSection — BuyTab / SellTab / ItemList / ConfirmButton / DetailLabel
+///   │   ├── ShopPanel          VendorSection — BuyTab / SellTab / ItemList / ConfirmButton / DetailLabel
 ///   │   ├── AlchemistPanel     AlchemistSection — ItemList / ConfirmButton / DetailLabel
 ///   │   ├── ResidencePanel     InnSection — RestButton / DetailLabel
 ///   │   ├── BlacksmithPanel    BlacksmithSection — ItemList / ConfirmButton / DetailLabel
@@ -47,7 +47,7 @@ public static class HubScaffold
     private static readonly (string buttonName, string panelName, string label, System.Type sectionType)[] Sections = new (string, string, string, System.Type)[]
     {
         (GameObjectHelper.Hub.PartyButton,      GameObjectHelper.Hub.PartyPanel,      "Party",      typeof(PartySection)),
-        (GameObjectHelper.Hub.ShopButton,       GameObjectHelper.Hub.ShopPanel,       "Store",      typeof(GeneralStoreSection)),
+        (GameObjectHelper.Hub.ShopButton,       GameObjectHelper.Hub.ShopPanel,       "Merchant",   typeof(VendorSection)),
         (GameObjectHelper.Hub.AlchemistButton,  GameObjectHelper.Hub.AlchemistPanel,  "Alchemist",  typeof(AlchemistSection)),
         (GameObjectHelper.Hub.ResidenceButton,  GameObjectHelper.Hub.ResidencePanel,  "Inn",        typeof(InnSection)),
         (GameObjectHelper.Hub.BlacksmithButton, GameObjectHelper.Hub.BlacksmithPanel, "Blacksmith", typeof(BlacksmithSection)),

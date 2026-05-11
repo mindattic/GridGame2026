@@ -6,24 +6,36 @@ using Scripts.Hub;
 using Scripts.Vendor;
 
 /// <summary>
-/// VENDORNAVBARSCAFFOLD - Builds the shared VendorNavBar strip into a vendor scene's Canvas.
-/// <para>PURPOSE: Single editor-time helper so every vendor scaffold (StoreScaffold,
+/// VENDORNAVBARSCAFFOLD - Builds the shared hamburger-menu navigation into a vendor scene's Canvas.
+/// <para>PURPOSE: Single editor-time helper so every vendor scaffold (VendorScaffold,
 /// AlchemistScaffold, ...) can call VendorNavBarScaffold.Build(canvas) and get an identical
-/// nav bar. When a new vendor scene ships, add an entry to <see cref="VendorNavBar.Entries"/>
+/// nav. When a new vendor scene ships, add an entry to <see cref="VendorNavBar.Entries"/>
 /// and re-run the affected scaffolds — the visual stays consistent.</para>
-/// <para>LAYOUT: Strip anchored to top of canvas, just below the Header, height 56px.
-/// Buttons stretch evenly via HorizontalLayoutGroup.</para>
-/// <para>RELATED FILES: VendorNavBar.cs, StoreScaffold.cs, AlchemistScaffold.cs</para>
+/// <para>LAYOUT: A floating hamburger button anchored to the upper-right of the canvas.
+/// Clicking the hamburger opens a vertical dropdown listing every scene; clicking outside
+/// the dropdown (the transparent Backdrop) closes it. The dropdown drops down-left so its
+/// right edge stays aligned with the hamburger.</para>
+/// <para>RELATED FILES: VendorNavBar.cs, VendorScaffold.cs, AlchemistScaffold.cs</para>
 /// </summary>
 public static class VendorNavBarScaffold
 {
-    /// <summary>The vertical space the nav bar consumes — vendor scaffolds use this to
-    /// inset their Body offsets so the bar doesn't overlap content.</summary>
-    public const float HeightPx = 56f;
+    /// <summary>Reserved vertical space the nav consumes in the layout. Zero since the
+    /// hamburger floats — vendor scaffolds keep the constant for back-compat in their
+    /// Body offset math.</summary>
+    public const float HeightPx = 0f;
 
-    /// <summary>Builds the nav bar under <paramref name="canvas"/>, anchored to the top edge
-    /// at <paramref name="topInset"/> px from the canvas top (typically the Header height).
-    /// Idempotent — clears and rebuilds if it already exists, so re-scaffolding is safe.</summary>
+    public const float HamburgerSize = 48f;
+    public const float HamburgerInset = 16f;
+    public const float DropdownWidth = 220f;
+    public const float DropdownButtonHeight = 44f;
+    public const float DropdownPadding = 6f;
+    public const float DropdownSpacing = 4f;
+    public const float DropdownGap = 8f;
+
+    /// <summary>Builds the hamburger + dropdown under <paramref name="canvas"/>.
+    /// <paramref name="topInset"/> is the per-scene header height — the hamburger floats just
+    /// below it so it doesn't collide with the header's GoldLabel.
+    /// Idempotent — clears and rebuilds if it already exists.</summary>
     public static void Build(RectTransform canvas, float topInset)
     {
         if (canvas == null) return;
@@ -35,34 +47,77 @@ public static class VendorNavBarScaffold
         navGO.layer = LayerMask.NameToLayer("UI");
         var navRT = navGO.AddComponent<RectTransform>();
         navRT.SetParent(canvas, false);
-        navRT.anchorMin = new Vector2(0f, 1f);
-        navRT.anchorMax = new Vector2(1f, 1f);
-        navRT.pivot = new Vector2(0.5f, 1f);
-        navRT.sizeDelta = new Vector2(0f, HeightPx);
-        navRT.anchoredPosition = new Vector2(0f, -topInset);
+        navRT.anchorMin = Vector2.zero;
+        navRT.anchorMax = Vector2.one;
+        navRT.offsetMin = Vector2.zero;
+        navRT.offsetMax = Vector2.zero;
         navGO.AddComponent<CanvasRenderer>();
         var navImg = navGO.AddComponent<Image>();
-        navImg.color = new Color(0.06f, 0.08f, 0.14f, 0.92f);
-        navImg.raycastTarget = true;
-
-        var hlg = navGO.AddComponent<HorizontalLayoutGroup>();
-        hlg.padding = new RectOffset(8, 8, 6, 6);
-        hlg.spacing = 8f;
-        hlg.childAlignment = TextAnchor.MiddleLeft;
-        hlg.childControlWidth = true;
-        hlg.childControlHeight = true;
-        hlg.childForceExpandWidth = true;
-        hlg.childForceExpandHeight = true;
+        navImg.color = new Color(0f, 0f, 0f, 0f);
+        navImg.raycastTarget = false;
 
         navGO.AddComponent<VendorNavBar>();
 
-        foreach (var entry in VendorNavBar.Entries)
-            BuildButton(navRT, entry.buttonName, entry.label);
+        BuildBackdrop(navRT);
+        BuildDropdown(navRT, topInset);
+        BuildHamburger(navRT, topInset);
 
         Undo.RegisterCreatedObjectUndo(navGO, "Create VendorNavBar");
     }
 
-    private static void BuildButton(RectTransform parent, string name, string label)
+    private static void BuildBackdrop(RectTransform parent)
+    {
+        var go = new GameObject(VendorNavBar.BackdropName);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        go.AddComponent<CanvasRenderer>();
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0f, 0f, 0f, 0.01f);
+        img.raycastTarget = true;
+        go.AddComponent<Button>();
+        go.SetActive(false);
+    }
+
+    private static void BuildDropdown(RectTransform parent, float topInset)
+    {
+        float entries = VendorNavBar.Entries.Count;
+        float height = (entries * DropdownButtonHeight) + ((entries - 1) * DropdownSpacing) + (DropdownPadding * 2f);
+
+        var go = new GameObject(VendorNavBar.DropdownName);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = new Vector2(1f, 1f);
+        rt.anchorMax = new Vector2(1f, 1f);
+        rt.pivot = new Vector2(1f, 1f);
+        rt.sizeDelta = new Vector2(DropdownWidth, height);
+        rt.anchoredPosition = new Vector2(-HamburgerInset, -(topInset + HamburgerInset + HamburgerSize + DropdownGap));
+        go.AddComponent<CanvasRenderer>();
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0.06f, 0.08f, 0.14f, 0.96f);
+        img.raycastTarget = true;
+
+        var vlg = go.AddComponent<VerticalLayoutGroup>();
+        vlg.padding = new RectOffset((int)DropdownPadding, (int)DropdownPadding, (int)DropdownPadding, (int)DropdownPadding);
+        vlg.spacing = DropdownSpacing;
+        vlg.childAlignment = TextAnchor.UpperCenter;
+        vlg.childControlWidth = true;
+        vlg.childControlHeight = true;
+        vlg.childForceExpandWidth = true;
+        vlg.childForceExpandHeight = false;
+
+        foreach (var entry in VendorNavBar.Entries)
+            BuildDropdownButton(rt, entry.buttonName, entry.label);
+
+        go.SetActive(false);
+    }
+
+    private static void BuildDropdownButton(RectTransform parent, string name, string label)
     {
         var go = new GameObject(name);
         go.layer = LayerMask.NameToLayer("UI");
@@ -87,8 +142,8 @@ public static class VendorNavBarScaffold
         };
 
         var le = go.AddComponent<LayoutElement>();
-        le.minHeight = 40f;
-        le.preferredHeight = 44f;
+        le.minHeight = DropdownButtonHeight;
+        le.preferredHeight = DropdownButtonHeight;
         le.flexibleWidth = 1f;
         le.flexibleHeight = 0f;
 
@@ -107,5 +162,56 @@ public static class VendorNavBarScaffold
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.enableWordWrapping = false;
         tmp.raycastTarget = false;
+    }
+
+    private static void BuildHamburger(RectTransform parent, float topInset)
+    {
+        var go = new GameObject(VendorNavBar.HamburgerButtonName);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = new Vector2(1f, 1f);
+        rt.anchorMax = new Vector2(1f, 1f);
+        rt.pivot = new Vector2(1f, 1f);
+        rt.sizeDelta = new Vector2(HamburgerSize, HamburgerSize);
+        rt.anchoredPosition = new Vector2(-HamburgerInset, -(topInset + HamburgerInset));
+        go.AddComponent<CanvasRenderer>();
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0.14f, 0.18f, 0.28f, 0.96f);
+        img.raycastTarget = true;
+        var btn = go.AddComponent<Button>();
+        btn.targetGraphic = img;
+        btn.transition = Selectable.Transition.ColorTint;
+        btn.colors = new ColorBlock
+        {
+            normalColor = Color.white,
+            highlightedColor = new Color(1.15f, 1.15f, 1.20f, 1f),
+            pressedColor = new Color(0.65f, 0.65f, 0.80f, 1f),
+            selectedColor = new Color(1.00f, 1.00f, 1.10f, 1f),
+            disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.85f),
+            colorMultiplier = 1f,
+            fadeDuration = 0.08f,
+        };
+
+        BuildHamburgerStripe(rt, "Line1", 0.66f);
+        BuildHamburgerStripe(rt, "Line2", 0.50f);
+        BuildHamburgerStripe(rt, "Line3", 0.34f);
+    }
+
+    private static void BuildHamburgerStripe(RectTransform parent, string name, float yAnchor01)
+    {
+        var go = new GameObject(name);
+        go.layer = LayerMask.NameToLayer("UI");
+        var rt = go.AddComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = new Vector2(0.5f, yAnchor01);
+        rt.anchorMax = new Vector2(0.5f, yAnchor01);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = new Vector2(24f, 3f);
+        go.AddComponent<CanvasRenderer>();
+        var img = go.AddComponent<Image>();
+        img.color = HubTheme.TextLight;
+        img.raycastTarget = false;
     }
 }

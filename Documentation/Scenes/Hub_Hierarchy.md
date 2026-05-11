@@ -169,13 +169,13 @@ Manage party composition: add/remove heroes, view stats and equipped gear.
 
 ### 2. Shop (`ShopSectionController`)
 
-**Vendor Theme:** General Store (Courier portrait, warm gold/amber background)
+**Vendor Theme:** Merchant (Courier portrait, warm gold/amber background)
 
 Buy consumables, materials, and basic equipment; sell owned items.
 
 ```
 ┌──────────────────────────────────────────┐
-│  General Store              Gold: 1200   │
+│  Merchant                   Gold: 1200   │
 ├──────────────────────────────────────────┤
 │  [Buy Tab]  [Sell Tab]                   │
 ├──────────────────────────────────────────┤
@@ -548,7 +548,7 @@ VendorOverlay (appended to panel root, non-interactive)
 | Section | VendorName | Portrait | Background |
 |---------|-----------|----------|------------|
 | Party | Camp | Paladin | Deep red/maroon |
-| Shop | General Store | Courier | Warm gold/amber |
+| Shop | Merchant | Courier | Warm gold/amber |
 | Blacksmith | Blacksmith | Engineer | Fiery orange/brown |
 | Training | Training Hall | Mannequin | Cool blue/purple |
 | Medical | Medical Tent | Cleric | Soft green/white |

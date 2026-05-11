@@ -28,13 +28,13 @@ using Scripts.Utilities;
 namespace Scripts.Hub.Sections
 {
     /// <summary>
-    /// GENERALSTORESECTION - Buy raw materials / basic consumables, sell anything.
+    /// VENDORSECTION - Buy raw materials / basic consumables, sell anything.
     /// <para>PURPOSE: Entry vendor for loot loops — materials (IronOre, Leather, Cloth, ArcaneDust,
     /// Wood) fuel the Alchemist and Blacksmith. Sell-mode dumps loot for gold. Two tabs (Buy/Sell)
     /// toggle which list is visible.</para>
     /// <para>RELATED FILES: HubManager.cs, HubItemRowFactory.cs, ItemLibrary.cs</para>
     /// </summary>
-    public class GeneralStoreSection : HubSection
+    public class VendorSection : HubSection
     {
         private enum Mode { Buy, Sell }
         private enum Category { All, Equipment, Consumables, Materials }
@@ -140,8 +140,8 @@ namespace Scripts.Hub.Sections
             if (selected == null)
             {
                 detail.text = mode == Mode.Buy
-                    ? "<b>General Store</b>\nBrowse to buy materials and basic supplies."
-                    : "<b>General Store</b>\nBrowse to sell unused items.";
+                    ? "<b>Merchant</b>\nBrowse to buy materials and basic supplies."
+                    : "<b>Merchant</b>\nBrowse to sell unused items.";
                 return;
             }
             int price = mode == Mode.Buy ? selected.BaseCost : selected.ComputedSellValue;

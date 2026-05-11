@@ -3,18 +3,18 @@ using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
 using Scripts.Hub;
-using Scripts.Vendor.Store;
+using Scripts.Vendor;
 
 /// <summary>
-/// STORESCAFFOLD - Editor tool that builds the Store scene from code.
+/// VENDORSCAFFOLD - Editor tool that builds the Vendor scene from code.
 ///
 /// SCENE HIERARCHY:
 /// ```
 /// Main Camera
 /// EventSystem
-/// StoreManagerGO              StoreManager script owner
+/// VendorManagerGO             VendorManager script owner
 /// Canvas                      ScreenSpaceOverlay + dark background
-///   ├── Header                "Store" title (left) + GoldLabel (right)
+///   ├── Header                "Merchant" title (left) + GoldLabel (right)
 ///   ├── Body
 ///   │   ├── ItemList          ScrollView with Viewport/Content (left 60%)
 ///   │   ├── DetailLabel       TMP label (right 40%, top)
@@ -23,17 +23,17 @@ using Scripts.Vendor.Store;
 ///   └── FadeOverlay
 /// ```
 ///
-/// RELATED FILES: StoreManager.cs, HubTheme.cs, SceneScaffoldHelper.cs
+/// RELATED FILES: VendorManager.cs, HubTheme.cs, SceneScaffoldHelper.cs
 /// </summary>
-public static class StoreScaffold
+public static class VendorScaffold
 {
-    private const string SceneName = "Store";
+    private const string SceneName = "Vendor";
 
-    [MenuItem("Tools/Scenes/Store/Load")]
+    [MenuItem("Tools/Scenes/Vendor/Load")]
     public static void Load()
     {
         if (!EditorUtility.DisplayDialog("Load",
-            "Clear the Store scene and recreate all GameObjects from the scaffold?\n\nAny unsaved scene changes will be lost.",
+            "Clear the Vendor scene and recreate all GameObjects from the scaffold?\n\nAny unsaved scene changes will be lost.",
             "Load", "Cancel"))
             return;
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -41,7 +41,7 @@ public static class StoreScaffold
         CreateScaffolding();
     }
 
-    [MenuItem("Tools/Scenes/Store/Clear Scene")]
+    [MenuItem("Tools/Scenes/Vendor/Clear Scene")]
     public static void ClearScene()
     {
         if (!SceneScaffoldHelper.OpenScene(SceneName)) return;
@@ -56,8 +56,8 @@ public static class StoreScaffold
         SceneScaffoldHelper.EnsureCamera("Main Camera", ref created, ref found);
         SceneScaffoldHelper.EnsureEventSystem(ref created, ref found);
 
-        var mgrGO = SceneScaffoldHelper.EnsureEmptyGameObject("StoreManagerGO", ref created, ref found);
-        SceneScaffoldHelper.EnsureScript<StoreManager>(mgrGO);
+        var mgrGO = SceneScaffoldHelper.EnsureEmptyGameObject("VendorManagerGO", ref created, ref found);
+        SceneScaffoldHelper.EnsureScript<VendorManager>(mgrGO);
 
         var canvas = SceneScaffoldHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas == null) { SceneScaffoldHelper.LogResults(SceneName, created, found); return; }
@@ -88,7 +88,7 @@ public static class StoreScaffold
         header.anchoredPosition = Vector2.zero;
         Paint(header.gameObject, HubTheme.HeaderBg);
 
-        var title = MakeLabel(header, "Title", "Store");
+        var title = MakeLabel(header, "Title", "Merchant");
         title.anchorMin = new Vector2(0f, 0.5f); title.anchorMax = new Vector2(0f, 0.5f);
         title.pivot = new Vector2(0f, 0.5f);
         title.sizeDelta = new Vector2(400f, 72f);
@@ -102,7 +102,7 @@ public static class StoreScaffold
             titleTmp.alignment = TextAlignmentOptions.MidlineLeft;
         }
 
-        var gold = MakeLabel(header, StoreManager.GoldLabelName, "Gold: 0g");
+        var gold = MakeLabel(header, VendorManager.GoldLabelName, "Gold: 0g");
         gold.anchorMin = new Vector2(1f, 0.5f); gold.anchorMax = new Vector2(1f, 0.5f);
         gold.pivot = new Vector2(1f, 0.5f);
         gold.sizeDelta = new Vector2(400f, 60f);

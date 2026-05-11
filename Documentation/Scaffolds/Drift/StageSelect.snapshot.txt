@@ -142,7 +142,7 @@
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         TextMeshProUGUI: font=Attic, text='Campaign', size=22, color=#FFFFFFFF, align=Center, raycast=False
-    [VendorNavBar_StoreButton] layer=UI
+    [VendorNavBar_VendorButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
@@ -151,7 +151,7 @@
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='Store', size=22, color=#FFFFFFFF, align=Center, raycast=False
+        TextMeshProUGUI: font=Attic, text='Merchant', size=22, color=#FFFFFFFF, align=Center, raycast=False
 [EventSystem]
   EventSystem
   StandaloneInputModule

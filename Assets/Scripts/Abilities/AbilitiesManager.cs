@@ -184,7 +184,7 @@ namespace Scripts.Vendor.Abilities
             for (int i = consumablesContent.childCount - 1; i >= 0; i--)
                 Object.Destroy(consumablesContent.GetChild(i).gameObject);
 
-            // Live inventory pulled from the save — same source of truth as Store / Alchemist.
+            // Live inventory pulled from the save — same source of truth as Vendor / Alchemist.
             var save = ProfileHelper.CurrentProfile?.CurrentSave;
             if (save?.Inventory?.Items == null) return;
 

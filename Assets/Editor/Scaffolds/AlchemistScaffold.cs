@@ -15,7 +15,7 @@ using Scripts.Vendor.Alchemy;
 /// AlchemistManagerGO         AlchemistManager script owner
 /// Canvas                     ScreenSpaceOverlay + dark background
 ///   ├── Header               "Alchemist" title (left) + GoldLabel (right)
-///   ├── VendorNavBar         Shared nav strip (Store / Alchemist / Overworld)
+///   ├── VendorNavBar         Shared nav strip (Vendor / Alchemist / Overworld)
 ///   ├── Body
 ///   │   ├── ItemList         ScrollView (left 60%)
 ///   │   ├── DetailLabel      Multi-line TMP (right 40%, top 64%)
@@ -244,7 +244,7 @@ public static class AlchemistScaffold
         if (img != null) img.color = HubTheme.NavIdle;
     }
 
-    // ---------- Primitives (mirrors StoreScaffold helpers) ----------
+    // ---------- Primitives (mirrors VendorScaffold helpers) ----------
 
     private static RectTransform FindOrMake(RectTransform parent, string name, ref int created, ref int found)
     {

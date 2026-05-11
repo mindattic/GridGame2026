@@ -1,4 +1,4 @@
-# Scaffold snapshot for scene: Store
+# Scaffold snapshot for scene: Vendor
 # Regenerate via CliEntryPoints.RegenerateScaffoldSnapshots.
 # Deterministic — diff this file to see scene drift.
 
@@ -65,7 +65,7 @@
     [Title] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,0, size=400,72, pivot=0,0.5
-      TextMeshProUGUI: font=Attic, text='Store', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
+      TextMeshProUGUI: font=Attic, text='Merchant', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
   [VendorNavBar] layer=UI
     CanvasRenderer
     HorizontalLayoutGroup: spacing=8, align=MiddleLeft
@@ -142,7 +142,7 @@
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
         TextMeshProUGUI: font=Attic, text='Campaign', size=22, color=#FFFFFFFF, align=Center, raycast=False
-    [VendorNavBar_StoreButton] layer=UI
+    [VendorNavBar_VendorButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
@@ -151,7 +151,7 @@
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
-        TextMeshProUGUI: font=Attic, text='Store', size=22, color=#FFFFFFFF, align=Center, raycast=False
+        TextMeshProUGUI: font=Attic, text='Merchant', size=22, color=#FFFFFFFF, align=Center, raycast=False
 [EventSystem]
   EventSystem
   StandaloneInputModule
@@ -160,6 +160,6 @@
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-[StoreManagerGO]
-  StoreManager
+[VendorManagerGO]
+  VendorManager
   Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

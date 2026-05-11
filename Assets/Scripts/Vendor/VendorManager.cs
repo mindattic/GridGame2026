@@ -26,10 +26,10 @@ using Scripts.Serialization;
 using Scripts.Utilities;
 using scene = Scripts.Helpers.SceneHelper;
 
-namespace Scripts.Vendor.Store
+namespace Scripts.Vendor
 {
     /// <summary>
-    /// STOREMANAGER - Runtime controller for the Store scene.
+    /// VENDORMANAGER - Runtime controller for the Vendor scene.
     /// <para>PURPOSE: Self-contained vendor scene. Owns its own PlayerInventory hydrated from
     /// ProfileHelper.CurrentProfile.CurrentSave on Awake. Lists buyable materials + a basic
     /// healing potion. Click a row to select; Buy deducts gold, adds the item, and persists
@@ -37,11 +37,11 @@ namespace Scripts.Vendor.Store
     /// <para>BOOT BEHAVIOR: Designed to work as a standalone start scene during dev. If no
     /// profile exists on disk, creates a "Dev" profile with default starter inventory so the
     /// scene is immediately playable in isolation.</para>
-    /// <para>RELATED FILES: StoreScaffold.cs (Editor builder), ItemLibrary.cs, ProfileHelper.cs</para>
+    /// <para>RELATED FILES: VendorScaffold.cs (Editor builder), ItemLibrary.cs, ProfileHelper.cs</para>
     /// </summary>
-    public class StoreManager : MonoBehaviour
+    public class VendorManager : MonoBehaviour
     {
-        // ----- Object names (match StoreScaffold) -----
+        // ----- Object names (match VendorScaffold) -----
         public const string GoldLabelName = "GoldLabel";
         public const string ItemListContentPath = "Body/ItemList/Viewport/Content";
         public const string DetailLabelName = "Body/DetailLabel";
@@ -74,7 +74,7 @@ namespace Scripts.Vendor.Store
 
         private static void BootstrapProfile()
         {
-            // If launched cold (Store as start scene), there's no profile in memory yet.
+            // If launched cold (Vendor as start scene), there's no profile in memory yet.
             // ProfileHelper.Load auto-discovers folders on disk; if there are none, fall back
             // to creating a Dev profile so the scene is immediately functional.
             if (ProfileHelper.CurrentProfile == null)
@@ -103,14 +103,14 @@ namespace Scripts.Vendor.Store
         private void CacheUiReferences()
         {
             var canvas = GameObject.Find("Canvas");
-            if (canvas == null) { Debug.LogError("[StoreManager] Canvas not found."); return; }
+            if (canvas == null) { Debug.LogError("[VendorManager] Canvas not found."); return; }
 
             goldLabel = FindLabel(canvas.transform, "Header/" + GoldLabelName);
             detailLabel = FindLabel(canvas.transform, DetailLabelName);
 
             var contentT = canvas.transform.Find(ItemListContentPath);
             listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
-            if (listContent == null) Debug.LogError("[StoreManager] ItemList Content not found at " + ItemListContentPath);
+            if (listContent == null) Debug.LogError("[VendorManager] ItemList Content not found at " + ItemListContentPath);
 
             var buyT = canvas.transform.Find(BuyButtonName);
             buyButton = buyT != null ? buyT.GetComponent<Button>() : null;
@@ -176,7 +176,7 @@ namespace Scripts.Vendor.Store
             if (detailLabel == null) return;
             if (selected == null)
             {
-                detailLabel.text = "<b>Store</b>\nBrowse to buy materials and basic supplies.\n\nClick a row to select an item.";
+                detailLabel.text = "<b>Merchant</b>\nBrowse to buy materials and basic supplies.\n\nClick a row to select an item.";
                 return;
             }
             int owned = Inventory.CountOf(selected.Id);

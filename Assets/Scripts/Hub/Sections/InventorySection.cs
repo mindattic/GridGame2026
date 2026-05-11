@@ -31,7 +31,7 @@ namespace Scripts.Hub.Sections
     /// INVENTORYSECTION - Read-only browser for every item the party owns.
     /// <para>PURPOSE: Four filter tabs (All / Equipment / Consumables / Materials) swap the list
     /// contents. Selecting a row shows the full description + stats + sell value in the detail
-    /// label. No transactions happen here — buying/selling is the General Store's job.</para>
+    /// label. No transactions happen here — buying/selling is the Vendor's job.</para>
     /// <para>RELATED FILES: HubManager.cs, PlayerInventory.cs, ItemDefinition.cs</para>
     /// </summary>
     public class InventorySection : HubSection

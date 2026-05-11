@@ -216,7 +216,7 @@ namespace Scripts.Vendor.Alchemy
             mixButton.interactable = selected != null && selected.CanCraft(Inventory);
         }
 
-        // ---------- Row factory (inline, mirrors StoreManager.CreateRow) ----------
+        // ---------- Row factory (inline, mirrors VendorManager.CreateRow) ----------
 
         private void CreateRow(CraftingRecipe recipe)
         {

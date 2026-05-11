@@ -998,7 +998,7 @@ GameObject:
   - component: {fileID: 555007039}
   - component: {fileID: 555007038}
   m_Layer: 5
-  m_Name: VendorNavBar_StoreButton
+  m_Name: VendorNavBar_VendorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2033,7 +2033,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Store
+  m_text: Merchant
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
   m_sharedMaterial: {fileID: 9208542116982176056, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
@@ -2951,7 +2951,7 @@ GameObject:
   - component: {fileID: 1329775713}
   - component: {fileID: 1329775712}
   m_Layer: 0
-  m_Name: StoreManagerGO
+  m_Name: VendorManagerGO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2968,7 +2968,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed3e0d28a039a2a4c9a53357ebee1fa8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Vendor.Store.StoreManager
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Vendor.VendorManager
 --- !u!4 &1329775713
 Transform:
   m_ObjectHideFlags: 0
@@ -3983,7 +3983,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Store
+  m_text: Merchant
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
   m_sharedMaterial: {fileID: 9208542116982176056, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
