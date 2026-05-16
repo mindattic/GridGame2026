@@ -441,31 +441,49 @@ namespace Scripts.Models
         }
     }
 
-    /// <summary>A single slot in a hero's ability bar. Stores either an ability name
-    /// (for class skills) or a consumable item ID (for item-backed abilities).</summary>
+    /// <summary>A single slot in a hero's ability bar. Stores exactly one of: an ability name
+    /// (class skill), a consumable item ID (item-backed ability), or a weapon ID (weapon-swap
+    /// slot — activating it swaps the hero's currently equipped weapon with the bar weapon
+    /// via ChangeEquippedWeaponSequence).</summary>
     [Serializable]
     public class AbilityBarSlotSave
     {
-        /// <summary>Ability name (e.g. "Spark of Healing"). Null for item-backed slots.</summary>
+        /// <summary>Ability name (e.g. "Spark of Healing"). Null for item/weapon slots.</summary>
         public string AbilityName;
-        /// <summary>Consumable item ID (e.g. "healing_potion"). Null for skill slots.</summary>
+        /// <summary>Consumable item ID (e.g. "healing_potion_basic"). Null for ability/weapon slots.</summary>
         public string ItemId;
+        /// <summary>Weapon item ID (e.g. "eq_sword_iron"). Null for ability/item slots.
+        /// Activating a weapon slot triggers a ChangeEquippedWeapon swap with the wielder's
+        /// currently equipped weapon.</summary>
+        public string WeaponId;
 
         public bool IsItem => !string.IsNullOrEmpty(ItemId);
         public bool IsAbility => !string.IsNullOrEmpty(AbilityName);
-        public bool IsEmpty => string.IsNullOrEmpty(AbilityName) && string.IsNullOrEmpty(ItemId);
+        public bool IsWeapon => !string.IsNullOrEmpty(WeaponId);
+        public bool IsEmpty => !IsAbility && !IsItem && !IsWeapon;
 
         public AbilityBarSlotSave() { }
         public AbilityBarSlotSave(AbilityBarSlotSave other)
         {
             AbilityName = other.AbilityName;
             ItemId = other.ItemId;
+            WeaponId = other.WeaponId;
         }
         public AbilityBarSlotSave(string abilityName, string itemId)
         {
             AbilityName = abilityName;
             ItemId = itemId;
         }
+        public AbilityBarSlotSave(string abilityName, string itemId, string weaponId)
+        {
+            AbilityName = abilityName;
+            ItemId = itemId;
+            WeaponId = weaponId;
+        }
+
+        /// <summary>Factory for a weapon-swap slot.</summary>
+        public static AbilityBarSlotSave ForWeapon(string weaponId)
+            => new AbilityBarSlotSave { WeaponId = weaponId };
     }
 
     /// <summary>

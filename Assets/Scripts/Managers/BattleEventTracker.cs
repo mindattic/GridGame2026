@@ -27,10 +27,10 @@ namespace Scripts.Managers
     /// surfacing in the Hub or PostBattle screen.
     /// <para>PURPOSE: Some things that happen mid-battle ("the Iron Sword broke!") should not
     /// produce a flying combat-text overlay during the swing — they belong on the post-fight
-    /// summary or the next Hub visit. This tracker holds a small list of human-readable strings
-    /// drained by whoever shows them next.</para>
+    /// summary or the next vendor-scene visit. This tracker holds a small list of human-readable
+    /// strings drained by whoever shows them next.</para>
     /// <para>RELATED FILES: WeaponDurabilityHelper.cs (records breakage), PostBattleManager.cs
-    /// + HubManager.cs (drain on entry).</para>
+    /// (drain on entry).</para>
     /// </summary>
     public static class BattleEventTracker
     {

@@ -40,7 +40,7 @@ namespace Scripts.Managers
     /// and not clickable. Cleared rows show a star prefix.</para>
     /// <para>NO BACK BUTTON — StageSelect is the campaign home. Players reach vendors
     /// via the persistent VendorNavBar; combat launches by Confirming a stage.</para>
-    /// <para>RELATED FILES: StageSelectScaffold.cs, CampaignStages.cs, StageLibrary.cs</para>
+    /// <para>RELATED FILES: StageSelectBuilder.cs, CampaignStages.cs, StageLibrary.cs</para>
     /// </summary>
     public class StageSelectManager : MonoBehaviour
     {

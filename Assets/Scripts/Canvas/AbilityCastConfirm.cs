@@ -103,6 +103,41 @@ namespace Scripts.Canvas
             label.text = text ?? string.Empty;
         }
 
+        /// <summary>Builds and sets a verb-dispatched confirmation prompt for the given ability.
+        /// Examples:
+        /// <list type="bullet">
+        /// <item>Active spell → "Cast Heal?"</item>
+        /// <item>Item-backed → "Use Cure Potion?"</item>
+        /// <item>Weapon-swap bar slot (planned) → "Equip Iron Sword (45/50)?"</item>
+        /// </list></summary>
+        public void SetTitleFor(Scripts.Instances.Ability ability)
+        {
+            if (ability == null) { ClearTitle(); return; }
+
+            // Item-backed ability (consumable on the bar) → "Use Cure Potion?"
+            if (ability.IsItemAbility && ability.SourceItem != null)
+            {
+                SetTitle($"Use {ability.SourceItem.DisplayName}?");
+                return;
+            }
+
+            // Weapon-bar-slot → "Equip Iron Sword (45/50)?".
+            // Bar slots are factory-spec in v1 (see ChangeEquippedWeaponSequence), so durability
+            // reads as Durability/Durability. Once per-instance state is preserved on bar slots,
+            // pull the current durability from the slot save data instead.
+            if (ability.IsWeaponAbility && ability.SourceWeapon != null)
+            {
+                int max = ability.SourceWeapon.Durability;
+                SetTitle(max > 0
+                    ? $"Equip {ability.SourceWeapon.DisplayName} ({max}/{max})?"
+                    : $"Equip {ability.SourceWeapon.DisplayName}?");
+                return;
+            }
+
+            // Default: active spell or skill → "Cast Heal?"
+            SetTitle($"Cast {ability.name}?");
+        }
+
         /// <summary>Clears the confirmation dialog title text.</summary>
         public void ClearTitle()
         {

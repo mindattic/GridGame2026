@@ -33,15 +33,15 @@ namespace Scripts.Vendor
     /// <para>PURPOSE: Lets the player hop Vendor ⇄ Alchemist ⇄ ... ⇄ StageSelect without
     /// any intermediate scene. A floating hamburger button at the upper-right opens a dropdown
     /// listing every scene; the active scene's row is highlighted and inert.</para>
-    /// <para>WIRING: Each scaffold calls VendorNavBarScaffold.Build(canvas) which creates the
+    /// <para>WIRING: Each builder calls VendorNavBarBuilder.Build(canvas) which creates the
     /// hamburger, backdrop, and dropdown, then attaches this script. On Awake the script binds
     /// click handlers by GameObject name (no SerializeField) and hoists itself to the top of
     /// the render stack so the dropdown paints above the Body.</para>
-    /// <para>RELATED FILES: VendorNavBarScaffold.cs, SceneHelper.cs, StageSelectManager.cs</para>
+    /// <para>RELATED FILES: VendorNavBarBuilder.cs, SceneHelper.cs, StageSelectManager.cs</para>
     /// </summary>
     public class VendorNavBar : MonoBehaviour
     {
-        // GameObject names — Scaffold and runtime must agree.
+        // GameObject names — Builder and runtime must agree.
         public const string RootName = "VendorNavBar";
         public const string HamburgerButtonName = "VendorNavBar_Hamburger";
         public const string DropdownName = "VendorNavBar_Dropdown";
@@ -52,11 +52,10 @@ namespace Scripts.Vendor
         public const string AbilitiesButtonName = "VendorNavBar_AbilitiesButton";
         public const string EquipButtonName = "VendorNavBar_EquipButton";
         public const string BlacksmithButtonName = "VendorNavBar_BlacksmithButton";
-        public const string InnButtonName = "VendorNavBar_InnButton";
         public const string StageSelectButtonName = "VendorNavBar_StageSelectButton";
 
         // Single source of truth for the buttons that exist in the dropdown.
-        // When new vendor scenes ship, append to this list and re-scaffold.
+        // When new vendor scenes ship, append to this list and re-builder.
         public static readonly List<(string buttonName, string sceneName, string label)> Entries = new()
         {
             (VendorButtonName,      scene.Vendor,      "Merchant"),
@@ -65,7 +64,6 @@ namespace Scripts.Vendor
             (PartyButtonName,       scene.Party,       "Party"),
             (AbilitiesButtonName,   scene.Abilities,   "Abilities"),
             (EquipButtonName,       scene.Equip,       "Equip"),
-            (InnButtonName,         scene.Inn,         "Inn"),
             (StageSelectButtonName, scene.StageSelect, "Campaign"),
         };
 
@@ -93,7 +91,7 @@ namespace Scripts.Vendor
         }
 
         // Move this nav under FadeOverlay (or to the end if there isn't one) so the dropdown
-        // paints above Body/BackButton/etc. without each scaffold needing to reorder siblings.
+        // paints above Body/BackButton/etc. without each builder needing to reorder siblings.
         private void HoistAboveBody()
         {
             var parent = transform.parent;

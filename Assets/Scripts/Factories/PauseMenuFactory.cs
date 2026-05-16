@@ -38,9 +38,9 @@ namespace Scripts.Factories
     /// └── PauseMenu       (Scripts.Managers.PauseMenu behaviour)
     /// </code>
     /// </para>
-    /// <para>CALLED BY: GameScaffold (edit-time) and any future runtime Game
+    /// <para>CALLED BY: GameBuilder (edit-time) and any future runtime Game
     /// builder.</para>
-    /// <para>RELATED FILES: PauseMenu.cs, GameScaffold.cs</para>
+    /// <para>RELATED FILES: PauseMenu.cs, GameBuilder.cs</para>
     /// </summary>
     public static class PauseMenuFactory
     {

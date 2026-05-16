@@ -114,9 +114,9 @@ namespace Scripts.Models
                 g.Spawn("Interrupted!", Caster.Position, "Miss");
             }
 
-            // Show on ability bar
-            var bar = Scripts.Helpers.GameHelper.AbilityBar;
-            bar?.Show($"{Caster?.characterClass}'s {Ability?.name} was interrupted!");
+            // Surface the interrupt on the top-center action title banner.
+            var title = Scripts.Helpers.GameHelper.ActionTitle;
+            title?.Show($"{Caster?.characterClass}'s {Ability?.name} was interrupted!");
         }
     }
 }

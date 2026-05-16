@@ -187,6 +187,49 @@ public class ActorCard : MonoBehaviour
         ApplyBackdropFor(g.Actors.SelectedActor.IsEnemy);
     }
 
+    /// <summary>Populates the card with an ability's preview: swaps the portrait sprite to the
+    /// ability's icon (so the player sees the card transform from "this is your hero" to
+    /// "this is what you're about to cast"), writes the ability name as the title, and builds a
+    /// rich-text details block with MP cost, mechanical formula (via Formulas.DescribeAbility),
+    /// and the ability's own description. Call <see cref="Assign"/> to restore the hero view.</summary>
+    public void AssignAbility(Ability ability)
+    {
+        if (ability == null) return;
+
+        backdrop.gameObject.SetActive(true);
+        portrait.gameObject.SetActive(true);
+        StopAllCoroutines();
+
+        // Swap portrait sprite to the ability icon. Fall back silently if the ability has none.
+        var portraitImg = portrait.GetComponent<Image>();
+        if (portraitImg != null && ability.button != null)
+            portraitImg.sprite = ability.button;
+
+        title.GetComponent<TextMeshProUGUI>().text = ability.name;
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append("<color=#88CCFF>MP Cost:</color> ").AppendLine(ability.ManaCost.ToString());
+        var formula = Formulas.DescribeAbility(ability);
+        if (!string.IsNullOrEmpty(formula))
+            sb.AppendLine(formula);
+        if (!string.IsNullOrEmpty(ability.Description))
+        {
+            sb.AppendLine();
+            sb.Append("<color=#AAAAAA><i>").Append(ability.Description).Append("</i></color>");
+        }
+        details.GetComponent<TextMeshProUGUI>().text = sb.ToString();
+
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
+        SetAlpha(backdropCG, 1f);
+        SetAlpha(portraitCG, 1f);
+        SetAlpha(titleCG, 1f);
+        SetAlpha(detailsCG, 1f);
+        // Ability preview always uses the hero backdrop (no enemy flicker) — we're showing
+        // a player-side action, not an enemy threat.
+        ApplyBackdropFor(isEnemy: false);
+    }
+
     /// <summary>Applies the backdrop look for the selected actor: white for heroes, black + red Quake-style flicker for enemies.</summary>
     private void ApplyBackdropFor(bool isEnemy)
     {

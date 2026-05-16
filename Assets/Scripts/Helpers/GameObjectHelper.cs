@@ -205,7 +205,7 @@ namespace Scripts.Helpers
 
                 public static RectTransform Root => GameObject.Find("Canvas/ManaPool").GetComponent<RectTransform>();
                 public static Button BankButton => GameObject.Find("Canvas/ManaPool/BankButton").GetComponent<Button>();
-                // Pulsing halo behind the bank button (created by GameScaffold).
+                // Pulsing halo behind the bank button (created by GameBuilder).
                 public static Image BankButtonGlow => GameObject.Find("Canvas/ManaPool/BankButton/Glow")?.GetComponent<Image>();
 
                 // Hero bar uses an Image set to Filled (Horizontal, Left).
@@ -278,10 +278,10 @@ namespace Scripts.Helpers
                 public static RectTransform Content => GameObject.Find("Canvas/Timeline/Viewport/Content").GetComponent<RectTransform>();
             }
 
-            public static class AbilityBar
+            public static class ActionTitle
             {
-                public static RectTransform Root => GameObject.Find("Canvas/AbilityBar").GetComponent<RectTransform>();
-                public static TextMeshProUGUI Label => GameObject.Find("Canvas/AbilityBar/Label").GetComponent<TextMeshProUGUI>();
+                public static RectTransform Root => GameObject.Find("Canvas/ActionTitle").GetComponent<RectTransform>();
+                public static TextMeshProUGUI Label => GameObject.Find("Canvas/ActionTitle/Label").GetComponent<TextMeshProUGUI>();
             }
 
             // NEW: CutoutOverlay helpers
@@ -515,162 +515,6 @@ namespace Scripts.Helpers
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
             public const string NextButton = "Canvas/BottomBar/NextButton";
-        }
-
-        /// <summary>Hub scene navigation buttons, section panels, and per-panel child element names.</summary>
-        public static class Hub
-        {
-            // ── Navigation Buttons (top bar, siblings under NavBar) ──
-
-            public const string PartyButton = "PartyButton";
-            public const string ShopButton = "ShopButton";
-            public const string AlchemistButton = "AlchemistButton";
-            public const string MedicalButton = "MedicalButton";
-            public const string ResidenceButton = "ResidenceButton";
-            public const string BlacksmithButton = "BlacksmithButton";
-            public const string EnchanterButton = "EnchanterButton";
-            public const string SalvageButton = "SalvageButton";
-            public const string TrainingButton = "TrainingButton";
-            public const string EquipButton = "EquipButton";
-            public const string InventoryButton = "InventoryButton";
-            public const string BattlePrepButton = "BattlePrepButton";
-            public const string PlacesButton = "PlacesButton";
-            public const string BountyButton = "BountyButton";
-            public const string OverworldButton = "OverworldButton";
-            public const string BattleButton = "BattleButton";
-
-            // ── Hamburger Menu ──
-            public const string MenuButton = "MenuButton";
-            public const string MenuDropdown = "MenuDropdown";
-            public const string MenuBackdrop = "MenuBackdrop";
-            public const string MenuPanel = "MenuPanel";
-
-            // ── Section Panels (siblings under ContentPanel) ──
-
-            public const string PartyPanel = "PartyPanel";
-            public const string ShopPanel = "ShopPanel";
-            public const string AlchemistPanel = "AlchemistPanel";
-            public const string MedicalPanel = "MedicalPanel";
-            public const string ResidencePanel = "ResidencePanel";
-            public const string BlacksmithPanel = "BlacksmithPanel";
-            public const string EnchanterPanel = "EnchanterPanel";
-            public const string SalvagePanel = "SalvagePanel";
-            public const string TrainingPanel = "TrainingPanel";
-            public const string EquipPanel = "EquipPanel";
-            public const string InventoryPanel = "InventoryPanel";
-            public const string BattlePrepPanel = "BattlePrepPanel";
-            public const string PlacesPanel = "PlacesPanel";
-            public const string BountyPanel = "BountyPanel";
-
-            // ── Shared Child Names (reused across multiple panels) ──
-
-            /// <summary>TMP label showing current gold. Present in every section panel.</summary>
-            public const string GoldLabel = "GoldLabel";
-
-            /// <summary>TMP label for contextual detail text. Present in every section panel.</summary>
-            public const string DetailLabel = "DetailLabel";
-
-            /// <summary>ScrollRect container for item rows. Used by Shop, Blacksmith, Inventory, BattlePrep.</summary>
-            public const string ItemList = "ItemList";
-
-            /// <summary>ScrollRect container for hero rows. Used by Medical, Training, Equip.</summary>
-            public const string HeroList = "HeroList";
-
-            // ── Party Panel Children ──
-
-            /// <summary>Container for available roster heroes not in party. RectTransform + VerticalLayoutGroup.</summary>
-            public const string RosterList = "RosterList";
-
-            /// <summary>Container for active party member rows. RectTransform + VerticalLayoutGroup.</summary>
-            public const string PartyList = "PartyList";
-
-            // ── Shop Panel Children ──
-
-            /// <summary>Button to switch to Buy mode.</summary>
-            public const string BuyTab = "BuyTab";
-
-            /// <summary>Button to switch to Sell mode.</summary>
-            public const string SellTab = "SellTab";
-
-            // ── Blacksmith Panel Children ──
-
-            /// <summary>Button to switch to Craft mode.</summary>
-            public const string CraftTab = "CraftTab";
-
-            /// <summary>Button to switch to Repair mode.</summary>
-            public const string RepairTab = "RepairTab";
-
-            /// <summary>Button to switch to Salvage mode.</summary>
-            public const string SalvageTab = "SalvageTab";
-
-            // ── Residence Panel Children ──
-
-            /// <summary>Container for rest/party actions. RectTransform + VerticalLayoutGroup.</summary>
-            public const string ActionList = "ActionList";
-
-            /// <summary>Container for recruitable hero rows. RectTransform + VerticalLayoutGroup.</summary>
-            public const string RecruitList = "RecruitList";
-
-            // ── Training Panel Children ──
-
-            /// <summary>Container for available training rows. RectTransform + VerticalLayoutGroup.</summary>
-            public const string TrainingList = "TrainingList";
-
-            /// <summary>Image displaying the vendor/trainer portrait.</summary>
-            public const string VendorPortrait = "VendorPortrait";
-
-            // ── Equip Panel Children ──
-
-            /// <summary>Container for the 6 equipment slot rows. RectTransform + VerticalLayoutGroup.</summary>
-            public const string SlotList = "SlotList";
-
-            /// <summary>Container for inventory items matching browsed slot. RectTransform + VerticalLayoutGroup.</summary>
-            public const string ItemPicker = "ItemPicker";
-
-            /// <summary>TMP label showing base stats + gear bonuses + totals.</summary>
-            public const string StatsLabel = "StatsLabel";
-
-            // ── Inventory Panel Children ──
-
-            /// <summary>Button to show all item types.</summary>
-            public const string FilterAll = "FilterAll";
-
-            /// <summary>Button to filter Equipment items.</summary>
-            public const string FilterEquip = "FilterEquip";
-
-            /// <summary>Button to filter Consumable items.</summary>
-            public const string FilterCons = "FilterCons";
-
-            /// <summary>Button to filter CraftingMaterial items.</summary>
-            public const string FilterMats = "FilterMats";
-
-            /// <summary>Button to filter QuestItem items.</summary>
-            public const string FilterQuest = "FilterQuest";
-
-            // ── Party Panel — Ability Bar Children ──
-
-            /// <summary>Container for the 5 equipped ability slots. RectTransform + VerticalLayoutGroup.</summary>
-            public const string AbilityBarList = "AbilityBarList";
-
-            /// <summary>Container for available abilities to assign. RectTransform + VerticalLayoutGroup.</summary>
-            public const string AbilityPicker = "AbilityPicker";
-
-            // ── Party Panel — Sub-Tab Buttons ──
-
-            /// <summary>Sub-tab: Status (hero stats, gear summary, read-only).</summary>
-            public const string PartyStatusTab = "PartyStatusTab";
-
-            /// <summary>Sub-tab: Equip (inline equipment management).</summary>
-            public const string PartyEquipTab = "PartyEquipTab";
-
-            /// <summary>Sub-tab: Abilities (ability bar assign/remove).</summary>
-            public const string PartyAbilityTab = "PartyAbilityTab";
-
-            // ── BattlePrep Panel Children ──
-            // Uses PartyList, ItemList, GoldLabel, DetailLabel (shared names above)
-
-            /// <summary>Button to enter battle. Triggers HubManager.GoToBattle().</summary>
-            public const string BattlePrepBattleButton = "BattleButton";
         }
 
         #endregion

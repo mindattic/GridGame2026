@@ -511,5 +511,36 @@ namespace Scripts.Libraries
                 SourceItem = item,
             };
         }
+
+        /// <summary>Synthesizes an Ability that represents a weapon-swap bar slot.
+        /// Activating it fires <see cref="Scripts.Sequences.ChangeEquippedWeaponSequence"/>
+        /// which swaps this weapon with the hero's currently equipped weapon. Targeting is
+        /// Self (no enemy/ally selection required) and the cost is 0 mana — the cost is
+        /// implicit in the turn it consumes.</summary>
+        public static Ability FromWeapon(ItemDefinition weapon)
+        {
+            if (weapon == null || weapon.Type != ItemType.Equipment ||
+                weapon.Slot != EquipmentSlot.Weapon)
+                return null;
+
+            // Fall back to the Strike ability sprite — weapons don't carry their own ability icon.
+            var sprite = SpriteLibrary.AbilityButtons.ContainsKey("Strike")
+                ? SpriteLibrary.AbilityButtons["Strike"]
+                : null;
+
+            return new Ability
+            {
+                name = weapon.DisplayName,
+                category = AbilityCategory.Active,
+                type = AbilityType.Self,
+                button = sprite,
+                TotalNumberOfTargets = 0,
+                Effect = AbilityEffect.EquipWeapon,
+                TargetingMode = AbilityTargetingMode.AnyActor,
+                ManaCost = 0,
+                Description = $"Swap to {weapon.DisplayName}. The currently equipped weapon returns to this bar slot.",
+                SourceWeapon = weapon,
+            };
+        }
     }
 }

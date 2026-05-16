@@ -1,0 +1,165 @@
+# Builder snapshot for scene: StageSelect
+# Regenerate via CliEntryPoints.RegenerateBuilderSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[Canvas] layer=UI
+  Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  GraphicRaycaster
+  Image: sprite=GunMetal16x16, color=#0F1424EB, type=Simple, raycast=True
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
+  [Body] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=0,-68, size=-48,-184, pivot=0.5,0.5
+    [DetailPanel] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#00000059, type=Simple, raycast=False
+      RectTransform: anchor=(0.5,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      [CancelButton] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.05,0.04)-(0.45,0.16), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Cancel', size=28, color=#FFFFFFFF, align=Center, raycast=False
+      [ConfirmButton] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
+        RectTransform: anchor=(0.55,0.04)-(0.95,0.16), pos=0,0, size=0,0, pivot=0.5,0.5
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+          TextMeshProUGUI: font=Attic, text='Confirm', size=28, color=#000000FF, align=Center, raycast=False
+      [DetailLabel] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0.18)-(1,1), pos=0,-4, size=-40,-24, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='', size=24, color=#FFFFFFFF, align=TopLeft, raycast=False
+    [StageList] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0.48,1), pos=-6,0, size=-12,0, pivot=0.5,0.5
+      [Viewport] layer=UI
+        CanvasRenderer
+        Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
+        Mask: showGraphic=False
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
+        ScrollRect
+        [Content] layer=UI
+          ContentSizeFitter: h=Unconstrained, v=PreferredSize
+          RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
+          VerticalLayoutGroup: spacing=6, align=UpperLeft
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+  [Header] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#1A243DFF, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,96, pivot=0.5,1
+    [Title] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,0, size=800,72, pivot=0,0.5
+      TextMeshProUGUI: font=Attic, text='Select Stage', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
+  [VendorNavBar] layer=UI
+    CanvasRenderer
+    HorizontalLayoutGroup: spacing=8, align=MiddleLeft
+    Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(1,1), pos=0,-96, size=0,56, pivot=0.5,1
+    VendorNavBar
+    [VendorNavBar_AbilitiesButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Abilities', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_AlchemistButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Alchemist', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_BlacksmithButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Blacksmith', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_EquipButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Equip', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_InnButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Inn', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_PartyButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Party', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_StageSelectButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Campaign', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_VendorButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Merchant', size=22, color=#FFFFFFFF, align=Center, raycast=False
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera]
+  AudioListener
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[StageSelectManagerGO]
+  StageSelectManager
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

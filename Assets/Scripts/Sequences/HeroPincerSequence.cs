@@ -1,6 +1,7 @@
 using Scripts.Models;
 using System.Collections;
 using System.Linq;
+using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
@@ -118,9 +119,15 @@ namespace Scripts.Sequences
 
                 // FE-style weapon attrition: each pincer counts as one swing per attacker. The
                 // helper writes the new durability straight to the save data so a broken weapon
-                // is reflected when the player gets back to the Hub.
-                WeaponDurabilityHelper.OnHeroAttacked(p.attacker1);
-                WeaponDurabilityHelper.OnHeroAttacked(p.attacker2);
+                // is reflected when the player gets back to a vendor scene.
+                var shatter1 = WeaponDurabilityHelper.OnHeroAttacked(p.attacker1);
+                var shatter2 = WeaponDurabilityHelper.OnHeroAttacked(p.attacker2);
+
+                // Shatter: the swing that drops durability to 0 hits harder AND damages the
+                // wielder. Boost the first target's damage by the shatter bonus and queue
+                // self-damage to the wielder.
+                ApplyShatterEffects(p.attacker1, p.attackResults1, shatter1);
+                ApplyShatterEffects(p.attacker2, p.attackResults2, shatter2);
 
                 g.SequenceManager.Add(new PincerAttackSequence(p));
             }
@@ -135,6 +142,30 @@ namespace Scripts.Sequences
             yield return g.BoardOverlay?.FadeOutRoutine();
             g.SynergyLineManager?.Clear();
             participants.Clear();
+        }
+
+        /// <summary>If the swing shattered the wielder's weapon, boost the first target's damage
+        /// by the shatter multiplier and deal self-damage to the wielder. Announces the shatter
+        /// on the ActionTitle banner so the player understands the dramatic moment.</summary>
+        private void ApplyShatterEffects(Scripts.Instances.Actor.ActorInstance wielder,
+                                         System.Collections.Generic.List<AttackResult> results,
+                                         Scripts.Helpers.ShatterResult shatter)
+        {
+            if (!shatter.Shattered || wielder == null) return;
+
+            // Boost the first target's damage by the shatter bonus (acts as the "final swing").
+            if (results != null && results.Count > 0 && shatter.TargetBonusMultiplier > 1f)
+            {
+                int boosted = Mathf.RoundToInt(results[0].Damage * shatter.TargetBonusMultiplier);
+                results[0].Damage = boosted;
+            }
+
+            // Wielder takes self-damage from the shatter — bypasses defense (it's not an attack).
+            wielder.Stats.HP = Mathf.Max(0f, wielder.Stats.HP - shatter.WielderSelfDamage);
+
+            // Surface the moment on the top-center banner.
+            if (shatter.ShatteredWeapon != null)
+                g.ActionTitle?.Show($"{wielder.characterClass}'s {shatter.ShatteredWeapon.DisplayName} shattered!");
         }
     }
 }

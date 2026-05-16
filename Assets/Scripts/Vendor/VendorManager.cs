@@ -30,31 +30,49 @@ namespace Scripts.Vendor
 {
     /// <summary>
     /// VENDORMANAGER - Runtime controller for the Vendor scene.
-    /// <para>PURPOSE: Self-contained vendor scene. Owns its own PlayerInventory hydrated from
-    /// ProfileHelper.CurrentProfile.CurrentSave on Awake. Lists buyable materials + a basic
-    /// healing potion. Click a row to select; Buy deducts gold, adds the item, and persists
-    /// to disk. Back fades to Overworld.</para>
+    /// <para>PURPOSE: Phone-portrait vendor UI with a Buy/Sell toggle. The 0-10vh strip is the
+    /// header (hamburger + Merchant title), 10-20vh is the mode toggle, 20-90vh is a scrollable
+    /// list of rows with [-] N [+] steppers, and 90-100vh is the cost/value label plus the
+    /// commit button. Buy and Sell each have their own cart; switching tabs preserves the other
+    /// tab's pending quantities until commit.</para>
     /// <para>BOOT BEHAVIOR: Designed to work as a standalone start scene during dev. If no
     /// profile exists on disk, creates a "Dev" profile with default starter inventory so the
     /// scene is immediately playable in isolation.</para>
-    /// <para>RELATED FILES: VendorScaffold.cs (Editor builder), ItemLibrary.cs, ProfileHelper.cs</para>
+    /// <para>RELATED FILES: VendorBuilder.cs (Editor builder), ItemLibrary.cs, ProfileHelper.cs</para>
     /// </summary>
     public class VendorManager : MonoBehaviour
     {
-        // ----- Object names (match VendorScaffold) -----
-        public const string GoldLabelName = "GoldLabel";
-        public const string ItemListContentPath = "Body/ItemList/Viewport/Content";
-        public const string DetailLabelName = "Body/DetailLabel";
-        public const string BuyButtonName = "Body/BuyButton";
-        public const string BackButtonName = "BackButton";
+        // ----- Object names (match VendorBuilder) -----
+        public const string TitleLabelName = "TitleLabel";
+        public const string BuyTabButtonName = "BuyTabButton";
+        public const string SellTabButtonName = "SellTabButton";
+        public const string TotalLabelName = "TotalLabel";
+        public const string ActionButtonName = "ActionButton";
+
+        private const string ListContentPath = "List/Viewport/Content";
+
+        // Items sell back to vendors at half their base cost (floored).
+        private const float SellPriceRatio = 0.5f;
+
+        private enum VendorMode { Buy, Sell }
 
         public PlayerInventory Inventory { get; private set; }
 
-        private ItemDefinition selected;
-        private TextMeshProUGUI goldLabel;
-        private TextMeshProUGUI detailLabel;
+        private VendorMode mode = VendorMode.Buy;
+        private readonly Dictionary<string, int> buyCart = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> sellCart = new Dictionary<string, int>();
+
+        // Per-row stepper qty labels, keyed by item id. Cleared on each RebuildList.
+        private readonly Dictionary<string, TextMeshProUGUI> rowQtyLabels = new Dictionary<string, TextMeshProUGUI>();
+
+        private TextMeshProUGUI totalLabel;
         private RectTransform listContent;
-        private Button buyButton;
+        private Button buyTabButton;
+        private Button sellTabButton;
+        private Image buyTabImage;
+        private Image sellTabImage;
+        private Button actionButton;
+        private TextMeshProUGUI actionLabel;
 
         private void Awake()
         {
@@ -74,9 +92,6 @@ namespace Scripts.Vendor
 
         private static void BootstrapProfile()
         {
-            // If launched cold (Vendor as start scene), there's no profile in memory yet.
-            // ProfileHelper.Load auto-discovers folders on disk; if there are none, fall back
-            // to creating a Dev profile so the scene is immediately functional.
             if (ProfileHelper.CurrentProfile == null)
                 ProfileHelper.Load();
             if (!ProfileHelper.HasCurrentSave)
@@ -105,60 +120,85 @@ namespace Scripts.Vendor
             var canvas = GameObject.Find("Canvas");
             if (canvas == null) { Debug.LogError("[VendorManager] Canvas not found."); return; }
 
-            goldLabel = FindLabel(canvas.transform, "Header/" + GoldLabelName);
-            detailLabel = FindLabel(canvas.transform, DetailLabelName);
+            totalLabel = FindLabel(canvas.transform, "FooterBar/" + TotalLabelName);
 
-            var contentT = canvas.transform.Find(ItemListContentPath);
+            var contentT = canvas.transform.Find(ListContentPath);
             listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
-            if (listContent == null) Debug.LogError("[VendorManager] ItemList Content not found at " + ItemListContentPath);
+            if (listContent == null) Debug.LogError("[VendorManager] List Content not found at " + ListContentPath);
 
-            var buyT = canvas.transform.Find(BuyButtonName);
-            buyButton = buyT != null ? buyT.GetComponent<Button>() : null;
+            var buyT = canvas.transform.Find("ModeBar/" + BuyTabButtonName);
+            buyTabButton = buyT != null ? buyT.GetComponent<Button>() : null;
+            buyTabImage = buyT != null ? buyT.GetComponent<Image>() : null;
+
+            var sellT = canvas.transform.Find("ModeBar/" + SellTabButtonName);
+            sellTabButton = sellT != null ? sellT.GetComponent<Button>() : null;
+            sellTabImage = sellT != null ? sellT.GetComponent<Image>() : null;
+
+            var actionT = canvas.transform.Find("FooterBar/" + ActionButtonName);
+            actionButton = actionT != null ? actionT.GetComponent<Button>() : null;
+            actionLabel = actionT != null ? actionT.GetComponentInChildren<TextMeshProUGUI>() : null;
         }
 
         private void WireButtons()
         {
-            if (buyButton != null)
+            if (buyTabButton != null)
             {
-                buyButton.onClick.RemoveAllListeners();
-                buyButton.onClick.AddListener(ConfirmBuy);
+                buyTabButton.onClick.RemoveAllListeners();
+                buyTabButton.onClick.AddListener(() => SetMode(VendorMode.Buy));
             }
-
-            var canvas = GameObject.Find("Canvas");
-            var backT = canvas != null ? canvas.transform.Find(BackButtonName) : null;
-            var backBtn = backT != null ? backT.GetComponent<Button>() : null;
-            if (backBtn != null)
+            if (sellTabButton != null)
             {
-                backBtn.onClick.RemoveAllListeners();
-                backBtn.onClick.AddListener(() => { PersistInventory(); scene.Fade.ToStageSelect(); });
+                sellTabButton.onClick.RemoveAllListeners();
+                sellTabButton.onClick.AddListener(() => SetMode(VendorMode.Sell));
+            }
+            if (actionButton != null)
+            {
+                actionButton.onClick.RemoveAllListeners();
+                actionButton.onClick.AddListener(CommitCart);
             }
         }
 
-        // ---------- Catalogue ----------
+        // ---------- Catalogues ----------
 
         private IEnumerable<ItemDefinition> BuyCatalogue()
         {
-            // Materials at entry prices first, then the basic healing potion at the bottom of the list.
             foreach (var mat in ItemLibrary.VendorMaterials())
                 yield return mat;
             var potion = ItemLibrary.Get("healing_potion_basic");
             if (potion != null) yield return potion;
         }
 
+        private IEnumerable<PlayerInventory.Entry> SellCatalogue()
+        {
+            return Inventory.All().Where(e => e.Definition != null && e.Definition.BaseCost > 0 && e.Count > 0);
+        }
+
+        private static int SellPriceFor(ItemDefinition item) => Mathf.Max(1, Mathf.FloorToInt(item.BaseCost * SellPriceRatio));
+
+        // ---------- Mode toggle ----------
+
+        private void SetMode(VendorMode next)
+        {
+            if (mode == next) return;
+            mode = next;
+            Refresh();
+        }
+
         // ---------- Refresh ----------
 
         public void Refresh()
         {
-            UpdateGoldLabel();
+            UpdateTabTints();
             RebuildList();
-            UpdateDetail();
-            UpdateBuyButtonInteractable();
+            UpdateFooter();
         }
 
-        private void UpdateGoldLabel()
+        private void UpdateTabTints()
         {
-            if (goldLabel != null)
-                goldLabel.text = "Gold: " + HubTheme.FormatGold(Inventory.Gold);
+            if (buyTabImage != null)
+                buyTabImage.color = (mode == VendorMode.Buy) ? HubTheme.Accent : HubTheme.NavIdle;
+            if (sellTabImage != null)
+                sellTabImage.color = (mode == VendorMode.Sell) ? HubTheme.Accent : HubTheme.NavIdle;
         }
 
         private void RebuildList()
@@ -166,84 +206,267 @@ namespace Scripts.Vendor
             if (listContent == null) return;
             for (int i = listContent.childCount - 1; i >= 0; i--)
                 Object.Destroy(listContent.GetChild(i).gameObject);
+            rowQtyLabels.Clear();
 
-            foreach (var item in BuyCatalogue())
-                CreateRow(item);
-        }
-
-        private void UpdateDetail()
-        {
-            if (detailLabel == null) return;
-            if (selected == null)
+            if (mode == VendorMode.Buy)
             {
-                detailLabel.text = "<b>Merchant</b>\nBrowse to buy materials and basic supplies.\n\nClick a row to select an item.";
-                return;
+                foreach (var item in BuyCatalogue())
+                    CreateBuyRow(item);
             }
-            int owned = Inventory.CountOf(selected.Id);
-            string ownedLine = owned > 0 ? $"\n\nOwned: {owned}" : "";
-            detailLabel.text = $"<b>{selected.DisplayName}</b>\n{selected.Description}\n\nBuy: {HubTheme.FormatGold(selected.BaseCost)}{ownedLine}";
+            else
+            {
+                foreach (var entry in SellCatalogue())
+                    CreateSellRow(entry);
+            }
         }
 
-        private void UpdateBuyButtonInteractable()
+        private void UpdateFooter()
         {
-            if (buyButton == null) return;
-            buyButton.interactable = selected != null && Inventory.Gold >= selected.BaseCost;
+            int total = ComputeCartTotal();
+            if (totalLabel != null)
+            {
+                string verb = (mode == VendorMode.Buy) ? "Pay" : "Receive";
+                string totalStr = HubTheme.FormatGold(total);
+                string goldStr = HubTheme.FormatGold(Inventory.Gold);
+                bool affordable = mode != VendorMode.Buy || Inventory.Gold >= total;
+                string totalColored = HubTheme.ColorByAffordable(totalStr, affordable);
+                totalLabel.text = $"{verb}: {totalColored}  |  Gold: {goldStr}";
+            }
+
+            if (actionLabel != null)
+                actionLabel.text = (mode == VendorMode.Buy) ? "Buy" : "Sell";
+
+            if (actionButton != null)
+            {
+                bool hasItems = total > 0;
+                bool affordable = mode != VendorMode.Buy || Inventory.Gold >= total;
+                actionButton.interactable = hasItems && affordable;
+            }
         }
 
-        // ---------- Row factory (inline — kept self-contained until 2nd vendor scene exists) ----------
-
-        private void CreateRow(ItemDefinition item)
+        private int ComputeCartTotal()
         {
-            var go = new GameObject("Row_" + item.Id);
+            int total = 0;
+            if (mode == VendorMode.Buy)
+            {
+                foreach (var kvp in buyCart)
+                {
+                    var def = ItemLibrary.Get(kvp.Key);
+                    if (def != null) total += def.BaseCost * kvp.Value;
+                }
+            }
+            else
+            {
+                foreach (var kvp in sellCart)
+                {
+                    var def = ItemLibrary.Get(kvp.Key);
+                    if (def != null) total += SellPriceFor(def) * kvp.Value;
+                }
+            }
+            return total;
+        }
+
+        // ---------- Row factories ----------
+
+        private void CreateBuyRow(ItemDefinition item)
+        {
+            int owned = Inventory.CountOf(item.Id);
+            int maxAdd = Mathf.Max(0, item.MaxStack - owned);
+            int unitPrice = item.BaseCost;
+            CreateStepperRow(
+                itemId: item.Id,
+                displayName: item.DisplayName,
+                rarity: item.Rarity,
+                unitPrice: unitPrice,
+                maxQty: maxAdd,
+                cart: buyCart);
+        }
+
+        private void CreateSellRow(PlayerInventory.Entry entry)
+        {
+            int unitPrice = SellPriceFor(entry.Definition);
+            CreateStepperRow(
+                itemId: entry.Definition.Id,
+                displayName: entry.Definition.DisplayName,
+                rarity: entry.Definition.Rarity,
+                unitPrice: unitPrice,
+                maxQty: entry.Count,
+                cart: sellCart);
+        }
+
+        private void CreateStepperRow(string itemId, string displayName, ItemRarity rarity,
+            int unitPrice, int maxQty, Dictionary<string, int> cart)
+        {
+            var go = new GameObject("Row_" + itemId);
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
-            rt.sizeDelta = new Vector2(0f, 56f);
-
+            rt.sizeDelta = new Vector2(0f, 64f);
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = (selected != null && selected.Id == item.Id)
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+            bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
             bg.raycastTarget = true;
 
-            var btn = go.AddComponent<Button>();
-            btn.targetGraphic = bg;
-            var captured = item;
-            btn.onClick.AddListener(() => { selected = captured; Refresh(); });
-
-            // Layout sizing — VerticalLayoutGroup parent honors LayoutElement.minHeight / preferredHeight.
             var le = go.AddComponent<LayoutElement>();
-            le.minHeight = 56f;
-            le.preferredHeight = 56f;
+            le.minHeight = 64f;
+            le.preferredHeight = 64f;
             le.flexibleWidth = 1f;
 
-            // Label
+            var hlg = go.AddComponent<HorizontalLayoutGroup>();
+            hlg.padding = new RectOffset(16, 16, 8, 8);
+            hlg.spacing = 12f;
+            hlg.childAlignment = TextAnchor.MiddleLeft;
+            hlg.childControlWidth = true;
+            hlg.childControlHeight = true;
+            hlg.childForceExpandWidth = false;
+            hlg.childForceExpandHeight = false;
+
+            // Name + price (flex)
+            var labelTmp = MakeRowLabel(rt, "Label",
+                $"{displayName}    <color=#FFE082>{HubTheme.FormatGold(unitPrice)}</color>",
+                HubItemRowFactory.RarityColor(rarity),
+                TextAlignmentOptions.MidlineLeft);
+            var labelLE = labelTmp.gameObject.AddComponent<LayoutElement>();
+            labelLE.flexibleWidth = 1f;
+            labelLE.minWidth = 0f;
+
+            // Stepper: [-] N [+]
+            var minusBtn = MakeStepperButton(rt, "Minus", "−");
+            var qtyLabel = MakeRowLabel(rt, "Qty", "0", HubTheme.TextLight, TextAlignmentOptions.Center);
+            qtyLabel.fontSize = 28;
+            var qtyLE = qtyLabel.gameObject.AddComponent<LayoutElement>();
+            qtyLE.minWidth = 56f;
+            qtyLE.preferredWidth = 56f;
+            qtyLE.flexibleWidth = 0f;
+            var plusBtn = MakeStepperButton(rt, "Plus", "+");
+
+            rowQtyLabels[itemId] = qtyLabel;
+
+            // Seed N from existing cart state (so toggle round-trip preserves quantity).
+            cart.TryGetValue(itemId, out int currentQty);
+            if (currentQty > maxQty) currentQty = maxQty;
+            if (currentQty < 0) currentQty = 0;
+            cart[itemId] = currentQty;
+            qtyLabel.text = currentQty.ToString();
+
+            string capturedId = itemId;
+            int capturedMax = maxQty;
+            Dictionary<string, int> capturedCart = cart;
+
+            minusBtn.onClick.AddListener(() =>
+            {
+                capturedCart.TryGetValue(capturedId, out int q);
+                if (q > 0) q--;
+                capturedCart[capturedId] = q;
+                qtyLabel.text = q.ToString();
+                UpdateFooter();
+            });
+
+            plusBtn.onClick.AddListener(() =>
+            {
+                capturedCart.TryGetValue(capturedId, out int q);
+                if (q < capturedMax) q++;
+                capturedCart[capturedId] = q;
+                qtyLabel.text = q.ToString();
+                UpdateFooter();
+            });
+        }
+
+        private static TextMeshProUGUI MakeRowLabel(RectTransform parent, string name, string text,
+            Color color, TextAlignmentOptions align)
+        {
+            var go = new GameObject(name);
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(parent, false);
+            go.AddComponent<CanvasRenderer>();
+            var tmp = go.AddComponent<TextMeshProUGUI>();
+            tmp.text = text;
+            tmp.fontSize = 24;
+            tmp.color = color;
+            tmp.alignment = align;
+            tmp.enableWordWrapping = false;
+            tmp.richText = true;
+            tmp.raycastTarget = false;
+            return tmp;
+        }
+
+        private static Button MakeStepperButton(RectTransform parent, string name, string label)
+        {
+            var go = new GameObject(name);
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(parent, false);
+            go.AddComponent<CanvasRenderer>();
+            var img = go.AddComponent<Image>();
+            img.color = HubTheme.NavIdle;
+            img.raycastTarget = true;
+            var btn = go.AddComponent<Button>();
+            btn.targetGraphic = img;
+
+            var le = go.AddComponent<LayoutElement>();
+            le.minWidth = 48f;
+            le.preferredWidth = 48f;
+            le.minHeight = 48f;
+            le.preferredHeight = 48f;
+            le.flexibleWidth = 0f;
+            le.flexibleHeight = 0f;
+
             var labelGO = new GameObject("Label");
             labelGO.layer = LayerMask.NameToLayer("UI");
             var labelRT = labelGO.AddComponent<RectTransform>();
             labelRT.SetParent(rt, false);
             labelRT.anchorMin = Vector2.zero; labelRT.anchorMax = Vector2.one;
-            labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
+            labelRT.offsetMin = labelRT.offsetMax = Vector2.zero;
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-            tmp.text = $"{item.DisplayName}    {HubTheme.ColorByAffordable(HubTheme.FormatGold(item.BaseCost), Inventory.Gold >= item.BaseCost)}";
-            tmp.fontSize = 24;
-            tmp.color = HubItemRowFactory.RarityColor(item.Rarity);
-            tmp.alignment = TextAlignmentOptions.MidlineLeft;
-            tmp.enableWordWrapping = false;
-            tmp.richText = true;
+            tmp.text = label;
+            tmp.fontSize = 32;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.color = HubTheme.TextLight;
+            tmp.alignment = TextAlignmentOptions.Center;
             tmp.raycastTarget = false;
+            return btn;
         }
 
-        // ---------- Buy ----------
+        // ---------- Commit ----------
 
-        private void ConfirmBuy()
+        private void CommitCart()
         {
-            if (selected == null) return;
-            if (Inventory.Gold < selected.BaseCost) return;
-            if (!Inventory.Add(selected, 1)) return;
-            Inventory.Gold -= selected.BaseCost;
+            if (mode == VendorMode.Buy) CommitBuy();
+            else                        CommitSell();
+        }
+
+        private void CommitBuy()
+        {
+            int total = ComputeCartTotal();
+            if (total <= 0 || Inventory.Gold < total) return;
+
+            foreach (var kvp in buyCart)
+            {
+                if (kvp.Value <= 0) continue;
+                var def = ItemLibrary.Get(kvp.Key);
+                if (def == null) continue;
+                Inventory.Add(def, kvp.Value);
+            }
+            Inventory.Gold -= total;
+            buyCart.Clear();
+            PersistInventory();
+            Refresh();
+        }
+
+        private void CommitSell()
+        {
+            int total = ComputeCartTotal();
+            if (total <= 0) return;
+
+            foreach (var kvp in sellCart)
+            {
+                if (kvp.Value <= 0) continue;
+                Inventory.Remove(kvp.Key, kvp.Value);
+            }
+            Inventory.Gold += total;
+            sellCart.Clear();
             PersistInventory();
             Refresh();
         }

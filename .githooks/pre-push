@@ -2,7 +2,7 @@
 # pre-push — runs CheckAllGuardrails before any push leaves the developer machine.
 #
 # Enforces the ban guardrails (SerializeField / Resources.Load / Instantiate)
-# and scaffold drift check introduced in Phases 1–6. One Unity batchmode launch
+# and builder drift check introduced in Phases 1–6. One Unity batchmode launch
 # covers all four (~30–60s cold, ~10–20s warm).
 #
 # Activation:  git config core.hooksPath .githooks

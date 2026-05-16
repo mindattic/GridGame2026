@@ -356,16 +356,16 @@ public class AbilityButtonManager : MonoBehaviour
 
     #region Button Click
 
-    /// <summary>Handles an ability button click. Locks input and begins targeting.</summary>
+    /// <summary>Handles an ability button click. Swaps the ActorCard to preview the chosen
+    /// ability (portrait → ability icon, details → MP + formula + description), then locks
+    /// input and enters targeting mode (or surfaces the confirm popup directly for
+    /// self-targeted actions like weapon swaps).</summary>
     private void OnAbilityButtonClicked(ActorInstance actor, Ability ability)
     {
         if (IsInteractionLocked()) return;
         if (actor == null || !actor.IsPlaying || !actor.IsHero) return;
 
-        var title = GameObjectHelper.Game.Card.Title.GetComponent<TextMeshProUGUI>();
-        var desc = GameObjectHelper.Game.Card.Details.GetComponent<TextMeshProUGUI>();
-        if (title != null) title.text = ability.name;
-        if (desc != null) desc.text = ability.Description ?? string.Empty;
+        g.Card?.AssignAbility(ability);
 
         if (ability.TargetingMode == AbilityTargetingMode.Linear)
         {
@@ -373,6 +373,16 @@ public class AbilityButtonManager : MonoBehaviour
             g.TileManager.HighlightLinearPaths(actor.location);
             g.InputManager.BeginAbilityTargeting(actor);
             g.InputManager.RequireTouchRelease();
+            return;
+        }
+
+        // Weapon-swap (EquipWeapon) is self-targeted but still needs the "Equip X (45/50)?"
+        // confirm prompt. Route it through the targeting flow with the actor as the implicit
+        // target so OnCastButtonClicked sees Count>0 and proceeds through the EquipWeapon switch.
+        if (ability.Effect == AbilityEffect.EquipWeapon)
+        {
+            g.AbilityManager.BeginTargeting(actor, ability);
+            g.AbilityManager.ConfirmSelfTarget(actor);
             return;
         }
 

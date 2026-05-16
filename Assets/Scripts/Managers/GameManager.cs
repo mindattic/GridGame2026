@@ -120,8 +120,8 @@ public class GameManager : Singleton<GameManager>
     // New timeline bar (replaces old block timeline)
     [HideInInspector] public TimelineBarInstance timelineBar;
 
-    // Ability bar for displaying ability names when executed
-    [HideInInspector] public AbilityBar abilityBar;
+    // Top-center action title banner — FF6-style action announcement ("Casting Flames" etc.)
+    [HideInInspector] public ActionTitle actionTitle;
 
     [HideInInspector] public BackgroundInstance background;
 
@@ -331,10 +331,10 @@ public class GameManager : Singleton<GameManager>
         if (timelineBarGO != null)
             timelineBar = timelineBarGO.GetComponent<TimelineBarInstance>();
         
-        // Find AbilityBar in Canvas
-        var abilityBarGO = GameObject.Find("Canvas/AbilityBar");
-        if (abilityBarGO != null)
-            abilityBar = abilityBarGO.GetComponent<AbilityBar>();
+        // Find ActionTitle in Canvas (the top-center action announcement banner).
+        var actionTitleGO = GameObject.Find("Canvas/" + ActionTitle.GameObjectName);
+        if (actionTitleGO != null)
+            actionTitle = actionTitleGO.GetComponent<ActionTitle>();
         
         // Find AbilityCastConfirm UI
         var abilityCastConfirmGO = GameObject.Find("Canvas/AbilityCastConfirm");

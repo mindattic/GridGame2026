@@ -5,11 +5,11 @@ namespace Scripts.Data.Config
     /// <para>PURPOSE: Replaces the former [SerializeField] tuning fields on
     /// SceneLoader with compile-time constants. The four UI references
     /// (progressBar, progressLabel, fadePanel, progressPanel) are now resolved
-    /// at runtime via transform.Find() against the LoadingScreen scaffold
+    /// at runtime via transform.Find() against the LoadingScreen builder
     /// hierarchy rather than Inspector drag-drop.</para>
     /// <para>USAGE: Referenced from SceneLoader.Start / FadeFromBlackRoutine /
     /// ShowUIAfterDelay / LoadRoutine.</para>
-    /// <para>RELATED FILES: SceneLoader.cs, LoadingScreenScaffold.cs</para>
+    /// <para>RELATED FILES: SceneLoader.cs, LoadingScreenBuilder.cs</para>
     /// </summary>
     public static class SceneLoaderConfig
     {

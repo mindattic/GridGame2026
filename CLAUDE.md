@@ -82,9 +82,11 @@ The `GridGame.Console.ps1` menu is intentionally minimal — only the 6 operatio
 | 5 | Build Player (headless) | `CliEntryPoints.BuildStandaloneWindows` in batchmode. |
 | 6 | Set Start Scene | Rewrites `StartSceneConfig.StartScene`; `StartSceneAuthority.[InitializeOnLoad]` applies to `playModeStartScene` + `EditorBuildSettings.scenes[0]`. |
 
-**Scene scaffolding** (rebuild a scene's hierarchy from code):
-- Unity menu: **Tools › Scenes › {SceneName} › Create Scaffolding / Clear Scene / Clear & Recreate**
-- All menu items auto-switch to the correct `.unity` scene before operating
+**Scene building** (Builder C# → `.unity`, one direction only):
+- Every `Assets/Editor/Builders/*Builder.cs` edit triggers a recompile; `BuilderAutoRebuild.cs` ([InitializeOnLoad]) detects the mtime change after the recompile and rebuilds the matching `Assets/Scenes/{Name}.unity` automatically. If the rebuilt scene is the one currently loaded, the editor reloads it in place.
+- **Reverse direction (`.unity` → builder) is NOT automated.** A `.unity` is YAML; a builder is C#. Translating one to the other requires LLM judgment about which fields are meaningful, so direct edits to a `.unity` in the Editor are not synced back — ask Claude to translate the change into builder code.
+- Manual escape hatch: **Tools › Scenes › Rebuild All** (or `CliEntryPoints.BuilderAllScenes` in batchmode) re-runs every builder.
+- mtime cache lives at `Library/BuilderMTimes.json`; deleting it forces a no-op silent re-sync on next editor launch (the first run records mtimes without rebuilding).
 
 ### Claude's batchmode duties
 
@@ -99,13 +101,13 @@ Exit code `0` = success, `1` = failure. Fix failures before asking the user to c
 
 | After this change | Run |
 |---|---|
-| Edited any `Assets/Editor/Scaffolds/*Scaffold.cs` | `ScaffoldAllScenes` |
-| User reports editor-side scene hierarchy edits | `SaveSceneScaffolds` |
-| Scaffold drift is intentional (new object expected) | `RegenerateScaffoldSnapshots` |
+| Edited any `Assets/Editor/Builders/*Builder.cs` | Nothing — `BuilderAutoRebuild` auto-rebuilds on next domain reload. For batch, run `BuilderAllScenes`. |
+| User reports editor-side scene hierarchy edits | Translate the YAML change into the matching `*Builder.cs` (no automatic scene→builder direction exists). |
+| Builder drift is intentional (new object expected) | `RegenerateBuilderSnapshots` |
 | Removed or added a `[SerializeField]` (Phase 1 work) | `RegenerateSerializedFieldAllowlist` |
 | Migrated a `Resources.Load` call-site to Addressables | `RegenerateResourcesLoadAllowlist` |
 | Moved an `Instantiate` call into a `*Factory.cs` | `RegenerateInstantiateAllowlist` |
-| Material scaffold / data-layer / architecture change | `GenerateDocs` |
+| Material builder / data-layer / architecture change | `GenerateDocs` |
 | About to hand work back for commit | `CheckAllGuardrails` + `RunEditTests` |
 
 **Guardrails (auto-enforced pre-push via `.githooks/pre-push`):**
@@ -114,24 +116,29 @@ Exit code `0` = success, `1` = failure. Fix failures before asking the user to c
 | `SerializedFieldBan` | new `[SerializeField]` fields in `Scripts/` | `Assets/Editor/SerializedFieldAllowlist.txt` |
 | `ResourcesLoadBan` | new `Resources.Load*` call-sites | `Assets/Editor/ResourcesLoadAllowlist.txt` |
 | `InstantiateBan` | `Instantiate(` outside `*Factory.cs` | `Assets/Editor/InstantiateAllowlist.txt` |
-| `ScaffoldDriftChecker` | scene YAML drifting from its scaffold output | `Documentation/Scaffolds/Drift/*.snapshot.txt` |
+| `BuilderDriftChecker` | scene YAML drifting from its builder output | `Documentation/Builders/Drift/*.snapshot.txt` |
 
 `CliEntryPoints.CheckAllGuardrails` runs all four in one batchmode session — run it before handing work back. The pre-push hook is activated automatically by **Setup (Option 4)**; bypass for hotfixes with `git push --no-verify`.
 
 ## Code-only Workflow
 
-The project is authored to run without opening the Unity Editor UI. Every `.unity` scene except `Game` and `Overworld` is a deep-clone output of a corresponding `Assets/Editor/Scaffolds/*Scaffold.cs` file; `Game` and `Overworld` have minimal bootstrap scaffolds (run `Tools › Scenes › {Scene} › Save` to snapshot the current scene into its scaffold once populated).
+The project is authored to run without opening the Unity Editor UI. Every `.unity` scene is the rebuilt output of a corresponding `Assets/Editor/Builders/*Builder.cs` — the builder is the source of truth, the `.unity` is the build artifact.
 
 **Rules when adding new content:**
-- **New GameObjects** → add to the scene's scaffold, then run `Load`. Do not click in the hierarchy.
+- **New GameObjects** → add to the scene's builder. `BuilderAutoRebuild` will regenerate the `.unity` after the next domain reload. Do not click in the hierarchy.
 - **New UI** → extend the existing factory pattern (`ActorFactory`, `HubItemRowFactory`, etc). Do not create new `.prefab` files.
 - **New assets** (sprite, font, audio) → register an Addressable address and load via `AssetHelper.LoadAssetAsync<T>(address)`. Do not add inspector drag-drop references.
 - **Avoid new `[SerializeField]`.** Initialize from data-layer statics (`ItemData_*`, `SkillData_*`, `ActorData_*`) or factory parameters.
-- **When inspector work is unavoidable** (editing an existing prefab / a legacy `[SerializeField]`): commit the `.prefab`/`.unity` change alongside the scaffold-code change that would rebuild it from scratch. The scaffold is the source of truth; the binary asset is a build artifact.
+- **When inspector work is unavoidable** (editing an existing prefab / a legacy `[SerializeField]`): commit the `.prefab`/`.unity` change alongside the builder-code change that would rebuild it from scratch.
 
-**Bidirectional scaffold system:**
-- `Tools › Scenes › {Scene} › Load` — scaffold code → scene. Authoritative. Deletes and recreates root objects.
-- `Tools › Scenes › {Scene} › Save` — scene → scaffold code. Overwrites `{Scene}Scaffold.cs` with a deep-clone generated from the current scene YAML. Use after editor-based tuning to check the changes back into code review.
+**Builder → Scene auto-rebuild:**
+- `BuilderAutoRebuild.cs` is an `[InitializeOnLoad]` watcher. After every domain reload it diffs each `*Builder.cs` mtime against `Library/BuilderMTimes.json`; any changed builder triggers a rebuild of its matching `Assets/Scenes/{Name}.unity` (open scene, clear roots, invoke `Build()`, save).
+- If the scene being rebuilt is the one currently loaded in the Editor, it is reloaded in place (any in-editor edits are lost — builders are the source of truth).
+- Rebuilds are deferred while in play mode and resume on exit.
+- First launch with no cache records mtimes silently — no rebuild on a fresh checkout.
+- Manual escape hatch: `Tools › Scenes › Rebuild All` rebuilds every scene with a builder.
+- **Reverse direction is intentionally absent.** A `.unity` is YAML; a builder is C#; the mapping requires judgment (which fields matter, which are noise). If you've hand-edited a scene in the Editor and want to preserve the change, ask Claude to translate the YAML diff into builder code.
+- The `BuilderDriftChecker` guardrail catches the case where someone hand-edits a `.unity` (e.g., merge resolution) and the builder no longer regenerates an identical scene.
 
 ## Architecture
 
@@ -153,7 +160,7 @@ using g = Scripts.Helpers.GameHelper;
 | `Libraries/` | Lazy-loaded registries with `Ensure()` pattern |
 | `Factories/` | Object instantiation |
 | `Canvas/` | In-game HUD and overlay UI |
-| `Hub/` | Town section controllers |
+| `Hub/` | Shared UI utilities (HubTheme palette, HubToast notifications) used by every vendor scene |
 | `Inventory/` | Inventory and equipment models |
 | `Overworld/` | Top-down exploration |
 | `Effects/` | Screen-space visual effects |
@@ -182,13 +189,11 @@ using g = Scripts.Helpers.GameHelper;
 - XP stored as `TotalXP`; level/currentXP derived at runtime via `ExperienceHelper.DeriveFromTotalXP(totalXP)`
 - Access current save: `ProfileHelper.CurrentProfile?.CurrentSave`
 
-### Hub Sections
-- Each section: `*SectionController : MonoBehaviour`
-- Pattern: `Initialize(HubManager)` → `OnActivated()` → private `Refresh*()` methods
-- `HubManager` owns `SharedInventory` (PlayerInventory) and `SharedLoadout` (PartyLoadout)
-- Auto-saves when switching sections via `WriteToSave()` + `ProfileHelper.Save()`
-- Scene object names in `GameObjectHelper.Hub.*` constants
-- List rows via `HubItemRowFactory.Create(container)` + `SetLabel/SetSubLabel/SetIcon/SetSelected`
+### Vendor Scenes (replaces the old monolithic Hub)
+- Each vendor area is its own scene: `Vendor`, `Alchemist`, `Blacksmith`, `Equip`, `Party`, `Abilities`. (Old `Hub.unity` + `Inn.unity` and their managers are deleted; future merged hub will compose these scenes.)
+- Each manages its own `PlayerInventory` hydrated from `ProfileHelper.CurrentProfile.CurrentSave` on Awake, persists on commit
+- Cross-scene navigation via `VendorNavBar` (the floating hamburger dropdown — `VendorNavBarBuilder.Build(canvas, topInset, anchorLeft)`)
+- Shared visual language: `HubTheme` (palette + `FormatGold` / `ColorByAffordable`), `HubToast` (notifications), `HubItemRowFactory.Create(container)` (list rows + `RarityColor`)
 
 ### Inventory & Equipment
 - `PlayerInventory`: item ID → `Entry(count, durability)`
@@ -196,11 +201,11 @@ using g = Scripts.Helpers.GameHelper;
 - `PartyLoadout`: all hero loadouts keyed by `CharacterClass`
 - `CraftingRecipe.CanCraft(inventory)` / `.Execute(inventory)`
 
-### Scene Scaffold System
-- Every scene except Game and Overworld is fully reproducible from code via `Assets/Editor/Scaffolds/`
-- `SceneScaffoldHelper.cs` provides shared `Ensure*()` methods — idempotent, Undo-registered
-- To add new UI objects: edit the scaffold `.cs`, run Create Scaffolding, save scene
-- Authoritative hierarchy data: `Documentation/Scaffolds/SceneHierarchies.txt`
+### Scene Builder System
+- Every scene except Game and Overworld is fully reproducible from code via `Assets/Editor/Builders/`
+- `SceneBuilderHelper.cs` provides shared `Ensure*()` methods — idempotent, Undo-registered
+- To add new UI objects: edit the builder `.cs`, run `Checkout` on the affected scene
+- Authoritative hierarchy data: `Documentation/Builders/SceneHierarchies.txt`
 
 ## Code Style
 

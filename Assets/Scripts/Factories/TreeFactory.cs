@@ -28,9 +28,9 @@ namespace Scripts.Factories
     /// tree. Adds SpriteRenderer (Tree00 sprite, sortingOrder=30), static
     /// Rigidbody2D, and a CircleCollider2D matching the original prefab. The
     /// caller positions and orients each tree after construction.</para>
-    /// <para>CALLED BY: OverworldScaffold (edit-time) and any future runtime
+    /// <para>CALLED BY: OverworldBuilder (edit-time) and any future runtime
     /// overworld builder.</para>
-    /// <para>RELATED FILES: TreeInstance.cs, OverworldScaffold.cs</para>
+    /// <para>RELATED FILES: TreeInstance.cs, OverworldBuilder.cs</para>
     /// </summary>
     public static class TreeFactory
     {

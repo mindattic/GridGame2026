@@ -14,16 +14,15 @@ using UnityEngine;
 /// Unity Editor UI. Each method is self-contained, logs its work, and calls
 /// EditorApplication.Exit with 0 on success or 1 on failure so CI pipelines don't hang.</para>
 /// <para>USAGE:
-/// Unity -batchmode -nographics -projectPath . -executeMethod CliEntryPoints.ScaffoldAllScenes -quit -logFile -
+/// Unity -batchmode -nographics -projectPath . -executeMethod CliEntryPoints.BuilderAllScenes -quit -logFile -
 /// </para>
-/// <para>RELATED FILES: GridGame.Console.ps1, SceneScaffoldHelper.cs, *Scaffold.cs</para>
+/// <para>RELATED FILES: GridGame.Console.ps1, SceneBuilderHelper.cs, *Builder.cs</para>
 /// </summary>
 public static class CliEntryPoints
 {
-    private static readonly string[] ScaffoldedScenes =
+    private static readonly string[] BuilderedScenes =
     {
         "Credits",
-        "Hub",
         "LoadingScreen",
         "PostBattleScreen",
         "ProfileCreate",
@@ -41,130 +40,78 @@ public static class CliEntryPoints
         "Abilities",
         "Equip",
         "Blacksmith",
-        "Inn",
     };
 
-    // ===================== Scaffolding =====================
+    // ===================== Building =====================
 
-    [MenuItem("Tools/Scenes/All Scenes/Load")]
-    public static void LoadAllScenesMenu()
-    {
-        if (!EditorUtility.DisplayDialog("Load All Scenes",
-            $"Clear and rebuild all {ScaffoldedScenes.Length} scaffolded scenes from code?\n\n" +
-            "Each scene will be opened, cleared, scaffolded, and saved. Any unsaved changes will be lost.",
-            "Load All", "Cancel"))
-            return;
-
-        int ok = 0, failed = 0;
-        var failedScenes = new System.Collections.Generic.List<string>();
-        try
-        {
-            for (int i = 0; i < ScaffoldedScenes.Length; i++)
-            {
-                var scene = ScaffoldedScenes[i];
-                EditorUtility.DisplayProgressBar("Load All Scenes",
-                    $"({i + 1}/{ScaffoldedScenes.Length}) {scene}",
-                    (float)i / ScaffoldedScenes.Length);
-                try
-                {
-                    InvokeScaffoldCreate(scene);
-                    var active = EditorSceneManager.GetActiveScene();
-                    EditorSceneManager.MarkSceneDirty(active);
-                    EditorSceneManager.SaveScene(active, $"Assets/Scenes/{scene}.unity");
-                    Debug.Log($"[Cli] Scaffolded + saved: {scene}");
-                    ok++;
-                }
-                catch (Exception e)
-                {
-                    var inner = e.InnerException ?? e;
-                    Debug.LogError($"[Cli] Scaffold failed for {scene}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
-                    failed++;
-                    failedScenes.Add(scene);
-                }
-            }
-        }
-        finally
-        {
-            EditorUtility.ClearProgressBar();
-        }
-
-        Debug.Log($"[Cli] LoadAllScenesMenu: {ok} ok, {failed} failed.");
-        if (failed == 0)
-            EditorUtility.DisplayDialog("Load All Scenes", $"Rebuilt {ok} scene(s) cleanly.", "OK");
-        else
-            EditorUtility.DisplayDialog("Load All Scenes",
-                $"Rebuilt {ok} scene(s). {failed} failed:\n  - {string.Join("\n  - ", failedScenes)}\n\nSee Console for details.",
-                "OK");
-    }
-
-    public static void ScaffoldAllScenes()
+    public static void BuilderAllScenes()
     {
         int ok = 0, failed = 0;
-        foreach (var scene in ScaffoldedScenes)
+        foreach (var scene in BuilderedScenes)
         {
             try
             {
-                InvokeScaffoldCreate(scene);
+                InvokeBuilderCreate(scene);
                 var active = EditorSceneManager.GetActiveScene();
                 EditorSceneManager.MarkSceneDirty(active);
                 EditorSceneManager.SaveScene(active, $"Assets/Scenes/{scene}.unity");
-                Debug.Log($"[Cli] Scaffolded + saved: {scene}");
+                Debug.Log($"[Cli] Buildered + saved: {scene}");
                 ok++;
             }
             catch (Exception e)
             {
                 var inner = e.InnerException ?? e;
-                Debug.LogError($"[Cli] Scaffold failed for {scene}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
+                Debug.LogError($"[Cli] Builder failed for {scene}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
                 failed++;
             }
         }
-        Debug.Log($"[Cli] ScaffoldAllScenes: {ok} ok, {failed} failed.");
+        Debug.Log($"[Cli] BuilderAllScenes: {ok} ok, {failed} failed.");
         EditorApplication.Exit(failed > 0 ? 1 : 0);
     }
 
-    public static void ScaffoldScene()
+    public static void BuilderScene()
     {
         var sceneName = GetArg("-sceneName");
         if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogError("[Cli] ScaffoldScene requires -sceneName <Name>");
+            Debug.LogError("[Cli] BuilderScene requires -sceneName <Name>");
             EditorApplication.Exit(1);
             return;
         }
         try
         {
-            InvokeScaffoldCreate(sceneName);
+            InvokeBuilderCreate(sceneName);
             var active = EditorSceneManager.GetActiveScene();
             EditorSceneManager.MarkSceneDirty(active);
             EditorSceneManager.SaveScene(active, $"Assets/Scenes/{sceneName}.unity");
-            Debug.Log($"[Cli] Scaffolded + saved: {sceneName}");
+            Debug.Log($"[Cli] Buildered + saved: {sceneName}");
             EditorApplication.Exit(0);
         }
         catch (Exception e)
         {
             var inner = e.InnerException ?? e;
-            Debug.LogError($"[Cli] ScaffoldScene failed for {sceneName}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
+            Debug.LogError($"[Cli] BuilderScene failed for {sceneName}: {inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}");
             EditorApplication.Exit(1);
         }
     }
 
-    private static void InvokeScaffoldCreate(string sceneName)
+    private static void InvokeBuilderCreate(string sceneName)
     {
-        var typeName = sceneName + "Scaffold";
+        var typeName = sceneName + "Builder";
         var type = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => SafeGetTypes(a))
             .FirstOrDefault(t => t.Name == typeName);
         if (type == null)
-            throw new Exception($"Type {typeName} not found. Does Assets/Editor/Scaffolds/{typeName}.cs exist?");
+            throw new Exception($"Type {typeName} not found. Does Assets/Editor/Builders/{typeName}.cs exist?");
 
-        var method = type.GetMethod("CreateScaffolding", BindingFlags.Public | BindingFlags.Static);
+        var method = type.GetMethod("Build", BindingFlags.Public | BindingFlags.Static);
         if (method == null)
-            throw new Exception($"{typeName}.CreateScaffolding() not found.");
+            throw new Exception($"{typeName}.Build() not found.");
 
-        // Clear-and-recreate: ensures the scaffold output is canonical (no stale objects).
-        if (!SceneScaffoldHelper.OpenScene(sceneName))
+        // Clear-and-recreate: ensures the builder output is canonical (no stale objects).
+        if (!SceneBuilderHelper.OpenScene(sceneName))
             throw new Exception($"Could not open scene {sceneName}.");
-        SceneScaffoldHelper.ClearAllRootObjectsSilent();
+        SceneBuilderHelper.ClearAllRootObjectsSilent();
         method.Invoke(null, null);
     }
 
@@ -362,77 +309,41 @@ public static class CliEntryPoints
         }
     }
 
-    // ===================== Scaffold Drift (Phase 0 guardrail) =====================
+    // ===================== Builder Drift (Phase 0 guardrail) =====================
 
     /// <summary>
-    /// Opens each scaffolded scene, walks its hierarchy, and emits a canonical signature text file.
-    /// Compares against the committed snapshot in Documentation/Scaffolds/Drift/. Exits 1 on any diff.
+    /// Opens each buildered scene, walks its hierarchy, and emits a canonical signature text file.
+    /// Compares against the committed snapshot in Documentation/Builders/Drift/. Exits 1 on any diff.
     /// </summary>
-    public static void VerifyScaffoldDrift()
+    public static void VerifyBuilderDrift()
     {
         try
         {
-            int drifted = ScaffoldDriftChecker.Verify(ScaffoldedScenes);
+            int drifted = BuilderDriftChecker.Verify(BuilderedScenes);
             EditorApplication.Exit(drifted > 0 ? 1 : 0);
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Cli] VerifyScaffoldDrift failed: {e.Message}\n{e.StackTrace}");
+            Debug.LogError($"[Cli] VerifyBuilderDrift failed: {e.Message}\n{e.StackTrace}");
             EditorApplication.Exit(1);
         }
     }
 
     /// <summary>
-    /// Opens each scaffolded scene and writes a fresh canonical signature to
-    /// Documentation/Scaffolds/Drift/&lt;Scene&gt;.snapshot.txt. Commit the output as the new baseline.
+    /// Opens each buildered scene and writes a fresh canonical signature to
+    /// Documentation/Builders/Drift/&lt;Scene&gt;.snapshot.txt. Commit the output as the new baseline.
     /// </summary>
-    public static void RegenerateScaffoldSnapshots()
+    public static void RegenerateBuilderSnapshots()
     {
         try
         {
-            int ok = ScaffoldDriftChecker.Regenerate(ScaffoldedScenes);
-            Debug.Log($"[Cli] Wrote {ok} scaffold snapshot(s).");
+            int ok = BuilderDriftChecker.Regenerate(BuilderedScenes);
+            Debug.Log($"[Cli] Wrote {ok} builder snapshot(s).");
             EditorApplication.Exit(0);
         }
         catch (Exception e)
         {
-            Debug.LogError($"[Cli] RegenerateScaffoldSnapshots failed: {e.Message}\n{e.StackTrace}");
-            EditorApplication.Exit(1);
-        }
-    }
-
-    // ===================== Scaffold Save (scene → code) =====================
-
-    /// <summary>
-    /// Batchmode-friendly wrapper around SceneScaffoldGenerator.GenerateForScene.
-    /// Accepts one or more -scene args (e.g. -scene Game -scene Overworld) or falls
-    /// back to every entry in ScaffoldedScenes. Exits 1 if any scene fails to save.
-    /// </summary>
-    public static void SaveSceneScaffolds()
-    {
-        try
-        {
-            var scenes = GetArgs("-scene");
-            if (scenes.Length == 0) scenes = ScaffoldedScenes;
-            int ok = 0, failed = 0;
-            foreach (var scene in scenes)
-            {
-                if (SceneScaffoldGenerator.GenerateForScene(scene, interactive: false))
-                {
-                    Debug.Log($"[Cli] Saved scaffold: {scene}");
-                    ok++;
-                }
-                else
-                {
-                    failed++;
-                }
-            }
-            Debug.Log($"[Cli] SaveSceneScaffolds: ok={ok} failed={failed}");
-            EditorApplication.Exit(failed > 0 ? 1 : 0);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"[Cli] SaveSceneScaffolds failed: {e.Message}\n{e.StackTrace}");
+            Debug.LogError($"[Cli] RegenerateBuilderSnapshots failed: {e.Message}\n{e.StackTrace}");
             EditorApplication.Exit(1);
         }
     }
@@ -442,7 +353,7 @@ public static class CliEntryPoints
     /// <summary>
     /// Runs every guardrail check in one batchmode session and fails if any report offenders.
     /// Covers: SerializedFieldBan (Phase 1), ResourcesLoadBan (Phase 3), InstantiateBan (Phase 4),
-    /// and ScaffoldDriftChecker (Phase 0/2). Intended as the pre-push / CI entry point —
+    /// and BuilderDriftChecker (Phase 0/2). Intended as the pre-push / CI entry point —
     /// four separate Unity launches collapse to one Editor warm-up.
     /// </summary>
     public static void CheckAllGuardrails()
@@ -470,7 +381,7 @@ public static class CliEntryPoints
         Run("SerializedFieldBan",  () => SerializedFieldBan.Check());
         Run("ResourcesLoadBan",    () => ResourcesLoadBan.Check());
         Run("InstantiateBan",      () => InstantiateBan.Check());
-        Run("ScaffoldDriftChecker", () => ScaffoldDriftChecker.Verify(ScaffoldedScenes));
+        Run("BuilderDriftChecker", () => BuilderDriftChecker.Verify(BuilderedScenes));
 
         Debug.Log($"[Cli] ── Summary ──────────────────────────────────────────");
         if (failures.Count == 0)

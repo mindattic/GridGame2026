@@ -184,6 +184,10 @@ public enum AbilityEffect
     Cover,
     // Utility
     Strike,
+
+    // Equipment management — bar slot holds a weapon. Activating swaps the hero's currently
+    // equipped weapon with the slot weapon via ChangeEquippedWeaponSequence.
+    EquipWeapon,
 }
 
 public enum AbilityTargetingMode
@@ -224,12 +228,20 @@ public class Ability
     // Source item for consumable-backed abilities (null for normal abilities)
     public ItemDefinition SourceItem;
 
+    // Source weapon for weapon-swap bar slots (null for normal abilities). When set, activating
+    // this ability fires ChangeEquippedWeaponSequence which swaps SourceWeapon with the
+    // wielder's currently equipped weapon. Effect should be AbilityEffect.EquipWeapon.
+    public ItemDefinition SourceWeapon;
+
     /// <summary>Number of times this ability has been cast during the current battle.
     /// Reset to 0 each battle — abilities are rebuilt from the loadout on scene load.</summary>
     public int UsesThisBattle = 0;
 
     /// <summary>True if this ability is backed by a consumable item.</summary>
     public bool IsItemAbility => SourceItem != null;
+
+    /// <summary>True if this ability is backed by a weapon (bar slot used as a loadout swap).</summary>
+    public bool IsWeaponAbility => SourceWeapon != null;
 
     /// <summary>Per-battle usage cap sourced from the underlying item (0 = unlimited).</summary>
     public int MaxUsesPerBattle => SourceItem != null ? SourceItem.MaxUsesPerBattle : 0;

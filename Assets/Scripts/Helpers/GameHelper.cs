@@ -73,7 +73,7 @@ namespace Scripts.Helpers
     /// UI COMPONENTS:
     /// - g.Card: ActorCard UI
     /// - g.TimelineBar: Turn order UI
-    /// - g.AbilityBar: Ability display UI
+    /// - g.ActionTitle: Top-center action announcement banner ("Casting Flames" etc.)
     /// 
     /// BOARD DATA:
     /// - g.TileSize: World-space tile size
@@ -196,6 +196,47 @@ namespace Scripts.Helpers
         /// <summary>Async gameplay event queue - execute sequences in order.</summary>
         public static SequenceManager SequenceManager => gm != null ? gm.sequenceManager : null;
 
+        /// <summary>Static-method shim around <c>SequenceManager.IsExecuting</c> for
+        /// AltDriver-style external test harnesses. <c>CallStaticMethod</c> can't traverse
+        /// instance-property chains (g.SequenceManager.IsExecuting), but it CAN invoke a
+        /// public static method on a named type — so PlayMode tests poll this from outside
+        /// the runtime to detect when a queued sequence chain has drained.</summary>
+        public static bool SequenceManagerIsExecuting()
+            => gm != null && gm.sequenceManager != null && gm.sequenceManager.IsExecuting;
+
+        /// <summary>Static-method shim for AltDriver-style PlayMode tests: places the hero
+        /// identified by <paramref name="characterClassName"/> on tile (<paramref name="x"/>,
+        /// <paramref name="y"/>) and triggers <see cref="PincerAttackManager.Check"/> as
+        /// though the player had just completed a drag-drop onto that tile. Returns true if
+        /// a pincer fired.</summary>
+        /// <remarks>The test harness can't pass enum or ActorInstance arguments across the
+        /// AltDriver bridge, so this method takes only primitives and resolves the hero by
+        /// matching CharacterClass name (case-insensitive). World-space position is also
+        /// updated so visual debugging in the running scene reflects the new placement.</remarks>
+        public static bool TriggerPincerDropForHero(string characterClassName, int x, int y)
+        {
+            if (gm == null) return false;
+            if (!System.Enum.TryParse<CharacterClass>(
+                    characterClassName, ignoreCase: true, out var characterClass))
+                return false;
+
+            var hero = Actors.Heroes?.FirstOrDefault(h =>
+                h != null && h.IsPlaying && h.characterClass == characterClass);
+            if (hero == null) return false;
+
+            // Snap to the target tile in both grid-space and world-space.
+            hero.location = new Vector2Int(x, y);
+            var tile = TileMap?.GetTile(hero.location);
+            if (tile != null) hero.Position = tile.position;
+
+            // Mark this hero as the freshly-dropped one so PincerAttackManager.Check orders
+            // queued pincer pairs around its position.
+            Actors.SelectedActor = hero;
+
+            return PincerAttackManager != null
+                && PincerAttackManager.Check(Scripts.Models.Team.Hero, hero);
+        }
+
         /// <summary>Core combat: detects and resolves pincer attacks.</summary>
         public static PincerAttackManager PincerAttackManager => gm != null ? gm.pincerAttackManager : null;
 
@@ -261,7 +302,7 @@ namespace Scripts.Helpers
         public static TimelineBarInstance TimelineBar => gm != null ? gm.timelineBar : null;
 
         /// <summary>Ability display bar UI.</summary>
-        public static AbilityBar AbilityBar => gm != null ? gm.abilityBar : null;
+        public static ActionTitle ActionTitle => gm != null ? gm.actionTitle : null;
         public static Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
 
         #endregion

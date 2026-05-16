@@ -9,7 +9,8 @@ namespace Scripts.Helpers
 {
     /// <summary>
     /// SALVAGEHELPER - Instant breakdown of equipment into raw materials.
-    /// <para>PURPOSE: Shared entry point for <see cref="Scripts.Hub.Sections.SalvageSection"/>.
+    /// <para>PURPOSE: Shared entry point for salvage flows. The old Hub-side SalvageSection is
+    /// retired; this helper survives for the future merged-hub rewrite and any per-scene callers.
     /// Unlike Blacksmith upgrades which take real time, salvage is immediate — the smith hands
     /// the disassembled parts back across the counter. This is the loop that gives unused gear
     /// a second life: rather than selling a sub-optimal weapon for gold, the player can recover
@@ -18,13 +19,13 @@ namespace Scripts.Helpers
     /// <list type="bullet">
     /// <item>Only <see cref="ItemDefinition.CanSalvage"/> items are eligible — equipment with at
     /// least one <see cref="SalvageComponent"/>.</item>
-    /// <item>Items currently equipped on any hero are filtered out by the UI (enforced at the
-    /// section level — see <c>SalvageSection.EligibleItems()</c>).</item>
+    /// <item>Items currently equipped on any hero are filtered out by the UI (callers should
+    /// filter via <see cref="Scripts.Inventory.PlayerInventory"/> against the hero loadouts).</item>
     /// <item>Items currently held by the Blacksmith (pending upgrade) are filtered out so we
     /// never salvage gear the smith still has.</item>
     /// </list></para>
     /// <para>RELATED FILES: ItemDefinition.cs (SalvageComponents), ItemLibrary.cs (AssignDefaultSalvageComponents),
-    /// SalvageSection.cs, CraftJobHelper.cs</para>
+    /// CraftJobHelper.cs</para>
     /// </summary>
     public static class SalvageHelper
     {

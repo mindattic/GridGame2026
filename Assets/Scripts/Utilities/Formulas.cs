@@ -410,6 +410,59 @@ public static class Formulas
         return CritPercent(attacker.Stats);
     }
 
+    /// <summary>One-line rich-text descriptor of an ability's mechanical effect, for the
+    /// ActorCard details panel. Approximates each AbilityEffect's behavior so the player can
+    /// reason about which ability to pick before committing mana — exact numbers come from
+    /// CalculateMagicDamage / CalculateAttack at resolution time.</summary>
+    public static string DescribeAbility(Ability ability)
+    {
+        if (ability == null) return string.Empty;
+        const string heal   = "<color=#CCCC88>Heals:</color>";
+        const string damage = "<color=#FF8888>Damage:</color>";
+        const string buff   = "<color=#CCFF88>Effect:</color>";
+        const string passive = "<color=#CCFF88>Passive:</color>";
+        const string reactive = "<color=#CCFF88>Reactive:</color>";
+
+        switch (ability.Effect)
+        {
+            case AbilityEffect.Heal:         return $"{heal} ~Magic (single ally)";
+            case AbilityEffect.GroupHeal:    return $"{heal} ~Magic × 0.7 (all allies)";
+            case AbilityEffect.Esuna:        return $"{buff} Cure status (single ally)";
+            case AbilityEffect.Protect:      return $"{buff} +Defense (single ally)";
+            case AbilityEffect.Regen:        return $"{buff} HP regen over time (single ally)";
+            case AbilityEffect.Smite:        return $"{damage} Magic × 1.5 (Holy)";
+            case AbilityEffect.Fire:         return $"{damage} ~Magic (Fire)";
+            case AbilityEffect.Ice:          return $"{damage} ~Magic (Ice)";
+            case AbilityEffect.Thunder:      return $"{damage} ~Magic (Thunder)";
+            case AbilityEffect.Fireball:     return $"{damage} Magic × 1.4 (Fire, all enemies)";
+            case AbilityEffect.Fira:         return $"{damage} Magic × 1.6 (Fire)";
+            case AbilityEffect.ShieldRush:   return $"{damage} Strength × 1.5 (linear)";
+            case AbilityEffect.Trap:         return $"{damage} ~Strength (placed tile)";
+            case AbilityEffect.Strike:       return $"{damage} ~Strength";
+            case AbilityEffect.UseItem:
+                return ability.SourceItem != null
+                    ? $"{buff} {ability.SourceItem.DisplayName}"
+                    : string.Empty;
+            case AbilityEffect.EquipWeapon:
+                if (ability.SourceWeapon == null) return string.Empty;
+                int dur = Mathf.Max(0, ability.SourceWeapon.Durability);
+                int str = Mathf.Max(0, Mathf.RoundToInt(ability.SourceWeapon.Strength));
+                return $"<color=#CCFF88>Swap:</color> Equip {ability.SourceWeapon.DisplayName} (STR +{str}, durability {dur}/{dur})";
+            case AbilityEffect.DoubleAttack: return $"{passive} +1 attack/turn";
+            case AbilityEffect.TripleAttack: return $"{passive} +2 attacks/turn";
+            case AbilityEffect.DoubleMove:   return $"{passive} +1 move/turn";
+            case AbilityEffect.TripleMove:   return $"{passive} +2 moves/turn";
+            case AbilityEffect.ArmorUp:      return $"{passive} +Defense";
+            case AbilityEffect.CritUp:       return $"{passive} +Critical Hit chance";
+            case AbilityEffect.Focus:        return $"{passive} +Magic";
+            case AbilityEffect.EvasionUp:    return $"{passive} +Evasion";
+            case AbilityEffect.HPUp:         return $"{passive} +MaxHP";
+            case AbilityEffect.CounterAttack: return $"{reactive} Counter melee attacks";
+            case AbilityEffect.Cover:        return $"{reactive} Take hits for adjacent allies";
+            default: return string.Empty;
+        }
+    }
+
     /// <summary>
     /// Real-world seconds required for a vendor (Blacksmith / Alchemist) to process a craft
     /// job. Scales gently with gold + material volume — small jobs finish in ~30s for playtest

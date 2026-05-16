@@ -37,7 +37,7 @@ namespace Scripts.Vendor.Abilities
     /// <para>UX: Click a consumable in the right pane to assign it to the first
     /// empty slot. Click a filled slot to clear it. If all slots are full and the
     /// player clicks a consumable, the flash label tells them to clear a slot first.</para>
-    /// <para>RELATED FILES: AbilitiesScaffold.cs, HeroHandoff.cs, Profile.HeroEquipmentSave</para>
+    /// <para>RELATED FILES: AbilitiesBuilder.cs, HeroHandoff.cs, Profile.HeroEquipmentSave</para>
     /// </summary>
     public class AbilitiesManager : MonoBehaviour
     {

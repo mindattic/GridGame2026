@@ -41,9 +41,9 @@ namespace Scripts.Factories
     ///     └── Front      (Image, SetActive(false))
     /// </code>
     /// </para>
-    /// <para>CALLED BY: PartyManagerScaffold.CreateStatRow (edit-time) and any
+    /// <para>CALLED BY: PartyManagerBuilder.CreateStatRow (edit-time) and any
     /// future runtime PartyManager builder.</para>
-    /// <para>RELATED FILES: PartyManager.cs, PartyManagerScaffold.cs</para>
+    /// <para>RELATED FILES: PartyManager.cs, PartyManagerBuilder.cs</para>
     /// </summary>
     public static class StatRowFactory
     {

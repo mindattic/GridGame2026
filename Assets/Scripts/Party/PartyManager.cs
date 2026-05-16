@@ -36,13 +36,13 @@ namespace Scripts.Vendor.Party
     /// <para>SAVE ROUND-TRIP: ProfileHelper.AddToParty / RemoveFromParty already handles
     /// XP-preserving roster ⇄ party transitions and persists; this scene only refreshes
     /// the UI from the resulting save state.</para>
-    /// <para>RELATED FILES: PartyScaffold.cs, ProfileHelper.cs, ActorLibrary.cs, ExperienceHelper.cs</para>
+    /// <para>RELATED FILES: PartyBuilder.cs, ProfileHelper.cs, ActorLibrary.cs, ExperienceHelper.cs</para>
     /// </summary>
     public class PartyManager : MonoBehaviour
     {
         public const int MaxPartySize = 4;
 
-        // Object names — scaffold must match.
+        // Object names — builder must match.
         public const string RosterContentPath = "Body/RosterList/Viewport/Content";
         public const string DetailLabelName = "Body/DetailLabel";
         public const string ActionButtonName = "Body/ActionButton";

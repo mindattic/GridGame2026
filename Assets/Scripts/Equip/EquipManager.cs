@@ -44,7 +44,7 @@ namespace Scripts.Vendor.Equip
     /// Class-vs-weapon proficiency is NOT enforced in this slice — combat (slice 7) will
     /// surface that warning. The slice-5 goal is just "the user can equip a sword and see
     /// it persist."</para>
-    /// <para>RELATED FILES: EquipScaffold.cs, HeroHandoff.cs, HeroEquipmentSave (Profile.cs)</para>
+    /// <para>RELATED FILES: EquipBuilder.cs, HeroHandoff.cs, HeroEquipmentSave (Profile.cs)</para>
     /// </summary>
     public class EquipManager : MonoBehaviour
     {

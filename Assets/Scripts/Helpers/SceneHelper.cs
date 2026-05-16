@@ -80,14 +80,12 @@ namespace Scripts.Helpers
         public const string StageSelect = "StageSelect";
         public const string TitleScreen = "TitleScreen";
         public const string PostBattleScreen = "PostBattleScreen";
-        public const string Hub = "Hub";
         public const string Vendor = "Vendor";
         public const string Alchemist = "Alchemist";
         public const string Party = "Party";
         public const string Abilities = "Abilities";
         public const string Equip = "Equip";
         public const string Blacksmith = "Blacksmith";
-        public const string Inn = "Inn";
 
         #endregion
 
@@ -209,8 +207,6 @@ namespace Scripts.Helpers
             public static void ToTitleScreen() => To(TitleScreen);
             /// <summary>To post battle screen.</summary>
             public static void ToPostBattleScreen() => To(PostBattleScreen);
-            /// <summary>To hub.</summary>
-            public static void ToHub() => To(Hub); // new helper
             /// <summary>To vendor.</summary>
             public static void ToVendor() => To(Vendor);
             /// <summary>To alchemist.</summary>
@@ -223,8 +219,6 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
-            /// <summary>To inn.</summary>
-            public static void ToInn() => To(Inn);
         }
 
         /// <summary>
@@ -281,8 +275,6 @@ namespace Scripts.Helpers
             public static void ToTitleScreen() => To(TitleScreen);
             /// <summary>To post battle screen.</summary>
             public static void ToPostBattleScreen() => To(PostBattleScreen);
-            /// <summary>To hub.</summary>
-            public static void ToHub() => To(Hub);
             /// <summary>To vendor.</summary>
             public static void ToVendor() => To(Vendor);
             /// <summary>To alchemist.</summary>
@@ -295,8 +287,6 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
-            /// <summary>To inn.</summary>
-            public static void ToInn() => To(Inn);
         }
 
         #endregion

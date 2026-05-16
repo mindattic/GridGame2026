@@ -48,7 +48,7 @@ namespace Scripts.Canvas
     public class DebugButtonPanel : MonoBehaviour
     {
         // Scene refs (not wired yet — DebugButtonPanel is not attached in any current scene;
-        // when scaffolded it should be initialized via a factory or Bind() method).
+        // when buildered it should be initialized via a factory or Bind() method).
         private RectTransform PanelRect;
         private Button ReloadStageButton;
         private Button PreviousStageButton;

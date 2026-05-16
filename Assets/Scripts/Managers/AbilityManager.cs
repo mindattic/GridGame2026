@@ -124,6 +124,20 @@ namespace Scripts.Managers
             pendingAbilityUser = user;
         }
 
+        /// <summary>For self-targeted actions (EquipWeapon, future buffs that target the
+        /// caster): registers <paramref name="self"/> as the implicit target and pops up the
+        /// confirm dialog. OnCastButtonClicked then proceeds normally because Count > 0.</summary>
+        public void ConfirmSelfTarget(ActorInstance self)
+        {
+            if (currentAbility == null || self == null) return;
+            ClearAllIndicators();
+            targetList.Clear();
+            Select(self);
+            g.AbilityCastConfirm.SetTitleFor(currentAbility);
+            g.AbilityCastConfirm.Toggle();
+            OnSelectionChanged(true);
+        }
+
         /// <summary>Clears the pending ability user.</summary>
         public void ClearPendingUser() => pendingAbilityUser = null;
 
@@ -157,7 +171,7 @@ namespace Scripts.Managers
                 ClearAllIndicators();
                 targetList.Clear();
                 Select(actor);
-                g.AbilityCastConfirm.SetTitle(currentAbility.name);
+                g.AbilityCastConfirm.SetTitleFor(currentAbility);
                 g.AbilityCastConfirm.Toggle();
                 OnSelectionChanged(true);
                 return;
@@ -166,7 +180,7 @@ namespace Scripts.Managers
             if (targetList.Count < capacity)
             {
                 Select(actor);
-                g.AbilityCastConfirm.SetTitle(currentAbility.name);
+                g.AbilityCastConfirm.SetTitleFor(currentAbility);
                 g.AbilityCastConfirm.Toggle();
                 OnSelectionChanged(true);
             }
@@ -176,7 +190,7 @@ namespace Scripts.Managers
                 oldest.Render.SetTargetIndicatorEnabled(false);
                 targetList.RemoveAt(0);
                 Select(actor);
-                g.AbilityCastConfirm.SetTitle(currentAbility.name);
+                g.AbilityCastConfirm.SetTitleFor(currentAbility);
                 g.AbilityCastConfirm.Toggle();
                 OnSelectionChanged(true);
             }
@@ -233,8 +247,11 @@ namespace Scripts.Managers
 
             g.InputManager.InputMode = InputMode.None;
 
-            // Announce the ability on the ability bar
-            g.AbilityBar?.Show(currentUser, currentAbility);
+            // Announce the action on the top-center title banner. Verb-specific overloads
+            // (Cast/Use/Equip) fire from the per-effect branches below — only the generic
+            // fallback announces here so we don't double-fire.
+            if (!currentAbility.IsItemAbility && !currentAbility.IsWeaponAbility)
+                g.ActionTitle?.Show(currentAbility?.name);
 
             var startPosition = g.Card.PortraitWorldPosition();
 
@@ -268,11 +285,17 @@ namespace Scripts.Managers
                         if (!currentAbility.HasUsesRemaining) break;
                         currentAbility.UsesThisBattle += 1;
 
-                        // Show ability bar announcement
-                        g.AbilityBar?.Show(currentUser, currentAbility.SourceItem);
+                        // "Using {Item}" on the top title banner.
+                        g.ActionTitle?.Use(currentAbility.SourceItem);
                         foreach (var t in targetList)
                             g.SequenceManager.Add(new UseItemSequence(currentUser, t, currentAbility.SourceItem));
                     }
+                    break;
+                case AbilityEffect.EquipWeapon:
+                    // Bar slot held a weapon — fire the swap sequence (handles save mutation +
+                    // ActionTitle.Equip() banner). No target required; targeting is Self.
+                    if (currentAbility.SourceWeapon != null)
+                        g.SequenceManager.Add(new ChangeEquippedWeaponSequence(currentUser, currentAbility.SourceWeapon));
                     break;
                 default:
                     foreach (var t in targetList)
@@ -304,7 +327,8 @@ namespace Scripts.Managers
             var target = targetList[0];
             var castStart = g.Card.PortraitWorldPosition();
 
-            g.AbilityBar?.Show(caster, ability);
+            // "Casting {Spell}" — the cast-time path that ticks on the timeline before resolving.
+            g.ActionTitle?.Cast(ability);
 
             var state = new CastingState(caster, ability, target);
 
@@ -426,6 +450,9 @@ namespace Scripts.Managers
             if (IsSequenceExecuting) return;
             g.TileManager.Reset();
             CancelTargeting();
+            // Restore the hero portrait on the ActorCard — AssignAbility swapped it to the
+            // ability icon during the click; cancelling means we go back to "this hero is selected".
+            if (g.Actors.HasSelectedActor) g.Card?.Assign();
             if (g.Actors.HasMovingHero)
             {
                 g.Actors.MovingHero.Move.ToLocation();

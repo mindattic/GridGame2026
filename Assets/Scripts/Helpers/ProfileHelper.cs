@@ -142,9 +142,13 @@ namespace Scripts.Helpers
         // Starter inventory: a representative sample of every weapon archetype + a couple of armor
         // pieces and helms so the player can experiment with equip / unequip and run into the
         // class-proficiency rules right out of the gate (Cleric vs. Greatsword, Paladin vs. Wand).
+        // Crafting mats are pre-seeded so a fresh save can immediately exercise the Blacksmith
+        // (build 10 Iron Swords: 3 ore + 1 plank each) and the Alchemist (5 brews × 2 = 10
+        // Healing Potions: 2 slime gel each) — enough content to test the ability-bar buttons
+        // for Abilities, Items, and Equipment without grinding for materials first.
         public static InventorySaveData DefaultInventory = new InventorySaveData
         {
-            Gold = 200,
+            Gold = 500,  // 300g for 10 Iron Sword crafts (30g each) + 50g for 5 potion brews (10g each) + 150g spending room
             Items = new List<InventoryEntrySave>
             {
                 // Weapons — one of each WeaponType so proficiency rules are reachable
@@ -165,6 +169,11 @@ namespace Scripts.Helpers
                 new InventoryEntrySave("eq_armor_plate",    1, 0),
                 new InventoryEntrySave("eq_helm_iron",      2, 0),
                 new InventoryEntrySave("eq_boots_leather",  2, 0),
+
+                // Crafting materials — sized for 10 Iron Sword forges + 10 Healing Potion brews
+                new InventoryEntrySave("mat_iron_ore",     30, 0),  // 3 per Iron Sword × 10
+                new InventoryEntrySave("mat_wood_plank",   10, 0),  // 1 per Iron Sword × 10
+                new InventoryEntrySave("mat_slime_gel",    10, 0),  // 2 per brew × 5 brews = 10 potions
 
                 // Consumables
                 new InventoryEntrySave("healing_potion_basic", 3, 0),

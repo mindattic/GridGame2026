@@ -1,0 +1,38 @@
+# Builder snapshot for scene: Overworld
+# Regenerate via CliEntryPoints.RegenerateBuilderSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[Canvas] layer=UI
+  Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  GraphicRaycaster
+  Image: sprite=GunMetal16x16, color=#0F1424EB, type=Simple, raycast=True
+  OverworldPlaceholderInstance
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+  [PlaceholderLabel] layer=UI
+    CanvasRenderer
+    RectTransform: anchor=(0.1,0.4)-(0.9,0.7), pos=0,0, size=0,0, pivot=0.5,0.5
+    TextMeshProUGUI: font=Attic, text='<b>Overworld</b>\n<size=70%>Parked. Use <color=#ffcc44>Campaign</color> for stage…', size=56, color=#FFFFFFFF, align=Center, raycast=True
+  [ToCampaignButton] layer=UI
+    Button
+    CanvasRenderer
+    Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
+    RectTransform: anchor=(0.5,0.18)-(0.5,0.18), pos=0,0, size=360,80, pivot=0.5,0.5
+    [Label] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='Go to Campaign', size=32, color=#000000FF, align=Center, raycast=True
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera]
+  AudioListener
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1

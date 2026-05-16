@@ -113,7 +113,7 @@ namespace Scripts.Factories
             rt.localScale = Vector3.one;
         }
 
-        /// <summary>Finds the main overlay Canvas by name (matches GameScaffold's "Canvas" root).</summary>
+        /// <summary>Finds the main overlay Canvas by name (matches GameBuilder's "Canvas" root).</summary>
         private static RectTransform FindMainCanvasRect()
         {
             var go = GameObject.Find("Canvas");

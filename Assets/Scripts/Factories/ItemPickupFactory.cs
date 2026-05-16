@@ -45,7 +45,7 @@ namespace Scripts.Factories
 /// RELATED FILES:
 /// - ItemPickupInstance.cs: Animation behavior
 /// - ItemPickupManager.cs: Spawns pickups on enemy death
-/// - CoinFactory.cs: Sister factory (same visual scaffolding)
+/// - CoinFactory.cs: Sister factory (same visual building)
 /// </summary>
 public static class ItemPickupFactory
 {

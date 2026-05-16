@@ -39,7 +39,7 @@ namespace Scripts.Vendor.Alchemy
     /// Wisdom 0 → 40%, Wisdom 14 → ~96% capped at 95%. Reads max Wisdom across party
     /// members at Level 1 base stats — refine when ExperienceHelper-driven level lookup
     /// is wired (slice 4+).</para>
-    /// <para>RELATED FILES: AlchemistScaffold.cs, RecipeLibrary.cs, CraftingRecipe.cs</para>
+    /// <para>RELATED FILES: AlchemistBuilder.cs, RecipeLibrary.cs, CraftingRecipe.cs</para>
     /// </summary>
     public class AlchemistManager : MonoBehaviour
     {

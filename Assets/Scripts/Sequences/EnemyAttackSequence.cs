@@ -89,8 +89,8 @@ namespace Scripts.Sequences
             // Pre-attack pause for visual pacing
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
-            // Announce enemy attack on ability bar
-            g.AbilityBar?.Show($"{attacker.characterClass} attacks!");
+            // Announce enemy attack on the top-center action title.
+            g.ActionTitle?.Show($"{attacker.characterClass} attacks!");
 
             // Find adjacent heroes
             var defendingHeroes = g.Actors.Heroes

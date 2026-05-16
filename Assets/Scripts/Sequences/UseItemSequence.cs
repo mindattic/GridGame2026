@@ -48,7 +48,7 @@ namespace Scripts.Sequences
     /// RELATED FILES:
     /// - HealAbilitySequence.cs: Similar pattern for heal spell
     /// - FireProjectileSequence.cs: Projectile spawning
-    /// - AbilityBar.cs: Announcement display
+    /// - ActionTitle.cs: Top-center action announcement banner
     /// - PlayerInventory.cs: Item consumption
     /// </summary>
     public class UseItemSequence : SequenceEvent
@@ -75,8 +75,8 @@ namespace Scripts.Sequences
             // Lock input during sequence
             g.InputManager.InputMode = InputMode.None;
 
-            // Announce the item usage on the ability bar
-            g.AbilityBar?.Show($"{user.characterClass} uses {item.DisplayName}");
+            // "Using {Item}" on the top-center action title.
+            g.ActionTitle?.Use(item);
 
             // Bounce the user portrait for visual feedback
             g.Card?.BouncePortrait();

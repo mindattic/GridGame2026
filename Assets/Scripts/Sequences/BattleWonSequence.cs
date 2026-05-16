@@ -66,8 +66,8 @@ namespace Scripts.Sequences
             if (sfx != null)
                 yield return Wait.For(sfx.length);
 
-            // Honor whatever the battle-launcher set (HubManager.ExitToBattle → Hub,
-            // OverworldManager → Overworld). Default in ExperienceTracker is Hub.
+            // Honor whatever the battle-launcher set (StageSelect → StageSelect,
+            // OverworldManager → Overworld). Default in ExperienceTracker is StageSelect.
 
             // Route to PostBattleScreen so XP is awarded on victory
             scene.Fade.ToPostBattleScreen();

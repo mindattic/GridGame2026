@@ -74,7 +74,7 @@ public class PortraitManager : MonoBehaviour
         instance.parent = g.PortraitsContainer;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
-        if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, Opacity.Translucent.Alpha196);
+        if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, 1f);
 
         // Lane locking keeps paired slide-ins on consistent axes.
         instance.fixedX = fixedX;
@@ -142,9 +142,9 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
-        instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        instance.transform.localScale = new Vector3(1f, 1f, 1f);
         if (instance.spriteRenderer != null)
-            instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Translucent.Alpha196);
+            instance.spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         instance.startTime = Time.time;
 
         portraits3D.Add(instance);

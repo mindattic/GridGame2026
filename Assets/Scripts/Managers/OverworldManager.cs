@@ -514,7 +514,7 @@ public class OverworldManager : MonoBehaviour
             ProfileHelper.Save(true);
         }
 
-        scene.Fade.ToHub();
+        scene.Fade.ToStageSelect(); // Hub is retired — route caravan-disembark to StageSelect
     }
 
     // Trigger scene change to a random stage after sustained movement

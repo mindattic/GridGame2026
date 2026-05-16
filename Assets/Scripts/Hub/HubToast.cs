@@ -7,11 +7,11 @@ namespace Scripts.Hub
     /// <summary>
     /// HUBTOAST - Ephemeral announcement banner.
     /// <para>PURPOSE: Fades in a short confirmation message ("Started: Iron Sword +1") at the
-    /// top of the Hub canvas, holds for a beat, then fades out. Used to give tactile feedback
+    /// top of any vendor canvas, holds for a beat, then fades out. Used to give tactile feedback
     /// on successful actions without forcing the player to read the detail panel.</para>
-    /// <para>USAGE: <c>HubToast.Show("message")</c> from anywhere inside the Hub scene. Scaffold
-    /// places a single instance named "HubToast" directly under the Canvas.</para>
-    /// <para>RELATED FILES: HubScaffold.cs, BlacksmithSection.cs, AlchemistSection.cs</para>
+    /// <para>USAGE: <c>HubToast.Show("message")</c> from any vendor scene. Each scene's Builder
+    /// is responsible for placing a single instance named "HubToast" under its Canvas.</para>
+    /// <para>RELATED FILES: HubTheme.cs, BlacksmithManager.cs, AlchemistManager.cs</para>
     /// </summary>
     public class HubToast : MonoBehaviour
     {

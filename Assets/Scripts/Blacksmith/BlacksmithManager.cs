@@ -37,7 +37,7 @@ namespace Scripts.Vendor.Blacksmith
     /// row to break that piece down into <see cref="SalvageRefundFraction"/> of the original
     /// recipe's ingredients (floor, min 1 of each). Item slots that have no recipe in the
     /// library cannot be salvaged.</para>
-    /// <para>RELATED FILES: BlacksmithScaffold.cs, RecipeLibrary.cs, AlchemistManager.cs (parallel)</para>
+    /// <para>RELATED FILES: BlacksmithBuilder.cs, RecipeLibrary.cs, AlchemistManager.cs (parallel)</para>
     /// </summary>
     public class BlacksmithManager : MonoBehaviour
     {

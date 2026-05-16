@@ -220,7 +220,7 @@ namespace Scripts.Canvas
             barRect.sizeDelta = size;
             halfWidth = targetWidth * 0.5f;
 
-            // Fixed Y from GameScaffold.cs — keep the bar at the scaffold-authored position.
+            // Fixed Y from GameBuilder.cs — keep the bar at the builder-authored position.
 
             // Position trigger/spawn points (trigger is on the RIGHT, spawn is on the LEFT)
             if (triggerPointRect != null)

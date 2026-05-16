@@ -61,7 +61,7 @@ namespace Scripts.Managers
         private static readonly Dictionary<CharacterClass, int> characterXP = new Dictionary<CharacterClass, int>();
         private static readonly HashSet<CharacterClass> participants = new HashSet<CharacterClass>();
 
-        public static string NextSceneAfterPostBattleScreen = Scripts.Helpers.SceneHelper.Hub;
+        public static string NextSceneAfterPostBattleScreen = Scripts.Helpers.SceneHelper.StageSelect;
 
         /// <summary>Start session.</summary>
         public static void StartSession(IEnumerable<CharacterClass> participantCharacters)

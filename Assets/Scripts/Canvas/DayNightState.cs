@@ -27,18 +27,17 @@ namespace Scripts.Canvas
 ///
 /// PURPOSE:
 /// Holds the current cycle position and evaluated overlay color so
-/// non-Overworld scenes (Hub, PostBattle) can apply the correct
+/// non-Overworld scenes (vendor scenes, PostBattle) can apply the correct
 /// time-of-day tint without running a full DayNightCycle instance.
 ///
 /// LIFECYCLE:
 /// 1. OverworldManager.SaveState() writes T01 to save data
 /// 2. DayNightCycle.Update() writes snapshot here each frame
-/// 3. HubManager reads snapshot on Awake to tint the Hub frozen
+/// 3. Any non-Overworld scene's manager reads snapshot on Awake to apply frozen tint
 /// 4. On return to Overworld, cycle resumes from save data
 ///
 /// RELATED FILES:
 /// - DayNightCycle.cs: Writes snapshots here every frame
-/// - HubManager.cs: Reads snapshot to apply frozen tint
 /// - OverworldManager.cs: Restores cycle on scene load
 /// - OverworldSaveData: Persists T01 across sessions
 /// </summary>

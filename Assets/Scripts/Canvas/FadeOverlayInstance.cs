@@ -69,7 +69,7 @@ public class FadeOverlayInstance : MonoBehaviour
     #region Configuration
 
     private Image image;
-    private float fadeDuration = 0.25f;
+    private float fadeDuration = 0.0833f;
 
     #endregion
 

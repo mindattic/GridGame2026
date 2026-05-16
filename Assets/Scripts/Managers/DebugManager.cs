@@ -38,7 +38,7 @@ public class DebugManager : MonoBehaviour
     ActorInstance hero3 => g.Actors.Heroes.Skip(2).Take(1).First();
     ActorInstance hero4 => g.Actors.Heroes.Skip(3).Take(1).First();
 
-    //Fields — resolved at runtime if wired by DebugManager.Initialize / scaffold.
+    //Fields — resolved at runtime if wired by DebugManager.Initialize / builder.
     private TMP_Dropdown Dropdown;
     public bool showActorNameTag = false;
     public bool showActorFrame = false;

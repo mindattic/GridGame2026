@@ -171,7 +171,7 @@ public class PostBattleManager : MonoBehaviour
     {
         nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
         if (string.IsNullOrEmpty(nextSceneName))
-            nextSceneName = SceneHelper.Hub; // go to Hub by default
+            nextSceneName = SceneHelper.StageSelect; // Hub is retired — return to StageSelect
     }
 
     /// <summary>Configure layout.</summary>

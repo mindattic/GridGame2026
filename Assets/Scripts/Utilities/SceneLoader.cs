@@ -67,7 +67,7 @@ namespace Scripts.Utilities
     {
         // All tuning values live in Scripts.Data.Config.SceneLoaderConfig.
         // UI refs below are resolved in Start() via transform.Find against the
-        // LoadingScreen scaffold, not Inspector drag-drop.
+        // LoadingScreen builder, not Inspector drag-drop.
         private Slider progressBar;
         private TextMeshProUGUI progressLabel;
         private CanvasGroup fadePanel;

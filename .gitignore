@@ -89,5 +89,5 @@ hidden_changes.conf
 /[Aa]ssets/[Ss]cripts/ExportedScripts.txt
 /ExportedScripts.txt
 
-# Scaffold drift diagnostic artifacts (regenerated on every VerifyScaffoldDrift run)
-/Documentation/Scaffolds/Drift/*.actual.txt
+# Builder drift diagnostic artifacts (regenerated on every VerifyBuilderDrift run)
+/Documentation/Builders/Drift/*.actual.txt

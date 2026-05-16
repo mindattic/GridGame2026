@@ -78,7 +78,7 @@ namespace Scripts.Factories
             var transform = root.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
-            transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            transform.localScale = new Vector3(1f, 1f, 1f);
 
             // SpriteRenderer
             var spriteRenderer = root.AddComponent<SpriteRenderer>();

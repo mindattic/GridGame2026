@@ -23,11 +23,12 @@ using Scripts.Utilities;
 namespace Scripts.Hub
 {
     /// <summary>
-    /// HUBTHEME - Shared color palette and formatting helpers for the Hub UI.
+    /// HUBTHEME - Shared color palette and formatting helpers for vendor UIs.
     /// <para>PURPOSE: Single source of truth for the navy + gold JRPG aesthetic used by every
-    /// HubSection. Keeps Shop, Blacksmith, Inn, etc. visually identical without each section
-    /// inventing its own colors.</para>
-    /// <para>RELATED FILES: HubManager.cs, HubSection.cs, HubItemRowFactory.cs</para>
+    /// vendor scene (Vendor, Alchemist, Blacksmith, Party, Equip, Abilities, StageSelect…) and
+    /// for the PostBattle screen. Name kept as "Hub" because all these scenes will eventually
+    /// compose back into a single Hub scene.</para>
+    /// <para>RELATED FILES: HubItemRowFactory.cs, HubToast.cs, VendorManager.cs (representative consumer)</para>
     /// </summary>
     public static class HubTheme
     {

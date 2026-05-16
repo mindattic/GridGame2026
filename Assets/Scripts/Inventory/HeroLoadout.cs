@@ -203,7 +203,15 @@ public class HeroLoadout
             {
                 if (slot == null || slot.IsEmpty) continue;
                 Ability ability = null;
-                if (slot.IsItem)
+                if (slot.IsWeapon)
+                {
+                    var weapon = ItemLibrary.Get(slot.WeaponId);
+                    if (weapon != null)
+                        ability = AbilityLibrary.FromWeapon(weapon);
+                    else
+                        UnityEngine.Debug.LogWarning($"[HeroLoadout] Could not resolve weapon '{slot.WeaponId}' for {CharacterClass} ability bar.");
+                }
+                else if (slot.IsItem)
                 {
                     var item = ItemLibrary.Get(slot.ItemId);
                     if (item != null)
@@ -248,7 +256,9 @@ public class HeroLoadout
         foreach (var ability in EquippedAbilities)
         {
             if (ability == null) continue;
-            if (ability.IsItemAbility && ability.SourceItem != null)
+            if (ability.IsWeaponAbility && ability.SourceWeapon != null)
+                save.AbilityBarSlots.Add(AbilityBarSlotSave.ForWeapon(ability.SourceWeapon.Id));
+            else if (ability.IsItemAbility && ability.SourceItem != null)
                 save.AbilityBarSlots.Add(new AbilityBarSlotSave(null, ability.SourceItem.Id));
             else
                 save.AbilityBarSlots.Add(new AbilityBarSlotSave(ability.name, null));

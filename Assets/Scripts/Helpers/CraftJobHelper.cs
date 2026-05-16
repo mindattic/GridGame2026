@@ -12,13 +12,13 @@ namespace Scripts.Helpers
 {
     /// <summary>
     /// CRAFTJOBHELPER - Start / query / collect time-gated vendor orders.
-    /// <para>PURPOSE: Shared entry points for <see cref="Scripts.Hub.Sections.BlacksmithSection"/>
-    /// and <see cref="Scripts.Hub.Sections.AlchemistSection"/> so they don't duplicate the
+    /// <para>PURPOSE: Shared entry points for <see cref="Scripts.Blacksmith.BlacksmithManager"/>
+    /// and <see cref="Scripts.Alchemist.AlchemistManager"/> so they don't duplicate the
     /// "consume-at-start / produce-at-collect" split that async crafting needs.</para>
     /// <para>OWNERSHIP: jobs live in the active <see cref="SaveState.CraftJobs"/> list. Callers
-    /// are responsible for triggering <see cref="ProfileHelper.Save"/> (via
-    /// <c>HubManager.PersistAndRefresh</c>) after any mutation so the list hits disk.</para>
-    /// <para>RELATED FILES: CraftJob.cs, BlacksmithSection.cs, AlchemistSection.cs, ProfileHelper.cs</para>
+    /// are responsible for triggering <see cref="ProfileHelper.Save"/> after any mutation so the
+    /// list hits disk.</para>
+    /// <para>RELATED FILES: CraftJob.cs, BlacksmithManager.cs, AlchemistManager.cs, ProfileHelper.cs</para>
     /// </summary>
     public static class CraftJobHelper
     {

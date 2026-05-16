@@ -1,0 +1,169 @@
+# Builder snapshot for scene: Alchemist
+# Regenerate via CliEntryPoints.RegenerateBuilderSnapshots.
+# Deterministic — diff this file to see scene drift.
+
+[AlchemistManagerGO]
+  AlchemistManager
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Canvas] layer=UI
+  Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
+  CanvasRenderer
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  GraphicRaycaster
+  Image: sprite=GunMetal16x16, color=#0F1424EB, type=Simple, raycast=True
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.769,1247.077, pivot=0.5,0.5
+  [BackButton] layer=UI
+    Button
+    CanvasRenderer
+    Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(0,0), pos=24,24, size=220,64, pivot=0,0
+    [Label] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='← Overworld', size=26, color=#FFFFFFFF, align=Center, raycast=False
+  [Body] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=0,-32, size=-48,-256, pivot=0.5,0.5
+    [DetailLabel] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0.6,0.32)-(1,1), pos=6,0, size=-12,-16, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
+    [FlashLabel] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0.6,0.18)-(1,0.32), pos=6,0, size=-12,-8, pivot=0.5,0.5
+      TextMeshProUGUI: font=Attic, text='', size=26, color=#FFFFFFFF, align=Center, raycast=False
+    [ItemList] layer=UI
+      CanvasRenderer
+      Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0.6,1), pos=-6,0, size=-12,0, pivot=0.5,0.5
+      [Viewport] layer=UI
+        CanvasRenderer
+        Image: sprite=UIMask, color=#FFFFFF05, type=Sliced, raycast=True
+        Mask: showGraphic=False
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,1
+        ScrollRect
+        [Content] layer=UI
+          ContentSizeFitter: h=Unconstrained, v=PreferredSize
+          RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,0, pivot=0,1
+          VerticalLayoutGroup: spacing=4, align=UpperLeft
+    [MixButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
+      RectTransform: anchor=(0.6,0)-(1,0.18), pos=6,0, size=-12,-16, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Mix', size=32, color=#000000FF, align=Center, raycast=False
+  [FadeOverlay] layer=UI
+    CanvasRenderer
+    FadeOverlayInstance
+    Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+  [Header] layer=UI
+    CanvasRenderer
+    Image: sprite=<null>, color=#1A243DFF, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,96, pivot=0.5,1
+    [GoldLabel] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-40,0, size=400,60, pivot=1,0.5
+      TextMeshProUGUI: font=Attic, text='Gold: 0g', size=36, color=#FFC747FF, align=MidlineRight, raycast=False
+    [Title] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,0, size=500,72, pivot=0,0.5
+      TextMeshProUGUI: font=Attic, text='Alchemist', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
+  [VendorNavBar] layer=UI
+    CanvasRenderer
+    HorizontalLayoutGroup: spacing=8, align=MiddleLeft
+    Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
+    RectTransform: anchor=(0,1)-(1,1), pos=0,-96, size=0,56, pivot=0.5,1
+    VendorNavBar
+    [VendorNavBar_AbilitiesButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Abilities', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_AlchemistButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Alchemist', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_BlacksmithButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Blacksmith', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_EquipButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Equip', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_InnButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Inn', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_PartyButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Party', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_StageSelectButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Campaign', size=22, color=#FFFFFFFF, align=Center, raycast=False
+    [VendorNavBar_VendorButton] layer=UI
+      Button
+      CanvasRenderer
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      LayoutElement: pref=(-1,44), flex=(1,0)
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+      [Label] layer=UI
+        CanvasRenderer
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        TextMeshProUGUI: font=Attic, text='Merchant', size=22, color=#FFFFFFFF, align=Center, raycast=False
+[EventSystem]
+  EventSystem
+  StandaloneInputModule
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+[Main Camera]
+  AudioListener
+  Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
