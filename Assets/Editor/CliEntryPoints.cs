@@ -312,8 +312,12 @@ public static class CliEntryPoints
     // ===================== Builder Drift (Phase 0 guardrail) =====================
 
     /// <summary>
-    /// Opens each buildered scene, walks its hierarchy, and emits a canonical signature text file.
-    /// Compares against the committed snapshot in Documentation/Builders/Drift/. Exits 1 on any diff.
+    /// For each buildered scene: opens it, rebuilds its hierarchy in-memory from the matching
+    /// <c>*Builder.Build()</c>, computes the canonical signature, and diffs against the committed
+    /// snapshot in <c>Documentation/Builders/Drift/&lt;Scene&gt;.snapshot.txt</c>. The in-memory
+    /// rebuild is NOT saved to disk — this is read-only verification. Exits 1 on any diff.
+    /// <para>This is the only path that catches drift between builder code and the committed .unity:
+    /// it signatures what the builder *would produce* right now, not what's already on disk.</para>
     /// </summary>
     public static void VerifyBuilderDrift()
     {
@@ -330,8 +334,13 @@ public static class CliEntryPoints
     }
 
     /// <summary>
-    /// Opens each buildered scene and writes a fresh canonical signature to
-    /// Documentation/Builders/Drift/&lt;Scene&gt;.snapshot.txt. Commit the output as the new baseline.
+    /// For each buildered scene: opens it, rebuilds via <c>*Builder.Build()</c>, saves the rebuilt
+    /// .unity, then writes a fresh canonical signature to
+    /// <c>Documentation/Builders/Drift/&lt;Scene&gt;.snapshot.txt</c>. Commit the output (snapshots
+    /// + any .unity changes) as the new baseline.
+    /// <para>This is a single "make everything consistent" operation: builder → .unity → snapshot.
+    /// Hand-edits to the .unity that aren't reproducible from the builder will be wiped — that's
+    /// intentional, since the builder is the source of truth.</para>
     /// </summary>
     public static void RegenerateBuilderSnapshots()
     {

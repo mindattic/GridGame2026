@@ -3,29 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// BUILDERAUTOREBUILD - Watches <c>Assets/Editor/Builders/*Builder.cs</c> for mtime changes and
+/// BUILDERAUTOREBUILD - Watches <c>Assets/Editor/Builders/*Builder.cs</c> for content changes and
 /// rebuilds the matching <c>Assets/Scenes/{Name}.unity</c> after each domain reload.
 /// <para>DIRECTION: Strictly Builder → Scene. The reverse (Scene → Builder) requires a human/LLM
 /// to translate YAML to C# and is intentionally not automated; edits made directly to a .unity in
 /// the Editor are not synced back.</para>
-/// <para>FIRST RUN: On editor launch with no cache, current mtimes are recorded silently. Nothing
+/// <para>CHANGE DETECTION: Uses content-SHA1 (not mtime) so a <c>git pull</c> that touches a builder
+/// file without changing its bytes won't trigger a spurious rebuild. The cache survives across
+/// machines because hashes depend on bytes, not local clock state.</para>
+/// <para>FIRST RUN: On editor launch with no cache, current hashes are recorded silently. Nothing
 /// is rebuilt — the cache is only used to detect deltas going forward.</para>
 /// <para>PLAY MODE: Rebuilds are deferred until edit mode resumes.</para>
-/// <para>ACTIVE SCENE: If a rebuild target matches the currently-loaded scene, the scene is reloaded
-/// in place. Any in-editor changes to that scene are lost (builders are the source of truth).</para>
+/// <para>SAVE PROMPT: If the currently-loaded scene is dirty, the user is prompted to save before
+/// the destructive clear-and-recreate happens. Batchmode skips the prompt (nothing dirty there).</para>
+/// <para>POST-REBUILD VERIFY: After each successful rebuild, the rebuilt scene's signature is
+/// compared to its committed snapshot. Divergence logs a warning but does NOT auto-update the
+/// snapshot — that's a deliberate signal to either regenerate snapshots (intentional builder change)
+/// or fix the builder (regression).</para>
 /// </summary>
 [InitializeOnLoad]
 public static class BuilderAutoRebuild
 {
     private const string BuildersFolder = "Assets/Editor/Builders";
     private const string ScenesFolder   = "Assets/Scenes";
-    private const string CachePath      = "Library/BuilderMTimes.json";
+    private const string CachePath      = "Library/BuilderHashes.json";
 
     // Files in BuildersFolder that aren't scene builders (helpers, watchers, codegen).
     private static readonly HashSet<string> NotASceneBuilder = new HashSet<string>
@@ -35,7 +43,7 @@ public static class BuilderAutoRebuild
         "BuilderAutoRebuild",
     };
 
-    [Serializable] private class Entry { public string name; public long mtimeTicks; }
+    [Serializable] private class Entry { public string name; public string hash; }
     [Serializable] private class Cache { public List<Entry> entries = new List<Entry>(); }
 
     static BuilderAutoRebuild()
@@ -58,14 +66,14 @@ public static class BuilderAutoRebuild
             "Rebuild", "Cancel"))
             return;
 
-        var targets = ScanBuilderMTimes().Keys
+        var targets = ScanBuilderHashes().Keys
             .Where(name => !NotASceneBuilder.Contains(name))
             .Select(StripBuilderSuffix)
             .Where(scene => File.Exists($"{ScenesFolder}/{scene}.unity"))
             .ToList();
 
         RebuildScenes(targets);
-        SaveCache(ScanBuilderMTimes());
+        SaveCache(ScanBuilderHashes());
     }
 
     private static void RunPending()
@@ -78,7 +86,7 @@ public static class BuilderAutoRebuild
         }
 
         var cache   = LoadCache();
-        var current = ScanBuilderMTimes();
+        var current = ScanBuilderHashes();
 
         // First run on a fresh checkout / cleared Library — just record and exit.
         if (cache.entries.Count == 0)
@@ -88,7 +96,7 @@ public static class BuilderAutoRebuild
         }
 
         var changedBuilders = current
-            .Where(kvp => !cache.entries.Any(e => e.name == kvp.Key && e.mtimeTicks == kvp.Value))
+            .Where(kvp => !cache.entries.Any(e => e.name == kvp.Key && e.hash == kvp.Value))
             .Select(kvp => kvp.Key)
             .ToList();
 
@@ -122,8 +130,16 @@ public static class BuilderAutoRebuild
 
     private static void RebuildScenes(IList<string> sceneNames)
     {
+        // Give the user a chance to save any dirty work before we wipe scenes. In batchmode no
+        // scene is dirty so this is a no-op. In interactive mode they see one prompt covering
+        // any modified scenes — better than silent destruction on every domain reload.
+        if (!Application.isBatchMode)
+        {
+            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+        }
+
         var originalActivePath = EditorSceneManager.GetActiveScene().path;
-        int ok = 0, failed = 0;
+        int ok = 0, failed = 0, drifted = 0;
         int total = sceneNames.Count;
         bool showBar = !Application.isBatchMode;
 
@@ -142,6 +158,7 @@ public static class BuilderAutoRebuild
                 try
                 {
                     RebuildScene(sceneName);
+                    if (VerifyAgainstCommittedSnapshot(sceneName)) drifted++;
                     ok++;
                 }
                 catch (Exception e)
@@ -164,7 +181,43 @@ public static class BuilderAutoRebuild
                 EditorSceneManager.OpenScene(originalActivePath);
         }
 
-        Debug.Log($"[BuilderAutoRebuild] Done. 100% — {ok} ok, {failed} failed.");
+        if (drifted > 0)
+        {
+            Debug.LogWarning(
+                $"[BuilderAutoRebuild] Done. 100% — {ok} ok, {failed} failed, {drifted} drifted from committed snapshot.\n" +
+                "  Drifted scenes' rebuilds no longer match the committed signature — either the builder change\n" +
+                "  was intentional (run CliEntryPoints.RegenerateBuilderSnapshots to bless the new state) or it's\n" +
+                "  a regression (revert the builder edit).");
+        }
+        else
+        {
+            Debug.Log($"[BuilderAutoRebuild] Done. 100% — {ok} ok, {failed} failed.");
+        }
+    }
+
+    // Returns true if the freshly-rebuilt scene's signature differs from the committed snapshot.
+    // Logs a warning with the location of the snapshot for inspection; does NOT regenerate it.
+    private static bool VerifyAgainstCommittedSnapshot(string sceneName)
+    {
+        try
+        {
+            var committed = BuilderDriftChecker.ReadCommittedSnapshot(sceneName);
+            if (committed == null) return false; // no snapshot yet for this scene — not drift
+
+            var current = BuilderDriftChecker.SignatureOfActiveScene();
+            if (BuilderDriftChecker.SignaturesEqual(committed, current)) return false;
+
+            Debug.LogWarning(
+                $"[BuilderAutoRebuild] {sceneName}: rebuilt scene drifts from committed snapshot at " +
+                $"Documentation/Builders/Drift/{sceneName}.snapshot.txt. " +
+                $"Run CliEntryPoints.RegenerateBuilderSnapshots if the change is intentional.");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[BuilderAutoRebuild] {sceneName}: post-rebuild signature check failed: {e.Message}");
+            return false;
+        }
     }
 
     private static void RebuildScene(string sceneName)
@@ -174,7 +227,8 @@ public static class BuilderAutoRebuild
         if (current.path != path)
             EditorSceneManager.OpenScene(path);
 
-        // Clear root objects silently — no Undo grouping, no dialog.
+        // Clear root objects silently — no Undo grouping, no dialog. (Save prompt happened
+        // earlier in RebuildScenes.)
         var roots = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (var go in roots)
             UnityEngine.Object.DestroyImmediate(go);
@@ -200,14 +254,20 @@ public static class BuilderAutoRebuild
     private static string StripBuilderSuffix(string name) =>
         name.EndsWith("Builder") ? name.Substring(0, name.Length - "Builder".Length) : name;
 
-    private static Dictionary<string, long> ScanBuilderMTimes()
+    // Content-SHA1 hashes — survives git checkouts that touch mtime without changing bytes.
+    private static Dictionary<string, string> ScanBuilderHashes()
     {
-        var result = new Dictionary<string, long>();
+        var result = new Dictionary<string, string>();
         if (!Directory.Exists(BuildersFolder)) return result;
-        foreach (var path in Directory.GetFiles(BuildersFolder, "*Builder.cs", SearchOption.TopDirectoryOnly))
+        using (var sha = SHA1.Create())
         {
-            var name = Path.GetFileNameWithoutExtension(path);
-            result[name] = new FileInfo(path).LastWriteTimeUtc.Ticks;
+            foreach (var path in Directory.GetFiles(BuildersFolder, "*Builder.cs", SearchOption.TopDirectoryOnly))
+            {
+                var name = Path.GetFileNameWithoutExtension(path);
+                var bytes = File.ReadAllBytes(path);
+                var hash = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "");
+                result[name] = hash;
+            }
         }
         return result;
     }
@@ -219,12 +279,12 @@ public static class BuilderAutoRebuild
         catch { return new Cache(); }
     }
 
-    private static void SaveCache(Dictionary<string, long> mtimes)
+    private static void SaveCache(Dictionary<string, string> hashes)
     {
         var c = new Cache
         {
-            entries = mtimes
-                .Select(kvp => new Entry { name = kvp.Key, mtimeTicks = kvp.Value })
+            entries = hashes
+                .Select(kvp => new Entry { name = kvp.Key, hash = kvp.Value })
                 .ToList()
         };
         Directory.CreateDirectory(Path.GetDirectoryName(CachePath));

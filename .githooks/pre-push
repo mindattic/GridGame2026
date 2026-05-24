@@ -30,6 +30,23 @@ if [ -z "$UNITY" ]; then
     exit 0
 fi
 
+# Batchmode can't acquire the project lock if the Editor is open. Detect that up front and
+# print a useful message rather than letting Unity exit with a cryptic license-or-lock error.
+# Unity 6 writes Temp/UnityLockfile while a session holds the project; if that file exists
+# AND can't be opened for writing, an Editor is alive on this project.
+LOCKFILE="$PROJ/Temp/UnityLockfile"
+if [ -f "$LOCKFILE" ]; then
+    # Try to obtain an exclusive lock on the file. If we can't, the Editor still holds it.
+    # Portable check: attempt to rename in-place (atomic, no data change); succeeds only if
+    # the OS isn't keeping a writer handle.
+    if ! ( exec 9<>"$LOCKFILE" ) 2>/dev/null; then
+        echo "[pre-push] Unity Editor appears to be running on this project (Temp/UnityLockfile held)."
+        echo "[pre-push] Batchmode can't acquire the project lock while the Editor is open."
+        echo "[pre-push] Close the Editor and retry the push, or bypass with: git push --no-verify"
+        exit 1
+    fi
+fi
+
 mkdir -p "$PROJ/Logs"
 LOG="$PROJ/Logs/pre-push-$(date +%Y%m%d-%H%M%S).log"
 
