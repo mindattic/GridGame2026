@@ -1,441 +1,442 @@
-# Builder snapshot for scene: Game
-# Regenerate via CliEntryPoints.RegenerateBuilderSnapshots.
-# Deterministic — diff this file to see scene drift.
+# signature_version: 2
+# scene: Game
+# regenerate via: CliEntryPoints.RegenerateBuilderSnapshots
+# comments (lines starting with #) are stripped before comparison
 
 [Background] layer=UI
   BackgroundInstance
   SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
 [Board] layer=Board
-  BoardInstance
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  BoardInstance: bounds=<null>, center=(0,0), columnCount=6, offset=(0,0), rowCount=8
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
   [BoardOverlay]
     BoardOverlay
     SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=0, layer=Default
-    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+    Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
   [FocusIndicator] layer=Actor
     FocusIndicator
-    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+    Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
   [TargetModeOverlay]
     CanvasRenderer
     SpriteRenderer: sprite=<null>, color=#FFFFFFFF, order=50, layer=Default
     TargetModeOverlay
-    Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+    Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
-  CanvasScaler: mode=ConstantPixelSize, ref=0,0, match=0
+  CanvasScaler: mode=ConstantPixelSize, ref=1E-05,1E-05, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5
-  [AbilityBar] layer=UI
-    AbilityBar
-    CanvasGroup
-    CanvasRenderer
-    Image: sprite=TitleBar, color=#FFFFFFFF, type=Simple, raycast=True
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,703, size=512,96, pivot=0.5,0.5
-    [Label] layer=UI
-      CanvasRenderer
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,64, pivot=0.5,0.5
-      TextMeshProUGUI: font=Attic, text='Test', size=32, color=#FFFFFFFF, align=Center, raycast=True
+  RectTransform: anchor=(0,0)-(0,0), pos=589.5,1278, size=1179,2556, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [AbilityCastConfirm] layer=UI
-    AbilityCastConfirm
+    AbilityCastConfirm: label=<null>
     CanvasGroup
     CanvasRenderer
     Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=512,128, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [CancelButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=Cancel, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=391.36,0, size=64,64, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=391.36,0, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Avenir, text='X', size=24, color=#FFFFFFFF, align=Center, raycast=True
     [CastButton] layer=UI
       Button
       CanvasRenderer
       Image: sprite=Confirm, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=454.9,0, size=64,64, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=454.9,0, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Avenir, text='Ok', size=24, color=#FFFFFFFF, align=Center, raycast=True
     [Label] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=64,0, size=0,64, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=64,0, size=0,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=Attic, text='Cast Heal', size=32, color=#FFFFFFFF, align=Left, raycast=True
+  [ActionTitle] layer=UI
+    ActionTitle
+    CanvasGroup
+    CanvasRenderer
+    Image: sprite=TitleBar, color=#FFFFFFFF, type=Simple, raycast=False
+    RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-32, size=720,96, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
+    [Label] layer=UI
+      CanvasRenderer
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      TextMeshProUGUI: font=Attic, text='Test', size=32, color=#FFFFFFFF, align=Center, raycast=True
   [Announcements] layer=UI
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [DefeatAnnouncement] layer=UI
       CanvasRenderer
-      DefeatAnnouncement
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
+      DefeatAnnouncement: floatSpeed=900, startOffsetY=250
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Back] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Defeat', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Front] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Defeat', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Image] layer=UI
         CanvasRenderer
         Image: sprite=Transparent32x32, color=#FFFFFF00, type=Simple, raycast=True
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         ScrollingImage
     [VictoryAnnouncement] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
-      VictoryAnnouncement
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      VictoryAnnouncement: holdDuration=0, slideSpeed=1200
       [Back] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Victory!', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Front] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Victory!', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Image] layer=UI
         CanvasRenderer
         Image: sprite=Transparent32x32, color=#FFFFFF00, type=Simple, raycast=True
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         ScrollingImage
     [WaveAnnouncement] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
-      WaveAnnouncement
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      WaveAnnouncement: holdDuration=2, rotationFocus=200
       [Back] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,8, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Wave 1/\u221E', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Front] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=Attic, text='Wave 1/\u221E', size=128, color=#FFFFFF00, align=Center, raycast=True
       [Image] layer=UI
         CanvasRenderer
         Image: sprite=Transparent32x32, color=#FFFFFF00, type=Simple, raycast=True
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         ScrollingImage
   [Card] layer=UI
     ActorCard
     CanvasRenderer
-    RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,256, pivot=1,0
+    RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,256, pivot=1,0, rotQ=(0,0,0,1), scale=1,1,1
     [AbilityButtonContainer] layer=UI
       CanvasRenderer
       HorizontalLayoutGroup: spacing=0, align=MiddleLeft
       Image: sprite=action-bar-1, color=#FFFFFF3C, type=Simple, raycast=True
-      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,128, pivot=0,0
+      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,128, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
     [ArrowLeft] layer=UI
       Button
       CanvasRenderer
       Image: sprite=ArrowLeft, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0)-(1,0), pos=-320,50, size=64,64, pivot=0.5,0.5
+      RectTransform: anchor=(1,0)-(1,0), pos=-320,50, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Text (TMP)] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
     [ArrowRight] layer=UI
       Button
       CanvasRenderer
       Image: sprite=ArrowRight, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0)-(1,0), pos=-250,50, size=64,64, pivot=0.5,0.5
+      RectTransform: anchor=(1,0)-(1,0), pos=-250,50, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Text (TMP)] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
     [Backdrop] layer=UI
       CanvasGroup
       CanvasRenderer
       Image: sprite=Back.1024x256, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,0
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
     [Details] layer=UI
       CanvasGroup
       CanvasRenderer
-      RectTransform: anchor=(0,1)-(0,1), pos=25,-60, size=512,0, pivot=0,0.5
+      RectTransform: anchor=(0,1)-(0,1), pos=25,-60, size=512,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=Avenir, text='Description', size=24, color=#FFFFFFFF, align=TopLeft, raycast=True
     [Portrait] layer=UI
       CanvasGroup
       CanvasRenderer
       Image: sprite=Mannequin, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(1,0)-(1,0), pos=-128,-128, size=1024,1024, pivot=0.5,0.5
+      RectTransform: anchor=(1,0)-(1,0), pos=-128,-128, size=1024,1024, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Title] layer=UI
       CanvasGroup
       CanvasRenderer
-      RectTransform: anchor=(0,1)-(0,1), pos=25,-20, size=512,0, pivot=0,0
+      RectTransform: anchor=(0,1)-(0,1), pos=25,-20, size=512,0, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=Attic, text='Name', size=32, color=#FFFFFFFF, align=TopLeft, raycast=True
   [Clock]
     CanvasRenderer
     Clock
-    RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,1100, size=280,32, pivot=0,1
+    RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,1100, size=280,32, pivot=0,1, rotQ=(0,0,0,1), scale=1,1,1
     TextMeshProUGUI: font=LiberationSans SDF - Fallback, text='10:41 AM', size=24, color=#FFFFFFFF, align=Center, raycast=False
   [CoinCounter] layer=UI
-    CoinCounter
-    RectTransform: anchor=(0,1)-(1,1), pos=-402.37,-1200, size=-980,100, pivot=1,0.5
+    CoinCounter: glow=<null>, glowCurve=<null>, icon=<null>, value=<null>
+    RectTransform: anchor=(0,1)-(1,1), pos=-402.37,-1200, size=-980,100, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Glow] layer=Portrait
       CanvasRenderer
       Image: sprite=Coin, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=218.79,1023.68, size=100,100, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=218.79,1023.68, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Icon] layer=Portrait
       CanvasRenderer
       Image: sprite=Coin, color=#FFDF00FF, type=Simple, raycast=True
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=218.79,1023.68, size=100,100, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=218.79,1023.68, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Value] layer=Portrait
       CanvasRenderer
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=243.79,1053.65, size=20,5, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=243.79,1053.65, size=20,5, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=Attic, text='0000000', size=48, color=#FFFFFFFF, align=TopLeft, raycast=True
   [CutoutOverlay] layer=UI
     CutoutOverlay
-    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Bottom] (inactive)
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.1538, pivot=0.5,0
+      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.15384, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
     [Top]
       CanvasRenderer
       Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.1538, pivot=0.5,1
+      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.1538, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [CenterPane]
         HorizontalLayoutGroup: spacing=0, align=MiddleCenter
-        RectTransform: anchor=(0.3333,0)-(0.6667,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0.3333333,0)-(0.6666667,1), pos=0,0, size=0,-7.629395E-06, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [LeftPane]
         HorizontalLayoutGroup: spacing=0, align=MiddleCenter
-        RectTransform: anchor=(0,0)-(0.3333,1), pos=0,0, size=0,0, pivot=0,0.5
+        RectTransform: anchor=(0,0)-(0.3333333,1), pos=0,0, size=0,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [RightPane]
         HorizontalLayoutGroup: spacing=0, align=MiddleCenter
-        RectTransform: anchor=(0.6667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5
+        RectTransform: anchor=(0.6666667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
     Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
-    RectTransform: anchor=(0,0)-(1,1), pos=-0.5,0.5, size=-1,-1, pivot=0.5,0.5
+    RectTransform: anchor=(0,0)-(1,1), pos=-0.5,0.5, size=-1,-1, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [ManaPool]
-    RectTransform: anchor=(0.02,0.5)-(0.98,0.5), pos=0,761.5, size=-32,100, pivot=0.5,0.5
+    RectTransform: anchor=(0.02,0.5)-(0.98,0.5), pos=0,761.5, size=-32.00003,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [BankButton]
       Button
       CanvasRenderer
       Image: sprite=Coin, color=#408CFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-86.8,0, size=96,96, pivot=0.5,0.5
+      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-86.8,0, size=96,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Glow]
         CanvasRenderer
         Image: sprite=Coin, color=#66B2FF99, type=Simple, raycast=False
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=96,96, pivot=0.5,0.5
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=96,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [EnemyBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,-80, size=-176,0, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,-80, size=-176,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Back]
         CanvasRenderer
         Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Fill]
         CanvasRenderer
         Image: sprite=action-bar-1, color=#FFFFFFFF, type=Filled, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [HeroBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,0, size=-176,64, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,0, size=-176,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Back]
         CanvasRenderer
         Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Fill]
         CanvasRenderer
         Image: sprite=action-bar-1, color=#FFFFFFFF, type=Filled, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [PauseButton] layer=UI
     Button
     CanvasRenderer
     Image: sprite=Pause, color=#FFFFFFFF, type=Simple, raycast=True
-    RectTransform: anchor=(1,0.5)-(1,0.5), pos=-100,1100, size=48,48, pivot=0.5,0.5
+    RectTransform: anchor=(1,0.5)-(1,0.5), pos=-100,1100, size=48,48, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Label] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
   [PauseMenu] layer=UI
     CanvasRenderer
     Image: sprite=Black32x32, color=#000000C4, type=Simple, raycast=False
     PauseMenu
-    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Inner] layer=UI
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,300, size=800,600, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,300, size=800,600, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       VerticalLayoutGroup: spacing=10, align=MiddleCenter
-      [CreateSaveGameButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='New Save', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [PartyManagerButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Party', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [QuickSaveGameButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Quick Save', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [QuitButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='\'Quit', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [RestartStageButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Restart Stage', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [ResumeButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Resume', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [RunAwayButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='Run Away', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [SectionGameplay] layer=UI
+      [SectionOptions @0] layer=UI
         CanvasRenderer
         Image: sprite=<null>, color=#00000000, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=1024,100, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=1024,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         [Image] layer=UI
           CanvasRenderer
           Image: sprite=Button.Bottom, color=#FFFFFFFF, type=Simple, raycast=True
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=1024,50, pivot=0.5,0.5
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=1024,50, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='\'Gameplay', size=36, color=#FFFFFFFF, align=Left, raycast=True
-      [SectionOptions] layer=UI
-        CanvasRenderer
-        Image: sprite=<null>, color=#00000000, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=1024,100, pivot=0.5,0.5
-        [Image] layer=UI
-          CanvasRenderer
-          Image: sprite=Button.Bottom, color=#FFFFFFFF, type=Simple, raycast=True
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=1024,50, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5
+          RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Attic, text='\'Options', size=36, color=#FFFFFFFF, align=Left, raycast=True
-      [SettingsButton] layer=UI
+      [StageSelectButton @1] layer=UI
         Button
         CanvasRenderer
         Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         [Label] layer=UI
           CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
-          TextMeshProUGUI: font=Attic, text='\'Settings', size=64, color=#FFFFFFFF, align=Center, raycast=True
-      [StageSelectButton] layer=UI
-        Button
-        CanvasRenderer
-        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5
-        [Label] layer=UI
-          CanvasRenderer
-          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Attic, text='Stage Select', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [QuitButton @2] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='\'Quit', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [SettingsButton @3] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='\'Settings', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [ResumeButton @4] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='Resume', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [RunAwayButton @5] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='Run Away', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [PartyManagerButton @6] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='Party', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [RestartStageButton @7] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='Restart Stage', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [CreateSaveGameButton @8] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='New Save', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [QuickSaveGameButton @9] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='Quick Save', size=64, color=#FFFFFFFF, align=Center, raycast=True
+      [SectionGameplay @10] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#00000000, type=Simple, raycast=True
+        RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=1024,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Image] layer=UI
+          CanvasRenderer
+          Image: sprite=Button.Bottom, color=#FFFFFFFF, type=Simple, raycast=True
+          RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=1024,50, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0.5)-(0,0.5), pos=125,24, size=200,75, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Attic, text='\'Gameplay', size=36, color=#FFFFFFFF, align=Left, raycast=True
     [ParallaxBackground] layer=UI
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5
+      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       [Slide1] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,1
-        ScrollingRawImage
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
+        ScrollingRawImage: scrollFocus=(0,0)
       [Slide2] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0
-        ScrollingRawImage
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+        ScrollingRawImage: scrollFocus=(0,0)
       [Slide3] layer=UI
         CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0
-        ScrollingRawImage
+        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+        ScrollingRawImage: scrollFocus=(0,0)
   [Pointer] layer=UI
     CanvasGroup
     CanvasRenderer
     PointerManager
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [Portraits] layer=UI
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [TimelineBar]
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,930, size=889.5,8, pivot=0.5,0.5
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,930, size=889.5,8, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     TimelineBarInstance
     [Left]
       CanvasRenderer
       Image: sprite=<null>, color=#FF0000FF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=2,16, pivot=0,0.5
+      RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,0, size=2,16, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Line]
       CanvasRenderer
       Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=0,0, size=0,2, pivot=0.5,0.5
+      RectTransform: anchor=(0,0.5)-(1,0.5), pos=0,0, size=0,2, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Right]
       CanvasRenderer
       Image: sprite=<null>, color=#8CC924FF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0.5)-(1,0.5), pos=0,0, size=2,16, pivot=1,0.5
+      RectTransform: anchor=(1,0.5)-(1,0.5), pos=0,0, size=2,16, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Tags]
-      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,16, size=100,100, pivot=0.5,0.5
+      RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,16, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
 [Canvas3D]
   Canvas: mode=WorldSpace, order=1, layer=Default
-  CanvasScaler: mode=ConstantPixelSize, ref=0,0, match=0
+  CanvasScaler: mode=ConstantPixelSize, ref=1E-05,1E-05, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5
+  RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
 [Effects]
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
 [EventSystem]
-  EventSystem
-  StandaloneInputModule
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  EventSystem: m_DragThreshold=10, m_FirstSelected=→<null>, m_sendNavigationEvents=True
+  StandaloneInputModule: m_CancelButton='Cancel', m_ForceModuleActive=False, m_HorizontalAxis='Horizontal', m_InputActionsPerSecond=10, m_RepeatDelay=0.5, m_SubmitButton='Submit', m_VerticalAxis='Vertical'
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
 [Game]
   AbilityButtonManager
   AbilityManager
-  ActorManager
+  ActorManager: snapTheshold=0
   AttackLineManager
   AudioManager
   AudioSource
   AudioSource
   BoardManager
-  CameraManager
+  CameraManager: local=<null>, screenBounds=<null>, viewBounds=<null>, world=<null>
   CoinManager
   CombatTextManager
-  ConsoleManager
-  DebugManager
-  DottedLineManager
+  ConsoleManager: textMesh=<null>
+  DebugManager: isEnemyInvincible=False, isEnemyStunned=False, isHeroInvincible=False, isTimerInfinite=False, showActorFrame=False, showActorNameTag=False, showTutorials=False
+  DottedLineManager: dottedLines=[count=0: ]
   EnemyManager
-  FootstepManager
-  GameManager
+  FootstepManager: target=→<null>
+  GameManager: abilityButtonManager=<null>, abilityCastConfirm=<null>, abilityManager=<null>, actionTitle=<null>, actorManager=<null>, actors=<null>, applyMovementTilt=False, attackLineManager=<null>, attackLines=<null>, audioManager=<null>, background=<null>, board=<null>, boardHorizontalPercent=0.96, boardManager=<null>, boardOverlay=<null>, bottomReservePercent=0.15, bumpFocus=0, cameraManager=<null>, canvas3D=→<null>, card=<null>, coinCountMultiplier=0.05, coinCounter=<null>, coinManager=<null>, combatTextManager=<null>, consoleManager=<null>, cursorFocus=0, debugManager=<null>, defeatAnnouncement=<null>, deviceType=<null>, dottedLineManager=<null>, dragSensitivity=0.05, dragThreshold=0, enemyManager=<null>, footstepManager=<null>, gameSpeed=1, ghostManager=<null>, heroManager=<null>, inputManager=<null>, itemPickupManager=<null>, logManager=<null>, manaPoolManager=<null>, moveFocus=0, movingHero=<null>, musicSource=→<null>, pauseMenu=<null>, pincerAttackManager=<null>, portraitManager=<null>, portraitsRect=→<null>, preselectHero=<null>, projectileManager=<null>, reloadThumbnailSettings=False, selectedActor=<null>, selectedHeroManager=<null>, sequenceManager=<null>, sortingManager=<null>, soundSource=→<null>, stageManager=<null>, supportLineManager=<null>, supportLines=<null>, swapFocus=0, synergyLineManager=<null>, targetActor=<null>, targetFramerate=Fps60, targetLineManager=<null>, targetModeOverlay=<null>, tileManager=<null>, tileMap=<null>, tileScale=(0,0,0), tileSize=0, tiles=<null>, timelineBar=<null>, topReservePercent=0.12, touchOffset=(0,0,0), touchPosition2D=(0,0,0), touchPosition3D=(0,0,0), turnManager=<null>, turnSelectionMode=FreeSelect, tutorialPopup=<null>, vSyncCount=VSync1, victoryAnnouncement=<null>, viewport=(0,0), visualEffectManager=<null>, waveAnnouncement=<null>
   GhostManager
   HeroManager
-  InputManager
+  InputManager: dragThreshold=0
   ItemPickupManager
-  LogManager
-  ManaPoolManager
+  LogManager: logLevel=None
+  ManaPoolManager: enemyMana=0, manaHdrColor=#33FFFFFF, manaPerSecond=5, maxMana=100, showEnemyMana=False
   PincerAttackManager
   PortraitManager
   ProjectileManager
@@ -447,18 +448,18 @@
   SynergyLineManager
   TargetLineManager
   TileManager
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
-  TurnManager
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
+  TurnManager: CurrentTurn=0
   VisualEffectManager
 [Main Camera] tag=MainCamera
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#314D7900
-  CameraManager
-  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
-  UniversalAdditionalCameraData
+  CameraManager: local=<null>, screenBounds=<null>, viewBounds=<null>, world=<null>
+  Transform: pos=0,0,-10, rotQ=(0,0,0,1), scale=1,1,1
+  UniversalAdditionalCameraData: m_AllowHDROutput=True, m_AllowXRRendering=True, m_Antialiasing=None, m_AntialiasingQuality=High, m_CameraType=Base, m_Cameras=[count=1: →Overlay Camera], m_ClearDepth=True, m_Dithering=False, m_RenderPostProcessing=False, m_RenderShadows=True, m_RendererIndex=-1, m_RequiresColorTexture=False, m_RequiresDepthTexture=False, m_RequiresDepthTextureOption=UsePipelineSettings, m_RequiresOpaqueTextureOption=UsePipelineSettings, m_ScreenCoordScaleBias=(0,0,0,0), m_ScreenSizeOverride=(0,0,0,0), m_StopNaN=False, m_UseScreenCoordOverride=False, m_Version=DepthAndOpaqueTextureOptions, m_VolumeFrameworkUpdateModeOption=UsePipelineSettings, m_VolumeLayerMask=1, m_VolumeTrigger=→<null>
 [Overlay Camera]
   Camera: ortho=True, size=5, fov=60, depth=1, clear=Nothing, bg=#314D7900
-  Transform: pos=0,0,-10, rot=0,0,0, scale=1,1,1
-  UniversalAdditionalCameraData
+  Transform: pos=0,0,-10, rotQ=(0,0,0,1), scale=1,1,1
+  UniversalAdditionalCameraData: m_AllowHDROutput=True, m_AllowXRRendering=True, m_Antialiasing=None, m_AntialiasingQuality=High, m_CameraType=Overlay, m_Cameras=[count=0: ], m_ClearDepth=True, m_Dithering=False, m_RenderPostProcessing=False, m_RenderShadows=True, m_RendererIndex=-1, m_RequiresColorTexture=False, m_RequiresDepthTexture=False, m_RequiresDepthTextureOption=UsePipelineSettings, m_RequiresOpaqueTextureOption=UsePipelineSettings, m_ScreenCoordScaleBias=(0,0,0,0), m_ScreenSizeOverride=(0,0,0,0), m_StopNaN=False, m_UseScreenCoordOverride=False, m_Version=DepthAndOpaqueTextureOptions, m_VolumeFrameworkUpdateModeOption=UsePipelineSettings, m_VolumeLayerMask=1, m_VolumeTrigger=→<null>
 [PostProcessing]
-  Transform: pos=0,0,0, rot=0,0,0, scale=1,1,1
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
