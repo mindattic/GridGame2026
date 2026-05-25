@@ -42,6 +42,49 @@ public static class BuilderDriftChecker
     public const string SnapshotRoot = "Documentation/Builders/Drift";
     public const int SignatureVersion = 2;
 
+    // ===================== Editor Menu =====================
+
+    /// <summary>
+    /// Tools › Scenes › Regenerate Drift Snapshots — same operation as the batchmode
+    /// CliEntryPoints.RegenerateBuilderSnapshots, runnable from inside an open Editor so the
+    /// project doesn't have to close + reopen just to refresh signatures.
+    /// </summary>
+    [UnityEditor.MenuItem("Tools/Scenes/Regenerate Drift Snapshots %#r")]
+    public static void RegenerateSnapshotsMenu()
+    {
+        if (!EditorUtility.DisplayDialog(
+            "Regenerate Drift Snapshots",
+            "Rebuild every buildered .unity from its *Builder.cs, save each scene, and " +
+            "overwrite the committed snapshot under Documentation/Builders/Drift/.\n\n" +
+            "Any hand-edits to scenes that aren't reproducible from their builders will be " +
+            "wiped — that's intentional, builders are source of truth.",
+            "Regenerate", "Cancel"))
+            return;
+
+        // Give the user a chance to save dirty scene work before we wipe-and-rebuild.
+        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+
+        var ok = Regenerate(CliEntryPoints.BuilderedScenes);
+        Debug.Log($"[BuilderDrift] Menu regen complete: wrote {ok}/{CliEntryPoints.BuilderedScenes.Length} snapshot(s).");
+    }
+
+    /// <summary>
+    /// Tools › Scenes › Verify Drift — same operation as the batchmode
+    /// CliEntryPoints.VerifyBuilderDrift, runnable from inside an open Editor for quick checks.
+    /// </summary>
+    [UnityEditor.MenuItem("Tools/Scenes/Verify Drift %#d")]
+    public static void VerifyDriftMenu()
+    {
+        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+        var drifted = Verify(CliEntryPoints.BuilderedScenes);
+        if (drifted == 0)
+            EditorUtility.DisplayDialog("Verify Drift", "All scenes clean.", "OK");
+        else
+            EditorUtility.DisplayDialog("Verify Drift",
+                $"{drifted} scene(s) drifted. See Console + Documentation/Builders/Drift/*.diff.txt.",
+                "OK");
+    }
+
     // ===================== Public API =====================
 
     /// <summary>

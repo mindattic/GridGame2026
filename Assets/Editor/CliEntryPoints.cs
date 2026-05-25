@@ -20,7 +20,7 @@ using UnityEngine;
 /// </summary>
 public static class CliEntryPoints
 {
-    private static readonly string[] BuilderedScenes =
+    public static readonly string[] BuilderedScenes =
     {
         "Credits",
         "LoadingScreen",
