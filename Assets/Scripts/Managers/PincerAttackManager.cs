@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
+using Scripts.Core.Board;
 using Scripts.Data.Actor;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
@@ -121,44 +122,24 @@ public class PincerAttackManager : MonoBehaviour
     {
         var participants = new PincerAttackParticipants();
 
-        var teamActors = g.Actors.All
-            .Where(x => x.IsPlaying && x.team == team)
-            .ToList();
+        // Snapshot the live board into pure value types, keyed by index, then run the
+        // detection rule as a pure function (PincerDetector). The index is the id that
+        // maps each result back to its live ActorInstance below.
+        var live = g.Actors.All.Where(x => x.IsPlaying).ToList();
+        var snapshot = new List<BoardActor>(live.Count);
+        for (int i = 0; i < live.Count; i++)
+            snapshot.Add(new BoardActor(i, live[i].team, live[i].location));
 
-        var indexed = teamActors.Select((actor, idx) => (actor, idx));
-
-        foreach (var (actor1, i) in indexed)
+        foreach (var candidate in PincerDetector.Find(snapshot, team))
         {
-            foreach (var actor2 in teamActors.Skip(i + 1))
+            participants.pair.Add(new PincerAttackPair
             {
-                if (!Geometry.IsSameRow(actor1.location, actor2.location) &&
-                    !Geometry.IsSameColumn(actor1.location, actor2.location))
-                    continue;
-
-                var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
-
-                var betweenActors = g.Actors.All
-                    .Where(x => x.IsPlaying && betweenLocs.Contains(x.location))
-                    .ToList();
-
-                bool hasEnemy = betweenActors.Any(x => x.team != team);
-                bool allOpponents = betweenActors.All(x => x.IsPlaying && x.team != team);
-                bool noGap = betweenLocs.Count == betweenActors.Count;
-
-                if (hasEnemy && allOpponents && noGap)
-                {
-                    var opponents = betweenActors.Where(x => x.team != team).ToList();
-
-                    participants.pair.Add(new PincerAttackPair
-                    {
-                        attacker1 = actor1,
-                        attacker2 = actor2,
-                        opponents = opponents,
-                        supporters1 = FindSupporters(actor1),
-                        supporters2 = FindSupporters(actor2)
-                    });
-                }
-            }
+                attacker1 = live[candidate.Attacker1Id],
+                attacker2 = live[candidate.Attacker2Id],
+                opponents = candidate.OpponentIds.Select(id => live[id]).ToList(),
+                supporters1 = candidate.Supporter1Ids.Select(id => live[id]).ToList(),
+                supporters2 = candidate.Supporter2Ids.Select(id => live[id]).ToList()
+            });
         }
 
         participants.pair = OrderPairsByChainsThenNearest(participants.pair, selectedHero);

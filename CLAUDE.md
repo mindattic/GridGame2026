@@ -33,6 +33,12 @@ A pincer is two heroes in the **same row OR same column** with a contiguous line
 
 A hero drop with no pincer and no queued enemy keeps the player in their turn (`InputMode = PlayerTurn`, `selectedState = Idle`). Sources: `Assets/Scripts/Managers/TurnManager.cs`, `Assets/Scripts/Managers/SelectionManager.cs:Drop()`, `Assets/Scripts/Sequences/EndTurnSequence.cs`.
 
+**Forced drop on trigger (design rule — currently incomplete).** When an enemy icon reaches u=1 *while a hero is mid-drag*, `TimelineTriggerSequence` runs `ForceHeroDropSequence` (drops the hero wherever it currently sits) and then `BeginEnemyTurn(enemy)`. Per design, the forced drop must run the **same pincer check** as a voluntary drop and the enemy turn must **wait for that pincer to resolve** before acting — i.e. a flank completed at the instant the timer expires still fires. **Current code reality:** `ForceHeroDropSequence.ProcessRoutine()` finalizes the hero position but does *not* call `PincerAttackManager.Check`, and `TimelineTriggerSequence` calls `BeginEnemyTurn` immediately after the forced drop. So a pincer formed exactly on the trigger is silently dropped. Fixing this is turn-flow work: it depends on making the forced-drop path await pincer resolution (the same `OnResolved` handoff `SelectionManager.Drop()` performs). Sources: `Assets/Scripts/Sequences/ForceHeroDropSequence.cs`, `Assets/Scripts/Sequences/TimelineTriggerSequence.cs`, `Assets/Scripts/Managers/SelectionManager.cs:Drop()`.
+
+### Time-advance gating (the commitment threshold)
+
+The world clock is **not** free-running during the hero window. Time advances — enemy icons move along the timeline, damage-over-time effects tick, and Mana regenerates — **only while the player has committed to a slide**, defined as: the dragged hero has been pulled **≥ 50% out of its origin tile**. Below that threshold (no hero picked up, or a picked-up hero still wiggling inside its origin tile), the world is **frozen**: this is the player's free rehearsal/planning time. Crossing the 50% threshold starts the clock; this is what makes spending a move *cost* timeline progress, and is the lever behind every "what can I accomplish before the next enemy triggers?" decision. (Open design questions, not yet pinned: whether dragging back **into** the origin tile re-freezes the clock, and whether entering each **new** tile re-arms a fresh 50% threshold or the clock simply stays live once first committed.) **This is design intent — verify against the current time-advance gating before relying on it; mana regen today keys off "timeline advancing" in `ManaPoolManager.Update()` rather than an explicit commitment gate.** Sources: `Assets/Scripts/Instances/Actor/ActorMovement.cs` (drag/threshold), `Assets/Scripts/Managers/ManaPoolManager.cs`, `Assets/Scripts/Canvas/TimelineBarInstance.cs`.
+
 ### Timeline & Pushback Zone (Grandia 2 IP gauge — "loading" metaphor)
 
 The TimelineBar shows a horizontal strip of icons "loading" left→right over normalized u-coordinates: **u=0.0 is spawn (left, fresh / not loaded), u=1.0 is trigger (right, fully loaded — ready to fire)**. When an enemy icon's right (leading) edge reaches u=1 the enemy's turn is queued. The **Pushback Zone** is a translucent red strip on the right, spanning `u ≥ 1 - TimelineBarConfig.ZoneU` (~the rightmost 25–35% of the bar).
@@ -151,6 +157,7 @@ using g = Scripts.Helpers.GameHelper;
 ### Folder Layout (`Assets/Scripts/`)
 | Folder | Purpose |
 |---|---|
+| `Core/` | **Pure game logic — no MonoBehaviour, no `GameHelper`, no scene state.** Operates on value-type snapshots (`BoardActor`) and returns id-based results. The architectural target: rules expressed as pure functions that are reasoned about and (eventually) unit-tested in isolation. First inhabitant: `Core/Board/PincerDetector.cs`. |
 | `Data/` | Static data definitions (items, actors, skills, recipes) |
 | `Models/` | Data structures, enums, `Singleton<T>` base |
 | `Managers/` | Singleton game systems (51 files) |
