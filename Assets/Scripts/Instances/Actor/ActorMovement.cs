@@ -309,7 +309,11 @@ namespace Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Handles swap movement after detecting an overlap.
+        /// Slides this actor back to the tile the dragging hero just vacated (displacement).
+        /// <para>If that tile is itself occupied — because the hero is being dragged through a
+        /// LINE of actors — the occupant is shoved one more tile along the same push direction
+        /// first (train-car cascade), so every actor in the path displaces in sequence instead
+        /// of stacking. The board edge is the only hard stop.</para>
         /// </summary>
         public void HandleOverlap(Vector2Int targetLocation)
         {
@@ -317,17 +321,32 @@ namespace Scripts.Instances.Actor
                 return;
 
             var currentTile = g.TileMap.GetTile(targetLocation);
+            if (currentTile == null)
+                return; // off board — board edge is the hard stop
 
             if (currentTile.IsOccupied)
             {
-                Debug.Log($"Tile {currentTile.location.x},{currentTile.location.y} is occupied.");
+                // Push direction = from where we stand now (the tile the hero just entered)
+                // toward the vacated tile, continued one step further. Movement is cardinal,
+                // so exactly one axis is non-zero.
+                int dx = Mathf.Clamp(targetLocation.x - location.x, -1, 1);
+                int dy = Mathf.Clamp(targetLocation.y - location.y, -1, 1);
+                var nextLocation = new Vector2Int(targetLocation.x + dx, targetLocation.y + dy);
+
+                var occupant = g.Actors.All.FirstOrDefault(x =>
+                    x != instance && x.IsPlaying && x.location == targetLocation);
+
+                // Can't cascade off the board, or no occupant to move — leave as-is.
+                if (occupant == null || g.TileMap.GetTile(nextLocation) == null)
+                    return;
+
+                // Shove the occupant onward (recurses for a full line), then claim the slot.
+                occupant.Move.HandleOverlap(nextLocation);
             }
-            else
-            {
-                flags.IsSwapping = true;
-                location = currentTile.location;
-                instance.StartCoroutine(TowardDestinationRoutine());
-            }
+
+            flags.IsSwapping = true;
+            location = currentTile.location;
+            instance.StartCoroutine(TowardDestinationRoutine());
         }
 
         /// <summary>

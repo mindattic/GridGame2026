@@ -112,160 +112,15 @@ public class PincerAttackManager : MonoBehaviour
 
     /// <summary>
     /// Scans the board for all valid pincer pairs for the given team.
-    /// Aligns chains to begin from selectedHero when provided.
+    /// Delegates the detection RULES to the pure <see cref="Scripts.Services.PincerDetector"/>;
+    /// this manager only supplies the live actor list and owns the animation/sequence BODY.
     /// </summary>
     /// <param name="team">Team to check for (Team.Hero or Team.Enemy)</param>
     /// <param name="selectedHero">Optional: Hero that was just dropped (for chain ordering)</param>
     /// <returns>PincerAttackParticipants containing all valid pincer pairs</returns>
     public PincerAttackParticipants GetParticipants(Team team, ActorInstance selectedHero)
     {
-        var participants = new PincerAttackParticipants();
-
-        var teamActors = g.Actors.All
-            .Where(x => x.IsPlaying && x.team == team)
-            .ToList();
-
-        var indexed = teamActors.Select((actor, idx) => (actor, idx));
-
-        foreach (var (actor1, i) in indexed)
-        {
-            foreach (var actor2 in teamActors.Skip(i + 1))
-            {
-                if (!Geometry.IsSameRow(actor1.location, actor2.location) &&
-                    !Geometry.IsSameColumn(actor1.location, actor2.location))
-                    continue;
-
-                var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
-
-                var betweenActors = g.Actors.All
-                    .Where(x => x.IsPlaying && betweenLocs.Contains(x.location))
-                    .ToList();
-
-                bool hasEnemy = betweenActors.Any(x => x.team != team);
-                bool allOpponents = betweenActors.All(x => x.IsPlaying && x.team != team);
-                bool noGap = betweenLocs.Count == betweenActors.Count;
-
-                if (hasEnemy && allOpponents && noGap)
-                {
-                    var opponents = betweenActors.Where(x => x.team != team).ToList();
-
-                    participants.pair.Add(new PincerAttackPair
-                    {
-                        attacker1 = actor1,
-                        attacker2 = actor2,
-                        opponents = opponents,
-                        supporters1 = FindSupporters(actor1),
-                        supporters2 = FindSupporters(actor2)
-                    });
-                }
-            }
-        }
-
-        participants.pair = OrderPairsByChainsThenNearest(participants.pair, selectedHero);
-        return participants;
-    }
-
-    /// <summary>
-    /// Orders pincer pairs to maximize chain attacks, starting from preferredStartHero.
-    /// </summary>
-    private List<PincerAttackPair> OrderPairsByChainsThenNearest(List<PincerAttackPair> pairs, ActorInstance preferredStartHero)
-    {
-        var ordered = new List<PincerAttackPair>();
-        var remaining = new HashSet<PincerAttackPair>(pairs);
-
-        System.Func<PincerAttackPair, (int y, int x)> posKey = p => (p.attacker1.location.y, p.attacker1.location.x);
-
-        var byAttacker1 = pairs
-            .GroupBy(p => p.attacker1)
-            .ToDictionary(gp => gp.Key, gp => SortPairsForAttacker1(gp.Key, gp.ToList()));
-
-        int Dist(Vector2Int a, Vector2Int b) => Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
-
-        PincerAttackPair PickInitialStart()
-        {
-            if (preferredStartHero != null)
-            {
-                var prefer = remaining.FirstOrDefault(p => p.attacker1 == preferredStartHero);
-                if (prefer != null) return prefer;
-            }
-
-            return remaining.OrderBy(posKey).First();
-        }
-
-        PincerAttackPair PickNearestStartTo(Vector2Int from)
-        {
-            return remaining
-                .OrderBy(p => Dist(p.attacker1.location, from))
-                .ThenBy(posKey)
-                .First();
-        }
-
-        while (remaining.Any())
-        {
-            var start = ordered.Any()
-                ? PickNearestStartTo(ordered.Last().attacker2.location)
-                : PickInitialStart();
-
-            var current = start;
-
-            while (current != null)
-            {
-                ordered.Add(current);
-                remaining.Remove(current);
-
-                if (byAttacker1.TryGetValue(current.attacker1, out var consumedList))
-                    consumedList.Remove(current);
-
-                PincerAttackPair next = null;
-                if (byAttacker1.TryGetValue(current.attacker2, out var nextList))
-                    next = nextList.FirstOrDefault(remaining.Contains);
-
-                current = next;
-            }
-        }
-
-        return ordered;
-    }
-
-    /// <summary>Sort pairs for attacker1.</summary>
-    private List<PincerAttackPair> SortPairsForAttacker1(ActorInstance attacker, List<PincerAttackPair> list)
-    {
-        IEnumerable<(PincerAttackPair pair, int orientPri, int primaryDist, int tieX, int tieY)> keyed =
-            list.Select(p =>
-            {
-                var a = attacker.location;
-                var b = (p.attacker1 == attacker ? p.attacker2.location : p.attacker1.location);
-
-                bool vertical = a.x == b.x;
-                bool horizontal = a.y == b.y;
-
-                int dy = Mathf.Abs(a.y - b.y);
-                int dx = Mathf.Abs(a.x - b.x);
-
-                int orientPri = dy == dx ? 0 : (dy > dx ? -1 : 1);
-
-                int primaryDist;
-                if (vertical)
-                {
-                    bool attackerAbove = a.y < b.y;
-                    primaryDist = attackerAbove ? b.y : -b.y;
-                }
-                else
-                {
-                    bool attackerLeft = a.x < b.x;
-                    primaryDist = attackerLeft ? -b.x : b.x;
-                }
-
-                return (p, orientPri, primaryDist, b.x, b.y);
-            });
-
-        return keyed
-            .OrderBy(k => k.orientPri)
-            .ThenBy(k => k.primaryDist)
-            .ThenBy(k => k.tieY)
-            .ThenBy(k => k.tieX)
-            .Select(k => k.pair)
-            .ToList();
+        return Scripts.Services.PincerDetector.Detect(g.Actors.All, team, selectedHero);
     }
 
     /// <summary>
@@ -350,33 +205,10 @@ public class PincerAttackManager : MonoBehaviour
         return Formulas.CalculateAttackResult(attacker, opponent);
     }
 
-    /// <summary>Finds the supporters.</summary>
+    /// <summary>Finds the supporters for an attacker. Delegates to the pure detector service.</summary>
     public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
-        var candidates = g.Actors.All
-            .Where(x => x.IsPlaying && x.team == attacker.team && x != attacker)
-            .Where(x => Geometry.IsSameRow(x.location, attacker.location) || Geometry.IsSameColumn(x.location, attacker.location))
-            .ToList();
-
-        var result = new List<ActorInstance>();
-        foreach (var c in candidates)
-            if (!IsActorBlocked(attacker, c))
-                result.Add(c);
-
-        return result;
-    }
-
-    /// <summary>Returns whether the is actor blocked condition is met.</summary>
-    private bool IsActorBlocked(ActorInstance a, ActorInstance b)
-    {
-        if (!Geometry.IsSameRow(a.location, b.location) && !Geometry.IsSameColumn(a.location, b.location))
-            return true;
-
-        var between = Geometry
-            .GetLocationsBetween(a.location, b.location)
-            .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
-
-        return g.Actors.All.Any(x => x.IsPlaying && between.Contains(x.location));
+        return Scripts.Services.PincerDetector.FindSupporters(g.Actors.All, attacker);
     }
 }
 

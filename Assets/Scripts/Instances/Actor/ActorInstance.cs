@@ -236,6 +236,7 @@ public partial class ActorInstance : MonoBehaviour
     public ActorRenderers Render = new ActorRenderers();
     public ActorStats Stats = new ActorStats();
     public ActorFlags Flags = new ActorFlags();
+    public Scripts.Models.StatusList Statuses = new Scripts.Models.StatusList();
     public ActorVFX Vfx = new ActorVFX();
     public ActorWeapon Weapon = new ActorWeapon();
     public ActorAnimation Animation = new ActorAnimation();
@@ -450,48 +451,13 @@ public partial class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Pick a target policy and record a target location for the next action.
+    /// Decides this enemy's next move tile and records it in <see cref="location"/> (the body then
+    /// animates there). The tactical decision — which hero to pressure, and stepping toward it
+    /// without walking into a pincer — lives in the pure <see cref="Scripts.Services.EnemyPlanner"/>.
     /// </summary>
     public void CalculateAttackStrategy()
     {
-        int[] ratios = { 50, 20, 15, 10, 5 };
-        var strategy = RNG.Strategy(ratios);
-
-        Vector2Int targetLocation = LocationHelper.Nowhere;
-
-        switch (strategy)
-        {
-            case AttackStrategy.AttackClosest:
-                var closest = g.Actors.Heroes.Where(x => x.IsPlaying)
-                                             .OrderBy(x => Vector3.Distance(x.Position, Position))
-                                             .FirstOrDefault();
-                targetLocation = closest.location;
-                break;
-
-            case AttackStrategy.AttackWeakest:
-                var weakest = g.Actors.Heroes.Where(x => x.IsPlaying)
-                                             .OrderBy(x => x.Stats.HP)
-                                             .FirstOrDefault();
-                targetLocation = weakest.location;
-                break;
-
-            case AttackStrategy.AttackStrongest:
-                var strongest = g.Actors.Heroes.Where(x => x.IsPlaying)
-                                               .OrderByDescending(x => x.Stats.HP)
-                                               .FirstOrDefault();
-                targetLocation = strongest.location;
-                break;
-
-            case AttackStrategy.AttackRandom:
-                targetLocation = RNG.Hero.location;
-                break;
-
-            case AttackStrategy.MoveAnywhere:
-                targetLocation = RNG.Location;
-                break;
-        }
-
-        location = Geometry.GetClosestAttackLocation(location, targetLocation);
+        location = Scripts.Services.EnemyPlanner.PlanStep(this, g.Actors.All, g.TileMap);
     }
 
     /// <summary>Fire damage.</summary>
@@ -539,6 +505,33 @@ public partial class ActorInstance : MonoBehaviour
     {
         if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
         StartCoroutine(DamageRoutine(attackResult));
+    }
+
+    /// <summary>
+    /// Advances this actor's status effects by one turn (DoT damage, Regen healing) and shows
+    /// feedback. Pure rules live in StatusList; this just applies the net HP delta through the
+    /// same HP/health-bar/combat-text path as normal damage and healing. Death from a DoT is
+    /// picked up by the DeathSequence the turn flow already runs.
+    /// </summary>
+    public IEnumerator TickStatusesRoutine()
+    {
+        if (Statuses == null || !IsPlaying)
+            yield break;
+
+        var result = Statuses.AdvanceOneTurn();
+        if (result.HpDelta != 0 && !IsInvincible)
+        {
+            Stats.PreviousHP = Stats.HP;
+            Stats.HP = Mathf.Clamp(Stats.HP + result.HpDelta, 0, Stats.MaxHP);
+            HealthText.Refresh();
+
+            string style = result.HpDelta < 0 ? "Damage" : "Heal";
+            g.CombatTextManager.Spawn(Mathf.Abs(result.HpDelta).ToString(), Position, style);
+            if (result.HpDelta < 0 && Stats.HP <= 0)
+                _lastAttacker = null; // DoT kill — no single attacker to credit
+        }
+
+        yield return Wait.None();
     }
 
     /// <summary>

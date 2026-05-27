@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Unity 6000.3.2f1 tactical RPG — grid-based combat with 2D sprites on a 3D board. C# 9.0 targeting .NET Standard 2.1. Namespace root: `Scripts.*`.
+Unity 6000.4.3f1 tactical RPG — grid-based combat with 2D sprites on a 3D board. C# 9.0 targeting .NET Standard 2.1. Namespace root: `Scripts.*`. (Editor version is authoritative in `ProjectSettings/ProjectVersion.txt` — compile/batchmode against that exact version; using a different installed editor corrupts the package cache.)
 
 ## Core Game Loop
 

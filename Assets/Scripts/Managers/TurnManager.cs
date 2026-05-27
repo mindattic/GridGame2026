@@ -257,13 +257,6 @@ namespace Scripts.Managers
  IsResolvingCast = false;
  }
 
- /// <summary>Handle hero turn focus.</summary>
- private void HandleHeroTurnFocus() { }
- /// <summary>Applies the hero turn desaturation.</summary>
- public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
- /// <summary>Restore full saturation.</summary>
- public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
-
  #endregion
  }
 }

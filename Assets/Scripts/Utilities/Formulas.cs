@@ -333,6 +333,10 @@ public static class Formulas
             ? 0
             : Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
 
+        // Protect buff on the defender mitigates a fraction of the final blow.
+        if (finalDamage > 0 && opponent.Statuses != null)
+            finalDamage = Mathf.Max(1, Mathf.FloorToInt(finalDamage * (1f - opponent.Statuses.ProtectPercent)));
+
         var s =
             $"[PHYS] {NameOf(attacker)} -> {NameOf(opponent)} ({element}, Resist {resistance:+0;-0;0}%)\n" +
             $"  Offense = {off:F1}, Defense = {def:F1}, Penetration({PenetrationFromAttack:P0}) = {pen:F1} -> EffDef {effDef:F1}\n" +
@@ -376,6 +380,10 @@ public static class Formulas
         int finalDamage = (type == HitOutcome.Miss)
             ? 0
             : Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
+
+        // Protect buff on the target mitigates a fraction of the final blow.
+        if (finalDamage > 0 && target.Statuses != null)
+            finalDamage = Mathf.Max(1, Mathf.FloorToInt(finalDamage * (1f - target.Statuses.ProtectPercent)));
 
         var s =
             $"[MAG] {NameOf(caster)} -> {NameOf(target)} ({element}, Resist {resistance:+0;-0;0}%)\n" +

@@ -181,7 +181,9 @@ public class PauseMenu : MonoBehaviour
     /// <summary>Resume.</summary>
     private void Resume()
     {
-        Time.timeScale = 1f;
+        // Restore the battle pace (GameManager.gameSpeed), not a hardcoded 1x — otherwise
+        // pausing/resuming would silently cancel the global speed multiplier.
+        Time.timeScale = GameManager.instance != null ? GameManager.instance.gameSpeed : 1f;
         pauseButtonImage.sprite = pauseIcon;
         pauseButtonImage.preserveAspect = true;
         gameObject.SetActive(false);

@@ -259,10 +259,16 @@ public class Ability
     public bool requiresTarget =>
         type == AbilityType.TargetAlly || type == AbilityType.TargetOpponent || type == AbilityType.TargetAny;
 
-    /// <summary>Activate.</summary>
+    /// <summary>
+    /// Fallback for ability effects that have no real implementation yet. This is NOT a
+    /// working effect — it deliberately shouts so an unimplemented ability can never again
+    /// masquerade as functional. Real effects are resolved by the ability dispatch in
+    /// AbilityManager; anything reaching here is a gap to be filled (see AbilityResolver work).
+    /// </summary>
     public void Activate(ActorInstance user, ActorInstance target)
     {
-        Debug.Log($"{user.name} used {name} on {(target ? target.name : "no target")}");
+        Debug.LogWarning($"[NOT IMPLEMENTED] Ability '{name}' (Effect={Effect}) has no real effect — " +
+                         $"{user?.name} -> {(target ? target.name : "no target")} did nothing.");
     }
 }
 

@@ -265,9 +265,17 @@ namespace Scripts.Managers
                     foreach (var t in targetList)
                         g.SequenceManager.Add(new TrapSequence(startPosition, t));
                     break;
+                case AbilityEffect.Fire:
+                case AbilityEffect.Fireball:
+                case AbilityEffect.Fira:
+                case AbilityEffect.Ice:
+                case AbilityEffect.Thunder:
                 case AbilityEffect.Smite:
-                    foreach (var t in targetList)
-                        g.SequenceManager.Add(new SmiteSequence(t));
+                    {
+                        TryGetMagicEffect(currentAbility.Effect, out var element, out var vfxKey);
+                        foreach (var t in targetList)
+                            g.SequenceManager.Add(new MagicAttackSequence(currentUser, t, element, vfxKey));
+                    }
                     break;
                 case AbilityEffect.ShieldRush:
                     var target = targetList[0];
@@ -297,6 +305,28 @@ namespace Scripts.Managers
                     if (currentAbility.SourceWeapon != null)
                         g.SequenceManager.Add(new ChangeEquippedWeaponSequence(currentUser, currentAbility.SourceWeapon));
                     break;
+                case AbilityEffect.Esuna:
+                    foreach (var t in targetList)
+                    {
+                        int removed = t.Statuses.ClearDebuffs();
+                        g.CombatTextManager.Spawn(removed > 0 ? "Cured!" : "No effect", t.Position, "Heal");
+                    }
+                    break;
+                case AbilityEffect.Protect:
+                    foreach (var t in targetList)
+                    {
+                        t.Statuses.Apply(new StatusEffect { Kind = StatusKind.Protect, Magnitude = 0.4f, RemainingTurns = 3 });
+                        g.CombatTextManager.Spawn("Protect", t.Position, "Heal");
+                    }
+                    break;
+                case AbilityEffect.Regen:
+                    foreach (var t in targetList)
+                    {
+                        float regen = Mathf.Max(2f, (currentUser.Stats.Intelligence + currentUser.Stats.Wisdom) * 0.4f);
+                        t.Statuses.Apply(new StatusEffect { Kind = StatusKind.Regen, Magnitude = regen, RemainingTurns = 5 });
+                        g.CombatTextManager.Spawn("Regen", t.Position, "Heal");
+                    }
+                    break;
                 default:
                     foreach (var t in targetList)
                         g.SequenceManager.Add(new SequenceCallback(() => currentAbility.Activate(currentUser, t)));
@@ -306,6 +336,9 @@ namespace Scripts.Managers
             // Hide ability cast confirm UI immediately when cast begins
             g.AbilityCastConfirm.FadeOut();
 
+            // Resolve any deaths the cast caused (no-op if none) before handing off the turn,
+            // exactly like the pincer flow.
+            g.SequenceManager.Add(new DeathSequence());
             g.SequenceManager.Add(new SequenceCallback(() => { CancelTargetingInternal(); ClearFocusAndUI(); }));
             g.SequenceManager.Add(new EndTurnSequence());
             g.SequenceManager.Execute();
@@ -352,10 +385,22 @@ namespace Scripts.Managers
                         case AbilityEffect.Heal:
                             g.SequenceManager.Add(new HealAbilitySequence(castStart, target));
                             break;
+                        case AbilityEffect.Fire:
+                        case AbilityEffect.Fireball:
+                        case AbilityEffect.Fira:
+                        case AbilityEffect.Ice:
+                        case AbilityEffect.Thunder:
+                        case AbilityEffect.Smite:
+                            {
+                                TryGetMagicEffect(ability.Effect, out var element, out var vfxKey);
+                                g.SequenceManager.Add(new MagicAttackSequence(caster, target, element, vfxKey));
+                            }
+                            break;
                         default:
                             g.SequenceManager.Add(new SequenceCallback(() => ability.Activate(caster, target)));
                             break;
                     }
+                    g.SequenceManager.Add(new DeathSequence());
                     g.SequenceManager.Add(new EndTurnSequence());
                     g.SequenceManager.Add(new SequenceCallback(() =>
                     {
@@ -499,6 +544,25 @@ namespace Scripts.Managers
                 AbilityCastConfirm.instance.Toggle();
             else
                 AbilityCastConfirm.instance.FadeOut();
+        }
+
+        /// <summary>
+        /// Maps an offensive-magic AbilityEffect to its damage element + impact VFX key.
+        /// Returns false for effects that are not direct-damage magic (heals, buffs, passives,
+        /// item/weapon slots) so the caller can route them elsewhere.
+        /// </summary>
+        private static bool TryGetMagicEffect(AbilityEffect effect, out ElementalDamageType element, out string vfxKey)
+        {
+            switch (effect)
+            {
+                case AbilityEffect.Fire:     element = ElementalDamageType.Fire;      vfxKey = "Flame";              return true;
+                case AbilityEffect.Fireball: element = ElementalDamageType.Fire;      vfxKey = "Fireball";           return true;
+                case AbilityEffect.Fira:     element = ElementalDamageType.Fire;      vfxKey = "FireRain";           return true;
+                case AbilityEffect.Ice:      element = ElementalDamageType.Ice;       vfxKey = "IceSparkle";         return true;
+                case AbilityEffect.Thunder:  element = ElementalDamageType.Lightning; vfxKey = "LightningExplosion"; return true;
+                case AbilityEffect.Smite:    element = ElementalDamageType.Light;     vfxKey = "GodRays";            return true;
+                default:                     element = ElementalDamageType.Arcane;    vfxKey = null;                 return false;
+            }
         }
 
         /// <summary>Returns whether the is valid target for ability condition is met.</summary>

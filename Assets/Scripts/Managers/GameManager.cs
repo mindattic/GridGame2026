@@ -209,7 +209,15 @@ public class GameManager : Singleton<GameManager>
 
         // Apply settings
         Application.targetFrameRate = targetFramerate.ToInt();
-        QualitySettings.vSyncCount = VSyncCount.VSync1.ToInt();
+        QualitySettings.vSyncCount = vSyncCount.ToInt();
+
+        // Global game pace. Tuned fast per design preference ("rather too fast than too slow").
+        // Drives Time.timeScale, so every deltaTime-based animation, WaitForSeconds delay,
+        // mana accrual, and timeline load runs at this multiplier. Per-frame slide steps
+        // (moveFocus/swapFocus/bumpFocus below) are NOT time-scaled, so they are doubled
+        // directly to keep the whole feel uniformly 2x.
+        gameSpeed = 2.0f;
+        Time.timeScale = gameSpeed;
 
         // Compute a robust tileSize using both width and height constraints,
         // reserving space for top/bottom UI and clamping across aspect ratios.
@@ -234,10 +242,14 @@ public class GameManager : Singleton<GameManager>
         tileScale = new Vector3(tileSize, tileSize, 1f);
         tileMap = new TileMap();
 
+        // Per-frame movement step sizes. These advance once per frame (yield null), NOT scaled
+        // by Time.deltaTime, so Time.timeScale does not affect them — doubled directly to match
+        // the 2x global pace set above. (cursorFocus left alone: it governs drag-follow snap to
+        // the finger and should track 1:1, not overshoot.)
         cursorFocus = tileSize * 0.5f;
-        swapFocus = tileSize * 0.1666f;
-        moveFocus = tileSize * 0.125f;
-        bumpFocus = tileSize * 0.08f;
+        swapFocus = tileSize * 0.3332f;
+        moveFocus = tileSize * 0.25f;
+        bumpFocus = tileSize * 0.16f;
         dragThreshold = tileSize * 0.125f;
 
         ShakeIntensity.Initialize(tileSize);

@@ -74,6 +74,14 @@ namespace Scripts.Sequences
         {
             yield return Wait.None();
 
+            // Tick every actor's status effects once per turn (Burn/Poison DoT, Regen healing),
+            // then resolve any deaths a DoT just caused — same DeathHelper the combat flow uses.
+            foreach (var actor in g.Actors.All)
+                if (actor != null && actor.IsPlaying)
+                    yield return actor.TickStatusesRoutine();
+
+            yield return DeathHelper.ProcessRoutine();
+
             g.TurnManager.NextTurn();
         }
     }
