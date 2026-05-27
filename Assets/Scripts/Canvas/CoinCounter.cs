@@ -82,19 +82,6 @@ public class CoinCounter : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Re-hosts the coin counter (icon + glow + value, with their scene sprites) onto a
-    /// world-space panel in the top-left negative-space corner — done in Start so GameManager's
-    /// Awake-time lookup of "Canvas/CoinCounter" still resolves before the reparent.
-    /// </summary>
-    private void Start()
-    {
-        var vr = UnitConversionHelper.World.VisibleRect();
-        var panel = WorldSpaceUiPanel.Create("CoinCounterWS", vr.width * 0.22f, vr.height * 0.06f, sortingOrder: 20);
-        panel.PlaceInTopLeft();
-        panel.Adopt(transform as RectTransform);
-    }
-
     #endregion
 
     #region Update
