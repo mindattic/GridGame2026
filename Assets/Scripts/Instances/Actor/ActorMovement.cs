@@ -344,9 +344,46 @@ namespace Scripts.Instances.Actor
                 occupant.Move.HandleOverlap(nextLocation);
             }
 
+            // Logical location updates INSTANTLY (so pincer/occupancy math is correct immediately),
+            // but the sprite still animates into the new tile via DisplaceRoutine — preserving the
+            // sense of progression. Cascading occupants each run their own slide, so a queue of
+            // displaced actors visibly slides into place even while briefly overlapping.
             flags.IsSwapping = true;
             location = currentTile.location;
-            instance.StartCoroutine(TowardDestinationRoutine());
+            instance.StartCoroutine(DisplaceRoutine());
+        }
+
+        /// <summary>
+        /// Animates the sprite from its current position to the tile its logical location was
+        /// already set to. A deliberate, time-based one-tile slide (displacement is always a single
+        /// cardinal step) so it stays perceptible regardless of the global game-speed multiplier.
+        /// </summary>
+        private IEnumerator DisplaceRoutine()
+        {
+            flags.IsMoving = true;
+            flags.IsSwapping = true;
+            g.AudioManager.Play("Slide");
+
+            Vector3 start = instance.Position;
+            Vector3 destination = Geometry.GetPositionByLocation(location);
+            var curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+            const float duration = 0.28f;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float k = curve.Evaluate(Mathf.Clamp01(elapsed / duration));
+                previousPosition = instance.Position;
+                instance.Position = Vector3.Lerp(start, destination, k).ClampToBoard();
+                ApplyTilt(instance.Position - previousPosition);
+                yield return Wait.None();
+            }
+
+            instance.Position = destination.ClampToBoard();
+            flags.IsMoving = false;
+            flags.IsSwapping = false;
+            rotation = Geometry.Rotation(0, 0, 0);
         }
 
         /// <summary>
