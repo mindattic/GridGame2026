@@ -134,6 +134,40 @@ namespace Scripts.Canvas
             transform.position = new Vector3(vr.center.x, bandCenterY, 0f);
         }
 
+        /// <summary>Places the panel in the top-left negative-space corner.</summary>
+        public void PlaceInTopLeft(float padFraction = 0.04f)
+        {
+            var vr = UnitConversionHelper.World.VisibleRect();
+            float x = vr.xMin + worldWidth * 0.5f + vr.width * padFraction;
+            float y = vr.yMax - worldHeight * 0.5f - vr.height * padFraction;
+            transform.position = new Vector3(x, y, 0f);
+        }
+
+        /// <summary>Places the panel in the top-right negative-space corner.</summary>
+        public void PlaceInTopRight(float padFraction = 0.04f)
+        {
+            var vr = UnitConversionHelper.World.VisibleRect();
+            float x = vr.xMax - worldWidth * 0.5f - vr.width * padFraction;
+            float y = vr.yMax - worldHeight * 0.5f - vr.height * padFraction;
+            transform.position = new Vector3(x, y, 0f);
+        }
+
+        /// <summary>
+        /// Re-hosts an existing UI hierarchy (with its scene-assigned sprites) onto this panel —
+        /// the migration path for sprite-based components that would be painful to rebuild in code.
+        /// The hierarchy stretches to fill the panel; its internal layout is preserved.
+        /// </summary>
+        public void Adopt(RectTransform existing)
+        {
+            if (existing == null) return;
+            existing.SetParent(Content, false);
+            existing.anchorMin = Vector2.zero;
+            existing.anchorMax = Vector2.one;
+            existing.offsetMin = Vector2.zero;
+            existing.offsetMax = Vector2.zero;
+            existing.localScale = Vector3.one;
+        }
+
         /// <summary>Sets the panel's visibility via the canvas (cheap show/hide).</summary>
         public void SetVisible(bool visible)
         {
