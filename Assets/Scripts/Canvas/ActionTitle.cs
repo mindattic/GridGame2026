@@ -60,58 +60,63 @@ namespace Scripts.Canvas
         private TextMeshProUGUI label;
         private CanvasGroup canvasGroup;
         private Coroutine hideCoroutine;
+        private WorldSpaceUiPanel panel;
 
         private void Awake()
         {
-            if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
-            BuildUI();
+            BuildWorldSpaceUI();
             Hide();
         }
 
         /// <summary>
-        /// Self-building Lego brick: anchors itself as a top-center band (responsive to any aspect
-        /// ratio via anchor fractions) and constructs its own navy panel + centered label, instead
-        /// of relying on a layout baked into Game.unity. Drop this component on a bare GameObject
-        /// under the Canvas and it builds itself.
+        /// First consumer of the world-space UI rig: builds the action banner on a
+        /// WorldSpaceUiPanel (UI sorting layer, sized off the visible world rect, placed in the
+        /// top negative-space band) instead of the ScreenSpaceOverlay canvas — so VFX/portraits
+        /// can render in front of it and it lives in the same coordinate system as the board.
+        /// Show/Hide/FadeOut drive the panel's CanvasGroup, so they work unchanged.
         /// </summary>
-        private void BuildUI()
+        private void BuildWorldSpaceUI()
         {
             int uiLayer = LayerMask.NameToLayer("UI");
-            gameObject.layer = uiLayer;
 
-            // Anchor a top-center band: 56% of width, fixed height, inset from the top edge.
-            var rt = GetComponent<RectTransform>();
-            if (rt == null) rt = gameObject.AddComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0.22f, 1f);
-            rt.anchorMax = new Vector2(0.78f, 1f);
-            rt.pivot = new Vector2(0.5f, 1f);
-            rt.offsetMin = new Vector2(0f, -200f);  // band height ~120 below the top inset
-            rt.offsetMax = new Vector2(0f, -80f);
+            // This component's own GameObject is still the scene-baked overlay node; clear any
+            // leftover baked children + background so the only visual is the world-space panel.
+            var selfRt = transform as RectTransform;
+            if (selfRt != null)
+                for (int i = selfRt.childCount - 1; i >= 0; i--)
+                    Destroy(selfRt.GetChild(i).gameObject);
+            var selfImage = GetComponent<UnityEngine.UI.Image>();
+            if (selfImage != null) selfImage.enabled = false;
 
-            // Remove any pre-existing baked children so the code-built look is authoritative.
-            for (int i = rt.childCount - 1; i >= 0; i--)
-                Destroy(rt.GetChild(i).gameObject);
+            var vr = UnitConversionHelper.World.VisibleRect();
 
-            // Navy panel background on this object.
-            var panel = GetComponent<UnityEngine.UI.Image>();
-            if (panel == null) panel = gameObject.AddComponent<UnityEngine.UI.Image>();
-            panel.color = new Color(0.07f, 0.10f, 0.22f, 0.92f);
-            panel.raycastTarget = false;
+            // Transient top-center banner sized in world units (not screen pixels).
+            panel = WorldSpaceUiPanel.Create("ActionTitleWS", vr.width * 0.6f, vr.height * 0.08f, sortingOrder: 30);
+            panel.PlaceInTopBand();
 
-            // Centered label child stretched to fill the band.
+            var root = panel.Content;
+            canvasGroup = root.GetComponent<CanvasGroup>();
+            if (canvasGroup == null) canvasGroup = root.gameObject.AddComponent<CanvasGroup>();
+
+            // Navy panel background filling the panel.
+            var bg = root.gameObject.AddComponent<UnityEngine.UI.Image>();
+            bg.color = new Color(0.07f, 0.10f, 0.22f, 0.92f);
+            bg.raycastTarget = false;
+
+            // Centered label, authored in the panel's reference-pixel space (~1000 wide).
             var labelGo = new GameObject("Label");
             labelGo.layer = uiLayer;
             var labelRT = labelGo.AddComponent<RectTransform>();
-            labelRT.SetParent(rt, false);
+            labelRT.SetParent(root, false);
             labelRT.anchorMin = Vector2.zero;
             labelRT.anchorMax = Vector2.one;
-            labelRT.offsetMin = new Vector2(16f, 8f);
-            labelRT.offsetMax = new Vector2(-16f, -8f);
+            labelRT.offsetMin = new Vector2(20f, 12f);
+            labelRT.offsetMax = new Vector2(-20f, -12f);
             labelRT.pivot = new Vector2(0.5f, 0.5f);
 
             label = labelGo.AddComponent<TextMeshProUGUI>();
             label.text = string.Empty;
-            label.fontSize = 44;
+            label.fontSize = 140;
             label.fontStyle = FontStyles.Bold;
             label.color = Color.white;
             label.alignment = TextAlignmentOptions.Center;
