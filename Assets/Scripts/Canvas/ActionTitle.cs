@@ -64,8 +64,60 @@ namespace Scripts.Canvas
         private void Awake()
         {
             if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
-            if (label == null) label = GetComponentInChildren<TextMeshProUGUI>();
+            BuildUI();
             Hide();
+        }
+
+        /// <summary>
+        /// Self-building Lego brick: anchors itself as a top-center band (responsive to any aspect
+        /// ratio via anchor fractions) and constructs its own navy panel + centered label, instead
+        /// of relying on a layout baked into Game.unity. Drop this component on a bare GameObject
+        /// under the Canvas and it builds itself.
+        /// </summary>
+        private void BuildUI()
+        {
+            int uiLayer = LayerMask.NameToLayer("UI");
+            gameObject.layer = uiLayer;
+
+            // Anchor a top-center band: 56% of width, fixed height, inset from the top edge.
+            var rt = GetComponent<RectTransform>();
+            if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.22f, 1f);
+            rt.anchorMax = new Vector2(0.78f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
+            rt.offsetMin = new Vector2(0f, -200f);  // band height ~120 below the top inset
+            rt.offsetMax = new Vector2(0f, -80f);
+
+            // Remove any pre-existing baked children so the code-built look is authoritative.
+            for (int i = rt.childCount - 1; i >= 0; i--)
+                Destroy(rt.GetChild(i).gameObject);
+
+            // Navy panel background on this object.
+            var panel = GetComponent<UnityEngine.UI.Image>();
+            if (panel == null) panel = gameObject.AddComponent<UnityEngine.UI.Image>();
+            panel.color = new Color(0.07f, 0.10f, 0.22f, 0.92f);
+            panel.raycastTarget = false;
+
+            // Centered label child stretched to fill the band.
+            var labelGo = new GameObject("Label");
+            labelGo.layer = uiLayer;
+            var labelRT = labelGo.AddComponent<RectTransform>();
+            labelRT.SetParent(rt, false);
+            labelRT.anchorMin = Vector2.zero;
+            labelRT.anchorMax = Vector2.one;
+            labelRT.offsetMin = new Vector2(16f, 8f);
+            labelRT.offsetMax = new Vector2(-16f, -8f);
+            labelRT.pivot = new Vector2(0.5f, 0.5f);
+
+            label = labelGo.AddComponent<TextMeshProUGUI>();
+            label.text = string.Empty;
+            label.fontSize = 44;
+            label.fontStyle = FontStyles.Bold;
+            label.color = Color.white;
+            label.alignment = TextAlignmentOptions.Center;
+            label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Overflow;
+            label.raycastTarget = false;
         }
 
         // ---------- Verb-dispatched API (FF6-style, no actor prefix) ----------

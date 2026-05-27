@@ -22,7 +22,8 @@ namespace Scripts.Data.Config
 
         // ── Tuning ───────────────────────────────────────────────────────────
         // Base time in seconds for an enemy with Speed 10 to cross the full bar.
-        public const float CrossingTimeSeconds = 8f;
+        // Doubled from 8s to halve timeline movement speed (per design: -50%).
+        public const float CrossingTimeSeconds = 16f;
 
         // Vertical spacing between duplicate tags.
         public const float TagRowHeight = 14f;
@@ -70,7 +71,8 @@ namespace Scripts.Data.Config
         // same slow fixed pace regardless of Speed stat. The race outside the
         // Zone is stat-driven; the in-Zone crawl gives the player a window to
         // coordinate a pincer that lands the enemy past the threshold.
-        public const float ZoneCrossingTimeSeconds = 5f;
+        // Doubled from 5s to halve in-Zone movement speed (per design: -50%).
+        public const float ZoneCrossingTimeSeconds = 10f;
 
         // Derived: u-units per second through the Zone strip.
         public const float ZonePaceUPerSec = ZoneU / ZoneCrossingTimeSeconds;
