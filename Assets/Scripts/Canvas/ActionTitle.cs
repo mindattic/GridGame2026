@@ -91,8 +91,7 @@ namespace Scripts.Canvas
             var vr = UnitConversionHelper.World.VisibleRect();
 
             // Transient top-center banner sized in world units (not screen pixels).
-            // Tuned down from first pass (was too large); fine-tune width/height/font as needed.
-            panel = WorldSpaceUiPanel.Create("ActionTitleWS", vr.width * 0.42f, vr.height * 0.055f, sortingOrder: 30);
+            panel = WorldSpaceUiPanel.Create("ActionTitleWS", vr.width * 0.6f, vr.height * 0.08f, sortingOrder: 30);
             panel.PlaceInTopBand();
 
             var root = panel.Content;
@@ -117,9 +116,7 @@ namespace Scripts.Canvas
 
             label = labelGo.AddComponent<TextMeshProUGUI>();
             label.text = string.Empty;
-            label.enableAutoSizing = true;
-            label.fontSizeMin = 24;
-            label.fontSizeMax = 90;
+            label.fontSize = 140;
             label.fontStyle = FontStyles.Bold;
             label.color = Color.white;
             label.alignment = TextAlignmentOptions.Center;
