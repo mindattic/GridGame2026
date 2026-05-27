@@ -55,11 +55,36 @@ namespace Scripts.Instances
 /// </summary>
 public class TileInstance : MonoBehaviour
 {
-    /// <summary>True if any living actor's location matches this tile's location.</summary>
-    public bool IsOccupied => g.Actors.All.Any(x => x.IsPlaying && x.location == location);
+    /// <summary>True if any living actor's location matches this tile's location.
+    /// Manual loop (no LINQ closure) — called inside tight scan/displacement loops.</summary>
+    public bool IsOccupied
+    {
+        get
+        {
+            var all = g.Actors.All;
+            for (int i = 0; i < all.Count; i++)
+            {
+                var a = all[i];
+                if (a.IsPlaying && a.location == location) return true;
+            }
+            return false;
+        }
+    }
 
     /// <summary>Returns the actor standing on this tile, or null if empty.</summary>
-    public ActorInstance Occupier => g.Actors.All.FirstOrDefault(x => x.location == location);
+    public ActorInstance Occupier
+    {
+        get
+        {
+            var all = g.Actors.All;
+            for (int i = 0; i < all.Count; i++)
+            {
+                var a = all[i];
+                if (a.location == location) return a;
+            }
+            return null;
+        }
+    }
 
     /// <summary>Event fired when the selected player leaves this tile location.</summary>
     public System.Action<Vector2Int> onSelectedPlayerLeaveLocation;

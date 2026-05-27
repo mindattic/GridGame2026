@@ -732,12 +732,21 @@ namespace Scripts.Canvas
             return string.Join("/", parts);
         }
 
-        /// <summary>Updates the label.</summary>
+        private string lastLabelText;
+
+        /// <summary>Updates the label. Only assigns TMP.text when the displayed value actually
+        /// changes — assigning every frame (even an identical string) dirties the text mesh and
+        /// forces a TMP rebuild per icon per frame, which is pure idle cost across the battle.</summary>
         private void UpdateLabel()
         {
             if (Label == null) return;
             float sec = GetSecondsRemaining();
-            Label.text = sec.ToString("0.0");
+            string s = sec.ToString("0.0");
+            if (!string.Equals(s, lastLabelText))
+            {
+                Label.text = s;
+                lastLabelText = s;
+            }
         }
 
         /// <summary>Applies the label alpha.</summary>

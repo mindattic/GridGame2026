@@ -119,7 +119,18 @@ public class Geometry
     /// <returns>The closest TileInstance based on Euclidean distance.</returns>
     public static TileInstance GetClosestTile(Vector3 position)
     {
-        return g.Tiles.OrderBy(x => Vector3.Distance(x.transform.position, position)).First();
+        // Single linear pass with squared distance — runs every frame during a drag, so avoid
+        // the OrderBy allocation + per-tile sqrt the old version paid each frame.
+        var tiles = g.Tiles;
+        TileInstance closest = null;
+        float best = float.MaxValue;
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            var t = tiles[i];
+            float d = (t.transform.position - position).sqrMagnitude;
+            if (d < best) { best = d; closest = t; }
+        }
+        return closest;
     }
 
     /// <summary>
