@@ -1,4 +1,5 @@
 using Scripts.Helpers;
+using g = Scripts.Helpers.GameHelper;
 using System.Collections;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
@@ -57,6 +58,13 @@ namespace Scripts.Sequences
         /// <summary>Coroutine that executes the process sequence.</summary>
         public override IEnumerator ProcessRoutine()
         {
+            if (supporter == null || !supporter.IsPlaying)
+                yield break;
+
+            // "Whack-a-mole" flourish: the supporter's portrait pops up at its tile, holds, then
+            // pops back out — telegraphing who's lending support before the pincer resolves.
+            yield return g.PortraitManager.PopInOutRoutine(supporter);
+
             // If supporter is a Cleric, heal the attacker
             if (supporter.characterClass == CharacterClass.Cleric)
                 yield return new HealSupportSequence(supporter.Position, attacker).ProcessRoutine();
