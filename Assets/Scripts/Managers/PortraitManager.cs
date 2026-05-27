@@ -94,26 +94,25 @@ public class PortraitManager : MonoBehaviour
 
         if (actorPair.axis == Axis.Vertical)
         {
-            var (leftX, rightX) = ComputeVerticalLaneXs();
-            bool a1Left = actorPair.actor1.location.x <= actorPair.actor2.location.x;
-            float a1X = a1Left ? leftX : rightX;
-            float a2X = a1Left ? rightX : leftX;
+            // Flank the attacking COLUMN: lanes sit left & right of the column's screen X so the
+            // portraits read as "these two are attacking this column" without covering it. Edge
+            // columns (no room on one side) shift both lanes into the open space.
+            var (xA, xB) = ComputeVerticalLanes(actorPair.actor1);
 
             yield return CoroutineHelper.WaitForAll(this,
-                SlideIn2DRoutine(actorPair.actor1, d1, fixedX: a1X, fixedY: null),
-                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: a2X, fixedY: null)
+                SlideIn2DRoutine(actorPair.actor1, d1, fixedX: xA, fixedY: null),
+                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: xB, fixedY: null)
             );
         }
         else
         {
-            var (bottomY, topY) = ComputeHorizontalLaneYs();
-            bool a1Bottom = actorPair.actor1.location.y <= actorPair.actor2.location.y;
-            float a1Y = a1Bottom ? bottomY : topY;
-            float a2Y = a1Bottom ? topY : bottomY;
+            // Flank the attacking ROW: lanes sit above & below the row's screen Y. Edge rows
+            // shift both lanes into the open space.
+            var (yA, yB) = ComputeHorizontalLanes(actorPair.actor1);
 
             yield return CoroutineHelper.WaitForAll(this,
-                SlideIn2DRoutine(actorPair.actor1, d1, fixedX: null, fixedY: a1Y),
-                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: null, fixedY: a2Y)
+                SlideIn2DRoutine(actorPair.actor1, d1, fixedX: null, fixedY: yA),
+                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: null, fixedY: yB)
             );
         }
 
@@ -265,20 +264,56 @@ public class PortraitManager : MonoBehaviour
                 pair.actor2 == pair.startActor ? first : second);
     }
 
-    private (float leftX, float rightX) ComputeVerticalLaneXs()
+    /// <summary>
+    /// Two X-lanes flanking the attacking column (vertical pincer). Lane X is derived from the
+    /// column's actual screen position so the portraits sit beside that column, not at fixed
+    /// screen-center lanes. If a lane would run off the edge (leftmost/rightmost column), both
+    /// lanes shift into the open space on the other side.
+    /// </summary>
+    private (float a, float b) ComputeVerticalLanes(ActorInstance columnActor)
     {
-        var parentRect = g.PortraitsContainer as RectTransform;
-        float width = parentRect != null ? parentRect.rect.width : 1920f;
-        float lane = width * 0.25f;
-        return (-lane, lane);
+        var container = g.PortraitsContainer as RectTransform;
+        float halfW = (container != null ? container.rect.width : 1920f) * 0.5f;
+        float colX = container != null
+            ? UnitConversionHelper.World.ToCanvas(container, columnActor.Position).x
+            : 0f;
+
+        float offset = halfW * 0.34f;   // ~portrait half-width + gap
+        float margin = halfW * 0.10f;
+
+        float left = colX - offset;
+        float right = colX + offset;
+
+        if (left < -halfW + margin)        // leftmost column — no room on the left
+            return (colX + offset, colX + offset * 2f);
+        if (right > halfW - margin)        // rightmost column — no room on the right
+            return (colX - offset, colX - offset * 2f);
+        return (left, right);
     }
 
-    private (float bottomY, float topY) ComputeHorizontalLaneYs()
+    /// <summary>
+    /// Two Y-lanes flanking the attacking row (horizontal pincer). Mirrors ComputeVerticalLanes:
+    /// above/below the row's screen Y, shifting into open space for top/bottom rows.
+    /// </summary>
+    private (float a, float b) ComputeHorizontalLanes(ActorInstance rowActor)
     {
-        var parentRect = g.PortraitsContainer as RectTransform;
-        float height = parentRect != null ? parentRect.rect.height : 1080f;
-        float lane = height * 0.25f;
-        return (-lane, lane);
+        var container = g.PortraitsContainer as RectTransform;
+        float halfH = (container != null ? container.rect.height : 1080f) * 0.5f;
+        float rowY = container != null
+            ? UnitConversionHelper.World.ToCanvas(container, rowActor.Position).y
+            : 0f;
+
+        float offset = halfH * 0.22f;
+        float margin = halfH * 0.10f;
+
+        float below = rowY - offset;
+        float above = rowY + offset;
+
+        if (below < -halfH + margin)       // bottom row — no room below
+            return (rowY + offset, rowY + offset * 2f);
+        if (above > halfH - margin)        // top row — no room above
+            return (rowY - offset, rowY - offset * 2f);
+        return (below, above);
     }
 
     /// <summary>Removes and destroys a canvas-space portrait.</summary>
