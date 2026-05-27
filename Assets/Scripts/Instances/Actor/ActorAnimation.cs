@@ -248,33 +248,45 @@ namespace Scripts.Instances.Actor
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), g.TileSize * Increment.Percent33);
             var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, g.TileSize * Increment.Percent33);
 
+            bool horizontal = direction == Direction.East || direction == Direction.West;
+
+            // Face the target during the strike: a horizontal attack turns on the Y axis toward the
+            // target; a vertical attack takes a slight Z-axis lean (rotating in-plane reads better
+            // than a Y-flip when striking up/down). Ramped in during windup, held through the slam,
+            // released on the return — all curve-eased.
+            float targetRotY = horizontal ? (direction == Direction.East ? 35f : -35f) : 0f;
+            float targetRotZ = horizontal ? 0f : (direction == Direction.North ? 10f : -10f);
+            Quaternion FaceRot(float k) => Quaternion.Euler(0f, targetRotY * k, targetRotZ * k);
+
             float elapsedTime;
 
+            // Windup: pull back AND rotate toward the target (anticipation).
             elapsedTime = 0f;
             while (elapsedTime < windupDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / windupDuration);
                 position = Vector3.Lerp(startPosition, windupPosition, windupCurve.Evaluate(progress));
+                rotation = FaceRot(progress);
                 yield return Wait.OneTick();
             }
 
             position = windupPosition;
+            rotation = FaceRot(1f);
 
+            // Lunge: charge forward to the slam, holding the facing rotation.
             elapsedTime = 0f;
-            float targetRotationZ = (direction == Direction.East) ? -15f : 15f;
-
             while (elapsedTime < bumpDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / bumpDuration);
                 position = Vector3.Lerp(windupPosition, bumpPosition, bumpCurve.Evaluate(progress));
-                rotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(0f, targetRotationZ, progress));
+                rotation = FaceRot(1f);
                 yield return Wait.OneTick();
             }
 
             position = bumpPosition;
-            rotation = Quaternion.Euler(0f, 0f, targetRotationZ);
+            rotation = FaceRot(1f);
 
             //Bump has reached it's apex:
             if (routine != null)
@@ -282,13 +294,14 @@ namespace Scripts.Instances.Actor
                 yield return instance.StartCoroutine(routine);
 
 
+            // Return: ease back to the start position and unwind the rotation to zero.
             elapsedTime = 0f;
             while (elapsedTime < returnDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / returnDuration);
                 position = Vector3.Lerp(bumpPosition, startPosition, returnCurve.Evaluate(progress));
-                rotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(targetRotationZ, 0f, progress));
+                rotation = FaceRot(1f - progress);
                 yield return Wait.OneTick();
             }
 
