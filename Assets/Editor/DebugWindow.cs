@@ -217,6 +217,7 @@ public partial class DebugWindow : EditorWindow
                 RenderSpawnOptions();
                 RenderActorStats();
                 RenderTextStyles(); // NEW section for experimenting with floating text styles
+                RenderDemos();      // live demos: world-space UI render checks + glyph economy
             }
             finally
             {

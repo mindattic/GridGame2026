@@ -48,6 +48,66 @@ public class DebugManager : MonoBehaviour
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
 
+    #region Demos (driven by DebugWindow buttons)
+
+    // Shared demo glyph bank — lets the FF8-style glyph economy be exercised from the editor
+    // before it's wired into the live battle resource system.
+    private readonly GlyphBank demoGlyphBank = new GlyphBank();
+
+    /// <summary>Demo: show the world-space ActionTitle banner so you can see it render + place.</summary>
+    public void Demo_ShowActionTitle()
+    {
+        if (g.ActionTitle == null) { Debug.LogWarning("[Demo] ActionTitle is null."); return; }
+        g.ActionTitle.Show("DEMO: Casting Fireball");
+        Debug.Log("[Demo] ActionTitle shown (world-space top band).");
+    }
+
+    /// <summary>Demo: pop the world-space cast-confirm modal.</summary>
+    public void Demo_ShowCastConfirm()
+    {
+        var m = AbilityCastConfirm.instance;
+        if (m == null) { Debug.LogWarning("[Demo] AbilityCastConfirm.instance is null."); return; }
+        m.SetTitle("Cast Meteor Slam?");
+        m.SetDescription("Fire + Physical + Physical — a devastating combo strike.");
+        m.Toggle(true);
+    }
+
+    /// <summary>Demo: hide the cast-confirm modal.</summary>
+    public void Demo_HideCastConfirm() => AbilityCastConfirm.instance?.FadeOut();
+
+    /// <summary>Demo: add one glyph of a type to the shared demo bank, then log it.</summary>
+    public void Demo_AddGlyph(GlyphType type) { demoGlyphBank.Add(type); Demo_LogGlyphBank(); }
+    public void Demo_AddGlyph_Colorless() => Demo_AddGlyph(GlyphType.Colorless);
+    public void Demo_AddGlyph_Physical() => Demo_AddGlyph(GlyphType.Physical);
+    public void Demo_AddGlyph_Magic() => Demo_AddGlyph(GlyphType.Magic);
+    public void Demo_AddGlyph_Fire() => Demo_AddGlyph(GlyphType.Fire);
+
+    /// <summary>Demo: log the current glyph bank contents to the console.</summary>
+    public void Demo_LogGlyphBank()
+    {
+        var sb = new System.Text.StringBuilder("[Demo] GlyphBank: ");
+        if (demoGlyphBank.Total == 0) sb.Append("(empty)");
+        else foreach (var kv in demoGlyphBank.All) sb.Append($"{kv.Key}x{kv.Value} ");
+        Debug.Log(sb.ToString());
+    }
+
+    /// <summary>Demo: try to cast a recipe from the bank; logs success or what's missing.</summary>
+    public void Demo_TryCast(GlyphRecipe recipe)
+    {
+        if (recipe == null) return;
+        if (demoGlyphBank.Spend(recipe))
+            Debug.Log($"[Demo] Cast '{recipe.Name}' — spent {recipe.Describe()}.");
+        else
+            Debug.LogWarning($"[Demo] Can't afford '{recipe.Name}' ({recipe.Describe()}). Disrupt more enemy charges.");
+        Demo_LogGlyphBank();
+    }
+
+    public void Demo_TryCast_Heal2() => Demo_TryCast(Scripts.Data.GlyphRecipes.Heal2);
+    public void Demo_TryCast_MeteorSlam() => Demo_TryCast(Scripts.Data.GlyphRecipes.MeteorSlam);
+    public void Demo_ClearGlyphs() { demoGlyphBank.Clear(); Demo_LogGlyphBank(); }
+
+    #endregion
+
     // Small helper to spawn a VFX for available heroes (guards null heroes)
     /// <summary>Creates the visual effect.</summary>
     private void SpawnVisualEffect(VisualEffectAsset vfx)
