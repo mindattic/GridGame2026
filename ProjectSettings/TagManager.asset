@@ -82,6 +82,9 @@ TagManager:
   - name: ActorAbove
     uniqueID: 2574162677
     locked: 0
+  - name: UI
+    uniqueID: 1700000001
+    locked: 0
   - name: VFX
     uniqueID: 406368527
     locked: 0

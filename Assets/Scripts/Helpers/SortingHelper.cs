@@ -36,6 +36,9 @@ namespace Scripts.Helpers
             public const string BoardOverlay = "BoardOverlay";
             public const string SupportLineAbove = "SupportLineAbove";
             public const string ActorAbove = "ActorAbove";
+            // World-space HUD: above the board/actors, below VFX/Coin/Portrait so effects and
+            // portraits can render in front of the UI during dramatic moments.
+            public const string UI = "UI";
             public const string VFX = "VFX";
             public const string Coin = "Coin";
             public const string DamageText = "DamageText";
