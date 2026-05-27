@@ -49,11 +49,13 @@ namespace Scripts.Sequences
     {
         private readonly Vector3 startPosition;
         private readonly ActorInstance target;
+        private readonly ActorInstance caster;
 
-        public HealAbilitySequence(Vector3 startPosition, ActorInstance targetActor)
+        public HealAbilitySequence(Vector3 startPosition, ActorInstance targetActor, ActorInstance caster = null)
         {
             this.startPosition = startPosition;
             this.target = targetActor;
+            this.caster = caster;
         }
 
         /// <summary>
@@ -65,6 +67,10 @@ namespace Scripts.Sequences
         {
             g.InputManager.InputMode = InputMode.None;
             g.Card.BouncePortrait();
+
+            // Caster bobs to show they emitted the heal ball.
+            if (caster != null && caster.IsPlaying)
+                yield return caster.Animation.BobRoutine();
 
             var healSettings = new ProjectileSettings
             {

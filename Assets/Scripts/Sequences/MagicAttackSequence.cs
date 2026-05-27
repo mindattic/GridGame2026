@@ -62,6 +62,10 @@ namespace Scripts.Sequences
             if (caster == null || target == null || !target.IsPlaying)
                 yield break;
 
+            // Caster bobs to show they emitted the projectile.
+            if (caster.IsPlaying)
+                yield return caster.Animation.BobRoutine();
+
             var vfx = VisualEffectLibrary.Get(impactVfxKey);
             if (vfx != null)
                 yield return g.VisualEffectManager.PlayRoutine(vfx, target.Position);

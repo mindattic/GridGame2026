@@ -250,10 +250,15 @@ public class AbilityButtonManager : MonoBehaviour
         {
             case CharacterClass.Cleric:
                 return new List<Ability> { AbilityLibrary.Heal(), AbilityLibrary.Smite() };
+            // Paladin — guardian: stun bash, ally protection, holy damage, and a cleanse.
             case CharacterClass.Paladin:
-                return new List<Ability> { AbilityLibrary.ShieldRush() };
+                return new List<Ability> { AbilityLibrary.ShieldRush(), AbilityLibrary.Protect(), AbilityLibrary.Smite(), AbilityLibrary.Esuna() };
+            // Barbarian — aggressor: melee strike, heavy fire, and self-sustain.
             case CharacterClass.Barbarian:
-                return new List<Ability> { AbilityLibrary.Trap() };
+                return new List<Ability> { AbilityLibrary.Strike(), AbilityLibrary.Fireball(), AbilityLibrary.Fira(), AbilityLibrary.Regen() };
+            // Green Ninja — elementalist: the full elemental kit to exercise the magic system.
+            case CharacterClass.GreenNinja:
+                return new List<Ability> { AbilityLibrary.Fire(), AbilityLibrary.Ice(), AbilityLibrary.Thunder(), AbilityLibrary.Fireball() };
             default:
                 return new List<Ability>();
         }

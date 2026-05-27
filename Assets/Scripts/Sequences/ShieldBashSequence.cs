@@ -68,13 +68,26 @@ namespace Scripts.Sequences
             yield return paladin.Animation.BumpRoutine(target, ShieldBashDamageRoutine());
         }
 
-        /// <summary>Coroutine that executes the shield bash damage sequence.</summary>
+        /// <summary>Coroutine that executes the shield bash damage + stun at impact.</summary>
         private IEnumerator ShieldBashDamageRoutine()
         {
-            if (target != null && target.IsPlaying)
-            {
-                g.CombatTextManager.Spawn("Shield Bash", target.Position, "Damage");
-            }
+            if (target == null || !target.IsPlaying)
+                yield break;
+
+            // Real physical damage from the bash.
+            var result = Formulas.CalculateAttackResult(paladin, target);
+            target.Damage(result);
+
+            // Stun for one round: skip the target's next move (reuses the working root-skip in
+            // EnemyMoveSequence) and freeze its timeline icon in place (Pushback with zero push,
+            // which drops the icon straight into Stunned mode for the duration).
+            target.Statuses.Apply(new StatusEffect { Kind = StatusKind.Stun, Magnitude = 0f, RemainingTurns = 1 });
+            target.Flags.RootedTurnsRemaining = System.Math.Max(target.Flags.RootedTurnsRemaining, 1);
+
+            var icon = g.TimelineBar?.GetIconFor(target);
+            icon?.Pushback(0f, 0f, 1f, target.Stats.Agility.ToInt(), 2f);
+
+            g.CombatTextManager.Spawn("Stunned!", target.Position, "Damage");
             yield return null;
         }
     }

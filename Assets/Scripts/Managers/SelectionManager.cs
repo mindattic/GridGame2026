@@ -153,8 +153,9 @@ public class SelectionManager : MonoBehaviour
  selectedState = SelectedActorState.Idle;
  g.Actors.MovingHero = null;
 
- // Board: toggle focus indicators
- g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.SelectedActor));
+ // Selected-hero focus arc removed per design — keep all focus indicators off.
+ // (Enemy-select arc and spell-targeting arcs are handled separately and remain.)
+ g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(false));
 
  // Always assign card when selecting
  g.Card.Assign();

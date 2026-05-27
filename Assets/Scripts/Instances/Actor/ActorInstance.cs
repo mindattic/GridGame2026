@@ -422,14 +422,12 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     private IEnumerator EnemyBackdropFlickerRoutine()
     {
-        var baseColor = new Color(0f, 0f, 0f, 0.6f);
-        var peakColor = new Color(0.55f, 0.04f, 0.04f, 0.85f);
-        float t0 = Time.time;
+        // Flicker disabled per design — enemy backdrop is a solid red marker for now.
+        // (Placeholder treatment; revisit once a final enemy-highlight look is decided.)
+        var solidRed = new Color(0.8f, 0f, 0f, 0.85f);
         while (IsPlaying)
         {
-            float b = QuakeLightFlicker.SampleSmooth(QuakeLightFlicker.FluorescentFlicker, Time.time - t0);
-            float k = Mathf.Clamp01(b);
-            Render.SetBackdropColor(Color.Lerp(baseColor, peakColor, k));
+            Render.SetBackdropColor(solidRed);
             yield return null;
         }
     }

@@ -259,7 +259,7 @@ namespace Scripts.Managers
             {
                 case AbilityEffect.Heal:
                     foreach (var t in targetList)
-                        g.SequenceManager.Add(new HealAbilitySequence(startPosition, t));
+                        g.SequenceManager.Add(new HealAbilitySequence(startPosition, t, currentUser));
                     break;
                 case AbilityEffect.Trap:
                     foreach (var t in targetList)
@@ -383,7 +383,7 @@ namespace Scripts.Managers
                     switch (ability.Effect)
                     {
                         case AbilityEffect.Heal:
-                            g.SequenceManager.Add(new HealAbilitySequence(castStart, target));
+                            g.SequenceManager.Add(new HealAbilitySequence(castStart, target, caster));
                             break;
                         case AbilityEffect.Fire:
                         case AbilityEffect.Fireball:

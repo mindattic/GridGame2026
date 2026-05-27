@@ -297,6 +297,38 @@ namespace Scripts.Instances.Actor
         }
 
         /// <summary>
+        /// A small up-then-down hop in place. Used to show a caster "emitting" a projectile
+        /// (heal ball, fireball) — the caster bobs as the spell leaves them.
+        /// </summary>
+        public IEnumerator BobRoutine()
+        {
+            var startPosition = instance.currentTile.position;
+            var upPosition = Geometry.GetDirectionalPosition(startPosition, Direction.North, g.TileSize * Increment.Percent33);
+            var curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+            const float upDuration = 0.12f;
+            const float downDuration = 0.18f;
+            float elapsed = 0f;
+
+            while (elapsed < upDuration)
+            {
+                elapsed += Time.deltaTime;
+                position = Vector3.Lerp(startPosition, upPosition, curve.Evaluate(Mathf.Clamp01(elapsed / upDuration)));
+                yield return Wait.OneTick();
+            }
+            position = upPosition;
+
+            elapsed = 0f;
+            while (elapsed < downDuration)
+            {
+                elapsed += Time.deltaTime;
+                position = Vector3.Lerp(upPosition, startPosition, curve.Evaluate(Mathf.Clamp01(elapsed / downDuration)));
+                yield return Wait.OneTick();
+            }
+            position = startPosition;
+        }
+
+        /// <summary>
         /// ProcessRoutine a growth Animation. Optional routine runs after growth finishes.
         /// </summary>
         public void Grow(float maxSize = 0f, IEnumerator routine = null)
