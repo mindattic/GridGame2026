@@ -92,61 +92,55 @@ namespace Scripts.Canvas
             castBtn.onClick.AddListener(() => GameHelper.AbilityManager.OnCastButtonClicked());
         }
 
-        /// <summary>Constructs the modal hierarchy on this GameObject (dim + card + texts + buttons).</summary>
+        /// <summary>Builds the modal on a centered world-space panel (UI sorting layer) instead of
+        /// the overlay node — so it shares the board's coordinate system and VFX can sort over it.</summary>
         private void BuildModal()
         {
             int uiLayer = LayerMask.NameToLayer("UI");
-            gameObject.layer = uiLayer;
 
-            // Root stretches to fill the canvas so the card lands dead-center on any aspect ratio.
-            var rootRT = GetComponent<RectTransform>();
-            if (rootRT == null) rootRT = gameObject.AddComponent<RectTransform>();
-            rootRT.anchorMin = Vector2.zero;
-            rootRT.anchorMax = Vector2.one;
-            rootRT.offsetMin = Vector2.zero;
-            rootRT.offsetMax = Vector2.zero;
-            rootRT.pivot = new Vector2(0.5f, 0.5f);
+            // Clear the scene-baked overlay node; the modal now lives on the world-space panel.
+            var selfRt = transform as RectTransform;
+            if (selfRt != null)
+                for (int i = selfRt.childCount - 1; i >= 0; i--)
+                    Destroy(selfRt.GetChild(i).gameObject);
+            var selfImg = GetComponent<Image>();
+            if (selfImg != null) selfImg.enabled = false;
 
-            canvasGroup = GetComponent<CanvasGroup>();
-            if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            var vr = UnitConversionHelper.World.VisibleRect();
+            var panel = WorldSpaceUiPanel.Create("AbilityCastConfirmWS", vr.width * 0.7f, vr.height * 0.4f, sortingOrder: 100);
+            panel.PlaceAt(vr.center);
 
-            // Remove any pre-existing scene children so the code-built look is authoritative.
-            for (int i = rootRT.childCount - 1; i >= 0; i--)
-                Destroy(rootRT.GetChild(i).gameObject);
+            var rootRT = panel.Content;
+            canvasGroup = rootRT.GetComponent<CanvasGroup>();
+            if (canvasGroup == null) canvasGroup = rootRT.gameObject.AddComponent<CanvasGroup>();
 
-            // Faint full-screen dim that also blocks taps outside the card.
-            var dim = gameObject.GetComponent<Image>();
-            if (dim == null) dim = gameObject.AddComponent<Image>();
-            dim.color = new Color(0f, 0f, 0f, 0.45f);
-            dim.raycastTarget = true;
-
-            // Centered card.
-            var card = MakeRect("Card", rootRT, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
-            card.anchoredPosition = Vector2.zero;
-            card.sizeDelta = new Vector2(900f, 520f);
+            // Card fills the panel.
+            var card = MakeRect("Card", rootRT, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f));
+            card.offsetMin = Vector2.zero;
+            card.offsetMax = Vector2.zero;
             var cardImg = card.gameObject.AddComponent<Image>();
             cardImg.color = new Color(0.10f, 0.10f, 0.13f, 0.96f);
             cardImg.raycastTarget = true;
 
-            // Title near the top of the card.
+            // Title near the top of the card (authored in the panel's reference-pixel space).
             var titleRT = MakeRect("Title", card, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0.5f, 1f));
-            titleRT.anchoredPosition = new Vector2(0f, -40f);
-            titleRT.sizeDelta = new Vector2(820f, 90f);
-            label = MakeText(titleRT, string.Empty, 48, FontStyles.Bold);
+            titleRT.anchoredPosition = new Vector2(0f, -70f);
+            titleRT.sizeDelta = new Vector2(920f, 130f);
+            label = MakeText(titleRT, string.Empty, 64, FontStyles.Bold);
 
             // Description in the middle, word-wrapped.
             var descRT = MakeRect("Description", card, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
-            descRT.anchoredPosition = new Vector2(0f, 20f);
-            descRT.sizeDelta = new Vector2(800f, 220f);
-            description = MakeText(descRT, string.Empty, 34, FontStyles.Normal);
+            descRT.anchoredPosition = new Vector2(0f, 30f);
+            descRT.sizeDelta = new Vector2(880f, 320f);
+            description = MakeText(descRT, string.Empty, 44, FontStyles.Normal);
             description.enableWordWrapping = true;
             description.color = new Color(0.85f, 0.85f, 0.88f, 1f);
 
             // Button row at the bottom.
             cancelBtn = MakeButton(card, "CancelButton", "Cancel", new Color(0.7f, 0.15f, 0.2f, 1f),
-                new Vector2(-150f, 70f), new Vector2(0.5f, 0f));
+                new Vector2(-230f, 95f), new Vector2(0.5f, 0f));
             castBtn = MakeButton(card, "CastButton", "OK", new Color(0.15f, 0.45f, 0.95f, 1f),
-                new Vector2(150f, 70f), new Vector2(0.5f, 0f));
+                new Vector2(230f, 95f), new Vector2(0.5f, 0f));
         }
 
         private static RectTransform MakeRect(string name, RectTransform parent, Vector2 aMin, Vector2 aMax, Vector2 pivot)
