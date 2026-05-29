@@ -21,6 +21,8 @@ namespace Scripts.Data
         public static readonly ManaAbility Fireball = Spell("Fireball", (ManaType.Red, 2));                              // (R)(R)
         public static readonly ManaAbility Frost    = Spell("Frost",    (ManaType.Blue, 2));                             // (U)(U)
         public static readonly ManaAbility Bolt     = Spell("Bolt",     (ManaType.Red, 2), (ManaType.Blue, 1));          // (R)(R)(U)
+        public static readonly ManaAbility Steal    = Spell("Steal",    (ManaType.Colorless, 1));                        // (C)  — cheap utility
+        public static readonly ManaAbility Mug      = Spell("Mug",      (ManaType.Black, 2));                            // (B)(B) — rogue/violence
 
         // ── Items (charges, no mana cost) ──
         public static readonly ManaAbility Potion   = Item("Potion", maxCharges: 3);

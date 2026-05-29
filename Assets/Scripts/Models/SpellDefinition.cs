@@ -47,6 +47,11 @@ namespace Scripts.Models
         /// <summary>If true, the spell removes ALL active debuffs from the target on impact (Antidote, Cleanse).</summary>
         public bool RemovesDebuffs { get; }
 
+        /// <summary>If true, each target gets a per-target steal roll (LCK + 0.5 × AGI) / 50 → on
+        /// success, one random-color orb is added to the team's ManaBank. Steal alone deals no
+        /// damage; Mug pairs <c>StealsMana = true</c> with <c>BaseDamage &gt; 0</c>.</summary>
+        public bool StealsMana { get; }
+
         public SpellDefinition(
             ManaAbility ability,
             TargetShape shape,
@@ -63,7 +68,8 @@ namespace Scripts.Models
             float baseHeal = 0f,
             DamageType damageType = DamageType.Physical,
             float projectileSeconds = 0.5f,
-            bool removesDebuffs = false)
+            bool removesDebuffs = false,
+            bool stealsMana = false)
         {
             Ability = ability;
             Shape = shape;
@@ -81,6 +87,7 @@ namespace Scripts.Models
             DamageType = damageType;
             ProjectileSeconds = projectileSeconds;
             RemovesDebuffs = removesDebuffs;
+            StealsMana = stealsMana;
         }
     }
 }

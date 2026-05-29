@@ -99,6 +99,9 @@ namespace Scripts.Managers
                     if (ctm != null) ctm.Spawn("Steam!", target.transform.position, "Damage");
                 }
 
+                // Steal / Mug — per-target LCK+AGI roll → one random orb to the team bank on success.
+                if (spell.StealsMana) TryStealFrom(caster, target);
+
                 if (spell.BaseDamage > 0f) ApplyDamage(target, spell);
                 if (spell.BaseHeal   > 0f) ApplyHeal  (target, spell.BaseHeal, spell.Ability.Name);
             }
@@ -138,6 +141,36 @@ namespace Scripts.Managers
             if (ctm != null) ctm.Spawn(final.ToString(), target.transform.position, "Damage");
 
             Debug.Log($"[Spell] {spell.Ability.Name} ({spell.DamageType}) hits {target.name} for {final} (base {spell.BaseDamage:0.#}, res ×{resMult:0.##}).");
+        }
+
+        /// <summary>Roll a steal attempt against <paramref name="target"/> using
+        /// <paramref name="caster"/>'s LCK + half AGI. Success → one random-color orb into the
+        /// team bank + "Steal!" combat text. Failure → quiet "Miss" pop. Used by Steal and Mug.</summary>
+        private static void TryStealFrom(ActorInstance caster, ActorInstance target)
+        {
+            if (caster == null || caster.Stats == null || target == null) return;
+
+            float chance = Mathf.Clamp01((caster.Stats.Luck + caster.Stats.Agility * 0.5f) / 50f);
+            bool success = UnityEngine.Random.value < chance;
+
+            var ctm = g.CombatTextManager;
+            if (!success)
+            {
+                if (ctm != null) ctm.Spawn("Miss", target.transform.position, "Miss");
+                return;
+            }
+
+            var color = RandomStealColor();
+            g.ManaBank?.Add(color, 1);
+
+            if (ctm != null) ctm.Spawn($"Steal! +{color}", target.transform.position, "Heal");
+            Debug.Log($"[Spell] {caster.name} stole 1 {color} orb from {target.name} (chance {chance:P0}).");
+        }
+
+        private static ManaType RandomStealColor()
+        {
+            int total = System.Enum.GetValues(typeof(ManaType)).Length;
+            return (ManaType)UnityEngine.Random.Range(0, total);
         }
 
         private static void ApplyHeal(ActorInstance target, float amount, string spellName)

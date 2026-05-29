@@ -41,7 +41,8 @@ namespace Scripts.Data
                 { CharacterClass.Cleric,    new [] { ManaAbilities.Heal,    ManaAbilities.Heal,     ManaAbilities.Frost,    ManaAbilities.Potion, null, null } },
                 { CharacterClass.Paladin,   new [] { ManaAbilities.Heal,    ManaAbilities.Fireball, ManaAbilities.Potion,   null, null, null } },
                 { CharacterClass.Barbarian, new [] { ManaAbilities.Fireball,ManaAbilities.Bolt,     ManaAbilities.Potion,   null, null, null } },
-                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.Potion,   ManaAbilities.Potion,   ManaAbilities.Heal,   null, null } },
+                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.Potion,   ManaAbilities.Steal,    ManaAbilities.Heal,   null, null } },
+                { CharacterClass.Assassain, new [] { ManaAbilities.Steal,   ManaAbilities.Mug,      ManaAbilities.Bolt,     ManaAbilities.Potion, null, null } },
             };
     }
 }

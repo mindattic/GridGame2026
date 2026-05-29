@@ -126,6 +126,28 @@ namespace Scripts.Data
             impactVfx: "LightningExplosion",
             baseDamage: 10f, damageType: DamageType.Lightning);
 
+        // Steal: hits every adjacent (cardinal) enemy with a per-target LCK+AGI roll. On success
+        // the team's ManaBank gains one random-color orb. Mode=Auto + Shape=Cross r=1 anchored on
+        // caster means "self tile + 4 cardinals" → EnemyOnly filter strips the caster.
+        public static readonly SpellDefinition Steal = new SpellDefinition(
+            ability: ManaAbilities.Steal,
+            shape: TargetShape.Cross, mode: TargetMode.Auto, filter: TargetFilter.EnemyOnly, radius: 1,
+            castVfx: "GoldSparkle", projectileVfx: "Feather", motion: ProjectileMotion.Homing,
+            impactVfx: "GoldSparkle",
+            damageType: DamageType.Arcane,
+            projectileSeconds: 0.35f,
+            stealsMana: true);
+
+        // Mug: Steal + a real physical attack on each adjacent enemy. Same shape, adds damage.
+        public static readonly SpellDefinition Mug = new SpellDefinition(
+            ability: ManaAbilities.Mug,
+            shape: TargetShape.Cross, mode: TargetMode.Auto, filter: TargetFilter.EnemyOnly, radius: 1,
+            castVfx: "BloodClaw", projectileVfx: "Shuriken", motion: ProjectileMotion.Straight,
+            impactVfx: "PuffyExplosion", lingerVfx: "BloodClaw",
+            baseDamage: 10f, damageType: DamageType.Physical,
+            projectileSeconds: 0.30f,
+            stealsMana: true);
+
         // Cross-Hit: pick a tile, Plus shape (entire row + column = big board-wide +).
         public static readonly SpellDefinition CrossHit = new SpellDefinition(
             ability: ManaAbilities.Bolt,
@@ -139,7 +161,8 @@ namespace Scripts.Data
         {
             Fire, Ice, Lightning, Poison, Sleep, Slow, Silence,
             Heal, MassHeal, Antidote, Scan,
-            Meteor, ShockWave, CrossHit
+            Meteor, ShockWave, CrossHit,
+            Steal, Mug
         };
     }
 }
