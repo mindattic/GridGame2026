@@ -113,20 +113,19 @@ public class AbilityButtonManager : MonoBehaviour
     }
 
     /// <summary>Builds all hero buttons and subscribes to events.
-    /// Called via GameReady.WhenReady so g.Actors.Heroes is fully populated.</summary>
+    /// Called via GameReady.WhenReady so g.Actors.Heroes is fully populated.
+    ///
+    /// PHASE B: per-hero button creation is DISABLED. The new party-wide 6-slot
+    /// <see cref="Scripts.Canvas.ManaAbilityBar"/> (spawned by ManaPoolManager.Start) replaces it.
+    /// The input-mode subscription is kept so future per-hero loadout swapping can re-enable
+    /// this path. Public API (Show/Hide/UpdateAllInteractables) survives as no-ops below.</summary>
     private void Initialize()
     {
-        BuildAllHeroButtons();
-        HideAll();
+        // BuildAllHeroButtons();   // PHASE B: superseded by ManaAbilityBar.
+        // HideAll();                // PHASE B: no per-hero buttons to hide.
 
-        // Subscribe to input mode changes to lock/unlock buttons during targeting
         if (g.InputManager != null)
             g.InputManager.OnInputModeChanged += OnInputModeChanged;
-
-        // If a hero is already selected (e.g. auto-selected at turn start), show their buttons
-        var selected = g.Actors.SelectedActor;
-        if (selected != null && selected.IsHero && selected.IsPlaying)
-            Show(selected);
     }
 
     private void OnDestroy()

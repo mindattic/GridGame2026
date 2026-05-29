@@ -82,6 +82,20 @@ public class ActorData
     public string Card;
     public List<string> Trivia = new List<string>();
 
+    /// <summary>
+    /// Per-element damage multipliers. Missing entries default to 1.0 (neutral). Values:
+    /// 0.0 = immune, 0.5 = resistant (half damage), 1.0 = neutral, 1.5 = weak (50% bonus),
+    /// 2.0 = double damage. Designer-tunable per character class.
+    /// </summary>
+    public Dictionary<Scripts.Models.DamageType, float> Resistances = new Dictionary<Scripts.Models.DamageType, float>();
+
+    /// <summary>Returns the damage multiplier this actor takes against <paramref name="type"/>. 1.0 if not listed.</summary>
+    public float ResistanceMultiplier(Scripts.Models.DamageType type)
+    {
+        if (Resistances == null) return 1f;
+        return Resistances.TryGetValue(type, out var m) ? m : 1f;
+    }
+
     public ActorData() { }
 
     public ActorData(ActorData other)

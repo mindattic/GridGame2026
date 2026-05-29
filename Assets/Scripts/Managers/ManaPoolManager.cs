@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Helpers;
 using Scripts.Canvas;
@@ -25,255 +23,157 @@ using Scripts.Utilities;
 
 namespace Scripts.Managers
 {
-/// <summary>
-/// MANAPOOLMANAGER - Hero and enemy mana resource system.
-/// 
-/// PURPOSE:
-/// Manages mana pools for both teams, handling accumulation,
-/// spending, and UI display.
-/// 
-/// MANA ACCUMULATION:
-/// - Passive gain: Mana accumulates while timeline advances
-/// - Bank bonus: Grants bonus mana equal to time skipped
-/// - Rate: manaPerSecond (default 5/sec)
-/// 
-/// MANA USAGE:
-/// - Abilities spend mana when cast
-/// - Each ability has a ManaCost
-/// - Cannot cast if insufficient mana
-/// 
-/// UI ELEMENTS:
-/// - Hero mana fill bar (blue/cyan HDR)
-/// - Enemy mana fill bar (optional)
-/// - Bank button for time skip
-/// 
-/// RELATED FILES:
-/// - AbilityManager.cs: Spends mana on ability cast
-/// - TimelineBarInstance.cs: Triggers mana gain
-/// - AbilityButton.cs: Shows mana requirements
-/// 
-/// ACCESS: g.ManaPoolManager
-/// </summary>
-public class ManaPoolManager : MonoBehaviour
-{
-    /// <summary>Canvas height of the mana pool container — referenced by TimelineBarInstance for stacking.</summary>
-    public const float UiHeight = 100f;
-
-    public float maxMana = 100f;
-    private float _heroMana = 0f;
-    public float enemyMana = 0f;
-
-    public float heroMana
+    /// <summary>
+    /// MANAPOOLMANAGER - Hero mana resource system (PHASE B: shim over the new orb economy).
+    ///
+    /// <para>PURPOSE: owns the team's <see cref="ManaBank"/> (a capped line of colored orbs) and
+    /// translates between the legacy float-mana API and orb spends/grants so existing callers
+    /// (AbilityManager, AbilityButtonManager, FX/pickups) keep working unchanged.</para>
+    ///
+    /// <para>PHASE B CHANGES:</para>
+    /// <list type="bullet">
+    ///   <item>The 5/sec time-accrual is REMOVED. Mana is harvested by completing pincers — see
+    ///   <see cref="PincerAttackManager"/> (each hero attacker + supporter drops a Blue orb via
+    ///   <see cref="ManaOrbFactory"/>).</item>
+    ///   <item>The old <c>Canvas/ManaPool</c> subtree (fill bar + Bank button + glow) is GONE —
+    ///   deleted from <c>GameBuilder.cs</c>. <see cref="OnBankButtonClicked"/> survives because
+    ///   <see cref="TurnManager"/> calls it as the auto-skip-to-next-enemy fallback — but it no
+    ///   longer grants mana.</item>
+    ///   <item>The new HUD is spawned in <see cref="Start"/>: <see cref="ManaOrbLineFactory"/> +
+    ///   <see cref="ShieldButtonFactory"/>, both parented to the Canvas.</item>
+    ///   <item><see cref="heroMana"/> is a DERIVED view: <c>Bank.Count(Blue) * ManaPerOrb</c>.
+    ///   <see cref="Spend"/> rounds float costs to orbs via <c>ceil(cost / ManaPerOrb)</c>.</item>
+    /// </list>
+    ///
+    /// <para>ACCESS: <c>g.ManaPoolManager</c> (legacy) or <c>g.ManaBank</c> (new, preferred).</para>
+    /// </summary>
+    public class ManaPoolManager : MonoBehaviour
     {
-        get => _heroMana;
-        set => _heroMana = value;
-    }
+        /// <summary>Float-mana-per-orb conversion factor — bridges legacy float costs to orb counts.</summary>
+        public const float ManaPerOrb = 10f;
 
-    [Header("Passive Gain")]
-    [Tooltip("Mana gained per second while timeline advances.")]
-    public float manaPerSecond = 5f;
+        public float maxMana = 100f;
+        public float enemyMana = 0f;
 
-    [Header("UI")]
-    public Color manaHdrColor = new Color(0.2f, 1.8f, 3.2f, 1f);
-    public bool showEnemyMana = false;
+        /// <summary>The live mana-orb line; ability spends/grants run through this.</summary>
+        public ManaBank Bank { get; private set; } = new ManaBank();
 
-    private Button BankButton;
-    private Image HeroFill;
-    private Image EnemyFill;
-    private RectTransform poolRect;
+        /// <summary>The live orb-line HUD spawned at Start — held so dropping orbs can find their target slot.</summary>
+        public ManaOrbLine OrbLine { get; private set; }
 
-    // Bank button pulse: glow halo scaled by an animation curve, mirroring CoinCounter.
-    private RectTransform bankButtonRect;
-    private RectTransform bankGlowRect;
-    private AnimationCurve bankGlowCurve;
-    private const float BankGlowMaxScale = 1.6f;
-
-    /// <summary>Initializes component references and state.</summary>
-    private void Awake()
-    {
-        _heroMana = 0f;
-        enemyMana = 0f;
-
-        BankButton = GameObjectHelper.Game.ManaPool.BankButton;
-        HeroFill = GameObjectHelper.Game.ManaPool.HeroFill;
-        EnemyFill = GameObjectHelper.Game.ManaPool.EnemyFill;
-        poolRect = GameObject.Find("Canvas/ManaPool")?.GetComponent<RectTransform>();
-
-        BankButton.onClick.AddListener(OnBankButtonClicked);
-
-        // Cache rects for the glow pulse — reuses CoinCounter's curve shape (0→1→0 loop).
-        bankButtonRect = BankButton != null ? BankButton.GetComponent<RectTransform>() : null;
-        var glow = GameObjectHelper.Game.ManaPool.BankButtonGlow;
-        bankGlowRect = glow != null ? glow.rectTransform : null;
-        bankGlowCurve = new AnimationCurve(
-            new Keyframe(0f, 0f),
-            new Keyframe(0.5f, 1f),
-            new Keyframe(1f, 0f));
-
-        ApplyBloomColor();
-        RefreshUI();
-    }
-
-    /// <summary>Anchor the pool just above the board's top edge after the board is built.</summary>
-    private void Start()
-    {
-        StartCoroutine(AnchorAboveBoardWhenReady());
-    }
-
-    /// <summary>Coroutine that waits a frame for the board to compute its bounds, then anchors.</summary>
-    private System.Collections.IEnumerator AnchorAboveBoardWhenReady()
-    {
-        for (int i = 0; i < 2; i++) yield return null;
-        AnchorAboveBoard();
-    }
-
-    /// <summary>Computes the canvas Y of the board's top edge and positions the pool just above it.</summary>
-    private void AnchorAboveBoard()
-    {
-        if (poolRect == null || g.Board == null || CanvasHelper.CanvasRect == null) return;
-
-        var boardTopWorld = new Vector3(0f, g.Board.bounds.Top, 0f);
-        var boardTopCanvas = UnitConversionHelper.World.ToCanvas(CanvasHelper.CanvasRect, boardTopWorld);
-
-        const float padBoardToMana = 8f;
-        float manaY = boardTopCanvas.y + padBoardToMana + UiHeight * 0.5f;
-        poolRect.anchoredPosition = new Vector2(poolRect.anchoredPosition.x, manaY);
-    }
-
-    /// <summary>Cleans up resources when the object is destroyed.</summary>
-    private void OnDestroy()
-    {
-        BankButton.onClick.RemoveListener(OnBankButtonClicked);
-    }
-
-    /// <summary>Runs per-frame update logic.</summary>
-    private void Update()
-    {
-        // Accumulate mana at a constant rate while the timeline is advancing
-        if (g.TimelineBar.IsAdvancing)
+        /// <summary>Derived: float-mana view onto the orb line. Setter is a no-op (kept for back-compat).</summary>
+        public float heroMana
         {
-            float gain = manaPerSecond * Time.deltaTime;
-            heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
-            RefreshUI();
+            get => Bank.Count(ManaType.Blue) * ManaPerOrb;
+            set { /* PHASE B: no-op — orbs are added/spent through Bank now. */ }
         }
 
-        UpdateBankGlow();
-    }
-
-    /// <summary>Pulses the bank-button glow halo using the same animation-curve loop as CoinCounter.</summary>
-    private void UpdateBankGlow()
-    {
-        if (bankGlowRect == null || bankButtonRect == null || bankGlowCurve == null || bankGlowCurve.length == 0) return;
-        float scale = BankGlowMaxScale * bankGlowCurve.Evaluate(Time.time % bankGlowCurve.length);
-        bankGlowRect.localScale = new Vector3(
-            bankButtonRect.localScale.x * scale,
-            bankButtonRect.localScale.y * scale,
-            1f);
-    }
-
-    /// <summary>
-    /// Bank button: skip to the next enemy trigger and gain mana equal to the time skipped.
-    /// The hero sacrifices their movement/turn to instantly accumulate mana and trigger the next enemy.
-    /// </summary>
-    public void OnBankButtonClicked()
-    {
-        if (!g.TurnManager.IsHeroTurn)
-            return;
-
-        // Get the next bank target
-        var (arrivingEnemy, secondsSkipped) = g.TimelineBar.GetNextBankTarget();
-        if (arrivingEnemy == null)
-            return;
-
-        // Advance the timeline visually
-        g.TimelineBar.AdvanceToNextTrigger(arrivingEnemy, secondsSkipped);
-
-        // Grant mana for the time skipped
-        float gain = secondsSkipped * manaPerSecond;
-        heroMana = Mathf.Clamp(heroMana + gain, 0f, maxMana);
-        
-        RefreshUI();
-        g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
-
-        // Disable input during transition
-        g.InputManager.InputMode = InputMode.None;
-
-        // Queue the timeline trigger sequence which handles drop, pincer, and enemy turn
-        g.SequenceManager.Add(new Scripts.Sequences.TimelineTriggerSequence(arrivingEnemy));
-        g.SequenceManager.Execute();
-    }
-
-    /// <summary>
-    /// Spend mana for an ability. Returns true if successful, false if insufficient mana.
-    /// </summary>
-    public bool Spend(Team team, float cost)
-    {
-        cost = Mathf.Max(0f, cost);
-
-        if (team == Team.Hero)
+        /// <summary>PHASE B: spawn the new HUD pieces under the main Canvas — orb line (Row 14),
+        /// shield button (Row 2 right), and the 6-slot mana ability bar (Row 13, inside the
+        /// existing AbilityButtonContainer that GameBuilder placed). After actors are ready,
+        /// attach a debuff icon strip above each. <b>Game-scene-only</b> — silently no-ops in
+        /// Bestiary / Overworld / vendor scenes that also happen to host this component.</summary>
+        private void Start()
         {
-            if (heroMana < cost)
-                return false;
-            heroMana -= cost;
-        }
-        else
-        {
-            if (enemyMana < cost)
-                return false;
-            enemyMana -= cost;
+            // Fix #1: gate by scene name so other scenes with a Canvas (e.g. Bestiary) don't get
+            // an orb line stranded on top of unrelated UI.
+            var activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (activeScene.name != "Game") return;
+
+            var canvas = GameObject.Find("Canvas");
+            if (canvas == null) return;
+            OrbLine = ManaOrbLineFactory.Create(canvas.transform, Bank);
+            ShieldButtonFactory.Create(canvas.transform);
+
+            var abilityContainer = GameObject.Find("Canvas/AbilityButtonContainer");
+            if (abilityContainer != null)
+                ManaAbilityBarFactory.Create(abilityContainer.transform, Bank);
+
+            // Once heroes + enemies exist on the board, drop a debuff icon strip above each.
+            Scripts.Utilities.GameReady.WhenReady(this, () => AttachDebuffBarsToAll(canvas.transform));
+
+            // Per-tick buff effects (Burning damage, Poisoned damage, Wet/Warm countdown).
+            if (GetComponent<BuffTickManager>() == null) gameObject.AddComponent<BuffTickManager>();
         }
 
-        RefreshUI();
-        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
-        return true;
-    }
-
-    /// <summary>
-    /// Add mana directly (for special effects, pickups, etc.).
-    /// </summary>
-    public void AddMana(Team team, float amount)
-    {
-        amount = Mathf.Max(0f, amount);
-
-        if (team == Team.Hero)
-            heroMana = Mathf.Clamp(heroMana + amount, 0f, maxMana);
-        else
-            enemyMana = Mathf.Clamp(enemyMana + amount, 0f, maxMana);
-
-        RefreshUI();
-        g.AbilityButtonManager.UpdateAllInteractables(heroMana);
-    }
-
-    /// <summary>
-    /// Update the UI fill bars to reflect current mana values.
-    /// </summary>
-    public void RefreshUI()
-    {
-        float heroT = Mathf.Clamp01(heroMana / maxMana);
-        HeroFill.fillAmount = heroT;
-
-        EnemyFill.gameObject.SetActive(showEnemyMana);
-        if (showEnemyMana)
+        private static void AttachDebuffBarsToAll(Transform canvas)
         {
-            float enemyT = Mathf.Clamp01(enemyMana / maxMana);
-            EnemyFill.fillAmount = enemyT;
+            if (g.Actors == null) return;
+            foreach (var a in g.Actors.All)
+                if (a != null) Scripts.Factories.DebuffIconBarFactory.EnsureAttached(a);
         }
-    }
 
-    /// <summary>Applies the bloom color.</summary>
-    private void ApplyBloomColor()
-    {
-        HeroFill.color = manaHdrColor;
-        EnemyFill.color = manaHdrColor;
-    }
+        /// <summary>
+        /// PHASE B: the Bank BUTTON is gone. This method still drives <b>auto-skip to next enemy</b>
+        /// when <see cref="TurnManager"/> finds remaining time too short for the player to act, so
+        /// we keep the timeline-advance + enemy-turn-queue flow. The mana grant is removed.
+        /// </summary>
+        public void OnBankButtonClicked()
+        {
+            if (!g.TurnManager.IsHeroTurn) return;
 
-    /// <summary>
-    /// Legacy hook called by TurnManager at turn start. 
-    /// </summary>
-    public void OnTurnStarted(Team team)
-    {
-        RefreshUI();
-    }
-}
+            var (arrivingEnemy, secondsSkipped) = g.TimelineBar.GetNextBankTarget();
+            if (arrivingEnemy == null) return;
 
+            g.TimelineBar.AdvanceToNextTrigger(arrivingEnemy, secondsSkipped);
+            g.InputManager.InputMode = InputMode.None;
+            g.SequenceManager.Add(new Scripts.Sequences.TimelineTriggerSequence(arrivingEnemy));
+            g.SequenceManager.Execute();
+        }
+
+        /// <summary>
+        /// PHASE B: Spend mana for an ability. Hero spends route through the orb line —
+        /// <c>orbs = ceil(cost / ManaPerOrb)</c>, spent as Blue (V1: all magic costs Blue). Returns
+        /// true if successful, false if insufficient orbs. Enemy mana keeps the legacy float path.
+        /// </summary>
+        public bool Spend(Team team, float cost)
+        {
+            cost = Mathf.Max(0f, cost);
+
+            if (team == Team.Hero)
+            {
+                int orbsNeeded = cost <= 0f ? 0 : Mathf.Max(1, Mathf.CeilToInt(cost / ManaPerOrb));
+                if (Bank.Count(ManaType.Blue) < orbsNeeded) return false;
+                var recipe = new ManaRecipe("Cast", new ManaCost(ManaType.Blue, orbsNeeded));
+                if (!Bank.Spend(recipe)) return false;
+            }
+            else
+            {
+                if (enemyMana < cost) return false;
+                enemyMana -= cost;
+            }
+
+            g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
+            return true;
+        }
+
+        /// <summary>
+        /// PHASE B: Add mana directly (special effects, pickups, etc.). Hero adds become Blue orbs;
+        /// enemy adds remain on the legacy float.
+        /// </summary>
+        public void AddMana(Team team, float amount)
+        {
+            amount = Mathf.Max(0f, amount);
+
+            if (team == Team.Hero)
+            {
+                int orbs = amount <= 0f ? 0 : Mathf.Max(1, Mathf.CeilToInt(amount / ManaPerOrb));
+                Bank.Add(ManaType.Blue, orbs);
+            }
+            else
+            {
+                enemyMana = Mathf.Clamp(enemyMana + amount, 0f, maxMana);
+            }
+
+            g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
+        }
+
+        // ── PHASE B no-op shims (kept because live callers still reference them) ──
+
+        /// <summary>PHASE B: legacy fill-bar UI is gone; no work required. Kept for back-compat (SelectionManager, ForceHeroDropSequence call this).</summary>
+        public void RefreshUI() { }
+
+        /// <summary>PHASE B: legacy turn-start hook; previously refreshed the fill bar. No-op now (TurnManager still calls this).</summary>
+        public void OnTurnStarted(Team team) { }
+    }
 }

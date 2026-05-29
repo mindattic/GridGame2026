@@ -252,8 +252,11 @@ namespace Scripts.Helpers
         /// <summary>Handles ability execution and targeting.</summary>
         public static AbilityManager AbilityManager => gm != null ? gm.abilityManager : null;
 
-        /// <summary>Manages mana pool resource system.</summary>
+        /// <summary>Manages mana pool resource system. Phase B: shim over the new sphere economy.</summary>
         public static ManaPoolManager ManaPoolManager => gm != null ? gm.manaPoolManager : null;
+
+        /// <summary>The live team mana-orb line. Phase B replacement for the float mana pool.</summary>
+        public static ManaBank ManaBank => gm != null && gm.manaPoolManager != null ? gm.manaPoolManager.Bank : null;
 
         #endregion
 

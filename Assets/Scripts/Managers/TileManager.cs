@@ -31,13 +31,17 @@ namespace Scripts.Managers
 /// </summary>
 public class TileManager : MonoBehaviour
 {
-    /// <summary>Resets component to default values (editor only).</summary>
+    /// <summary>Resets component to default values (editor only). Unity calls this whenever the
+    /// component is freshly added — including from GameBuilder during a scene rebuild, when there
+    /// is NO GameManager yet (g.Tiles returns null). Guard accordingly.</summary>
     public void Reset()
     {
-        foreach (var tile in g.Tiles)
+        var tiles = g.Tiles;
+        if (tiles == null) return;
+        foreach (var tile in tiles)
         {
-            // Reset each tile's sprite color to a translucent white.
-            tile.spriteRenderer.color = ColorHelper.Tile.White;
+            if (tile != null && tile.spriteRenderer != null)
+                tile.spriteRenderer.color = ColorHelper.Tile.White;
         }
     }
 

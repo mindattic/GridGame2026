@@ -40,22 +40,66 @@ public partial class DebugWindow
             ("Show ActionTitle", () => g.DebugManager.Demo_ShowActionTitle()),
             ("Show CastConfirm", () => g.DebugManager.Demo_ShowCastConfirm()),
             ("Hide CastConfirm", () => g.DebugManager.Demo_HideCastConfirm()),
-            ("Log GlyphBank", () => g.DebugManager.Demo_LogGlyphBank())
+            ("Log Mana Line", () => g.DebugManager.Demo_LogManaBank())
         );
 
-        // Glyph economy — draw glyphs (as if disrupting enemy charges).
+        // In-game HUD — spawn / hide the (debug) demo orb line and shield. NOTE: the LIVE orb line
+        // and shield button auto-spawn in ManaPoolManager.Start; these Demo_Show buttons spawn an
+        // EXTRA debug copy bound to the demo bank.
         RenderButtonRow(
-            ("+ Colorless", () => g.DebugManager.Demo_AddGlyph_Colorless()),
-            ("+ Physical", () => g.DebugManager.Demo_AddGlyph_Physical()),
-            ("+ Magic", () => g.DebugManager.Demo_AddGlyph_Magic()),
-            ("+ Fire", () => g.DebugManager.Demo_AddGlyph_Fire())
+            ("Demo Orb Line", () => g.DebugManager.Demo_ShowOrbLine()),
+            ("Hide Demo Orb Line", () => g.DebugManager.Demo_HideOrbLine()),
+            ("Toggle Any-Color", () => g.DebugManager.Demo_ToggleAnyColor()),
+            ("Random Hero Abilities", () => g.DebugManager.Demo_RandomHeroAbilities())
         );
 
-        // Glyph economy — spend on recipes.
+        // Give Mana — drop a bouncing orb of each color into the LIVE bank for spell testing.
         RenderButtonRow(
-            ("Cast Heal+ (Colorless+Magic)", () => g.DebugManager.Demo_TryCast_Heal2()),
-            ("Cast Meteor Slam (Fire+2 Phys)", () => g.DebugManager.Demo_TryCast_MeteorSlam()),
-            ("Clear Glyphs", () => g.DebugManager.Demo_ClearGlyphs())
+            ("Give (W)", () => g.DebugManager.Demo_GiveMana_White()),
+            ("Give (U)", () => g.DebugManager.Demo_GiveMana_Blue()),
+            ("Give (B)", () => g.DebugManager.Demo_GiveMana_Black()),
+            ("Give (R)", () => g.DebugManager.Demo_GiveMana_Red())
         );
+
+        // Mana economy — harvest orbs (V1: all Blue, sourced from the heroes you bring along)
+        // and simulate vendor restock for the item slot.
+        RenderButtonRow(
+            ("+ Blue (1 hero)", () => g.DebugManager.Demo_HarvestBlue()),
+            ("Harvest Party", () => g.DebugManager.Demo_HarvestParty()),
+            ("Buy Potion (+1)", () => g.DebugManager.Demo_RefillPotion()),
+            ("Clear Mana", () => g.DebugManager.Demo_ClearMana())
+        );
+
+        // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
+        // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
+        // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.
+        var abilities = Scripts.Data.ManaAbilities.Slots;
+        var castActions = new System.Action[]
+        {
+            () => g.DebugManager.Demo_Cast_Heal(),
+            () => g.DebugManager.Demo_Cast_Fireball(),
+            () => g.DebugManager.Demo_Cast_Frost(),
+            () => g.DebugManager.Demo_Cast_Bolt(),
+            () => g.DebugManager.Demo_Cast_Potion(),
+            null, // slot 6: reserved
+        };
+        GUILayout.BeginHorizontal();
+        float slotW = Mathf.Max(56f, (Screen.width - 24f) / 6f);
+        var w = GUILayout.Width(slotW);
+        var h = GUILayout.Height(36f);
+        for (int i = 0; i < 6; i++)
+        {
+            var a = abilities[i];
+            if (a == null)
+            {
+                GUI.enabled = false;
+                GUILayout.Button("—\nReserved", w, h);
+                GUI.enabled = true;
+                continue;
+            }
+            string label = $"{a.Name}\n{Scripts.Data.ManaAbilities.CostIcons(a)}";
+            if (GUILayout.Button(label, w, h)) castActions[i]?.Invoke();
+        }
+        GUILayout.EndHorizontal();
     }
 }

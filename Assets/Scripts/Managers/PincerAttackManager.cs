@@ -191,6 +191,18 @@ public class PincerAttackManager : MonoBehaviour
 
         yield return g.SequenceManager.ExecuteRoutine();
 
+        // PHASE B: hero-side pincer completion DROPS Blue mana orbs (bouncing pickups) toward the
+        // orb line — heroes are the primary mana source. V1 is always Blue; per-hero color
+        // affinity arrives with WUBRG. Each orb commits on landing (ManaOrbInstance.Update).
+        foreach (var p in participants.pair)
+        {
+            if (p == null || p.attacker1 == null || p.attacker1.team != Team.Hero) continue;
+            DropOrbAt(p.attacker1, ManaType.Blue);
+            if (p.attacker2 != null) DropOrbAt(p.attacker2, ManaType.Blue);
+            if (p.supporters1 != null) foreach (var s in p.supporters1) DropOrbAt(s, ManaType.Blue);
+            if (p.supporters2 != null) foreach (var s in p.supporters2) DropOrbAt(s, ManaType.Blue);
+        }
+
         yield return g.BoardOverlay.FadeOutRoutine();
         g.SynergyLineManager.Clear();
         participants.Clear();
@@ -203,6 +215,13 @@ public class PincerAttackManager : MonoBehaviour
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)
     {
         return Formulas.CalculateAttackResult(attacker, opponent);
+    }
+
+    /// <summary>Drops a bouncing mana orb from <paramref name="source"/>'s world position toward the orb line.</summary>
+    private void DropOrbAt(ActorInstance source, ManaType color)
+    {
+        if (source == null || source.transform == null) return;
+        Scripts.Factories.ManaOrbFactory.Drop(source.transform.position, color);
     }
 
     /// <summary>Finds the supporters for an attacker. Delegates to the pure detector service.</summary>

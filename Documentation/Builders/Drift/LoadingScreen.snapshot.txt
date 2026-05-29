@@ -7,7 +7,7 @@
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=589.5,1278, size=1179,2556, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+  RectTransform: anchor=(0,0)-(0,0), pos=585,1266, size=1170,2532, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance

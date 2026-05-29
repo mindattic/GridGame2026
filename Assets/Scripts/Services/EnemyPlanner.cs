@@ -28,6 +28,11 @@ namespace Scripts.Services
             if (enemy == null || actors == null || tileMap == null)
                 return enemy != null ? enemy.location : Vector2Int.zero;
 
+            // Fix #10: Frozen / Sleep stick the enemy in place. Until this hook landed the buff
+            // was cosmetic; now an immobilised enemy never advances.
+            if (Scripts.Managers.BuffSystem.IsImmobile(enemy))
+                return enemy.location;
+
             var heroes = actors.Where(a => a != null && a.IsPlaying && a.team == Team.Hero).ToList();
             if (heroes.Count == 0)
                 return enemy.location;

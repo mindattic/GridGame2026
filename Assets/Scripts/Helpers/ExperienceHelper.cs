@@ -118,9 +118,9 @@ namespace Scripts.Helpers
 
                     actor.HealthText.Refresh();
 
-                    g.CombatTextManager?.Spawn("Level Up!", actor.Position, "Heal");
+                    g.CombatTextManager.Spawn("Level Up!", actor.Position, "Heal");
                     if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
-                        g.VisualEffectManager?.Spawn(vfx, actor.Position);
+                        g.VisualEffectManager.Spawn(vfx, actor.Position);
                 }
                 else
                 {

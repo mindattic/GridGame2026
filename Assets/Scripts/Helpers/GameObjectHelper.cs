@@ -199,24 +199,11 @@ namespace Scripts.Helpers
                 public static TargetModeOverlay TargetModeOverlay => GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
             }
 
-            public static class ManaPool
-            {
-                public static ManaPoolManager Instance => GameObject.Find("ManaPoolManager").GetComponent<ManaPoolManager>();
-
-                public static RectTransform Root => GameObject.Find("Canvas/ManaPool").GetComponent<RectTransform>();
-                public static Button BankButton => GameObject.Find("Canvas/ManaPool/BankButton").GetComponent<Button>();
-                // Pulsing halo behind the bank button (created by GameBuilder).
-                public static Image BankButtonGlow => GameObject.Find("Canvas/ManaPool/BankButton/Glow")?.GetComponent<Image>();
-
-                // Hero bar uses an Image set to Filled (Horizontal, Left).
-                // Back is a static background image that never changes.
-                public static Image HeroBack => GameObject.Find("Canvas/ManaPool/HeroBar/Back").GetComponent<Image>();
-                public static Image HeroFill => GameObject.Find("Canvas/ManaPool/HeroBar/Fill").GetComponent<Image>();
-
-                // Enemy bar is optional (toggle from ManaPoolManager.showEnemyMana).
-                public static Image EnemyBack => GameObject.Find("Canvas/ManaPool/EnemyBar/Back").GetComponent<Image>();
-                public static Image EnemyFill => GameObject.Find("Canvas/ManaPool/EnemyBar/Fill").GetComponent<Image>();
-            }
+            // PHASE B: Game.ManaPool.* accessor block removed.
+            // The legacy Canvas/ManaPool subtree (HeroBar, EnemyBar, BankButton, Glow) is gone from
+            // GameBuilder.cs. Use g.ManaBank (the live orb line) or g.ManaPoolManager.OrbLine (the
+            // HUD strip) instead. The ManaPoolManager component itself is fetched off the gameRoot
+            // by GameManager, not via GameObject.Find.
 
             public static class Card
             {
@@ -226,7 +213,9 @@ namespace Scripts.Helpers
                 public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
                 public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
-                public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/Card/AbilityButtonContainer").GetComponent<RectTransform>();
+                // PHASE B: AbilityButtonContainer was pulled out of Card to its own Row 13 slot
+                // (direct child of Canvas) — path is now Canvas/AbilityButtonContainer.
+                public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/AbilityButtonContainer")?.GetComponent<RectTransform>();
 
 
 

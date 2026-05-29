@@ -114,14 +114,17 @@ public class VisualEffectManager : MonoBehaviour
     /// Fire-and-forget spawn at a world position.
     /// Optionally runs a routine after effect starts.
     /// </summary>
-    public void Spawn(VisualEffectAsset asset, Vector3 position, IEnumerator routine = null)
+    public void Spawn(VisualEffectAsset asset, Vector3? position, IEnumerator routine = null)
     {
-        var instance = CreateInstance(asset, position, null);
+            if(asset == null || position == null)
+                return;
+
+            var instance = CreateInstance(asset, position.Value, null);
         if (instance == null)
             return;
 
         float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
-        instance.Spawn(asset, position, tileSize, routine);
+        instance.Spawn(asset, position.Value, tileSize, routine);
     }
 
     /// <summary>

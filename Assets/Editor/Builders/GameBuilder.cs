@@ -27,6 +27,22 @@ public static class GameBuilder
     private const string Sprite_TitleBar = "Assets/Sprites/TitleBar.png";
     private const string Sprite_Transparent32x32 = "Assets/Sprites/Transparent32x32.png";
 
+    // ── 15-row HUD layout grid (canvas 1170×2532; each row ~169px tall) ──
+    // Row 1: Money (right) | Row 2: Timeline | Row 3: ActionTitle
+    // Rows 4–12: 6×8 Board (world-space, camera-framed, not a canvas element)
+    // Row 13: 6-slot ability bar | Row 14: 12-orb mana line | Row 15: Character card
+    private const float Hud_CanvasHeight    = 2532f;
+    private const float Hud_RowHeight       = Hud_CanvasHeight / 15f;  // ≈168.8
+    private const float Hud_Row1Y_FromTop   = -Hud_RowHeight * 0.5f;   // ≈-84
+    private const float Hud_Row2Y_FromTop   = -Hud_RowHeight * 1.5f;   // ≈-253
+    private const float Hud_Row3Y_FromTop   = -Hud_RowHeight * 2.5f;   // ≈-422
+    private const float Hud_Row13Y_FromBot  =  Hud_RowHeight * 2.5f;   // ≈ 422
+    private const float Hud_Row14Y_FromBot  =  Hud_RowHeight * 1.5f;   // ≈ 253
+    private const float Hud_Row15Y_FromBot  =  Hud_RowHeight * 0.5f;   // ≈  84
+    // Center-pivot canvas: convert "from top" to canvas-center-relative Y for elements anchored
+    // at (0.5,0.5) — Y_center = (CanvasHeight/2) + fromTop  (fromTop is already negative).
+    private const float Hud_Row2Y_Centered  = Hud_CanvasHeight * 0.5f + Hud_Row2Y_FromTop; // ≈1013
+
     // Font asset paths
     private const string Font_Attic = "Assets/Fonts/Attic.asset";
     private const string Font_Avenir = "Assets/Fonts/Avenir.asset";
@@ -477,16 +493,18 @@ public static class GameBuilder
         go_Card.AddComponent<Scripts.Canvas.ActorCard>();
         Undo.RegisterCreatedObjectUndo(go_Card, "Create Card");
 
-        // --- AbilityButtonContainer ---
+        // --- AbilityButtonContainer (Row 13: 6-slot ability bar, pulled out of Card) ---
+        // Pre-Phase-B this lived inside the Card; now it's a direct Canvas child sitting on Row 13
+        // (above the orb line, above the character card).
         var go_AbilityButtonContainer = new GameObject("AbilityButtonContainer");
         go_AbilityButtonContainer.layer = 5;
         var rt_AbilityButtonContainer = go_AbilityButtonContainer.AddComponent<RectTransform>();
-        rt_AbilityButtonContainer.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_AbilityButtonContainer.anchorMin = new Vector2(0f, 1f);
-        rt_AbilityButtonContainer.anchorMax = new Vector2(1f, 1f);
-        rt_AbilityButtonContainer.pivot = new Vector2(0f, 0f);
-        rt_AbilityButtonContainer.sizeDelta = new Vector2(0f, 128f);
-        rt_AbilityButtonContainer.anchoredPosition = new Vector2(0f, 0f);
+        rt_AbilityButtonContainer.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
+        rt_AbilityButtonContainer.anchorMin = new Vector2(0f, 0f);
+        rt_AbilityButtonContainer.anchorMax = new Vector2(1f, 0f);
+        rt_AbilityButtonContainer.pivot = new Vector2(0.5f, 0.5f);
+        rt_AbilityButtonContainer.sizeDelta = new Vector2(0f, Hud_RowHeight);
+        rt_AbilityButtonContainer.anchoredPosition = new Vector2(0f, Hud_Row13Y_FromBot);
         go_AbilityButtonContainer.AddComponent<CanvasRenderer>();
         var img_AbilityButtonContainer = go_AbilityButtonContainer.AddComponent<Image>();
         img_AbilityButtonContainer.sprite = SceneBuilderHelper.LoadSprite(Sprite_action_bar_1);
@@ -800,17 +818,17 @@ public static class GameBuilder
         tmp_Label4.raycastTarget = true;
         Undo.RegisterCreatedObjectUndo(go_Label4, "Create Label");
 
-        // --- ActionTitle (top-center FF6-style action banner: "Casting Flames", "Using Cure Potion", ...) ---
+        // --- ActionTitle (Row 3: dedicated action banner under timeline, FF6-style) ---
         var go_ActionTitle = new GameObject("ActionTitle");
         go_ActionTitle.layer = 5;
         var rt_ActionTitle = go_ActionTitle.AddComponent<RectTransform>();
         rt_ActionTitle.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        // Pin to top-center: anchor top edge (y=1), pivot at top, offset 32px down from the canvas top.
+        // Anchored top, pivot centered — sits at Row 3 (≈422px below canvas top).
         rt_ActionTitle.anchorMin = new Vector2(0.5f, 1f);
         rt_ActionTitle.anchorMax = new Vector2(0.5f, 1f);
-        rt_ActionTitle.pivot = new Vector2(0.5f, 1f);
-        rt_ActionTitle.sizeDelta = new Vector2(720f, 96f);
-        rt_ActionTitle.anchoredPosition = new Vector2(0f, -32f);
+        rt_ActionTitle.pivot = new Vector2(0.5f, 0.5f);
+        rt_ActionTitle.sizeDelta = new Vector2(900f, 130f);
+        rt_ActionTitle.anchoredPosition = new Vector2(0f, Hud_Row3Y_FromTop);
         go_ActionTitle.AddComponent<CanvasRenderer>();
         var img_ActionTitle = go_ActionTitle.AddComponent<Image>();
         img_ActionTitle.sprite = SceneBuilderHelper.LoadSprite(Sprite_TitleBar);
@@ -841,151 +859,11 @@ public static class GameBuilder
         tmp_Label.raycastTarget = true;
         Undo.RegisterCreatedObjectUndo(go_Label, "Create Label");
 
-        // --- ManaPool ---
-        var go_ManaPool = new GameObject("ManaPool");
-        var rt_ManaPool = go_ManaPool.AddComponent<RectTransform>();
-        rt_ManaPool.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        rt_ManaPool.anchorMin = new Vector2(0.02f, 0.5f);
-        rt_ManaPool.anchorMax = new Vector2(0.98f, 0.5f);
-        rt_ManaPool.pivot = new Vector2(0.5f, 0.5f);
-        rt_ManaPool.sizeDelta = new Vector2(-32.00003f, 100f);
-        rt_ManaPool.anchoredPosition = new Vector2(0f, 761.5f);
-        Undo.RegisterCreatedObjectUndo(go_ManaPool, "Create ManaPool");
-
-        // --- HeroBar ---
-        var go_HeroBar = new GameObject("HeroBar");
-        var rt_HeroBar = go_HeroBar.AddComponent<RectTransform>();
-        rt_HeroBar.SetParent(go_ManaPool.GetComponent<RectTransform>(), false);
-        rt_HeroBar.anchorMin = new Vector2(0f, 0.5f);
-        rt_HeroBar.anchorMax = new Vector2(1f, 0.5f);
-        rt_HeroBar.pivot = new Vector2(0.5f, 0.5f);
-        rt_HeroBar.sizeDelta = new Vector2(-176f, 64f);
-        rt_HeroBar.anchoredPosition = new Vector2(-72f, 0f);
-        Undo.RegisterCreatedObjectUndo(go_HeroBar, "Create HeroBar");
-
-        // --- Back ---
-        var go_Back2 = new GameObject("Back");
-        var rt_Back2 = go_Back2.AddComponent<RectTransform>();
-        rt_Back2.SetParent(go_HeroBar.GetComponent<RectTransform>(), false);
-        rt_Back2.anchorMin = new Vector2(0f, 0f);
-        rt_Back2.anchorMax = new Vector2(1f, 1f);
-        rt_Back2.pivot = new Vector2(0.5f, 0.5f);
-        rt_Back2.sizeDelta = new Vector2(0f, 0f);
-        rt_Back2.anchoredPosition = new Vector2(0f, 0f);
-        go_Back2.AddComponent<CanvasRenderer>();
-        var img_Back2 = go_Back2.AddComponent<Image>();
-        img_Back2.sprite = SceneBuilderHelper.LoadSprite(Sprite_action_bar_back_1);
-        img_Back2.color = new Color(1f, 1f, 1f, 1f);
-        img_Back2.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_Back2, "Create Back");
-
-        // --- Fill ---
-        var go_Fill = new GameObject("Fill");
-        var rt_Fill = go_Fill.AddComponent<RectTransform>();
-        rt_Fill.SetParent(go_HeroBar.GetComponent<RectTransform>(), false);
-        rt_Fill.anchorMin = new Vector2(0f, 0f);
-        rt_Fill.anchorMax = new Vector2(1f, 1f);
-        rt_Fill.pivot = new Vector2(0.5f, 0.5f);
-        rt_Fill.sizeDelta = new Vector2(0f, 0f);
-        rt_Fill.anchoredPosition = new Vector2(0f, 0f);
-        go_Fill.AddComponent<CanvasRenderer>();
-        var img_Fill = go_Fill.AddComponent<Image>();
-        img_Fill.sprite = SceneBuilderHelper.LoadSprite(Sprite_action_bar_1);
-        img_Fill.color = new Color(1f, 1f, 1f, 1f);
-        img_Fill.type = Image.Type.Filled;
-        img_Fill.fillMethod = Image.FillMethod.Horizontal;
-        img_Fill.fillOrigin = (int)Image.OriginHorizontal.Left;
-        img_Fill.fillAmount = 0f;
-        img_Fill.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_Fill, "Create Fill");
-
-        // --- EnemyBar ---
-        var go_EnemyBar = new GameObject("EnemyBar");
-        var rt_EnemyBar = go_EnemyBar.AddComponent<RectTransform>();
-        rt_EnemyBar.SetParent(go_ManaPool.GetComponent<RectTransform>(), false);
-        rt_EnemyBar.anchorMin = new Vector2(0f, 0.5f);
-        rt_EnemyBar.anchorMax = new Vector2(1f, 0.5f);
-        rt_EnemyBar.pivot = new Vector2(0.5f, 0.5f);
-        rt_EnemyBar.sizeDelta = new Vector2(-176f, 0f);
-        rt_EnemyBar.anchoredPosition = new Vector2(-72f, -80f);
-        Undo.RegisterCreatedObjectUndo(go_EnemyBar, "Create EnemyBar");
-
-        // --- Fill ---
-        var go_Fill2 = new GameObject("Fill");
-        var rt_Fill2 = go_Fill2.AddComponent<RectTransform>();
-        rt_Fill2.SetParent(go_EnemyBar.GetComponent<RectTransform>(), false);
-        rt_Fill2.anchorMin = new Vector2(0f, 0f);
-        rt_Fill2.anchorMax = new Vector2(1f, 1f);
-        rt_Fill2.pivot = new Vector2(0.5f, 0.5f);
-        rt_Fill2.sizeDelta = new Vector2(0f, 0f);
-        rt_Fill2.anchoredPosition = new Vector2(0f, 0f);
-        go_Fill2.AddComponent<CanvasRenderer>();
-        var img_Fill2 = go_Fill2.AddComponent<Image>();
-        img_Fill2.sprite = SceneBuilderHelper.LoadSprite(Sprite_action_bar_1);
-        img_Fill2.color = new Color(1f, 1f, 1f, 1f);
-        img_Fill2.type = Image.Type.Filled;
-        img_Fill2.fillMethod = Image.FillMethod.Horizontal;
-        img_Fill2.fillOrigin = (int)Image.OriginHorizontal.Left;
-        img_Fill2.fillAmount = 0f;
-        img_Fill2.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_Fill2, "Create Fill");
-
-        // --- Back ---
-        var go_Back4 = new GameObject("Back");
-        var rt_Back4 = go_Back4.AddComponent<RectTransform>();
-        rt_Back4.SetParent(go_EnemyBar.GetComponent<RectTransform>(), false);
-        rt_Back4.anchorMin = new Vector2(0f, 0f);
-        rt_Back4.anchorMax = new Vector2(1f, 1f);
-        rt_Back4.pivot = new Vector2(0.5f, 0.5f);
-        rt_Back4.sizeDelta = new Vector2(0f, 0f);
-        rt_Back4.anchoredPosition = new Vector2(0f, 0f);
-        go_Back4.AddComponent<CanvasRenderer>();
-        var img_Back4 = go_Back4.AddComponent<Image>();
-        img_Back4.sprite = SceneBuilderHelper.LoadSprite(Sprite_action_bar_back_1);
-        img_Back4.color = new Color(1f, 1f, 1f, 1f);
-        img_Back4.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_Back4, "Create Back");
-
-        // --- BankButton (blue circle, pulsing glow — anchored to RIGHT side now that
-        //     the timeline runs left → right and the bank "fast-forwards" the load.) ---
-        var go_BankButton = new GameObject("BankButton");
-        var rt_BankButton = go_BankButton.AddComponent<RectTransform>();
-        rt_BankButton.SetParent(go_ManaPool.GetComponent<RectTransform>(), false);
-        rt_BankButton.anchorMin = new Vector2(1f, 0.5f);
-        rt_BankButton.anchorMax = new Vector2(1f, 0.5f);
-        rt_BankButton.pivot = new Vector2(0.5f, 0.5f);
-        rt_BankButton.sizeDelta = new Vector2(96f, 96f);
-        rt_BankButton.anchoredPosition = new Vector2(-86.8f, 0f);
-        go_BankButton.AddComponent<CanvasRenderer>();
-        var img_BankButton = go_BankButton.AddComponent<Image>();
-        // Reuse the round Coin sprite as a circular shape; tinted blue/cyan to read as mana/bank.
-        img_BankButton.sprite = SceneBuilderHelper.LoadSprite(Sprite_Coin);
-        img_BankButton.color = new Color(0.25f, 0.55f, 1f, 1f);
-        img_BankButton.preserveAspect = true;
-        img_BankButton.raycastTarget = true;
-        var btn_BankButton = go_BankButton.AddComponent<Button>();
-        btn_BankButton.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_BankButton.targetGraphic = go_BankButton.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_BankButton, "Create BankButton");
-
-        // --- Glow (pulsing halo behind the bank button — duplicates CoinCounter pulse) ---
-        var go_BankGlow = new GameObject("Glow");
-        var rt_BankGlow = go_BankGlow.AddComponent<RectTransform>();
-        rt_BankGlow.SetParent(go_BankButton.GetComponent<RectTransform>(), false);
-        rt_BankGlow.anchorMin = new Vector2(0.5f, 0.5f);
-        rt_BankGlow.anchorMax = new Vector2(0.5f, 0.5f);
-        rt_BankGlow.pivot = new Vector2(0.5f, 0.5f);
-        rt_BankGlow.sizeDelta = new Vector2(96f, 96f);
-        rt_BankGlow.anchoredPosition = new Vector2(0f, 0f);
-        rt_BankGlow.SetAsFirstSibling();
-        go_BankGlow.AddComponent<CanvasRenderer>();
-        var img_BankGlow = go_BankGlow.AddComponent<Image>();
-        img_BankGlow.sprite = SceneBuilderHelper.LoadSprite(Sprite_Coin);
-        img_BankGlow.color = new Color(0.4f, 0.7f, 1f, 0.6f);
-        img_BankGlow.preserveAspect = true;
-        img_BankGlow.raycastTarget = false;
-        Undo.RegisterCreatedObjectUndo(go_BankGlow, "Create Bank Glow");
-
+        // --- ManaPool, HeroBar, EnemyBar, BankButton: REMOVED ---
+        // The legacy fill-bar UI + Bank button are gone. The new HUD pieces (12-orb
+        // mana line + Shield button) are runtime-spawned by ManaPoolManager.Start via
+        // ManaOrbLineFactory.Create and ShieldButtonFactory.Create.
+        // Pincer-completion orb drops via ManaOrbFactory.Drop (see PincerAttackManager).
         // --- Clock ---
         var go_Clock = new GameObject("Clock");
         var rt_Clock = go_Clock.AddComponent<RectTransform>();
@@ -1087,15 +965,15 @@ public static class GameBuilder
         img_Icon.raycastTarget = true;
         Undo.RegisterCreatedObjectUndo(go_Icon, "Create Icon");
 
-        // --- TimelineBar ---
+        // --- TimelineBar (Row 2: horizontal load strip) ---
         var go_TimelineBar = new GameObject("TimelineBar");
         var rt_TimelineBar = go_TimelineBar.AddComponent<RectTransform>();
         rt_TimelineBar.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
         rt_TimelineBar.anchorMin = new Vector2(0.5f, 0.5f);
         rt_TimelineBar.anchorMax = new Vector2(0.5f, 0.5f);
         rt_TimelineBar.pivot = new Vector2(0.5f, 0.5f);
-        rt_TimelineBar.sizeDelta = new Vector2(889.5f, 8f);
-        rt_TimelineBar.anchoredPosition = new Vector2(0f, 930f);
+        rt_TimelineBar.sizeDelta = new Vector2(1050f, 8f);
+        rt_TimelineBar.anchoredPosition = new Vector2(0f, Hud_Row2Y_Centered);
         go_TimelineBar.AddComponent<Scripts.Canvas.TimelineBarInstance>();
         Undo.RegisterCreatedObjectUndo(go_TimelineBar, "Create TimelineBar");
 
@@ -1845,9 +1723,10 @@ public static class GameBuilder
             new UnityAction(go_Game.GetComponent<Scripts.Managers.AbilityManager>().OnCastButtonClicked));
         // TODO: unresolved onClick — go_ArrowRight → Card.OnNextHeroArrowClick
         // TODO: unresolved onClick — go_ArrowLeft → Card.OnPreviousHeroArrowClick
-        SceneBuilderHelper.WireOnClick(
-            go_BankButton.GetComponent<Button>(),
-            new UnityAction(go_Game.GetComponent<Scripts.Managers.ManaPoolManager>().OnBankButtonClicked));
+        // PHASE B: BankButton onClick removed — the legacy button is gone (see ManaPool removal
+        // block above). The new Shield button is runtime-spawned and wires its own click in
+        // ShieldButtonFactory (which calls BuffSystem.ApplyToAllHeroes(Protection) +
+        // ManaPoolManager.OnBankButtonClicked() for the timeline auto-skip side of the flow).
         SceneBuilderHelper.WireOnClick(
             go_QuickSaveGameButton.GetComponent<Button>(),
             new UnityAction(go_PauseMenu.GetComponent<Scripts.Managers.PauseMenu>().OnQuickSaveGameButtonClicked));

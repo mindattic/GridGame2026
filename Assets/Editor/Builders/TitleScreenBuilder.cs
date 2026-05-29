@@ -60,6 +60,7 @@ public static class TitleScreenBuilder
         ("CreditsButton", "Credits"),
         ("EndlessModeButton", "Endless Mode"),
         ("PartyManagerButton", "Party Manager"),
+        ("BestiaryButton", "Bestiary"),
     };
 
     //[MenuItem("Tools/Scenes/Title Screen/Create Building")]
@@ -165,6 +166,12 @@ public static class TitleScreenBuilder
                 var profileBtn = canvas.Find("ProfileButton")?.GetComponent<Button>();
                 if (profileBtn != null)
                     SceneBuilderHelper.WireOnClick(profileBtn, new UnityAction(titleManager.OnChangeProfileButtonClicked));
+
+                // Bestiary button — direct scene-load, no manager method needed.
+                var bestiaryBtn = canvas.Find("Panel/BestiaryButton")?.GetComponent<Button>();
+                if (bestiaryBtn != null)
+                    SceneBuilderHelper.WireOnClick(bestiaryBtn,
+                        new UnityAction(() => Scripts.Helpers.SceneHelper.Fade.ToBestiary()));
             }
         }
 
