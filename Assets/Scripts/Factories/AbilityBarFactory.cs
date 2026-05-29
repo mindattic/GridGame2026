@@ -8,21 +8,24 @@ using Scripts.Models;
 namespace Scripts.Factories
 {
     /// <summary>
-    /// MANAABILITYBARFACTORY - Builds the Row-13 6-slot ability bar inside the existing
+    /// ABILITYBARFACTORY - Builds the Row-13 6-slot <see cref="AbilityBar"/> inside the existing
     /// AbilityButtonContainer (canvas child placed by GameBuilder at Row 13).
     ///
     /// <para>Each slot has a frame Image + Name (top) + Cost icons (bottom). The TMP font is
     /// "stolen" from any existing TextMeshProUGUI in the scene (no Resources.Load needed and no
-    /// Addressables wiring required for V1).</para>
+    /// Addressables wiring required).</para>
+    ///
+    /// <para>The bar holds three kinds of <see cref="ManaAbility"/> entries — Skill / Spell /
+    /// Item (see <see cref="AbilityKind"/>). The bar instance dispatches clicks per kind.</para>
     /// </summary>
-    public static class ManaAbilityBarFactory
+    public static class AbilityBarFactory
     {
         public const int Slots = 6;
         public const float SlotWidth = 168f;
         public const float SlotHeight = 130f;
         public const float Spacing = 8f;
 
-        public static ManaAbilityBar Create(Transform container, ManaBank bank)
+        public static AbilityBar Create(Transform container, ManaBank bank)
         {
             if (container == null) return null;
 
@@ -54,7 +57,7 @@ namespace Scripts.Factories
 
             // The bar is added at the end; capture via closure variable so click handlers can route
             // through it (it knows the currently-selected-hero's loadout).
-            ManaAbilityBar barRef = null;
+            AbilityBar barRef = null;
 
             for (int i = 0; i < Slots; i++)
             {
@@ -93,8 +96,8 @@ namespace Scripts.Factories
                     color: new Color(1f, 0.92f, 0.55f));
             }
 
-            barRef = container.gameObject.GetComponent<ManaAbilityBar>();
-            if (barRef == null) barRef = container.gameObject.AddComponent<ManaAbilityBar>();
+            barRef = container.gameObject.GetComponent<AbilityBar>();
+            if (barRef == null) barRef = container.gameObject.AddComponent<AbilityBar>();
             barRef.Bind(bank, buttons, nameLabels, costLabels, frames);
             return barRef;
         }
@@ -130,7 +133,7 @@ namespace Scripts.Factories
             return any != null ? any.font : null;
         }
 
-        // Click resolution lives on the ManaAbilityBar component itself so it can read the
+        // Click resolution lives on the AbilityBar component itself so it can read the
         // currently-selected hero's loadout (not a global slot list).
     }
 }

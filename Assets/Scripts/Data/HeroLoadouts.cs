@@ -38,11 +38,14 @@ namespace Scripts.Data
         private static readonly Dictionary<CharacterClass, IReadOnlyList<ManaAbility>> perClass =
             new Dictionary<CharacterClass, IReadOnlyList<ManaAbility>>
             {
-                { CharacterClass.Cleric,    new [] { ManaAbilities.Heal,    ManaAbilities.Heal,     ManaAbilities.Frost,    ManaAbilities.Potion, null, null } },
-                { CharacterClass.Paladin,   new [] { ManaAbilities.Heal,    ManaAbilities.Fireball, ManaAbilities.Potion,   null, null, null } },
-                { CharacterClass.Barbarian, new [] { ManaAbilities.Fireball,ManaAbilities.Bolt,     ManaAbilities.Potion,   null, null, null } },
-                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.Potion,   ManaAbilities.Steal,    ManaAbilities.Heal,   null, null } },
-                { CharacterClass.Assassain, new [] { ManaAbilities.Steal,   ManaAbilities.Mug,      ManaAbilities.Bolt,     ManaAbilities.Potion, null, null } },
+                // Per-slot Item instances via NewPotion(stackSize) so each slot's charges are
+                // independent — Cleric carries 3, Paladin 3, Alchemist 5+5 (10 total uses in 2
+                // slots), Assassain 3.
+                { CharacterClass.Cleric,    new [] { ManaAbilities.Heal,    ManaAbilities.Heal,     ManaAbilities.Frost,    ManaAbilities.NewPotion(3), null, null } },
+                { CharacterClass.Paladin,   new [] { ManaAbilities.Heal,    ManaAbilities.Fireball, ManaAbilities.NewPotion(3), null, null, null } },
+                { CharacterClass.Barbarian, new [] { ManaAbilities.Fireball,ManaAbilities.Bolt,     ManaAbilities.NewPotion(3), null, null, null } },
+                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.NewPotion(5), ManaAbilities.Steal,ManaAbilities.Heal, ManaAbilities.NewPotion(5), null } },
+                { CharacterClass.Assassain, new [] { ManaAbilities.Steal,   ManaAbilities.Mug,      ManaAbilities.Bolt,     ManaAbilities.NewPotion(3), null, null } },
             };
     }
 }

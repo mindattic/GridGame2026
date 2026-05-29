@@ -87,7 +87,7 @@ namespace Scripts.Managers
 
             var abilityContainer = GameObject.Find("Canvas/AbilityButtonContainer");
             if (abilityContainer != null)
-                ManaAbilityBarFactory.Create(abilityContainer.transform, Bank);
+                AbilityBarFactory.Create(abilityContainer.transform, Bank);
 
             // Once heroes + enemies exist on the board, drop a debuff icon strip above each.
             Scripts.Utilities.GameReady.WhenReady(this, () => AttachDebuffBarsToAll(canvas.transform));

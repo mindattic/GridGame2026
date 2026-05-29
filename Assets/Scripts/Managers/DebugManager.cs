@@ -155,9 +155,9 @@ namespace Scripts.Managers
             if (ability.Kind == AbilityKind.Item)
             {
                 if (ability.TryConsumeCharge())
-                    Debug.Log($"[Demo] Item '{ability.Name}' used ({ability.Charges}/{ability.MaxCharges} left).");
+                    Debug.Log($"[Demo] Item '{ability.Name}' used ({ability.Charges}/{ability.MaxStackSize} left).");
                 else
-                    Debug.LogWarning($"[Demo] Item '{ability.Name}' is empty (0/{ability.MaxCharges}). Buy at vendor / craft at alchemist.");
+                    Debug.LogWarning($"[Demo] Item '{ability.Name}' is empty (0/{ability.MaxStackSize}). Buy at vendor / craft at alchemist.");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Scripts.Managers
         {
             var p = Scripts.Data.ManaAbilities.Potion;
             p.Refill(1);
-            Debug.Log($"[Demo] Bought 1 Potion — now {p.Charges}/{p.MaxCharges}.");
+            Debug.Log($"[Demo] Bought 1 Potion — now {p.Charges}/{p.MaxStackSize}.");
         }
 
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }

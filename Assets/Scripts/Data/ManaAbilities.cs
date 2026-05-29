@@ -5,45 +5,67 @@ using Scripts.Models;
 namespace Scripts.Data
 {
     /// <summary>
-    /// MANAABILITIES - The (up to 6) ability bar slots.
+    /// MANAABILITIES - The catalog of every entry that can live in an
+    /// <see cref="Scripts.Canvas.AbilityBar"/> slot, grouped by kind:
     ///
-    /// <para><b>Spells</b> cost mana orbs from the ManaBank line, declared as a WUBRG-style
-    /// <see cref="ManaRecipe"/>. Each color is currently a placeholder identity — see project
-    /// design memory for the eventual W=heal/U=control/B=drain/R=damage/G=growth pie.</para>
-    /// <para><b>Items</b> have charges (no mana cost); restocked at vendor / alchemist.</para>
-    /// <para>Debug shortcut: <see cref="ManaBank.AllowAnyColor"/> lets 1–4 orbs of ANY color pay
-    /// any 1–4-cost spell — for experimenting with the bar before color identity is locked.</para>
+    /// <list type="bullet">
+    ///   <item><b>Skills</b> — free, reusable, "costs a turn" (Steal, Mug). Built with the
+    ///   skill-marker constructor; <see cref="ManaAbility.Kind"/> = <see cref="AbilityKind.Skill"/>.</item>
+    ///
+    ///   <item><b>Spells</b> — pay mana orbs from the <see cref="ManaBank"/>, declared as a WUBRG
+    ///   <see cref="ManaRecipe"/>. Each color's gameplay identity is the eventual MTG-style pie
+    ///   (W=heal/U=control/B=drain/R=damage/G=growth) — placeholders for now.</item>
+    ///
+    ///   <item><b>Items</b> — per-slot consumable stacks. Each instance carries its own
+    ///   <see cref="ManaAbility.MaxStackSize"/>; mint per-slot via <see cref="NewPotion"/> so
+    ///   stacks of the same item don't share charges. Restocked at vendor/alchemist.</item>
+    /// </list>
+    ///
+    /// <para>Debug shortcut: <see cref="ManaBank.AllowAnyColor"/> lets 1–N orbs of ANY color pay
+    /// any 1–N-cost Spell — for experimenting with the bar before color identity is locked.</para>
     /// </summary>
     public static class ManaAbilities
     {
-        // ── Spells (color-typed cost) ──
+        // ── Skills (free, reusable, cost a player's turn) ──
+        public static readonly ManaAbility Steal    = new ManaAbility("Steal", _isSkill: true);
+        public static readonly ManaAbility Mug      = new ManaAbility("Mug",   _isSkill: true);
+
+        // ── Spells (mana-orb cost) ──
         public static readonly ManaAbility Heal     = Spell("Heal",     (ManaType.White, 1));                            // (W)
         public static readonly ManaAbility Fireball = Spell("Fireball", (ManaType.Red, 2));                              // (R)(R)
         public static readonly ManaAbility Frost    = Spell("Frost",    (ManaType.Blue, 2));                             // (U)(U)
         public static readonly ManaAbility Bolt     = Spell("Bolt",     (ManaType.Red, 2), (ManaType.Blue, 1));          // (R)(R)(U)
-        public static readonly ManaAbility Steal    = Spell("Steal",    (ManaType.Colorless, 1));                        // (C)  — cheap utility
-        public static readonly ManaAbility Mug      = Spell("Mug",      (ManaType.Black, 2));                            // (B)(B) — rogue/violence
 
-        // ── Items (charges, no mana cost) ──
-        public static readonly ManaAbility Potion   = Item("Potion", maxCharges: 3);
+        // ── Items (per-slot stack; vendor/alchemist restocks) ──
+        /// <summary>Default 3-stack Potion template — useful for "vendor sells this" or debug.</summary>
+        public static readonly ManaAbility Potion   = Item("Potion", maxStackSize: 3);
+
+        /// <summary>Mint a fresh per-slot Potion stack with the given <paramref name="stackSize"/>.
+        /// Each call returns a NEW instance so its <see cref="ManaAbility.Charges"/> counter is
+        /// independent — two 5-stack slots give the hero 10 total uses across two slots, each
+        /// draining on its own.</summary>
+        public static ManaAbility NewPotion(int stackSize) => new ManaAbility("Potion", stackSize);
 
         // ── SIDE-NOTE: deferred ──
         // Ether — design idea: consumable that auto-grants mana orbs. Parked.
 
-        /// <summary>The 6 bar slots in display order (slot 6 reserved — Ether candidate).</summary>
+        /// <summary>The 6 bar slots in display order (slot 6 reserved — Ether candidate). Used as
+        /// the default loadout for any character class without a per-class override in
+        /// <see cref="HeroLoadouts"/>.</summary>
         public static readonly IReadOnlyList<ManaAbility> Slots = new[]
         {
             Heal, Fireball, Frost, Bolt, Potion, /* slot 6: reserved */ null
         };
 
         /// <summary>
-        /// Cost icon string for a tooltip/label, e.g. "(R)(R)(U)" or "(W)" or "3/3" for items.
-        /// Uses a single capital letter per color matching MTG conventions (W,U,B,R,G,C for Colorless).
+        /// Cost-icon label for a tooltip/slot, e.g. "(R)(R)(U)" for Bolt, "3/3" for a Potion stack,
+        /// or "Free" for a Skill. Uses MTG single-letter convention (W/U/B/R/G/C).
         /// </summary>
         public static string CostIcons(ManaAbility ability)
         {
             if (ability == null) return "";
-            if (ability.Kind == AbilityKind.Item) return $"{ability.Charges}/{ability.MaxCharges}";
+            if (ability.Kind == AbilityKind.Skill) return "Free";
+            if (ability.Kind == AbilityKind.Item)  return $"{ability.Charges}/{ability.MaxStackSize}";
             if (ability.Cost == null || ability.Cost.Costs.Count == 0) return "Free";
 
             var sb = new StringBuilder();
@@ -73,7 +95,7 @@ namespace Scripts.Data
             return new ManaAbility(name, new ManaRecipe(name, manaCosts));
         }
 
-        private static ManaAbility Item(string name, int maxCharges) =>
-            new ManaAbility(name, maxCharges);
+        private static ManaAbility Item(string name, int maxStackSize) =>
+            new ManaAbility(name, maxStackSize);
     }
 }

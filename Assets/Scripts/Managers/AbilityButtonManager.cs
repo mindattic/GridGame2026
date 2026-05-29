@@ -115,13 +115,13 @@ public class AbilityButtonManager : MonoBehaviour
     /// <summary>Builds all hero buttons and subscribes to events.
     /// Called via GameReady.WhenReady so g.Actors.Heroes is fully populated.
     ///
-    /// PHASE B: per-hero button creation is DISABLED. The new party-wide 6-slot
-    /// <see cref="Scripts.Canvas.ManaAbilityBar"/> (spawned by ManaPoolManager.Start) replaces it.
+    /// PHASE B: per-hero button creation is DISABLED. The new 6-slot
+    /// <see cref="Scripts.Canvas.AbilityBar"/> (spawned by ManaPoolManager.Start) replaces it.
     /// The input-mode subscription is kept so future per-hero loadout swapping can re-enable
     /// this path. Public API (Show/Hide/UpdateAllInteractables) survives as no-ops below.</summary>
     private void Initialize()
     {
-        // BuildAllHeroButtons();   // PHASE B: superseded by ManaAbilityBar.
+        // BuildAllHeroButtons();   // PHASE B: superseded by AbilityBar.
         // HideAll();                // PHASE B: no per-hero buttons to hide.
 
         if (g.InputManager != null)

@@ -83,7 +83,7 @@ namespace Scripts.Data
             displayName: "Silenced",
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Turns,
-            defaultDuration: 2);             // TODO: hook cast-block in ManaAbilityBar / AbilityManager
+            defaultDuration: 2);             // TODO: hook cast-block in AbilityBar / AbilityManager
 
         public static readonly Buff Sleep = new Buff(
             id: "sleep",
