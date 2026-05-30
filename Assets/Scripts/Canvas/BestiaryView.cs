@@ -22,6 +22,14 @@ namespace Scripts.Canvas
     public sealed class BestiaryView : MonoBehaviour
     {
         // Wired by BestiaryBuilder via name-lookup (cheap, code-only — no SerializeField).
+        /// <summary>Method-on-MonoBehaviour for the Back button. The BestiaryBuilder wires this via
+        /// SceneBuilderHelper.WireOnClick (persistent listener), which requires a target deriving
+        /// from UnityEngine.Object — a lambda's compiler-generated closure doesn't qualify.</summary>
+        public void OnBackButtonClicked()
+        {
+            Scripts.Helpers.SceneHelper.Fade.ToTitleScreen();
+        }
+
         public TMP_Text TitleLabel;
         public TMP_Text PageLabel;
         public TMP_Text NameLabel;

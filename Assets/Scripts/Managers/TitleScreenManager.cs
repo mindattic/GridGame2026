@@ -105,6 +105,13 @@ public class TitleScreenManager : MonoBehaviour
     {
         scene.Fade.ToProfileSelect();
     }
+
+    /// <summary>Handles the bestiary button clicked event. Method-on-MonoBehaviour rather than a
+    /// lambda so SceneBuilderHelper.WireOnClick (persistent listener) can target it.</summary>
+    public void OnBestiaryButtonClicked()
+    {
+        scene.Fade.ToBestiary();
+    }
 }
 
 }

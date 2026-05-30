@@ -167,21 +167,14 @@ public static class TitleScreenBuilder
                 if (profileBtn != null)
                     SceneBuilderHelper.WireOnClick(profileBtn, new UnityAction(titleManager.OnChangeProfileButtonClicked));
 
-                // Bestiary button — direct scene-load, no manager method needed.
-                // Wrapped: any failure here was getting masked by BuilderAutoRebuild's outer
-                // TargetInvocationException, with no inner-exception details surfaced.
-                try
-                {
-                    var bestiaryBtn = canvas.Find("Panel/BestiaryButton")?.GetComponent<Button>();
-                    if (bestiaryBtn != null)
-                        SceneBuilderHelper.WireOnClick(bestiaryBtn,
-                            new UnityAction(() => Scripts.Helpers.SceneHelper.Fade.ToBestiary()));
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogError($"[TitleScreenBuilder] BestiaryButton wire-up failed: {ex}");
-                    throw;
-                }
+                // Bestiary button — wires to TitleScreenManager.OnBestiaryButtonClicked. Must go
+                // through a real method on a UnityEngine.Object (not a lambda) because
+                // SceneBuilderHelper.WireOnClick adds PERSISTENT listeners which can't target
+                // compiler-generated closure classes.
+                var bestiaryBtn = canvas.Find("Panel/BestiaryButton")?.GetComponent<Button>();
+                if (bestiaryBtn != null)
+                    SceneBuilderHelper.WireOnClick(bestiaryBtn,
+                        new UnityAction(titleManager.OnBestiaryButtonClicked));
             }
         }
 

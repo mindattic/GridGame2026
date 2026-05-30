@@ -134,15 +134,18 @@ public static class BestiaryBuilder
         var prev = AddNavButton(canvasRT, "Prev", new Vector2(0f, 0.5f), new Vector2(64f, 64f), atticFont, "<");
         var next = AddNavButton(canvasRT, "Next", new Vector2(1f, 0.5f), new Vector2(-64f, 64f), atticFont, ">");
 
-        // ── Back button (returns to TitleScreen) ──
+        // ── Back button (returns to TitleScreen). Wired AFTER BestiaryView is created so we can
+        // target view.OnBackButtonClicked (a UnityEngine.Object method) instead of a lambda —
+        // persistent UnityEvent listeners can't target closure classes.
         var back = AddNavButton(canvasRT, "Back", new Vector2(0f, 1f), new Vector2(64f, -64f), atticFont, "←");
-        SceneBuilderHelper.WireOnClick(back,
-            new UnityEngine.Events.UnityAction(() => Scripts.Helpers.SceneHelper.Fade.ToTitleScreen()));
 
         // ── BestiaryView controller ──
         var viewGO = new GameObject("BestiaryView", typeof(Scripts.Canvas.BestiaryView));
         viewGO.transform.SetParent(canvasGO.transform, false);
         var view = viewGO.GetComponent<Scripts.Canvas.BestiaryView>();
+
+        SceneBuilderHelper.WireOnClick(back,
+            new UnityEngine.Events.UnityAction(view.OnBackButtonClicked));
         view.TitleLabel = titleTMP;
         view.PageLabel  = pageTMP;
         view.NameLabel  = nameTMP;
