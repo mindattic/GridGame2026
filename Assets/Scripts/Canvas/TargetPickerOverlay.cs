@@ -37,6 +37,17 @@ namespace Scripts.Canvas
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
                 NotifyCancel();
         }
+
+        /// <summary>Safety net: if the GameObject is destroyed externally (scene reload, manual
+        /// Destroy, etc.) without going through NotifyPick/NotifyCancel, fire the cancel callback
+        /// so listeners (TargetingMode.IsActive) clean up — otherwise the static flag sticks at
+        /// true forever and every subsequent ability click silently no-ops.</summary>
+        private void OnDestroy()
+        {
+            if (finished) return;
+            finished = true;
+            OnCancelled?.Invoke();
+        }
     }
 
     /// <summary>Tiny scale pulse for actor target rings.</summary>

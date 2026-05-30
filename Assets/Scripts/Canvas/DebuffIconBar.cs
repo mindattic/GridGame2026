@@ -107,6 +107,7 @@ namespace Scripts.Canvas
                 case "poisoned":    return 'X';
                 case "slowed":      return 'S';
                 case "silenced":    return '!';
+                case "blinded":     return '@'; // eye-blocked look
                 default:            return '?';
             }
         }
@@ -124,6 +125,7 @@ namespace Scripts.Canvas
                 case "poisoned":    return new Color(0.50f, 0.85f, 0.40f);
                 case "slowed":      return new Color(0.40f, 0.65f, 0.85f);
                 case "silenced":    return new Color(0.85f, 0.55f, 1.00f);
+                case "blinded":     return new Color(0.35f, 0.35f, 0.45f); // dim grey-blue
                 default:            return new Color(0.7f, 0.7f, 0.7f);
             }
         }

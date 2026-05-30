@@ -637,6 +637,11 @@ namespace Scripts.Canvas
         {
             if (paused) return;
 
+            // Frost / Frozen halts the icon — the enemy can't ever reach the trigger to act while
+            // the buff is alive. The radial ring on the actor's debuff icon ticks down; once it
+            // hits zero the buff expires and the icon resumes advancing.
+            if (Owner != null && Scripts.Managers.BuffSystem.Has(Owner, "frozen")) return;
+
             // Race outside the Zone at the actor's stat-derived pace; once inside
             // the Zone (final stretch), every icon crawls at the same fixed rate
             // so the player has a coordination window to land an in-Zone pincer.

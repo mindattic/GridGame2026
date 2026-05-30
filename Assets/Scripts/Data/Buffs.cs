@@ -85,6 +85,13 @@ namespace Scripts.Data
             durationUnit: BuffDurationUnit.Turns,
             defaultDuration: 2);             // TODO: hook cast-block in AbilityBar / AbilityManager
 
+        public static readonly Buff Blinded = new Buff(
+            id: "blinded",
+            displayName: "Blinded",
+            kind: BuffKind.Debuff,
+            durationUnit: BuffDurationUnit.Turns,
+            defaultDuration: 2);             // TODO: hook hit-chance multiplier in Formulas.CalculateAttackResult
+
         public static readonly Buff Sleep = new Buff(
             id: "sleep",
             displayName: "Asleep",
@@ -107,6 +114,7 @@ namespace Scripts.Data
             { Poisoned.Id, Poisoned },
             { Slowed.Id, Slowed },
             { Silenced.Id, Silenced },
+            { Blinded.Id, Blinded },
         };
     }
 }

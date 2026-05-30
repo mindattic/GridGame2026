@@ -45,7 +45,11 @@ namespace Scripts.Data
                 { CharacterClass.Paladin,   new [] { ManaAbilities.Heal,    ManaAbilities.Fireball, ManaAbilities.NewPotion(3), null, null, null } },
                 { CharacterClass.Barbarian, new [] { ManaAbilities.Fireball,ManaAbilities.Bolt,     ManaAbilities.NewPotion(3), null, null, null } },
                 { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.NewPotion(5), ManaAbilities.Steal,ManaAbilities.Heal, ManaAbilities.NewPotion(5), null } },
-                { CharacterClass.Assassain, new [] { ManaAbilities.Steal,   ManaAbilities.Mug,      ManaAbilities.Bolt,     ManaAbilities.NewPotion(3), null, null } },
+                { CharacterClass.Assassain,  new [] { ManaAbilities.Steal,    ManaAbilities.Mug,      ManaAbilities.Bolt,         ManaAbilities.NewPotion(3), null, null } },
+                // Ninja classes get Teleport — pick an empty tile, instantly relocate, and any
+                // pincer the new position completes resolves automatically. Free, costs a turn.
+                { CharacterClass.GreenNinja, new [] { ManaAbilities.Teleport, ManaAbilities.Steal,    ManaAbilities.Fireball,     ManaAbilities.NewPotion(3), null, null } },
+                { CharacterClass.RedNinja,   new [] { ManaAbilities.Teleport, ManaAbilities.Mug,      ManaAbilities.Bolt,         ManaAbilities.NewPotion(3), null, null } },
             };
     }
 }

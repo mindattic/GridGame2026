@@ -56,12 +56,20 @@ namespace Scripts.Services
             Vector2Int best = enemy.location;
             float bestScore = float.NegativeInfinity;
 
+            // Humanoid enemies seek out a pincer attack before they seek out a regular attack.
+            // For each candidate, simulate the move and check whether this enemy + any other
+            // Humanoid enemy would form a valid pincer pair around heroes at that position.
+            bool seeksPincer = Scripts.Managers.PincerAttackManager.IsHumanoid(enemy);
+
             foreach (var c in candidates)
             {
                 float score = -Manhattan(c, target.location);        // advance toward the target
                 if (IsCardinalAdjacent(c, target.location)) score += 2f; // in range to strike next
                 if (WouldBeFlanked(c, heroes)) score -= 100f;        // do not walk into a pincer
                 if (c == enemy.location) score -= 0.5f;              // mild bias to keep advancing
+
+                if (seeksPincer && WouldFormPincer(enemy, c, actors))
+                    score += 50f;                                    // pincer-seek beats positional ties
 
                 if (score > bestScore)
                 {
@@ -71,6 +79,29 @@ namespace Scripts.Services
             }
 
             return best;
+        }
+
+        /// <summary>True if moving <paramref name="enemy"/> to <paramref name="candidate"/> would
+        /// form at least one Humanoid-vs-hero pincer. Mutates the enemy's location briefly to
+        /// reuse the standard PincerDetector; always restores.</summary>
+        private static bool WouldFormPincer(ActorInstance enemy, Vector2Int candidate, IReadOnlyList<ActorInstance> actors)
+        {
+            var prev = enemy.location;
+            enemy.location = candidate;
+            try
+            {
+                var participants = PincerDetector.Detect(actors, Team.Enemy, enemy);
+                if (participants.pair == null) return false;
+                foreach (var p in participants.pair)
+                {
+                    if (p?.attacker1 != null && p.attacker2 != null
+                        && Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker1)
+                        && Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker2))
+                        return true;
+                }
+                return false;
+            }
+            finally { enemy.location = prev; }
         }
 
         private static readonly Vector2Int[] Cardinals =

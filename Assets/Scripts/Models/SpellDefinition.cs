@@ -52,6 +52,12 @@ namespace Scripts.Models
         /// damage; Mug pairs <c>StealsMana = true</c> with <c>BaseDamage &gt; 0</c>.</summary>
         public bool StealsMana { get; }
 
+        /// <summary>If true, the spell is a Teleport — picks an empty tile and instantly relocates
+        /// the caster there. After the move, the AbilityBar checks for any new pincer the caster
+        /// just completed and resolves it. Bypasses the SpellEffectDispatcher entirely (no damage,
+        /// no VFX projectile — handled in AbilityBar.HandleTeleport).</summary>
+        public bool IsTeleport { get; }
+
         public SpellDefinition(
             ManaAbility ability,
             TargetShape shape,
@@ -69,7 +75,8 @@ namespace Scripts.Models
             DamageType damageType = DamageType.Physical,
             float projectileSeconds = 0.5f,
             bool removesDebuffs = false,
-            bool stealsMana = false)
+            bool stealsMana = false,
+            bool isTeleport = false)
         {
             Ability = ability;
             Shape = shape;
@@ -88,6 +95,7 @@ namespace Scripts.Models
             ProjectileSeconds = projectileSeconds;
             RemovesDebuffs = removesDebuffs;
             StealsMana = stealsMana;
+            IsTeleport = isTeleport;
         }
     }
 }

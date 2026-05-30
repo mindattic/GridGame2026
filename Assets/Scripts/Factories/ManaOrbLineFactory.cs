@@ -56,7 +56,8 @@ namespace Scripts.Factories
                 crt.sizeDelta = new Vector2(CellSize, CellSize);
 
                 var img = cellGO.GetComponent<Image>();
-                img.color = new Color(1f, 1f, 1f, 0.15f); // empty by default
+                img.sprite = Scripts.Utilities.UiCircleSprite.Get(); // round, not square
+                img.color = new Color(1f, 1f, 1f, 0.15f);            // empty by default
                 cells[i] = img;
             }
 

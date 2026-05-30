@@ -24,12 +24,14 @@ namespace Scripts.Data
             impactVfx: "PuffyExplosion", lingerVfx: "Flame",
             debuffId: "burning", baseDamage: 18f, damageType: DamageType.Fire, projectileSeconds: 0.55f);
 
-        // Ice: pick a tile, 3×3 square AOE of enemies hit by Frost.
+        // Ice: pick a tile, 3×3 square AOE of enemies hit by Frost. CastVfx is intentionally null —
+        // IceSparkle is a LOOPING prefab in VisualEffectLibrary, so playing it at the caster would
+        // stick on them permanently. The icy persistent effect belongs on the TARGET (Linger).
         public static readonly SpellDefinition Ice = new SpellDefinition(
             ability: ManaAbilities.Frost,
             shape: TargetShape.Square, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly, radius: 1,
-            castVfx: "IceSparkle", projectileVfx: "IceSparkle", motion: ProjectileMotion.Bezier,
-            impactVfx: "BlueGlow", lingerVfx: "BlueGlow",
+            castVfx: null, projectileVfx: "IceSparkle", motion: ProjectileMotion.Bezier,
+            impactVfx: "BlueGlow", lingerVfx: "IceSparkle",
             debuffId: "frozen", baseDamage: 10f, damageType: DamageType.Ice, projectileSeconds: 0.6f);
 
         // Lightning: pick an enemy, hits the entire ROW (chains through everyone in that line).
@@ -148,6 +150,16 @@ namespace Scripts.Data
             projectileSeconds: 0.30f,
             stealsMana: true);
 
+        // Teleport: pick an empty tile, instantly relocate the caster, then check for an
+        // incidental pincer the new position completes. Free, costs a turn. AbilityBar.HandleSkill
+        // detects IsTeleport and runs a dedicated flow (bypasses SpellEffectDispatcher).
+        public static readonly SpellDefinition Teleport = new SpellDefinition(
+            ability: ManaAbilities.Teleport,
+            shape: TargetShape.SingleTile, mode: TargetMode.PickTile, filter: TargetFilter.EmptyOnly,
+            castVfx: "BlueGlow",
+            impactVfx: "BlueGlow",
+            isTeleport: true);
+
         // Cross-Hit: pick a tile, Plus shape (entire row + column = big board-wide +).
         public static readonly SpellDefinition CrossHit = new SpellDefinition(
             ability: ManaAbilities.Bolt,
@@ -162,7 +174,7 @@ namespace Scripts.Data
             Fire, Ice, Lightning, Poison, Sleep, Slow, Silence,
             Heal, MassHeal, Antidote, Scan,
             Meteor, ShockWave, CrossHit,
-            Steal, Mug
+            Steal, Mug, Teleport
         };
     }
 }

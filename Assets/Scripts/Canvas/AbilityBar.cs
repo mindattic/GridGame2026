@@ -85,6 +85,10 @@ namespace Scripts.Canvas
             if (spell == null) { Debug.LogWarning($"[AbilityBar] Skill '{a.Name}' has no SpellDefinition wired."); return; }
             var caster = g.Actors.SelectedActor;
 
+            // Teleport is its own flow — picks an empty tile and instantly relocates the caster,
+            // then checks for a pincer the new position completes.
+            if (spell.IsTeleport) { HandleTeleport(spell, caster, canvas); return; }
+
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
                 {
@@ -95,6 +99,58 @@ namespace Scripts.Canvas
                     g.ManaPoolManager?.OnBankButtonClicked();
                 },
                 onCancel: () => Debug.Log($"[AbilityBar] Skill '{a.Name}' cancelled — turn not spent."));
+        }
+
+        /// <summary>Tile-pick → relocate caster → fire any pincer the new position completes.
+        /// Direct tile-picker (bypasses SpellEffectDispatcher because there's no "target actor").</summary>
+        private void HandleTeleport(SpellDefinition spell, Scripts.Instances.Actor.ActorInstance caster, GameObject canvas)
+        {
+            if (caster == null) { Debug.LogWarning("[AbilityBar] Teleport requires a selected hero."); return; }
+            var board = g.Board;
+            int w = board != null ? board.columnCount : 6;
+            int h = board != null ? board.rowCount    : 8;
+
+            Scripts.Managers.TargetingMode.DismissAnyActive();
+
+            Scripts.Factories.TargetPickerOverlayFactory.CreateTilePicker(
+                canvas.transform, spell, caster, w, h,
+                onPickedTile: anchor =>
+                {
+                    // Refuse if the destination tile is already occupied.
+                    var occupant = Scripts.Services.TargetShapeResolver.FindActorAt(anchor);
+                    if (occupant != null)
+                    {
+                        Debug.LogWarning($"[AbilityBar] Teleport refused — {anchor} is occupied by {occupant.name}.");
+                        return;
+                    }
+
+                    // Play a quick "vanish" at the origin, then move + "appear" at the destination.
+                    var vfx = g.VisualEffectManager;
+                    if (vfx != null)
+                    {
+                        var castAsset = Scripts.Libraries.VisualEffectLibrary.Get(spell.CastVfxName);
+                        if (castAsset != null) vfx.Spawn(castAsset, caster.transform.position);
+                    }
+
+                    var dest = Scripts.Utilities.Geometry.CalculatePositionByLocation(anchor);
+                    caster.location = anchor;
+                    caster.transform.position = dest;
+
+                    if (vfx != null)
+                    {
+                        var impactAsset = Scripts.Libraries.VisualEffectLibrary.Get(spell.ImpactVfxName);
+                        if (impactAsset != null) vfx.Spawn(impactAsset, dest);
+                    }
+                    Debug.Log($"[AbilityBar] {caster.name} teleported to {anchor}.");
+
+                    // Did the new position complete a pincer? PincerAttackManager queues it.
+                    bool pincer = g.PincerAttackManager != null && g.PincerAttackManager.Check(Scripts.Models.Team.Hero, caster);
+                    if (pincer) Debug.Log("[AbilityBar] Teleport landed a pincer!");
+
+                    // Costs a turn — advance the timeline to next enemy.
+                    g.ManaPoolManager?.OnBankButtonClicked();
+                },
+                onCancelled: () => Debug.Log("[AbilityBar] Teleport cancelled — turn not spent."));
         }
 
         // ── Spell: pays orbs upfront after target pick; cast bar shrinks; dispatcher resolves ──

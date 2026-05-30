@@ -27,6 +27,16 @@ namespace Scripts.Managers
     {
         public static bool IsActive { get; private set; }
 
+        /// <summary>Dismiss any live targeting overlay and reset the IsActive flag. Called at the
+        /// top of <see cref="Begin"/> so a stale flag (e.g. overlay destroyed by a scene reload
+        /// without firing its callbacks) can't silently block every subsequent ability click.</summary>
+        public static void DismissAnyActive()
+        {
+            var existing = UnityEngine.Object.FindFirstObjectByType<Scripts.Canvas.TargetPickerOverlay>();
+            if (existing != null) existing.NotifyCancel();
+            IsActive = false;
+        }
+
         public static void Begin(
             SpellDefinition spell,
             ActorInstance caster,
@@ -35,14 +45,13 @@ namespace Scripts.Managers
         {
             if (spell == null || onConfirm == null) { onCancel?.Invoke(); return; }
 
-            // Fix #7: only one targeting session at a time. If the user mashes ability buttons,
-            // the second click is treated as a no-op cancel rather than stacking overlays.
-            if (IsActive)
-            {
-                Debug.Log("[TargetingMode] Another session is already active — ignoring.");
-                onCancel?.Invoke();
-                return;
-            }
+            // If a previous targeting session is still alive (or its flag stuck), dismiss it first
+            // and start fresh. The old behavior was to bail with onCancel — which silently locked
+            // every subsequent ability click whenever IsActive got stuck (e.g., overlay destroyed
+            // without going through NotifyCancel).
+            DismissAnyActive();
+
+            Debug.Log($"[TargetingMode] Begin '{spell.Ability?.Name}' mode={spell.Mode} shape={spell.Shape} filter={spell.Filter}");
 
             switch (spell.Mode)
             {

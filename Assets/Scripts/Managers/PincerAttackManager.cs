@@ -88,6 +88,7 @@ public class PincerAttackManager : MonoBehaviour
     public bool Check(Team team)
     {
         var participants = GetParticipants(team, null);
+        FilterToHumanoidAttackers(participants);
         if (!participants.pair.Any())
             return false;
 
@@ -102,7 +103,12 @@ public class PincerAttackManager : MonoBehaviour
     /// </summary>
     public bool Check(Team team, ActorInstance selectedHero)
     {
+        // Per design: only Humanoid-tagged actors can SCAN for a pincer. A beast or mechanical
+        // selectedHero just won't be considered a valid attacker even if the geometry lines up.
+        if (selectedHero != null && !IsHumanoid(selectedHero)) return false;
+
         var participants = GetParticipants(team, selectedHero);
+        FilterToHumanoidAttackers(participants);
         if (!participants.pair.Any())
             return false;
 
@@ -215,6 +221,28 @@ public class PincerAttackManager : MonoBehaviour
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)
     {
         return Formulas.CalculateAttackResult(attacker, opponent);
+    }
+
+    /// <summary>True if the actor's ActorData carries the <see cref="ActorTag.Humanoid"/> flag.
+    /// Heroes fall back to true even if the data file forgot the tag (sensible default — most
+    /// heroes are humanoid). Enemies must be explicitly tagged.</summary>
+    public static bool IsHumanoid(ActorInstance actor)
+    {
+        if (actor == null) return false;
+        var data = Scripts.Libraries.ActorLibrary.Get(actor.characterClass);
+        if (data != null && (data.Tags & ActorTag.Humanoid) == ActorTag.Humanoid) return true;
+        return actor.team == Team.Hero; // hero fallback so existing data without the tag still pincers
+    }
+
+    /// <summary>Drop pincer pairs whose attackers are not Humanoid — per design only Humanoid
+    /// actors can perform a pincer attack regardless of which team is scanning.</summary>
+    private static void FilterToHumanoidAttackers(PincerAttackParticipants participants)
+    {
+        if (participants == null || participants.pair == null) return;
+        participants.pair.RemoveAll(p =>
+            p == null ||
+            (p.attacker1 != null && !IsHumanoid(p.attacker1)) ||
+            (p.attacker2 != null && !IsHumanoid(p.attacker2)));
     }
 
     /// <summary>Drops a bouncing mana orb from <paramref name="source"/>'s world position toward the orb line.</summary>

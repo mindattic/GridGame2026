@@ -27,8 +27,9 @@ namespace Scripts.Data
     public static class ManaAbilities
     {
         // ── Skills (free, reusable, cost a player's turn) ──
-        public static readonly ManaAbility Steal    = new ManaAbility("Steal", _isSkill: true);
-        public static readonly ManaAbility Mug      = new ManaAbility("Mug",   _isSkill: true);
+        public static readonly ManaAbility Steal    = new ManaAbility("Steal",    _isSkill: true);
+        public static readonly ManaAbility Mug      = new ManaAbility("Mug",      _isSkill: true);
+        public static readonly ManaAbility Teleport = new ManaAbility("Teleport", _isSkill: true);
 
         // ── Spells (mana-orb cost) ──
         public static readonly ManaAbility Heal     = Spell("Heal",     (ManaType.White, 1));                            // (W)

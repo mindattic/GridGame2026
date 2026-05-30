@@ -39,6 +39,9 @@ namespace Scripts.Factories
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.sizeDelta = new Vector2(OrbDiameter, OrbDiameter);
 
+            // Render as a round disk, not a square quad.
+            go.GetComponent<Image>().sprite = Scripts.Utilities.UiCircleSprite.Get();
+
             // Convert the world origin to canvas-anchored space.
             Vector2 screenPt = RectTransformUtility.WorldToScreenPoint(Camera.main, worldOrigin);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRt, screenPt, null, out var startCanvas);

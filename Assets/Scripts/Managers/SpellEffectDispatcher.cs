@@ -102,6 +102,14 @@ namespace Scripts.Managers
                 // Steal / Mug — per-target LCK+AGI roll → one random orb to the team bank on success.
                 if (spell.StealsMana) TryStealFrom(caster, target);
 
+                // Lightning: 30% chance to blind on impact (independent of base damage roll).
+                if (spell.DamageType == DamageType.Lightning && UnityEngine.Random.value < 0.30f)
+                {
+                    BuffSystem.Apply(target, Buffs.Blinded);
+                    var ctmL = g.CombatTextManager;
+                    if (ctmL != null) ctmL.Spawn("Blinded!", target.transform.position, "Miss");
+                }
+
                 if (spell.BaseDamage > 0f) ApplyDamage(target, spell);
                 if (spell.BaseHeal   > 0f) ApplyHeal  (target, spell.BaseHeal, spell.Ability.Name);
             }

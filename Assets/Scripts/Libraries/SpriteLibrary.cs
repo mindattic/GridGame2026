@@ -76,6 +76,8 @@ namespace Scripts.Libraries
         private static Dictionary<string, Sprite> actorTagIcon;
         private static Dictionary<string, Sprite> abilityButtons;
         private static Dictionary<string, Sprite> icons;
+        private static Dictionary<string, Sprite> mana;
+        private static Dictionary<string, Sprite> spellIcons;
         private static bool isLoaded = false;
 
         #endregion
@@ -118,6 +120,12 @@ namespace Scripts.Libraries
 
         /// <summary>32x32 UI icon sprites (246 addressable icons).</summary>
         public static Dictionary<string, Sprite> Icons { get { if (!isLoaded) Load(); return icons; } }
+
+        /// <summary>Mana orb body + glassy highlight sprites (authored by Editor/SpriteAssetAuthor → Tools/Sprites/Author Mana Orb Sprites).</summary>
+        public static Dictionary<string, Sprite> Mana { get { if (!isLoaded) Load(); return mana; } }
+
+        /// <summary>Per-spell 64×64 placeholder icons keyed by ManaAbility.Name (Tools/Sprites/Author Spell Icons (Placeholders)).</summary>
+        public static Dictionary<string, Sprite> SpellIcons { get { if (!isLoaded) Load(); return spellIcons; } }
 
         #endregion
 
@@ -555,6 +563,24 @@ namespace Scripts.Libraries
                 { "ZoomIn", AssetHelper.LoadAsset<Sprite>("Sprites/Icons/32x32/ZoomIn") },
                 { "ZoomOut", AssetHelper.LoadAsset<Sprite>("Sprites/Icons/32x32/ZoomOut") },
             };
+
+            // ── Mana orb body + glass — authored by Editor/SpriteAssetAuthor. Returns null if
+            // the authoring menu hasn't run yet; callers fall back to UiCircleSprite.
+            mana = new Dictionary<string, Sprite>
+            {
+                { "OrbBody",  AssetHelper.LoadAsset<Sprite>("Sprites/Mana/orb-body") },
+                { "OrbGlass", AssetHelper.LoadAsset<Sprite>("Sprites/Mana/orb-glass") },
+            };
+
+            // ── Spell placeholder icons keyed by ManaAbility.Name — also from SpriteAssetAuthor.
+            spellIcons = new Dictionary<string, Sprite>();
+            foreach (var spell in Scripts.Data.SpellLibrary.All)
+            {
+                if (spell == null || spell.Ability == null) continue;
+                var name = spell.Ability.Name;
+                if (spellIcons.ContainsKey(name)) continue;
+                spellIcons[name] = AssetHelper.LoadAsset<Sprite>($"Sprites/Spells/{name}");
+            }
 
             isLoaded = true;
         }

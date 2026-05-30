@@ -50,7 +50,10 @@ namespace Scripts.Factories
                         + (DebuffIconBar.MaxVisible - 1) * DebuffIconBar.IconSpacing;
             rt.sizeDelta = new Vector2(width, DebuffIconBar.IconSize + 6f);
 
-            rootGO.GetComponent<WorldFollow>().Bind(owner.transform, new Vector3(0.35f, 0.65f, 0f));
+            // Anchor INSIDE the upper-right corner of the actor's tile (was floating half a tile
+            // too high at y=0.65 — outside the tile). Tile sprites are ~1 unit; 0.30 keeps the
+            // icon strip just inside the top edge, 0.30 just inside the right edge.
+            rootGO.GetComponent<WorldFollow>().Bind(owner.transform, new Vector3(0.30f, 0.30f, 0f));
 
             var font = BorrowSceneFont();
 
