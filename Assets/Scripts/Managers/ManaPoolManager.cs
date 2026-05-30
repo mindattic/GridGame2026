@@ -98,8 +98,10 @@ namespace Scripts.Managers
 
         private static void AttachDebuffBarsToAll(Transform canvas)
         {
-            if (g.Actors == null) return;
-            foreach (var a in g.Actors.All)
+            // `g.Actors` is a nested static class — null-check the All list instead.
+            var all = g.Actors.All;
+            if (all == null) return;
+            foreach (var a in all)
                 if (a != null) Scripts.Factories.DebuffIconBarFactory.EnsureAttached(a);
         }
 

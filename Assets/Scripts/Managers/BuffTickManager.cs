@@ -32,7 +32,9 @@ namespace Scripts.Managers
             if (timer < TickSeconds) return;
             timer = 0f;
 
-            var all = g.Actors != null ? g.Actors.All : null;
+            // `g.Actors` is a nested static class, not a property — can't be null-checked.
+            // The All list itself can be null pre-GameReady; guard on that.
+            var all = g.Actors.All;
             if (all == null) return;
 
             for (int i = 0; i < all.Count; i++)

@@ -163,7 +163,11 @@ public static class BuilderAutoRebuild
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[BuilderAutoRebuild] {sceneName} failed: {e.GetType().Name}: {e.Message}");
+                    // Unwrap TargetInvocationException so the real cause is visible. Also log
+                    // ToString() (stack + inner chain) — was only logging .Message before, which
+                    // hid the actual failure inside reflection invokes.
+                    var root = e is System.Reflection.TargetInvocationException tie && tie.InnerException != null ? tie.InnerException : e;
+                    Debug.LogError($"[BuilderAutoRebuild] {sceneName} failed: {root.GetType().Name}: {root.Message}\n{root}");
                     failed++;
                 }
             }

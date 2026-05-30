@@ -20,6 +20,18 @@ public static class BestiaryBuilder
 
     public static void Build()
     {
+        try { BuildInternal(); }
+        catch (System.Exception ex)
+        {
+            // BuilderAutoRebuild wraps this in TargetInvocationException and logs only the outer
+            // .Message — surface the full stack + inner here so we can actually see the cause.
+            Debug.LogError($"[BestiaryBuilder] Build threw: {ex}");
+            throw;
+        }
+    }
+
+    private static void BuildInternal()
+    {
         if (!SceneBuilderHelper.OpenScene(SceneName)) return;
         SceneBuilderHelper.ClearAllRootObjectsSilent();
 
@@ -37,8 +49,10 @@ public static class BestiaryBuilder
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = new Color(0.06f, 0.08f, 0.14f);
         cam.orthographic = true;
-        // Fix #8: UI-only scene — exclude world geometry layers so nothing accidentally renders.
-        cam.cullingMask = 1 << LayerMask.NameToLayer("UI");
+        // UI-only scene — exclude world geometry. Defensive: if "UI" layer doesn't exist in the
+        // project, fall back to "everything" so the camera at least renders something.
+        int uiLayer = LayerMask.NameToLayer("UI");
+        cam.cullingMask = uiLayer >= 0 ? (1 << uiLayer) : ~0;
         Undo.RegisterCreatedObjectUndo(camGO, "Create Main Camera");
 
         // ── Canvas ──
