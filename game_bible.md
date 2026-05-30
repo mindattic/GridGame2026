@@ -377,7 +377,7 @@ Magic-style 5-color pie plus a generic:
 
 Orbs are minted from gameplay events:
 - **Pincer completion**: each hero attacker contributes 1 orb of their class color (V1: all Blue placeholder). Each supporter also contributes 1.
-- **Enemy charge interruption** (Phase C, design intent): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. Currently the interrupt path is a stub — the design is documented.
+- **Enemy charge interruption** (Phase C, `US-027`): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. Blocked on enemies not casting yet (`US-026`); the hero-side interrupt mechanic itself is wired (§13.4).
 - **Critical hits** (Phase C): may drop a single Colorless orb.
 - **Steal / Mug skills**: per-target LCK + 0.5 × AGI roll, success → random-color orb to the bank.
 
@@ -1184,13 +1184,16 @@ No resistance applies; no crit on heal in V1 (designer call later — could add 
 
 HP reaching 0 = death. Handled by existing `DeathHelper` / death sequence (separate from spell dispatcher). Coins drop on enemy death via existing `CoinManager`.
 
-### 13.4 The interrupt path (design intent, not built)
+### 13.4 The interrupt path (partially built)
 
-When an enemy is in the Prepare Zone and casting/charging, a pincer or shield press should **interrupt** their charge. Currently `EnemyAttackSequence.InterruptCastingHero` is a stub. Phase C work:
-- Roll outcome: **Fail** (cast cancels, MP stays consumed, no effect) | **Pushback** (cast survives but icon moves left, brief stun) | **Clutch** (LCK-driven rare: cast snaps to u=1 and resolves instantly — the "miracle save").
-- Roll order: Clutch first; otherwise Pushback vs Fail weighted by LCK / WIS.
+When an enemy is in the Prepare Zone and casting/charging, a pincer or shield press should **interrupt** their charge.
 
-For interrupting an ENEMY (the inverse — Phase C primary loop): cancels the attack AND drops an orb of the enemy charge's color to the team bank. This is how off-palette colors flow in: the enemy supplies what your party can't make.
+**Built (Phase 1 — Fail only):** `EnemyAttackSequence.InterruptCastingHero` is wired and calls `TimelineBar.InterruptCastsByOwner(hero)` unconditionally (`EnemyAttackSequence.cs:109,133`). Today every interrupt is a **Fail** — cast cancels, MP stays consumed, no effect, spell-icon removed. (`CastingState.Interrupt()`.)
+
+**Remaining (Phase C):**
+- **Three-outcome resolver** (`US-024`): replace the flat Fail with `CastInterruptResolver.Resolve` → **Fail** | **Pushback** (cast survives, icon moves left, brief stun) | **Clutch** (LCK-rare: snap to u=1, resolve — the "miracle save"). Roll order: Clutch first; else Pushback vs Fail weighted by LCK / WIS. Clutch plays a dedicated `ClutchSequence` (`US-025`).
+- **Enemies that actually cast** (`US-026`): enemies are melee-only today, so there's no enemy charge to interrupt yet.
+- **Interrupting an ENEMY drops an orb** (`US-027`): cancels the charge AND drops an orb of its color to the team bank — how off-palette colors flow in (the enemy supplies what your party can't make).
 
 ---
 
@@ -1323,72 +1326,83 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 
 ### 15.3 Open migrations
 
-- `HeroEquipmentSave.AbilityBarSlots` is the long-term source of truth for per-hero AbilityBar contents; currently `HeroLoadouts.perClass` static is the placeholder.
-- `BestiaryProgress` is unwritten — Bestiary currently shows every entry regardless of whether the player has encountered it. Future: gate by `seen` flag, show silhouettes for unseen.
+- ~~`HeroEquipmentSave.AbilityBarSlots` migration~~ — **DONE.** It is now the source of truth for per-hero AbilityBar contents with a full hydrate/persist round-trip (`Profile.cs:376-487`, `HeroLoadout.cs:183-268`); `HeroLoadouts.perClass` is the fallback default only when a hero has no saved bar.
+- `BestiaryProgress` is **unwritten** (`US-054`) — Bestiary currently shows every entry regardless of whether the player has encountered it. Future: gate by `seen` flag, show silhouettes for unseen (`US-093`).
 
 ---
 
 ## 16. Open Design / Implementation TODOs
 
-Tracked here so unattended development knows what to pick up. Grouped by area; **P0** = blocks core loop feel, **P1** = enriches existing feature, **P2** = polish.
+> **The execution board is `user_stories.md`** (repo root) — a dependency-ordered backlog reconciled against the live code on 2026-05-30. This §16 is the *index of what's still open*; the board is where you pick up work, with file evidence and build order. Keep them in sync: landing a story deletes its row here AND moves any new rule into its section.
+>
+> **Reconciliation note (2026-05-30):** a code audit found this section had drifted badly — it listed as "TODO / not built / stub" a large amount of work that was **already implemented**. Those rows are struck below with their verifying file. The remaining open rows carry their `user_stories.md` id. **P0** = blocks core-loop feel, **P1** = enriches, **P2** = polish.
 
 ### 16.1 Combat gameplay hooks (buffs that apply but don't yet bite)
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 1 | **Burning / Poisoned per-tick damage** — verify timeline-advancing gate behaves correctly | P1 | `BuffTickManager` |
-| 2 | **Slowed → timeline-speed multiplier** in `TimelineBarInstance` (buff applies, no effect yet) | P1 | `TimelineBarInstance.UpdateApproaching` |
-| 3 | **Silenced → cast-block** in `AbilityBar.HandleSpell` (refuse spell click if silenced) | P1 | `AbilityBar` |
-| 4 | **Blinded → hit-chance penalty** in `Formulas.CalculateAttackResult` | P1 | `Formulas` |
-| 5 | **SleepWhenWarmMultiplier** applied at Sleep-spell hit roll | P2 | `SpellEffectDispatcher` |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| ~~1~~ | — | ~~Burning / Poisoned per-tick damage~~ — **DONE** (`BuffTickManager.cs:45-60`) | — | — |
+| 2 | US-011 | **Slowed → timeline-speed multiplier** (buff applies, no effect yet) | P1 | `TimelineIcon.UpdateApproaching` |
+| 3 | US-012 | **Silenced → cast-block** (refuse spell click if silenced) | P1 | `AbilityBar.HandleSpell` |
+| 4 | US-013 | **Blinded → hit-chance penalty** | P1 | `Formulas.CalculateHitType` |
+| 5 | US-014 | **SleepWhenWarmMultiplier** applied at Sleep-spell hit roll | P2 | `SpellEffectDispatcher` |
+| — | US-015 | **BreaksOnMove** — `ActorMovement` must call `BuffSystem.OnMoved` on displacement | P1 | `ActorMovement`, `BuffSystem` |
+| — | US-016 | **Turn-unit decrement** — `TurnManager` must call `BuffSystem.TickTurn` at turn boundary (else Slowed/Silenced never expire) | P1 | `TurnManager`, `BuffSystem` |
 
 ### 16.2 Cast / interrupt system (Phase C)
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 10 | **Interrupt path** — wire `EnemyAttackSequence.InterruptCastingHero` (currently empty stub) | P0 | `EnemyAttackSequence` |
-| 11 | **Cast-as-timeline-icon** — refactor cast bars (under timeline) into dedicated `TimelineIcon` mode `Resolving` riding the bar | P1 | `TimelineIcon`, `SpellCastBar`, `CastingState` |
-|   | **Cast-time WIS/INT scaling** — `Formulas.CastTime(baseSeconds, wis, int)` helper; CastingState reads it | P1 | `Formulas`, `CastingState` |
-|   | **Clutch/Pushback/Fail resolver** — `CastInterruptResolver.Resolve(caster, attacker)` returning {Fail|Pushback|Clutch} | P1 | new file |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| ~~10~~ | — | ~~Interrupt path — wire `InterruptCastingHero`~~ — **DONE** (Fail path live: `EnemyAttackSequence.cs:109,133` → `TimelineBarInstance.InterruptCastsByOwner`) | — | — |
+| ~~11~~ | — | ~~Cast-as-timeline-icon (`Resolving` mode)~~ — **DONE** (`TimelineIcon.cs:52,833`; `TurnManager.IsResolvingCast`) | — | — |
+| ~~—~~ | — | ~~Cast-time WIS/INT scaling~~ — **DONE** (`Formulas.cs:492`; `CastingState.cs:91`) | — | — |
+| — | US-024 | **Clutch/Pushback/Fail resolver** — `CastInterruptResolver.Resolve` returning {Fail\|Pushback\|Clutch} (today: unconditional Fail) | P1 | new `Services/CastInterruptResolver.cs` |
+| — | US-025 | **ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX | P2 | new `Sequences/ClutchSequence.cs` |
+| — | US-026 | **Enemy charge/telegraph spells** — enemies cast (today: melee only) | P1 | `EnemyPlanner`, new `EnemyChargeSequence` |
+| — | US-027 | **Interrupt enemy cast → drop charge-color orb** (closes off-palette economy) | P1 | `TimelineBarInstance`, `ManaPoolManager` |
 
 ### 16.3 Equipment / inventory
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 6 | **Mage Robe / Wizard Robe** — `ItemDefinition.BattleStartManaOrbs` field + battle-start party scan adds N orbs per robe | P1 | `ItemDefinition`, `ManaPoolManager.Start` |
-| 7 | **Sleep Dart** — `ItemDefinition.OnUseSpellName` field; item-kind click routes through Sleep's targeting | P1 | `ItemDefinition`, `AbilityBar.HandleItem` |
-| 8 | **Weapon shatter dual-damage** — shatter at 0 should hit BOTH target AND wielder (currently empties slot only) | P1 | `Formulas.ApplyDurabilityShatter` |
-| 9 | **Repair max-cap** — `WeaponRepairCount` decrements max durability per repair (rule in §24.5) | P1 | `BlacksmithManager.Repair` |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| — | US-040 | **`ItemDefinition` fields** — `BattleStartManaOrbs`, `OnUseSpellName`, `ResistanceModifiers` (all absent) | P1 | `ItemDefinition` |
+| 6 | US-041 | **Mage/Wizard Robe battle-start orbs** — `MageRobes` exists; need Wizard Robe + battle-start scan | P1 | `ItemData_Armor`, `ManaPoolManager.Start` |
+| 7 | US-042 | **Sleep Dart** — item routes through Sleep's targeting via `OnUseSpellName` | P1 | `AbilityBar.HandleItem`, `UseItemSequence` |
+| — | US-043 | **Equipped `ResistanceModifiers` folded into damage** | P1 | `Formulas`, `SpellEffectDispatcher` |
+| ~~8~~ | — | ~~Weapon shatter dual-damage~~ — **DONE** (`WeaponDurabilityHelper.cs:37-103`) | — | — |
+| ~~9~~ | — | ~~Repair max-cap~~ — **DONE** (`WeaponDurabilityHelper.cs:105-138`) | — | — |
 
 ### 16.4 UI / responsive design
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 16 | **`ManaOrbLine` full-width** — line currently fixed 12 × 28px; design wants full canvas width equidistant | P2 | `ManaOrbLineFactory` |
-| 17 | **AspectGuard** — `Utilities/AspectGuard.cs` + insert into every Canvas + viewport math (§26.3–26.4) | P0 | new file; every `*Builder.cs` |
-| 21 | **Spell icons on bar** — wire `SpriteLibrary.SpellIcons[name]` to AbilityBar slot frame (replaces letter glyphs) | P2 | `AbilityBar.RefreshSlot` |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| ~~16~~ | — | ~~`ManaOrbLine` full-width~~ — **DONE** (responsive/equidistant, `ManaOrbLineFactory.cs:38`) | — | — |
+| 17 | US-001 | **AspectGuard** — `Utilities/AspectGuard.cs` + insert into every Canvas + viewport math (§26.3–26.4) | P0 | new file; every `*Builder.cs` |
+| 21 | US-076 | **Spell icons on bar** — render `SpriteLibrary.SpellIcons[name]` (today: glyphs only) | P2 | `AbilityBar.Refresh` |
 
 ### 16.5 Content / data layer
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 12 | **Spell-VFX per-spell prefabs** — author menus exist; user runs them and registers in library | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
-| 13 | **Per-hero color affinity** — `ColorAffinity` on ActorData (or class); pincer drops use it (not always Blue) | P1 | `ActorData`, `PincerAttackManager.DropOrbAt` |
-| 14 | **Bestiary enemy filter** — show only `ActorTag.Enemy` entries | P2 | `BestiaryView` |
-| 22 | **Drop tables per enemy class** — populate `DropTableLibrary` per-enemy entries | P1 | `DropTableLibrary` |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| 12 | (backlog) | **Spell-VFX per-spell prefabs** — author menus exist; run + register as art lands | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
+| 13 | US-030 | **Per-hero color affinity** — `ColorAffinity` on ActorData; pincer drops use it (today: hardcoded Blue, `PincerAttackManager.cs:206`) | P1 | `ActorData`, `PincerAttackManager.DropOrbAt` |
+| 14 | US-093 | **Bestiary enemy filter** — show only `ActorTag.Enemy` entries | P2 | `BestiaryView` |
+| ~~22~~ | — | ~~Drop tables per enemy class~~ — **DONE** (16 tables, `DropTableLibrary.cs:53-68`) | — | — |
 
 ### 16.6 Save / state
 
-| # | TODO | Priority | Touch |
-|---|---|---|---|
-| 20 | **AbilityBar save migration** — `HeroLoadouts.perClass` → `HeroEquipmentSave.AbilityBarSlots` | P1 | `HeroLoadouts`, `SaveStateService` |
-| 15 | **Targeting "no valid targets" toast** — Auto resolve with 0 actors currently silent-cancels | P2 | `TargetingMode.Begin` |
-|   | **Bestiary unlock gating** — read `BestiaryProgress.seen` to show silhouettes for unseen | P2 | `BestiaryView` |
+| # | US | TODO | Priority | Touch |
+|---|---|---|---|---|
+| ~~20~~ | — | ~~AbilityBar save migration~~ — **DONE** (`Profile.cs:376-487`; `HeroLoadout.cs:183-268`) | — | — |
+| — | US-053 | **HP carry-over** — no `HpCurrent` in save; needed for wounds + defeat restore | P1 | `Profile.cs`, `PostBattleManager` |
+| — | US-054 | **BestiaryProgress writing** — record seen/defeated (gates US-093/US-077) | P2 | `Profile.cs`, spawn/death hooks |
+| 15 | US-090 | **"No valid targets" toast** — Auto resolve with 0 actors silent-cancels (`TargetingMode.cs:81`) | P2 | `TargetingMode.Begin` |
+|   | US-093 | **Bestiary unlock gating** — read `BestiaryProgress.seen` for silhouettes | P2 | `BestiaryView` |
 
 ### 16.7 Cross-reference
 
 When you land a TODO from this list:
-1. Delete the row.
+1. Delete the row here AND check the box in `user_stories.md`.
 2. If the implementation produced a new rule, **add it to the right section** (e.g., Slow → §2/§8; Mage Robe → §24.8).
 3. If it raised a new question, add it to §29.
 
@@ -1833,10 +1847,10 @@ ResistanceModifiers: Dict<DamageType, float>  // elemental rings, etc.
 
 ### 24.5 Weapon durability
 
-Per the locked rule ([[project_weapon_durability_rule]]):
+Per the locked rule ([[project_weapon_durability_rule]]) — **all built** in `WeaponDurabilityHelper.cs`:
 - A weapon takes durability damage per use.
-- At durability 0, it **shatters** — deals damage to **both** the target AND the wielder (currently target damage works; dual-damage TODO).
-- Each repair drops max durability by 1 (`WeaponRepairCount` increments). Repairing forever isn't free — gear erodes (TODO: max-cap not yet enforced).
+- At durability 0, it **shatters** — deals damage to **both** the target (×1.5 bonus) AND the wielder (15% MaxHP self-damage), then clears the slot (`WeaponDurabilityHelper.cs:37-103`).
+- Each repair drops effective max durability by 1 (`EffectiveMaxDurability = max(1, Durability − repairCount)`) and per-point repair cost escalates ×1.6, so gear naturally retires (`WeaponDurabilityHelper.cs:105-138`).
 
 ### 24.6 Crafting recipes
 
@@ -1923,7 +1937,7 @@ Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `Pla
 
 `Alchemist.unity` / `AlchemistManager.cs`. Brews consumables from materials + gold per recipes. Pulls `RecipeLibrary.All().Where(r => r.ResultItemId is consumable)`.
 
-- **Enchant** (planned, per `EnchantLibrary`) — apply elemental affinity to a weapon.
+- **Enchant** (built, `EnchantLibrary.cs:58-174`) — apply one of 4 elemental affinities (Flame/Frost/Spark/Shadow) to a base weapon; each recipe = 1 element-essence + 2 ArcaneDust + 150g, elevates rarity and adds element-themed stats.
 
 ### 25.4 Equip
 
