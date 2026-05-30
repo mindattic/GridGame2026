@@ -45,8 +45,8 @@
 - [24. Equipment, Items, Materials, Currency](#24-equipment-items-materials-currency) — rarity tiers
 - [25. The Hub: Vendor Scenes](#25-the-hub-vendor-scenes) — per-screen sketches
 - [26. Responsive Design & Aspect Ratio Profile](#26-responsive-design--aspect-ratio-profile)
-- [27. Dialog & Story (placeholder)](#27-dialog--story-placeholder)
-- [28. The Future Overworld (placeholder)](#28-the-future-overworld-placeholder)
+- 27. Dialog & Story — *cut from the design (tombstone)*
+- 28. Overworld — *cut; replaced by the scrollable level list (§22.3)*
 
 **Quality**
 - [29. Open Design Questions](#29-open-design-questions)
@@ -1030,8 +1030,8 @@ Every scene EXCEPT `Game` and `Overworld` is reproducible from `Editor/Builders/
 
 ### 11.2 Scene list
 
-- `SplashScreen` → `TitleScreen` → `ProfileSelect` / `ProfileCreate` / `SaveFileSelect` → `Game` (battle) / `Overworld` (exploration).
-- Vendor sub-scenes: `Vendor`, `Alchemist`, `Blacksmith`, `Equip`, `Party`, `Abilities`. Each has its own scene + builder + manager + `PlayerInventory` hydration.
+- `SplashScreen` → `TitleScreen` → `ProfileSelect` / `ProfileCreate` / `SaveFileSelect` → `StageSelect` → `Game` (battle). (No Overworld — see §22.3, §28.)
+- Vendor sub-scenes: `Vendor`, `Alchemist`, `Blacksmith`, `Equip`, `Party`, `Abilities`. Each has its own scene + builder + manager + `PlayerInventory` hydration. **Long-term**: once each is stable independently they merge into a single composed hub `.unity` (§25.9).
 - `PostBattleScreen` after battles.
 - `Bestiary` — swipe-navigable encyclopedia of every `ActorLibrary` entry (name, portrait, stats, abilities, lore). Reachable from `TitleScreen → Bestiary` (button wired to `TitleScreenManager.OnBestiaryButtonClicked → SceneHelper.Fade.ToBestiary()`). Back button → `BestiaryView.OnBackButtonClicked → SceneHelper.Fade.ToTitleScreen()`.
 - `Credits`, `Settings`, `LoadingScreen`, `StageSelect`.
@@ -1075,6 +1075,8 @@ Every scene EXCEPT `Game` and `Overworld` is reproducible from `Editor/Builders/
 ### 11.3 Scene navigation
 
 `SceneHelper.Switch.ToX()` (instant) and `SceneHelper.Fade.ToX()` (with FadeOverlay) are the two flavors. `SceneHelper.Bestiary` constant + `ToBestiary()` methods added.
+
+**Fade speed: 125 ms.** `FadeOverlayInstance` fades out/in at **0.125 s** each way — snappy, not languid. Scene-to-scene navigation should feel near-instant; the fade exists only to hide the load seam, not to be a transition flourish. (Set the duration constant in `FadeOverlayInstance`; don't pad it.)
 
 **Rule:** for any UI Button → scene transition, the click handler must be a real `MonoBehaviour` method (not a lambda). Persistent `UnityEvent` listeners require a `UnityEngine.Object` target — lambdas via the `<>c` closure class do not qualify and are silently dropped. Example pattern: `BestiaryView.OnBackButtonClicked()` on the scene's view component, wired by the builder via `UnityEventTools.AddPersistentListener`.
 
@@ -1440,6 +1442,10 @@ A running list — when you trip one of these, fix it AND amend this section so 
 
 10. **`LayerMask.NameToLayer("UI")` can return -1.** When a builder creates a camera with `cullingMask = 1 << LayerMask.NameToLayer("UI")`, a missing UI layer means the camera renders nothing. Defensive: `uiLayer >= 0 ? (1 << uiLayer) : ~0` (fallback to "everything").
 
+11. **Vendor scenes look "like trash" because of a broken `CanvasScaler` — the #1 cause.** `VendorBuilder` (and the other vendor builders) set `CanvasScaler.referenceResolution = new Vector2(0f, 0f)` with `ScaleWithScreenSize`. Scaling against a **zero** reference resolution makes every element size/position nonsense — fonts, padding, buttons all wrong. **Fix:** every vendor Canvas MUST use the §26.2 baseline (`referenceResolution = (1170, 2532)`, `screenMatchMode = MatchWidthOrHeight`, `matchWidthOrHeight = 0.5`). This is *the* reason "sizing and colors and basic interface" came out broken.
+
+12. **The vendor list doesn't scroll because the `ScrollRect` is never wired.** `VendorBuilder` calls `AddComponent<ScrollRect>()` on the Viewport but never assigns `.content`, `.viewport`, `.horizontal`/`.vertical`, or `movementType` (the "ScrollRect cross-references" comment block at the file's end is empty). Result: rows overflow/clip and the list is unusable. **Fix:** wire `scroll.viewport = Viewport`, `scroll.content = Content`, `scroll.vertical = true`, `scroll.horizontal = false`, `scroll.movementType = Clamped`. Also pull all colors from `HubTheme` (the builders hardcode `new Color(...)` and drift from the palette). The lasting fix is the shared `ShopView` (US-111) so this is solved once, not six times.
+
 ### 17.2 Cadence
 
 - Keep going until the whole feature works end-to-end before committing ([[feedback_commit_granularity]]).
@@ -1686,20 +1692,24 @@ TitleScreen
    ↓
 ProfileSelect / ProfileCreate / SaveFileSelect
    ↓
-StageSelect ────────────────────────────────────┐
-   ↓                                            │
-Game.unity (the battle) — fight, win = gold + materials + XP
-   ↓
-PostBattleScreen — XP applied, rewards summarized, party HP restored
-   ↓
-Hub (vendor scenes, see §25) — spend gold/materials, augment characters
-   ↓                                            │
-└──────────────────────  back to StageSelect ───┘
+StageSelect  ◀════════════════════════════════╗   (scrollable level list, §22.3)
+   │  ↕ "Hub" button                          ║
+   │  Hub.unity — grid of vendor buttons       ║   (§25.0; each button → a vendor
+   │   → Vendor / Blacksmith / Alchemist /     ║    scene, "Back" returns to Hub)
+   │     Equip / Party / Abilities → back      ║
+   ↓                                           ║
+Game.unity — clear ALL waves of the stage      ║   (waves spawn in sequence)
+   ↓                                           ║
+PostBattleScreen — XP + items + gold awarded   ║
+   ↓                                           ║
+└════════ back to StageSelect (next stage now unlocked, on top) ═╝
 ```
 
+- **Stage = waves.** A stage runs its waves in sequence (`StageLibrary`); clearing the **last** wave ends the battle → PostBattle. Beating a stage unlocks the next, which appears **on top** of the list (§22.3).
+- **Reward beat.** PostBattle awards XP, items, and gold, commits the save, then returns to StageSelect.
+- **Hub is a launcher, not a mega-screen.** From StageSelect the player can open **`Hub.unity`** — a simple **grid of buttons**, one per vendor, that forwards into that vendor's own scene (§25.0). It replaces the floating `VendorNavBar` as the primary way to reach vendors. (Long-term the vendor *UIs* may compose into one screen — §25.9 — but that's separate from this lightweight launcher.)
 - **Failure path**: all heroes die in Game → PostBattleScreen with "Defeat" → StageSelect (no permadeath V1; the run can be retried).
-- **No Overworld in v1**. The `Overworld.unity` scene exists but is deliberately not gated into the macro loop yet — we're perfecting the battle ↔ vendor loop first.
-- The hub IS the per-vendor scene navigation via `VendorNavBar`. There's no separate "town overworld" scene; vendor screens are first-class destinations reached directly from PostBattle / StageSelect.
+- **No Overworld.** There is no world-map / exploration scene. Stage navigation is the scrollable level list in StageSelect (§22.3). (A stray `Overworld.unity` file may linger in the project; it is dead — ignore it.)
 
 `SceneHelper.Fade.ToX()` / `SceneHelper.Switch.ToX()` are the canonical scene-switch entry points.
 
@@ -1725,12 +1735,19 @@ When all heroes hit `HP <= 0`:
 
 (No permadeath in V1. Future: a roguelike mode where defeat ends the run and clears the save slot.)
 
-### 22.3 The Overworld trajectory
+### 22.3 StageSelect — the scrollable level list
 
-`Overworld.unity` exists but is intentionally disconnected from the macro loop. When it lands:
-- StageSelect becomes a sub-screen of Overworld (pick a node from a world map instead of a list).
-- Vendors live at named towns; visiting one is "enter town → vendor sub-scene" rather than the floating NavBar.
-- Random encounters on world-map edges trigger Game battles.
+Stage navigation is a **vertically scrollable list of levels**, same look-and-feel as the load/save-file screen (`SaveFileSelect`) but for picking the next battle. It is the *only* navigation surface — there is no world map.
+
+**Behavior:**
+- **Newest-on-top.** Each newly-unlocked level is **prepended to the top** of the list; older/earlier levels scroll below. The most recent frontier is always the first thing the player sees.
+- **All unlocked levels stay replayable.** Clearing a stage unlocks the next but does **not** consume or grey out the cleared one. The player can scroll down and re-enter any previously-beaten level at will.
+- **Farming is the point.** Because cleared stages remain replayable and each enemy class has its own drop table (§24.7), the player goes back to a specific stage to farm a specific material an enemy there drops — e.g. re-run the Frost stage for Ice Shards to fund a Blacksmith upgrade. This is the intended grind loop; the list is built to support it, not to lock progress behind one-shot stages.
+- **Unlock gating (linear frontier, open backtrack).** A stage is unlocked when the prior stage is cleared (`HighestClearedStageIndex`, `CampaignStages.IsUnlocked`). So progression is linear *forward* (you can't skip ahead), but fully *open backward* (every unlocked stage is freely re-enterable). Locked (not-yet-reached) stages render dimmed/disabled.
+
+**Row content (per level):** name, theme/biome, recommended level or difficulty pip, a cleared ✓ marker, and a hint of the notable drops/enemies so the player knows where to farm what. Tapping a row → `StageCarrier`/`StageSaveData.CurrentStage` set → fade to `Game`.
+
+Implementation lives in `StageSelectManager` / `StageSelectBuilder`; unlock data in `StageLibrary` + `CampaignStages`.
 
 ## 23. Character Classes
 
@@ -1917,14 +1934,51 @@ Gold is the universal currency. Lives on `SaveState`. Coin pickups via `CoinMana
 
 ## 25. The Hub: Vendor Scenes
 
-Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `PlayerInventory` hydration. The old monolithic `Hub.unity` + `Inn.unity` are deleted; per-vendor scenes are the new normal ([[project_scene_per_section_migration]]).
+Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `PlayerInventory` hydration. The old *monolithic* `Hub.unity` was deleted in the scene-per-section migration ([[project_scene_per_section_migration]]); `Hub.unity` is now **re-created as a lightweight launcher** (§25.0), not a mega-screen.
 
-### 25.1 Vendor (general merchant)
+### 25.0 Hub.unity — the vendor launcher (grid of buttons)
 
-`Vendor.unity` / `VendorManager.cs`. Buy + sell.
-- **Buy list**: all `Inventory.All()` entries with `BaseCost > 0` priced at `BaseCost × rarity multiplier`. (Generic stock; future: stage-progressed inventory.)
-- **Sell list**: anything in the player's inventory with `BaseCost > 0` and count > 0. Sale returns ~50% `BaseCost`.
-- Inventory cap: TODO.
+`Hub.unity` / `HubBuilder.cs` / `HubManager.cs`. The hub is a **plain grid of buttons**, one per vendor — nothing more. Reached from StageSelect via a "Hub" button; each button fades into that vendor's own scene; the vendor's "Back" returns to the Hub.
+
+```
+┌──────────── The Hub ────────────┐
+│  [  Vendor  ] [ Blacksmith ]    │
+│  [ Alchemist] [   Equip    ]    │   ← grid of 6 buttons (2 cols × 3 rows)
+│  [  Party   ] [ Abilities  ]    │
+│            [ ← Back ]           │   → StageSelect
+└─────────────────────────────────┘
+```
+
+- **Layout:** a `GridLayoutGroup` of equal-size buttons, themed via `HubTheme` (navy panels, gold accents), under the §26.2 CanvasScaler + AspectGuard. Each button: vendor icon + name.
+- **Navigation:** button → `SceneHelper.Fade.To<Vendor>()`; this is the primary path to vendors and **replaces the floating `VendorNavBar`** as the main navigation. (The NavBar may stay as an in-vendor quick-jump, but the Hub grid is the canonical launcher.)
+- **No shopping logic in the Hub** — it only routes. All buy/sell/craft happens in the destination vendor scene.
+
+### 25.1 Vendor (general merchant) — the standardized shop pattern
+
+`Vendor.unity` / `VendorManager.cs`. **This is the canonical menu-based shop** — a classic JRPG (Final Fantasy-style) flow. It is deliberately *standardized*: the same component drives buy/sell/buyback so the player learns it once and every vendor feels identical. No bespoke per-vendor layout.
+
+**Three tabs:** `Buy` · `Sell` · `Buyback`.
+
+**The item list (all three tabs share one layout).** A vertical, scrollable list of rows, each a clean **multi-column** read — never a single cramped string:
+
+```
+│ [icon]  Name (rarity-colored)            owned ×N     25g │
+```
+- **Icon** — item sprite (left).
+- **Name** — rarity-colored (`HubItemRowFactory.RarityColor`).
+- **Owned ×N** — how many the player already holds (right-aligned middle column).
+- **Unit price** — gold, right column, colored by affordability (`HubTheme.ColorByAffordable`): gold if affordable, red if not.
+
+**Select → quantity → confirm.** Tapping a row selects it (highlight + ▶). A **quantity stepper** appears (`− [ N ] +`, with a "Max" affordance that fills to gold-limit on Buy or owned-count on Sell). A **running total** (`Pay: 75g  |  Gold: 124g`) updates live in the footer. The footer **action button** commits the whole quantity at once (`Buy ×3` / `Sell ×3`).
+
+**Pricing:**
+- **Buy** = `BaseCost × rarity multiplier` per unit (§24.1.1). Refused (button disabled, total in red) if the player can't afford the selected quantity.
+- **Sell** = **50% of `BaseCost`** per unit, rounded. Only items with `BaseCost > 0` and `count > 0` are sellable.
+- **Buyback** = a **session-scoped stack** of everything sold this visit. Re-purchasing returns the item at the **exact gold it was sold for** (a friendly undo for fat-finger sells). The buyback list clears on leaving the vendor; selling pushes onto it, buying-back pops from it.
+
+**Stock:** Buy tab lists `Inventory.All()` entries with `BaseCost > 0` (generic stock V1; future: stage-progressed). Inventory cap: TODO.
+
+**Layout discipline (why vendors kept looking broken — see §17.1 #11/#12):** every vendor Canvas MUST use the §26.2 CanvasScaler (`referenceResolution = (1170, 2532)`, match 0.5) and sit under the AspectGuard (US-001); the scroll list's `ScrollRect` MUST be fully wired (`content`, `viewport`, `vertical = true`, `horizontal = false`, movementType Clamped); all colors come from `HubTheme`, never hand-typed `new Color(...)`. The standardized shop is built once as a shared `ShopView` (Canvas/`ShopView.cs` + factory) that every vendor instantiates with `(catalog, ownedInventory, priceFn)` — see `user_stories.md` US-111.
 
 ### 25.2 Blacksmith
 
@@ -1962,17 +2016,22 @@ Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `Pla
 
 Each vendor follows the same skeleton: NavBar at top, scene-specific body in the middle, action row at bottom. Sketches below show the body for clarity.
 
-**Vendor (buy/sell)**
+**Vendor (standardized FF-style shop — §25.1)**
 ```
-┌──[≡ NavBar]──────────────── 💰0124 gold ─┐
-│ ┌─ Buy ─┐┌─ Sell ─┐                       │  ← two tabs
-│ │ ▶ Health Potion ··· 25g   [+1]         │
-│ │   Mana Potion   ··· 35g   [+1]         │
-│ │   Iron Sword    ··· 200g  [+1]         │
-│ │   ...                                  │
-│ └────────────────────────────────────────┘│
-│        [Confirm purchase]  [Close]        │  ← action row
-└──────────────────────────────────────────┘
+┌──[≡ NavBar]─────────────────────── 💰 1,240g ─┐
+│  ┌ Buy ┐┌ Sell ┐┌ Buyback ┐                   │  ← three tabs
+│ ┌──────────────────────────────────────────┐ │
+│ │ [▤] ▶ Health Potion        owned ×2   25g │ │  ← icon · name(rarity) · owned · price
+│ │ [▤]   Mana Potion          owned ×0   35g │ │
+│ │ [▤]   Iron Sword           owned ×1  200g │ │     scrollable list
+│ │ [▤]   Steel Sword (rare)   owned ×0  900g │ │     (price red if unaffordable)
+│ │  ...                                       │ │
+│ └──────────────────────────────────────────┘ │
+│  Qty:  [ − ]  3  [ + ]  [Max]                 │  ← stepper on the selected row
+│  Pay: 75g  |  Gold: 1,240g          [ Buy ×3 ]│  ← live total + commit
+└────────────────────────────────────────────────┘
+   Sell tab → "Sell ×N" returns 50% BaseCost; sold items go to Buyback.
+   Buyback tab → repurchase at the exact price you sold for (session undo).
 ```
 
 **Blacksmith**
@@ -2028,6 +2087,18 @@ Each vendor follows the same skeleton: NavBar at top, scene-specific body in the
 │  [Tap to swap between Active/Reserve]    │
 └──────────────────────────────────────────┘
 ```
+
+### 25.9 The merged hub (long-term goal — distinct from §25.0)
+
+> **Not the same as the §25.0 launcher.** §25.0 `Hub.unity` is a button-grid that *routes to* separate vendor scenes — that's the V1 navigation and it ships now. §25.9 is the *optional later* step of folding the vendor **UIs themselves** into one screen (tabs/panels, no scene loads). Build §25.0 first; §25.9 only after every vendor is independently stable.
+
+**Intent:** eventually fold all six vendor scenes into a **single composed hub `.unity`** — one screen where the player switches between Vendor / Blacksmith / Alchemist / Equip / Party / Abilities as tabs/panels rather than separate scene loads.
+
+**Sequencing — deliberately NOT yet.** Each vendor stays its **own** scene + builder + manager until it is individually stable and works independently. Only then do they compose. Rationale:
+- Merging unstable screens multiplies the surface area of any one bug across all six.
+- The shared utilities (`HubTheme`, `HubToast`, `HubItemRowFactory`, `VendorNavBar`) already give a consistent look so the eventual merge is layout composition, not a rewrite ([[project_scene_per_section_migration]]).
+
+**Known pain (flagged by the user 2026-05-30):** building these shopping-interface scenes via the `*Builder.cs` pipeline is disproportionately fiddly/error-prone relative to how simple a buy/sell list *seems*. Treat vendor-builder churn as a first-class hazard — keep each builder minimal, lean on the shared factories, and don't attempt the merge while individual builders are still thrashing. When a vendor builder misbehaves, fix it in isolation rather than touching neighbors. (If this keeps biting, a candidate root-cause investigation is worth a dedicated pass — see `user_stories.md`.)
 
 ## 26. Responsive Design & Aspect Ratio Profile
 
@@ -2164,71 +2235,13 @@ The above is the **design intent**. Current implementation:
 - §26.2 (CanvasScaler) — ✅ done in every builder.
 - §26.3–§26.6 (AspectGuard, viewport math, safe area) — ❌ TODO. Tracked in §16.4 P0.
 
-## 27. Dialog & Story (deferred — not in V1 scope)
+## 27. (removed) Dialog & Story — cut from the design
 
-> **Out of scope** per design call 2026-05-30 — too far in the future to design now. Whatever lands first will be designed when it's actually next on the roadmap. Sketch below preserved for design history; do NOT build against it.
+> **Cut 2026-05-30.** No dialog/story/cutscene system in the design. Vendors are UI-only (no shopkeeper voice); battles have no character lines. If a narrative layer is ever wanted it will be designed fresh — there is no preserved spec to build against. (Section number kept as a tombstone so later cross-refs don't shift.)
 
-~~Not built. Reserved for future:~~
-- ~~Pre-battle / post-battle character lines.~~
-- ~~NPC dialogue at vendor scenes (currently vendors have no shopkeeper voice — just UI).~~
-- ~~Quest / lore / cutscene flow.~~
+## 28. (removed) Overworld — cut from the design
 
-Plan: a `DialogManager` (singleton) + `DialogLine` data structs + a `DialogPanel` UI element. Lines triggered by stage events, vendor entry, or class-specific hooks (the Cleric reacts to seeing a Cleric-aligned NPC, etc.). All triggers via the existing `SequenceManager` (combat sequence queue can host non-combat sequences too).
-
-### 27.1 Anticipated data model (sketch)
-
-```
-DialogLine
-  Id              string
-  Speaker         CharacterClass | "Narrator" | "NPC:<name>"
-  Text            string
-  PortraitAddress string?            (Addressable; speaker icon)
-  Tone            enum (Neutral/Happy/Angry/Whisper)
-  Continuation    DialogLineId?      (chain)
-  Choices[]       DialogChoice?      (branch: text + next line id)
-  Trigger         enum (BeforeBattle | AfterBattle | OnVendorEnter | OnEvent)
-
-DialogSequence (a SequenceManager entry)
-  Lines[]         DialogLine
-  OnComplete      Action            (advance the world; unlock; grant item)
-```
-
-UI: a bottom-sheet `DialogPanel` (covers Row 13–15 of the HUD), portrait at left, text at right, "Next" arrow or `Choices` buttons. Tap-anywhere fast-advances. Skip button. ESC closes (only on non-blocking dialog).
-
-## 28. The Future Overworld (deferred — not in V1 scope)
-
-> **Out of scope** per design call 2026-05-30 — too far in the future to design now. The battle ↔ vendor loop ships first; world-map node graph is preserved below as design history only. Do NOT build against it.
-
-`Overworld.unity` exists but is **not gated into the macro loop**. The current battle ↔ vendor loop deliberately skips it to ship faster.
-
-~~Future design (when we revisit):~~
-- Top-down exploration scene. The player walks an avatar across a map.
-- Encounters trigger battles (transition to `Game.unity`).
-- Hidden vendors, side-stages, story beats, treasure pickups, NPC dialog (§27).
-- Mini-map; fast-travel after first visit.
-
-When this lands, the macro loop (§22) gains an extra layer: StageSelect becomes "pick region" → Overworld → encounter → Game → PostBattle → back to Overworld (or hub).
-
-### 28.1 Anticipated node model
-
-```
-WorldMap
-  Nodes[]         WorldNode
-    Id            string
-    Kind          enum (Battle | Town | Vendor | Treasure | Event | Boss)
-    Position      Vector2
-    Connections[] WorldNodeId        (edge list; defines walkable graph)
-    Unlocked      bool               (gated by parent node completion)
-    Cleared       bool               (battle nodes — beat once, fast-travel through)
-    Payload       BattleId | VendorId | DialogId
-
-OverworldState               (lives in SaveState)
-  CurrentNodeId       string
-  NodesUnlocked       Set<WorldNodeId>
-  NodesCleared        Set<WorldNodeId>
-```
-
-The Overworld scene reads `OverworldState` on Awake and reconstructs the map; tapping a connected unlocked node enters its payload. Cleared battle nodes auto-skip to the next unlocked one ("fast-travel through").
+> **Cut 2026-05-30.** No world-map / exploration scene. Stage navigation is the **scrollable level list** in StageSelect (§22.3): newest-on-top, every unlocked level freely replayable for farming. A stray `Overworld.unity` file may linger in the project but is dead and ungated. (Section number kept as a tombstone.)
 
 ## 29. Open Design Questions
 
@@ -2237,7 +2250,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 ### 29.1 Macro loop / run structure
 
 1. **Permadeath vs revive cost** — does a battle loss strip the run or just bounce back to StageSelect?
-2. **Stage gating** — are stages linear (unlock next on win) or open (pick any)?
+2. ~~**Stage gating**~~ — **RESOLVED 2026-05-30** → §22.3: linear *forward* (next unlocks on clear), open *backward* (every unlocked stage stays freely replayable for farming).
 5. **Difficulty / scaling** — flat per-stage scaling or NG+ system?
 6. **Tutorial / onboarding** — does the player get a guided first battle?
 

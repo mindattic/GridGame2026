@@ -88,6 +88,28 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a `BestiarySaveData : Dict<CharacterClass, {Seen, Defeated, TimesDefeated}>` added; populated on enemy spawn (seen) + death (defeated); persisted at battle end.
   **Touch:** `Models/Profile.cs`, spawn/death hooks, `PostBattleManager`. **Bible:** §15.1, §15.3. **Dep:** —
 
+- [ ] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
+  **Why:** The *only* nav surface (Overworld is cut). Load/save-screen look-and-feel; cleared stages stay replayable so the player can **farm a specific enemy's drop** (a Frost stage for Ice Shards, etc.) — the intended grind loop.
+  **Done when:** the list is vertically scrollable in `SaveFileSelect` style; newly-unlocked levels **prepend to the top**; every unlocked level (incl. cleared) is re-enterable; locked stages dimmed/disabled; each row shows name, theme, cleared ✓, and a hint of notable drops/enemies. Tapping a row sets `StageSaveData.CurrentStage` → `Game`.
+  **Touch:** `Managers/StageSelectManager`, `Editor/Builders/StageSelectBuilder`, `StageLibrary`/`CampaignStages`. **Bible:** §22.3 (now built), §11.2. **Dep:** —
+
+- [ ] **US-111 — Fix the vendor scaler/scroll bugs + build the standardized `ShopView`.** `BROKEN` — root cause found 2026-05-30.
+  **Why:** Vendors look "like trash" (sizing/colors/readability) for two concrete reasons, not vague polish:
+  - `VendorBuilder` sets `CanvasScaler.referenceResolution = (0,0)` with ScaleWithScreenSize → every element mis-scales (bible §17.1 #11). Must be `(1170,2532)` + match 0.5 (§26.2) under AspectGuard (US-001).
+  - The `ScrollRect` is added but never wired (`.content`/`.viewport`/`.vertical` unset; the "ScrollRect cross-references" block is empty) → list can't scroll, rows clip (§17.1 #12).
+  **Done when:** a shared **`Canvas/ShopView.cs` + factory** renders the standardized FF shop (§25.1): **Buy / Sell / Buyback** tabs; scrollable list with columns **icon · name(rarity) · owned ×N · unit price(affordability-colored)**; select-row → **quantity stepper** (`− N +` + Max) → live total → footer **commit** button. Sell = 50% BaseCost; Buyback = session stack at the sold price. Scaler fixed, ScrollRect fully wired, all colors from `HubTheme`. `Vendor.unity` uses it end-to-end and rebuilds cleanly via `BuilderAllScenes`. Root cause recorded in §17.1 (done).
+  **Touch:** new `Canvas/ShopView.cs` + `Factories/ShopViewFactory.cs`; `Editor/Builders/VendorBuilder.cs`; `Vendor/VendorManager.cs`; `HubItemRowFactory`/`HubTheme`; `SceneBuilderHelper`. **Bible:** §25.1, §25.8, §17.1 #11/#12. **Dep:** US-001 (AspectGuard).
+  *Unblocks:* the eventual merged hub (§C) and lets the other vendors reuse `ShopView` instead of each reinventing a broken layout.
+
+- [ ] **US-112 — `Hub.unity` vendor launcher (grid of buttons).** `NOT-BUILT` (the old monolithic Hub was deleted; this is a new lightweight launcher).
+  **Why:** Central navigation from StageSelect to the six vendors; replaces the floating `VendorNavBar` as the primary path.
+  **Done when:** `HubBuilder.cs` + `HubManager.cs` build a themed `GridLayoutGroup` of 6 equal buttons (Vendor/Blacksmith/Alchemist/Equip/Party/Abilities), each → `SceneHelper.Fade.To<X>()`, plus a Back → StageSelect; reached via a "Hub" button on StageSelect; uses §26.2 scaler + AspectGuard + `HubTheme`. No shop logic in the hub — it only routes.
+  **Touch:** new `Editor/Builders/HubBuilder.cs`, `Scripts/Hub/HubManager.cs`; `StageSelectBuilder` (Hub button); `SceneHelper` (`ToHub`). **Bible:** §25.0, §22. **Dep:** US-001. **Note:** add `Hub.unity` to Build Settings (§11.4).
+
+- [ ] **US-113 — FadeOverlay speed = 125 ms.** Quick tuning.
+  **Done when:** `FadeOverlayInstance` fades out/in at 0.125 s each way (snappy seam-hider, not a flourish).
+  **Touch:** `Canvas/FadeOverlayInstance.cs`. **Bible:** §11.3. **Dep:** —
+
 ---
 
 ## EPIC B — Buffs That Bite
@@ -263,10 +285,11 @@ These were on the original board and are **already implemented in code**. The bi
 
 # §C — Backlog / Deferred (NOT in the build window)
 
+- **Merged hub `.unity`** (§25.9) — fold the six vendor scenes into one composed hub screen. **Gated**: do NOT attempt until every vendor is individually stable (see US-111). It's layout composition over the shared `HubTheme`/`HubToast`/`HubItemRowFactory`/`VendorNavBar`, not a rewrite.
 - **TargetShape.Line** — `Row`/`Column` already cover line targeting (`TargetShapeResolver`); add `Line` only if a *partial* line (not full row/col) is ever needed. (Originally US-073.)
 - **Distinct loadouts for unfilled classes** (Ninja variants, Bruiser, Captain, Druid) — additive `HeroLoadouts.Set` content, do as roster grows (§23.2.2).
 - **Per-spell custom VFX authoring** — base VFX work; run `Tools/VFX/Author *` as art lands (§12.3).
-- **Dialog & Story** (§27) and **Overworld node graph** (§28) — out of V1 per 2026-05-30.
+- **Dialog & Story (§27) and Overworld (§28)** — **CUT from the design** 2026-05-30 (not merely deferred). No narrative layer; no world map. Stage navigation is the scrollable level list (US-110). Don't build either; don't re-story them.
 - **Roster / variable party composition** (§23.4, §25.5); **roguelike/NG+** (§29.1 #5); **tutorial** (§29.1 #6).
 - **Relic-slot passives** (§24.1) — underspecified; design before storying.
 - **Deep-poison stacking / tiered buff upgrades** (§8.6); **crit-heal** (§13.1.3).
