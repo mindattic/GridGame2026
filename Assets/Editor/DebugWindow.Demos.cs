@@ -61,6 +61,12 @@ public partial class DebugWindow
             ("Give (R)", () => g.DebugManager.Demo_GiveMana_Red())
         );
 
+        // Buffs — US-016: apply a turn-unit debuff then advance enemy turns to watch it tick + expire.
+        RenderButtonRow(
+            ("Slowed → Enemy", () => g.DebugManager.Demo_ApplySlowedToEnemy()),
+            ("Trigger Enemy Attack", () => g.DebugManager.TriggerEnemyAttack())
+        );
+
         // Mana economy — harvest orbs (V1: all Blue, sourced from the heroes you bring along)
         // and simulate vendor restock for the item slot.
         RenderButtonRow(

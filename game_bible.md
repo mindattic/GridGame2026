@@ -830,7 +830,7 @@ Other debuffs expire silently. Designer can add more chains by editing `OnExpire
 - Applies `DamagePerTick` to HP.
 - Decrements duration; on expire, applies `OnExpireApplyId` chain (Fire→Warm, Frozen→Wet).
 
-Turn-unit buffs decrement via `BuffSystem.TickTurn(actor)` called at the bearer's turn boundary (TODO: wire into TurnManager turn-start).
+Turn-unit buffs decrement via `BuffSystem.TickTurn(actor)`, called at the **END** of the bearer's turn (US-016, wired into `TurnManager.NextTurn`). End-of-turn (not turn-start) so a "2 Turns" debuff affects the bearer for 2 of its *own* turns — ticking before the actor acts would burn one turn to off-by-one. `NextTurn` is the single turn boundary: when an enemy turn just ended it ticks that enemy (`lastEnemy`); when the hero window just ended it ticks every playing hero once (heroes share one free-form window, so there is no per-hero turn to tick — this is the closest boundary and is fine until enemy-cast debuffs on heroes exist, US-026). Decision confirmed via the Legion panel (2026-05-31).
 
 ### 8.4 Immobility hook
 

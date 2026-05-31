@@ -203,6 +203,17 @@ namespace Scripts.Managers
         public void Demo_GiveMana_Red()   => Demo_DropOrb(ManaType.Red);
         public void Demo_GiveMana_Green() => Demo_DropOrb(ManaType.Green);
 
+        /// <summary>Demo (US-016): apply Slowed (2 Turns) to the first playing enemy so you can
+        /// advance its turns (e.g. Trigger Enemy Attack) and watch the turn-unit buff tick down
+        /// and expire — verifies BuffSystem.TickTurn is wired into the turn boundary.</summary>
+        public void Demo_ApplySlowedToEnemy()
+        {
+            var enemy = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying);
+            if (enemy == null) { Debug.LogWarning("[Demo] No playing enemy to debuff — spawn one first."); return; }
+            BuffSystem.Apply(enemy, Scripts.Data.Buffs.Slowed);
+            Debug.Log($"[Demo] Applied Slowed (2 Turns) to {enemy.name}. Advance its turns (Trigger Enemy Attack) to watch TickTurn decrement + expire (US-016).");
+        }
+
         /// <summary>Toggle the cheat that lets 1–N orbs of ANY color pay for any 1–N-cost spell.</summary>
         public void Demo_ToggleAnyColor()
         {

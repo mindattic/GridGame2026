@@ -116,7 +116,7 @@ These were on the original board and are **already implemented in code**. The bi
 *Every debuff applies + shows an icon, but the gameplay hooks are stubbed with TODO comments. Quick, low-risk, high-feel wins that make the spell catalog meaningful. Verified: all six below are `NOT-BUILT` (data + TODO markers present, no behavior).*
 *Order note: **US-016 first** — turn-unit buffs (Slowed, Silenced) can't expire until `TickTurn` is wired, so the others need it to be observable.*
 
-- [ ] **US-016 — Turn-unit buff decrement at the turn boundary.** `NOT-BUILT` (`BuffSystem.TickTurn` exists, never called — `TurnManager.cs:146-170`).
+- [x] **US-016 — Turn-unit buff decrement at the turn boundary.** ✅ DONE 2026-05-31: `TurnManager.NextTurn` ticks turn-unit buffs at END-of-turn (enemy → `lastEnemy`; hero-window end → all heroes). End-of-turn confirmed via Legion. Demo: `Demo_ApplySlowedToEnemy` + "Slowed → Enemy" / "Trigger Enemy Attack" DebugWindow buttons. Bible §8.3 updated.
   **Done when:** `TurnManager` calls `BuffSystem.TickTurn(actor)` at each bearer's turn boundary; turn-unit buffs count down + fire expire-chains.
   **Touch:** `Managers/TurnManager`, `BuffSystem`. **Bible:** §8.3. **Dep:** —
 

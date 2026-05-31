@@ -151,6 +151,23 @@ namespace Scripts.Managers
             CurrentTurn++;
             g.StageManager?.OnTurnAdvanced();
 
+            // US-016: turn-unit buffs (Slowed/Silenced/Blinded) decrement at the END of the
+            // bearer's turn — end-of-turn semantics (Legion panel, 2026-05-31) so a "2 Turns"
+            // debuff affects 2 of the bearer's own turns rather than losing one to off-by-one.
+            // NextTurn is the single turn boundary; tick whichever side just finished.
+            if (endingEnemyTurn)
+            {
+                if (lastEnemy != null) BuffSystem.TickTurn(lastEnemy);
+            }
+            else
+            {
+                // Heroes share one free-form window, so tick them all once as that window ends.
+                var heroesEndingTurn = g.Actors.Heroes;
+                if (heroesEndingTurn != null)
+                    foreach (var h in heroesEndingTurn)
+                        if (h != null && h.IsPlaying) BuffSystem.TickTurn(h);
+            }
+
             // If an enemy was queued (from timeline tag hit) take their turn now
             if (queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying)
             {
