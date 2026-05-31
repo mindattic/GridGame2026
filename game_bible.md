@@ -1440,7 +1440,7 @@ A running list — when you trip one of these, fix it AND amend this section so 
 
 9. **`AddressableAssetSettings` missing.** If the project's Addressables aren't initialized, `AssetHelper.LoadAsset<T>` returns null and `SpriteAssetAuthor` logs a warning. Open `Window → Asset Management → Addressables → Groups` once to seed the default group.
 
-10. **`LayerMask.NameToLayer("UI")` can return -1.** When a builder creates a camera with `cullingMask = 1 << LayerMask.NameToLayer("UI")`, a missing UI layer means the camera renders nothing. Defensive: `uiLayer >= 0 ? (1 << uiLayer) : ~0` (fallback to "everything").
+10. ~~**`LayerMask.NameToLayer("UI")` can return -1.**~~ ✅ RESOLVED (US-003, verified 2026-05-31): the only `cullingMask` assignment in `Assets/` is `BestiaryBuilder.cs:55`, which already guards with `uiLayer >= 0 ? (1 << uiLayer) : ~0`. Other builder cameras don't cull at all (render everything). Keep the guard pattern for any future `1 << NameToLayer` camera site.
 
 11. **Vendor scenes look "like trash" because of a broken `CanvasScaler` — the #1 cause.** `VendorBuilder` (and the other vendor builders) set `CanvasScaler.referenceResolution = new Vector2(0f, 0f)` with `ScaleWithScreenSize`. Scaling against a **zero** reference resolution makes every element size/position nonsense — fonts, padding, buttons all wrong. **Fix:** every vendor Canvas MUST use the §26.2 baseline (`referenceResolution = (1170, 2532)`, `screenMatchMode = MatchWidthOrHeight`, `matchWidthOrHeight = 0.5`). This is *the* reason "sizing and colors and basic interface" came out broken.
 
@@ -2330,7 +2330,7 @@ LINQ is **fine in cold paths** (vendor scenes, `Awake`, scene transitions) — i
 
 ### 30.5 When in doubt, profile
 
-Unity's Profiler (`Window > Analysis > Profiler`) is the only ground truth. Set `Application.targetFrameRate = 60` early in `Bootstrap.Awake` so the editor matches build behavior; spikes are visible immediately.
+Unity's Profiler (`Window > Analysis > Profiler`) is the only ground truth. `Application.targetFrameRate = 60` is pinned at app launch by `Scripts.Helpers.Bootstrap.Initialize` (a `[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]`, US-004) so the editor matches build behavior from the first frame and spikes are visible immediately. `GameManager` later refines the framerate from the user's saved setting when a battle begins. (Implemented as a startup hook rather than a `Bootstrap.Awake` MonoBehaviour because the start scene is configurable — no single scene's manager is guaranteed to run at boot.)
 
 ---
 

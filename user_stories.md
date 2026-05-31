@@ -70,11 +70,11 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `GameBuilder.Build()` calls `ClearAllRootObjectsSilent()` first; rebuild is warning-free.
   **Touch:** `Editor/Builders/GameBuilder.cs`. **Bible:** strike §17.1 #8. **Dep:** —
 
-- [ ] **US-003 — `LayerMask.NameToLayer("UI")` defensive fallback.** `NOT-BUILT` (audit).
+- [x] **US-003 — `LayerMask.NameToLayer("UI")` defensive fallback.** ✅ ALREADY SATISFIED (verified 2026-05-31): the sole `cullingMask` site in `Assets/` is `BestiaryBuilder.cs:55` and already uses the guard; no other camera culls. No code change; bible §17.1 #10 struck. (05-30 pass mislabeled NOT-BUILT.)
   **Done when:** every camera `cullingMask` site uses `uiLayer >= 0 ? (1<<uiLayer) : ~0`.
   **Touch:** builders creating cameras. **Bible:** §17.1 #10. **Dep:** —
 
-- [ ] **US-004 — `Application.targetFrameRate = 60` in Bootstrap.** `NOT-BUILT` (audit).
+- [x] **US-004 — `Application.targetFrameRate = 60` in Bootstrap.** ✅ DONE 2026-05-31: new `Scripts.Helpers.Bootstrap` static with `[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]` pins 60 at app launch (entry-scene-independent; GameManager later applies the user's setting). Bible §30.5 updated.
   **Why:** Editor matches build framerate so perf spikes show during the whole build, not just at the end.
   **Touch:** `Bootstrap.Awake`. **Bible:** §30.5. **Dep:** —
 
