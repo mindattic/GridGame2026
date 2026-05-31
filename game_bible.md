@@ -777,7 +777,7 @@ All entries in `Data/SpellLibrary.cs`. Cost references `ManaAbilities.<Name>`.
 | `warm` | Debuff | 3 Ticks | (sleep-bonus hook in formula) | — |
 | `sleep` | Debuff | 3 Turns | immobile, breaks on damage / move | — |
 | `poisoned` | Debuff | 6 Ticks | 3 dmg/tick | — |
-| `slowed` | Debuff | 2 Turns | (timeline-speed mult — TODO) | — |
+| `slowed` | Debuff | 2 Turns | timeline icon advances ×0.5 (US-011) | — |
 | `silenced` | Debuff | 2 Turns | Spell clicks refused + slots blocked (US-012) | — |
 | `blinded` | Debuff | 2 Turns | attacker accuracy ×0.5 (US-013) | — |
 
@@ -1344,7 +1344,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~1~~ | — | ~~Burning / Poisoned per-tick damage~~ — **DONE** (`BuffTickManager.cs:45-60`) | — | — |
-| 2 | US-011 | **Slowed → timeline-speed multiplier** (buff applies, no effect yet) | P1 | `TimelineIcon.UpdateApproaching` |
+| ~~2~~ | US-011 | ~~**Slowed → timeline-speed multiplier**~~ — **DONE** 2026-05-31 (`TimelineIcon.GetEffectiveUPerSec` ×0.5, read by `TimelineBarInstance.AdvanceBySeconds`) | — | — |
 | ~~3~~ | US-012 | ~~**Silenced → cast-block**~~ — **DONE** 2026-05-31 (`AbilityBar.HandleSpell` refuses + Spell slots render blocked; diagonal-stripe sprite is future polish) | — | — |
 | ~~4~~ | US-013 | ~~**Blinded → hit-chance penalty**~~ — **DONE** 2026-05-31 (`Formulas.CalculateHitType` ×0.5 accuracy when attacker Blinded) | — | — |
 | ~~5~~ | US-014 | ~~**SleepWhenWarmMultiplier**~~ — **DONE** 2026-05-31 (Sleep ×1.5 duration on Warm target, `SpellEffectDispatcher`) | — | — |

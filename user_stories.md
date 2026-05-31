@@ -120,7 +120,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `TurnManager` calls `BuffSystem.TickTurn(actor)` at each bearer's turn boundary; turn-unit buffs count down + fire expire-chains.
   **Touch:** `Managers/TurnManager`, `BuffSystem`. **Bible:** §8.3. **Dep:** —
 
-- [ ] **US-011 — Slowed → timeline-speed multiplier.** `NOT-BUILT` (`TimelineIcon.UpdateApproaching` reads only "frozen"; `Buffs.cs:79` TODO).
+- [x] **US-011 — Slowed → timeline-speed multiplier.** ✅ DONE 2026-05-31: `TimelineIcon.GetEffectiveUPerSec()` folds in `Buffs.SlowedTimelineMultiplier` (×0.5); `TimelineBarInstance.AdvanceBySeconds` reads it instead of `GetUPerSec`, so a Slowed enemy's icon crawls and its turn is delayed. Demo: existing "Slowed → Enemy" button. Bible §8.1 + §16.1 #2 updated.
   **Done when:** icon `uPerSec` scaled by a `slowed` factor; Slow visibly delays a rank.
   **Touch:** `Canvas/TimelineIcon` / `TimelineBarInstance`. **Bible:** §2.2, §8.1, delete §16.1 #2. **Dep:** US-016.
 

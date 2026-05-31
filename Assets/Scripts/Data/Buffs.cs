@@ -21,6 +21,7 @@ namespace Scripts.Data
         public const float LightningWhenWetMultiplier = 1.5f;   // lightning vs Wet → ×1.5 damage
         public const float SleepWhenWarmMultiplier   = 1.5f;   // sleep applied to Warm target → ×1.5 duration (US-014; no success roll exists yet)
         public const float BlindedAccuracyMultiplier = 0.5f;   // Blinded attacker → hit chance ×0.5 (US-013, bible §8.1)
+        public const float SlowedTimelineMultiplier  = 0.5f;   // Slowed → timeline icon advances at ×0.5 speed (US-011)
 
         // ── Buffs ──
         public static readonly Buff Protection = new Buff(

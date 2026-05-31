@@ -470,6 +470,17 @@ namespace Scripts.Canvas
         /// <summary>Gets the u per sec.</summary>
         public float GetUPerSec() => uPerSec;
 
+        /// <summary>US-011: the live advance speed, with the Slowed debuff applied. The base
+        /// uPerSec is fixed at spawn from the owner's Speed; Slowed is dynamic, so it is folded
+        /// in here (×SlowedTimelineMultiplier) and read by the bar's advance instead of GetUPerSec.</summary>
+        public float GetEffectiveUPerSec()
+        {
+            float eff = uPerSec;
+            if (Owner != null && Scripts.Managers.BuffSystem.Has(Owner, Scripts.Data.Buffs.Slowed.Id))
+                eff *= Scripts.Data.Buffs.SlowedTimelineMultiplier;
+            return Mathf.Max(0.0001f, eff);
+        }
+
         /// <summary>
         /// Returns the u this tag is heading toward — pushTargetU when in PushedBack mode,
         /// the current u otherwise. Used by the bar's spatial overlap resolver.

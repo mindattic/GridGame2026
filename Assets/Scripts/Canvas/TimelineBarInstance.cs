@@ -562,7 +562,9 @@ namespace Scripts.Canvas
             {
                 if (t == null) continue;
                 float u = t.GetU();
-                float uPerSec = Mathf.Max(0.0001f, t.GetUPerSec());
+                // US-011: GetEffectiveUPerSec folds in the Slowed debuff (×0.5), so a Slowed
+                // enemy's icon crawls the racing leg and its turn is visibly delayed.
+                float uPerSec = Mathf.Max(0.0001f, t.GetEffectiveUPerSec());
                 float remaining = seconds;
                 float newU = u;
                 if (newU < zoneStartU)
