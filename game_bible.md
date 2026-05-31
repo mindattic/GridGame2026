@@ -779,7 +779,7 @@ All entries in `Data/SpellLibrary.cs`. Cost references `ManaAbilities.<Name>`.
 | `poisoned` | Debuff | 6 Ticks | 3 dmg/tick | — |
 | `slowed` | Debuff | 2 Turns | (timeline-speed mult — TODO) | — |
 | `silenced` | Debuff | 2 Turns | (cast-block — TODO) | — |
-| `blinded` | Debuff | 2 Turns | (hit-chance mult — TODO) | — |
+| `blinded` | Debuff | 2 Turns | attacker accuracy ×0.5 (US-013) | — |
 
 ### 8.2 Cross-effect multipliers
 
@@ -1346,10 +1346,10 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~1~~ | — | ~~Burning / Poisoned per-tick damage~~ — **DONE** (`BuffTickManager.cs:45-60`) | — | — |
 | 2 | US-011 | **Slowed → timeline-speed multiplier** (buff applies, no effect yet) | P1 | `TimelineIcon.UpdateApproaching` |
 | 3 | US-012 | **Silenced → cast-block** (refuse spell click if silenced) | P1 | `AbilityBar.HandleSpell` |
-| 4 | US-013 | **Blinded → hit-chance penalty** | P1 | `Formulas.CalculateHitType` |
+| ~~4~~ | US-013 | ~~**Blinded → hit-chance penalty**~~ — **DONE** 2026-05-31 (`Formulas.CalculateHitType` ×0.5 accuracy when attacker Blinded) | — | — |
 | 5 | US-014 | **SleepWhenWarmMultiplier** applied at Sleep-spell hit roll | P2 | `SpellEffectDispatcher` |
 | — | US-015 | **BreaksOnMove** — `ActorMovement` must call `BuffSystem.OnMoved` on displacement | P1 | `ActorMovement`, `BuffSystem` |
-| — | US-016 | **Turn-unit decrement** — `TurnManager` must call `BuffSystem.TickTurn` at turn boundary (else Slowed/Silenced never expire) | P1 | `TurnManager`, `BuffSystem` |
+| ~~—~~ | US-016 | ~~**Turn-unit decrement**~~ — **DONE** 2026-05-31 (`TurnManager.NextTurn` end-of-turn `BuffSystem.TickTurn`) | — | — |
 
 ### 16.2 Cast / interrupt system (Phase C)
 

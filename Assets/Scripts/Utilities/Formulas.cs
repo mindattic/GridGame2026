@@ -169,6 +169,9 @@ public static class Formulas
         int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
         float hitChance = Mathf.Clamp(Accuracy(attacker.Stats) + adv * HitShiftPerLevel, 5f, 95f);
+        // US-013: a Blinded attacker's accuracy is multiplied down (bible §8.1 "hit-chance mult").
+        if (Scripts.Managers.BuffSystem.Has(attacker, Scripts.Data.Buffs.Blinded.Id))
+            hitChance = Mathf.Clamp(hitChance * Scripts.Data.Buffs.BlindedAccuracyMultiplier, 5f, 95f);
         float critChance = CritPercent(attacker.Stats);
 
         float roll = RNG.Float(0f, 100f);

@@ -214,6 +214,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Applied Slowed (2 Turns) to {enemy.name}. Advance its turns (Trigger Enemy Attack) to watch TickTurn decrement + expire (US-016).");
         }
 
+        /// <summary>Demo (US-013): apply Blinded (2 Turns) to the first playing enemy so its attacks
+        /// roll at halved accuracy — Trigger Enemy Attack repeatedly to see extra misses.</summary>
+        public void Demo_ApplyBlindedToEnemy()
+        {
+            var enemy = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying);
+            if (enemy == null) { Debug.LogWarning("[Demo] No playing enemy to debuff — spawn one first."); return; }
+            BuffSystem.Apply(enemy, Scripts.Data.Buffs.Blinded);
+            Debug.Log($"[Demo] Applied Blinded (2 Turns) to {enemy.name}. Its attacks now hit at ×{Scripts.Data.Buffs.BlindedAccuracyMultiplier} accuracy (US-013).");
+        }
+
         /// <summary>Toggle the cheat that lets 1–N orbs of ANY color pay for any 1–N-cost spell.</summary>
         public void Demo_ToggleAnyColor()
         {

@@ -20,6 +20,7 @@ namespace Scripts.Data
         // Tuning constants for cross-buff interactions (designer-tunable).
         public const float LightningWhenWetMultiplier = 1.5f;   // lightning vs Wet → ×1.5 damage
         public const float SleepWhenWarmMultiplier   = 1.5f;   // sleep applied to Warm target → ×1.5 success chance
+        public const float BlindedAccuracyMultiplier = 0.5f;   // Blinded attacker → hit chance ×0.5 (US-013, bible §8.1)
 
         // ── Buffs ──
         public static readonly Buff Protection = new Buff(

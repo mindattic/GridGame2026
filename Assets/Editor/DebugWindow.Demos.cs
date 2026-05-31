@@ -62,8 +62,10 @@ public partial class DebugWindow
         );
 
         // Buffs — US-016: apply a turn-unit debuff then advance enemy turns to watch it tick + expire.
+        // US-013: Blinded halves the bearer's attack accuracy.
         RenderButtonRow(
             ("Slowed → Enemy", () => g.DebugManager.Demo_ApplySlowedToEnemy()),
+            ("Blinded → Enemy", () => g.DebugManager.Demo_ApplyBlindedToEnemy()),
             ("Trigger Enemy Attack", () => g.DebugManager.TriggerEnemyAttack())
         );
 

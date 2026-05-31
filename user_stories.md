@@ -128,7 +128,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** Spell-kind clicks refused when caster `silenced`; Spell slots show the red diagonal-stripe state (§4.5).
   **Touch:** `Canvas/AbilityBar`. **Bible:** §4.5, §8.1, delete §16.1 #3. **Dep:** US-016.
 
-- [ ] **US-013 — Blinded → hit-chance penalty.** `NOT-BUILT` (`Formulas.CalculateHitType:167-180` ignores buffs; `Buffs.cs:93` TODO).
+- [x] **US-013 — Blinded → hit-chance penalty.** ✅ DONE 2026-05-31: `Formulas.CalculateHitType` multiplies a Blinded attacker's hit chance by `Buffs.BlindedAccuracyMultiplier` (0.5). Demo: "Blinded → Enemy" button. Bible §8.1 + §16.1 #4 updated.
   **Done when:** miss-chance penalty applied when attacker `blinded`.
   **Touch:** `Utilities/Formulas`. **Bible:** §13.1.1, §8.1, delete §16.1 #4. **Dep:** —
 
