@@ -42,7 +42,7 @@ namespace Scripts.Models
     /// RELATED FILES:
     /// - ActorData.cs: Contains thumbnail settings
     /// - TimelineIcon.cs: Uses for portrait display
-    /// - ActorCard.cs: Uses for card portrait
+    /// - ActorPanel.cs: Uses for card portrait
     /// </summary>
     [System.Serializable]
     public class ThumbnailSettings

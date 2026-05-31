@@ -253,7 +253,7 @@ namespace Scripts.Managers
             if (!currentAbility.IsItemAbility && !currentAbility.IsWeaponAbility)
                 g.ActionTitle?.Show(currentAbility?.name);
 
-            var startPosition = g.Card.PortraitWorldPosition();
+            var startPosition = g.ActorPanel.PortraitWorldPosition();
 
             switch (currentAbility.Effect)
             {
@@ -358,7 +358,7 @@ namespace Scripts.Managers
             var caster = currentUser;
             var ability = currentAbility;
             var target = targetList[0];
-            var castStart = g.Card.PortraitWorldPosition();
+            var castStart = g.ActorPanel.PortraitWorldPosition();
 
             // "Casting {Spell}" — the cast-time path that ticks on the timeline before resolving.
             g.ActionTitle?.Cast(ability);
@@ -445,7 +445,7 @@ namespace Scripts.Managers
             foreach (var a in g.Actors.All)
                 a.Render.SetFocusIndicatorEnabled(false);
             g.AbilityButtonManager.Hide();
-            g.Card.Clear();
+            g.ActorPanel.Clear();
             // Selection has been wiped — drop the red enemy-select arc with it.
             g.SelectionManager?.HideEnemySelectArc();
         }
@@ -495,9 +495,9 @@ namespace Scripts.Managers
             if (IsSequenceExecuting) return;
             g.TileManager.Reset();
             CancelTargeting();
-            // Restore the hero portrait on the ActorCard — AssignAbility swapped it to the
+            // Restore the hero portrait on the ActorPanel — AssignAbility swapped it to the
             // ability icon during the click; cancelling means we go back to "this hero is selected".
-            if (g.Actors.HasSelectedActor) g.Card?.Assign();
+            if (g.Actors.HasSelectedActor) g.ActorPanel?.Assign();
             if (g.Actors.HasMovingHero)
             {
                 g.Actors.MovingHero.Move.ToLocation();

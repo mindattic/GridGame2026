@@ -34,7 +34,7 @@ namespace Scripts.Managers
 /// SELECTION FLOW:
 /// 1. Player taps hero → Select(actor) called
 /// 2. g.Actors.SelectedActor updated
-/// 3. ActorCard.Assign() shows hero info
+/// 3. ActorPanel.Assign() shows hero info
 /// 4. AbilityButtonManager.Show() displays abilities
 /// 5. SortingManager.OnActorFocus() brings hero to front
 /// 
@@ -57,7 +57,7 @@ namespace Scripts.Managers
 /// 
 /// RELATED FILES:
 /// - InputManager.cs: Calls Select() on tap
-/// - ActorCard.cs: Displays selected hero info
+/// - ActorPanel.cs: Displays selected hero info
 /// - AbilityButtonManager.cs: Shows hero abilities
 /// - GhostManager.cs: Shows drag preview
 /// - SortingManager.cs: Brings selected actor to front
@@ -127,7 +127,7 @@ public class SelectionManager : MonoBehaviour
         // If unchanged, just refresh visuals
         if (g.Actors.SelectedActor == target)
         {
-            g.Card.Assign();
+            g.ActorPanel.Assign();
 #if UNITY_EDITOR
             GameManager.instance.reloadThumbnailSettings = true;
 #endif
@@ -158,7 +158,7 @@ public class SelectionManager : MonoBehaviour
  g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(false));
 
  // Always assign card when selecting
- g.Card.Assign();
+ g.ActorPanel.Assign();
 
 #if UNITY_EDITOR
  GameManager.instance.reloadThumbnailSettings = true;
@@ -217,7 +217,7 @@ public class SelectionManager : MonoBehaviour
  // TimelineBar starts moving via OnHeroStartMove
  g.TimelineBar?.OnHeroStartMove();
 
- g.Card.Clear();
+ g.ActorPanel.Clear();
  g.AudioManager.Play("Click");
  }
  }

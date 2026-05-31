@@ -56,7 +56,7 @@ namespace Scripts.Managers
 /// - AbilityButtonFactory.cs: Creates button GameObjects
 /// - AbilityButton.cs: Individual button component
 /// - AbilityManager.cs: Handles targeting/casting
-/// - ActorCard.cs: Contains AbilityButtonContainer
+/// - ActorPanel.cs: Contains AbilityButtonContainer
 /// - Ability.cs: Ability data definition
 /// - HeroEquipmentSave.AbilityBarSlots: Persisted bar layout
 /// 
@@ -88,7 +88,7 @@ public class AbilityButtonManager : MonoBehaviour
     /// <summary>Initializes component references and state.</summary>
     public void Awake()
     {
-        abilityButtonContainer = GameObjectHelper.Game.Card.AbilityButtonContainer;
+        abilityButtonContainer = GameObjectHelper.Game.ActorPanel.AbilityButtonContainer;
 
         // Configure HorizontalLayoutGroup for left-aligned buttons
         if (abilityButtonContainer != null)
@@ -360,7 +360,7 @@ public class AbilityButtonManager : MonoBehaviour
 
     #region Button Click
 
-    /// <summary>Handles an ability button click. Swaps the ActorCard to preview the chosen
+    /// <summary>Handles an ability button click. Swaps the ActorPanel to preview the chosen
     /// ability (portrait → ability icon, details → MP + formula + description), then locks
     /// input and enters targeting mode (or surfaces the confirm popup directly for
     /// self-targeted actions like weapon swaps).</summary>
@@ -369,7 +369,7 @@ public class AbilityButtonManager : MonoBehaviour
         if (IsInteractionLocked()) return;
         if (actor == null || !actor.IsPlaying || !actor.IsHero) return;
 
-        g.Card?.AssignAbility(ability);
+        g.ActorPanel?.AssignAbility(ability);
 
         if (ability.TargetingMode == AbilityTargetingMode.Linear)
         {

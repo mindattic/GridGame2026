@@ -71,7 +71,7 @@ namespace Scripts.Helpers
     /// - g.TileMap.Tiles: All TileInstances
     /// 
     /// UI COMPONENTS:
-    /// - g.Card: ActorCard UI
+    /// - g.ActorPanel: ActorPanel UI (tabbed)
     /// - g.TimelineBar: Turn order UI
     /// - g.ActionTitle: Top-center action announcement banner ("Casting Flames" etc.)
     /// 
@@ -295,8 +295,8 @@ namespace Scripts.Helpers
         /// <summary>Target mode overlay for ability targeting.</summary>
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
 
-        /// <summary>Actor info card UI.</summary>
-        public static ActorCard Card => gm != null ? gm.card : null;
+        /// <summary>Actor info panel UI (tabbed: Stats / Equipment / Lore).</summary>
+        public static Scripts.Canvas.ActorPanel ActorPanel => gm != null ? gm.actorPanel : null;
 
         /// <summary>Tutorial popup overlay.</summary>
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;

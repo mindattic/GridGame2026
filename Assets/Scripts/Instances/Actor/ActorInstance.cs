@@ -378,7 +378,7 @@ public partial class ActorInstance : MonoBehaviour
             Vfx.Attack = VisualEffectLibrary.VisualEffects["DoubleClaw"];
 
             // Enemy frame flickers between black and dark red using Quake's broken-fluorescent
-            // pattern — same effect ActorCard uses for the enemy backdrop, applied here to the
+            // pattern — same effect ActorPanel uses for the enemy backdrop, applied here to the
             // per-actor frame overlay so enemies read as menacing at a glance.
             StartCoroutine(EnemyBackdropFlickerRoutine());
         }

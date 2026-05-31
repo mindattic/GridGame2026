@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioSource musicSource;
 
     // Canvas
-    [HideInInspector] public ActorCard card;
+    [HideInInspector] public Scripts.Canvas.ActorPanel actorPanel;
     [HideInInspector] public TutorialPopup tutorialPopup;
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
@@ -255,7 +255,7 @@ public class GameManager : Singleton<GameManager>
         ShakeIntensity.Initialize(tileSize);
 
         // UnityEngine.Canvas
-        card = GameObjectHelper.Game.Card.Instance;
+        actorPanel = GameObjectHelper.Game.ActorPanel.Instance;
         canvas3D = GameObjectHelper.Game.Canvas3D;
         portraitsRect = GameObjectHelper.Game.Portraits;
 

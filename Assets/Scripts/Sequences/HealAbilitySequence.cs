@@ -66,7 +66,7 @@ namespace Scripts.Sequences
         public override IEnumerator ProcessRoutine()
         {
             g.InputManager.InputMode = InputMode.None;
-            g.Card.BouncePortrait();
+            g.ActorPanel.BouncePortrait();
 
             // Caster bobs to show they emitted the heal ball.
             if (caster != null && caster.IsPlaying)

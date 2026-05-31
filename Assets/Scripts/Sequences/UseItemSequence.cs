@@ -79,7 +79,7 @@ namespace Scripts.Sequences
             g.ActionTitle?.Use(item);
 
             // Bounce the user portrait for visual feedback
-            g.Card?.BouncePortrait();
+            g.ActorPanel?.BouncePortrait();
 
             // Determine the effective target (self if no target specified)
             var effectTarget = target != null && target.IsPlaying ? target : user;

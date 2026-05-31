@@ -484,19 +484,21 @@ public static class GameBuilder
         tmp_Front2.raycastTarget = true;
         Undo.RegisterCreatedObjectUndo(go_Front2, "Create Front");
 
-        // --- Card ---
-        var go_Card = new GameObject("Card");
-        go_Card.layer = 5;
-        var rt_Card = go_Card.AddComponent<RectTransform>();
-        rt_Card.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        rt_Card.anchorMin = new Vector2(0f, 0f);
-        rt_Card.anchorMax = new Vector2(1f, 0f);
-        rt_Card.pivot = new Vector2(1f, 0f);
-        rt_Card.sizeDelta = new Vector2(0f, 256f);
-        rt_Card.anchoredPosition = new Vector2(0f, 0f);
-        go_Card.AddComponent<CanvasRenderer>();
-        go_Card.AddComponent<Scripts.Canvas.ActorCard>();
-        Undo.RegisterCreatedObjectUndo(go_Card, "Create Card");
+        // --- ActorPanel (HUD Row 15: tabbed character panel — Stats / Equipment / Lore). The
+        //     tab bar + content panels are built at runtime by Scripts.Canvas.ActorPanel, so this
+        //     is just the full-width, bottom-anchored 256-tall root + the component. ---
+        var go_ActorPanel = new GameObject("ActorPanel");
+        go_ActorPanel.layer = 5;
+        var rt_ActorPanel = go_ActorPanel.AddComponent<RectTransform>();
+        rt_ActorPanel.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
+        rt_ActorPanel.anchorMin = new Vector2(0f, 0f);
+        rt_ActorPanel.anchorMax = new Vector2(1f, 0f);
+        rt_ActorPanel.pivot = new Vector2(0.5f, 0f);
+        rt_ActorPanel.sizeDelta = new Vector2(0f, 256f);
+        rt_ActorPanel.anchoredPosition = new Vector2(0f, 0f);
+        go_ActorPanel.AddComponent<CanvasRenderer>();
+        go_ActorPanel.AddComponent<Scripts.Canvas.ActorPanel>();
+        Undo.RegisterCreatedObjectUndo(go_ActorPanel, "Create ActorPanel");
 
         // --- AbilityButtonContainer (Row 13: 6-slot ability bar, pulled out of Card) ---
         // Pre-Phase-B this lived inside the Card; now it's a direct Canvas child sitting on Row 13
@@ -524,167 +526,9 @@ public static class GameBuilder
         hlg_AbilityButtonContainer.childForceExpandHeight = true;
         Undo.RegisterCreatedObjectUndo(go_AbilityButtonContainer, "Create AbilityButtonContainer");
 
-        // --- ArrowRight ---
-        var go_ArrowRight = new GameObject("ArrowRight");
-        go_ArrowRight.layer = 5;
-        var rt_ArrowRight = go_ArrowRight.AddComponent<RectTransform>();
-        rt_ArrowRight.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_ArrowRight.anchorMin = new Vector2(1f, 0f);
-        rt_ArrowRight.anchorMax = new Vector2(1f, 0f);
-        rt_ArrowRight.pivot = new Vector2(0.5f, 0.5f);
-        rt_ArrowRight.sizeDelta = new Vector2(64f, 64f);
-        rt_ArrowRight.anchoredPosition = new Vector2(-250f, 50f);
-        go_ArrowRight.AddComponent<CanvasRenderer>();
-        var img_ArrowRight = go_ArrowRight.AddComponent<Image>();
-        img_ArrowRight.sprite = SceneBuilderHelper.LoadSprite(Sprite_ArrowRight);
-        img_ArrowRight.color = new Color(1f, 1f, 1f, 1f);
-        img_ArrowRight.raycastTarget = true;
-        var btn_ArrowRight = go_ArrowRight.AddComponent<Button>();
-        btn_ArrowRight.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_ArrowRight.targetGraphic = go_ArrowRight.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_ArrowRight, "Create ArrowRight");
-
-        // --- Text (TMP) ---
-        var go_Text_TMP2 = new GameObject("Text (TMP)");
-        go_Text_TMP2.layer = 5;
-        var rt_Text_TMP2 = go_Text_TMP2.AddComponent<RectTransform>();
-        rt_Text_TMP2.SetParent(go_ArrowRight.GetComponent<RectTransform>(), false);
-        rt_Text_TMP2.anchorMin = new Vector2(0f, 0f);
-        rt_Text_TMP2.anchorMax = new Vector2(1f, 1f);
-        rt_Text_TMP2.pivot = new Vector2(0.5f, 0.5f);
-        rt_Text_TMP2.sizeDelta = new Vector2(0f, 0f);
-        rt_Text_TMP2.anchoredPosition = new Vector2(0f, 0f);
-        go_Text_TMP2.AddComponent<CanvasRenderer>();
-        var tmp_Text_TMP2 = go_Text_TMP2.AddComponent<TextMeshProUGUI>();
-        tmp_Text_TMP2.font = SceneBuilderHelper.LoadFont(Font_LiberationSans_SDF);
-        tmp_Text_TMP2.text = "m_isRightToLeft: 0";
-        tmp_Text_TMP2.fontSize = 24f;
-        tmp_Text_TMP2.color = new Color(0.1960784f, 0.1960784f, 0.1960784f, 1f);
-        tmp_Text_TMP2.alignment = (TextAlignmentOptions)514;
-        tmp_Text_TMP2.enableWordWrapping = true;
-        tmp_Text_TMP2.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Text_TMP2, "Create Text (TMP)");
-
-        // --- Backdrop ---
-        var go_Backdrop = new GameObject("Backdrop");
-        go_Backdrop.layer = 5;
-        var rt_Backdrop = go_Backdrop.AddComponent<RectTransform>();
-        rt_Backdrop.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_Backdrop.anchorMin = new Vector2(0f, 0f);
-        rt_Backdrop.anchorMax = new Vector2(1f, 1f);
-        rt_Backdrop.pivot = new Vector2(0f, 0f);
-        rt_Backdrop.sizeDelta = new Vector2(0f, 0f);
-        rt_Backdrop.anchoredPosition = new Vector2(0f, 0f);
-        go_Backdrop.AddComponent<CanvasRenderer>();
-        var img_Backdrop = go_Backdrop.AddComponent<Image>();
-        img_Backdrop.sprite = SceneBuilderHelper.LoadSprite(Sprite_Back_1024x256);
-        img_Backdrop.color = new Color(1f, 1f, 1f, 1f);
-        img_Backdrop.raycastTarget = true;
-        var canvasGroup_Backdrop = go_Backdrop.AddComponent<CanvasGroup>();
-        Undo.RegisterCreatedObjectUndo(go_Backdrop, "Create Backdrop");
-
-        // --- Details ---
-        var go_Details = new GameObject("Details");
-        go_Details.layer = 5;
-        var rt_Details = go_Details.AddComponent<RectTransform>();
-        rt_Details.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_Details.anchorMin = new Vector2(0f, 1f);
-        rt_Details.anchorMax = new Vector2(0f, 1f);
-        rt_Details.pivot = new Vector2(0f, 0.5f);
-        rt_Details.sizeDelta = new Vector2(512f, 0f);
-        rt_Details.anchoredPosition = new Vector2(25f, -60f);
-        go_Details.AddComponent<CanvasRenderer>();
-        var tmp_Details = go_Details.AddComponent<TextMeshProUGUI>();
-        tmp_Details.font = SceneBuilderHelper.LoadFont(Font_Avenir);
-        tmp_Details.text = "Description";
-        tmp_Details.fontSize = 24f;
-        tmp_Details.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Details.alignment = (TextAlignmentOptions)257;
-        tmp_Details.enableWordWrapping = true;
-        tmp_Details.raycastTarget = true;
-        var canvasGroup_Details = go_Details.AddComponent<CanvasGroup>();
-        Undo.RegisterCreatedObjectUndo(go_Details, "Create Details");
-
-        // --- ArrowLeft ---
-        var go_ArrowLeft = new GameObject("ArrowLeft");
-        go_ArrowLeft.layer = 5;
-        var rt_ArrowLeft = go_ArrowLeft.AddComponent<RectTransform>();
-        rt_ArrowLeft.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_ArrowLeft.anchorMin = new Vector2(1f, 0f);
-        rt_ArrowLeft.anchorMax = new Vector2(1f, 0f);
-        rt_ArrowLeft.pivot = new Vector2(0.5f, 0.5f);
-        rt_ArrowLeft.sizeDelta = new Vector2(64f, 64f);
-        rt_ArrowLeft.anchoredPosition = new Vector2(-320f, 50f);
-        go_ArrowLeft.AddComponent<CanvasRenderer>();
-        var img_ArrowLeft = go_ArrowLeft.AddComponent<Image>();
-        img_ArrowLeft.sprite = SceneBuilderHelper.LoadSprite(Sprite_ArrowLeft);
-        img_ArrowLeft.color = new Color(1f, 1f, 1f, 1f);
-        img_ArrowLeft.raycastTarget = true;
-        var btn_ArrowLeft = go_ArrowLeft.AddComponent<Button>();
-        btn_ArrowLeft.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_ArrowLeft.targetGraphic = go_ArrowLeft.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_ArrowLeft, "Create ArrowLeft");
-
-        // --- Text (TMP) ---
-        var go_Text_TMP = new GameObject("Text (TMP)");
-        go_Text_TMP.layer = 5;
-        var rt_Text_TMP = go_Text_TMP.AddComponent<RectTransform>();
-        rt_Text_TMP.SetParent(go_ArrowLeft.GetComponent<RectTransform>(), false);
-        rt_Text_TMP.anchorMin = new Vector2(0f, 0f);
-        rt_Text_TMP.anchorMax = new Vector2(1f, 1f);
-        rt_Text_TMP.pivot = new Vector2(0.5f, 0.5f);
-        rt_Text_TMP.sizeDelta = new Vector2(0f, 0f);
-        rt_Text_TMP.anchoredPosition = new Vector2(0f, 0f);
-        go_Text_TMP.AddComponent<CanvasRenderer>();
-        var tmp_Text_TMP = go_Text_TMP.AddComponent<TextMeshProUGUI>();
-        tmp_Text_TMP.font = SceneBuilderHelper.LoadFont(Font_LiberationSans_SDF);
-        tmp_Text_TMP.text = "m_isRightToLeft: 0";
-        tmp_Text_TMP.fontSize = 24f;
-        tmp_Text_TMP.color = new Color(0.1960784f, 0.1960784f, 0.1960784f, 1f);
-        tmp_Text_TMP.alignment = (TextAlignmentOptions)514;
-        tmp_Text_TMP.enableWordWrapping = true;
-        tmp_Text_TMP.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Text_TMP, "Create Text (TMP)");
-
-        // --- Portrait ---
-        var go_Portrait = new GameObject("Portrait");
-        go_Portrait.layer = 5;
-        var rt_Portrait = go_Portrait.AddComponent<RectTransform>();
-        rt_Portrait.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_Portrait.anchorMin = new Vector2(1f, 0f);
-        rt_Portrait.anchorMax = new Vector2(1f, 0f);
-        rt_Portrait.pivot = new Vector2(0.5f, 0.5f);
-        rt_Portrait.sizeDelta = new Vector2(1024f, 1024f);
-        rt_Portrait.anchoredPosition = new Vector2(-128f, -128f);
-        go_Portrait.AddComponent<CanvasRenderer>();
-        var img_Portrait = go_Portrait.AddComponent<Image>();
-        img_Portrait.sprite = SceneBuilderHelper.LoadSprite(Sprite_Mannequin);
-        img_Portrait.color = new Color(1f, 1f, 1f, 1f);
-        img_Portrait.raycastTarget = false;
-        var canvasGroup_Portrait = go_Portrait.AddComponent<CanvasGroup>();
-        Undo.RegisterCreatedObjectUndo(go_Portrait, "Create Portrait");
-
-        // --- Title ---
-        var go_Title = new GameObject("Title");
-        go_Title.layer = 5;
-        var rt_Title = go_Title.AddComponent<RectTransform>();
-        rt_Title.SetParent(go_Card.GetComponent<RectTransform>(), false);
-        rt_Title.anchorMin = new Vector2(0f, 1f);
-        rt_Title.anchorMax = new Vector2(0f, 1f);
-        rt_Title.pivot = new Vector2(0f, 0f);
-        rt_Title.sizeDelta = new Vector2(512f, 0f);
-        rt_Title.anchoredPosition = new Vector2(25f, -20f);
-        go_Title.AddComponent<CanvasRenderer>();
-        var tmp_Title = go_Title.AddComponent<TextMeshProUGUI>();
-        tmp_Title.font = SceneBuilderHelper.LoadFont(Font_Attic);
-        tmp_Title.text = "Name";
-        tmp_Title.fontSize = 32f;
-        tmp_Title.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Title.alignment = (TextAlignmentOptions)257;
-        tmp_Title.enableWordWrapping = true;
-        tmp_Title.raycastTarget = true;
-        var canvasGroup_Title = go_Title.AddComponent<CanvasGroup>();
-        Undo.RegisterCreatedObjectUndo(go_Title, "Create Title");
+        // (Legacy ActorCard children — ArrowRight / Text / Backdrop / Details / ArrowLeft /
+        //  Portrait / Title — removed. Scripts.Canvas.ActorPanel now builds its tab bar and the
+        //  Stats / Equipment / Lore content panels at runtime, so the scene root carries none of them.)
 
         // --- Pointer ---
         var go_Pointer = new GameObject("Pointer");
@@ -1726,8 +1570,8 @@ public static class GameBuilder
         SceneBuilderHelper.WireOnClick(
             go_CastButton.GetComponent<Button>(),
             new UnityAction(go_Game.GetComponent<Scripts.Managers.AbilityManager>().OnCastButtonClicked));
-        // TODO: unresolved onClick — go_ArrowRight → Card.OnNextHeroArrowClick
-        // TODO: unresolved onClick — go_ArrowLeft → Card.OnPreviousHeroArrowClick
+        // (Hero-cycle arrows + tab buttons now live inside ActorPanel and wire their own onClick
+        //  in ActorPanel.BuildUi — no scene-side wiring needed.)
         // PHASE B: BankButton onClick removed — the legacy button is gone (see ManaPool removal
         // block above). The new Shield button is runtime-spawned and wires its own click in
         // ShieldButtonFactory (which calls BuffSystem.ApplyToAllHeroes(Protection) +

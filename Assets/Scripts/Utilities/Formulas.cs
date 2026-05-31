@@ -422,7 +422,7 @@ public static class Formulas
     }
 
     /// <summary>One-line rich-text descriptor of an ability's mechanical effect, for the
-    /// ActorCard details panel. Approximates each AbilityEffect's behavior so the player can
+    /// ActorPanel details panel. Approximates each AbilityEffect's behavior so the player can
     /// reason about which ability to pick before committing mana — exact numbers come from
     /// CalculateMagicDamage / CalculateAttack at resolution time.</summary>
     public static string DescribeAbility(Ability ability)

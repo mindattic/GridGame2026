@@ -7,7 +7,7 @@ namespace Scripts.Effects
     /// <para>PURPOSE: Provides the original 11 light flicker pattern strings used by Quake's
     /// dynamic lighting system, plus samplers that turn them into a brightness curve over time.
     /// Each character maps to a brightness level: 'a'=0 (off), 'm'=1 (normal), 'z'=2.083 (max).</para>
-    /// <para>RELATED FILES: ActorCard.cs (enemy backdrop flicker)</para>
+    /// <para>RELATED FILES: ActorPanel.cs (enemy backdrop flicker)</para>
     /// </summary>
     public static class QuakeLightFlicker
     {

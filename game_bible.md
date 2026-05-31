@@ -946,7 +946,7 @@ The full HUD layout lives in `Utilities/HudLayout.cs` (constants `Row{N}Y_FromTo
 │ Row 14   ●●●●●●●○○○○○                       ← 12 mana orb slots
 ├─────────────────────────────────────┤
 │ Row 15  ┌──────────────────────────┐│
-│         │ ActorCard: portrait + stat││  ← contextual: selected hero or hovered enemy
+│         │ ActorPanel: [Stats][Equip][Lore] tabs ││  ← contextual: selected hero or scanned enemy
 │         └──────────────────────────┘│
 └─────────────────────────────────────┘  ← y = canvas bottom
 ```
@@ -958,8 +958,8 @@ The full HUD layout lives in `Utilities/HudLayout.cs` (constants `Row{N}Y_FromTo
 | 3 | ActionTitle banner | `GameBuilder` |
 | 4–12 | 6×8 Board (world-space, camera-framed) | `GameBuilder` (BoardInstance) + ActorFactory (runtime spawn) |
 | 13 | 6-slot AbilityBar | `AbilityBarFactory` (runtime, parented to `Canvas/AbilityButtonContainer` placed by `GameBuilder`) |
-| 14 | 12-slot mana orb line | `ManaOrbLineFactory` (runtime) |
-| 15 | Character card (ActorCard) — contextual stats / portrait | `GameBuilder` |
+| 14 | 12-slot mana orb belt — screen-wide "tray", sits just **above** the ability bar | `ManaOrbLineFactory` (runtime) |
+| 15 | `ActorPanel` — tabbed **Stats / Equipment / Lore** (contextual: selected hero or scanned enemy). Hero ◀▶ cycle arrows in the tab bar. | root in `GameBuilder`; tab UI built at runtime by `ActorPanel` |
 
 **Cast bars** (`SpellCastBar`) stack vertically below Row 2 (the timeline), each its own slot via `SpellCastBar.Active` registry. Max 4 concurrent (§2.6).
 

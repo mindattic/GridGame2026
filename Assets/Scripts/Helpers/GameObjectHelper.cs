@@ -205,20 +205,14 @@ namespace Scripts.Helpers
             // HUD strip) instead. The ManaPoolManager component itself is fetched off the gameRoot
             // by GameManager, not via GameObject.Find.
 
-            public static class Card
+            public static class ActorPanel
             {
-                public static RectTransform Rect => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
-                public static ActorCard Instance => GameObject.Find("Canvas/Card").GetComponent<ActorCard>();
-                public static RectTransform Backdrop => GameObject.Find("Canvas/Card/Backdrop").GetComponent<RectTransform>();
-                public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
-                public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
-                public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
-                // PHASE B: AbilityButtonContainer was pulled out of Card to its own Row 13 slot
-                // (direct child of Canvas) — path is now Canvas/AbilityButtonContainer.
+                public static RectTransform Rect => GameObject.Find("Canvas/ActorPanel")?.GetComponent<RectTransform>();
+                public static Scripts.Canvas.ActorPanel Instance => GameObject.Find("Canvas/ActorPanel")?.GetComponent<Scripts.Canvas.ActorPanel>();
+                // The tab bar + Stats/Equipment/Lore content panels are built at runtime by the
+                // ActorPanel component, so they aren't looked up here (the component owns them).
+                // The 6-slot ability bar is a separate Canvas child on Row 13.
                 public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/AbilityButtonContainer")?.GetComponent<RectTransform>();
-
-
-
             }
 
            
