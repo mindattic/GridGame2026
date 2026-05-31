@@ -527,6 +527,31 @@ public static class CliEntryPoints
         }
     }
 
+    /// <summary>
+    /// Authors every procedural placeholder sprite SpriteLibrary expects but that isn't on disk
+    /// yet: the mana orb body/glass and one icon per SpellLibrary entry. Each is written as a PNG
+    /// (importer = Sprite) and registered in Addressables at the address SpriteLibrary loads
+    /// (e.g. "Sprites/Mana/orb-body", "Sprites/Spells/Fireball"). Idempotent — re-running
+    /// overwrites. Run once after a fresh checkout, or whenever SpellLibrary gains an entry.
+    /// </summary>
+    public static void AuthorPlaceholderSprites()
+    {
+        try
+        {
+            SpriteAssetAuthor.AuthorManaOrbSprites();
+            SpriteAssetAuthor.AuthorSpellIcons();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("[Cli] AuthorPlaceholderSprites: mana orbs + spell icons authored and registered.");
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] AuthorPlaceholderSprites failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
+    }
+
     private static float DistanceToSegment(Vector2 p, Vector2 a, Vector2 b)
     {
         var ab = b - a;

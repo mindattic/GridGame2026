@@ -115,6 +115,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1743acbb17e1ba54b8c1e236a53f5f17
+    m_Address: Sprites/Spells/Mug
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 17477ba70bbddad4a8e35eed76468bae
     m_Address: Technician
     m_ReadOnly: 0
@@ -200,6 +205,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30d49ee41a615774da9cf724ad53252e
+    m_Address: Sprites/Spells/Bolt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30e0896e8d4a3ba43a64c6ced308837f
     m_Address: Cyclops04
     m_ReadOnly: 0
@@ -227,6 +237,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 352ce82be08eb3045bf697fbcb0b04a1
     m_Address: Odachi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37601c11f4a1ee44d824c114232d63c4
+    m_Address: Sprites/Spells/Heal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -295,8 +310,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5595a3f097043d54b9365eb5f70aa339
+    m_Address: Sprites/Spells/Frost
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 55b7cadb709c8484aa25cd11e7e788c9
     m_Address: DemonLord
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55c2b7936ae1ed24fb9ded207aa00c6e
+    m_Address: Sprites/Mana/orb-body
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -525,6 +550,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94c76f1f8329ec545ae88ee51ad7ce16
+    m_Address: Sprites/Spells/Fireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9503900c090f01e4e98e9cd5832f05bc
     m_Address: Cyclops03
     m_ReadOnly: 0
@@ -592,6 +622,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a514eb4fab727e144bfd058bb10f86c5
     m_Address: CyberZombie03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6c31d98b76980741b50253793fc61d7
+    m_Address: Sprites/Spells/Steal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -800,6 +835,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db679279df8099e4f832734f5c1345ca
+    m_Address: Sprites/Spells/Teleport
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc0e2c64c40fd5c4d8684e13d714d350
     m_Address: Striker
     m_ReadOnly: 0
@@ -917,6 +957,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f750e4142fffc7d4ea1cf58fa42b06eb
     m_Address: WildChild
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f99be86c795a0c241a32f0fa422ef2e0
+    m_Address: Sprites/Mana/orb-glass
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
