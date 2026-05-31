@@ -5,6 +5,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Conversation
 - A bare "do" / "do it" / "yes" from the user means "continue", "keep going", "proceed". Resume the current task without asking for clarification.
 
+## Autonomous Decisions — the Legion panel
+
+You have a **multi-LLM consensus panel** for the hard calls. Use it to decide *how to tackle things* instead of blocking on the user. This is a **tooling/process integration only — it is NOT a game dependency.** Do not add `MindAttic.Legion`, `legion.exe`, LLM keys, or any AI integration to the GridGame2026 *codebase* (the project ships with zero LLM features — see the `project_no_legion.md` memory). Legion is something *you* (Claude Code) shell out to while working; nothing about it lands in `Assets/`.
+
+**CLI:** `D:\Projects\MindAttic\MindAttic.Legion\MindAttic.Legion.Cli\bin\Release\net10.0\legion.exe`
+The panel is hardcoded to four trusted providers — Claude, ChatGPT, Gemini, DeepSeek — with automatic refill when one is unreachable. The shared credential store (`%APPDATA%/MindAttic/LLM/`) is populated, so the panel is live.
+
+**Before your first `ask` of a session, re-read the "Briefing another coding agent" section of `D:\Projects\MindAttic\MindAttic.Legion\README.md`** — it is the authoritative contract (commands, tiers, exit codes, quorum). The summary below is just the trigger list.
+
+**When to consult the panel (`legion.exe ask`):** whenever you'd otherwise pause to ask the user, *and* the choice is consequential —
+- an architectural choice in this repo (where a sequence lives, manager vs. helper, builder vs. factory, data-layer shape);
+- a breaking-change tradeoff (rename now vs. shim, migrate vs. adapt) — especially anything that touches the core game-loop rules above;
+- an ambiguous spec where two readings exist and the next file you write depends on which is right;
+- anything hard to reverse.
+
+**How:**
+```
+legion.exe ask "<question>" --options "A,B,C"        # choice mode; stdout = exactly one option, exit 0 on quorum
+legion.exe ask "<question>" --json                    # full audit (votes, reasoning, dissent) — use to surface tradeoffs back to the user
+legion.exe ask "<question>" --quorum twothirds        # fail closed (exit 1) on a split — for irreversible calls
+legion.exe ask "<question>" --tier low                # cheap one-shot when flagship reasoning is overkill (default tier = high)
+```
+`ask` auto-includes this `CLAUDE.md`, `README.md`, and git status/log as voter context (disable with `--no-auto-context`). Exit `0` = panel agrees, act on it; `1` = split (re-run `--json`, summarize the dissent, ask the user — do **not** silently take the best-guess on a structural call); `2` = panel down (escalate).
+
+**Don't** call it for mechanical edits, formatting, or decisions you already know — each call is ~3–8s and four flagship API requests. It's for the calls that are expensive to get wrong, not a substitute for judgment on cheap ones. Note in your reply when a decision came from the panel.
+
+(Related: `legion.exe poll` for "how does the panel split?" distributions, `legion.exe generate` for bulk name/idea lists, `legion.exe tiers` for a once-per-session connectivity check. Same README briefing covers all four.)
+
 ## Project Overview
 
 Unity 6000.4.3f1 tactical RPG — grid-based combat with 2D sprites on a 3D board. C# 9.0 targeting .NET Standard 2.1. Namespace root: `Scripts.*`. (Editor version is authoritative in `ProjectSettings/ProjectVersion.txt` — compile/batchmode against that exact version; using a different installed editor corrupts the package cache.)
