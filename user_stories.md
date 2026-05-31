@@ -65,7 +65,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `Utilities/AspectGuard.cs` per §26.6 inserted as first child of every Canvas; black `AspectBars` behind; `CameraViewportSync.cs` clamps `Camera.rect`; safe-area inset; separate UI Overlay Camera shares the viewport (§26.4). Verified pillarbox (iPad-portrait) + letterbox (ultra-tall).
   **Touch:** new `Utilities/AspectGuard.cs`, `Utilities/CameraViewportSync.cs`; every `Editor/Builders/*Builder.cs`. **Bible:** §26.3–§26.7 (flip Status → ✅); delete §16.4 #17. **Dep:** —
 
-- [ ] **US-002 — GameBuilder clears roots before rebuild.** `NOT-BUILT` (per bible §17.1 #8).
+- [x] **US-002 — GameBuilder clears roots before rebuild.** ✅ DONE 2026-05-31 (`GameBuilder.cs:55` calls `ClearAllRootObjectsSilent()`; bible §17.1 #8 struck).
   **Why:** Kills the "already exists" warning spam that hides real errors.
   **Done when:** `GameBuilder.Build()` calls `ClearAllRootObjectsSilent()` first; rebuild is warning-free.
   **Touch:** `Editor/Builders/GameBuilder.cs`. **Bible:** strike §17.1 #8. **Dep:** —

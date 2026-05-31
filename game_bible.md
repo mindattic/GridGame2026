@@ -1436,7 +1436,7 @@ A running list — when you trip one of these, fix it AND amend this section so 
 
 7. **`TileManager.Reset()` NREs during builder rebuild.** Unity's `Reset()` magic method fires when a builder calls `AddComponent<TileManager>()`. At that moment `g.Tiles` is null (no GameManager initialized). Always null-guard `g.X` accessors in `Reset()` methods.
 
-8. **`Game.unity` rebuilds emit "Can't add component X — already exists" warnings.** Pre-existing issue: `GameBuilder` doesn't call `ClearAllRootObjectsSilent()` at the top. The warnings are noisy but harmless; the rebuild completes. Cleanup TODO (§16) — until then ignore them.
+8. ~~**`Game.unity` rebuilds emit "Can't add component X — already exists" warnings.**~~ ✅ RESOLVED (US-002, 2026-05-31): `GameBuilder.Build()` now calls `SceneBuilderHelper.ClearAllRootObjectsSilent()` at the top, matching every other builder + `CliEntryPoints.InvokeBuilderCreate`. Rebuilds are warning-free.
 
 9. **`AddressableAssetSettings` missing.** If the project's Addressables aren't initialized, `AssetHelper.LoadAsset<T>` returns null and `SpriteAssetAuthor` logs a warning. Open `Window → Asset Management → Addressables → Groups` once to seed the default group.
 

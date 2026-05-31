@@ -53,6 +53,11 @@ public static class GameBuilder
     {
         if (!SceneBuilderHelper.OpenScene(SceneName)) return;
 
+        // Clear existing roots first so the rebuild is canonical and warning-free
+        // (matches every other builder + CliEntryPoints; US-002 — kills the
+        // "object already exists" warning spam that hides real Console errors).
+        SceneBuilderHelper.ClearAllRootObjectsSilent();
+
         // --- Background ---
         var go_Background = new GameObject("Background");
         go_Background.layer = 5;
