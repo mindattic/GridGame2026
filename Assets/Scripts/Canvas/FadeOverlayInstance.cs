@@ -69,7 +69,7 @@ public class FadeOverlayInstance : MonoBehaviour
     #region Configuration
 
     private Image image;
-    private float fadeDuration = 0.0833f;
+    private float fadeDuration = 0.125f; // US-113: 125 ms each way — snappy seam-hider
 
     #endregion
 

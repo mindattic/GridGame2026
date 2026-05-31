@@ -106,7 +106,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `HubBuilder.cs` + `HubManager.cs` build a themed `GridLayoutGroup` of 6 equal buttons (Vendor/Blacksmith/Alchemist/Equip/Party/Abilities), each → `SceneHelper.Fade.To<X>()`, plus a Back → StageSelect; reached via a "Hub" button on StageSelect; uses §26.2 scaler + AspectGuard + `HubTheme`. No shop logic in the hub — it only routes.
   **Touch:** new `Editor/Builders/HubBuilder.cs`, `Scripts/Hub/HubManager.cs`; `StageSelectBuilder` (Hub button); `SceneHelper` (`ToHub`). **Bible:** §25.0, §22. **Dep:** US-001. **Note:** add `Hub.unity` to Build Settings (§11.4).
 
-- [ ] **US-113 — FadeOverlay speed = 125 ms.** Quick tuning.
+- [x] **US-113 — FadeOverlay speed = 125 ms.** ✅ DONE 2026-05-31: `FadeOverlayInstance.fadeDuration` 0.0833f → 0.125f. Bible §11.3 already specified 125 ms (code was out of sync); now compliant.
   **Done when:** `FadeOverlayInstance` fades out/in at 0.125 s each way (snappy seam-hider, not a flourish).
   **Touch:** `Canvas/FadeOverlayInstance.cs`. **Bible:** §11.3. **Dep:** —
 
