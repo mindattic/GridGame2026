@@ -161,8 +161,9 @@ public static class SpriteAssetAuthor
     private static Color ColorForSpell(Scripts.Models.SpellDefinition spell)
     {
         // Reuse the orb palette for thematic consistency. Mana cost wins; fall back to DamageType.
-        if (spell.Cost != null && spell.Cost.Costs.Count > 0)
-            return Scripts.Canvas.ManaOrbLine.ColorFor(spell.Cost.Costs[0].Type);
+        // (Cost lives on the spell's ManaAbility, not on SpellDefinition directly.)
+        if (spell.Ability.Cost != null && spell.Ability.Cost.Costs.Count > 0)
+            return Scripts.Canvas.ManaOrbLine.ColorFor(spell.Ability.Cost.Costs[0].Type);
         switch (spell.DamageType)
         {
             case Scripts.Models.DamageType.Fire:      return new Color(1.00f, 0.45f, 0.10f);
