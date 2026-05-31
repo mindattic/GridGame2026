@@ -785,7 +785,7 @@ All entries in `Data/SpellLibrary.cs`. Cost references `ManaAbilities.<Name>`.
 
 Constants in `Data/Buffs.cs`:
 - `LightningWhenWetMultiplier = 1.5f` — Lightning damage × 1.5 on a Wet target. Wired in `ApplyDamage`.
-- `SleepWhenWarmMultiplier   = 1.5f` — Sleep application × 1.5 success chance on a Warm target. **TODO** to wire.
+- `SleepWhenWarmMultiplier   = 1.5f` — Sleep on a Warm target lasts × 1.5 longer (US-014, wired in `SpellEffectDispatcher` debuff-apply). Applies to **duration** rather than a success roll, since Sleep has no success-chance roll today — revisit if one is added.
 
 Also: **Fire on Wet → strips Wet** (steam) before damage applies. Wired in dispatcher.
 
@@ -821,7 +821,7 @@ Other debuffs expire silently. Designer can add more chains by editing `OnExpire
 
 `Buff.BreaksOnDamage` (currently set on `Sleep` only): when the target takes any damage, this buff is force-removed before damage finalizes. Implemented via `BuffSystem.OnDamaged(target)` called by `ApplyDamage`.
 
-`Buff.BreaksOnMove` (also Sleep): force-removed when the bearer is displaced. TODO hook in `ActorMovement` to call `BuffSystem.OnMoved(target)` on slide-through.
+`Buff.BreaksOnMove` (also Sleep): force-removed when the bearer is displaced. Wired (US-015) — `ActorMovement.HandleOverlap` calls `BuffSystem.OnMoved(instance)` at the displacement commit, so sliding a sleeping actor wakes it.
 
 ### 8.3 Ticking
 
@@ -1347,8 +1347,8 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | 2 | US-011 | **Slowed → timeline-speed multiplier** (buff applies, no effect yet) | P1 | `TimelineIcon.UpdateApproaching` |
 | 3 | US-012 | **Silenced → cast-block** (refuse spell click if silenced) | P1 | `AbilityBar.HandleSpell` |
 | ~~4~~ | US-013 | ~~**Blinded → hit-chance penalty**~~ — **DONE** 2026-05-31 (`Formulas.CalculateHitType` ×0.5 accuracy when attacker Blinded) | — | — |
-| 5 | US-014 | **SleepWhenWarmMultiplier** applied at Sleep-spell hit roll | P2 | `SpellEffectDispatcher` |
-| — | US-015 | **BreaksOnMove** — `ActorMovement` must call `BuffSystem.OnMoved` on displacement | P1 | `ActorMovement`, `BuffSystem` |
+| ~~5~~ | US-014 | ~~**SleepWhenWarmMultiplier**~~ — **DONE** 2026-05-31 (Sleep ×1.5 duration on Warm target, `SpellEffectDispatcher`) | — | — |
+| ~~—~~ | US-015 | ~~**BreaksOnMove**~~ — **DONE** 2026-05-31 (`ActorMovement.HandleOverlap` → `BuffSystem.OnMoved`) | — | — |
 | ~~—~~ | US-016 | ~~**Turn-unit decrement**~~ — **DONE** 2026-05-31 (`TurnManager.NextTurn` end-of-turn `BuffSystem.TickTurn`) | — | — |
 
 ### 16.2 Cast / interrupt system (Phase C)

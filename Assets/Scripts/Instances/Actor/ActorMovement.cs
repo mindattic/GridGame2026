@@ -344,6 +344,9 @@ namespace Scripts.Instances.Actor
                 occupant.Move.HandleOverlap(nextLocation);
             }
 
+            // US-015: a displaced actor has moved — break Sleep-like buffs flagged BreaksOnMove.
+            Scripts.Managers.BuffSystem.OnMoved(instance);
+
             // Logical location updates INSTANTLY (so pincer/occupancy math is correct immediately),
             // but the sprite still animates into the new tile via DisplaceRoutine — preserving the
             // sense of progression. Cascading occupants each run their own slide, so a queue of

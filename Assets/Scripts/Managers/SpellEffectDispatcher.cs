@@ -77,7 +77,20 @@ namespace Scripts.Managers
             if (!string.IsNullOrEmpty(spell.DebuffId) && target != null
                 && Buffs.ById.TryGetValue(spell.DebuffId, out var buff))
             {
-                BuffSystem.Apply(target, buff);
+                // US-014: Sleep lands harder on a Warm target — extend its duration by
+                // SleepWhenWarmMultiplier. Sleep has no separate success roll today, so the
+                // bonus applies to duration; revisit if a success-chance roll is ever added.
+                if (buff.Id == Buffs.Sleep.Id && BuffSystem.Has(target, Buffs.Warm.Id))
+                {
+                    int boosted = Mathf.RoundToInt(buff.DefaultDuration * Buffs.SleepWhenWarmMultiplier);
+                    BuffSystem.Apply(target, buff, boosted);
+                    var ctmS = g.CombatTextManager;
+                    if (ctmS != null) ctmS.Spawn("Deep Sleep!", target.transform.position, "Miss");
+                }
+                else
+                {
+                    BuffSystem.Apply(target, buff);
+                }
             }
 
             // 6) Damage / heal / cleanse. Fix #9: target may have died / left the board between

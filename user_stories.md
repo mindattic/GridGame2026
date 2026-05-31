@@ -132,11 +132,11 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** miss-chance penalty applied when attacker `blinded`.
   **Touch:** `Utilities/Formulas`. **Bible:** §13.1.1, §8.1, delete §16.1 #4. **Dep:** —
 
-- [ ] **US-014 — SleepWhenWarm multiplier.** `NOT-BUILT` (`Buffs.cs:22` constant defined, never read).
+- [x] **US-014 — SleepWhenWarm multiplier.** ✅ DONE 2026-05-31: `SpellEffectDispatcher` applies Sleep with ×1.5 duration when the target is Warm ("Deep Sleep!" popup). Applied to duration (Sleep has no success roll); bible §8.2 noted. Bible §16.1 #5 struck.
   **Done when:** Sleep success/duration × `SleepWhenWarmMultiplier` (1.5) on a `warm` target.
   **Touch:** `SpellEffectDispatcher` Sleep-apply. **Bible:** §8.2, delete §16.1 #5. **Dep:** —
 
-- [ ] **US-015 — BreaksOnMove hook.** `NOT-BUILT` (`BuffSystem.OnMoved:120-123` exists, never called from `ActorMovement`).
+- [x] **US-015 — BreaksOnMove hook.** ✅ DONE 2026-05-31: `ActorMovement.HandleOverlap` calls `BuffSystem.OnMoved(instance)` at the displacement commit, so sliding a sleeping actor breaks Sleep. Bible §8.2.3 updated.
   **Done when:** `ActorMovement.HandleOverlap` (displacement) calls `BuffSystem.OnMoved(actor)`; Sleep breaks on slide.
   **Touch:** `Instances/Actor/ActorMovement`, `BuffSystem`. **Bible:** §8.2.3. **Dep:** —
 
