@@ -124,7 +124,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** icon `uPerSec` scaled by a `slowed` factor; Slow visibly delays a rank.
   **Touch:** `Canvas/TimelineIcon` / `TimelineBarInstance`. **Bible:** §2.2, §8.1, delete §16.1 #2. **Dep:** US-016.
 
-- [ ] **US-012 — Silenced → cast-block + slot overlay.** `NOT-BUILT` (`AbilityBar.HandleSpell:157-193` has no check; `Buffs.cs:86` TODO).
+- [x] **US-012 — Silenced → cast-block + slot overlay.** ✅ DONE 2026-05-31: `AbilityBar.HandleSpell` refuses spell casts when the caster is Silenced ("Silenced!" popup); `Refresh` renders Silenced heroes' Spell slots blocked (solid-red `SilencedFrameColor`, non-interactable). Demo: "Silenced → Hero" button. NOTE: visual is a solid-red blocked state; the exact §4.5 diagonal-stripe overlay sprite is deferred as polish. Bible §8.1 + §16.1 #3 updated.
   **Done when:** Spell-kind clicks refused when caster `silenced`; Spell slots show the red diagonal-stripe state (§4.5).
   **Touch:** `Canvas/AbilityBar`. **Bible:** §4.5, §8.1, delete §16.1 #3. **Dep:** US-016.
 

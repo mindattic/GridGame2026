@@ -224,6 +224,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Applied Blinded (2 Turns) to {enemy.name}. Its attacks now hit at ×{Scripts.Data.Buffs.BlindedAccuracyMultiplier} accuracy (US-013).");
         }
 
+        /// <summary>Demo (US-012): Silence the selected hero so their Spell slots block (red) and
+        /// spell clicks are refused — Skills/Items still work.</summary>
+        public void Demo_ApplySilencedToHero()
+        {
+            var hero = g.Actors.SelectedActor;
+            if (hero == null || !hero.IsHero) { Debug.LogWarning("[Demo] Select a hero first."); return; }
+            BuffSystem.Apply(hero, Scripts.Data.Buffs.Silenced);
+            Debug.Log($"[Demo] Silenced {hero.name} (2 Turns). Spell slots now blocked (US-012); Skills/Items unaffected.");
+        }
+
         /// <summary>Toggle the cheat that lets 1–N orbs of ANY color pay for any 1–N-cost spell.</summary>
         public void Demo_ToggleAnyColor()
         {

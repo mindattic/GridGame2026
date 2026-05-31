@@ -168,6 +168,14 @@ namespace Scripts.Canvas
             if (spell == null) { Debug.LogWarning($"[AbilityBar] Spell '{a.Name}' has no SpellDefinition wired."); return; }
             var caster = g.Actors.SelectedActor;
 
+            // US-012: a Silenced caster cannot cast Spells. Refuse the click (Skills/Items unaffected).
+            if (caster != null && Scripts.Managers.BuffSystem.Has(caster, Scripts.Data.Buffs.Silenced.Id))
+            {
+                Debug.LogWarning($"[AbilityBar] '{a.Name}' refused — {caster.name} is Silenced.");
+                g.CombatTextManager?.Spawn("Silenced!", caster.transform.position, "Miss");
+                return;
+            }
+
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
                 {
@@ -216,6 +224,10 @@ namespace Scripts.Canvas
         {
             if (buttons == null) return;
             bool active = currentLoadout != null;
+            // US-012: if the bound hero is Silenced, their Spell slots render blocked + non-interactable.
+            var owner = g.Actors.SelectedActor;
+            bool silenced = active && owner != null
+                && Scripts.Managers.BuffSystem.Has(owner, Scripts.Data.Buffs.Silenced.Id);
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (!active)
@@ -245,12 +257,19 @@ namespace Scripts.Canvas
                     case AbilityKind.Skill: affordable = true; break; // free, always usable
                     default:                affordable = bank != null && bank.CanAfford(a.Cost); break;
                 }
+                // US-012: Silenced blocks Spell-kind slots (Skills/Items still usable).
+                bool blockedBySilence = a.Kind == AbilityKind.Spell && silenced;
+                if (blockedBySilence) affordable = false;
                 if (buttons[i] != null) buttons[i].interactable = affordable;
                 if (nameLabels[i] != null) nameLabels[i].text = a.Name;
                 if (costLabels[i] != null) costLabels[i].text = ManaAbilities.CostIcons(a);
-                if (frames[i] != null) frames[i].color = FrameColorFor(a, affordable);
+                if (frames[i] != null) frames[i].color = blockedBySilence ? SilencedFrameColor : FrameColorFor(a, affordable);
             }
         }
+
+        /// <summary>Blocked-by-Silence slot tint (US-012). A solid red "blocked" state; the exact
+        /// §4.5 diagonal-stripe overlay sprite is a future visual refinement.</summary>
+        private static readonly Color SilencedFrameColor = new Color(0.50f, 0.12f, 0.12f, 0.95f);
 
         /// <summary>Color the slot's frame by kind. Skill = green, Spell = blue, Item = warm,
         /// Reserved = dark. Dimmed when unaffordable / empty.</summary>

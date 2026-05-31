@@ -778,7 +778,7 @@ All entries in `Data/SpellLibrary.cs`. Cost references `ManaAbilities.<Name>`.
 | `sleep` | Debuff | 3 Turns | immobile, breaks on damage / move | — |
 | `poisoned` | Debuff | 6 Ticks | 3 dmg/tick | — |
 | `slowed` | Debuff | 2 Turns | (timeline-speed mult — TODO) | — |
-| `silenced` | Debuff | 2 Turns | (cast-block — TODO) | — |
+| `silenced` | Debuff | 2 Turns | Spell clicks refused + slots blocked (US-012) | — |
 | `blinded` | Debuff | 2 Turns | attacker accuracy ×0.5 (US-013) | — |
 
 ### 8.2 Cross-effect multipliers
@@ -1345,7 +1345,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 |---|---|---|---|---|
 | ~~1~~ | — | ~~Burning / Poisoned per-tick damage~~ — **DONE** (`BuffTickManager.cs:45-60`) | — | — |
 | 2 | US-011 | **Slowed → timeline-speed multiplier** (buff applies, no effect yet) | P1 | `TimelineIcon.UpdateApproaching` |
-| 3 | US-012 | **Silenced → cast-block** (refuse spell click if silenced) | P1 | `AbilityBar.HandleSpell` |
+| ~~3~~ | US-012 | ~~**Silenced → cast-block**~~ — **DONE** 2026-05-31 (`AbilityBar.HandleSpell` refuses + Spell slots render blocked; diagonal-stripe sprite is future polish) | — | — |
 | ~~4~~ | US-013 | ~~**Blinded → hit-chance penalty**~~ — **DONE** 2026-05-31 (`Formulas.CalculateHitType` ×0.5 accuracy when attacker Blinded) | — | — |
 | ~~5~~ | US-014 | ~~**SleepWhenWarmMultiplier**~~ — **DONE** 2026-05-31 (Sleep ×1.5 duration on Warm target, `SpellEffectDispatcher`) | — | — |
 | ~~—~~ | US-015 | ~~**BreaksOnMove**~~ — **DONE** 2026-05-31 (`ActorMovement.HandleOverlap` → `BuffSystem.OnMoved`) | — | — |

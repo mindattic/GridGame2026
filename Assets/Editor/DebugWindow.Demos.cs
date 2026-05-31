@@ -66,6 +66,7 @@ public partial class DebugWindow
         RenderButtonRow(
             ("Slowed → Enemy", () => g.DebugManager.Demo_ApplySlowedToEnemy()),
             ("Blinded → Enemy", () => g.DebugManager.Demo_ApplyBlindedToEnemy()),
+            ("Silenced → Hero", () => g.DebugManager.Demo_ApplySilencedToHero()),
             ("Trigger Enemy Attack", () => g.DebugManager.TriggerEnemyAttack())
         );
 
