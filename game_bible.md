@@ -492,11 +492,20 @@ Row 13 of the HUD. **6 slots.** Each slot holds one `ManaAbility` (which is one 
 
 | Kind | Cost | Cast time | Frame color |
 |---|---|---|---|
-| **Skill** | free, "costs the player's turn" (timeline auto-advances after resolve) | instant | green |
+| **Skill** | free, "costs the player's turn" (timeline auto-advances after resolve); locked by a per-skill cooldown after use | instant | green |
 | **Spell** | colored mana orbs from `ManaBank` | shrinking cast bar | cool blue |
 | **Item** | per-slot stack charge | instant | warm leather |
 
 Slot kind is set by the constructor used on `ManaAbility`. Cost icons label: Skills show `Free`, Items show `current/MaxStackSize`, Spells show `(W)(R)…`.
+
+### 4.1.1 Skill cooldowns
+
+A Skill is free to use but, once cast, is **locked for `ManaAbility.CooldownTurns` turn-cycles**. Current values: **Steal 3, Mug 2, Teleport 3** (`Data/ManaAbilities.cs`). The remaining countdown is tracked **per hero** by `SkillCooldownManager` (a `BuffSystem`-style static dictionary) — *not* on the `ManaAbility`, because Skill ability instances are shared statics across multiple class loadouts.
+
+- **Set:** `AbilityBar.HandleSkill` (and the Teleport flow) call `SkillCooldownManager.Begin(hero, skill)` when the skill actually fires.
+- **Tick:** `TurnManager.BeginHeroWindow` calls `SkillCooldownManager.TickAll()` once per turn-cycle (each time the player regains control); a skill reactivates when its counter reaches 0. `TurnManager.Initialize` clears all cooldowns at battle start.
+- **UI:** while on cooldown the bar slot **fades out** and its cost label shows the **turns-remaining number**; the button is non-interactable and `HandleSkill` refuses an early click. (`AbilityBar.Refresh`.)
+- **Debug:** Debug Window → *Lock Skill CDs* / *Tick CD (1 turn)* (`DebugManager.Demo_LockSkillCooldowns` / `Demo_TickSkillCooldowns`).
 
 ### 4.2 Per-hero loadouts
 

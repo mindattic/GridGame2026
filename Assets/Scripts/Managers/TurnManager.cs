@@ -108,7 +108,7 @@ namespace Scripts.Managers
         }
 
         /// <summary>Initializes turn manager and begins first hero window.</summary>
-        public void Initialize() { BeginHeroWindow(); }
+        public void Initialize() { SkillCooldownManager.Clear(); BeginHeroWindow(); }
 
         #endregion
 
@@ -191,6 +191,9 @@ namespace Scripts.Managers
  {
  IsHeroTurn = true;
  ActiveActor = null;
+ // Tick skill cooldowns once per turn-cycle: a skill locked for N turns reactivates when its
+ // per-hero counter reaches 0 at the start of a window (see SkillCooldownManager / AbilityBar).
+ SkillCooldownManager.TickAll();
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Hero);
  g.InputManager.InputMode = InputMode.PlayerTurn;
 

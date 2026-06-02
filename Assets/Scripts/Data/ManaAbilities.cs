@@ -26,10 +26,10 @@ namespace Scripts.Data
     /// </summary>
     public static class ManaAbilities
     {
-        // ── Skills (free, reusable, cost a player's turn) ──
-        public static readonly ManaAbility Steal    = new ManaAbility("Steal",    _isSkill: true);
-        public static readonly ManaAbility Mug      = new ManaAbility("Mug",      _isSkill: true);
-        public static readonly ManaAbility Teleport = new ManaAbility("Teleport", _isSkill: true);
+        // ── Skills (free, reusable, cost a player's turn; locked for N turn-cycles after use) ──
+        public static readonly ManaAbility Steal    = new ManaAbility("Steal",    _isSkill: true, cooldownTurns: 3);
+        public static readonly ManaAbility Mug      = new ManaAbility("Mug",      _isSkill: true, cooldownTurns: 2);
+        public static readonly ManaAbility Teleport = new ManaAbility("Teleport", _isSkill: true, cooldownTurns: 3);
 
         // ── Spells (mana-orb cost) ──
         // IMPORTANT: a ManaAbility must map 1:1 to a single SpellDefinition. AbilityBar.ResolveSpell

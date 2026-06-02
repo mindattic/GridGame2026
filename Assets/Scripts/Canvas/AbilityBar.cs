@@ -79,15 +79,25 @@ namespace Scripts.Canvas
         // ── Skill: free; no cast bar; resolves on target confirm; then advances the turn ──
         private void HandleSkill(ManaAbility a)
         {
+            var caster = g.Actors.SelectedActor;
+
+            // Cooldown gate — a Skill is locked for ManaAbility.CooldownTurns turn-cycles after use.
+            if (Scripts.Managers.SkillCooldownManager.IsOnCooldown(caster, a))
+            {
+                int turns = Scripts.Managers.SkillCooldownManager.GetRemaining(caster, a);
+                Debug.LogWarning($"[AbilityBar] '{a.Name}' on cooldown ({turns} turn(s) left).");
+                if (caster != null) g.CombatTextManager?.Spawn($"{turns}", caster.transform.position, "Miss");
+                return;
+            }
+
             var canvas = GameObject.Find("Canvas");
             if (canvas == null) return;
             var spell = ResolveSpell(a);
             if (spell == null) { Debug.LogWarning($"[AbilityBar] Skill '{a.Name}' has no SpellDefinition wired."); return; }
-            var caster = g.Actors.SelectedActor;
 
             // Teleport is its own flow — picks an empty tile and instantly relocates the caster,
             // then checks for a pincer the new position completes.
-            if (spell.IsTeleport) { HandleTeleport(spell, caster, canvas); return; }
+            if (spell.IsTeleport) { HandleTeleport(spell, a, caster, canvas); return; }
 
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
@@ -95,7 +105,8 @@ namespace Scripts.Canvas
                     Debug.Log($"[AbilityBar] Skill '{a.Name}' used on {targets.Count} target(s).");
                     foreach (var t in targets)
                         Scripts.Managers.SpellEffectDispatcher.Cast(spell, caster, t);
-                    // "Costs a turn" — advance timeline to next enemy.
+                    // Start the cooldown, then "cost a turn" — advance timeline to next enemy.
+                    Scripts.Managers.SkillCooldownManager.Begin(caster, a);
                     g.ManaPoolManager?.OnBankButtonClicked();
                 },
                 onCancel: () => Debug.Log($"[AbilityBar] Skill '{a.Name}' cancelled — turn not spent."));
@@ -103,7 +114,7 @@ namespace Scripts.Canvas
 
         /// <summary>Tile-pick → relocate caster → fire any pincer the new position completes.
         /// Direct tile-picker (bypasses SpellEffectDispatcher because there's no "target actor").</summary>
-        private void HandleTeleport(SpellDefinition spell, Scripts.Instances.Actor.ActorInstance caster, GameObject canvas)
+        private void HandleTeleport(SpellDefinition spell, ManaAbility ability, Scripts.Instances.Actor.ActorInstance caster, GameObject canvas)
         {
             if (caster == null) { Debug.LogWarning("[AbilityBar] Teleport requires a selected hero."); return; }
             var board = g.Board;
@@ -147,7 +158,8 @@ namespace Scripts.Canvas
                     bool pincer = g.PincerAttackManager != null && g.PincerAttackManager.Check(Scripts.Models.Team.Hero, caster);
                     if (pincer) Debug.Log("[AbilityBar] Teleport landed a pincer!");
 
-                    // Costs a turn — advance the timeline to next enemy.
+                    // Start the cooldown, then cost a turn — advance the timeline to next enemy.
+                    Scripts.Managers.SkillCooldownManager.Begin(caster, ability);
                     g.ManaPoolManager?.OnBankButtonClicked();
                 },
                 onCancelled: () => Debug.Log("[AbilityBar] Teleport cancelled — turn not spent."));
@@ -250,20 +262,37 @@ namespace Scripts.Canvas
                     continue;
                 }
 
+                // Skill cooldown for the bound hero (0 for Spells/Items, which don't use it).
+                int cooldown = a.Kind == AbilityKind.Skill
+                    ? Scripts.Managers.SkillCooldownManager.GetRemaining(owner, a)
+                    : 0;
+                bool onCooldown = cooldown > 0;
+
                 bool affordable;
                 switch (a.Kind)
                 {
                     case AbilityKind.Item:  affordable = a.Charges > 0; break;
-                    case AbilityKind.Skill: affordable = true; break; // free, always usable
+                    case AbilityKind.Skill: affordable = !onCooldown; break; // free, but locked while recharging
                     default:                affordable = bank != null && bank.CanAfford(a.Cost); break;
                 }
                 // US-012: Silenced blocks Spell-kind slots (Skills/Items still usable).
                 bool blockedBySilence = a.Kind == AbilityKind.Spell && silenced;
                 if (blockedBySilence) affordable = false;
                 if (buttons[i] != null) buttons[i].interactable = affordable;
-                if (nameLabels[i] != null) nameLabels[i].text = a.Name;
-                if (costLabels[i] != null) costLabels[i].text = ManaAbilities.CostIcons(a);
-                if (frames[i] != null) frames[i].color = blockedBySilence ? SilencedFrameColor : FrameColorFor(a, affordable);
+                if (nameLabels[i] != null)
+                {
+                    nameLabels[i].text = a.Name;
+                    // Fade the skill name while it recharges (slot reads as "disabled").
+                    var nc = nameLabels[i].color; nc.a = onCooldown ? 0.35f : 1f; nameLabels[i].color = nc;
+                }
+                // On cooldown: show the turns-remaining count where the cost normally goes.
+                if (costLabels[i] != null) costLabels[i].text = onCooldown ? $"{cooldown}" : ManaAbilities.CostIcons(a);
+                if (frames[i] != null)
+                {
+                    var fc = blockedBySilence ? SilencedFrameColor : FrameColorFor(a, affordable);
+                    if (onCooldown) fc.a *= 0.4f; // fade the whole slot out while recharging
+                    frames[i].color = fc;
+                }
             }
         }
 

@@ -183,6 +183,31 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Bought 1 Potion — now {p.Charges}/{p.MaxStackSize}.");
         }
 
+        private static readonly ManaAbility[] DemoSkills =
+            { Scripts.Data.ManaAbilities.Steal, Scripts.Data.ManaAbilities.Mug, Scripts.Data.ManaAbilities.Teleport };
+
+        /// <summary>Demo: lock the selected hero's Skill abilities so the bar shows the fade + countdown.</summary>
+        public void Demo_LockSkillCooldowns()
+        {
+            var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
+            if (hero == null) { Debug.LogWarning("[Demo] Select a hero first — its skills will be put on cooldown."); return; }
+            foreach (var s in DemoSkills)
+            {
+                Scripts.Managers.SkillCooldownManager.Begin(hero, s);
+                Debug.Log($"[Demo] {hero.name}: {s.Name} locked for {Scripts.Managers.SkillCooldownManager.GetRemaining(hero, s)} turn(s).");
+            }
+        }
+
+        /// <summary>Demo: tick skill cooldowns by one turn-cycle (mimics a hero-window start) and log.</summary>
+        public void Demo_TickSkillCooldowns()
+        {
+            Scripts.Managers.SkillCooldownManager.TickAll();
+            var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
+            if (hero == null) { Debug.Log("[Demo] Ticked skill cooldowns (no hero selected to report)."); return; }
+            foreach (var s in DemoSkills)
+                Debug.Log($"[Demo] {hero.name}: {s.Name} cooldown = {Scripts.Managers.SkillCooldownManager.GetRemaining(hero, s)}.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

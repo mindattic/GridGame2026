@@ -89,6 +89,11 @@ namespace Scripts.Models
         /// Skills (instant) and Items (instant).</summary>
         public float CastTimeSeconds { get; }
 
+        /// <summary>Skill-only: turns the skill is locked after use (0 = no cooldown). The remaining
+        /// countdown is tracked per-hero by <see cref="Scripts.Managers.SkillCooldownManager"/> — NOT
+        /// here — because Skill ManaAbility instances are shared statics across multiple loadouts.</summary>
+        public int CooldownTurns { get; }
+
         /// <summary>Spell ctor — pays orbs from the team bank.</summary>
         public ManaAbility(string name, ManaRecipe cost, float castTimeSeconds = DefaultSpellCastSeconds)
         {
@@ -98,6 +103,7 @@ namespace Scripts.Models
             Charges = -1;
             MaxStackSize = -1;
             CastTimeSeconds = castTimeSeconds;
+            CooldownTurns = 0;
         }
 
         /// <summary>Item ctor — per-slot consumable. <paramref name="maxStackSize"/> caps the stack;
@@ -111,11 +117,13 @@ namespace Scripts.Models
             MaxStackSize = maxStackSize;
             Charges = maxStackSize;
             CastTimeSeconds = 0f;
+            CooldownTurns = 0;
         }
 
         /// <summary>Skill ctor — free, reusable, "costs a turn." The bool param is a tag marker
-        /// to distinguish this ctor from the Item one (which also takes a non-string second arg).</summary>
-        public ManaAbility(string name, bool _isSkill)
+        /// to distinguish this ctor from the Item one (which also takes a non-string second arg).
+        /// <paramref name="cooldownTurns"/> locks the skill for N turn-cycles after use (0 = none).</summary>
+        public ManaAbility(string name, bool _isSkill, int cooldownTurns = 0)
         {
             Name = name;
             Kind = AbilityKind.Skill;
@@ -123,6 +131,7 @@ namespace Scripts.Models
             Charges = -1;
             MaxStackSize = -1;
             CastTimeSeconds = 0f;
+            CooldownTurns = cooldownTurns;
         }
 
         /// <summary>Item-only: consume one charge from the stack. Returns false if empty or not an Item.</summary>

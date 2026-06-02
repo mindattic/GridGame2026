@@ -79,6 +79,13 @@ public partial class DebugWindow
             ("Clear Mana", () => g.DebugManager.Demo_ClearMana())
         );
 
+        // Skill cooldowns — lock the selected hero's skills, then tick (or play through a turn) to
+        // watch the bar slots fade + count down and reactivate at 0.
+        RenderButtonRow(
+            ("Lock Skill CDs", () => g.DebugManager.Demo_LockSkillCooldowns()),
+            ("Tick CD (1 turn)", () => g.DebugManager.Demo_TickSkillCooldowns())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.
