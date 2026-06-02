@@ -363,6 +363,18 @@ namespace Scripts.Managers
             Demo_LogManaBank();
         }
 
+        /// <summary>Demo (US-030): log each hero class's mana color affinity (what it mints on a pincer).</summary>
+        public void Demo_LogColorAffinities()
+        {
+            var classes = new[]
+            {
+                CharacterClass.Cleric, CharacterClass.Paladin, CharacterClass.Barbarian, CharacterClass.Alchemist,
+                CharacterClass.Assassain, CharacterClass.GreenNinja, CharacterClass.RedNinja
+            };
+            foreach (var cls in classes)
+                Debug.Log($"[Demo] {cls} mints {Scripts.Data.Actor.ManaColorAffinity.For(cls)} on pincer.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

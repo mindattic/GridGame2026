@@ -197,16 +197,17 @@ public class PincerAttackManager : MonoBehaviour
 
         yield return g.SequenceManager.ExecuteRoutine();
 
-        // PHASE B: hero-side pincer completion DROPS Blue mana orbs (bouncing pickups) toward the
-        // orb line — heroes are the primary mana source. V1 is always Blue; per-hero color
-        // affinity arrives with WUBRG. Each orb commits on landing (ManaOrbInstance.Update).
+        // PHASE B: hero-side pincer completion DROPS mana orbs (bouncing pickups) toward the orb
+        // line — heroes are the primary mana source. US-030: each contributor mints ITS class color
+        // (was hardcoded Blue) so the bank profile reflects party composition (§23.2.1). Each orb
+        // commits on landing (ManaOrbInstance.Update).
         foreach (var p in participants.pair)
         {
             if (p == null || p.attacker1 == null || p.attacker1.team != Team.Hero) continue;
-            DropOrbAt(p.attacker1, ManaType.Blue);
-            if (p.attacker2 != null) DropOrbAt(p.attacker2, ManaType.Blue);
-            if (p.supporters1 != null) foreach (var s in p.supporters1) DropOrbAt(s, ManaType.Blue);
-            if (p.supporters2 != null) foreach (var s in p.supporters2) DropOrbAt(s, ManaType.Blue);
+            DropOrbAt(p.attacker1, Scripts.Data.Actor.ManaColorAffinity.For(p.attacker1.characterClass));
+            if (p.attacker2 != null) DropOrbAt(p.attacker2, Scripts.Data.Actor.ManaColorAffinity.For(p.attacker2.characterClass));
+            if (p.supporters1 != null) foreach (var s in p.supporters1) DropOrbAt(s, Scripts.Data.Actor.ManaColorAffinity.For(s.characterClass));
+            if (p.supporters2 != null) foreach (var s in p.supporters2) DropOrbAt(s, Scripts.Data.Actor.ManaColorAffinity.For(s.characterClass));
         }
 
         yield return g.BoardOverlay.FadeOutRoutine();

@@ -134,6 +134,11 @@ public partial class DebugWindow
             ("Mint Wild Orb", () => g.DebugManager.Demo_MintWildOrb())
         );
 
+        // Color affinity (US-030) — log what color each hero class mints on a pincer.
+        RenderButtonRow(
+            ("Log Color Affinities", () => g.DebugManager.Demo_LogColorAffinities())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

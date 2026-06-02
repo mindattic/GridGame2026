@@ -160,9 +160,7 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC D — Mana Color Identity
 *Orbs are hardcoded Blue. Give them class identity and the remaining mint sources so the bank profile reflects party composition (§23.2.1).*
 
-- [ ] **US-030 — Per-hero color affinity on pincer mint.** `PARTIAL` (all drops hardcoded `ManaType.Blue` — `PincerAttackManager.cs:206`; no `ColorAffinity` on `ActorData`).
-  **Done when:** `ActorData.ColorAffinity` (or per-class) added; `DropOrbAt` mints the contributor's affinity color; seed §23.2 colors (Cleric=W, Barbarian=R, …).
-  **Touch:** `Models/Actor/ActorData`, `Managers/PincerAttackManager`. **Bible:** §3.1.2, §23.1, §23.2, delete §16.5 #13; resolve §29.2 #8. **Dep:** —
+- [x] **US-030 — Per-hero color affinity on pincer mint.** ✅ DONE 2026-06-02. New `Data/Actor/ManaColorAffinity.For(class)` (per-class, the board's allowed alternative to an ActorData field — avoids churning 7 hero `Data()` files); `PincerAttackManager` mints each contributor's color instead of hardcoded Blue. Map (Legion-ratified for the two ambiguous): Cleric **W**, Paladin **W**, Barbarian **R**, Alchemist **G**, Assassin **B**, GreenNinja **G**, RedNinja **R**; others default Blue. Demo: "Log Color Affinities". Bible §3.1.2/§3.1.7/§23.2 + §16.5 #13 + §29.2 #8 updated. Unblocks US-031 (done) / US-033 (color conversion). **Dep:** — ✓
 
 - [x] **US-031 — Critical hit → Colorless orb.** ✅ DONE 2026-06-02. A hero's critical hit mints one Colorless "wild" orb to the team bank — hooked centrally in `ActorInstance.DamageRoutine` (covers pincer crits via AttackHelper AND magic crits via MagicAttackSequence, both routed through `AttackResult.HitType`). The wild orb renders as a spectrum-cycling cell (`ManaOrbLine.AnimateWildOrbs`) per the user's "flashes every color" treatment. Capped by the bank. Demo: "Mint Wild Orb". Bible §3.1.2/§3.1.7 updated. *(Dep US-030 was epic-ordering only — Colorless is a fixed color, no per-class decision needed.)* **Dep:** — ✓
 
@@ -277,7 +275,7 @@ These were on the original board and are **already implemented in code**. The bi
 ---
 
 # §D — Design questions to settle before their stories (from bible §29)
-- **§29.2 #8 color identity per class** → gates **US-030** (seed from §23.2).
+- ~~**§29.2 #8 color identity per class** → gates **US-030** (seed from §23.2).~~ **RESOLVED 2026-06-02 (Legion): Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R.**
 - ~~**§29.3 #12 heal/rest model** (free vs gold) → shapes **US-053**.~~ **RESOLVED 2026-06-01 (Legion 4/4): model A — wounds persist, gold-cost full-heal at the Alchemist.**
 - **§29.3 #13 out-of-battle debuff carry** → §8.8 locks *clear-on-end*; confirm before shipping HP carry-over.
 - **§29.4 #16 Bestiary unlock gate** → gates **US-093**.

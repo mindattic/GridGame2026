@@ -376,7 +376,7 @@ Magic-style 5-color pie plus a generic:
 #### 3.1.2 Harvesting
 
 Orbs are minted from gameplay events:
-- **Pincer completion**: each hero attacker contributes 1 orb of their class color (V1: all Blue placeholder). Each supporter also contributes 1.
+- **Pincer completion**: each hero attacker contributes 1 orb of their **class color** (US-030, via `ManaColorAffinity.For`). Each supporter also contributes 1 (its own color).
 - **Enemy charge interruption** (Phase C, `US-027`): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. Blocked on enemies not casting yet (`US-026`); the hero-side interrupt mechanic itself is wired (§13.4).
 - **Critical hits** (**Built — US-031**): a hero's critical hit (pincer or magic — any damage routed through `ActorInstance.DamageRoutine`) mints one **Colorless "wild" orb** to the bank. Wild orbs render as an all-colors-at-once orb that **flashes through the spectrum** in the line (`ManaOrbLine.AnimateWildOrbs`), distinguishing them from the static elemental orbs. This is a primary off-palette source.
 - **Steal / Mug skills**: per-target LCK + 0.5 × AGI roll, success → random-color orb to the bank.
@@ -419,7 +419,7 @@ A future alchemy step can trade N orbs of one color toward another, or treat Col
 
 | Event | Orbs minted | Color source |
 |---|---|---|
-| Hero completes a 2-hero pincer (no supporters, 1 enemy in line) | 2 | each hero's class color (V1: Blue placeholder) |
+| Hero completes a 2-hero pincer (no supporters, 1 enemy in line) | 2 | each hero's class color (US-030) |
 | Hero pincer with 2 supporters | 4 | 2 attackers + 2 supporters |
 | Hero pincer with 1 supporter, 3 enemies in line | 3 | 2 attackers + 1 supporter |
 | Steal/Mug skill, 3 adjacent enemies, 2 succeed | 2 | random per roll |
@@ -1407,7 +1407,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | 12 | (backlog) | **Spell-VFX per-spell prefabs** — author menus exist; run + register as art lands | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
-| 13 | US-030 | **Per-hero color affinity** — `ColorAffinity` on ActorData; pincer drops use it (today: hardcoded Blue, `PincerAttackManager.cs:206`) | P1 | `ActorData`, `PincerAttackManager.DropOrbAt` |
+| ~~13~~ | US-030 | ~~**Per-hero color affinity**~~ — **DONE 2026-06-02**: `ManaColorAffinity.For(class)` (W/W/R/G/B/G/R); `PincerAttackManager` mints each contributor's color instead of Blue. Demo: "Log Color Affinities". | P1 | `Data/Actor/ManaColorAffinity`, `PincerAttackManager` |
 | 14 | US-093 | **Bestiary enemy filter** — show only `ActorTag.Enemy` entries | P2 | `BestiaryView` |
 | ~~22~~ | — | ~~Drop tables per enemy class~~ — **DONE** (16 tables, `DropTableLibrary.cs:53-68`) | — | — |
 
@@ -1789,14 +1789,14 @@ Heroes and enemies share the `CharacterClass` enum in `Helpers/CharacterClass.cs
 | Class | Identity | Stat lean | Color affinity (planned) | Loadout |
 |---|---|---|---|---|
 | **Cleric** | white-magic healer; sustain-focused; reads enemy intentions | INT/WIS high, STR low | White | Heal, Heal, Frost, Potion(3) |
-| **Paladin** | front-line tank with healing on the side | VIT/STR high, mid WIS | White/Red | Heal, Fireball, Potion(3) |
+| **Paladin** | front-line tank with healing on the side | VIT/STR high, mid WIS | **White** (US-030) | Heal, Fireball, Potion(3) |
 | **Barbarian** | high-damage front line; brute force | STR/VIT high, low INT/WIS | Red | Fireball, Bolt, Potion(3) |
-| **Alchemist** | utility / consumable stacks / non-magical control | INT/AGI mid, high LCK | Blue/Green | Frost, Potion(5), Steal, Heal, Potion(5) |
+| **Alchemist** | utility / consumable stacks / non-magical control | INT/AGI mid, high LCK | **Green** (US-030) | Frost, Potion(5), Steal, Heal, Potion(5) |
 | **Assassain** | high-damage flanker; rogue toolkit | AGI/LCK high | Black | Steal, Mug, Bolt, Potion(3) |
 | **GreenNinja** | mobility specialist; thief variant | AGI/LCK high | Green | Teleport, Steal, Fireball, Potion(3) |
 | **RedNinja** | mobility + striker | AGI/STR high | Red | Teleport, Mug, Bolt, Potion(3) |
 
-Color affinity is **planned** — when implemented, completing a pincer will drop an orb of the participating heroes' colors instead of all-Blue placeholders.
+Color affinity is **BUILT (US-030, 2026-06-02)** — completing a pincer drops an orb of each participating hero's color (not the old all-Blue placeholder), via `ManaColorAffinity.For(class)` in `PincerAttackManager`. The full map: Cleric **W**, Paladin **W**, Barbarian **R**, Alchemist **G**, Assassin **B**, GreenNinja **G**, RedNinja **R** (Paladin/Alchemist resolved by the Legion panel; unlisted classes default Blue).
 
 #### 23.2.0 Signature moves + design rationale
 
@@ -2281,7 +2281,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 ### 29.2 Party / classes
 
 7. **Party size cap** — 4 heroes? 5? Variable per stage?
-8. **Color identity per class** — each hero contributes their color to a pincer. Which classes are which color?
+8. ~~**Color identity per class** — each hero contributes their color to a pincer. Which classes are which color?~~ **RESOLVED 2026-06-02 (US-030; Legion panel for the two ambiguous):** Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R. See §23.2 / `ManaColorAffinity`.
 9. **Per-hero AbilityBar (not per-class)** — when do we migrate from `HeroLoadouts.perClass` defaults to player-assigned bars saved in `HeroEquipmentSave.AbilityBarSlots`?
 
 ### 29.3 Content economy
