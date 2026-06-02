@@ -105,14 +105,17 @@ namespace Scripts.Sequences
 
             if (opponent.IsPlaying && !opponent.IsDying && !opponent.IsDead)
             {
-                // Check if the target hero is casting - if so, interrupt them
-                InterruptCastingHero(opponent);
-
                 var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
 
-                if (attackResult != null && attackResult.Opponent != null && 
+                if (attackResult != null && attackResult.Opponent != null &&
                     !attackResult.Opponent.IsDying && !attackResult.Opponent.IsDead)
                 {
+                    // Interrupt the hero's in-flight cast only when the blow actually LANDS.
+                    // The bible ties interruption to "taking damage", so a fully-dodged (Miss)
+                    // attack must not break a cast or consume its MP.
+                    if (attackResult.HitType != HitOutcome.Miss)
+                        InterruptCastingHero(opponent);
+
                     var singleAttack = AttackHelper.SingleAttackRoutine(attackResult);
                     yield return attacker.Animation.BumpRoutine(opponent, singleAttack);
                 }

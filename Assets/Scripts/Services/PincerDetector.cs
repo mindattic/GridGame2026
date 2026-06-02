@@ -187,14 +187,16 @@ namespace Scripts.Services
         }
 
         /// <summary>
-        /// Allies cardinally in line with <paramref name="attacker"/> and not blocked by an
-        /// intervening actor — each adds bonus pincer damage.
+        /// Allies <b>cardinally adjacent</b> to <paramref name="attacker"/> (a pincer endpoint),
+        /// not blocked by an intervening actor — each adds bonus pincer damage. Adjacency is
+        /// required per game_bible.md §1: a supporter sits directly next to the endpoint, not
+        /// merely somewhere along the same row/column.
         /// </summary>
         public static List<ActorInstance> FindSupporters(IReadOnlyList<ActorInstance> actors, ActorInstance attacker)
         {
             var candidates = actors
                 .Where(x => x.IsPlaying && x.team == attacker.team && x != attacker)
-                .Where(x => Geometry.IsSameRow(x.location, attacker.location) || Geometry.IsSameColumn(x.location, attacker.location))
+                .Where(x => Geometry.IsAdjacentTo(x.location, attacker.location))
                 .ToList();
 
             var result = new List<ActorInstance>();

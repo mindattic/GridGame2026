@@ -183,6 +183,23 @@ public class VisualEffectManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Destroys and unregisters a VFX instance by reference. Use this for instances obtained from
+    /// <see cref="SpawnInstance"/>: they are registered under a unique GUID key, so the by-name
+    /// Despawn can never find them and would leak the dictionary entry.
+    /// </summary>
+    public void Despawn(VisualEffectInstance instance)
+    {
+        if (instance == null) return;
+
+        string key = null;
+        foreach (var kv in collection)
+            if (kv.Value == instance) { key = kv.Key; break; }
+        if (key != null) collection.Remove(key);
+
+        if (instance.gameObject != null) Destroy(instance.gameObject);
+    }
+
+    /// <summary>
     /// Destroys all VFX instances from the scene without using tags.
     /// </summary>
     public void Clear()

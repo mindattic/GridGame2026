@@ -229,13 +229,15 @@ namespace Scripts.Managers
                 yield return null;
             }
 
-            // Fix #3: route through VisualEffectManager so it owns lifetime (pool/dedup). Falls
-            // back to direct Destroy if the manager dropped its reference.
+            // Route through VisualEffectManager so it owns lifetime (unregisters its GUID-keyed
+            // entry too). The old Despawn(asset.Name) was a no-op — instances are keyed by a
+            // unique GUID, not the asset name — so it leaked a dictionary entry per projectile.
             if (instance != null)
             {
-                if (g.VisualEffectManager != null && !string.IsNullOrEmpty(asset.Name))
-                    g.VisualEffectManager.Despawn(asset.Name);
-                if (instance != null && instance.gameObject != null) GameObject.Destroy(instance.gameObject);
+                if (g.VisualEffectManager != null)
+                    g.VisualEffectManager.Despawn(instance);
+                else if (instance.gameObject != null)
+                    GameObject.Destroy(instance.gameObject);
             }
         }
 

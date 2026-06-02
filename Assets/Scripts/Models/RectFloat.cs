@@ -63,7 +63,7 @@ namespace Scripts.Models
         //Properties
         public float Width => Right - Left;
         public float Height => Top - Bottom;
-        public Vector2 Center => new Vector2(Width / 2, Height / 2);
+        public Vector2 Center => new Vector2(Left + Width / 2f, Bottom + Height / 2f);
         public Vector2 Size => new Vector2(Width, Height);
     }
 }

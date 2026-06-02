@@ -66,11 +66,8 @@ namespace Scripts.Sequences
             if (caster.IsPlaying)
                 yield return caster.Animation.BobRoutine();
 
-            var vfx = VisualEffectLibrary.Get(impactVfxKey);
-            if (vfx != null)
-                yield return g.VisualEffectManager.PlayRoutine(vfx, target.Position);
-
-            // Miss → dodge feedback, no damage. Otherwise apply through the shared damage path.
+            // Roll the outcome BEFORE the impact VFX: a miss should show only dodge feedback,
+            // not a full impact splash (the splash implies a hit — mirrors AttackHelper).
             var result = Formulas.CalculateMagicDamage(caster, target, element);
             if (result.HitType == HitOutcome.Miss)
             {
@@ -78,6 +75,13 @@ namespace Scripts.Sequences
                 yield break;
             }
 
+            var vfx = VisualEffectLibrary.Get(impactVfxKey);
+            if (vfx != null)
+                yield return g.VisualEffectManager.PlayRoutine(vfx, target.Position);
+
+            // Capture survival BEFORE applying — Damage() runs as a coroutine, so target.Stats.HP
+            // is not yet reduced here and target.IsPlaying would still read true on a killing blow.
+            bool targetWillSurvive = result.Damage < target.Stats.HP;
             target.Damage(result);
 
             // Mirror physical attacks: a hero striking an enemy during the hero window shoves
@@ -90,8 +94,9 @@ namespace Scripts.Sequences
             }
 
             // Fire spells leave a lingering Burn (damage-over-time) on a surviving target.
-            // Burn severity scales with the caster's magic stats; cured by Esuna.
-            if (element == ElementalDamageType.Fire && target.IsPlaying && target.Statuses != null)
+            // Burn severity scales with the caster's magic stats; cured by Esuna. Skip it when
+            // this hit is lethal — no point stamping a DoT on an actor that's already dying.
+            if (element == ElementalDamageType.Fire && targetWillSurvive && target.Statuses != null)
             {
                 float burn = Mathf.Max(2f, (caster.Stats.Intelligence + caster.Stats.Wisdom) * 0.35f);
                 target.Statuses.Apply(new StatusEffect

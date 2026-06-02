@@ -590,9 +590,12 @@ public partial class ActorInstance : MonoBehaviour
             if (baseXp > 0)
             {
                 // Accumulate to ExperienceTracker for PostBattle screen (both modes)
+                // `save` is null-conditional above, so the whole chain must be guarded — the old
+                // `save.Party...` dereferenced a possibly-null save (no profile loaded), and the
+                // trailing `?? new ...` was dead (ToHashSet/ToList never return null).
                 var save = ProfileHelper.CurrentProfile?.CurrentSave;
-                var party = save.Party.Members.Select(m => m.CharacterClass).ToHashSet() ?? new HashSet<CharacterClass>();
-                var roster = save.Roster.Members.Select(m => m.CharacterClass).ToList() ?? new System.Collections.Generic.List<CharacterClass>();
+                var party = save?.Party?.Members?.Select(m => m.CharacterClass).ToHashSet() ?? new HashSet<CharacterClass>();
+                var roster = save?.Roster?.Members?.Select(m => m.CharacterClass).ToList() ?? new System.Collections.Generic.List<CharacterClass>();
 
                 foreach (var character in roster)
                 {
