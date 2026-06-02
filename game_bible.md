@@ -1224,7 +1224,7 @@ When an enemy is in the Prepare Zone and casting/charging, a pincer or shield pr
 
 `Services/EnemyPlanner.PlanStep(enemy, actors, tileMap)`:
 1. If `BuffSystem.IsImmobile(enemy)` → stay put.
-2. Pick best target hero (nearest + HP-weighted).
+2. Pick best target hero (nearest + HP-weighted, minus an INT-scaled threat term — US-080).
 3. Score candidate moves (stay + 4 cardinals): distance to target, in-range bonus, walk-into-flank penalty.
 4. **If Humanoid**: add +50 to any candidate that would form a pincer (simulate the move, run `PincerDetector`, restore).
 5. Return best candidate.
@@ -1276,6 +1276,7 @@ The +50 pincer-seek beats the −100 self-flank avoidance (no, it doesn't — �
 | Would be flanked by heroes here | −100 | Hard avoid (single hardest signal) |
 | Stay put | −0.5 | Mild bias to keep advancing |
 | Forms Humanoid pincer here | +50 | Pincer-seek beats positional ties, loses to flank-avoidance |
+| **Target's threat (US-080)** | −(threat∕maxThreat) × INT × 0.8 | Smart enemies hunt whoever's hurt them. Applied to *target choice*, not the step score: high-INT enemies prefer the top damage-dealer; low-INT barely weight it. Threat = damage dealt this battle (`ThreatTracker`). |
 
 These weights are the **only tuning knobs**; they live as constants in `EnemyPlanner`. Adding new behaviors (range-keep, support-buddy) means new factor branches.
 
@@ -1299,7 +1300,7 @@ Different enemies should *feel* different by their `ActorData.Tags` + base stat 
 - **Casting enemies** (Phase C): telegraph a charge in the Prepare Zone. The icon shows a colored fill bar matching the charge type; if the player interrupts during the slow window, the cast is canceled AND drops an orb of that color into the team bank (§3.1.2).
 - **AI-driven supporter positioning**: enemy turn could include a "support" mode where an enemy moves to enable an ally's pincer.
 - **Boss-specific scripted moves**: per-class override in `EnemyPlanner` that swaps the generic step logic for boss-authored sequences.
-- **Threat tracking**: heroes who deal more damage become preferred targets (TODO).
+- ~~**Threat tracking**: heroes who deal more damage become preferred targets (TODO).~~ **DONE — US-080 (2026-06-02):** `ThreatTracker` tallies hero→enemy damage; `EnemyPlanner` subtracts a normalized-threat × INT × 0.8 term from each candidate's target score, so **smarter (high-INT) enemies prefer the top damage-dealer** while dumb ones keep chasing nearest/wounded. Cleared at battle start. Demo: "Log Threat".
 - **Coordinated retreat**: low-HP enemies could move *away* from heroes when wounded.
 
 ---

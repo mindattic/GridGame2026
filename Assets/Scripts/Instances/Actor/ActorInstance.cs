@@ -547,6 +547,11 @@ public partial class ActorInstance : MonoBehaviour
             {
                 _lastAttacker = attackResult.Attacker;
             }
+
+            // US-080: accrue threat for hero→enemy damage so smart (high-INT) enemies can prefer
+            // whoever's been hurting them. Enemy→hero and ally damage do not count.
+            if (this.IsEnemy && attackResult?.Attacker != null && attackResult.Attacker.IsHero && attackResult.Damage > 0)
+                Scripts.Managers.ThreatTracker.AddThreat(attackResult.Attacker, attackResult.Damage);
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);

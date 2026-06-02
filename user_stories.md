@@ -196,9 +196,7 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC F — AI Depth
 *The planner is solid for positioning (§A) but lacks the §14.3 future hooks. Best done after enemy casting (US-026) exists so the Caster archetype has behavior to plan.*
 
-- [ ] **US-080 — Threat tracking (damage → preferred target).** `PARTIAL` (targeting weights distance+HP, not damage dealt — `EnemyPlanner.cs:42-44`).
-  **Done when:** `EnemyPlanner` adds an accumulated-damage-per-hero weight to target selection.
-  **Touch:** `Services/EnemyPlanner` (+ a per-battle damage tally). **Bible:** §14.1.2 (new factor), §14.3. **Dep:** —
+- [x] **US-080 — Threat tracking (damage → preferred target).** ✅ DONE 2026-06-02. New `Managers/ThreatTracker` (per-battle hero→enemy damage tally, accrued in `ActorInstance.DamageRoutine`, cleared in `TurnManager.Initialize`). `EnemyPlanner` subtracts `(threat∕maxThreat) × enemyINT × 0.8` from each candidate's target score, so **threat weight scales with enemy Intelligence** (user refinement): smart enemies hunt the top damage-dealer, dumb ones keep chasing nearest/wounded. Demo: "Log Threat". Bible §14.1.2/§14.3 updated. **Dep:** —
 
 - [ ] **US-081 — Coordinated retreat (wounded enemies flee).** `NOT-BUILT`.
   **Done when:** below an HP threshold an enemy biases moves *away* from heroes.

@@ -336,6 +336,22 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] {hero.name} resistance scan: {shown} non-default type(s) (others = ×1.0).");
         }
 
+        /// <summary>Demo (US-080): log each hero's accrued threat (damage dealt this battle). Smart
+        /// enemies prefer the highest — fight a bit, then check who the enemies will hunt.</summary>
+        public void Demo_LogThreat()
+        {
+            var all = g.Actors.All;
+            if (all == null) { Debug.LogWarning("[Demo] No actors (start a battle)."); return; }
+            int n = 0;
+            foreach (var a in all)
+            {
+                if (a == null || !a.IsHero) continue;
+                Debug.Log($"[Demo] Threat — {a.name}: {Scripts.Managers.ThreatTracker.GetThreat(a):0} damage dealt.");
+                n++;
+            }
+            if (n == 0) Debug.Log("[Demo] No heroes to report threat for.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

@@ -39,8 +39,13 @@ namespace Scripts.Services
 
             // Choose a target: prefer heroes that are both NEAR and WOUNDED (kill pressure).
             // Lower score wins (distance, plus a big bonus for low HP fraction).
+            // US-080: smarter enemies hold a grudge — subtract an INT-scaled threat term so a
+            // high-INT enemy gravitates to whoever has dealt it the most damage. A dumb (low-INT)
+            // enemy barely weights threat and keeps chasing the nearest/most-wounded hero.
+            float maxThreat = Scripts.Managers.ThreatTracker.MaxThreat(heroes);
+            float intFactor = (enemy.Stats != null ? enemy.Stats.Intelligence : 0f) * ThreatIntScale;
             ActorInstance target = heroes
-                .OrderBy(h => Manhattan(enemy.location, h.location) + HpFraction(h) * 8f)
+                .OrderBy(h => Manhattan(enemy.location, h.location) + HpFraction(h) * 8f - ThreatTerm(h, maxThreat, intFactor))
                 .First();
 
             // Candidate steps: stay put + the four cardinal neighbors that are on-board and free.
@@ -118,6 +123,19 @@ namespace Scripts.Services
 
         private static float HpFraction(ActorInstance h) =>
             h.Stats != null && h.Stats.MaxHP > 0f ? h.Stats.HP / h.Stats.MaxHP : 1f;
+
+        /// <summary>US-080: per-INT weight on threat. Tuned so the term is comparable to the HP bonus
+        /// (×8) around INT 10, dominates distance at high INT, and is negligible at low INT.</summary>
+        private const float ThreatIntScale = 0.8f;
+
+        /// <summary>Threat contribution to the (lower-wins) target score: the hero's share of the
+        /// highest threat (0..1) × the enemy's INT-scaled weight. 0 when no one has dealt damage.</summary>
+        private static float ThreatTerm(ActorInstance h, float maxThreat, float intFactor)
+        {
+            if (maxThreat <= 0f || intFactor <= 0f) return 0f;
+            float norm = Scripts.Managers.ThreatTracker.GetThreat(h) / maxThreat; // 0..1
+            return norm * intFactor;
+        }
 
         private static bool IsOccupied(Vector2Int loc, IReadOnlyList<ActorInstance> actors, ActorInstance self) =>
             actors.Any(a => a != null && a != self && a.IsPlaying && a.location == loc);

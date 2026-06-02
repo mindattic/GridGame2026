@@ -108,7 +108,7 @@ namespace Scripts.Managers
         }
 
         /// <summary>Initializes turn manager and begins first hero window.</summary>
-        public void Initialize() { SkillCooldownManager.Clear(); BeginHeroWindow(); }
+        public void Initialize() { SkillCooldownManager.Clear(); ThreatTracker.Clear(); BeginHeroWindow(); }
 
         #endregion
 
