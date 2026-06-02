@@ -169,10 +169,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a Quicken spell increases target icon u; `ResolveSpatialOverlap` runs inverted; turn order updates.
   **Touch:** `Canvas/TimelineBarInstance.ResolveSpatialOverlap`, `Data/SpellLibrary` (Quicken). **Bible:** §2, casting prose. **Dep:** —
 
-- [ ] **US-033 — Color conversion / pressure valve.** `NOT-BUILT` (`ManaBank` has Add/Spend/CanAfford only).
-  **Why:** Documented escape valve (§3.1.6) so off-color banks aren't dead weight.
-  **Done when:** a `ManaBank.Trade()` + in-battle UI trades N orbs of one color toward another (Colorless wildcard at a cost). Design-locked first.
-  **Touch:** `Models/ManaBank`, `ManaPoolManager`, conversion UI. **Bible:** §3.1.6 (promote intent → built). **Dep:** US-030.
+- [x] **US-033 — Pressure valve (Colorless wildcard).** ✅ DONE 2026-06-02. **Design-locked by Legion (4/4): rule B — Colorless wild orbs satisfy any color on spend; no manual converter** (keeps colors meaningful, valve tied to crits, not exploitable). This removed the UI requirement entirely — pure `ManaBank` logic: `CanAfford`/`Spend` pay each cost with its own color (leftmost) then fall back to Colorless wilds for shortfalls; explicit Colorless costs paid only by Colorless. Demo: "Test Wildcard Spend". Bible §3.1.6 promoted to built. **Dep:** US-030 ✓ (uses US-031 crit-orbs as the valve source). ✓
 
 ---
 

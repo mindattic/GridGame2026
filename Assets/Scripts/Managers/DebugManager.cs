@@ -375,6 +375,17 @@ namespace Scripts.Managers
                 Debug.Log($"[Demo] {cls} mints {Scripts.Data.Actor.ManaColorAffinity.For(cls)} on pincer.");
         }
 
+        /// <summary>Demo (US-033, rule B): prove Colorless "wild" orbs pay any color on spend.
+        /// White satisfies Heal(W); a lone Colorless ALSO satisfies it (wildcard); a lone Red does not.</summary>
+        public void Demo_TestColorlessWildcard()
+        {
+            var cost = Scripts.Data.ManaAbilities.Heal.Cost; // (W) ×1
+            var withWhite = new ManaBank(); withWhite.Add(ManaType.White, 1);
+            var withWild = new ManaBank(); withWild.Add(ManaType.Colorless, 1);
+            var withRed = new ManaBank(); withRed.Add(ManaType.Red, 1);
+            Debug.Log($"[Demo] Heal(W) — White:{withWhite.CanAfford(cost)} (exp true), Colorless-wild:{withWild.CanAfford(cost)} (exp true), Red:{withRed.CanAfford(cost)} (exp false).");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

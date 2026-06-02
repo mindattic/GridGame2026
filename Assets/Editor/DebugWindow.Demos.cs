@@ -139,6 +139,11 @@ public partial class DebugWindow
             ("Log Color Affinities", () => g.DebugManager.Demo_LogColorAffinities())
         );
 
+        // Colorless wildcard (US-033) — prove a Colorless "wild" orb pays any color on spend.
+        RenderButtonRow(
+            ("Test Wildcard Spend", () => g.DebugManager.Demo_TestColorlessWildcard())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

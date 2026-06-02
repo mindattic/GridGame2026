@@ -60,7 +60,9 @@ namespace Scripts.Models
             return added;
         }
 
-        /// <summary>True if the line holds every orb the cost requires. With <see cref="AllowAnyColor"/>, only the TOTAL count is checked.</summary>
+        /// <summary>True if the line holds every orb the cost requires. With <see cref="AllowAnyColor"/>,
+        /// only the TOTAL count is checked. US-033 rule B: <see cref="ManaType.Colorless"/> "wild" orbs
+        /// (minted by crits, US-031) substitute for any colored requirement — the bank's pressure valve.</summary>
         public bool CanAfford(ManaRecipe cost)
         {
             if (cost == null) return false;
@@ -70,12 +72,31 @@ namespace Scripts.Models
                 foreach (var c in cost.Costs) total += c.Amount;
                 return orbs.Count >= total;
             }
+
+            int colorlessAvail = Count(ManaType.Colorless);
             foreach (var c in cost.Costs)
-                if (Count(c.Type) < c.Amount) return false;
+            {
+                if (c.Type == ManaType.Colorless)
+                {
+                    // An explicit Colorless requirement can only be paid by Colorless orbs.
+                    if (colorlessAvail < c.Amount) return false;
+                    colorlessAvail -= c.Amount;
+                }
+                else
+                {
+                    int have = Count(c.Type);
+                    if (have >= c.Amount) continue;
+                    int shortfall = c.Amount - have;
+                    if (colorlessAvail < shortfall) return false; // wilds cover the rest
+                    colorlessAvail -= shortfall;
+                }
+            }
             return true;
         }
 
-        /// <summary>Spends the cost's orbs if affordable (removes from the line). With <see cref="AllowAnyColor"/>, consumes from the leftmost orbs regardless of color.</summary>
+        /// <summary>Spends the cost's orbs if affordable (removes from the line). With <see cref="AllowAnyColor"/>,
+        /// consumes leftmost regardless of color. Otherwise pays each requirement with its own color
+        /// (leftmost-first, §3.1.5), falling back to Colorless wild orbs for any shortfall (US-033 rule B).</summary>
         public bool Spend(ManaRecipe cost)
         {
             if (!CanAfford(cost)) return false;
@@ -86,8 +107,21 @@ namespace Scripts.Models
                 for (int k = 0; k < total && orbs.Count > 0; k++) orbs.RemoveAt(0);
                 return true;
             }
+
+            // Pay explicit Colorless requirements first so colored fallbacks don't consume the
+            // wild orbs those requirements need.
             foreach (var c in cost.Costs)
-                for (int k = 0; k < c.Amount; k++) orbs.Remove(c.Type); // removes the first matching orb
+                if (c.Type == ManaType.Colorless)
+                    for (int k = 0; k < c.Amount; k++) orbs.Remove(ManaType.Colorless);
+
+            // Colored requirements: spend the matching color (leftmost), else a Colorless wild orb.
+            foreach (var c in cost.Costs)
+            {
+                if (c.Type == ManaType.Colorless) continue;
+                for (int k = 0; k < c.Amount; k++)
+                    if (!orbs.Remove(c.Type))
+                        orbs.Remove(ManaType.Colorless);
+            }
             return true;
         }
 

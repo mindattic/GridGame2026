@@ -411,9 +411,9 @@ When `Bank.Spend(recipe)` removes colored orbs, the **leftmost orb of each deman
 
 `AllowAnyColor` (dev flag) consumes purely leftmost regardless of color — useful for early-stage testing before colors lock in.
 
-#### 3.1.6 Conversion / pressure valve (design intent, not built)
+#### 3.1.6 Pressure valve — Colorless wildcard (BUILT, US-033)
 
-A future alchemy step can trade N orbs of one color toward another, or treat Colorless as a wildcard at a cost. Keeps colors meaningful while giving the player an escape valve.
+The escape valve so an off-color bank isn't dead weight: **a Colorless "wild" orb (minted by crits, §3.1.2/US-031) satisfies any single colored requirement when spending.** `ManaBank.CanAfford`/`Spend` pay each cost with its own color first (leftmost, §3.1.5) and fall back to Colorless wilds for any shortfall; an explicit Colorless requirement is paid only by Colorless. There is **no manual color-to-color converter** — the Legion panel (2026-06-02, 4/4) chose this over a 2-for-1 trade because it keeps class colors meaningful (off-color orbs stay off-color — the cost of poor positioning), ties the valve to skilled play (crits), and isn't exploitable. Reversible: a converter can be added later if the valve proves too tight.
 
 #### 3.1.7 At-a-glance mint cadence
 
