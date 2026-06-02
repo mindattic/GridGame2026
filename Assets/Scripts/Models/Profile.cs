@@ -224,7 +224,7 @@ namespace Scripts.Models
             Members = new List<CharacterLevelPair>();
             if (other.Members != null)
                 foreach (var m in other.Members)
-                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP));
+                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP, m.HpCurrent));
         }
     }
 
@@ -240,7 +240,7 @@ namespace Scripts.Models
             Members = new List<CharacterLevelPair>();
             if (other.Members != null)
                 foreach (var m in other.Members)
-                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP));
+                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP, m.HpCurrent));
         }
     }
 
@@ -252,11 +252,17 @@ namespace Scripts.Models
         // Persist only the accumulated (lifetime) XP. Level and current XP are derived at runtime.
         public int TotalXP;
 
+        // US-053: carried-over current HP between battles. 0 = spawn at full MaxHP. Wounds persist
+        // after a victory; a full-heal-for-gold at the Alchemist (§29.3 #12, model A) or a defeat
+        // resets it to 0.
+        public float HpCurrent;
+
         public CharacterLevelPair() { }
-        public CharacterLevelPair(CharacterClass characterClass, int totalXP = 0)
+        public CharacterLevelPair(CharacterClass characterClass, int totalXP = 0, float hpCurrent = 0f)
         {
             CharacterClass = characterClass;
             TotalXP = totalXP;
+            HpCurrent = hpCurrent;
         }
     }
 

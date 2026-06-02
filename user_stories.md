@@ -78,10 +78,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Why:** Editor matches build framerate so perf spikes show during the whole build, not just at the end.
   **Touch:** `Bootstrap.Awake`. **Bible:** §30.5. **Dep:** —
 
-- [ ] **US-053 — HP carry-over between battles.** `NOT-BUILT` (no `HpCurrent` field in any save class — `Profile.cs`).
-  **Why:** Wounds-between-battles gives the heal vendor a job (§15.1) and completes the defeat path (US-063 routing already exists, just needs the restore).
-  **Done when:** an `HpCurrent` field is added (e.g. on `CharacterLevelPair`/a `HeroHealthSave`); written at battle end; wounded HP hydrated on spawn; defeat resets to MaxHP.
-  **Touch:** `Models/Profile.cs`, `SaveStateService`/`PostBattleManager`, hero spawn in `GameBuilder`. **Bible:** §15.1, §15.2, §22.2; resolve §29.3 #12 (heal model). **Dep:** —
+- [x] **US-053 — HP carry-over between battles.** ✅ DONE 2026-06-01. `CharacterLevelPair.HpCurrent` added (`Profile.cs`); `StageManager.SpawnActor` hydrates wounds after equipment finalizes MaxHP; `BattleWonSequence` persists each party hero's HP (survivors keep their wound, a hero who fell in a won battle revives at 1); `BattleLostSequence` resets the party to full. **Heal model = §29.3 #12 model A (Legion 4/4): wounds persist, gold-cost full-heal at the Alchemist** (Inn was cut). Demos: "Wound Party 50%" / "Heal Party Full". Bible §15.1/§15.2 + §29.3 #12 updated. *Follow-on: the Alchemist heal-service UI button (the carry-over mechanism + in-battle heal preview are built).*
 
 - [ ] **US-054 — `BestiaryProgress` writing (seen / defeated).** `NOT-BUILT` (no `BestiarySaveData` in `Profile.cs`).
   **Why:** Unblocks Bestiary unlock gating (US-093) and lets Scan flag `seen` (US-077).
@@ -258,8 +255,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** hover/long-press shows name, cost, target-shape preview, base dmg/heal.
   **Touch:** `Canvas/AbilityBar`, new tooltip. **Bible:** §4.5. **Dep:** US-076.
 
-- [ ] **US-092 — Cooldown slot visual state.** `NOT-BUILT`.
-  **Done when:** skills can declare a reuse limit; bar renders the greyscale + radial sweep (§4.5).
+- [~] **US-092 — Cooldown slot visual state.** ✅ MOSTLY DONE 2026-06-01 (commit `1bdb322b`). Skills declare a reuse limit (`ManaAbility.CooldownTurns`; Steal 3 / Mug 2 / Teleport 3); per-hero countdown via `SkillCooldownManager`, ticked per turn-cycle in `TurnManager.BeginHeroWindow`; `AbilityBar.Refresh` renders a disabled state — **slot fades out + shows the turns-remaining number**, button non-interactable. Bible §4.1.1. *Remaining polish only:* the exact §4.5 **greyscale + radial-sweep** visual (current state is fade + numeric countdown).
   **Touch:** `Canvas/AbilityBar`, `Data/ManaAbility`. **Bible:** §4.5. **Dep:** —
 
 - [ ] **US-094 — Colorblind palette toggle.** `NOT-BUILT` (`SettingsManager` has toggles, not this).
@@ -300,7 +296,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 # §D — Design questions to settle before their stories (from bible §29)
 - **§29.2 #8 color identity per class** → gates **US-030** (seed from §23.2).
-- **§29.3 #12 heal/rest model** (free vs gold) → shapes **US-053**.
+- ~~**§29.3 #12 heal/rest model** (free vs gold) → shapes **US-053**.~~ **RESOLVED 2026-06-01 (Legion 4/4): model A — wounds persist, gold-cost full-heal at the Alchemist.**
 - **§29.3 #13 out-of-battle debuff carry** → §8.8 locks *clear-on-end*; confirm before shipping HP carry-over.
 - **§29.4 #16 Bestiary unlock gate** → gates **US-093**.
 - **§29.4 #17 AspectGuard strategy** → ratify §26 before **US-001**.

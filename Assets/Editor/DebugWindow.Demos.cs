@@ -86,6 +86,13 @@ public partial class DebugWindow
             ("Tick CD (1 turn)", () => g.DebugManager.Demo_TickSkillCooldowns())
         );
 
+        // HP carry-over (US-053) — wound the party, win, and the next battle spawns them still hurt;
+        // Heal Party previews the gold-cost Alchemist full-heal (§29.3 #12, model A).
+        RenderButtonRow(
+            ("Wound Party 50%", () => g.DebugManager.Demo_WoundParty()),
+            ("Heal Party Full", () => g.DebugManager.Demo_HealParty())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

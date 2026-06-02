@@ -208,6 +208,35 @@ namespace Scripts.Managers
                 Debug.Log($"[Demo] {hero.name}: {s.Name} cooldown = {Scripts.Managers.SkillCooldownManager.GetRemaining(hero, s)}.");
         }
 
+        /// <summary>Demo (US-053): wound every living hero to ~50% HP — set up a carry-over test
+        /// (win this battle, then the next one should spawn them still wounded).</summary>
+        public void Demo_WoundParty()
+        {
+            int n = 0;
+            foreach (var a in g.Actors.All)
+            {
+                if (a == null || !a.IsHero || !a.IsPlaying || a.Stats == null) continue;
+                a.Stats.HP = Mathf.Max(1f, a.Stats.MaxHP * 0.5f);
+                n++;
+                Debug.Log($"[Demo] {a.name} wounded to {a.Stats.HP:0}/{a.Stats.MaxHP:0}.");
+            }
+            if (n == 0) Debug.LogWarning("[Demo] No living heroes to wound (start a battle first).");
+        }
+
+        /// <summary>Demo (US-053, §29.3 #12 model A): full-heal the party — preview of the gold-cost
+        /// Alchemist heal service. Restores every living hero to MaxHP.</summary>
+        public void Demo_HealParty()
+        {
+            int n = 0;
+            foreach (var a in g.Actors.All)
+            {
+                if (a == null || !a.IsHero || !a.IsPlaying || a.Stats == null) continue;
+                a.Stats.HP = a.Stats.MaxHP;
+                n++;
+            }
+            Debug.Log(n > 0 ? $"[Demo] Healed {n} hero(es) to full." : "[Demo] No living heroes to heal.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

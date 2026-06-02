@@ -330,6 +330,18 @@ public class StageManager : MonoBehaviour
                     Formulas.ApplyEquipmentBonus(instance.Stats, loadout);
                 }
             }
+
+            // US-053: hydrate carried-over wounds AFTER equipment finalizes MaxHP. HpCurrent > 0
+            // means the hero ended a prior battle wounded; 0 = spawn at full (fresh / healed / post-defeat).
+            if (party != null)
+            {
+                var hpEntry = party.FirstOrDefault(m => m != null && m.CharacterClass == stageActor.CharacterClass);
+                if (hpEntry != null && hpEntry.HpCurrent > 0f)
+                {
+                    instance.Stats.HP = Mathf.Clamp(hpEntry.HpCurrent, 1f, instance.Stats.MaxHP);
+                    instance.Stats.PreviousHP = instance.Stats.HP;
+                }
+            }
         }
 
         instance.transform.localScale = GameManager.instance.tileScale;

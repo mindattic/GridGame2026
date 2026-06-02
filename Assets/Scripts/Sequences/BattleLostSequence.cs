@@ -60,6 +60,16 @@ namespace Scripts.Sequences
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);
+            // US-053: defeat wipes carried-over wounds — the whole party returns at full HP for the
+            // retry (no gold-heal needed after a loss).
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Party?.Members != null)
+            {
+                foreach (var m in save.Party.Members)
+                    if (m != null) m.HpCurrent = 0f;
+                ProfileHelper.Save(true);
+            }
+
             // Ensure the next scene after PostBattle is StageSelect (campaign home post-slice 9).
             ExperienceTracker.NextSceneAfterPostBattleScreen = scene.StageSelect;
             // Route to PostBattleScreen so XP is awarded on defeat

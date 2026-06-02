@@ -69,6 +69,28 @@ namespace Scripts.Sequences
             // Honor whatever the battle-launcher set (StageSelect → StageSelect,
             // OverworldManager → Overworld). Default in ExperienceTracker is StageSelect.
 
+            // US-053: persist each party hero's current HP so wounds carry into the next battle.
+            // Survivors keep their wound; a hero who fell during this WON battle revives at 1 HP and
+            // must be healed for gold at the Alchemist (§29.3 #12, model A). Cleared by a full-heal
+            // or a defeat. Dead heroes remain in g.Actors.All, so iterate it (not the living list).
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Party?.Members != null && g.Actors.All != null)
+            {
+                foreach (var a in g.Actors.All)
+                {
+                    if (a == null || !a.IsHero || a.Stats == null) continue;
+                    foreach (var m in save.Party.Members)
+                    {
+                        if (m != null && m.CharacterClass == a.characterClass)
+                        {
+                            m.HpCurrent = a.Stats.HP < 1f ? 1f : a.Stats.HP;
+                            break;
+                        }
+                    }
+                }
+                ProfileHelper.Save(true);
+            }
+
             // Route to PostBattleScreen so XP is awarded on victory
             scene.Fade.ToPostBattleScreen();
         }

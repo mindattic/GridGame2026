@@ -1329,7 +1329,7 @@ Profile                       (one per player, top-level)
                           (seen, defeated, lore-unlock flags)
 ```
 
-XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelper.DeriveFromTotalXP(totalXP)` — no need to migrate when the curve changes. HP carry-over (wounds between battles) is intentional and lets the Inn vendor have a job (full-heal for gold).
+XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelper.DeriveFromTotalXP(totalXP)` — no need to migrate when the curve changes. HP carry-over (wounds between battles) is intentional and gives the **Alchemist** a job (full-heal for gold — the Inn was cut, so its gold-for-HP role moves there; §29.3 #12 model A). **Built — US-053**: `CharacterLevelPair.HpCurrent` persists on victory and is hydrated on spawn; defeat resets to full.
 
 ### 15.2 Persistence flow
 
@@ -1339,7 +1339,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | AbilityBar reassign (Abilities scene) | Yes (commit on scene exit) |
 | Equip change (Equip scene) | Yes (commit on scene exit) |
 | Mid-battle stat/hp changes | No (held in `ActorInstance.Stats`) |
-| End of battle | Yes (Hp written back to HeroSave; rewards added to Inventory) |
+| End of battle | Yes — **victory** persists each party hero's current HP (`HpCurrent`; wounds carry forward, a hero who fell in a won battle revives at 1 HP); **defeat** resets the whole party to full; XP/loot committed (US-053) |
 
 ### 15.3 Open migrations
 
@@ -2279,7 +2279,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 
 10. **Material drop tables per enemy class** — framework exists (`DropTableLibrary`); per-enemy tables aren't fully populated.
 11. **Crafting recipe completeness** — Mage Robe / Wizard Robe / Sleep Dart need recipes + Blacksmith/Alchemist menu entries.
-12. **Inn / rest / healing** — between-stage healing free, gold cost, or tied to a specific vendor?
+12. ~~**Inn / rest / healing** — between-stage healing free, gold cost, or tied to a specific vendor?~~ **RESOLVED 2026-06-01 (Legion panel 4/4, model A):** wounds **persist** across stages (`HpCurrent`, US-053); recovery is a **gold-cost full-heal at the Alchemist** (the cut Inn's role). Defeat resets to full for free. *(The Alchemist heal-service UI is a small follow-on; the carry-over mechanism + heal API are built.)*
 13. **Out-of-battle status** — do debuffs carry between stages or always cleared on PostBattle?
 14. **Save autosave cadence** — only at PostBattle, or also on entering a vendor?
 
