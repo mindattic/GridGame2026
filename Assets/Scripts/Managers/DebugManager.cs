@@ -258,6 +258,25 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Bestiary: {seen} seen, {defeated} defeated ({bestiary.Entries.Count} classes recorded).");
         }
 
+        /// <summary>Demo (US-024): roll the cast-interrupt resolver 20× for the selected hero and log
+        /// the {Fail | Pushback | Clutch} distribution (dominant factor = caster Luck).</summary>
+        public void Demo_RollCastInterrupt()
+        {
+            var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
+            if (hero == null) { Debug.LogWarning("[Demo] Select a hero first."); return; }
+            int fail = 0, push = 0, clutch = 0;
+            for (int i = 0; i < 20; i++)
+            {
+                switch (Scripts.Services.CastInterruptResolver.Resolve(hero, null))
+                {
+                    case Scripts.Services.CastInterruptOutcome.Pushback: push++; break;
+                    case Scripts.Services.CastInterruptOutcome.Clutch:   clutch++; break;
+                    default:                                             fail++; break;
+                }
+            }
+            Debug.Log($"[Demo] {hero.name} (LCK {hero.Stats?.Luck:0}, WIS {hero.Stats?.Wisdom:0}) cast-interrupt ×20 → Fail={fail}, Pushback={push}, Clutch={clutch}.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

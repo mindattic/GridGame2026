@@ -139,10 +139,7 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC C — Interrupt Depth + Enemy Casting + Orb Economy
 *The cast scaffolding is fully built (§A). What's missing is the **richness**: the three-outcome resolver, enemies that actually cast, and the interrupt→orb mint that closes the off-palette mana economy.*
 
-- [ ] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** `PARTIAL` (only unconditional Fail today — `EnemyAttackSequence.cs:128` comment names the intended resolver).
-  **Why:** Replace the flat Fail with the LCK-driven roll (Clutch first, then Pushback vs Fail by LCK/WIS).
-  **Done when:** new `Services/CastInterruptResolver.cs`; `InterruptCastsByOwner` routes through it; **Pushback** rewinds the spell-icon u + brief stun (icon already supports u + Stunned); **Fail** = current behavior.
-  **Touch:** new `Services/CastInterruptResolver.cs`, `Canvas/TimelineBarInstance.InterruptCastsByOwner`, `EnemyAttackSequence`. **Bible:** §13.4, casting prose, delete §16.2 resolver row. **Dep:** —
+- [x] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** ✅ DONE 2026-06-01. New `Services/CastInterruptResolver.cs` (Clutch first ≈ `LCK/200` capped 25%; else Pushback vs Fail by `(LCK+WIS)/100 − atkSTR/400` capped 60%). `TimelineBarInstance.InterruptCastsByOwner(hero, attacker)` routes through it: **Fail** = `CastingState.Interrupt()` (current); **Pushback** = `TimelineIcon.Pushback` (rewind u + stun, cast survives); **Clutch** = cast survives untouched (the snap-to-u=1 + flash/SFX juice is **US-025**). `EnemyAttackSequence` passes the attacker. Demo: "Roll Cast Interrupt ×20". Bible §13.4 + §16.2 updated. **Dep:** —
 
 - [ ] **US-025 — `ClutchSequence` (the miracle save).** `NOT-BUILT`.
   **Done when:** rare LCK outcome: screen flash / SFX / "Clutch!" text, snap spell-icon to u=1 (reuse `EnterResolvingMode`), run normal resolution; base rate ≈ `LCK/200`, designer-capped.

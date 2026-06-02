@@ -1205,10 +1205,13 @@ HP reaching 0 = death. Handled by existing `DeathHelper` / death sequence (separ
 
 When an enemy is in the Prepare Zone and casting/charging, a pincer or shield press should **interrupt** their charge.
 
-**Built (Phase 1 — Fail only):** `EnemyAttackSequence.InterruptCastingHero` is wired and calls `TimelineBar.InterruptCastsByOwner(hero)` unconditionally (`EnemyAttackSequence.cs:109,133`). Today every interrupt is a **Fail** — cast cancels, MP stays consumed, no effect, spell-icon removed. (`CastingState.Interrupt()`.)
+**Built (US-024 — three-outcome resolver):** when a casting hero **takes damage** (the blow must land — a Miss never interrupts), `EnemyAttackSequence.InterruptCastingHero(hero, attacker)` → `TimelineBar.InterruptCastsByOwner(hero, attacker)` rolls each in-flight cast through `Services/CastInterruptResolver.Resolve(caster, attacker)`:
+- **Clutch** (checked first; rare, LCK-driven ≈ `LCK/200`, capped 25%) — the cast survives untouched (the dramatic snap-to-u=1 + flash/SFX is `ClutchSequence`, `US-025`).
+- **Pushback** (cast survives, delayed) — the spell-icon is pushed back (u decreases) + briefly stunned via `TimelineIcon.Pushback`; the filling bar rewinds with u. Chance ≈ `(LCK+WIS)/100 − attackerSTR/400`, capped 60%.
+- **Fail** (common, remainder) — `CastingState.Interrupt()`: cast cancels, MP stays consumed, no effect, spell-icon removed.
 
 **Remaining (Phase C):**
-- **Three-outcome resolver** (`US-024`): replace the flat Fail with `CastInterruptResolver.Resolve` → **Fail** | **Pushback** (cast survives, icon moves left, brief stun) | **Clutch** (LCK-rare: snap to u=1, resolve — the "miracle save"). Roll order: Clutch first; else Pushback vs Fail weighted by LCK / WIS. Clutch plays a dedicated `ClutchSequence` (`US-025`).
+- **ClutchSequence** (`US-025`): the Clutch *juice* — screen flash / SFX / "Clutch!" text + snap the spell-icon to u=1 and resolve on the spot. (The resolver already returns Clutch; today it just lets the cast survive.)
 - **Enemies that actually cast** (`US-026`): enemies are melee-only today, so there's no enemy charge to interrupt yet.
 - **Interrupting an ENEMY drops an orb** (`US-027`): cancels the charge AND drops an orb of its color to the team bank — how off-palette colors flow in (the enemy supplies what your party can't make).
 
@@ -1373,7 +1376,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~10~~ | — | ~~Interrupt path — wire `InterruptCastingHero`~~ — **DONE** (Fail path live: `EnemyAttackSequence.cs:109,133` → `TimelineBarInstance.InterruptCastsByOwner`) | — | — |
 | ~~11~~ | — | ~~Cast-as-timeline-icon (`Resolving` mode)~~ — **DONE** (`TimelineIcon.cs:52,833`; `TurnManager.IsResolvingCast`) | — | — |
 | ~~—~~ | — | ~~Cast-time WIS/INT scaling~~ — **DONE** (`Formulas.cs:492`; `CastingState.cs:91`) | — | — |
-| — | US-024 | **Clutch/Pushback/Fail resolver** — `CastInterruptResolver.Resolve` returning {Fail\|Pushback\|Clutch} (today: unconditional Fail) | P1 | new `Services/CastInterruptResolver.cs` |
+| ~~—~~ | US-024 | ~~**Clutch/Pushback/Fail resolver**~~ — **DONE 2026-06-01**: `CastInterruptResolver.Resolve` returns {Fail\|Pushback\|Clutch}; `InterruptCastsByOwner` routes through it (Fail interrupts, Pushback rewinds+stuns, Clutch survives). Demo: "Roll Cast Interrupt ×20". | P1 | `Services/CastInterruptResolver.cs` |
 | — | US-025 | **ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX | P2 | new `Sequences/ClutchSequence.cs` |
 | — | US-026 | **Enemy charge/telegraph spells** — enemies cast (today: melee only) | P1 | `EnemyPlanner`, new `EnemyChargeSequence` |
 | — | US-027 | **Interrupt enemy cast → drop charge-color orb** (closes off-palette economy) | P1 | `TimelineBarInstance`, `ManaPoolManager` |

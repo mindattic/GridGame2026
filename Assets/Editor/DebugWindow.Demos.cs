@@ -98,6 +98,12 @@ public partial class DebugWindow
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())
         );
 
+        // Cast interrupt (US-024) — roll the {Fail | Pushback | Clutch} resolver x20 for the
+        // selected hero and log the distribution (dominant factor = caster Luck).
+        RenderButtonRow(
+            ("Roll Cast Interrupt x20", () => g.DebugManager.Demo_RollCastInterrupt())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

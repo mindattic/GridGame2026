@@ -114,7 +114,7 @@ namespace Scripts.Sequences
                     // The bible ties interruption to "taking damage", so a fully-dodged (Miss)
                     // attack must not break a cast or consume its MP.
                     if (attackResult.HitType != HitOutcome.Miss)
-                        InterruptCastingHero(opponent);
+                        InterruptCastingHero(opponent, attacker);
 
                     var singleAttack = AttackHelper.SingleAttackRoutine(attackResult);
                     yield return attacker.Animation.BumpRoutine(opponent, singleAttack);
@@ -124,16 +124,15 @@ namespace Scripts.Sequences
         }
 
         /// <summary>
-        /// Interrupts a hero's active cast(s) if they have one on the timeline.
-        /// Phase 1 (Fail outcome only): unconditionally calls Interrupt() — MP stays
-        /// consumed, the spell effect does NOT apply, and the spell icon fades out.
-        /// Phase 2 will replace this with a CastInterruptResolver returning
-        /// {Fail | Pushback | Clutch} based on caster Luck / Wisdom / Intelligence.
+        /// Interrupts a hero's active cast(s) when the hero takes damage. The {Fail | Pushback |
+        /// Clutch} outcome is rolled per cast by <see cref="Scripts.Services.CastInterruptResolver"/>
+        /// (US-024) — dominant factor caster Luck. Fail = interrupt (MP stays consumed); Pushback =
+        /// cast delayed (icon pushed back + stun); Clutch = miracle save (cast survives).
         /// </summary>
-        private void InterruptCastingHero(ActorInstance hero)
+        private void InterruptCastingHero(ActorInstance hero, ActorInstance attacker)
         {
             if (hero == null || g.TimelineBar == null) return;
-            g.TimelineBar.InterruptCastsByOwner(hero);
+            g.TimelineBar.InterruptCastsByOwner(hero, attacker);
         }
     }
 }

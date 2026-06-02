@@ -733,7 +733,7 @@ namespace Scripts.Canvas
         /// fire its onInterrupted callback (which removes it from activeIcons).
         /// Returns the number of casts interrupted (0 if hero wasn't casting).
         /// </summary>
-        public int InterruptCastsByOwner(ActorInstance hero)
+        public int InterruptCastsByOwner(ActorInstance hero, ActorInstance attacker = null)
         {
             if (hero == null) return 0;
             int count = 0;
@@ -741,7 +741,30 @@ namespace Scripts.Canvas
             var snapshot = activeIcons.Where(i => i != null && i.IsSpellIcon && i.Owner == hero && i.ActiveCast != null && !i.ActiveCast.IsInterrupted && !i.ActiveCast.IsComplete).ToList();
             foreach (var icon in snapshot)
             {
-                icon.ActiveCast.Interrupt();
+                // US-024: roll {Fail | Pushback | Clutch} instead of always failing.
+                var outcome = Scripts.Services.CastInterruptResolver.Resolve(hero, attacker);
+                var combatText = Scripts.Helpers.GameHelper.CombatTextManager;
+                switch (outcome)
+                {
+                    case Scripts.Services.CastInterruptOutcome.Clutch:
+                        // Miracle save — the cast continues unharmed. US-025 adds the dramatic
+                        // snap-to-u=1 + ClutchSequence (flash / SFX). For now it simply survives.
+                        combatText?.Spawn("Clutch!", hero.Position, "Heal");
+                        break;
+
+                    case Scripts.Services.CastInterruptOutcome.Pushback:
+                        // Cast survives but is delayed: rewind the icon's u + brief stun (reuse the
+                        // enemy-pushback animation). The filling bar rewinds with u. No interrupt.
+                        int agi = hero.Stats != null ? hero.Stats.Agility.ToInt() : 10;
+                        float strMult = (attacker?.Stats != null ? attacker.Stats.Strength.ToInt() : 10) / 10f;
+                        icon.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strMult, agi, TimelineBarConfig.BaseStunDuration);
+                        combatText?.Spawn("Cast delayed!", hero.Position, "Miss");
+                        break;
+
+                    default: // Fail — the original behavior: interrupt, MP stays consumed.
+                        icon.ActiveCast.Interrupt();
+                        break;
+                }
                 count++;
             }
             return count;
