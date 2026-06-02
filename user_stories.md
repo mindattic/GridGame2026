@@ -147,18 +147,18 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC C — Interrupt Depth + Enemy Casting + Orb Economy
 *The cast scaffolding is fully built (§A). What's missing is the **richness**: the three-outcome resolver, enemies that actually cast, and the interrupt→orb mint that closes the off-palette mana economy.*
 
-- [x] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** ✅ DONE 2026-06-01. New `Services/CastInterruptResolver.cs` (Clutch first ≈ `LCK/200` capped 25%; else Pushback vs Fail by `(LCK+WIS)/100 − atkSTR/400` capped 60%). `TimelineBarInstance.InterruptCastsByOwner(hero, attacker)` routes through it: **Fail** = `CastingState.Interrupt()` (current); **Pushback** = `TimelineIcon.Pushback` (rewind u + stun, cast survives); **Clutch** = cast survives untouched (the snap-to-u=1 + flash/SFX juice is **US-025**). `EnemyAttackSequence` passes the attacker. Demo: "Roll Cast Interrupt ×20". Bible §13.4 + §16.2 updated. **Dep:** —
+- [x] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** ✅ DONE 2026-06-01, **REVISED 2026-06-02 → cast-stagger model (user)**. *Original build was a three-outcome {Fail|Pushback|Clutch} LCK roll; that's been replaced.* Now: each landed hit on a casting actor adds a WIS/STR-scaled **cast-time delay** (`CastingState.AccumulatedInterruptDelay`), pushing the cast icon back (`TimelineIcon.DelayCast`); when the **accumulated delay exceeds the original cast time the cast is cancelled** (`CastingState.Interrupt`). **WIS = poise:** chance to shrug a hit entirely + smaller per-hit delay; attacker STR raises the delay. No LCK/Clutch (→ US-025 obsolete). `InterruptCastsByOwner(hero, attacker)` applies it; `EnemyAttackSequence` passes the attacker. Demo: "Cast-Stagger Info". Bible §13.4 rewritten. **Dep:** —
   *(Original spec — audit log)* **Was:** `PARTIAL` (only unconditional Fail today — `EnemyAttackSequence.cs:128` comment names the intended resolver).
   **Why:** Replace the flat Fail with the LCK-driven roll (Clutch first, then Pushback vs Fail by LCK/WIS).
   **Done when:** new `Services/CastInterruptResolver.cs`; `InterruptCastsByOwner` routes through it; **Pushback** rewinds the spell-icon u + brief stun (icon already supports u + Stunned); **Fail** = current behavior.
   **Touch:** new `Services/CastInterruptResolver.cs`, `Canvas/TimelineBarInstance.InterruptCastsByOwner`, `EnemyAttackSequence`. **Bible:** §13.4, casting prose, delete §16.2 resolver row. **Dep:** —
 
-- [ ] **US-025 — `ClutchSequence` (the miracle save).** `NOT-BUILT`.
+- [ ] **US-025 — `ClutchSequence` (the miracle save).** ⛔ **OBSOLETE 2026-06-02** — the US-024 cast-stagger rewrite removed the LCK-driven Clutch outcome, so there's no miracle-save to sequence. Kept here for the audit log; re-spec only if a Clutch-style mechanic is reintroduced. *(Original spec below.)* `NOT-BUILT`.
   **Done when:** rare LCK outcome: screen flash / SFX / "Clutch!" text, snap spell-icon to u=1 (reuse `EnterResolvingMode`), run normal resolution; base rate ≈ `LCK/200`, designer-capped.
   **Touch:** new `Sequences/ClutchSequence.cs`. **Bible:** casting prose. **Dep:** US-024.
 
 - [ ] **US-026 — Enemy charge/telegraph spells.** `NOT-BUILT` (`EnemyAttackSequence` is melee-only; `EnemyPlanner` is positional-only).
-  **🔓 Interrupt model locked 2026-06-02 (user, after Legion 2/2 split): A — DAMAGE-CANCELS.** The charge is its own spell-icon; any hero damage (pincer or spell) to the caster before u=1 cancels it — mirrors the hero-side `CastInterruptResolver` (US-024) and gives US-027 one clean mint trigger. (Rejected C pushback-out-of-Zone: pushback hits the turn icon, not the charge icon → fuzzy mint moment.) Editor-gated to build. Bible §13.4.
+  **🔓 Interrupt model 2026-06-02 → folded into the unified CAST-STAGGER model (US-024 rewrite).** A hero hit on a charging enemy no longer binary-cancels; it adds WIS/STR-scaled delay to the charge, and **cumulative delay ≥ the charge's cast time cancels it** (supersedes the earlier "A damage-cancels" binary lock). US-027 mints the charge-color orb at the cancel. The charge is its own below-the-line cast icon (§2.6). Editor-gated to build. Bible §13.4.
   **Why:** The Caster archetype (§14.2) + the inverse-interrupt loop need enemies that telegraph a charge in the Prepare Zone.
   **Done when:** a casting enemy spawns a colored charge timeline icon advancing via cast-time; resolves into an attack at u=1; `EnemyPlanner` chooses to charge.
   **Touch:** `Services/EnemyPlanner`, new `Sequences/EnemyChargeSequence`, `TimelineBarInstance.SpawnSpellIcon` (generalize beyond hero casts), enemy spell data. **Bible:** §2.8, §14.2 (Caster), §14.3. **Dep:** —
@@ -247,6 +247,11 @@ These were on the original board and are **already implemented in code**. The bi
 
 ## EPIC G — UI Polish & Accessibility
 *Sand the edges. Several of these are PARTIAL — the framework exists, the last mile doesn't.*
+
+- [ ] **US-114 — Timeline two-lane layout (portraits above, cast icons below).** `NOT-BUILT` (today actor + cast icons share one row; casts render as stacked shrinking `SpellCastBar` bars).
+  **🔓 Design rule 2026-06-02 (user):** one shared timeline, two lanes — **large actor/portrait turn-icons ABOVE** the line, **¼-size cast icons BELOW**. Remove the stacked `SpellCastBar` shrinking-bars entirely; a cast's *position on the shared u-axis* is its progress read, so it lines up under the enemy turn-icons. Shared continuous clock: a cast resolves at its icon's trigger, off any particular turn (the IP-gauge — §2.6). Enemy charge icons (US-026) ride the same below-line lane.
+  **Done when:** turn-icons render large above the timeline line; cast icons render ~¼-size below it on the same axis; `SpellCastBar`/`SpellCastBarFactory` retired; both lanes share the trigger; verified in-editor (the layout is the whole point).
+  **Touch:** `Canvas/TimelineIcon`, `Factories/TimelineIconFactory`, `Canvas/TimelineBarInstance`; retire `Canvas/SpellCastBar` + `Factories/SpellCastBarFactory`; `AbilityBar.HandleSpell` (no longer spawns a cast bar). **Bible:** §2.6, §2.8, §9. **Dep:** US-001 (AspectGuard layout). **Editor-gated (visual).**
 
 - [ ] **US-076 — Spell icons on the AbilityBar.** `PARTIAL` (`SpriteLibrary.SpellIcons` populated `:127`; `AbilityBar.Refresh:248` renders name+cost glyphs only, no icon Image).
   **Done when:** slot shows the spell icon sprite; glyph fallback if missing.

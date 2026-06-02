@@ -305,23 +305,26 @@ The Shield button (top-right of the timeline, replaces the old Bank button) fast
 
 `TurnManager` also auto-presses this when remaining time until the next enemy trigger is too short for the player to react.
 
-### 2.6 Cast bars (under the timeline)
+### 2.6 One timeline, two lanes — turn icons above, cast icons below
 
-Spells with `CastTimeSeconds > 0` spawn a **colored shrinking bar** stacked below the timeline (`SpellCastBar`). Bar starts full, shrinks toward the right, resolves at width = 0.
-- Color = the spell's **dominant mana cost color** (via `SpellCastBarFactory.ColorForSpell`, palette from `ManaOrbLine.ColorFor`).
-- Multiple concurrent casts **stack vertically** (slot-managed, max `MaxConcurrent = 4`); the 5th cast is refused, orbs not spent.
-- On resolve: lock `InputMode = None` for `ResolveLockSeconds = 0.30f`, fire effect, restore previous input mode.
-- **Caster died mid-cast** → bar destroys itself without resolving.
+**Design rule (2026-06-02, user):** the timeline is read on a single left→right time-axis (`u`: 0 = spawn, 1 = trigger). **Two lanes share that one axis** so the player sees, at a glance, **when each enemy acts AND when each spell fires — relative to each other, on the same timeline**:
+
+- **Above the line — actor turn icons (LARGE):** each actor's **portrait** loads toward the trigger; reaching `u = 1` is that actor's turn. Large, because turn order is the dominant read.
+- **Below the line — cast icons (SMALL, ~¼ the size of a turn icon):** a spell with `CastTimeSeconds > 0` rides the *same* axis as a quarter-size icon **below** the line; its position is how close the cast is to resolving (`u = 1` = it fires). Color = the spell's dominant mana-cost color (`ManaOrbLine.ColorFor`).
+
+> **No more cast bars.** Casts were previously separately-stacked shrinking `SpellCastBar` rows with their own width axis ("the bar IS the icon"). That representation is **removed** — a cast is now just a small icon on the shared timeline, below the line. Its **position is the progress read**, lining up directly under the enemy turn-icons. The same below-the-line lane is where an **enemy charge-cast** icon rides (US-026).
+
+**Shared continuous clock — does a cast fire "off-turn"? Yes, and that's the point.** This is the Grandia IP-gauge model (§0): there is *one* clock, not alternating turns. Both lanes advance together as the timeline progresses, and **whatever icon reaches the trigger first resolves** — an enemy icon at `u = 1` takes its turn; a cast icon at `u = 1` fires its spell, even if that lands *between* enemy turns. Resolution runs through the input-suspending **`Resolving` third state** (§2.2) and then hands control back to wherever the clock was. The two-lane layout is exactly what keeps this legible rather than confusing: you literally *see* your Fireball's small icon racing the Goblin's portrait toward the trigger and read "my spell lands just before it acts." So casting time and enemy turns are **related — same axis, same clock** — and a cast resolving off any particular turn is intended, not a bug. *(If we ever wanted casts gated to a turn boundary instead, that would be a departure from the IP-gauge pillar — flagged, not assumed.)*
+
+Concurrency / lifecycle (unchanged): up to `MaxConcurrent = 4` cast icons; a 5th is refused (orbs not spent). On resolve: lock `InputMode = None` for `ResolveLockSeconds = 0.30f`, fire effect, restore input. Caster died mid-cast → cast icon removed without resolving. Interrupts: hero casts §13.4; enemy charges US-026 (damage-cancels).
 
 ```
-Row 2 ┃══════ Timeline (enemy icons) ══════[🛡]┃
-       ↓                                        ↓
-       │ ▓▓▓▓▓▓▓▓▓░░░░░░░░  Fireball (red)      │  ← cast slot 0
-       │ ▓▓▓▓▓▓░░░░░░░░░░░  Heal     (white)    │  ← cast slot 1
-       │ ▓▓░░░░░░░░░░░░░░░  Frost    (blue)     │  ← cast slot 2
-       │                                        │  ← slot 3 free, slot 4+ refused
-       └────────────────────────────────────────┘
-       width shrinks left→right; resolves at 0.
+        ╭─────╮       ╭─────╮                      ← ABOVE: large actor turn icons
+        │ 👹  │       │ 👤  │                          (enemy / hero portraits)
+  ┃═════╪═════╪═══════╪═════╪══════════════[🛡]┃   ← the timeline (u: spawn→trigger)
+        │ ⬤R │   │ ⬤W │                            ← BELOW: small cast icons
+        ╰─────╯   ╰─────╯                              (Fireball-red, Heal-white …)
+   left (just cast / fresh) ───────────────→ right (about to fire / act)
 ```
 
 ### 2.7 Worked example: pushback math
@@ -346,8 +349,8 @@ Net: a single hit at u=0.92 buys ~0.26u of delay + ~0.7s of frozen-position stun
 |---|---|
 | Battle start | All actor icons spawn at `u = 0` staggered by `Queued` delay |
 | Enemy reinforcement (scripted mid-battle) | `u = 0` |
-| Spell cast by hero | Cast bar (§2.6); no timeline icon for the caster's spell — the bar IS the icon |
-| Enemy charge spell (Phase C, future) | Spawns a separate timeline icon next to the enemy's, advances via cast-time formula |
+| Spell cast by hero | A **small cast icon BELOW the timeline line** (§2.6), riding the shared `u`-axis toward the trigger at the cast-time rate — *not* a separate stacked bar |
+| Enemy charge spell (US-026) | A small cast icon in the **same below-the-line lane** as hero casts, advancing via the cast-time formula |
 | Pushback / displacement | Existing icon's u changes; train-cascade resolves neighbors |
 
 ---
@@ -1206,15 +1209,16 @@ HP reaching 0 = death. Handled by existing `DeathHelper` / death sequence (separ
 
 When an enemy is in the Prepare Zone and casting/charging, a pincer or shield press should **interrupt** their charge.
 
-**Built (US-024 — three-outcome resolver):** when a casting hero **takes damage** (the blow must land — a Miss never interrupts), `EnemyAttackSequence.InterruptCastingHero(hero, attacker)` → `TimelineBar.InterruptCastsByOwner(hero, attacker)` rolls each in-flight cast through `Services/CastInterruptResolver.Resolve(caster, attacker)`:
-- **Clutch** (checked first; rare, LCK-driven ≈ `LCK/200`, capped 25%) — the cast survives untouched (the dramatic snap-to-u=1 + flash/SFX is `ClutchSequence`, `US-025`).
-- **Pushback** (cast survives, delayed) — the spell-icon is pushed back (u decreases) + briefly stunned via `TimelineIcon.Pushback`; the filling bar rewinds with u. Chance ≈ `(LCK+WIS)/100 − attackerSTR/400`, capped 60%.
-- **Fail** (common, remainder) — `CastingState.Interrupt()`: cast cancels, MP stays consumed, no effect, spell-icon removed.
+**Interrupt model — "cast stagger" (REVISED 2026-06-02, user; supersedes the US-024 three-outcome roll).** When a casting actor **takes a landing hit** (a Miss never interrupts), the in-flight cast is **pushed back on the timeline — its remaining cast time increases** (the small below-the-line cast icon, §2.6, slides away from the trigger). Each interrupt adds a delay; the delays **accumulate**, and **once the accumulated delay exceeds the spell's original cast time, the cast is CANCELLED** (`CastingState.Interrupt()` — MP stays consumed, no effect, icon removed). Otherwise the cast survives, just later.
 
-**Remaining (Phase C):**
-- **ClutchSequence** (`US-025`): the Clutch *juice* — screen flash / SFX / "Clutch!" text + snap the spell-icon to u=1 and resolve on the spot. (The resolver already returns Clutch; today it just lets the cast survive.)
-- **Enemies that actually cast** (`US-026`): enemies are melee-only today, so there's no enemy charge to interrupt yet. **Interrupt model locked 2026-06-02 (user, after a Legion 2/2 split): A — DAMAGE-CANCELS.** A charging enemy spawns its own charge spell-icon; any hero damage to that enemy before the charge reaches u=1 cancels the cast — the symmetric mirror of the hero-side `CastInterruptResolver` path (a pincer OR a spell can do it). The cancel is one crisp event, which is the clean trigger for the US-027 orb-mint. (Rejected C "pushback-out-of-Zone" — pushback acts on the enemy's *turn* icon, not the separate charge icon, leaving the mint moment fuzzy.)
-- **Interrupting an ENEMY drops an orb** (`US-027`): cancels the charge AND drops an orb of its color to the team bank — how off-palette colors flow in (the enemy supplies what your party can't make).
+**Wisdom = caster poise** (the main stat): higher WIS both (a) **reduces the push-back per hit** and (b) makes a hit **less likely to interrupt at all** (it can be shrugged off entirely). Attacker **Strength** increases the push. There is **no LCK/Clutch roll** — the old `{Fail | Pushback | Clutch}` is replaced by this continuous accumulate-to-cancel model.
+
+This is **one unified rule for hero casts AND enemy charge-casts** (US-026) — so the earlier US-026 "binary damage-cancels" lock is folded in: a hit doesn't instantly cancel a charge, it **staggers** it; enough cumulative stagger cancels it. `US-027` mints the charge-color orb at the **cancel** moment.
+
+**Audit / migration:**
+- US-024 shipped a three-outcome `CastInterruptResolver` (Fail/Pushback/Clutch, LCK-driven). **Superseded** by the stagger model above; `CastInterruptResolver` + `CastingState` + `TimelineBar.InterruptCastsByOwner` refactored to it.
+- **`US-025` ClutchSequence is now OBSOLETE** under this model (no LCK miracle save) — dropped unless re-specced.
+- **Enemies that actually cast** (`US-026`, still not built): charge-cast spawns a below-line cast icon; interrupting it uses the same stagger rule. **`US-027`**: cancel → mint a charge-color orb to the bank (how off-palette colors flow in).
 
 ---
 

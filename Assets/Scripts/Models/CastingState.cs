@@ -71,6 +71,11 @@ namespace Scripts.Models
         /// <summary>True if the cast was interrupted by damage.</summary>
         public bool IsInterrupted;
 
+        /// <summary>US-024 (stagger model): total cast-time (seconds) added by interrupt hits so far.
+        /// When this exceeds <see cref="TotalCastTime"/> the cast is cancelled. Higher caster WIS keeps
+        /// this growing slower (see <see cref="Scripts.Services.CastInterruptResolver"/>).</summary>
+        public float AccumulatedInterruptDelay;
+
         /// <summary>True if casting is still in progress.</summary>
         public bool IsCasting => !IsInterrupted && ElapsedTime < TotalCastTime;
 

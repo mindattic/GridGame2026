@@ -470,6 +470,16 @@ namespace Scripts.Canvas
         /// <summary>Gets the u per sec.</summary>
         public float GetUPerSec() => uPerSec;
 
+        /// <summary>US-024 (stagger model): push this cast icon backward on the timeline by
+        /// <paramref name="seconds"/> of cast-time — its u drops by <c>seconds × uPerSec</c> (clamped
+        /// ≥ 0). The cast's ElapsedTime tracks u (see UpdateApproaching), so this lengthens the
+        /// remaining cast. No-op for a non-advancing icon.</summary>
+        public void DelayCast(float seconds)
+        {
+            if (seconds <= 0f || uPerSec <= 0f) return;
+            SetU(Mathf.Max(0f, u - seconds * uPerSec));
+        }
+
         /// <summary>US-011: the live advance speed, with the Slowed debuff applied. The base
         /// uPerSec is fixed at spawn from the owner's Speed; Slowed is dynamic, so it is folded
         /// in here (×SlowedTimelineMultiplier) and read by the bar's advance instead of GetUPerSec.</summary>

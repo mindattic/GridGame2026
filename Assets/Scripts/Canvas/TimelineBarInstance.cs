@@ -741,28 +741,26 @@ namespace Scripts.Canvas
             var snapshot = activeIcons.Where(i => i != null && i.IsSpellIcon && i.Owner == hero && i.ActiveCast != null && !i.ActiveCast.IsInterrupted && !i.ActiveCast.IsComplete).ToList();
             foreach (var icon in snapshot)
             {
-                // US-024: roll {Fail | Pushback | Clutch} instead of always failing.
-                var outcome = Scripts.Services.CastInterruptResolver.Resolve(hero, attacker);
+                // US-024 (stagger model): each landed hit pushes the cast back (adds cast-time);
+                // accumulated delay past the original cast time cancels it. WIS resists both.
+                var cast = icon.ActiveCast;
+                var result = Scripts.Services.CastInterruptResolver.Resolve(hero, attacker, cast);
                 var combatText = Scripts.Helpers.GameHelper.CombatTextManager;
-                switch (outcome)
+                switch (result.Outcome)
                 {
-                    case Scripts.Services.CastInterruptOutcome.Clutch:
-                        // Miracle save — the cast continues unharmed. US-025 adds the dramatic
-                        // snap-to-u=1 + ClutchSequence (flash / SFX). For now it simply survives.
-                        combatText?.Spawn("Clutch!", hero.Position, "Heal");
+                    case Scripts.Services.CastInterruptOutcome.Resisted:
+                        combatText?.Spawn("Resisted!", hero.Position, "Heal");
                         break;
 
-                    case Scripts.Services.CastInterruptOutcome.Pushback:
-                        // Cast survives but is delayed: rewind the icon's u + brief stun (reuse the
-                        // enemy-pushback animation). The filling bar rewinds with u. No interrupt.
-                        int agi = hero.Stats != null ? hero.Stats.Agility.ToInt() : 10;
-                        float strMult = (attacker?.Stats != null ? attacker.Stats.Strength.ToInt() : 10) / 10f;
-                        icon.Pushback(TimelineBarConfig.PushbackBase, TimelineBarConfig.PushbackMax, strMult, agi, TimelineBarConfig.BaseStunDuration);
-                        combatText?.Spawn("Cast delayed!", hero.Position, "Miss");
+                    case Scripts.Services.CastInterruptOutcome.Cancelled:
+                        cast.AccumulatedInterruptDelay += result.DelayAdded;
+                        cast.Interrupt(); // total stagger exceeded the original cast time
                         break;
 
-                    default: // Fail — the original behavior: interrupt, MP stays consumed.
-                        icon.ActiveCast.Interrupt();
+                    default: // Delayed — cast survives, pushed back on the timeline.
+                        cast.AccumulatedInterruptDelay += result.DelayAdded;
+                        icon.DelayCast(result.DelayAdded);
+                        combatText?.Spawn("Stagger!", hero.Position, "Miss");
                         break;
                 }
                 count++;

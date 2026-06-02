@@ -98,10 +98,10 @@ public partial class DebugWindow
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())
         );
 
-        // Cast interrupt (US-024) — roll the {Fail | Pushback | Clutch} resolver x20 for the
-        // selected hero and log the distribution (dominant factor = caster Luck).
+        // Cast interrupt (US-024 stagger model) — report the selected hero's WIS-driven cast-stagger
+        // resistance + cast-time added per hit (cancel when total added exceeds the cast time).
         RenderButtonRow(
-            ("Roll Cast Interrupt x20", () => g.DebugManager.Demo_RollCastInterrupt())
+            ("Cast-Stagger Info", () => g.DebugManager.Demo_RollCastInterrupt())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

@@ -1,60 +1,71 @@
 using UnityEngine;
 using Scripts.Instances.Actor;
+using Scripts.Models;
 using Scripts.Utilities;
 
 namespace Scripts.Services
 {
-    /// <summary>The three ways an in-flight cast can react to taking damage (game_bible.md §13.4).</summary>
+    /// <summary>What a single landed hit does to an in-flight cast (game_bible.md §13.4 stagger model).</summary>
     public enum CastInterruptOutcome
     {
-        /// <summary>Common — the cast is interrupted; MP stays consumed, effect does not apply.</summary>
-        Fail,
-        /// <summary>Uncommon — the cast survives but is delayed: its timeline icon is pushed back
-        /// (u decreases) and briefly stunned. No MP refund; the spell still resolves later.</summary>
-        Pushback,
-        /// <summary>Rare (LCK-driven) — the caster shrugs off the hit and the cast resolves on the
-        /// spot. The dramatic snap-to-u=1 + ClutchSequence juice is US-025.</summary>
-        Clutch
+        /// <summary>WIS poise shrugged the hit off — no delay added.</summary>
+        Resisted,
+        /// <summary>Cast survives but is pushed back (its remaining cast time grows).</summary>
+        Delayed,
+        /// <summary>Accumulated delay now exceeds the spell's original cast time — cast is cancelled.</summary>
+        Cancelled
+    }
+
+    public struct CastInterruptResult
+    {
+        public CastInterruptOutcome Outcome;
+        /// <summary>Seconds of cast-time this hit added (0 if Resisted).</summary>
+        public float DelayAdded;
     }
 
     /// <summary>
-    /// CASTINTERRUPTRESOLVER - Rolls the {Fail | Pushback | Clutch} outcome when a casting hero takes
-    /// damage (US-024). Replaces the old unconditional-Fail behavior.
+    /// CASTINTERRUPTRESOLVER - The "cast stagger" interrupt model (US-024, revised 2026-06-02).
     ///
-    /// <para>ROLL ORDER (per the bible): <b>Clutch first</b> (instant-resolve wins over everything),
-    /// then <b>Pushback vs Fail</b>. Dominant factor is the caster's <b>Luck</b>; secondary is the
-    /// caster's Wisdom (poise) and the attacker's Strength (pushes toward Fail).</para>
-    ///
-    /// <para>RELATED FILES: TimelineBarInstance.InterruptCastsByOwner (caller), EnemyAttackSequence
-    /// (origin), CastingState (Fail path), ClutchSequence (US-025, the Clutch juice).</para>
+    /// <para>When a casting actor takes a landing hit, the cast is <b>pushed back on the timeline</b>:
+    /// its remaining cast time increases by a delay. Delays <b>accumulate</b>; once the total exceeds
+    /// the spell's original cast time, the cast is <b>cancelled</b>. <b>Wisdom is the caster's poise</b> —
+    /// higher WIS both reduces the delay per hit AND gives a chance to shrug a hit off entirely;
+    /// attacker Strength increases the delay. Replaces the old {Fail | Pushback | Clutch} LCK roll
+    /// (no Clutch — US-025 obsolete). Pure logic; the caller (`TimelineBar.InterruptCastsByOwner`)
+    /// applies the push (`TimelineIcon.DelayCast`) or the cancel (`CastingState.Interrupt`).</para>
     /// </summary>
     public static class CastInterruptResolver
     {
-        /// <summary>Clutch base rate per point of Luck — LCK 10 ≈ 5%, LCK 20 ≈ 10%.</summary>
-        public const float ClutchChancePerLuck = 1f / 200f;
-        /// <summary>Designer cap on the Clutch chance (Luck 50 would otherwise hit 25%).</summary>
-        public const float ClutchMaxChance = 0.25f;
-        /// <summary>Designer cap on the Pushback (cast-survives) chance.</summary>
-        public const float PushbackMaxChance = 0.60f;
+        /// <summary>Baseline cast-time added per landed hit (seconds), before STR/WIS scaling.</summary>
+        public const float BaseInterruptDelay = 0.6f;
+        /// <summary>Divisor for the attacker-Strength term (higher STR → more delay).</summary>
+        public const float StrengthScale = 20f;
+        /// <summary>Divisor for the caster-Wisdom term (higher WIS → less delay).</summary>
+        public const float WisdomDelayScale = 15f;
+        /// <summary>Per-point WIS chance to fully resist a hit (shrug it off).</summary>
+        public const float WisdomResistPerPoint = 0.015f;
+        /// <summary>Cap on the WIS resist chance.</summary>
+        public const float MaxResistChance = 0.60f;
 
-        public static CastInterruptOutcome Resolve(ActorInstance caster, ActorInstance attacker)
+        public static CastInterruptResult Resolve(ActorInstance caster, ActorInstance attacker, CastingState cast)
         {
-            float lck = caster?.Stats?.Luck ?? 0f;
             float wis = caster?.Stats?.Wisdom ?? 0f;
-            float atkStr = attacker?.Stats?.Strength ?? 0f;
+            float atk = attacker?.Stats?.Strength ?? 0f;
 
-            // 1) Clutch — checked first; an instant resolve trumps the other outcomes.
-            float clutchChance = Mathf.Clamp(lck * ClutchChancePerLuck, 0f, ClutchMaxChance);
-            if (RNG.Float(0f, 1f) < clutchChance)
-                return CastInterruptOutcome.Clutch;
+            // WIS poise: a hit may be shrugged off with no effect.
+            float resist = Mathf.Clamp(wis * WisdomResistPerPoint, 0f, MaxResistChance);
+            if (RNG.Float(0f, 1f) < resist)
+                return new CastInterruptResult { Outcome = CastInterruptOutcome.Resisted, DelayAdded = 0f };
 
-            // 2) Pushback vs Fail — the cast survives (delayed) when the caster's poise (LCK + WIS)
-            //    beats the blow; a stronger attacker drags the result toward a clean Fail.
-            float surviveChance = Mathf.Clamp((lck + wis) / 100f - atkStr / 400f, 0f, PushbackMaxChance);
-            if (RNG.Float(0f, 1f) < surviveChance)
-                return CastInterruptOutcome.Pushback;
+            // Delay grows with attacker STR, shrinks with caster WIS.
+            float delay = BaseInterruptDelay * (1f + atk / StrengthScale) / (1f + wis / WisdomDelayScale);
 
-            return CastInterruptOutcome.Fail;
+            float total = (cast?.AccumulatedInterruptDelay ?? 0f) + delay;
+            float original = cast?.TotalCastTime ?? 0f;
+            var outcome = (original > 0f && total >= original)
+                ? CastInterruptOutcome.Cancelled
+                : CastInterruptOutcome.Delayed;
+            return new CastInterruptResult { Outcome = outcome, DelayAdded = delay };
         }
     }
 }

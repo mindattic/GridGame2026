@@ -258,23 +258,20 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Bestiary: {seen} seen, {defeated} defeated ({bestiary.Entries.Count} classes recorded).");
         }
 
-        /// <summary>Demo (US-024): roll the cast-interrupt resolver 20× for the selected hero and log
-        /// the {Fail | Pushback | Clutch} distribution (dominant factor = caster Luck).</summary>
+        /// <summary>Demo (US-024 stagger model): report the selected hero's cast-stagger resistance —
+        /// WIS-driven resist chance + cast-time added per landed hit. A cast cancels once the total
+        /// added delay exceeds its cast time.</summary>
         public void Demo_RollCastInterrupt()
         {
             var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
             if (hero == null) { Debug.LogWarning("[Demo] Select a hero first."); return; }
-            int fail = 0, push = 0, clutch = 0;
-            for (int i = 0; i < 20; i++)
-            {
-                switch (Scripts.Services.CastInterruptResolver.Resolve(hero, null))
-                {
-                    case Scripts.Services.CastInterruptOutcome.Pushback: push++; break;
-                    case Scripts.Services.CastInterruptOutcome.Clutch:   clutch++; break;
-                    default:                                             fail++; break;
-                }
-            }
-            Debug.Log($"[Demo] {hero.name} (LCK {hero.Stats?.Luck:0}, WIS {hero.Stats?.Wisdom:0}) cast-interrupt ×20 → Fail={fail}, Pushback={push}, Clutch={clutch}.");
+            float wis = hero.Stats?.Wisdom ?? 0f;
+            float resist = Mathf.Clamp(wis * Scripts.Services.CastInterruptResolver.WisdomResistPerPoint,
+                0f, Scripts.Services.CastInterruptResolver.MaxResistChance);
+            float delayVsStr10 = Scripts.Services.CastInterruptResolver.BaseInterruptDelay
+                * (1f + 10f / Scripts.Services.CastInterruptResolver.StrengthScale)
+                / (1f + wis / Scripts.Services.CastInterruptResolver.WisdomDelayScale);
+            Debug.Log($"[Demo] Cast-stagger for {hero.name} (WIS {wis:0}): {resist:P0} chance to shrug a hit; ~{delayVsStr10:0.00}s of cast-time added per landed hit (vs STR 10). Cast cancels once total added ≥ its cast time.");
         }
 
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
