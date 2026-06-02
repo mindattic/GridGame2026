@@ -148,22 +148,26 @@ namespace Scripts.Managers
                 {
                     result.Add(pick.id);
                     remaining -= pick.score;
+                    scored.RemoveAt(index);
                 }
                 else
                 {
-                    var cheaper = scored.FirstOrDefault(s => s.score <= remaining);
-                    if (cheaper.id != null)
+                    // Random pick too expensive — fall back to the cheapest affordable
+                    // candidate and remove THAT entry (not the random index), otherwise the
+                    // fallback stays in the pool and can be picked again while an unrelated
+                    // candidate is wrongly evicted.
+                    int cheaperIdx = scored.FindIndex(s => s.score <= remaining);
+                    if (cheaperIdx >= 0)
                     {
-                        result.Add(cheaper.id);
-                        remaining -= cheaper.score;
+                        result.Add(scored[cheaperIdx].id);
+                        remaining -= scored[cheaperIdx].score;
+                        scored.RemoveAt(cheaperIdx);
                     }
                     else
                     {
                         break;
                     }
                 }
-
-                scored.RemoveAt(index);
             }
 
             if (result.Count == 0)

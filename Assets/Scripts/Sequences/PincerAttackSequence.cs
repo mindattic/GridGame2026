@@ -112,25 +112,36 @@ namespace Scripts.Sequences
                 pair.attacker2.Animation.ShrinkRoutine()
             );
 
-            // Find closest opponent for each attacker's bump animation
+            // Find closest opponent for each attacker (used to position the Respite eye-candy).
             var opp1 = Geometry.GetClosestOpponent(pair.attacker1, pair.attackResults1);
             var opp2 = Geometry.GetClosestOpponent(pair.attacker2, pair.attackResults2);
 
-            // Build attack routines (damage, VFX, combat text)
+            // Build attack routines (damage, VFX, combat text). MultiAttackRoutine self-skips
+            // any already-dead opponent (SingleAttackRoutine guards on IsPlaying), so it is safe
+            // to run even when part of the line was killed by an earlier chained pincer.
             var routine1 = AttackHelper.MultiAttackRoutine(pair.attackResults1);
             var routine2 = AttackHelper.MultiAttackRoutine(pair.attackResults2);
 
+            // Respite is pure eye candy: an attacker queued to swing whose trapped enemies are
+            // ALL already dead does a little happy spin instead of bumping corpses. If even one
+            // opponent is still alive the attacker performs the real attack — the dead ones in
+            // the line are skipped, the living ones still take their damage. (Previously the
+            // spin fired whenever the *closest* enemy was dying, silently dropping all of that
+            // attacker's damage on the survivors behind it.)
+            var living1 = pair.attackResults1.Where(r => r.Opponent != null && r.Opponent.IsPlaying).ToList();
+            var living2 = pair.attackResults2.Where(r => r.Opponent != null && r.Opponent.IsPlaying).ToList();
+
             // Execute attack for attacker1
-            if (opp1 != null && opp1.IsDying)
+            if (living1.Count == 0)
                 yield return pair.attacker1.Animation.Spin360AndWaitRoutine(RespiteRoutine(opp1));
             else
-                yield return pair.attacker1.Animation.BumpRoutine(opp1, routine1);
+                yield return pair.attacker1.Animation.BumpRoutine(Geometry.GetClosestOpponent(pair.attacker1, living1), routine1);
 
             // Execute attack for attacker2
-            if (opp2 != null && opp2.IsDying)
+            if (living2.Count == 0)
                 yield return pair.attacker2.Animation.Spin360AndWaitRoutine(RespiteRoutine(opp2));
             else
-                yield return pair.attacker2.Animation.BumpRoutine(opp2, routine2);
+                yield return pair.attacker2.Animation.BumpRoutine(Geometry.GetClosestOpponent(pair.attacker2, living2), routine2);
         }
 
         /// <summary>Shows "Respite" text when killing an enemy.</summary>

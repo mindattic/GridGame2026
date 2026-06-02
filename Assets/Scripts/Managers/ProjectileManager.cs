@@ -243,12 +243,20 @@ public class ProjectileManager : MonoBehaviour
     /// </summary>
     private IEnumerator SpawnImpactRoutine(string vfxKey, Vector3 position, ProjectileSettings s)
     {
-        if (string.IsNullOrEmpty(vfxKey) || g.VisualEffectManager == null) yield break;
+        // The gameplay payload (s.routine — heal/damage) must apply even when there is no
+        // impact VFX to show; it is the projectile "arriving", not a cosmetic. Run it before
+        // bailing so a missing/empty VFX key never silently swallows the effect.
+        if (string.IsNullOrEmpty(vfxKey) || g.VisualEffectManager == null)
+        {
+            if (s != null && s.routine != null) yield return s.routine;
+            yield break;
+        }
 
         var vfx = VisualEffectLibrary.Get(vfxKey);
         if (vfx == null || vfx.Prefab == null)
         {
             Debug.LogError($"ProjectileManager: VFX `{vfxKey}` not found or prefab is null.");
+            if (s != null && s.routine != null) yield return s.routine;
             yield break;
         }
 

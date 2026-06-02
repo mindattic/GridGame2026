@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using Scripts.Models;
 using g = Scripts.Helpers.GameHelper;
@@ -43,10 +44,13 @@ namespace Scripts.Managers
                 if (actor == null || !actor.IsPlaying || actor.Stats == null) continue;
 
                 // Apply damage-per-tick BEFORE decrementing so a 1-remaining buff still ticks.
-                var buffs = BuffSystem.GetAll(actor);
+                // Snapshot to an array: OnDamaged below can break (RemoveAt) buffs flagged
+                // BreaksOnDamage from the LIVE list GetAll returns, shifting indices mid-loop
+                // and skipping a sibling DoT buff. Iterating a copy keeps every buff ticking.
+                var buffs = BuffSystem.GetAll(actor).ToArray();
                 if (buffs != null)
                 {
-                    for (int b = 0; b < buffs.Count; b++)
+                    for (int b = 0; b < buffs.Length; b++)
                     {
                         var bi = buffs[b];
                         if (bi.IsExpired) continue;

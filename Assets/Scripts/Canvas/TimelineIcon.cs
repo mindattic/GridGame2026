@@ -656,9 +656,12 @@ namespace Scripts.Canvas
             // Race outside the Zone at the actor's stat-derived pace; once inside
             // the Zone (final stretch), every icon crawls at the same fixed rate
             // so the player has a coordination window to land an in-Zone pincer.
+            // Use the Slowed-folded rate (GetEffectiveUPerSec), not the raw spawn rate, so the
+            // Slowed debuff actually crawls the icon in real time (US-011) — the bank/advance
+            // path already used the effective rate; the live per-frame loop must too.
             float effectiveUPerSec = u >= (1f - TimelineBarConfig.ZoneU)
                 ? TimelineBarConfig.ZonePaceUPerSec
-                : uPerSec;
+                : GetEffectiveUPerSec();
 
             u = Mathf.MoveTowards(u, 1f, effectiveUPerSec * Time.deltaTime);
             ApplyPosition();

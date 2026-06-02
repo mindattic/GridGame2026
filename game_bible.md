@@ -1149,6 +1149,10 @@ Resolved by `Formulas.CalculateAttackResult(attacker, opponent)`. Stat-derived i
 
 Resulting `AttackResult` carries `Damage`, `IsCrit`, `IsMiss`, `HpDelta`. Supporters add their own `Offense`-derived chunks via `PincerAttackSupportSequence`.
 
+**Both endpoints hit the whole line.** One `AttackResult` is built per trapped enemy *per attacker* (`PincerAttackManager`), so every enemy in the line takes damage from both flanking heroes. When a single drop spawns chained pincers, an enemy killed by an earlier link is `IsDying` (HP 0, not yet despawned) when the next link resolves; `AttackHelper.SingleAttackRoutine` skips any non-`IsPlaying` target, so the dead enemy is passed over while the survivors behind it still take their hit.
+
+**Respite** is cosmetic only: if an attacker's *entire* trapped line is already dead by the time its link resolves, it plays a little victory spin + "Respite" text (`Spin360AndWaitRoutine`) instead of swinging at corpses. It never suppresses damage — an attacker with even one living target performs the real attack (`PincerAttackSequence`).
+
 #### 13.1.2 Spell damage (dispatcher)
 
 Computed inline in `SpellEffectDispatcher.ApplyDamage`:

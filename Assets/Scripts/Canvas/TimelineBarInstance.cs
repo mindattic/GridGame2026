@@ -429,6 +429,9 @@ namespace Scripts.Canvas
             foreach (var t in activeIcons)
             {
                 if (t == null || t.Rect == null) continue;
+                // Skip in-flight spell icons — snapping a hero's cast icon to u=1 would make it
+                // resolve early when the bar resumes. Only enemy march icons get locked here.
+                if (t.IsSpellIcon) continue;
                 if (t.Rect.anchoredPosition.x >= right - 0.25f)
                 {
                     t.SetU(1f); // snaps exactly to RightX via ApplyPosition clamp

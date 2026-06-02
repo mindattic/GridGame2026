@@ -171,12 +171,15 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
-        // Normalize 7 weights to [0..1] and mirror to SynergyLineInstanceConfig.WaveformCount slots
-        float[] w = new float[7]
+        // Normalize all 8 weights to [0..1] and mirror to SynergyLineInstanceConfig.WaveformCount
+        // slots. Order matches the VectorStats built in Spawn(): Speed (index 3) was previously
+        // dropped, silently discarding its contribution to the strand weighting.
+        float[] w = new float[8]
         {
             Mathf.Max(0.0001f, weights.Strength),
             Mathf.Max(0.0001f, weights.Vitality),
             Mathf.Max(0.0001f, weights.Agility),
+            Mathf.Max(0.0001f, weights.Speed),
             Mathf.Max(0.0001f, weights.Stamina),
             Mathf.Max(0.0001f, weights.Intelligence),
             Mathf.Max(0.0001f, weights.Wisdom),
@@ -184,14 +187,14 @@ public class SynergyLineInstance : MonoBehaviour
         };
 
         float max = 0f;
-        for (int i = 0; i < 7; i++) if (w[i] > max) max = w[i];
+        for (int i = 0; i < 8; i++) if (w[i] > max) max = w[i];
         if (max <= 0f) max = 1f;
 
         if (wNormPerStrand == null || wNormPerStrand.Length != SynergyLineInstanceConfig.WaveformCount)
             wNormPerStrand = new float[SynergyLineInstanceConfig.WaveformCount];
 
         for (int i = 0; i < SynergyLineInstanceConfig.WaveformCount; i++)
-            wNormPerStrand[i] = w[i % 7] / max;
+            wNormPerStrand[i] = w[i % 8] / max;
 
         ApplySettingsToStrands();
     }

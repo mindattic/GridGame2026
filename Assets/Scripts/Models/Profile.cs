@@ -217,7 +217,15 @@ namespace Scripts.Models
         public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
 
         public RosterSaveData() { }
-        public RosterSaveData(RosterSaveData other) { this.Members = other.Members; }
+        public RosterSaveData(RosterSaveData other)
+        {
+            // Deep copy — SaveState's copy ctor produces an independent save; aliasing the
+            // list here would let edits to the copy mutate the original (save corruption).
+            Members = new List<CharacterLevelPair>();
+            if (other.Members != null)
+                foreach (var m in other.Members)
+                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP));
+        }
     }
 
     [Serializable]
@@ -226,7 +234,14 @@ namespace Scripts.Models
         public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
 
         public PartySaveData() { }
-        public PartySaveData(PartySaveData other) { this.Members = other.Members; }
+        public PartySaveData(PartySaveData other)
+        {
+            // Deep copy — see RosterSaveData above.
+            Members = new List<CharacterLevelPair>();
+            if (other.Members != null)
+                foreach (var m in other.Members)
+                    Members.Add(new CharacterLevelPair(m.CharacterClass, m.TotalXP));
+        }
     }
 
     [Serializable]

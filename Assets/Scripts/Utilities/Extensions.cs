@@ -530,7 +530,8 @@ public static class Vector3Extensions
     /// <summary>Returns whether the has na n condition is met.</summary>
     public static bool HasNaN(this Vector3 v)
     {
-        return v.x == float.NaN || v.y == float.NaN || v.z == float.NaN;
+        // NaN compares unequal to everything (incl. itself), so `== float.NaN` is always false.
+        return float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z);
     }
 
     /// <summary>Randomize offset.</summary>

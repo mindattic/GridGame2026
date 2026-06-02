@@ -47,7 +47,9 @@ namespace Scripts.Canvas
             if (bank == null) return 0;
             int total = bank.Total;
             int sig = total;
-            int sample = Mathf.Min(total, 4);
+            // Hash every filled orb, not just the first 4 — otherwise a color change at a slot
+            // past index 3 (total unchanged) leaves lastSignature equal and the line never repaints.
+            int sample = Mathf.Min(total, bank.Orbs.Count);
             for (int i = 0; i < sample; i++) sig = (sig * 31) ^ (int)bank.Orbs[i];
             return sig;
         }
