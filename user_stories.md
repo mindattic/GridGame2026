@@ -79,8 +79,16 @@ These were on the original board and are **already implemented in code**. The bi
   **Touch:** `Bootstrap.Awake`. **Bible:** §30.5. **Dep:** —
 
 - [x] **US-053 — HP carry-over between battles.** ✅ DONE 2026-06-01. `CharacterLevelPair.HpCurrent` added (`Profile.cs`); `StageManager.SpawnActor` hydrates wounds after equipment finalizes MaxHP; `BattleWonSequence` persists each party hero's HP (survivors keep their wound, a hero who fell in a won battle revives at 1); `BattleLostSequence` resets the party to full. **Heal model = §29.3 #12 model A (Legion 4/4): wounds persist, gold-cost full-heal at the Alchemist** (Inn was cut). Demos: "Wound Party 50%" / "Heal Party Full". Bible §15.1/§15.2 + §29.3 #12 updated. *Follow-on: the Alchemist heal-service UI button (the carry-over mechanism + in-battle heal preview are built).*
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no `HpCurrent` field in any save class — `Profile.cs`).
+  **Why:** Wounds-between-battles gives the heal vendor a job (§15.1) and completes the defeat path (US-063 routing already exists, just needs the restore).
+  **Done when:** an `HpCurrent` field is added (e.g. on `CharacterLevelPair`/a `HeroHealthSave`); written at battle end; wounded HP hydrated on spawn; defeat resets to MaxHP.
+  **Touch:** `Models/Profile.cs`, `SaveStateService`/`PostBattleManager`, hero spawn in `GameBuilder`. **Bible:** §15.1, §15.2, §22.2; resolve §29.3 #12 (heal model). **Dep:** —
 
 - [x] **US-054 — `BestiaryProgress` writing (seen / defeated).** ✅ DONE 2026-06-01. `BestiarySaveData` + `BestiaryEntrySave` added to `Profile.cs` (**list-based**, keyed by `CharacterClass` — the serializer can't do Dictionaries, matching `InventorySaveData`); wired into `SaveState` (field + deep-copy ctor). `StageManager.SpawnActor` marks enemies **Seen** on spawn; `ActorInstance.DieRoutine` marks **Defeated + TimesDefeated** on enemy death; persisted via the existing battle-end save. Demo: "Log Bestiary". Bible §15.3 updated. Unblocks US-077 (Scan→seen) and US-093 (view gating). **Dep:** —
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no `BestiarySaveData` in `Profile.cs`).
+  **Why:** Unblocks Bestiary unlock gating (US-093) and lets Scan flag `seen` (US-077).
+  **Done when:** a `BestiarySaveData : Dict<CharacterClass, {Seen, Defeated, TimesDefeated}>` added; populated on enemy spawn (seen) + death (defeated); persisted at battle end.
+  **Touch:** `Models/Profile.cs`, spawn/death hooks, `PostBattleManager`. **Bible:** §15.1, §15.3. **Dep:** —
 
 - [ ] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
   **Why:** The *only* nav surface (Overworld is cut). Load/save-screen look-and-feel; cleared stages stay replayable so the player can **farm a specific enemy's drop** (a Frost stage for Ice Shards, etc.) — the intended grind loop.
@@ -140,6 +148,10 @@ These were on the original board and are **already implemented in code**. The bi
 *The cast scaffolding is fully built (§A). What's missing is the **richness**: the three-outcome resolver, enemies that actually cast, and the interrupt→orb mint that closes the off-palette mana economy.*
 
 - [x] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** ✅ DONE 2026-06-01. New `Services/CastInterruptResolver.cs` (Clutch first ≈ `LCK/200` capped 25%; else Pushback vs Fail by `(LCK+WIS)/100 − atkSTR/400` capped 60%). `TimelineBarInstance.InterruptCastsByOwner(hero, attacker)` routes through it: **Fail** = `CastingState.Interrupt()` (current); **Pushback** = `TimelineIcon.Pushback` (rewind u + stun, cast survives); **Clutch** = cast survives untouched (the snap-to-u=1 + flash/SFX juice is **US-025**). `EnemyAttackSequence` passes the attacker. Demo: "Roll Cast Interrupt ×20". Bible §13.4 + §16.2 updated. **Dep:** —
+  *(Original spec — audit log)* **Was:** `PARTIAL` (only unconditional Fail today — `EnemyAttackSequence.cs:128` comment names the intended resolver).
+  **Why:** Replace the flat Fail with the LCK-driven roll (Clutch first, then Pushback vs Fail by LCK/WIS).
+  **Done when:** new `Services/CastInterruptResolver.cs`; `InterruptCastsByOwner` routes through it; **Pushback** rewinds the spell-icon u + brief stun (icon already supports u + Stunned); **Fail** = current behavior.
+  **Touch:** new `Services/CastInterruptResolver.cs`, `Canvas/TimelineBarInstance.InterruptCastsByOwner`, `EnemyAttackSequence`. **Bible:** §13.4, casting prose, delete §16.2 resolver row. **Dep:** —
 
 - [ ] **US-025 — `ClutchSequence` (the miracle save).** `NOT-BUILT`.
   **Done when:** rare LCK outcome: screen flash / SFX / "Clutch!" text, snap spell-icon to u=1 (reuse `EnterResolvingMode`), run normal resolution; base rate ≈ `LCK/200`, designer-capped.
@@ -161,8 +173,14 @@ These were on the original board and are **already implemented in code**. The bi
 *Orbs are hardcoded Blue. Give them class identity and the remaining mint sources so the bank profile reflects party composition (§23.2.1).*
 
 - [x] **US-030 — Per-hero color affinity on pincer mint.** ✅ DONE 2026-06-02. New `Data/Actor/ManaColorAffinity.For(class)` (per-class, the board's allowed alternative to an ActorData field — avoids churning 7 hero `Data()` files); `PincerAttackManager` mints each contributor's color instead of hardcoded Blue. Map (Legion-ratified for the two ambiguous): Cleric **W**, Paladin **W**, Barbarian **R**, Alchemist **G**, Assassin **B**, GreenNinja **G**, RedNinja **R**; others default Blue. Demo: "Log Color Affinities". Bible §3.1.2/§3.1.7/§23.2 + §16.5 #13 + §29.2 #8 updated. Unblocks US-031 (done) / US-033 (color conversion). **Dep:** — ✓
+  *(Original spec — audit log)* **Was:** `PARTIAL` (all drops hardcoded `ManaType.Blue` — `PincerAttackManager.cs:206`; no `ColorAffinity` on `ActorData`).
+  **Done when:** `ActorData.ColorAffinity` (or per-class) added; `DropOrbAt` mints the contributor's affinity color; seed §23.2 colors (Cleric=W, Barbarian=R, …).
+  **Touch:** `Models/Actor/ActorData`, `Managers/PincerAttackManager`. **Bible:** §3.1.2, §23.1, §23.2, delete §16.5 #13; resolve §29.2 #8. **Dep:** —
 
 - [x] **US-031 — Critical hit → Colorless orb.** ✅ DONE 2026-06-02. A hero's critical hit mints one Colorless "wild" orb to the team bank — hooked centrally in `ActorInstance.DamageRoutine` (covers pincer crits via AttackHelper AND magic crits via MagicAttackSequence, both routed through `AttackResult.HitType`). The wild orb renders as a spectrum-cycling cell (`ManaOrbLine.AnimateWildOrbs`) per the user's "flashes every color" treatment. Capped by the bank. Demo: "Mint Wild Orb". Bible §3.1.2/§3.1.7 updated. *(Dep US-030 was epic-ordering only — Colorless is a fixed color, no per-class decision needed.)* **Dep:** — ✓
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`HitOutcome.Critical` exists; no orb mint — `AttackHelper.cs:74-128`).
+  **Done when:** a crit (pincer or spell) mints one Colorless orb.
+  **Touch:** `Helpers/AttackHelper` / `SpellEffectDispatcher`, `ManaPoolManager`. **Bible:** §3.1.2. **Dep:** US-030.
 
 - [ ] **US-028 — Quicken / Hasten (forward push + overtake).** `NOT-BUILT` (no spell; no forward-push in `ResolveSpatialOverlap`).
   **Why:** Inverse of pushback — slide a target's icon toward the trigger, overtaking neighbors (inverted train-cascade).
@@ -170,6 +188,10 @@ These were on the original board and are **already implemented in code**. The bi
   **Touch:** `Canvas/TimelineBarInstance.ResolveSpatialOverlap`, `Data/SpellLibrary` (Quicken). **Bible:** §2, casting prose. **Dep:** —
 
 - [x] **US-033 — Pressure valve (Colorless wildcard).** ✅ DONE 2026-06-02. **Design-locked by Legion (4/4): rule B — Colorless wild orbs satisfy any color on spend; no manual converter** (keeps colors meaningful, valve tied to crits, not exploitable). This removed the UI requirement entirely — pure `ManaBank` logic: `CanAfford`/`Spend` pay each cost with its own color (leftmost) then fall back to Colorless wilds for shortfalls; explicit Colorless costs paid only by Colorless. Demo: "Test Wildcard Spend". Bible §3.1.6 promoted to built. **Dep:** US-030 ✓ (uses US-031 crit-orbs as the valve source). ✓
+  *(Original spec — audit log; title was "Color conversion / pressure valve")* **Was:** `NOT-BUILT` (`ManaBank` has Add/Spend/CanAfford only).
+  **Why:** Documented escape valve (§3.1.6) so off-color banks aren't dead weight.
+  **Done when:** a `ManaBank.Trade()` + in-battle UI trades N orbs of one color toward another (Colorless wildcard at a cost). Design-locked first.
+  **Touch:** `Models/ManaBank`, `ManaPoolManager`, conversion UI. **Bible:** §3.1.6 (promote intent → built). **Dep:** US-030.
 
 ---
 
@@ -177,12 +199,24 @@ These were on the original board and are **already implemented in code**. The bi
 *Durability + weapon-swap are done (§A). What's left is the three planned `ItemDefinition` fields and their consumers.*
 
 - [x] **US-040 — Extend `ItemDefinition` with planned fields.** ✅ DONE 2026-06-01. `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added to `Data/Items/ItemDefinition.cs` with safe defaults (0 / null / empty dict). Inert until EPIC E consumers (US-041/042/043). Demo: "Log ItemDef Fields". Bible §24.3 + §16.3 updated. **Dep:** —
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`ItemDefinition.cs:63-124` lacks all three).
+  **Done when:** `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added with safe defaults.
+  **Touch:** `Inventory/ItemDefinition`. **Bible:** §24.3. **Dep:** —
 
 - [x] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** ✅ DONE 2026-06-01. `MageRobes.BattleStartManaOrbs=2`; new `WizardRobe` (Rare, `eq_armor_wizard`, =3) added + registered in `ItemLibrary`. `ManaPoolManager.ApplyBattleStartManaOrbs` (run at battle start via `GameReady`) sums `BattleStartManaOrbs` across the active party's equipped gear and adds that many random WUBRG orbs, clamped to the 12 cap. Demo: "Battle-Start Orbs". Bible §24.8/§3.1.4 + §16.3 #6 updated. **Dep:** US-040. ✓
+  *(Original spec — audit log)* **Was:** `PARTIAL` (`MageRobes` item exists `ItemData_Armor.cs:128`; no Wizard Robe; no battle-start scan).
+  **Done when:** Wizard Robe added; `ManaPoolManager.Start` scans equipped party gear and adds `BattleStartManaOrbs` random orbs per robe (stacks per wearer, respects the 12 cap §3.1.4).
+  **Touch:** `Data/ItemData_Armor`, `ManaPoolManager.Start`. **Bible:** §24.8, §3.1.4, delete §16.3 #6. **Dep:** US-040.
 
 - [x] **US-042 — Sleep Dart (item triggers a spell).** ✅ DONE 2026-06-01. `cons_sleep_dart` (`OnUseSpellName="Sleep"`, stack 5) added + registered; `ManaAbility.SourceItemId` links a bar slot to its `ItemDefinition`; `AbilityBar.HandleItem`→`TryHandleItemSpell` resolves the spell by ability-name, runs Sleep's targeting flow, and on confirm spends one charge + `SpellEffectDispatcher.Cast` + costs a turn. On the Alchemist's default bar (slot 6). First item-casts-a-spell path (generalizes to any consumable with `OnUseSpellName`). Demo: "Verify Sleep Dart Route". Bible §4.4/§24.8 + §16.3 #7 updated. **Dep:** US-040. ✓
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no item; `AbilityBar.HandleItem:71-77` + `UseItemSequence` are heal/damage-only, no spell routing).
+  **Done when:** Sleep Dart consumable (stack 5) routes `HandleItem` through `OnUseSpellName` → Sleep's targeting flow → `SpellEffectDispatcher.Cast`, consuming one charge on confirm.
+  **Touch:** `Data/ItemData_Consumables`, `Canvas/AbilityBar.HandleItem`, `Sequences/UseItemSequence`. **Bible:** §24.8, §4.4, delete §16.3 #7. **Dep:** US-040.
 
 - [x] **US-043 — Equipped `ResistanceModifiers` folded into damage.** ✅ DONE 2026-06-01. `SpellEffectDispatcher.EquipmentResistanceMultiplier(target, type)` multiplies every equipped item's `ResistanceModifiers[type]` into `ApplyDamage`'s per-class `resMult` (multiplicative; heroes only — enemies have no gear). Sunfire Amulet seeded with Fire ×0.7 as a demonstrable example. Demo: "Log Resistances". Bible §13.1.2/§24.3 + §16.3 updated. **Completes EPIC E.** **Dep:** US-040. ✓
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (resistances are per-class on `ActorData` only; no equipment aggregation — `Formulas.cs:293-300`).
+  **Done when:** equipped `ResistanceModifiers` aggregate (alongside `ComputeEquipmentBonus`) into the wearer's effective resistance used by `ApplyDamage`.
+  **Touch:** `Utilities/Formulas`, `SpellEffectDispatcher.ApplyDamage`. **Bible:** §3.3, §24.3. **Dep:** US-040.
 
 ---
 
@@ -190,10 +224,19 @@ These were on the original board and are **already implemented in code**. The bi
 *The planner is solid for positioning (§A) but lacks the §14.3 future hooks. Best done after enemy casting (US-026) exists so the Caster archetype has behavior to plan.*
 
 - [x] **US-080 — Threat tracking (damage → preferred target).** ✅ DONE 2026-06-02. New `Managers/ThreatTracker` (per-battle hero→enemy damage tally, accrued in `ActorInstance.DamageRoutine`, cleared in `TurnManager.Initialize`). `EnemyPlanner` subtracts `(threat∕maxThreat) × enemyINT × 0.8` from each candidate's target score, so **threat weight scales with enemy Intelligence** (user refinement): smart enemies hunt the top damage-dealer, dumb ones keep chasing nearest/wounded. Demo: "Log Threat". Bible §14.1.2/§14.3 updated. **Dep:** —
+  *(Original spec — audit log)* **Was:** `PARTIAL` (targeting weights distance+HP, not damage dealt — `EnemyPlanner.cs:42-44`).
+  **Done when:** `EnemyPlanner` adds an accumulated-damage-per-hero weight to target selection.
+  **Touch:** `Services/EnemyPlanner` (+ a per-battle damage tally). **Bible:** §14.1.2 (new factor), §14.3. **Dep:** —
 
 - [x] **US-081 — Coordinated retreat (wounded enemies flee).** ✅ DONE 2026-06-02. `EnemyPlanner.PlanStep`: below `RetreatHpThreshold` (0.30 HP fraction) the enemy flips advance→flee (maximizes distance from the target) and drops its adjacency + pincer-seek biases; flank-avoidance still applies so it won't back into a pincer. Demo: "Test Enemy Retreat". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
+  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
+  **Done when:** below an HP threshold an enemy biases moves *away* from heroes.
+  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
 
 - [x] **US-082 — AI supporter positioning.** ✅ DONE 2026-06-02 (Legion: supporter-adjacency over lane-clearing, 4/4). `EnemyPlanner.WouldSupportAllyPincer` rewards (+25) a move that makes this enemy a §1.2.3 supporter of *another* ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`; excludes pincers where this enemy is itself an endpoint — that's the +50 `WouldFormPincer`). Suppressed when fleeing (US-081). Demo: "Log Enemy Plans". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
+  *(Original spec — audit log)* **Was:** `PARTIAL` (planner seeks its *own* pincer, not moves that enable an *ally's*).
+  **Done when:** a support branch rewards moves completing an ally's pincer line.
+  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
 
 - [ ] **US-083 — Boss scripted phases.** `NOT-BUILT`.
   **Done when:** a per-class boss override (or `BossScript` sequence) swaps generic stepping for authored phases via `SequenceManager`.
@@ -229,6 +272,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Touch:** `Canvas/AbilityBar`, new tooltip. **Bible:** §4.5. **Dep:** US-076.
 
 - [~] **US-092 — Cooldown slot visual state.** ✅ MOSTLY DONE 2026-06-01 (commit `1bdb322b`). Skills declare a reuse limit (`ManaAbility.CooldownTurns`; Steal 3 / Mug 2 / Teleport 3); per-hero countdown via `SkillCooldownManager`, ticked per turn-cycle in `TurnManager.BeginHeroWindow`; `AbilityBar.Refresh` renders a disabled state — **slot fades out + shows the turns-remaining number**, button non-interactable. Bible §4.1.1. *Remaining polish only:* the exact §4.5 **greyscale + radial-sweep** visual (current state is fade + numeric countdown).
+  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
+  **Done when:** skills can declare a reuse limit; bar renders the greyscale + radial sweep (§4.5).
   **Touch:** `Canvas/AbilityBar`, `Data/ManaAbility`. **Bible:** §4.5. **Dep:** —
 
 - [ ] **US-094 — Colorblind palette toggle.** `NOT-BUILT` (`SettingsManager` has toggles, not this).
@@ -277,3 +322,5 @@ These were on the original board and are **already implemented in code**. The bi
 ---
 
 *Reconciled against the live codebase 2026-05-30. When you land a story: check the box, update the cited bible section, and move any new rule/question into bible §16/§29 so this board and the bible never drift again — which is exactly the drift this pass had to correct.*
+
+> **This file is the AUDIT LOG — never delete a story's original text.** To complete a story: flip `[ ] → [x]`, add a `✅ DONE <date>` outcome note on the title line (what shipped, key files, the Debug demo, bible sections touched), and **keep the original `Why` / `Done when` / `Touch` / `Bible` / `Dep` lines beneath it** (prefixed `*(Original spec — audit log)*`). The original spec is how we know what was asked for vs. what was built — do not collapse or erase it.
