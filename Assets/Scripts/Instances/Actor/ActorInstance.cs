@@ -586,6 +586,9 @@ public partial class ActorInstance : MonoBehaviour
         // Award XP only when an enemy dies
         if (this.IsEnemy)
         {
+            // US-054: record the defeat in the Bestiary (seen + defeated + times-defeated).
+            ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary?.MarkDefeated(this.characterClass);
+
             int baseXp = ExperienceHelper.Calculate(this);
             if (baseXp > 0)
             {

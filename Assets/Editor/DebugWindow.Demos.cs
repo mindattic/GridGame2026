@@ -93,6 +93,11 @@ public partial class DebugWindow
             ("Heal Party Full", () => g.DebugManager.Demo_HealParty())
         );
 
+        // Bestiary (US-054) — log seen/defeated progress, written on enemy spawn + death.
+        RenderButtonRow(
+            ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

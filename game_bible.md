@@ -1344,7 +1344,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 ### 15.3 Open migrations
 
 - ~~`HeroEquipmentSave.AbilityBarSlots` migration~~ — **DONE.** It is now the source of truth for per-hero AbilityBar contents with a full hydrate/persist round-trip (`Profile.cs:376-487`, `HeroLoadout.cs:183-268`); `HeroLoadouts.perClass` is the fallback default only when a hero has no saved bar.
-- `BestiaryProgress` is **unwritten** (`US-054`) — Bestiary currently shows every entry regardless of whether the player has encountered it. Future: gate by `seen` flag, show silhouettes for unseen (`US-093`).
+- ~~`BestiaryProgress` is **unwritten** (`US-054`)~~ — **WRITTEN (US-054, 2026-06-01):** `SaveState.Bestiary` (`BestiarySaveData` — list-based, not a Dict, to match the serializer) records each enemy class **Seen** on spawn (`StageManager.SpawnActor`) and **Defeated/TimesDefeated** on death (`ActorInstance.DieRoutine`), persisted at battle end. The Bestiary *view* still shows every entry — the unlock gate / silhouettes for unseen are `US-093`.
 
 ---
 

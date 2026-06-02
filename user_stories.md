@@ -80,10 +80,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-053 — HP carry-over between battles.** ✅ DONE 2026-06-01. `CharacterLevelPair.HpCurrent` added (`Profile.cs`); `StageManager.SpawnActor` hydrates wounds after equipment finalizes MaxHP; `BattleWonSequence` persists each party hero's HP (survivors keep their wound, a hero who fell in a won battle revives at 1); `BattleLostSequence` resets the party to full. **Heal model = §29.3 #12 model A (Legion 4/4): wounds persist, gold-cost full-heal at the Alchemist** (Inn was cut). Demos: "Wound Party 50%" / "Heal Party Full". Bible §15.1/§15.2 + §29.3 #12 updated. *Follow-on: the Alchemist heal-service UI button (the carry-over mechanism + in-battle heal preview are built).*
 
-- [ ] **US-054 — `BestiaryProgress` writing (seen / defeated).** `NOT-BUILT` (no `BestiarySaveData` in `Profile.cs`).
-  **Why:** Unblocks Bestiary unlock gating (US-093) and lets Scan flag `seen` (US-077).
-  **Done when:** a `BestiarySaveData : Dict<CharacterClass, {Seen, Defeated, TimesDefeated}>` added; populated on enemy spawn (seen) + death (defeated); persisted at battle end.
-  **Touch:** `Models/Profile.cs`, spawn/death hooks, `PostBattleManager`. **Bible:** §15.1, §15.3. **Dep:** —
+- [x] **US-054 — `BestiaryProgress` writing (seen / defeated).** ✅ DONE 2026-06-01. `BestiarySaveData` + `BestiaryEntrySave` added to `Profile.cs` (**list-based**, keyed by `CharacterClass` — the serializer can't do Dictionaries, matching `InventorySaveData`); wired into `SaveState` (field + deep-copy ctor). `StageManager.SpawnActor` marks enemies **Seen** on spawn; `ActorInstance.DieRoutine` marks **Defeated + TimesDefeated** on enemy death; persisted via the existing battle-end save. Demo: "Log Bestiary". Bible §15.3 updated. Unblocks US-077 (Scan→seen) and US-093 (view gating). **Dep:** —
 
 - [ ] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
   **Why:** The *only* nav surface (Overworld is cut). Load/save-screen look-and-feel; cleared stages stay replayable so the player can **farm a specific enemy's drop** (a Frost stage for Ice Shards, etc.) — the intended grind loop.

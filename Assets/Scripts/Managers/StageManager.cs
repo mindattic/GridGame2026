@@ -344,6 +344,10 @@ public class StageManager : MonoBehaviour
             }
         }
 
+        // US-054: record an enemy class as "seen" the moment it appears on the board.
+        if (stageActor.Team == Team.Enemy)
+            ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary?.MarkSeen(stageActor.CharacterClass);
+
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 

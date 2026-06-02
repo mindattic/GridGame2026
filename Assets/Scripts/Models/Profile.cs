@@ -125,6 +125,7 @@ namespace Scripts.Models
         public EquipmentSaveData Equipment;
         public TrainingSaveData Training;
         public BountySaveData Bounty;
+        public BestiarySaveData Bestiary = new BestiarySaveData();
         public List<CraftJob> CraftJobs = new List<CraftJob>();
 
         public SaveState() { }
@@ -142,6 +143,7 @@ namespace Scripts.Models
             this.Equipment = other.Equipment != null ? new EquipmentSaveData(other.Equipment) : new EquipmentSaveData();
             this.Training = other.Training != null ? new TrainingSaveData(other.Training) : new TrainingSaveData();
             this.Bounty = other.Bounty != null ? new BountySaveData(other.Bounty) : new BountySaveData();
+            this.Bestiary = other.Bestiary != null ? new BestiarySaveData(other.Bestiary) : new BestiarySaveData();
             this.CraftJobs = new List<CraftJob>();
             if (other.CraftJobs != null)
                 foreach (var j in other.CraftJobs)
@@ -176,6 +178,70 @@ namespace Scripts.Models
             Equipment = new EquipmentSaveData();
             Training = new TrainingSaveData();
             Bounty = new BountySaveData();
+        }
+    }
+
+    // US-054: Bestiary progress — per-enemy-class encounter record. List-based (not a Dictionary)
+    // to match the rest of the save model, which the serializer requires. Written on enemy spawn
+    // (Seen) and death (Defeated/TimesDefeated); read by the Bestiary view's unlock gating (US-093).
+    [Serializable]
+    public class BestiarySaveData
+    {
+        public List<BestiaryEntrySave> Entries = new List<BestiaryEntrySave>();
+
+        public BestiarySaveData() { }
+        public BestiarySaveData(BestiarySaveData other)
+        {
+            Entries = new List<BestiaryEntrySave>();
+            if (other?.Entries != null)
+                foreach (var e in other.Entries)
+                    if (e != null) Entries.Add(new BestiaryEntrySave(e));
+        }
+
+        /// <summary>Find (or create) the record for a class.</summary>
+        public BestiaryEntrySave GetOrCreate(CharacterClass cls)
+        {
+            foreach (var e in Entries) if (e != null && e.CharacterClass == cls) return e;
+            var created = new BestiaryEntrySave(cls);
+            Entries.Add(created);
+            return created;
+        }
+
+        /// <summary>Lookup without creating (null if never encountered).</summary>
+        public BestiaryEntrySave Get(CharacterClass cls)
+        {
+            foreach (var e in Entries) if (e != null && e.CharacterClass == cls) return e;
+            return null;
+        }
+
+        public void MarkSeen(CharacterClass cls) => GetOrCreate(cls).Seen = true;
+
+        public void MarkDefeated(CharacterClass cls)
+        {
+            var e = GetOrCreate(cls);
+            e.Seen = true;
+            e.Defeated = true;
+            e.TimesDefeated++;
+        }
+    }
+
+    [Serializable]
+    public class BestiaryEntrySave
+    {
+        public CharacterClass CharacterClass;
+        public bool Seen;
+        public bool Defeated;
+        public int TimesDefeated;
+
+        public BestiaryEntrySave() { }
+        public BestiaryEntrySave(CharacterClass cls) { CharacterClass = cls; }
+        public BestiaryEntrySave(BestiaryEntrySave other)
+        {
+            if (other == null) return;
+            CharacterClass = other.CharacterClass;
+            Seen = other.Seen;
+            Defeated = other.Defeated;
+            TimesDefeated = other.TimesDefeated;
         }
     }
 

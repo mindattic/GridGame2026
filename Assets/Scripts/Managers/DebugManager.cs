@@ -237,6 +237,27 @@ namespace Scripts.Managers
             Debug.Log(n > 0 ? $"[Demo] Healed {n} hero(es) to full." : "[Demo] No living heroes to heal.");
         }
 
+        /// <summary>Demo (US-054): log Bestiary progress — seen vs defeated enemy classes
+        /// (written on enemy spawn + death).</summary>
+        public void Demo_LogBestiary()
+        {
+            var bestiary = ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary;
+            if (bestiary?.Entries == null || bestiary.Entries.Count == 0)
+            {
+                Debug.Log("[Demo] Bestiary empty — spawn/defeat some enemies first.");
+                return;
+            }
+            int seen = 0, defeated = 0;
+            foreach (var e in bestiary.Entries)
+            {
+                if (e == null) continue;
+                if (e.Seen) seen++;
+                if (e.Defeated) defeated++;
+                Debug.Log($"[Demo] {e.CharacterClass}: seen={e.Seen} defeated={e.Defeated} x{e.TimesDefeated}");
+            }
+            Debug.Log($"[Demo] Bestiary: {seen} seen, {defeated} defeated ({bestiary.Entries.Count} classes recorded).");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──
