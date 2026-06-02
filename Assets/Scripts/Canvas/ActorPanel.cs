@@ -63,13 +63,15 @@ namespace Scripts.Canvas
         #region Layout constants
         private const float TabBarHeight = 44f;
         private const float Pad = 12f;
-        private const float PortraitSize = 150f;
-        private static readonly Color PanelBg        = new Color(0.06f, 0.06f, 0.09f, 0.92f);
+        private const float FrameInset = 40f;           // keep content inside the base-4 frame's border (~44px)
+        private const float PortraitSize = 440f;        // large; bleeds off the lower-right corner
+        private const float StatsRightReserve = 450f;   // keep title/stats text out of the portrait's overlap margin
         private static readonly Color TabSelected     = new Color(0.22f, 0.27f, 0.42f, 0.98f);
         private static readonly Color TabUnselected   = new Color(0.12f, 0.12f, 0.16f, 0.85f);
-        private static readonly Color HeroBackdrop    = new Color(0.06f, 0.06f, 0.09f, 0.92f);
-        private static readonly Color EnemyBackdropBase = new Color(0.10f, 0.02f, 0.02f, 0.92f);
-        private static readonly Color EnemyBackdropPeak = new Color(0.55f, 0.04f, 0.04f, 0.95f);
+        // The backdrop is the base-4 frame sprite; tinting white shows it true, red flickers it for enemies.
+        private static readonly Color HeroBackdrop    = Color.white;
+        private static readonly Color EnemyBackdropBase = new Color(1f, 0.55f, 0.55f, 1f);
+        private static readonly Color EnemyBackdropPeak = new Color(1f, 0.25f, 0.25f, 1f);
         private static readonly string[] TabNames = { "Stats", "Equipment", "Lore" };
         private static readonly EquipmentSlot[] EquipSlots =
             { EquipmentSlot.Weapon, EquipmentSlot.Armor, EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3 };
@@ -111,9 +113,16 @@ namespace Scripts.Canvas
             // tabbed UI built below remains — defensive against an un-pruned GameBuilder root.
             for (int i = root.childCount - 1; i >= 0; i--) Destroy(root.GetChild(i).gameObject);
 
-            // Backdrop — fills the whole panel, sits behind everything (enemy flicker target).
+            // Backdrop — the base-4 actor frame as a 9-slice, sized to the whole panel (the metallic
+            // border stays crisp at any size; the black center stretches). Also the enemy-flicker tint.
             backdropImage = MakeImage("Backdrop", root, HeroBackdrop);
             Stretch((RectTransform)backdropImage.transform);
+            if (Scripts.Libraries.SpriteLibrary.Sprites != null
+                && Scripts.Libraries.SpriteLibrary.Sprites.TryGetValue("Base4", out var frameSprite) && frameSprite != null)
+            {
+                backdropImage.sprite = frameSprite;
+                backdropImage.type = Image.Type.Sliced;
+            }
             backdropImage.raycastTarget = false;
 
             // ── Tab bar (top strip): 3 tab buttons + the two hero-cycle arrows on the right. ──
@@ -121,8 +130,8 @@ namespace Scripts.Canvas
             tabBar.anchorMin = new Vector2(0f, 1f);
             tabBar.anchorMax = new Vector2(1f, 1f);
             tabBar.pivot = new Vector2(0.5f, 1f);
-            tabBar.sizeDelta = new Vector2(-Pad * 2f, TabBarHeight);
-            tabBar.anchoredPosition = new Vector2(0f, -Pad * 0.25f);
+            tabBar.sizeDelta = new Vector2(-FrameInset * 2f, TabBarHeight);
+            tabBar.anchoredPosition = new Vector2(0f, -FrameInset * 0.4f);
 
             tabButtonBgs = new Image[TabNames.Length];
             float btnW = 150f;
@@ -154,35 +163,41 @@ namespace Scripts.Canvas
             content.anchorMin = new Vector2(0f, 0f);
             content.anchorMax = new Vector2(1f, 1f);
             content.pivot = new Vector2(0.5f, 0.5f);
-            content.offsetMin = new Vector2(Pad, Pad);
-            content.offsetMax = new Vector2(-Pad, -(TabBarHeight + Pad));
+            content.offsetMin = new Vector2(FrameInset, FrameInset);
+            content.offsetMax = new Vector2(-FrameInset, -(TabBarHeight + FrameInset * 0.5f));
 
             tabPanels = new GameObject[TabNames.Length];
 
             // Tab 0 — Stats: portrait (left) + title (top) + stat block (body).
             var stats = MakeRect("StatsTab", content); Stretch(stats); tabPanels[0] = stats.gameObject;
-            portraitImg = MakeImage("Portrait", stats, Color.white);
-            var prt = (RectTransform)portraitImg.transform;
-            prt.anchorMin = new Vector2(0f, 0.5f);
-            prt.anchorMax = new Vector2(0f, 0.5f);
-            prt.pivot = new Vector2(0f, 0.5f);
-            prt.sizeDelta = new Vector2(PortraitSize, PortraitSize);
-            prt.anchoredPosition = new Vector2(0f, 0f);
-            portraitImg.preserveAspect = true;
-            portraitCG = portraitImg.gameObject.AddComponent<CanvasGroup>();
 
+            // Title + stats pushed to the LEFT; the right side is reserved (StatsRightReserve) so no
+            // text prints into the large portrait's overlapping margin.
             titleText = MakeText(stats, "Attic", 30f, TextAlignmentOptions.TopLeft);
             var ttr = (RectTransform)titleText.transform;
             ttr.anchorMin = new Vector2(0f, 1f); ttr.anchorMax = new Vector2(1f, 1f); ttr.pivot = new Vector2(0f, 1f);
-            ttr.offsetMin = new Vector2(PortraitSize + Pad, -34f);
-            ttr.offsetMax = new Vector2(0f, 0f);
+            ttr.offsetMin = new Vector2(0f, -34f);
+            ttr.offsetMax = new Vector2(-StatsRightReserve, 0f);
 
             statsText = MakeText(stats, "Avenir", 22f, TextAlignmentOptions.TopLeft);
             var str = (RectTransform)statsText.transform;
             str.anchorMin = new Vector2(0f, 0f); str.anchorMax = new Vector2(1f, 1f); str.pivot = new Vector2(0f, 1f);
-            str.offsetMin = new Vector2(PortraitSize + Pad, 0f);
-            str.offsetMax = new Vector2(0f, -38f);
+            str.offsetMin = new Vector2(0f, 0f);
+            str.offsetMax = new Vector2(-StatsRightReserve, -38f);
             statsText.enableWordWrapping = true;
+
+            // Large portrait bleeding off the lower-right corner (overlaps the panel edge, like the
+            // old card). Built last in the Stats tab so it draws over the (left-confined) text region.
+            portraitImg = MakeImage("Portrait", stats, Color.white);
+            var prt = (RectTransform)portraitImg.transform;
+            prt.anchorMin = new Vector2(1f, 0f);
+            prt.anchorMax = new Vector2(1f, 0f);
+            prt.pivot = new Vector2(1f, 0f);
+            prt.sizeDelta = new Vector2(PortraitSize, PortraitSize);
+            prt.anchoredPosition = new Vector2(10f, -10f);   // slight bleed off the bottom-right corner
+            portraitImg.preserveAspect = true;
+            portraitImg.raycastTarget = false;
+            portraitCG = portraitImg.gameObject.AddComponent<CanvasGroup>();
 
             // Tab 1 — Equipment.
             var equip = MakeRect("EquipmentTab", content); Stretch(equip); tabPanels[1] = equip.gameObject;
@@ -195,6 +210,10 @@ namespace Scripts.Canvas
             loreText = MakeText(lore, "Avenir", 22f, TextAlignmentOptions.TopLeft);
             Stretch((RectTransform)loreText.transform);
             loreText.enableWordWrapping = true;
+
+            // The big portrait bleeds upward past the content area; keep the tab bar on top so its
+            // buttons stay visible and clickable above the portrait.
+            tabBar.SetAsLastSibling();
         }
         #endregion
 

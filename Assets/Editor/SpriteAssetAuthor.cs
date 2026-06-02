@@ -55,6 +55,33 @@ public static class SpriteAssetAuthor
         Debug.Log("[SpriteAssetAuthor] Spell placeholder icons authored. Real art: drop a 64×64 PNG with the same name to replace.");
     }
 
+    [MenuItem("Tools/Sprites/Configure base-4 Frame 9-slice")]
+    public static void ConfigureFrameSlice()
+    {
+        // The actor frame (base-4) doubles as the universal menu frame: a 9-slice border so the same
+        // pixels render crisp at any size (Image.Type.Sliced). Reuse on any panel that wants the frame.
+        SetSpriteBorder("Assets/Sprites/Actor/Base/base-4.png", 44);
+        Debug.Log("[SpriteAssetAuthor] base-4 configured as a 44px 9-slice (FullRect). Use it on any UI Image via Image.Type.Sliced for a resizable menu frame.");
+    }
+
+    /// <summary>Sets a uniform 9-slice border (px) on a Single-mode sprite + forces FullRect mesh
+    /// (required for sliced rendering), then reimports. The sanctioned way to make a sprite a frame.</summary>
+    private static void SetSpriteBorder(string assetPath, int border)
+    {
+        if (AssetImporter.GetAtPath(assetPath) is not TextureImporter importer)
+        {
+            Debug.LogWarning($"[SpriteAssetAuthor] No TextureImporter at {assetPath}.");
+            return;
+        }
+        importer.spriteImportMode = SpriteImportMode.Single;
+        importer.spriteBorder = new Vector4(border, border, border, border);
+        var settings = new TextureImporterSettings();
+        importer.ReadTextureSettings(settings);
+        settings.spriteMeshType = SpriteMeshType.FullRect; // 9-slice requires FullRect, not Tight
+        importer.SetTextureSettings(settings);
+        importer.SaveAndReimport();
+    }
+
     // ── Procedural texture builders ───────────────────────────────
 
     /// <summary>Radial gradient: bright at center, fades to transparent at the edge.

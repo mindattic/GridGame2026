@@ -57,8 +57,8 @@ namespace Scripts.Factories
             beltRt.sizeDelta = new Vector2(-BeltSideInset * 2f, BeltHeight);
             beltRt.anchoredPosition = Vector2.zero;
             var beltImg = beltGO.GetComponent<Image>();
-            beltImg.sprite = Scripts.Utilities.UiCircleSprite.Get(); // soft, round-capped bar
-            beltImg.type = Image.Type.Sliced;
+            beltImg.sprite = null;              // plain rectangle (no sprite = solid UI quad; NOT a stretched circle)
+            beltImg.type = Image.Type.Simple;
             beltImg.color = BeltColor;
             beltImg.raycastTarget = false;
 
