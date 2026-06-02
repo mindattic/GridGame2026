@@ -44,7 +44,7 @@ namespace Scripts.Data
 
         // Poison: pick a tile, CROSS pattern (center + 4 cardinals = 5 tiles). Toxic spread.
         public static readonly SpellDefinition Poison = new SpellDefinition(
-            ability: ManaAbilities.Frost,
+            ability: ManaAbilities.Poison,
             shape: TargetShape.Cross, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly, radius: 1,
             castVfx: "ToxicCloud", projectileVfx: "AcidSplash", motion: ProjectileMotion.Bezier,
             impactVfx: "AcidSplash", lingerVfx: "ToxicCloud",
@@ -54,7 +54,7 @@ namespace Scripts.Data
 
         // Sleep: pick a single enemy.
         public static readonly SpellDefinition Sleep = new SpellDefinition(
-            ability: ManaAbilities.Heal,
+            ability: ManaAbilities.Sleep,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "PinkDust", projectileVfx: "PinkDust", motion: ProjectileMotion.Homing,
             impactVfx: "PinkSpark",
@@ -62,7 +62,7 @@ namespace Scripts.Data
 
         // Slow: pick an enemy, applies to their entire ROW (slows a whole rank).
         public static readonly SpellDefinition Slow = new SpellDefinition(
-            ability: ManaAbilities.Frost,
+            ability: ManaAbilities.Slow,
             shape: TargetShape.Row, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "BlueGlow", projectileVfx: "BlueGlow", motion: ProjectileMotion.Bezier,
             impactVfx: "Bubble", lingerVfx: "Bubble",
@@ -71,7 +71,7 @@ namespace Scripts.Data
 
         // Silence: pick a single enemy.
         public static readonly SpellDefinition Silence = new SpellDefinition(
-            ability: ManaAbilities.Heal,
+            ability: ManaAbilities.Silence,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "PinkSpark", projectileVfx: "PinkDust", motion: ProjectileMotion.Straight,
             impactVfx: "PinkSpark",
@@ -90,7 +90,7 @@ namespace Scripts.Data
 
         // Mass Heal: all allies (no pick).
         public static readonly SpellDefinition MassHeal = new SpellDefinition(
-            ability: ManaAbilities.Heal,
+            ability: ManaAbilities.MassHeal,
             shape: TargetShape.AllAllies, mode: TargetMode.Auto, filter: TargetFilter.AllyOnly,
             castVfx: "BuffLife", motion: ProjectileMotion.None,
             impactVfx: "GreenSparkle", lingerVfx: "BuffLife",
@@ -98,7 +98,7 @@ namespace Scripts.Data
 
         // Antidote: pick a single ally; cleanses ALL debuffs on impact.
         public static readonly SpellDefinition Antidote = new SpellDefinition(
-            ability: ManaAbilities.Heal,
+            ability: ManaAbilities.Antidote,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.AllyOnly,
             castVfx: "GoldSparkle", motion: ProjectileMotion.None,
             impactVfx: "GoldSparkle",
@@ -106,7 +106,7 @@ namespace Scripts.Data
 
         // Scan: pick a single enemy; reveals stats (TBD).
         public static readonly SpellDefinition Scan = new SpellDefinition(
-            ability: ManaAbilities.Heal,
+            ability: ManaAbilities.Scan,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "GodRays", projectileVfx: "BlueGlow", motion: ProjectileMotion.Straight,
             impactVfx: "GodRays",
@@ -114,7 +114,7 @@ namespace Scripts.Data
 
         // Meteor: pick a tile, big diamond AOE hits all enemies in radius 2.
         public static readonly SpellDefinition Meteor = new SpellDefinition(
-            ability: ManaAbilities.Fireball,
+            ability: ManaAbilities.Meteor,
             shape: TargetShape.Diamond, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly, radius: 2,
             castVfx: "FireRain", projectileVfx: "Fireball", motion: ProjectileMotion.Strike,
             impactVfx: "PuffyExplosion", lingerVfx: "Flame",
@@ -122,7 +122,7 @@ namespace Scripts.Data
 
         // Shock Wave: pick an enemy; hits their entire COLUMN (vertical line).
         public static readonly SpellDefinition ShockWave = new SpellDefinition(
-            ability: ManaAbilities.Bolt,
+            ability: ManaAbilities.ShockWave,
             shape: TargetShape.Column, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "RayBlast", projectileVfx: "LightningStrike", motion: ProjectileMotion.Strike,
             impactVfx: "LightningExplosion",
@@ -162,7 +162,7 @@ namespace Scripts.Data
 
         // Cross-Hit: pick a tile, Plus shape (entire row + column = big board-wide +).
         public static readonly SpellDefinition CrossHit = new SpellDefinition(
-            ability: ManaAbilities.Bolt,
+            ability: ManaAbilities.CrossHit,
             shape: TargetShape.Plus, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly,
             castVfx: "RayBlast", projectileVfx: "LightningStrike", motion: ProjectileMotion.Strike,
             impactVfx: "LightningExplosion",

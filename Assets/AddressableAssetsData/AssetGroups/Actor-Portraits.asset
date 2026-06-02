@@ -70,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c81b7f692e708440b7073be556a0887
+    m_Address: Sprites/Spells/MassHeal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e72edbbb10f9184b8361896f0d83055
     m_Address: Dervish
     m_ReadOnly: 0
@@ -112,6 +117,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 16e326b65c397f246ae2e350baec7dfe
     m_Address: DarkTemplar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17331e34b949aab4d962d45f5ef16858
+    m_Address: Sprites/Spells/CrossHit
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -230,6 +240,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33577a238575de4429ce50e40241bf34
+    m_Address: Sprites/Spells/Slow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 35215e8ad5dbaa747b1efff8a7f90dcf
     m_Address: Bat00
     m_ReadOnly: 0
@@ -332,6 +347,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5720882a0e529b94fb881e8ec34ddacf
     m_Address: MarshShambler00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58e1547bacd26c740bcab9bf99734aee
+    m_Address: Sprites/Spells/Scan
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -670,6 +690,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afb74a2e7c727f44db0d1812e0d8b5d5
+    m_Address: Sprites/Spells/Antidote
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: afdfa55b1401afb458df7c6d56fa3cc8
     m_Address: Templar02
     m_ReadOnly: 0
@@ -732,6 +757,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bde9388ee37bbb6419ce1c0d75453f60
     m_Address: Templar00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be3a5f7080bc16d43949fa2ff3aaacdc
+    m_Address: Sprites/Spells/Silence
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c01aa7ff18d76e645b0c6b5863e4368f
+    m_Address: Sprites/Spells/ShockWave
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -825,8 +860,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d243e10a3629b7f44b616ce20395ba6a
+    m_Address: Sprites/Spells/Sleep
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d59cff1210639a743901d71c67865f5b
     m_Address: RedNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d839661aecfc68149823b266daf69d1b
+    m_Address: Sprites/Spells/Meteor
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -957,6 +1002,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f750e4142fffc7d4ea1cf58fa42b06eb
     m_Address: WildChild
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7f960565dc54fe4ca23f56fd08ec06f
+    m_Address: Sprites/Spells/Poison
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

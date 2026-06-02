@@ -486,6 +486,8 @@ Then rounds + floors-at-1 (per §3.2).
 
 Row 13 of the HUD. **6 slots.** Each slot holds one `ManaAbility` (which is one of three kinds).
 
+> **Invariant — one `ManaAbility` per spell.** For Spell-kind abilities, `AbilityBar.ResolveSpell` looks the `SpellDefinition` up by *ability reference* and returns the first match in `SpellLibrary.All`. A `ManaAbility` must therefore back exactly one `SpellDefinition` — reusing a single instance across spells silently resolves to whichever is declared first (this caused the Heal→Sleep bug). Every entry in the §7 catalog has its own dedicated ability.
+
 ### 4.1 The three kinds
 
 | Kind | Cost | Cast time | Frame color |

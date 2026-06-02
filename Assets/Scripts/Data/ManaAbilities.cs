@@ -32,10 +32,27 @@ namespace Scripts.Data
         public static readonly ManaAbility Teleport = new ManaAbility("Teleport", _isSkill: true);
 
         // ── Spells (mana-orb cost) ──
+        // IMPORTANT: a ManaAbility must map 1:1 to a single SpellDefinition. AbilityBar.ResolveSpell
+        // finds the spell by ability-reference and returns the FIRST SpellLibrary.All entry that
+        // matches, so sharing one instance across SpellDefinitions silently resolves the wrong spell
+        // (the old Heal→Sleep bug). Give every castable spell its OWN ability below — never reuse one.
         public static readonly ManaAbility Heal     = Spell("Heal",     (ManaType.White, 1));                            // (W)
         public static readonly ManaAbility Fireball = Spell("Fireball", (ManaType.Red, 2));                              // (R)(R)
         public static readonly ManaAbility Frost    = Spell("Frost",    (ManaType.Blue, 2));                             // (U)(U)
         public static readonly ManaAbility Bolt     = Spell("Bolt",     (ManaType.Red, 2), (ManaType.Blue, 1));          // (R)(R)(U)
+
+        // Secondary spells — dedicated ability each (not yet on a HeroLoadout, but now uniquely
+        // resolvable). Costs mirror game_bible.md §7.
+        public static readonly ManaAbility Sleep     = Spell("Sleep",     (ManaType.White, 1));                          // (W)
+        public static readonly ManaAbility Silence   = Spell("Silence",   (ManaType.White, 1));                          // (W)
+        public static readonly ManaAbility Poison    = Spell("Poison",    (ManaType.Blue, 2));                           // (U)(U)
+        public static readonly ManaAbility Slow      = Spell("Slow",      (ManaType.Blue, 2));                           // (U)(U)
+        public static readonly ManaAbility MassHeal  = Spell("MassHeal",  (ManaType.White, 1));                          // (W)
+        public static readonly ManaAbility Antidote  = Spell("Antidote",  (ManaType.White, 1));                          // (W)
+        public static readonly ManaAbility Scan      = Spell("Scan",      (ManaType.White, 1));                          // (W)
+        public static readonly ManaAbility Meteor    = Spell("Meteor",    (ManaType.Red, 2));                            // (R)(R)
+        public static readonly ManaAbility ShockWave = Spell("ShockWave", (ManaType.Red, 2), (ManaType.Blue, 1));        // (R)(R)(U)
+        public static readonly ManaAbility CrossHit  = Spell("CrossHit",  (ManaType.Red, 2), (ManaType.Blue, 1));        // (R)(R)(U)
 
         // ── Items (per-slot stack; vendor/alchemist restocks) ──
         /// <summary>Default 3-stack Potion template — useful for "vendor sells this" or debug.</summary>
