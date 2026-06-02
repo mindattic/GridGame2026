@@ -386,6 +386,17 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Heal(W) — White:{withWhite.CanAfford(cost)} (exp true), Colorless-wild:{withWild.CanAfford(cost)} (exp true), Red:{withRed.CanAfford(cost)} (exp false).");
         }
 
+        /// <summary>Demo (US-081): wound a living enemy below the retreat threshold and log its planned
+        /// step — it should move AWAY from the heroes instead of advancing.</summary>
+        public void Demo_TestEnemyRetreat()
+        {
+            var enemy = g.Actors.All?.FirstOrDefault(a => a != null && a.IsEnemy && a.IsPlaying);
+            if (enemy == null) { Debug.LogWarning("[Demo] No living enemy (start a battle first)."); return; }
+            enemy.Stats.HP = Mathf.Max(1f, enemy.Stats.MaxHP * 0.2f); // below RetreatHpThreshold (0.30)
+            var step = Scripts.Services.EnemyPlanner.PlanStep(enemy, g.Actors.All, g.TileMap);
+            Debug.Log($"[Demo] Wounded {enemy.name} ({enemy.Stats.HP:0}/{enemy.Stats.MaxHP:0}) plans {enemy.location} → {step} (should retreat from heroes).");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

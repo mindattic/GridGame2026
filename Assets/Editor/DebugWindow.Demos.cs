@@ -144,6 +144,11 @@ public partial class DebugWindow
             ("Test Wildcard Spend", () => g.DebugManager.Demo_TestColorlessWildcard())
         );
 
+        // Coordinated retreat (US-081) — wound an enemy and log that it plans to flee the heroes.
+        RenderButtonRow(
+            ("Test Enemy Retreat", () => g.DebugManager.Demo_TestEnemyRetreat())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

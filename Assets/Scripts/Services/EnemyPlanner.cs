@@ -66,14 +66,20 @@ namespace Scripts.Services
             // Humanoid enemy would form a valid pincer pair around heroes at that position.
             bool seeksPincer = Scripts.Managers.PincerAttackManager.IsHumanoid(enemy);
 
+            // US-081: a badly wounded enemy RETREATS — it flees the target (maximizes distance)
+            // instead of advancing, and drops its offensive biases (adjacency, pincer-seek).
+            // Flank-avoidance still applies so it never backs into a pincer.
+            bool wounded = HpFraction(enemy) < RetreatHpThreshold;
+
             foreach (var c in candidates)
             {
-                float score = -Manhattan(c, target.location);        // advance toward the target
-                if (IsCardinalAdjacent(c, target.location)) score += 2f; // in range to strike next
+                float dist = Manhattan(c, target.location);
+                float score = wounded ? dist : -dist;               // flee (maximize) vs advance (minimize)
+                if (!wounded && IsCardinalAdjacent(c, target.location)) score += 2f; // in range to strike next
                 if (WouldBeFlanked(c, heroes)) score -= 100f;        // do not walk into a pincer
-                if (c == enemy.location) score -= 0.5f;              // mild bias to keep advancing
+                if (c == enemy.location) score -= 0.5f;              // mild bias to keep moving
 
-                if (seeksPincer && WouldFormPincer(enemy, c, actors))
+                if (!wounded && seeksPincer && WouldFormPincer(enemy, c, actors))
                     score += 50f;                                    // pincer-seek beats positional ties
 
                 if (score > bestScore)
@@ -123,6 +129,9 @@ namespace Scripts.Services
 
         private static float HpFraction(ActorInstance h) =>
             h.Stats != null && h.Stats.MaxHP > 0f ? h.Stats.HP / h.Stats.MaxHP : 1f;
+
+        /// <summary>US-081: at/under this HP fraction an enemy switches from advancing to retreating.</summary>
+        private const float RetreatHpThreshold = 0.30f;
 
         /// <summary>US-080: per-INT weight on threat. Tuned so the term is comparable to the HP bonus
         /// (×8) around INT 10, dominates distance at high INT, and is negligible at low INT.</summary>

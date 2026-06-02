@@ -191,9 +191,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-080 — Threat tracking (damage → preferred target).** ✅ DONE 2026-06-02. New `Managers/ThreatTracker` (per-battle hero→enemy damage tally, accrued in `ActorInstance.DamageRoutine`, cleared in `TurnManager.Initialize`). `EnemyPlanner` subtracts `(threat∕maxThreat) × enemyINT × 0.8` from each candidate's target score, so **threat weight scales with enemy Intelligence** (user refinement): smart enemies hunt the top damage-dealer, dumb ones keep chasing nearest/wounded. Demo: "Log Threat". Bible §14.1.2/§14.3 updated. **Dep:** —
 
-- [ ] **US-081 — Coordinated retreat (wounded enemies flee).** `NOT-BUILT`.
-  **Done when:** below an HP threshold an enemy biases moves *away* from heroes.
-  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
+- [x] **US-081 — Coordinated retreat (wounded enemies flee).** ✅ DONE 2026-06-02. `EnemyPlanner.PlanStep`: below `RetreatHpThreshold` (0.30 HP fraction) the enemy flips advance→flee (maximizes distance from the target) and drops its adjacency + pincer-seek biases; flank-avoidance still applies so it won't back into a pincer. Demo: "Test Enemy Retreat". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
 
 - [ ] **US-082 — AI supporter positioning.** `PARTIAL` (planner seeks its *own* pincer, not moves that enable an *ally's*).
   **Done when:** a support branch rewards moves completing an ally's pincer line.
