@@ -315,6 +315,27 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] {def.DisplayName}: OnUseSpellName='{def.OnUseSpellName}', stack={def.MaxStack} → resolves to spell: {(spell != null ? "YES (" + spell.Ability.Name + ")" : "NO")}. Equip on the Alchemist's bar to cast it in battle.");
         }
 
+        /// <summary>Demo (US-043): log the selected hero's effective resistance per DamageType —
+        /// per-class × equipped ResistanceModifiers (equip e.g. the Sunfire Amulet to see Fire ×0.7).</summary>
+        public void Demo_LogResistance()
+        {
+            var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
+            if (hero == null) { Debug.LogWarning("[Demo] Select a hero first."); return; }
+            var data = Scripts.Libraries.ActorLibrary.Get(hero.characterClass);
+            int shown = 0;
+            foreach (Scripts.Models.DamageType t in System.Enum.GetValues(typeof(Scripts.Models.DamageType)))
+            {
+                float cls = data != null ? data.ResistanceMultiplier(t) : 1f;
+                float gear = Scripts.Managers.SpellEffectDispatcher.EquipmentResistanceMultiplier(hero, t);
+                if (cls != 1f || gear != 1f)
+                {
+                    Debug.Log($"[Demo] {hero.name} {t}: class ×{cls:0.##} × gear ×{gear:0.##} = ×{cls * gear:0.##}");
+                    shown++;
+                }
+            }
+            Debug.Log($"[Demo] {hero.name} resistance scan: {shown} non-default type(s) (others = ×1.0).");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

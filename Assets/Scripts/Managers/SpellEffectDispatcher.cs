@@ -138,6 +138,8 @@ namespace Scripts.Managers
             // Elemental resistance from the target's ActorData (1.0 = neutral, 0.5 resistant, 2.0 weak).
             var data = Scripts.Libraries.ActorLibrary.Get(target.characterClass);
             float resMult = data != null ? data.ResistanceMultiplier(spell.DamageType) : 1f;
+            // US-043: fold equipped items' ResistanceModifiers into the per-class resistance.
+            resMult *= EquipmentResistanceMultiplier(target, spell.DamageType);
             dmg *= resMult;
 
             // Lightning × Wet bonus (existing constant in Buffs.cs).
@@ -162,6 +164,32 @@ namespace Scripts.Managers
             if (ctm != null) ctm.Spawn(final.ToString(), target.transform.position, "Damage");
 
             Debug.Log($"[Spell] {spell.Ability.Name} ({spell.DamageType}) hits {target.name} for {final} (base {spell.BaseDamage:0.#}, res ×{resMult:0.##}).");
+        }
+
+        /// <summary>US-043: product of every equipped item's <c>ResistanceModifiers[type]</c> on the
+        /// target (heroes only — enemies carry no equipment), combined multiplicatively with the
+        /// per-class resistance in <see cref="ApplyDamage"/>. Returns 1.0 when the target has no gear
+        /// or no matching modifier. Public so the Debug Window can report effective resistances.</summary>
+        public static float EquipmentResistanceMultiplier(ActorInstance target, DamageType type)
+        {
+            if (target == null) return 1f;
+            var save = Scripts.Helpers.ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Equipment?.Heroes == null) return 1f;
+
+            Scripts.Models.HeroEquipmentSave heroSave = null;
+            foreach (var h in save.Equipment.Heroes)
+                if (h != null && h.CharacterClass == target.characterClass) { heroSave = h; break; }
+            if (heroSave == null) return 1f;
+
+            float mult = 1f;
+            foreach (var id in new[] { heroSave.WeaponId, heroSave.ArmorId, heroSave.Relic1Id, heroSave.Relic2Id, heroSave.Relic3Id })
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                var item = Scripts.Data.Items.ItemLibrary.Get(id);
+                if (item?.ResistanceModifiers != null && item.ResistanceModifiers.TryGetValue(type, out var m))
+                    mult *= m;
+            }
+            return mult;
         }
 
         /// <summary>Roll a steal attempt against <paramref name="target"/> using

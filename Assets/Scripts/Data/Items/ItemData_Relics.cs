@@ -166,6 +166,11 @@ public static class ItemData_Relics
         Intelligence = 5,
         Strength = 3,
         Stamina = 2,
+        // US-043: sunfire attunement — the bearer takes 30% less Fire damage.
+        ResistanceModifiers = new System.Collections.Generic.Dictionary<Scripts.Models.DamageType, float>
+        {
+            { Scripts.Models.DamageType.Fire, 0.7f },
+        },
     };
 
     public static readonly ItemDefinition CrownOfStars = new ItemDefinition

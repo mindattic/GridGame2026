@@ -1170,7 +1170,8 @@ Computed inline in `SpellEffectDispatcher.ApplyDamage`:
 
 ```
 raw       = spell.BaseDamage
-resMult   = ActorData.ResistanceMultiplier(spell.DamageType)   // 0..2+
+resMult   = ActorData.ResistanceMultiplier(spell.DamageType)   // 0..2+ (per-class)
+          × Π(equipped item.ResistanceModifiers[type])         // US-043: gear folds in, multiplicative
 elemBonus = (spell.DamageType == Lightning && BuffSystem.Has(target, "wet"))
              ? Buffs.LightningWhenWetMultiplier
              : 1.0f
@@ -1388,7 +1389,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~—~~ | US-040 | ~~**`ItemDefinition` fields**~~ — **DONE 2026-06-01**: `BattleStartManaOrbs`/`OnUseSpellName`/`ResistanceModifiers` added with safe defaults; unblocks US-041/042/043. | P1 | `ItemDefinition` |
 | ~~6~~ | US-041 | ~~**Mage/Wizard Robe battle-start orbs**~~ — **DONE 2026-06-01**: `MageRobes.BattleStartManaOrbs=2`, new `WizardRobe`=3; `ManaPoolManager.ApplyBattleStartManaOrbs` scans equipped party gear at battle start (GameReady) and adds random-color orbs, capped at 12. Demo: "Battle-Start Orbs". | P1 | `ItemData_Armor`, `ManaPoolManager` |
 | ~~7~~ | US-042 | ~~**Sleep Dart**~~ — **DONE 2026-06-01**: `cons_sleep_dart` (`OnUseSpellName="Sleep"`) routes `AbilityBar.HandleItem`→`TryHandleItemSpell`→Sleep targeting→`SpellEffectDispatcher.Cast`, charge spent on confirm; `ManaAbility.SourceItemId` links the slot to its item. On the Alchemist's default bar. | P1 | `AbilityBar.HandleItem`, `ManaAbility` |
-| — | US-043 | **Equipped `ResistanceModifiers` folded into damage** | P1 | `Formulas`, `SpellEffectDispatcher` |
+| ~~—~~ | US-043 | ~~**Equipped `ResistanceModifiers` folded into damage**~~ — **DONE 2026-06-01**: `SpellEffectDispatcher.EquipmentResistanceMultiplier` multiplies every equipped item's `ResistanceModifiers[type]` into `ApplyDamage`'s per-class `resMult`. Sunfire Amulet → Fire ×0.7. Demo: "Log Resistances". **Completes EPIC E.** | P1 | `SpellEffectDispatcher` |
 | ~~8~~ | — | ~~Weapon shatter dual-damage~~ — **DONE** (`WeaponDurabilityHelper.cs:37-103`) | — | — |
 | ~~9~~ | — | ~~Repair max-cap~~ — **DONE** (`WeaponDurabilityHelper.cs:105-138`) | — | — |
 
@@ -1876,7 +1877,7 @@ OnUseSpellName     : string      // Sleep Dart etc. → consumable that triggers
 ResistanceModifiers: Dict<DamageType, float>  // elemental rings, etc.
 ```
 
-**Built — US-040 (2026-06-01):** all three planned fields now exist on `ItemDefinition` with safe defaults (`0` / `null` / empty `Dictionary`). They are inert until their EPIC E consumers populate and read them: `BattleStartManaOrbs`→US-041, `OnUseSpellName`→US-042, `ResistanceModifiers`→US-043.
+**Built — US-040 (2026-06-01):** all three planned fields now exist on `ItemDefinition` with safe defaults (`0` / `null` / empty `Dictionary`). All three are now **live** via EPIC E: `BattleStartManaOrbs`→US-041 (`ManaPoolManager`), `OnUseSpellName`→US-042 (`AbilityBar.HandleItem`), `ResistanceModifiers`→US-043 (`SpellEffectDispatcher.ApplyDamage`).
 
 ### 24.4 Inventory
 

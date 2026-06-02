@@ -189,9 +189,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-042 — Sleep Dart (item triggers a spell).** ✅ DONE 2026-06-01. `cons_sleep_dart` (`OnUseSpellName="Sleep"`, stack 5) added + registered; `ManaAbility.SourceItemId` links a bar slot to its `ItemDefinition`; `AbilityBar.HandleItem`→`TryHandleItemSpell` resolves the spell by ability-name, runs Sleep's targeting flow, and on confirm spends one charge + `SpellEffectDispatcher.Cast` + costs a turn. On the Alchemist's default bar (slot 6). First item-casts-a-spell path (generalizes to any consumable with `OnUseSpellName`). Demo: "Verify Sleep Dart Route". Bible §4.4/§24.8 + §16.3 #7 updated. **Dep:** US-040. ✓
 
-- [ ] **US-043 — Equipped `ResistanceModifiers` folded into damage.** `NOT-BUILT` (resistances are per-class on `ActorData` only; no equipment aggregation — `Formulas.cs:293-300`).
-  **Done when:** equipped `ResistanceModifiers` aggregate (alongside `ComputeEquipmentBonus`) into the wearer's effective resistance used by `ApplyDamage`.
-  **Touch:** `Utilities/Formulas`, `SpellEffectDispatcher.ApplyDamage`. **Bible:** §3.3, §24.3. **Dep:** US-040.
+- [x] **US-043 — Equipped `ResistanceModifiers` folded into damage.** ✅ DONE 2026-06-01. `SpellEffectDispatcher.EquipmentResistanceMultiplier(target, type)` multiplies every equipped item's `ResistanceModifiers[type]` into `ApplyDamage`'s per-class `resMult` (multiplicative; heroes only — enemies have no gear). Sunfire Amulet seeded with Fire ×0.7 as a demonstrable example. Demo: "Log Resistances". Bible §13.1.2/§24.3 + §16.3 updated. **Completes EPIC E.** **Dep:** US-040. ✓
 
 ---
 

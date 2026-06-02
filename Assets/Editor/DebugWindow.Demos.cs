@@ -119,6 +119,11 @@ public partial class DebugWindow
             ("Verify Sleep Dart Route", () => g.DebugManager.Demo_VerifyItemSpellRoute())
         );
 
+        // Resistances (US-043) — log the selected hero's effective per-type resistance (class × gear).
+        RenderButtonRow(
+            ("Log Resistances", () => g.DebugManager.Demo_LogResistance())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.
