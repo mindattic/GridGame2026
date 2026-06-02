@@ -520,7 +520,7 @@ Seeded loadouts:
 | Cleric | Heal, Heal, Frost, NewPotion(3) |
 | Paladin | Heal, Fireball, NewPotion(3) |
 | Barbarian | Fireball, Bolt, NewPotion(3) |
-| Alchemist | Frost, NewPotion(5), Steal, Heal, NewPotion(5) |
+| Alchemist | Frost, NewPotion(5), Steal, Heal, NewPotion(5), Sleep Dart (×5) |
 | Assassain | Steal, Mug, Bolt, NewPotion(3) |
 | GreenNinja | Teleport, Steal, Fireball, NewPotion(3) |
 | RedNinja | Teleport, Mug, Bolt, NewPotion(3) |
@@ -533,7 +533,7 @@ Items are **per-slot instances** — each call to `ManaAbilities.NewPotion(stack
 
 ### 4.4 Click flow per kind
 
-**Item**: `TryConsumeCharge` → log usage. Instant.
+**Item**: if the item declares `OnUseSpellName` (e.g. Sleep Dart), route through that spell's targeting flow → `SpellEffectDispatcher.Cast`, spending one charge **on confirm** + costing a turn (US-042, via `ManaAbility.SourceItemId`); otherwise `TryConsumeCharge` → log. Instant (no cast bar).
 
 **Skill**: `TargetingMode.Begin` → on confirm, dispatch (or run the Skill's bespoke flow), then call `ManaPoolManager.OnBankButtonClicked()` to advance the timeline ("costs a turn"). Free.
 
@@ -1387,7 +1387,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 |---|---|---|---|---|
 | ~~—~~ | US-040 | ~~**`ItemDefinition` fields**~~ — **DONE 2026-06-01**: `BattleStartManaOrbs`/`OnUseSpellName`/`ResistanceModifiers` added with safe defaults; unblocks US-041/042/043. | P1 | `ItemDefinition` |
 | ~~6~~ | US-041 | ~~**Mage/Wizard Robe battle-start orbs**~~ — **DONE 2026-06-01**: `MageRobes.BattleStartManaOrbs=2`, new `WizardRobe`=3; `ManaPoolManager.ApplyBattleStartManaOrbs` scans equipped party gear at battle start (GameReady) and adds random-color orbs, capped at 12. Demo: "Battle-Start Orbs". | P1 | `ItemData_Armor`, `ManaPoolManager` |
-| 7 | US-042 | **Sleep Dart** — item routes through Sleep's targeting via `OnUseSpellName` | P1 | `AbilityBar.HandleItem`, `UseItemSequence` |
+| ~~7~~ | US-042 | ~~**Sleep Dart**~~ — **DONE 2026-06-01**: `cons_sleep_dart` (`OnUseSpellName="Sleep"`) routes `AbilityBar.HandleItem`→`TryHandleItemSpell`→Sleep targeting→`SpellEffectDispatcher.Cast`, charge spent on confirm; `ManaAbility.SourceItemId` links the slot to its item. On the Alchemist's default bar. | P1 | `AbilityBar.HandleItem`, `ManaAbility` |
 | — | US-043 | **Equipped `ResistanceModifiers` folded into damage** | P1 | `Formulas`, `SpellEffectDispatcher` |
 | ~~8~~ | — | ~~Weapon shatter dual-damage~~ — **DONE** (`WeaponDurabilityHelper.cs:37-103`) | — | — |
 | ~~9~~ | — | ~~Repair max-cap~~ — **DONE** (`WeaponDurabilityHelper.cs:105-138`) | — | — |
@@ -1948,7 +1948,7 @@ Materials don't directly enter combat — they're the bridge between battle outp
 - **Wizard Robe** — armor, Rare (`eq_armor_wizard`). `BattleStartManaOrbs = 3`. Stacks per hero wearing. **Built — US-041.**
 
 Battle-start grant: `ManaPoolManager.ApplyBattleStartManaOrbs` (run once at battle start via `GameReady`) sums `BattleStartManaOrbs` across every equipped item on the active party and adds that many **random-color** orbs (WUBRG, not Colorless) to the team bank, clamped to the 12-orb cap (§3.1.4).
-- **Sleep Dart** — consumable, per-slot stack (e.g. `MaxStackSize = 5`). `OnUseSpellName = "Sleep"` — on use, opens the Sleep spell's targeting flow and consumes one charge.
+- **Sleep Dart** — consumable, per-slot stack (`MaxStack = 5`, `cons_sleep_dart`). `OnUseSpellName = "Sleep"` — on use, opens the Sleep spell's targeting flow and consumes one charge. **Built — US-042**; on the Alchemist's default bar. The bar slot carries `ManaAbility.SourceItemId` so `HandleItem` recovers the item and routes the cast (first item-casts-a-spell path; generalizes to any consumable with `OnUseSpellName`).
 
 ### 24.9 Currency
 

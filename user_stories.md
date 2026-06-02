@@ -187,9 +187,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** ✅ DONE 2026-06-01. `MageRobes.BattleStartManaOrbs=2`; new `WizardRobe` (Rare, `eq_armor_wizard`, =3) added + registered in `ItemLibrary`. `ManaPoolManager.ApplyBattleStartManaOrbs` (run at battle start via `GameReady`) sums `BattleStartManaOrbs` across the active party's equipped gear and adds that many random WUBRG orbs, clamped to the 12 cap. Demo: "Battle-Start Orbs". Bible §24.8/§3.1.4 + §16.3 #6 updated. **Dep:** US-040. ✓
 
-- [ ] **US-042 — Sleep Dart (item triggers a spell).** `NOT-BUILT` (no item; `AbilityBar.HandleItem:71-77` + `UseItemSequence` are heal/damage-only, no spell routing).
-  **Done when:** Sleep Dart consumable (stack 5) routes `HandleItem` through `OnUseSpellName` → Sleep's targeting flow → `SpellEffectDispatcher.Cast`, consuming one charge on confirm.
-  **Touch:** `Data/ItemData_Consumables`, `Canvas/AbilityBar.HandleItem`, `Sequences/UseItemSequence`. **Bible:** §24.8, §4.4, delete §16.3 #7. **Dep:** US-040.
+- [x] **US-042 — Sleep Dart (item triggers a spell).** ✅ DONE 2026-06-01. `cons_sleep_dart` (`OnUseSpellName="Sleep"`, stack 5) added + registered; `ManaAbility.SourceItemId` links a bar slot to its `ItemDefinition`; `AbilityBar.HandleItem`→`TryHandleItemSpell` resolves the spell by ability-name, runs Sleep's targeting flow, and on confirm spends one charge + `SpellEffectDispatcher.Cast` + costs a turn. On the Alchemist's default bar (slot 6). First item-casts-a-spell path (generalizes to any consumable with `OnUseSpellName`). Demo: "Verify Sleep Dart Route". Bible §4.4/§24.8 + §16.3 #7 updated. **Dep:** US-040. ✓
 
 - [ ] **US-043 — Equipped `ResistanceModifiers` folded into damage.** `NOT-BUILT` (resistances are per-class on `ActorData` only; no equipment aggregation — `Formulas.cs:293-300`).
   **Done when:** equipped `ResistanceModifiers` aggregate (alongside `ComputeEquipmentBonus`) into the wearer's effective resistance used by `ApplyDamage`.

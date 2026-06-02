@@ -44,7 +44,7 @@ namespace Scripts.Data
                 { CharacterClass.Cleric,    new [] { ManaAbilities.Heal,    ManaAbilities.Heal,     ManaAbilities.Frost,    ManaAbilities.NewPotion(3), null, null } },
                 { CharacterClass.Paladin,   new [] { ManaAbilities.Heal,    ManaAbilities.Fireball, ManaAbilities.NewPotion(3), null, null, null } },
                 { CharacterClass.Barbarian, new [] { ManaAbilities.Fireball,ManaAbilities.Bolt,     ManaAbilities.NewPotion(3), null, null, null } },
-                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.NewPotion(5), ManaAbilities.Steal,ManaAbilities.Heal, ManaAbilities.NewPotion(5), null } },
+                { CharacterClass.Alchemist, new [] { ManaAbilities.Frost,   ManaAbilities.NewPotion(5), ManaAbilities.Steal,ManaAbilities.Heal, ManaAbilities.NewPotion(5), ManaAbilities.NewConsumable("Sleep Dart", 5, Scripts.Data.Items.ItemData_Consumables.SleepDart.Id) } },
                 { CharacterClass.Assassain,  new [] { ManaAbilities.Steal,    ManaAbilities.Mug,      ManaAbilities.Bolt,         ManaAbilities.NewPotion(3), null, null } },
                 // Ninja classes get Teleport — pick an empty tile, instantly relocate, and any
                 // pincer the new position completes resolves automatically. Free, costs a turn.

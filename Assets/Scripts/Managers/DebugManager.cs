@@ -303,6 +303,18 @@ namespace Scripts.Managers
             Demo_LogManaBank();
         }
 
+        /// <summary>Demo (US-042): verify the Sleep Dart → Sleep wiring — its OnUseSpellName resolves
+        /// to a real SpellDefinition. (Full cast is via the Alchemist's bar slot in a battle.)</summary>
+        public void Demo_VerifyItemSpellRoute()
+        {
+            var def = Scripts.Data.Items.ItemLibrary.Get(Scripts.Data.Items.ItemData_Consumables.SleepDart.Id);
+            if (def == null) { Debug.LogWarning("[Demo] Sleep Dart not registered in ItemLibrary."); return; }
+            SpellDefinition spell = null;
+            foreach (var s in Scripts.Data.SpellLibrary.All)
+                if (s?.Ability != null && s.Ability.Name == def.OnUseSpellName) { spell = s; break; }
+            Debug.Log($"[Demo] {def.DisplayName}: OnUseSpellName='{def.OnUseSpellName}', stack={def.MaxStack} → resolves to spell: {(spell != null ? "YES (" + spell.Ability.Name + ")" : "NO")}. Equip on the Alchemist's bar to cast it in battle.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

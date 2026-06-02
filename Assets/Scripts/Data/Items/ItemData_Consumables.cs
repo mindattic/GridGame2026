@@ -58,6 +58,19 @@ public static class ItemData_Consumables
         MaxUsesPerBattle = 3,
     };
 
+    // US-042: first item-casts-a-spell consumable. On use it routes through Sleep's targeting flow.
+    public static readonly ItemDefinition SleepDart = new ItemDefinition
+    {
+        Id = "cons_sleep_dart",
+        DisplayName = "Sleep Dart",
+        Description = "A tranquilizer dart — on use, casts Sleep on a target enemy.",
+        Type = ItemType.Consumable,
+        Rarity = ItemRarity.Uncommon,
+        BaseCost = 60,
+        MaxStack = 5,
+        OnUseSpellName = "Sleep",
+    };
+
     public static readonly ItemDefinition XPotion = new ItemDefinition
     {
         Id = "x_potion",

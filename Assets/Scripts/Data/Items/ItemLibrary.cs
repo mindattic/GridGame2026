@@ -69,6 +69,7 @@ public static class ItemLibrary
         Register(ItemData_Consumables.Remedy);
         Register(ItemData_Consumables.SmokeBomb);
         Register(ItemData_Consumables.Tent);
+        Register(ItemData_Consumables.SleepDart);
 
         // Themed / offensive consumables
         Register(ItemData_ThemedConsumables.HolyWater);

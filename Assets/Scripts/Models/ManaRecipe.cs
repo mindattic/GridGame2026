@@ -94,6 +94,11 @@ namespace Scripts.Models
         /// here — because Skill ManaAbility instances are shared statics across multiple loadouts.</summary>
         public int CooldownTurns { get; }
 
+        /// <summary>Item-only: the ItemDefinition Id this slot was minted from (null for Skills/Spells
+        /// and the plain Potion template). Lets <c>AbilityBar.HandleItem</c> recover the item's
+        /// <c>OnUseSpellName</c> so a consumable can cast a spell on use (US-042, e.g. Sleep Dart).</summary>
+        public string SourceItemId { get; }
+
         /// <summary>Spell ctor — pays orbs from the team bank.</summary>
         public ManaAbility(string name, ManaRecipe cost, float castTimeSeconds = DefaultSpellCastSeconds)
         {
@@ -104,12 +109,14 @@ namespace Scripts.Models
             MaxStackSize = -1;
             CastTimeSeconds = castTimeSeconds;
             CooldownTurns = 0;
+            SourceItemId = null;
         }
 
         /// <summary>Item ctor — per-slot consumable. <paramref name="maxStackSize"/> caps the stack;
         /// the slot starts FULL (Charges = MaxStackSize) on construction. Each call returns a NEW
-        /// instance so stacks don't share state across slots.</summary>
-        public ManaAbility(string name, int maxStackSize)
+        /// instance so stacks don't share state across slots. <paramref name="sourceItemId"/> links
+        /// back to the ItemDefinition (for OnUseSpellName routing); null for the generic Potion.</summary>
+        public ManaAbility(string name, int maxStackSize, string sourceItemId = null)
         {
             Name = name;
             Kind = AbilityKind.Item;
@@ -118,6 +125,7 @@ namespace Scripts.Models
             Charges = maxStackSize;
             CastTimeSeconds = 0f;
             CooldownTurns = 0;
+            SourceItemId = sourceItemId;
         }
 
         /// <summary>Skill ctor — free, reusable, "costs a turn." The bool param is a tag marker
@@ -132,6 +140,7 @@ namespace Scripts.Models
             MaxStackSize = -1;
             CastTimeSeconds = 0f;
             CooldownTurns = cooldownTurns;
+            SourceItemId = null;
         }
 
         /// <summary>Item-only: consume one charge from the stack. Returns false if empty or not an Item.</summary>

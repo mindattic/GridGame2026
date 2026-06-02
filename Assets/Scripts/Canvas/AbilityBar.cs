@@ -70,10 +70,68 @@ namespace Scripts.Canvas
         // ── Item: instant; consumes one charge from THIS slot's stack ──
         private void HandleItem(ManaAbility a)
         {
+            // US-042: an item that casts a spell on use (ItemDefinition.OnUseSpellName, e.g. Sleep
+            // Dart → Sleep) routes through the spell's targeting flow; the charge is only spent on
+            // confirm. Falls through to plain-consume for ordinary items.
+            if (TryHandleItemSpell(a)) return;
+
             if (a.TryConsumeCharge())
                 Debug.Log($"[AbilityBar] Item '{a.Name}' used ({a.Charges}/{a.MaxStackSize} left).");
             else
                 Debug.LogWarning($"[AbilityBar] Item '{a.Name}' empty (0/{a.MaxStackSize}). Buy/craft to restock.");
+        }
+
+        /// <summary>US-042: if the item is backed by an ItemDefinition with an OnUseSpellName, begin
+        /// that spell's targeting flow and, on confirm, spend one charge + dispatch the spell + cost
+        /// a turn (like a Skill — items are instant, no cast bar). Returns true if it handled the item
+        /// (spell-backed), false to let the caller plain-consume.</summary>
+        private bool TryHandleItemSpell(ManaAbility a)
+        {
+            if (a == null || string.IsNullOrEmpty(a.SourceItemId)) return false;
+            var def = Scripts.Data.Items.ItemLibrary.Get(a.SourceItemId);
+            if (def == null || string.IsNullOrEmpty(def.OnUseSpellName)) return false;
+
+            var spell = ResolveSpellByName(def.OnUseSpellName);
+            if (spell == null)
+            {
+                Debug.LogWarning($"[AbilityBar] Item '{a.Name}' OnUseSpellName '{def.OnUseSpellName}' has no SpellDefinition — falling back to plain use.");
+                return false;
+            }
+            if (a.Charges <= 0)
+            {
+                Debug.LogWarning($"[AbilityBar] Item '{a.Name}' empty (0/{a.MaxStackSize}).");
+                return true; // handled (refused) — don't double-message via plain-consume
+            }
+
+            var canvas = GameObject.Find("Canvas");
+            if (canvas == null) return true;
+            var caster = g.Actors.SelectedActor;
+
+            Scripts.Managers.TargetingMode.Begin(spell, caster,
+                onConfirm: targets =>
+                {
+                    if (!a.TryConsumeCharge())
+                    {
+                        Debug.LogWarning($"[AbilityBar] '{a.Name}' emptied mid-pick — nothing cast.");
+                        return;
+                    }
+                    Debug.Log($"[AbilityBar] Item '{a.Name}' cast {def.OnUseSpellName} on {targets.Count} target(s) ({a.Charges}/{a.MaxStackSize} left).");
+                    foreach (var t in targets)
+                        Scripts.Managers.SpellEffectDispatcher.Cast(spell, caster, t);
+                    // Costs a turn — advance timeline to next enemy (like a Skill).
+                    g.ManaPoolManager?.OnBankButtonClicked();
+                },
+                onCancel: () => Debug.Log($"[AbilityBar] Item '{a.Name}' cancelled — no charge spent."));
+            return true;
+        }
+
+        /// <summary>Resolve a SpellDefinition by its ManaAbility name (item OnUseSpellName routing).
+        /// Relies on the 1:1 ability↔spell invariant (§4.1) so names are unique.</summary>
+        private static SpellDefinition ResolveSpellByName(string spellAbilityName)
+        {
+            foreach (var s in SpellLibrary.All)
+                if (s.Ability != null && s.Ability.Name == spellAbilityName) return s;
+            return null;
         }
 
         // ── Skill: free; no cast bar; resolves on target confirm; then advances the turn ──

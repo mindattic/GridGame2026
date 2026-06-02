@@ -64,6 +64,12 @@ namespace Scripts.Data
         /// draining on its own.</summary>
         public static ManaAbility NewPotion(int stackSize) => new ManaAbility("Potion", stackSize);
 
+        /// <summary>Mint a fresh per-slot consumable bar entry linked to its ItemDefinition Id, so
+        /// <c>AbilityBar.HandleItem</c> can route it through the item's <c>OnUseSpellName</c>
+        /// (US-042, e.g. Sleep Dart → Sleep). Each call is a new instance with its own charges.</summary>
+        public static ManaAbility NewConsumable(string displayName, int stackSize, string itemId) =>
+            new ManaAbility(displayName, stackSize, itemId);
+
         // ── SIDE-NOTE: deferred ──
         // Ether — design idea: consumable that auto-grants mana orbs. Parked.
 
