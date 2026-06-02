@@ -1213,7 +1213,7 @@ When an enemy is in the Prepare Zone and casting/charging, a pincer or shield pr
 
 **Remaining (Phase C):**
 - **ClutchSequence** (`US-025`): the Clutch *juice* — screen flash / SFX / "Clutch!" text + snap the spell-icon to u=1 and resolve on the spot. (The resolver already returns Clutch; today it just lets the cast survive.)
-- **Enemies that actually cast** (`US-026`): enemies are melee-only today, so there's no enemy charge to interrupt yet.
+- **Enemies that actually cast** (`US-026`): enemies are melee-only today, so there's no enemy charge to interrupt yet. **Interrupt model locked 2026-06-02 (user, after a Legion 2/2 split): A — DAMAGE-CANCELS.** A charging enemy spawns its own charge spell-icon; any hero damage to that enemy before the charge reaches u=1 cancels the cast — the symmetric mirror of the hero-side `CastInterruptResolver` path (a pincer OR a spell can do it). The cancel is one crisp event, which is the clean trigger for the US-027 orb-mint. (Rejected C "pushback-out-of-Zone" — pushback acts on the enemy's *turn* icon, not the separate charge icon, leaving the mint moment fuzzy.)
 - **Interrupting an ENEMY drops an orb** (`US-027`): cancels the charge AND drops an orb of its color to the team bank — how off-palette colors flow in (the enemy supplies what your party can't make).
 
 ---

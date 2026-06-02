@@ -158,6 +158,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Touch:** new `Sequences/ClutchSequence.cs`. **Bible:** casting prose. **Dep:** US-024.
 
 - [ ] **US-026 — Enemy charge/telegraph spells.** `NOT-BUILT` (`EnemyAttackSequence` is melee-only; `EnemyPlanner` is positional-only).
+  **🔓 Interrupt model locked 2026-06-02 (user, after Legion 2/2 split): A — DAMAGE-CANCELS.** The charge is its own spell-icon; any hero damage (pincer or spell) to the caster before u=1 cancels it — mirrors the hero-side `CastInterruptResolver` (US-024) and gives US-027 one clean mint trigger. (Rejected C pushback-out-of-Zone: pushback hits the turn icon, not the charge icon → fuzzy mint moment.) Editor-gated to build. Bible §13.4.
   **Why:** The Caster archetype (§14.2) + the inverse-interrupt loop need enemies that telegraph a charge in the Prepare Zone.
   **Done when:** a casting enemy spawns a colored charge timeline icon advancing via cast-time; resolves into an attack at u=1; `EnemyPlanner` chooses to charge.
   **Touch:** `Services/EnemyPlanner`, new `Sequences/EnemyChargeSequence`, `TimelineBarInstance.SpawnSpellIcon` (generalize beyond hero casts), enemy spell data. **Bible:** §2.8, §14.2 (Caster), §14.3. **Dep:** —
