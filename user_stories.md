@@ -260,6 +260,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Touch:** `Managers/TargetingMode`, in-battle toast. **Bible:** §5.2, delete §16.6 #15. **Dep:** —
 
 - [ ] **US-093 — Bestiary enemy filter + unlock gating.** `PARTIAL`→needs US-054 (`BestiaryView:59-98` lists all actors, no filter/progress/silhouette).
+  **🔓 Design-locked 2026-06-02 (Legion 4/4): SEEN-gated reveal** — full entry once `BestiaryProgress.Seen` (encounter or Scan US-077); unseen = silhouette + "???". Dep US-054 now ✓ (Seen/Defeated are written). Remaining work is the editor-side `BestiaryView` UI (filter to `Enemy` tag + silhouette rendering).
   **Done when:** only `Enemy`-tagged entries; unseen show silhouettes per `BestiaryProgress.seen`.
   **Touch:** `Canvas/BestiaryView`. **Bible:** §11.2, §15.3, delete §16.5 #14 + §16.6 bestiary row; resolve §29.4 #16. **Dep:** US-054.
 
@@ -316,7 +317,7 @@ These were on the original board and are **already implemented in code**. The bi
 - ~~**§29.2 #8 color identity per class** → gates **US-030** (seed from §23.2).~~ **RESOLVED 2026-06-02 (Legion): Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R.**
 - ~~**§29.3 #12 heal/rest model** (free vs gold) → shapes **US-053**.~~ **RESOLVED 2026-06-01 (Legion 4/4): model A — wounds persist, gold-cost full-heal at the Alchemist.**
 - **§29.3 #13 out-of-battle debuff carry** → §8.8 locks *clear-on-end*; confirm before shipping HP carry-over.
-- **§29.4 #16 Bestiary unlock gate** → gates **US-093**.
+- ~~**§29.4 #16 Bestiary unlock gate** → gates **US-093**.~~ **RESOLVED 2026-06-02 (Legion 4/4): SEEN-gated** — reveal a class's full entry once `BestiaryProgress.Seen` (encounter or Scan); unseen = silhouette + "???".
 - **§29.4 #17 AspectGuard strategy** → ratify §26 before **US-001**.
 
 ---

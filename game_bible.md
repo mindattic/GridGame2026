@@ -2297,7 +2297,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 ### 29.4 UI / presentation
 
 15. **Spell-icon → ability-bar UI** — when do we wire `SpriteLibrary.SpellIcons[name]` into the AbilityBar slot's frame so the bar shows real icons instead of letter labels?
-16. **Bestiary unlock gate** — only after first defeat, or always visible?
+16. ~~**Bestiary unlock gate** — only after first defeat, or always visible?~~ **RESOLVED 2026-06-02 (Legion 4/4): SEEN-gated.** A class reveals its full entry once `BestiaryProgress.Seen` is set (encountered in a played battle, or flagged by Scan US-077); never-seen classes render as a dark silhouette + "???". Not defeat-gated (too punishing, devalues Scan), not always-visible (no discovery beat). Drives US-093.
 17. **AspectGuard ratification** — confirm the strategy in §26 before coding the MonoBehaviour.
 18. **Soundtrack / audio system** — audio constraints sketched in §30.4 (compression, latency); full system (`AudioManager`, music transitions, SFX routing) is still TBD. Plan or defer?
 
