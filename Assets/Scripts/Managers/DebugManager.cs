@@ -352,6 +352,17 @@ namespace Scripts.Managers
             if (n == 0) Debug.Log("[Demo] No heroes to report threat for.");
         }
 
+        /// <summary>Demo (US-031): mint one wild (Colorless) orb — the crit reward. Watch it flash
+        /// through the spectrum in the orb line (capped at 12).</summary>
+        public void Demo_MintWildOrb()
+        {
+            var mp = g.ManaPoolManager;
+            if (mp?.Bank == null) { Debug.LogWarning("[Demo] No ManaBank (start a battle first)."); return; }
+            int added = mp.Bank.Add(ManaType.Colorless, 1);
+            Debug.Log(added > 0 ? "[Demo] Minted 1 wild (Colorless) orb — watch it flash in the line." : "[Demo] Bank full — no wild orb minted.");
+            Demo_LogManaBank();
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

@@ -129,6 +129,11 @@ public partial class DebugWindow
             ("Log Threat", () => g.DebugManager.Demo_LogThreat())
         );
 
+        // Wild orb (US-031) — mint a Colorless "wild" orb (the crit reward); flashes every color.
+        RenderButtonRow(
+            ("Mint Wild Orb", () => g.DebugManager.Demo_MintWildOrb())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

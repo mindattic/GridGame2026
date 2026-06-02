@@ -548,10 +548,19 @@ public partial class ActorInstance : MonoBehaviour
                 _lastAttacker = attackResult.Attacker;
             }
 
-            // US-080: accrue threat for hero→enemy damage so smart (high-INT) enemies can prefer
-            // whoever's been hurting them. Enemy→hero and ally damage do not count.
-            if (this.IsEnemy && attackResult?.Attacker != null && attackResult.Attacker.IsHero && attackResult.Damage > 0)
-                Scripts.Managers.ThreatTracker.AddThreat(attackResult.Attacker, attackResult.Damage);
+            // Rewards for a hero damaging an enemy (not enemy→hero, not ally hits).
+            if (this.IsEnemy && attackResult?.Attacker != null && attackResult.Attacker.IsHero)
+            {
+                // US-080: accrue threat so smart (high-INT) enemies prefer whoever's hurt them.
+                if (attackResult.Damage > 0)
+                    Scripts.Managers.ThreatTracker.AddThreat(attackResult.Attacker, attackResult.Damage);
+
+                // US-031: a critical hit mints one "wild" (Colorless) orb to the team bank — the
+                // off-palette source. Covers pincers (AttackHelper) and magic (MagicAttackSequence),
+                // both of which apply damage via this routine. Capped by the bank (Add no-ops if full).
+                if (attackResult.HitType == HitOutcome.Critical)
+                    g.ManaPoolManager?.Bank?.Add(ManaType.Colorless, 1);
+            }
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);

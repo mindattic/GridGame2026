@@ -31,15 +31,37 @@ namespace Scripts.Canvas
         /// <summary>Wired by the factory after the cells are spawned.</summary>
         internal void SetCells(Image[] orbCells) { cells = orbCells; }
 
+        /// <summary>How fast a wild (Colorless) orb cycles through the spectrum (hue turns/second).</summary>
+        private const float WildCycleSpeed = 0.45f;
+
         private void Update()
         {
             // Fix #7: only repaint when the bank's snapshot actually changed (still cheap, but
             // skips most frames). Signature mixes total count with the leftmost few colors so
             // any visible change forces a refresh.
             int sig = ComputeSignature();
-            if (sig == lastSignature) return;
-            lastSignature = sig;
-            Refresh();
+            if (sig != lastSignature)
+            {
+                lastSignature = sig;
+                Refresh();
+            }
+
+            // US-031: wild (Colorless) orbs are "all colors at once" — animate them every frame so
+            // they flash through the spectrum, distinct from the static elemental orbs.
+            AnimateWildOrbs();
+        }
+
+        /// <summary>Per-frame rainbow cycle for any Colorless orb cells (US-031).</summary>
+        private void AnimateWildOrbs()
+        {
+            if (cells == null || bank == null) return;
+            int filled = bank.Total;
+            float hue = Mathf.Repeat(Time.time * WildCycleSpeed, 1f);
+            for (int i = 0; i < cells.Length && i < filled; i++)
+            {
+                if (cells[i] != null && bank.Orbs[i] == ManaType.Colorless)
+                    cells[i].color = Color.HSVToRGB(hue, 0.75f, 1f);
+            }
         }
 
         private int ComputeSignature()

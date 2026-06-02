@@ -164,9 +164,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `ActorData.ColorAffinity` (or per-class) added; `DropOrbAt` mints the contributor's affinity color; seed §23.2 colors (Cleric=W, Barbarian=R, …).
   **Touch:** `Models/Actor/ActorData`, `Managers/PincerAttackManager`. **Bible:** §3.1.2, §23.1, §23.2, delete §16.5 #13; resolve §29.2 #8. **Dep:** —
 
-- [ ] **US-031 — Critical hit → Colorless orb.** `NOT-BUILT` (`HitOutcome.Critical` exists; no orb mint — `AttackHelper.cs:74-128`).
-  **Done when:** a crit (pincer or spell) mints one Colorless orb.
-  **Touch:** `Helpers/AttackHelper` / `SpellEffectDispatcher`, `ManaPoolManager`. **Bible:** §3.1.2. **Dep:** US-030.
+- [x] **US-031 — Critical hit → Colorless orb.** ✅ DONE 2026-06-02. A hero's critical hit mints one Colorless "wild" orb to the team bank — hooked centrally in `ActorInstance.DamageRoutine` (covers pincer crits via AttackHelper AND magic crits via MagicAttackSequence, both routed through `AttackResult.HitType`). The wild orb renders as a spectrum-cycling cell (`ManaOrbLine.AnimateWildOrbs`) per the user's "flashes every color" treatment. Capped by the bank. Demo: "Mint Wild Orb". Bible §3.1.2/§3.1.7 updated. *(Dep US-030 was epic-ordering only — Colorless is a fixed color, no per-class decision needed.)* **Dep:** — ✓
 
 - [ ] **US-028 — Quicken / Hasten (forward push + overtake).** `NOT-BUILT` (no spell; no forward-push in `ResolveSpatialOverlap`).
   **Why:** Inverse of pushback — slide a target's icon toward the trigger, overtaking neighbors (inverted train-cascade).

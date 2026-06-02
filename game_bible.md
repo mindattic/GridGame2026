@@ -378,7 +378,7 @@ Magic-style 5-color pie plus a generic:
 Orbs are minted from gameplay events:
 - **Pincer completion**: each hero attacker contributes 1 orb of their class color (V1: all Blue placeholder). Each supporter also contributes 1.
 - **Enemy charge interruption** (Phase C, `US-027`): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. Blocked on enemies not casting yet (`US-026`); the hero-side interrupt mechanic itself is wired (§13.4).
-- **Critical hits** (Phase C): may drop a single Colorless orb.
+- **Critical hits** (**Built — US-031**): a hero's critical hit (pincer or magic — any damage routed through `ActorInstance.DamageRoutine`) mints one **Colorless "wild" orb** to the bank. Wild orbs render as an all-colors-at-once orb that **flashes through the spectrum** in the line (`ManaOrbLine.AnimateWildOrbs`), distinguishing them from the static elemental orbs. This is a primary off-palette source.
 - **Steal / Mug skills**: per-target LCK + 0.5 × AGI roll, success → random-color orb to the bank.
 
 Orbs **drop visually** as bouncing UI sprites (`ManaOrbInstance`) from the source actor to the first empty slot in the line. Each commits `Bank.Add(color, 1)` on landing.
@@ -423,7 +423,7 @@ A future alchemy step can trade N orbs of one color toward another, or treat Col
 | Hero pincer with 2 supporters | 4 | 2 attackers + 2 supporters |
 | Hero pincer with 1 supporter, 3 enemies in line | 3 | 2 attackers + 1 supporter |
 | Steal/Mug skill, 3 adjacent enemies, 2 succeed | 2 | random per roll |
-| Critical hit (Phase C) | 1 | Colorless |
+| Critical hit (**built, US-031**) | 1 | Colorless "wild" orb (flashes every color) |
 | Interrupt enemy cast (Phase C) | 1 | matches enemy charge color |
 | Battle start (Mage Robe equipped, count=1) | 2 | random (per `BattleStartManaOrbs`) |
 
