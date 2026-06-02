@@ -185,9 +185,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-040 — Extend `ItemDefinition` with planned fields.** ✅ DONE 2026-06-01. `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added to `Data/Items/ItemDefinition.cs` with safe defaults (0 / null / empty dict). Inert until EPIC E consumers (US-041/042/043). Demo: "Log ItemDef Fields". Bible §24.3 + §16.3 updated. **Dep:** —
 
-- [ ] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** `PARTIAL` (`MageRobes` item exists `ItemData_Armor.cs:128`; no Wizard Robe; no battle-start scan).
-  **Done when:** Wizard Robe added; `ManaPoolManager.Start` scans equipped party gear and adds `BattleStartManaOrbs` random orbs per robe (stacks per wearer, respects the 12 cap §3.1.4).
-  **Touch:** `Data/ItemData_Armor`, `ManaPoolManager.Start`. **Bible:** §24.8, §3.1.4, delete §16.3 #6. **Dep:** US-040.
+- [x] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** ✅ DONE 2026-06-01. `MageRobes.BattleStartManaOrbs=2`; new `WizardRobe` (Rare, `eq_armor_wizard`, =3) added + registered in `ItemLibrary`. `ManaPoolManager.ApplyBattleStartManaOrbs` (run at battle start via `GameReady`) sums `BattleStartManaOrbs` across the active party's equipped gear and adds that many random WUBRG orbs, clamped to the 12 cap. Demo: "Battle-Start Orbs". Bible §24.8/§3.1.4 + §16.3 #6 updated. **Dep:** US-040. ✓
 
 - [ ] **US-042 — Sleep Dart (item triggers a spell).** `NOT-BUILT` (no item; `AbilityBar.HandleItem:71-77` + `UseItemSequence` are heal/damage-only, no spell routing).
   **Done when:** Sleep Dart consumable (stack 5) routes `HandleItem` through `OnUseSpellName` → Sleep's targeting flow → `SpellEffectDispatcher.Cast`, consuming one charge on confirm.

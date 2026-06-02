@@ -92,8 +92,52 @@ namespace Scripts.Managers
             // Once heroes + enemies exist on the board, drop a debuff icon strip above each.
             Scripts.Utilities.GameReady.WhenReady(this, () => AttachDebuffBarsToAll(canvas.transform));
 
+            // US-041: once the party is on the board, equipped robes (Mage/Wizard) seed the bank
+            // with their BattleStartManaOrbs as random-color orbs (respecting the 12-orb cap).
+            Scripts.Utilities.GameReady.WhenReady(this, ApplyBattleStartManaOrbs);
+
             // Per-tick buff effects (Burning damage, Poisoned damage, Wet/Warm countdown).
             if (GetComponent<BuffTickManager>() == null) gameObject.AddComponent<BuffTickManager>();
+        }
+
+        /// <summary>Colors a battle-start orb can roll (the five castable colors; not Colorless).</summary>
+        private static readonly ManaType[] BattleStartColors =
+            { ManaType.White, ManaType.Blue, ManaType.Black, ManaType.Red, ManaType.Green };
+
+        /// <summary>US-041: scans the active party's equipped gear and adds each item's
+        /// <see cref="ItemDefinition.BattleStartManaOrbs"/> as random-color orbs to the team bank,
+        /// stacking across wearers and clamped to the 12-orb capacity (§3.1.4). Public so the Debug
+        /// Window can re-trigger it for testing.</summary>
+        public void ApplyBattleStartManaOrbs()
+        {
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Equipment?.Heroes == null || save.Party?.Members == null) return;
+
+            int requested = 0;
+            foreach (var member in save.Party.Members)
+            {
+                if (member == null) continue;
+                HeroEquipmentSave heroSave = null;
+                foreach (var h in save.Equipment.Heroes)
+                    if (h != null && h.CharacterClass == member.CharacterClass) { heroSave = h; break; }
+                if (heroSave == null) continue;
+
+                foreach (var id in new[] { heroSave.WeaponId, heroSave.ArmorId, heroSave.Relic1Id, heroSave.Relic2Id, heroSave.Relic3Id })
+                {
+                    if (string.IsNullOrEmpty(id)) continue;
+                    var item = ItemLibrary.Get(id);
+                    if (item != null) requested += item.BattleStartManaOrbs;
+                }
+            }
+
+            if (requested <= 0) return;
+
+            int added = 0;
+            for (int i = 0; i < requested && !Bank.IsFull; i++)
+                added += Bank.Add(BattleStartColors[RNG.Int(0, BattleStartColors.Length - 1)], 1);
+
+            if (added > 0)
+                Debug.Log($"[ManaPool] Battle-start robes granted +{added} orb(s) (requested {requested}, cap {Bank.Capacity}).");
         }
 
         private static void AttachDebuffBarsToAll(Transform canvas)

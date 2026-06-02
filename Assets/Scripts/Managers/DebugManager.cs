@@ -293,6 +293,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] US-040 fields across {total} items → BattleStartManaOrbs:{orbs}, OnUseSpellName:{spells}, ResistanceModifiers:{resists}.");
         }
 
+        /// <summary>Demo (US-041): re-run the equipped-robe battle-start orb grant (Mage Robe = 2,
+        /// Wizard Robe = 3 random orbs, capped at 12). Equip a robe in the Equip vendor first.</summary>
+        public void Demo_ApplyBattleStartOrbs()
+        {
+            var mp = g.ManaPoolManager;
+            if (mp == null) { Debug.LogWarning("[Demo] No ManaPoolManager (start a battle first)."); return; }
+            mp.ApplyBattleStartManaOrbs();
+            Demo_LogManaBank();
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

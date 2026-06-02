@@ -96,6 +96,7 @@ public static class ItemLibrary
         Register(ItemData_Armor.SteelGreaves);
         Register(ItemData_Armor.PaddedVest);
         Register(ItemData_Armor.MageRobes);
+        Register(ItemData_Armor.WizardRobe);
         Register(ItemData_Armor.DragonscaleArmor);
         Register(ItemData_Armor.SteelHelm);
         Register(ItemData_Armor.WizardHat);

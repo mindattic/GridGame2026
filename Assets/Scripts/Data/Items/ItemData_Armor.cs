@@ -138,6 +138,24 @@ public static class ItemData_Armor
         Durability = 120,
         Intelligence = 4,
         Wisdom = 3,
+        BattleStartManaOrbs = 2,   // US-041: seeds the team bank with 2 random orbs at battle start
+        RequiredTags = { ActorTag.Magic },
+    };
+
+    public static readonly ItemDefinition WizardRobe = new ItemDefinition
+    {
+        Id = "eq_armor_wizard",
+        DisplayName = "Wizard Robe",
+        Description = "Master's vestments humming with stored mana — the team begins the fight with extra orbs.",
+        Type = ItemType.Equipment,
+        Slot = EquipmentSlot.Armor,
+        Rarity = ItemRarity.Rare,
+        BaseCost = 320,
+        MaxStack = 1,
+        Durability = 120,
+        Intelligence = 6,
+        Wisdom = 5,
+        BattleStartManaOrbs = 3,   // US-041: a tier above the Mage Robes
         RequiredTags = { ActorTag.Magic },
     };
 

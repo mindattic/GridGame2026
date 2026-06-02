@@ -1386,7 +1386,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~—~~ | US-040 | ~~**`ItemDefinition` fields**~~ — **DONE 2026-06-01**: `BattleStartManaOrbs`/`OnUseSpellName`/`ResistanceModifiers` added with safe defaults; unblocks US-041/042/043. | P1 | `ItemDefinition` |
-| 6 | US-041 | **Mage/Wizard Robe battle-start orbs** — `MageRobes` exists; need Wizard Robe + battle-start scan | P1 | `ItemData_Armor`, `ManaPoolManager.Start` |
+| ~~6~~ | US-041 | ~~**Mage/Wizard Robe battle-start orbs**~~ — **DONE 2026-06-01**: `MageRobes.BattleStartManaOrbs=2`, new `WizardRobe`=3; `ManaPoolManager.ApplyBattleStartManaOrbs` scans equipped party gear at battle start (GameReady) and adds random-color orbs, capped at 12. Demo: "Battle-Start Orbs". | P1 | `ItemData_Armor`, `ManaPoolManager` |
 | 7 | US-042 | **Sleep Dart** — item routes through Sleep's targeting via `OnUseSpellName` | P1 | `AbilityBar.HandleItem`, `UseItemSequence` |
 | — | US-043 | **Equipped `ResistanceModifiers` folded into damage** | P1 | `Formulas`, `SpellEffectDispatcher` |
 | ~~8~~ | — | ~~Weapon shatter dual-damage~~ — **DONE** (`WeaponDurabilityHelper.cs:37-103`) | — | — |
@@ -1944,8 +1944,10 @@ Materials don't directly enter combat — they're the bridge between battle outp
 
 ### 24.8 Specific items user-spec'd
 
-- **Mage Robe** — armor, common. `BattleStartManaOrbs = 2`. Stacks per hero wearing.
-- **Wizard Robe** — armor, uncommon. `BattleStartManaOrbs = 3`. Stacks per hero wearing.
+- **Mage Robes** — armor, Uncommon (`eq_armor_mage`). `BattleStartManaOrbs = 2`. Stacks per hero wearing. **Built — US-041.**
+- **Wizard Robe** — armor, Rare (`eq_armor_wizard`). `BattleStartManaOrbs = 3`. Stacks per hero wearing. **Built — US-041.**
+
+Battle-start grant: `ManaPoolManager.ApplyBattleStartManaOrbs` (run once at battle start via `GameReady`) sums `BattleStartManaOrbs` across every equipped item on the active party and adds that many **random-color** orbs (WUBRG, not Colorless) to the team bank, clamped to the 12-orb cap (§3.1.4).
 - **Sleep Dart** — consumable, per-slot stack (e.g. `MaxStackSize = 5`). `OnUseSpellName = "Sleep"` — on use, opens the Sleep spell's targeting flow and consumes one charge.
 
 ### 24.9 Currency

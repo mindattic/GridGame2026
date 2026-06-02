@@ -109,6 +109,11 @@ public partial class DebugWindow
             ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())
         );
 
+        // Battle-start orbs (US-041) — re-run the equipped-robe grant (Mage Robe=2, Wizard Robe=3).
+        RenderButtonRow(
+            ("Battle-Start Orbs", () => g.DebugManager.Demo_ApplyBattleStartOrbs())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.
