@@ -104,6 +104,11 @@ public partial class DebugWindow
             ("Roll Cast Interrupt x20", () => g.DebugManager.Demo_RollCastInterrupt())
         );
 
+        // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).
+        RenderButtonRow(
+            ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())
+        );
+
         // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.

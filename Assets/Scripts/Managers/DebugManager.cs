@@ -277,6 +277,22 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] {hero.name} (LCK {hero.Stats?.Luck:0}, WIS {hero.Stats?.Wisdom:0}) cast-interrupt ×20 → Fail={fail}, Pushback={push}, Clutch={clutch}.");
         }
 
+        /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
+        /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
+        public void Demo_LogItemDefFields()
+        {
+            int orbs = 0, spells = 0, resists = 0, total = 0;
+            foreach (var item in Scripts.Data.Items.ItemLibrary.All())
+            {
+                if (item == null) continue;
+                total++;
+                if (item.BattleStartManaOrbs > 0) orbs++;
+                if (!string.IsNullOrEmpty(item.OnUseSpellName)) spells++;
+                if (item.ResistanceModifiers != null && item.ResistanceModifiers.Count > 0) resists++;
+            }
+            Debug.Log($"[Demo] US-040 fields across {total} items → BattleStartManaOrbs:{orbs}, OnUseSpellName:{spells}, ResistanceModifiers:{resists}.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

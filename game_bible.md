@@ -1385,7 +1385,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
-| — | US-040 | **`ItemDefinition` fields** — `BattleStartManaOrbs`, `OnUseSpellName`, `ResistanceModifiers` (all absent) | P1 | `ItemDefinition` |
+| ~~—~~ | US-040 | ~~**`ItemDefinition` fields**~~ — **DONE 2026-06-01**: `BattleStartManaOrbs`/`OnUseSpellName`/`ResistanceModifiers` added with safe defaults; unblocks US-041/042/043. | P1 | `ItemDefinition` |
 | 6 | US-041 | **Mage/Wizard Robe battle-start orbs** — `MageRobes` exists; need Wizard Robe + battle-start scan | P1 | `ItemData_Armor`, `ManaPoolManager.Start` |
 | 7 | US-042 | **Sleep Dart** — item routes through Sleep's targeting via `OnUseSpellName` | P1 | `AbilityBar.HandleItem`, `UseItemSequence` |
 | — | US-043 | **Equipped `ResistanceModifiers` folded into damage** | P1 | `Formulas`, `SpellEffectDispatcher` |
@@ -1875,6 +1875,8 @@ BattleStartManaOrbs : int        // Mage/Wizard Robe → adds N random orbs to b
 OnUseSpellName     : string      // Sleep Dart etc. → consumable that triggers a spell on use
 ResistanceModifiers: Dict<DamageType, float>  // elemental rings, etc.
 ```
+
+**Built — US-040 (2026-06-01):** all three planned fields now exist on `ItemDefinition` with safe defaults (`0` / `null` / empty `Dictionary`). They are inert until their EPIC E consumers populate and read them: `BattleStartManaOrbs`→US-041, `OnUseSpellName`→US-042, `ResistanceModifiers`→US-043.
 
 ### 24.4 Inventory
 

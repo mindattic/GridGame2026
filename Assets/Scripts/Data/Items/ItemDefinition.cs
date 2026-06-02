@@ -104,6 +104,20 @@ public class ItemDefinition
     // Salvage: what materials this item breaks down into
     public List<SalvageComponent> SalvageComponents = new List<SalvageComponent>();
 
+    // ── US-040: planned fields (consumed by EPIC E) — safe defaults, inert until set ──
+    /// <summary>Equipment (Mage/Wizard Robe §24.8): random mana orbs granted to the team bank at
+    /// battle start, per wearer (0 = none). Consumed by US-041 (`ManaPoolManager.Start` gear scan).</summary>
+    public int BattleStartManaOrbs = 0;
+
+    /// <summary>Consumable (Sleep Dart §24.8): name of a `SpellDefinition` this item casts on use,
+    /// routed through the spell targeting flow. Null/empty = plain heal/damage consumable.
+    /// Consumed by US-042 (`AbilityBar.HandleItem`).</summary>
+    public string OnUseSpellName = null;
+
+    /// <summary>Equipment: per-damage-type resistance multipliers folded into the wearer's effective
+    /// resistance (alongside class resistances). Empty = none. Consumed by US-043 (`ApplyDamage`).</summary>
+    public Dictionary<DamageType, float> ResistanceModifiers = new Dictionary<DamageType, float>();
+
     /// <summary>Computed sell value (half of cost if not explicitly set).</summary>
     public int ComputedSellValue => SellValue >= 0 ? SellValue : UnityEngine.Mathf.Max(1, BaseCost / 2);
 

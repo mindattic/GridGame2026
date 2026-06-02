@@ -183,9 +183,7 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC E — Equipment Data Layer
 *Durability + weapon-swap are done (§A). What's left is the three planned `ItemDefinition` fields and their consumers.*
 
-- [ ] **US-040 — Extend `ItemDefinition` with planned fields.** `NOT-BUILT` (`ItemDefinition.cs:63-124` lacks all three).
-  **Done when:** `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added with safe defaults.
-  **Touch:** `Inventory/ItemDefinition`. **Bible:** §24.3. **Dep:** —
+- [x] **US-040 — Extend `ItemDefinition` with planned fields.** ✅ DONE 2026-06-01. `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added to `Data/Items/ItemDefinition.cs` with safe defaults (0 / null / empty dict). Inert until EPIC E consumers (US-041/042/043). Demo: "Log ItemDef Fields". Bible §24.3 + §16.3 updated. **Dep:** —
 
 - [ ] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** `PARTIAL` (`MageRobes` item exists `ItemData_Armor.cs:128`; no Wizard Robe; no battle-start scan).
   **Done when:** Wizard Robe added; `ManaPoolManager.Start` scans equipped party gear and adds `BattleStartManaOrbs` random orbs per robe (stacks per wearer, respects the 12 cap §3.1.4).
