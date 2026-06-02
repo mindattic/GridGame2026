@@ -397,6 +397,23 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Wounded {enemy.name} ({enemy.Stats.HP:0}/{enemy.Stats.MaxHP:0}) plans {enemy.location} → {step} (should retreat from heroes).");
         }
 
+        /// <summary>Demo (US-082): log every living enemy's planned step — exercises the full planner
+        /// (advance / retreat / own-pincer-seek / ally-supporter positioning).</summary>
+        public void Demo_LogEnemyPlans()
+        {
+            var all = g.Actors.All;
+            if (all == null) { Debug.LogWarning("[Demo] No actors (start a battle first)."); return; }
+            int n = 0;
+            foreach (var e in all)
+            {
+                if (e == null || !e.IsEnemy || !e.IsPlaying) continue;
+                var step = Scripts.Services.EnemyPlanner.PlanStep(e, all, g.TileMap);
+                Debug.Log($"[Demo] {e.name} plans {e.location} → {step}.");
+                n++;
+            }
+            if (n == 0) Debug.Log("[Demo] No living enemies to plan.");
+        }
+
         public void Demo_ClearMana() { demoManaBank.Clear(); Demo_LogManaBank(); }
 
         // ── Phase-B live HUD demos (target the LIVE ManaBank, not the demo bank) ──

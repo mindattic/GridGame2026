@@ -82,6 +82,11 @@ namespace Scripts.Services
                 if (!wounded && seeksPincer && WouldFormPincer(enemy, c, actors))
                     score += 50f;                                    // pincer-seek beats positional ties
 
+                // US-082: failing its own pincer, an enemy still values buffing an ALLY's pincer
+                // by standing where it becomes a supporter (worth less than forming a pincer itself).
+                if (!wounded && WouldSupportAllyPincer(enemy, c, actors))
+                    score += 25f;
+
                 if (score > bestScore)
                 {
                     bestScore = score;
@@ -109,6 +114,42 @@ namespace Scripts.Services
                         && Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker1)
                         && Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker2))
                         return true;
+                }
+                return false;
+            }
+            finally { enemy.location = prev; }
+        }
+
+        /// <summary>US-082: true if moving <paramref name="enemy"/> to <paramref name="candidate"/>
+        /// makes it a §1.2.3 SUPPORTER of some OTHER ally's Humanoid pincer (adjacent to an endpoint
+        /// with line of sight), reusing <see cref="PincerDetector.FindSupporters"/>. Pincers where this
+        /// enemy is itself an endpoint are excluded — those are <see cref="WouldFormPincer"/>'s job.
+        /// Mutates the enemy's location briefly; always restores.</summary>
+        private static bool WouldSupportAllyPincer(ActorInstance enemy, Vector2Int candidate, IReadOnlyList<ActorInstance> actors)
+        {
+            var prev = enemy.location;
+            enemy.location = candidate;
+            try
+            {
+                foreach (var ally in actors)
+                {
+                    if (ally == null || ally == enemy || !ally.IsPlaying || ally.team != Team.Enemy) continue;
+                    if (!Scripts.Managers.PincerAttackManager.IsHumanoid(ally)) continue;
+
+                    var participants = PincerDetector.Detect(actors, Team.Enemy, ally);
+                    if (participants.pair == null) continue;
+
+                    foreach (var p in participants.pair)
+                    {
+                        if (p?.attacker1 == null || p.attacker2 == null) continue;
+                        if (p.attacker1 == enemy || p.attacker2 == enemy) continue; // own pincer → WouldFormPincer
+                        if (!Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker1)
+                            || !Scripts.Managers.PincerAttackManager.IsHumanoid(p.attacker2)) continue;
+
+                        if (PincerDetector.FindSupporters(actors, p.attacker1).Contains(enemy)
+                            || PincerDetector.FindSupporters(actors, p.attacker2).Contains(enemy))
+                            return true;
+                    }
                 }
                 return false;
             }

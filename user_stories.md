@@ -193,9 +193,7 @@ These were on the original board and are **already implemented in code**. The bi
 
 - [x] **US-081 — Coordinated retreat (wounded enemies flee).** ✅ DONE 2026-06-02. `EnemyPlanner.PlanStep`: below `RetreatHpThreshold` (0.30 HP fraction) the enemy flips advance→flee (maximizes distance from the target) and drops its adjacency + pincer-seek biases; flank-avoidance still applies so it won't back into a pincer. Demo: "Test Enemy Retreat". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
 
-- [ ] **US-082 — AI supporter positioning.** `PARTIAL` (planner seeks its *own* pincer, not moves that enable an *ally's*).
-  **Done when:** a support branch rewards moves completing an ally's pincer line.
-  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
+- [x] **US-082 — AI supporter positioning.** ✅ DONE 2026-06-02 (Legion: supporter-adjacency over lane-clearing, 4/4). `EnemyPlanner.WouldSupportAllyPincer` rewards (+25) a move that makes this enemy a §1.2.3 supporter of *another* ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`; excludes pincers where this enemy is itself an endpoint — that's the +50 `WouldFormPincer`). Suppressed when fleeing (US-081). Demo: "Log Enemy Plans". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
 
 - [ ] **US-083 — Boss scripted phases.** `NOT-BUILT`.
   **Done when:** a per-class boss override (or `BossScript` sequence) swaps generic stepping for authored phases via `SequenceManager`.

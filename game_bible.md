@@ -1278,6 +1278,7 @@ The +50 pincer-seek beats the −100 self-flank avoidance (no, it doesn't — �
 | Forms Humanoid pincer here | +50 | Pincer-seek beats positional ties, loses to flank-avoidance |
 | **Target's threat (US-080)** | −(threat∕maxThreat) × INT × 0.8 | Smart enemies hunt whoever's hurt them. Applied to *target choice*, not the step score: high-INT enemies prefer the top damage-dealer; low-INT barely weight it. Threat = damage dealt this battle (`ThreatTracker`). |
 | **Wounded retreat (US-081)** | flips advance→flee below 0.30 HP | A badly wounded enemy maximizes distance from the target instead of minimizing it, and drops adjacency/pincer-seek bonuses (flank-avoid still applies). |
+| **Support ally pincer (US-082)** | +25 | Move makes this enemy a supporter of *another* ally's Humanoid pincer (`FindSupporters`). Below its own +50 pincer-seek; suppressed when fleeing. |
 
 These weights are the **only tuning knobs**; they live as constants in `EnemyPlanner`. Adding new behaviors (range-keep, support-buddy) means new factor branches.
 
@@ -1299,7 +1300,7 @@ Different enemies should *feel* different by their `ActorData.Tags` + base stat 
 ### 14.3 Future AI hooks
 
 - **Casting enemies** (Phase C): telegraph a charge in the Prepare Zone. The icon shows a colored fill bar matching the charge type; if the player interrupts during the slow window, the cast is canceled AND drops an orb of that color into the team bank (§3.1.2).
-- **AI-driven supporter positioning**: enemy turn could include a "support" mode where an enemy moves to enable an ally's pincer.
+- ~~**AI-driven supporter positioning**: enemy turn could include a "support" mode where an enemy moves to enable an ally's pincer.~~ **DONE — US-082 (2026-06-02; Legion chose supporter-adjacency over lane-clearing):** an enemy is rewarded (+25) for moving to a tile where it becomes a §1.2.3 **supporter** of another ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`); own-pincer formation still wins (+50). `EnemyPlanner.WouldSupportAllyPincer`. Demo: "Log Enemy Plans".
 - **Boss-specific scripted moves**: per-class override in `EnemyPlanner` that swaps the generic step logic for boss-authored sequences.
 - ~~**Threat tracking**: heroes who deal more damage become preferred targets (TODO).~~ **DONE — US-080 (2026-06-02):** `ThreatTracker` tallies hero→enemy damage; `EnemyPlanner` subtracts a normalized-threat × INT × 0.8 term from each candidate's target score, so **smarter (high-INT) enemies prefer the top damage-dealer** while dumb ones keep chasing nearest/wounded. Cleared at battle start. Demo: "Log Threat".
 - ~~**Coordinated retreat**: low-HP enemies could move *away* from heroes when wounded.~~ **DONE — US-081 (2026-06-02):** below `RetreatHpThreshold` (0.30 HP fraction) an enemy flees the target (maximizes distance) and drops its adjacency/pincer-seek biases; flank-avoidance still applies. `EnemyPlanner.PlanStep`. Demo: "Test Enemy Retreat".
