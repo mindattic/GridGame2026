@@ -8,6 +8,9 @@ namespace Scripts.Services
     /// <summary>What a single landed hit does to an in-flight cast (game_bible.md §13.4 stagger model).</summary>
     public enum CastInterruptOutcome
     {
+        /// <summary>Rare LCK "miracle save" — the cast shrugs the hit entirely (US-025 adds the
+        /// snap-to-resolve + flash/SFX). Checked first.</summary>
+        Clutch,
         /// <summary>WIS poise shrugged the hit off — no delay added.</summary>
         Resisted,
         /// <summary>Cast survives but is pushed back (its remaining cast time grows).</summary>
@@ -46,11 +49,22 @@ namespace Scripts.Services
         public const float WisdomResistPerPoint = 0.015f;
         /// <summary>Cap on the WIS resist chance.</summary>
         public const float MaxResistChance = 0.60f;
+        /// <summary>Clutch (US-025 miracle save) base rate per point of LCK — LCK 10 ≈ 5%, LCK 20 ≈ 10%.</summary>
+        public const float ClutchChancePerLuck = 1f / 200f;
+        /// <summary>Cap on the Clutch chance.</summary>
+        public const float ClutchMaxChance = 0.20f;
 
         public static CastInterruptResult Resolve(ActorInstance caster, ActorInstance attacker, CastingState cast)
         {
+            float lck = caster?.Stats?.Luck ?? 0f;
             float wis = caster?.Stats?.Wisdom ?? 0f;
             float atk = attacker?.Stats?.Strength ?? 0f;
+
+            // Clutch FIRST — rare, LCK-driven miracle save: the cast shrugs the hit entirely
+            // (US-025 adds the snap-to-resolve + flash/SFX). LCK is the primary stat here.
+            float clutch = Mathf.Clamp(lck * ClutchChancePerLuck, 0f, ClutchMaxChance);
+            if (RNG.Float(0f, 1f) < clutch)
+                return new CastInterruptResult { Outcome = CastInterruptOutcome.Clutch, DelayAdded = 0f };
 
             // WIS poise: a hit may be shrugged off with no effect.
             float resist = Mathf.Clamp(wis * WisdomResistPerPoint, 0f, MaxResistChance);

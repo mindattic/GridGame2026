@@ -266,12 +266,15 @@ namespace Scripts.Managers
             var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
             if (hero == null) { Debug.LogWarning("[Demo] Select a hero first."); return; }
             float wis = hero.Stats?.Wisdom ?? 0f;
+            float lck = hero.Stats?.Luck ?? 0f;
+            float clutch = Mathf.Clamp(lck * Scripts.Services.CastInterruptResolver.ClutchChancePerLuck,
+                0f, Scripts.Services.CastInterruptResolver.ClutchMaxChance);
             float resist = Mathf.Clamp(wis * Scripts.Services.CastInterruptResolver.WisdomResistPerPoint,
                 0f, Scripts.Services.CastInterruptResolver.MaxResistChance);
             float delayVsStr10 = Scripts.Services.CastInterruptResolver.BaseInterruptDelay
                 * (1f + 10f / Scripts.Services.CastInterruptResolver.StrengthScale)
                 / (1f + wis / Scripts.Services.CastInterruptResolver.WisdomDelayScale);
-            Debug.Log($"[Demo] Cast-stagger for {hero.name} (WIS {wis:0}): {resist:P0} chance to shrug a hit; ~{delayVsStr10:0.00}s of cast-time added per landed hit (vs STR 10). Cast cancels once total added ≥ its cast time.");
+            Debug.Log($"[Demo] Cast interrupt for {hero.name} (LCK {lck:0}, WIS {wis:0}): {clutch:P0} Clutch (LCK miracle save) → else {resist:P0} WIS shrug → else ~{delayVsStr10:0.00}s cast-time added per hit (vs STR 10). Cast cancels once total added ≥ its cast time.");
         }
 
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new

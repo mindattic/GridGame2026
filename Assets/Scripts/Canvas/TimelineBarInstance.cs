@@ -748,6 +748,12 @@ namespace Scripts.Canvas
                 var combatText = Scripts.Helpers.GameHelper.CombatTextManager;
                 switch (result.Outcome)
                 {
+                    case Scripts.Services.CastInterruptOutcome.Clutch:
+                        // Rare LCK miracle save — cast shrugs the hit untouched. US-025 will add the
+                        // dramatic snap-to-u=1 resolve + flash/SFX; for now it simply survives.
+                        combatText?.Spawn("Clutch!", hero.Position, "Heal");
+                        break;
+
                     case Scripts.Services.CastInterruptOutcome.Resisted:
                         combatText?.Spawn("Resisted!", hero.Position, "Heal");
                         break;

@@ -1211,13 +1211,13 @@ When an enemy is in the Prepare Zone and casting/charging, a pincer or shield pr
 
 **Interrupt model — "cast stagger" (REVISED 2026-06-02, user; supersedes the US-024 three-outcome roll).** When a casting actor **takes a landing hit** (a Miss never interrupts), the in-flight cast is **pushed back on the timeline — its remaining cast time increases** (the small below-the-line cast icon, §2.6, slides away from the trigger). Each interrupt adds a delay; the delays **accumulate**, and **once the accumulated delay exceeds the spell's original cast time, the cast is CANCELLED** (`CastingState.Interrupt()` — MP stays consumed, no effect, icon removed). Otherwise the cast survives, just later.
 
-**Wisdom = caster poise** (the main stat): higher WIS both (a) **reduces the push-back per hit** and (b) makes a hit **less likely to interrupt at all** (it can be shrugged off entirely). Attacker **Strength** increases the push. There is **no LCK/Clutch roll** — the old `{Fail | Pushback | Clutch}` is replaced by this continuous accumulate-to-cancel model.
+**Two stats matter.** **Wisdom = caster poise** (the main stagger stat): higher WIS both (a) **reduces the push-back per hit** and (b) gives a chance to **shrug a hit off entirely** (no delay). Attacker **Strength** increases the push. **Luck = Clutch**: a rare **LCK-driven Clutch is rolled FIRST** (≈ `LCK/200`, capped 20%) — on a proc the cast **shrugs the hit completely**, the "fun miracle save" (US-025). So the order per hit is: **Clutch (LCK) → WIS-shrug → add stagger delay → cancel if total ≥ cast time.** (This replaces the old flat `{Fail | Pushback | Clutch}` roll: Pushback/Fail became the continuous stagger; Clutch is retained as the LCK pre-check.)
 
 This is **one unified rule for hero casts AND enemy charge-casts** (US-026) — so the earlier US-026 "binary damage-cancels" lock is folded in: a hit doesn't instantly cancel a charge, it **staggers** it; enough cumulative stagger cancels it. `US-027` mints the charge-color orb at the **cancel** moment.
 
 **Audit / migration:**
 - US-024 shipped a three-outcome `CastInterruptResolver` (Fail/Pushback/Clutch, LCK-driven). **Superseded** by the stagger model above; `CastInterruptResolver` + `CastingState` + `TimelineBar.InterruptCastsByOwner` refactored to it.
-- **`US-025` ClutchSequence is now OBSOLETE** under this model (no LCK miracle save) — dropped unless re-specced.
+- **`US-025` ClutchSequence — RETAINED** (user, 2026-06-02): the resolver already returns `Clutch` on the rare LCK proc (cast shrugs the hit). US-025 is the *juice* — snap the spell-icon to `u = 1` + screen flash / SFX / "Clutch!" so the miracle save reads dramatically. Still to build.
 - **Enemies that actually cast** (`US-026`, still not built): charge-cast spawns a below-line cast icon; interrupting it uses the same stagger rule. **`US-027`**: cancel → mint a charge-color orb to the bank (how off-palette colors flow in).
 
 ---
