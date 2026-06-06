@@ -105,6 +105,12 @@ public partial class DebugWindow
             ("Clutch! (Force)", () => g.DebugManager.Demo_Clutch())
         );
 
+        // Enemy charge/telegraph (US-026) — make a caster enemy load a spell on the timeline that
+        // resolves into a magic hit at u=1 (enemies were melee-only before this).
+        RenderButtonRow(
+            ("Enemy Charge", () => g.DebugManager.Demo_EnemyCharge())
+        );
+
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).
         RenderButtonRow(
             ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())

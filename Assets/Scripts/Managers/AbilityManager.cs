@@ -551,7 +551,10 @@ namespace Scripts.Managers
         /// Returns false for effects that are not direct-damage magic (heals, buffs, passives,
         /// item/weapon slots) so the caller can route them elsewhere.
         /// </summary>
-        private static bool TryGetMagicEffect(AbilityEffect effect, out ElementalDamageType element, out string vfxKey)
+        /// <summary>Maps an offensive-magic <see cref="AbilityEffect"/> to its damage element + impact
+        /// VFX key. Public so enemy charge-casts (US-026 <c>EnemyChargeSequence</c>) resolve through the
+        /// same single source of truth heroes use.</summary>
+        public static bool TryGetMagicEffect(AbilityEffect effect, out ElementalDamageType element, out string vfxKey)
         {
             switch (effect)
             {

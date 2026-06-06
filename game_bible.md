@@ -316,7 +316,7 @@ The Shield button (top-right of the timeline, replaces the old Bank button) fast
 
 **Shared continuous clock — does a cast fire "off-turn"? Yes, and that's the point.** This is the Grandia IP-gauge model (§0): there is *one* clock, not alternating turns. Both lanes advance together as the timeline progresses, and **whatever icon reaches the trigger first resolves** — an enemy icon at `u = 1` takes its turn; a cast icon at `u = 1` fires its spell, even if that lands *between* enemy turns. Resolution runs through the input-suspending **`Resolving` third state** (§2.2) and then hands control back to wherever the clock was. The two-lane layout is exactly what keeps this legible rather than confusing: you literally *see* your Fireball's small icon racing the Goblin's portrait toward the trigger and read "my spell lands just before it acts." So casting time and enemy turns are **related — same axis, same clock** — and a cast resolving off any particular turn is intended, not a bug. *(If we ever wanted casts gated to a turn boundary instead, that would be a departure from the IP-gauge pillar — flagged, not assumed.)*
 
-Concurrency / lifecycle (unchanged): up to `MaxConcurrent = 4` cast icons; a 5th is refused (orbs not spent). On resolve: lock `InputMode = None` for `ResolveLockSeconds = 0.30f`, fire effect, restore input. Caster died mid-cast → cast icon removed without resolving. Interrupts: hero casts §13.4; enemy charges US-026 (damage-cancels).
+Concurrency / lifecycle (unchanged): up to `MaxConcurrent = 4` cast icons; a 5th is refused (orbs not spent). On resolve: lock `InputMode = None` for `ResolveLockSeconds = 0.30f`, fire effect, restore input. Caster died mid-cast → cast icon removed without resolving. Interrupts: hero casts §13.4; enemy charges US-026 (same cast-stagger rule, §13.4).
 
 ```
         ╭─────╮       ╭─────╮                      ← ABOVE: large actor turn icons
@@ -380,7 +380,7 @@ Magic-style 5-color pie plus a generic:
 
 Orbs are minted from gameplay events:
 - **Pincer completion**: each hero attacker contributes 1 orb of their **class color** (US-030, via `ManaColorAffinity.For`). Each supporter also contributes 1 (its own color).
-- **Enemy charge interruption** (Phase C, `US-027`): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. Blocked on enemies not casting yet (`US-026`); the hero-side interrupt mechanic itself is wired (§13.4).
+- **Enemy charge interruption** (Phase C, `US-027`, now unblocked): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. `US-026` (enemies casting) is **built** as of 2026-06-06, and `EnemyChargeCatalog.ColorFor` already exposes the charge color; the hero-side interrupt mechanic itself is wired (§13.4).
 - **Critical hits** (**Built — US-031**): a hero's critical hit (pincer or magic — any damage routed through `ActorInstance.DamageRoutine`) mints one **Colorless "wild" orb** to the bank. Wild orbs render as an all-colors-at-once orb that **flashes through the spectrum** in the line (`ManaOrbLine.AnimateWildOrbs`), distinguishing them from the static elemental orbs. This is a primary off-palette source.
 - **Steal / Mug skills**: per-target LCK + 0.5 × AGI roll, success → random-color orb to the bank.
 
@@ -1218,7 +1218,7 @@ This is **one unified rule for hero casts AND enemy charge-casts** (US-026) — 
 **Audit / migration:**
 - US-024 shipped a three-outcome `CastInterruptResolver` (Fail/Pushback/Clutch, LCK-driven). **Superseded** by the stagger model above; `CastInterruptResolver` + `CastingState` + `TimelineBar.InterruptCastsByOwner` refactored to it.
 - **`US-025` ClutchSequence — DONE 2026-06-06.** On the rare LCK Clutch proc, `InterruptCastsByOwner` pauses the spell-icon and `AddFirst`-queues `Sequences/ClutchSequence`, which plays a white full-screen flash + "Heal" SFX + "Clutch!" combat text, then calls `TimelineIcon.ForceResolve()` — snapping the icon to `u = 1` and firing the **same** resolution closure a natural arrival uses (EnterResolvingMode → suspend input → apply effect → end turn). The dying-healer miracle save: the cast shrugs the hit AND resolves on the spot. Demo: "Clutch! (Force)".
-- **Enemies that actually cast** (`US-026`, still not built): charge-cast spawns a below-line cast icon; interrupting it uses the same stagger rule. **`US-027`**: cancel → mint a charge-color orb to the bank (how off-palette colors flow in).
+- **Enemies that actually cast** (`US-026`, DONE 2026-06-06): a Caster (tagged `Magic`) that isn't adjacent to a hero telegraphs a charge via `EnemyChargeSequence` (spawns a cast-icon through the team-agnostic `SpawnSpellIcon`; resolves into a `MagicAttackSequence` at u=1 with NO `EndTurnSequence` — it resolves on the shared clock, not as a turn). The decision is the pure, side-effect-free `EnemyPlanner.PlanCast` (Legion-ratified Option A); `EnemyTakeTurnSequence` queues the charge in place of the move/attack chain. `EnemyChargeCatalog` derives the spell element from affinity tags. IceMauler is the first live caster (Ice). Interrupting it uses the same stagger rule. **`US-027`** (now unblocked): cancel → mint a charge-color orb to the bank (how off-palette colors flow in).
 
 ---
 
@@ -1296,7 +1296,7 @@ Different enemies should *feel* different by their `ActorData.Tags` + base stat 
 | **Bruiser** | high STR + VIT | `Humanoid, Soldier` | Slower load but high HP and threat. Best target for a pincer. |
 | **Flanker** | mid STR, high AGI | `Humanoid` | Seeks pincer formation with another Flanker. Devastating if ignored. |
 | **Ranged** | high AGI, mid INT | `Humanoid` | Wants distance — keeps gap from heroes; attacks across tiles (future: requires a Line shape) |
-| **Caster** | high INT, low VIT | `Humanoid, Magic` | Telegraphs a spell in the Prepare Zone (Phase C); high reward for interrupting |
+| **Caster** | high INT, low VIT | `Humanoid, Magic` | **BUILT (US-026)**: when not adjacent to a hero, telegraphs an affinity charge-cast on the timeline (`EnemyPlanner.PlanCast` → `EnemyChargeSequence`) that resolves into a magic hit at u=1; high reward for interrupting (US-027) |
 | **Beast** | varies | `Beast` (no Humanoid) | Can NOT pincer. Just rushes. Cheaper threat density. |
 | **Mechanical** | high VIT, status-immune | `Mechanical, Boss` | Status immunities (Resistances 0 for Poison/Sleep). Pure HP race. |
 | **Boss** | very high everything | `Humanoid, Boss, Elite` | Scripted phase changes (TODO via `SequenceManager`); large move-set; not pincerable in some phases. |
@@ -1386,7 +1386,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~—~~ | — | ~~Cast-time WIS/INT scaling~~ — **DONE** (`Formulas.cs:492`; `CastingState.cs:91`) | — | — |
 | ~~—~~ | US-024 | ~~**Clutch/Pushback/Fail resolver**~~ — **DONE 2026-06-01**: `CastInterruptResolver.Resolve` returns {Fail\|Pushback\|Clutch}; `InterruptCastsByOwner` routes through it (Fail interrupts, Pushback rewinds+stuns, Clutch survives). Demo: "Roll Cast Interrupt ×20". | P1 | `Services/CastInterruptResolver.cs` |
 | ~~—~~ | US-025 | ~~**ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX~~ — **DONE 2026-06-06**: `Sequences/ClutchSequence.cs` (flash + "Heal" SFX + "Clutch!" text) → `TimelineIcon.ForceResolve()` snaps to u=1 and resolves; queued from the Clutch branch of `InterruptCastsByOwner`. Demo: "Clutch! (Force)". | P2 | `Sequences/ClutchSequence.cs`, `TimelineIcon.cs`, `TimelineBarInstance.cs` |
-| — | US-026 | **Enemy charge/telegraph spells** — enemies cast (today: melee only) | P1 | `EnemyPlanner`, new `EnemyChargeSequence` |
+| ~~—~~ | US-026 | ~~**Enemy charge/telegraph spells** — enemies cast (today: melee only)~~ — **DONE 2026-06-06**: `EnemyPlanner.PlanCast` (pure, Legion Option A) + new `EnemyChargeSequence` + `EnemyChargeCatalog`; `EnemyTakeTurnSequence` branches to the charge; IceMauler tagged `Magic\|IceAffinity` as the first live caster. Demo: "Enemy Charge". | P1 | `EnemyPlanner`, `EnemyChargeSequence`, `EnemyChargeCatalog`, `EnemyTakeTurnSequence`, `IceMauler` |
 | — | US-027 | **Interrupt enemy cast → drop charge-color orb** (closes off-palette economy) | P1 | `TimelineBarInstance`, `ManaPoolManager` |
 
 ### 16.3 Equipment / inventory

@@ -290,6 +290,39 @@ namespace Scripts.Managers
             g.SequenceManager.Execute();
         }
 
+        /// <summary>Demo (US-026): force a caster enemy to telegraph a charge spell at the nearest hero.
+        /// Uses the selected enemy if one is selected, else the first Magic-tagged enemy on the board.
+        /// Watch the colored cast-icon load on the timeline, then resolve into a magic hit at u=1.</summary>
+        public void Demo_EnemyCharge()
+        {
+            var enemy = g.Actors.SelectedActor;
+            if (enemy == null || !enemy.IsEnemy)
+                enemy = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying && EnemyChargeCatalog.IsCaster(e))
+                     ?? g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying);
+            if (enemy == null) { Debug.LogWarning("[Demo] No enemy on the board — start a battle first."); return; }
+
+            // Real casters (IceMauler etc.) get their affinity spell; for any other enemy, force a
+            // demo Fireball so the charge mechanic is visible on every stage.
+            var ability = EnemyChargeCatalog.For(enemy) ?? new Scripts.Instances.Ability
+            {
+                name = "Fireball",
+                type = AbilityType.TargetOpponent,
+                Effect = AbilityEffect.Fireball,
+                CastTimeSeconds = EnemyChargeCatalog.DefaultChargeCastSeconds,
+                TargetingMode = AbilityTargetingMode.AnyActor
+            };
+
+            var target = g.Actors.Heroes?
+                .Where(h => h != null && h.IsPlaying)
+                .OrderBy(h => Mathf.Abs(enemy.location.x - h.location.x) + Mathf.Abs(enemy.location.y - h.location.y))
+                .FirstOrDefault();
+            if (target == null) { Debug.LogWarning("[Demo] No living hero to target."); return; }
+
+            Debug.Log($"[Demo] {enemy.characterClass} charging {ability.name} ({ability.CastTimeSeconds:0.#}s base) at {target.characterClass}. Color (US-027) = {EnemyChargeCatalog.ColorFor(enemy)}.");
+            g.SequenceManager.Add(new Scripts.Sequences.EnemyChargeSequence(enemy, target, ability));
+            g.SequenceManager.Execute();
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

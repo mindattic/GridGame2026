@@ -1,11 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Scripts.Instances;
 using Scripts.Instances.Actor;
 using Scripts.Models;
 
 namespace Scripts.Services
 {
+    /// <summary>US-026: a planned enemy charge-cast — which spell, aimed at which hero. Returned by
+    /// <see cref="EnemyPlanner.PlanCast"/> (null = no charge this turn).</summary>
+    public sealed class EnemyChargePlan
+    {
+        public ActorInstance Target;
+        public Ability Ability;
+    }
+
     /// <summary>
     /// ENEMYPLANNER - Pure positional AI for an enemy's move step (no Unity scene access, no g.).
     ///
@@ -95,6 +104,35 @@ namespace Scripts.Services
             }
 
             return best;
+        }
+
+        /// <summary>
+        /// US-026: decide whether this enemy should TELEGRAPH a charge spell this turn instead of
+        /// moving/meleeing. Pure + side-effect-free (the Legion-ratified Option A shape) — it does NOT
+        /// alter <see cref="PlanStep"/> or the melee chain; the caller checks this first and, on a
+        /// non-null result, queues an <c>EnemyChargeSequence</c> in place of the move/attack chain.
+        ///
+        /// <para>Rule: a caster (<see cref="ActorTag.Magic"/>) that is NOT cardinally adjacent to any
+        /// hero charges its affinity spell at the nearest hero — a ranged attacker telegraphing from
+        /// afar. If it can melee (adjacent), it falls through to the normal chain. Immobilised or
+        /// targetless enemies never charge. Returns null = "no charge, run the normal turn".</para>
+        /// </summary>
+        public static EnemyChargePlan PlanCast(ActorInstance enemy, IReadOnlyList<ActorInstance> actors)
+        {
+            if (enemy == null || actors == null) return null;
+            if (Scripts.Managers.BuffSystem.IsImmobile(enemy)) return null;
+
+            var ability = Scripts.Data.Actor.EnemyChargeCatalog.For(enemy);
+            if (ability == null) return null; // not a caster
+
+            var heroes = actors.Where(a => a != null && a.IsPlaying && a.team == Team.Hero).ToList();
+            if (heroes.Count == 0) return null;
+
+            // If it can melee, let it melee — only telegraph from range.
+            if (heroes.Any(h => IsCardinalAdjacent(enemy.location, h.location))) return null;
+
+            var target = heroes.OrderBy(h => Manhattan(enemy.location, h.location)).First();
+            return new EnemyChargePlan { Target = target, Ability = ability };
         }
 
         /// <summary>True if moving <paramref name="enemy"/> to <paramref name="candidate"/> would
