@@ -186,7 +186,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a crit (pincer or spell) mints one Colorless orb.
   **Touch:** `Helpers/AttackHelper` / `SpellEffectDispatcher`, `ManaPoolManager`. **Bible:** §3.1.2. **Dep:** US-030.
 
-- [ ] **US-028 — Quicken / Hasten (forward push + overtake).** `NOT-BUILT` (no spell; no forward-push in `ResolveSpatialOverlap`).
+- [x] **US-028 — Quicken / Hasten (forward push + overtake).** ✅ DONE 2026-06-06. New `TimelineIcon.Hasten(amountU)` + `TimelineBarInstance.HastenIcon(actor, amountU)` slide an icon **forward** in u (inverse of `Pushback`). New `Quicken` spell — `SpellDefinition.HastenU` field (0 = no timeline effect), `SpellLibrary.Quicken` (SingleActor / PickActor / Any filter, `hastenU: 0.30`, no damage), `ManaAbilities.Quicken` (1×Blue); `SpellEffectDispatcher` applies the hasten on impact via the live `AbilityBar → SpellEffectDispatcher.Cast` path. **Reality correction:** the spec's `ResolveSpatialOverlap` / "inverted train-cascade" **does not exist in code** — icons advance independently and turn order = arrival-at-trigger (`GetSecondsRemaining`), so **overtaking is emergent** from the forward bump; nothing to invert. Documented in bible §2.7.1 (+ corrected the §2.8 spawn-rules row that asserted a cascade). Demo: "Quicken". Bible §2.7.1/§2.8/§16.2 updated. **Dep:** —
+  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no spell; no forward-push in `ResolveSpatialOverlap`).
   **Why:** Inverse of pushback — slide a target's icon toward the trigger, overtaking neighbors (inverted train-cascade).
   **Done when:** a Quicken spell increases target icon u; `ResolveSpatialOverlap` runs inverted; turn order updates.
   **Touch:** `Canvas/TimelineBarInstance.ResolveSpatialOverlap`, `Data/SpellLibrary` (Quicken). **Bible:** §2, casting prose. **Dep:** —

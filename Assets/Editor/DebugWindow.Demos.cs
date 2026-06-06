@@ -113,6 +113,12 @@ public partial class DebugWindow
             ("Interrupt Charge", () => g.DebugManager.Demo_InterruptEnemyCharge())
         );
 
+        // Quicken / Hasten (US-028) — slide an actor's timeline icon forward toward the trigger
+        // (inverse of pushback); it may overtake icons that were ahead.
+        RenderButtonRow(
+            ("Quicken", () => g.DebugManager.Demo_Quicken())
+        );
+
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).
         RenderButtonRow(
             ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())

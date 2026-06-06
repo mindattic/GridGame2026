@@ -58,6 +58,12 @@ namespace Scripts.Models
         /// no VFX projectile — handled in AbilityBar.HandleTeleport).</summary>
         public bool IsTeleport { get; }
 
+        /// <summary>US-028 Quicken/Hasten: if &gt; 0, the spell slides the target's timeline icon
+        /// FORWARD (toward the trigger) by this much u on impact — the inverse of pushback. The
+        /// hastened icon's turn arrives sooner and may overtake icons that were ahead (turn order is
+        /// arrival-at-trigger order). 0 = no timeline effect.</summary>
+        public float HastenU { get; }
+
         public SpellDefinition(
             ManaAbility ability,
             TargetShape shape,
@@ -76,7 +82,8 @@ namespace Scripts.Models
             float projectileSeconds = 0.5f,
             bool removesDebuffs = false,
             bool stealsMana = false,
-            bool isTeleport = false)
+            bool isTeleport = false,
+            float hastenU = 0f)
         {
             Ability = ability;
             Shape = shape;
@@ -96,6 +103,7 @@ namespace Scripts.Models
             RemovesDebuffs = removesDebuffs;
             StealsMana = stealsMana;
             IsTeleport = isTeleport;
+            HastenU = hastenU;
         }
     }
 }

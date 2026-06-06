@@ -343,6 +343,12 @@ stunSeconds        = baseStun / agilityMult(AGI 8)
 
 Net: a single hit at u=0.92 buys ~0.26u of delay + ~0.7s of frozen-position stun. Hits earlier in the Zone (u closer to 0.70) buy less push but the same stun. Hits **outside** the Zone (u < 0.70) buy zero push (damage only). This is the lever the player pulls — engineer pincers around in-Zone enemies.
 
+### 2.7.1 Hasten / Quicken — the inverse (BUILT, US-028)
+
+The mirror of pushback: **Quicken** (`SpellLibrary.Quicken`, `SpellDefinition.HastenU`) slides a target's timeline icon **forward** (toward the trigger) by a fixed `u` amount via `TimelineIcon.Hasten` / `TimelineBarInstance.HastenIcon`. A higher `u` means a sooner turn, so the hastened icon can **overtake** icons that were ahead of it.
+
+> **Reality note (no train-cascade in code):** earlier prose described an "inverted train-cascade" / `ResolveSpatialOverlap` resolving neighbor spacing. That cascade **does not exist** — icons advance independently and turn order is simply **arrival-at-trigger order** (`GetSecondsRemaining`, lowest first). So overtaking is *emergent* from the forward `u` bump; there is no spacing pass to invert. Hasten clears a `Queued`/`Stunned`/`PushedBack` icon to `Approaching` so the push lands, then clamps `u ≤ 1` (pushed all the way to the trigger → the icon fires its turn). Cast on an enemy to bait its turn early or out of a forming pincer; on a charging ally to rush a cast.
+
 ### 2.8 Spawn rules
 
 | Trigger | Where the icon spawns |
@@ -351,7 +357,7 @@ Net: a single hit at u=0.92 buys ~0.26u of delay + ~0.7s of frozen-position stun
 | Enemy reinforcement (scripted mid-battle) | `u = 0` |
 | Spell cast by hero | A **small cast icon BELOW the timeline line** (§2.6), riding the shared `u`-axis toward the trigger at the cast-time rate — *not* a separate stacked bar |
 | Enemy charge spell (US-026) | A small cast icon in the **same below-the-line lane** as hero casts, advancing via the cast-time formula |
-| Pushback / displacement | Existing icon's u changes; train-cascade resolves neighbors |
+| Pushback / displacement / Hasten | Existing icon's u changes directly; turn order follows from arrival-at-trigger order (no separate spatial cascade — see §2.7.1) |
 
 ---
 
@@ -1388,6 +1394,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~—~~ | US-025 | ~~**ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX~~ — **DONE 2026-06-06**: `Sequences/ClutchSequence.cs` (flash + "Heal" SFX + "Clutch!" text) → `TimelineIcon.ForceResolve()` snaps to u=1 and resolves; queued from the Clutch branch of `InterruptCastsByOwner`. Demo: "Clutch! (Force)". | P2 | `Sequences/ClutchSequence.cs`, `TimelineIcon.cs`, `TimelineBarInstance.cs` |
 | ~~—~~ | US-026 | ~~**Enemy charge/telegraph spells** — enemies cast (today: melee only)~~ — **DONE 2026-06-06**: `EnemyPlanner.PlanCast` (pure, Legion Option A) + new `EnemyChargeSequence` + `EnemyChargeCatalog`; `EnemyTakeTurnSequence` branches to the charge; IceMauler tagged `Magic\|IceAffinity` as the first live caster. Demo: "Enemy Charge". | P1 | `EnemyPlanner`, `EnemyChargeSequence`, `EnemyChargeCatalog`, `EnemyTakeTurnSequence`, `IceMauler` |
 | ~~—~~ | US-027 | ~~**Interrupt enemy cast → drop charge-color orb** (closes off-palette economy)~~ — **DONE 2026-06-06**: `ActorInstance.DamageRoutine` interrupts a hit enemy's charge; cancel → `MintInterruptOrb` drops a charge-color orb (`ManaOrbFactory.Drop`) to the bank. Clutch gated hero-only. Demo: "Interrupt Charge". | P1 | `ActorInstance`, `TimelineBarInstance`, `CastInterruptResolver`, `EnemyChargeCatalog` |
+| ~~—~~ | US-028 | ~~**Quicken/Hasten** — forward timeline push + overtake (inverse of pushback)~~ — **DONE 2026-06-06**: `TimelineIcon.Hasten` + `TimelineBarInstance.HastenIcon` slide an icon forward in u; overtaking is emergent (turn order = arrival-at-trigger; no spatial cascade exists in code). New `Quicken` spell (`SpellDefinition.HastenU`) dispatched in `SpellEffectDispatcher`. Demo: "Quicken". | P1 | `TimelineIcon`, `TimelineBarInstance`, `SpellDefinition`, `SpellEffectDispatcher`, `SpellLibrary`, `ManaAbilities` |
 
 ### 16.3 Equipment / inventory
 

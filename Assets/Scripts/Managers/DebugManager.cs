@@ -343,6 +343,23 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Staggered {enemy.characterClass}'s charge across {hits} hit(s) → cancelled; minting a {color} orb (it bounces to the bank). Before={before} {color}.");
         }
 
+        /// <summary>Demo (US-028): Quicken — slide an actor's timeline icon forward toward the trigger
+        /// (inverse of pushback). Uses the selected actor, else the first enemy. Watch its icon jump
+        /// ahead on the timeline; if it now reaches the trigger first it overtakes others' turns.</summary>
+        public void Demo_Quicken()
+        {
+            var actor = g.Actors.SelectedActor;
+            if (actor == null || !actor.IsPlaying)
+                actor = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying);
+            if (actor == null) { Debug.LogWarning("[Demo] No actor to Quicken — start a battle first."); return; }
+            var icon = g.TimelineBar?.GetIconFor(actor);
+            if (icon == null) { Debug.LogWarning($"[Demo] {actor.characterClass} has no timeline icon to hasten."); return; }
+            float before = icon.GetU();
+            float amount = Scripts.Data.SpellLibrary.Quicken.HastenU;
+            g.TimelineBar.HastenIcon(actor, amount);
+            Debug.Log($"[Demo] Quickened {actor.characterClass} by {amount:0.##}u: u {before:0.00} → {icon.GetU():0.00} ({icon.GetSecondsRemaining():0.0}s to its turn now).");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

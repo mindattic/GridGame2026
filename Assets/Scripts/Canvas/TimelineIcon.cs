@@ -470,6 +470,19 @@ namespace Scripts.Canvas
         /// <summary>Gets the u per sec.</summary>
         public float GetUPerSec() => uPerSec;
 
+        /// <summary>US-028 Quicken/Hasten: slide this icon FORWARD (toward the trigger) by
+        /// <paramref name="amountU"/> u — the inverse of <see cref="Pushback"/>. If it was waiting
+        /// (Queued) or held (Stunned/PushedBack), flip it to Approaching so the forward push lands and
+        /// it advances from the new position; it may then overtake icons that were ahead (turn order is
+        /// arrival-at-trigger order). Clamped to ≤ 1.</summary>
+        public void Hasten(float amountU)
+        {
+            if (amountU <= 0f) return;
+            if (Mode == TimelineIconMode.Queued || Mode == TimelineIconMode.Stunned || Mode == TimelineIconMode.PushedBack)
+                Mode = TimelineIconMode.Approaching;
+            SetU(Mathf.Clamp01(u + amountU));
+        }
+
         /// <summary>US-024 (stagger model): push this cast icon backward on the timeline by
         /// <paramref name="seconds"/> of cast-time — its u drops by <c>seconds × uPerSec</c> (clamped
         /// ≥ 0). The cast's ElapsedTime tracks u (see UpdateApproaching), so this lengthens the

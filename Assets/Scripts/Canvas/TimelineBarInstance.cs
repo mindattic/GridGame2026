@@ -487,6 +487,20 @@ namespace Scripts.Canvas
             if (TimelineBarConfig.DebugLogs) Debug.Log($"[TimelineBar] Pushed {enemy.name} tag (str={attackerStrength}, agi={enemyAgility}, mode={tag.Mode})");
         }
 
+        /// <summary>US-028: slide an actor's timeline icon FORWARD (toward the trigger) by
+        /// <paramref name="amountU"/> u — the inverse of <see cref="PushbackOnAttack"/>. Higher u =
+        /// sooner turn; since turn order is arrival-at-trigger order, the hastened icon may overtake
+        /// icons that were ahead of it. No-op if the actor has no icon. Driven by Quicken (US-028).</summary>
+        public void HastenIcon(ActorInstance actor, float amountU)
+        {
+            if (actor == null || amountU <= 0f) return;
+            var icon = GetIconFor(actor);
+            if (icon == null) return;
+            icon.Hasten(amountU);
+            if (TimelineBarConfig.DebugLogs)
+                Debug.Log($"[TimelineBar] Hastened {actor.name} by {amountU:F2}u → u={icon.GetU():F2}");
+        }
+
         /// <summary>Returns the tag whose Owner is the given actor, or null if absent.</summary>
         public TimelineIcon GetIconFor(ActorInstance actor)
         {

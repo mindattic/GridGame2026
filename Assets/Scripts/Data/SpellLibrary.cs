@@ -69,6 +69,19 @@ namespace Scripts.Data
             debuffId: "slowed", damageType: DamageType.Ice,
             projectileSeconds: 0.5f);
 
+        // Quicken (US-028): pick any actor, slide its timeline icon FORWARD toward the trigger (the
+        // inverse of pushback). No damage — a pure tempo tool. Cast on an enemy to bait its turn
+        // early (act before a more dangerous ally / out of a forming pincer), or on a charging ally
+        // to rush a cast. HastenU is the forward push in u; overtaking is emergent (turn order =
+        // arrival-at-trigger). DamageType irrelevant (no damage).
+        public static readonly SpellDefinition Quicken = new SpellDefinition(
+            ability: ManaAbilities.Quicken,
+            shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.Any,
+            castVfx: "GoldSparkle", projectileVfx: "BlueGlow", motion: ProjectileMotion.Straight,
+            impactVfx: "GoldSparkle",
+            projectileSeconds: 0.35f,
+            hastenU: 0.30f);
+
         // Silence: pick a single enemy.
         public static readonly SpellDefinition Silence = new SpellDefinition(
             ability: ManaAbilities.Silence,
@@ -171,7 +184,7 @@ namespace Scripts.Data
         /// <summary>All spells in display order — for debug menus / random-loadout picks.</summary>
         public static readonly IReadOnlyList<SpellDefinition> All = new[]
         {
-            Fire, Ice, Lightning, Poison, Sleep, Slow, Silence,
+            Fire, Ice, Lightning, Poison, Sleep, Slow, Quicken, Silence,
             Heal, MassHeal, Antidote, Scan,
             Meteor, ShockWave, CrossHit,
             Steal, Mug, Teleport

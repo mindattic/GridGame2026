@@ -47,6 +47,7 @@ namespace Scripts.Data
         public static readonly ManaAbility Silence   = Spell("Silence",   (ManaType.White, 1));                          // (W)
         public static readonly ManaAbility Poison    = Spell("Poison",    (ManaType.Blue, 2));                           // (U)(U)
         public static readonly ManaAbility Slow      = Spell("Slow",      (ManaType.Blue, 2));                           // (U)(U)
+        public static readonly ManaAbility Quicken   = Spell("Quicken",   (ManaType.Blue, 1));                           // (U) — US-028 timeline forward-push
         public static readonly ManaAbility MassHeal  = Spell("MassHeal",  (ManaType.White, 1));                          // (W)
         public static readonly ManaAbility Antidote  = Spell("Antidote",  (ManaType.White, 1));                          // (W)
         public static readonly ManaAbility Scan      = Spell("Scan",      (ManaType.White, 1));                          // (W)

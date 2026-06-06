@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Scripts.Canvas;
 using Scripts.Data;
 using Scripts.Instances.Actor;
 using Scripts.Libraries;
@@ -91,6 +92,15 @@ namespace Scripts.Managers
                 {
                     BuffSystem.Apply(target, buff);
                 }
+            }
+
+            // 5.5) US-028 Quicken/Hasten — slide the target's timeline icon FORWARD (toward the
+            // trigger), the inverse of pushback. Overtaking is emergent (turn order = arrival order).
+            if (spell.HastenU > 0f && target != null && target.IsPlaying)
+            {
+                g.TimelineBar?.HastenIcon(target, spell.HastenU);
+                var ctmH = g.CombatTextManager;
+                if (ctmH != null) ctmH.Spawn("Quickened!", target.transform.position, "Heal");
             }
 
             // 6) Damage / heal / cleanse. Fix #9: target may have died / left the board between
