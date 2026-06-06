@@ -101,7 +101,8 @@ public partial class DebugWindow
         // Cast interrupt (US-024 stagger model) — report the selected hero's WIS-driven cast-stagger
         // resistance + cast-time added per hit (cancel when total added exceeds the cast time).
         RenderButtonRow(
-            ("Cast-Stagger Info", () => g.DebugManager.Demo_RollCastInterrupt())
+            ("Cast-Stagger Info", () => g.DebugManager.Demo_RollCastInterrupt()),
+            ("Clutch! (Force)", () => g.DebugManager.Demo_Clutch())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

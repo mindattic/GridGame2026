@@ -860,6 +860,22 @@ namespace Scripts.Canvas
             Mode = TimelineIconMode.Resolving;
         }
 
+        /// <summary>
+        /// US-025 Clutch (the miracle save): force this in-flight spell-icon to resolve
+        /// <b>immediately</b>, wherever it currently sits on the bar — snaps it to the trigger
+        /// (u=1) and fires its resolution closure exactly once (the same <c>onReached</c> the
+        /// natural u=1 arrival uses, so resolution is identical: EnterResolvingMode → suspend
+        /// input → apply the effect → end the turn). No-op if it already fired or isn't a spell
+        /// icon. The dramatic flash / SFX / "Clutch!" text is the caller's job (ClutchSequence).
+        /// </summary>
+        public void ForceResolve()
+        {
+            if (fired || !IsSpellIcon) return;
+            fired = true;
+            SetU(1f);
+            onReached?.Invoke(this);
+        }
+
         private System.Action onSpellInterrupted;
 
         /// <summary>

@@ -33,9 +33,11 @@ namespace Scripts.Services
     /// its remaining cast time increases by a delay. Delays <b>accumulate</b>; once the total exceeds
     /// the spell's original cast time, the cast is <b>cancelled</b>. <b>Wisdom is the caster's poise</b> —
     /// higher WIS both reduces the delay per hit AND gives a chance to shrug a hit off entirely;
-    /// attacker Strength increases the delay. Replaces the old {Fail | Pushback | Clutch} LCK roll
-    /// (no Clutch — US-025 obsolete). Pure logic; the caller (`TimelineBar.InterruptCastsByOwner`)
-    /// applies the push (`TimelineIcon.DelayCast`) or the cancel (`CastingState.Interrupt`).</para>
+    /// attacker Strength increases the delay. Replaces the old flat {Fail | Pushback} interrupt with
+    /// the accumulating stagger; <b>Clutch</b> is retained as the rare LCK pre-check (rolled first) —
+    /// the cast shrugs the hit and US-025's <c>ClutchSequence</c> snaps it to the trigger to resolve.
+    /// Pure logic; the caller (`TimelineBar.InterruptCastsByOwner`) applies the push
+    /// (`TimelineIcon.DelayCast`), the cancel (`CastingState.Interrupt`), or the Clutch save.</para>
     /// </summary>
     public static class CastInterruptResolver
     {

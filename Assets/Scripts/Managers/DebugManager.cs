@@ -277,6 +277,19 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Cast interrupt for {hero.name} (LCK {lck:0}, WIS {wis:0}): {clutch:P0} Clutch (LCK miracle save) → else {resist:P0} WIS shrug → else ~{delayVsStr10:0.00}s cast-time added per hit (vs STR 10). Cast cancels once total added ≥ its cast time.");
         }
 
+        /// <summary>Demo (US-025): fire the Clutch! miracle save. If the selected hero has a spell
+        /// in flight, snaps it to the trigger and resolves it on the spot with the flash/SFX/text;
+        /// otherwise just plays the juice so the effect is visible. Cast a spell first to see the snap.</summary>
+        public void Demo_Clutch()
+        {
+            var hero = Scripts.Helpers.GameHelper.Actors.SelectedActor;
+            var icon = g.TimelineBar?.GetSpellIconFor(hero);
+            if (icon != null) icon.Pause();
+            else Debug.Log("[Demo] No in-flight cast for the selected hero — playing the Clutch juice only (cast a spell, then re-run to see the snap-to-resolve).");
+            g.SequenceManager.Add(new Scripts.Sequences.ClutchSequence(icon, hero));
+            g.SequenceManager.Execute();
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

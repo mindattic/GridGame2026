@@ -494,6 +494,16 @@ namespace Scripts.Canvas
             return activeIcons.FirstOrDefault(t => t != null && t.Owner == actor);
         }
 
+        /// <summary>Returns the in-flight spell-cast icon owned by <paramref name="actor"/>
+        /// (a caster has both a turn icon and, while casting, a spell icon — this picks the
+        /// spell one), or null if the actor isn't currently casting. Used by US-025's Clutch demo.</summary>
+        public TimelineIcon GetSpellIconFor(ActorInstance actor)
+        {
+            if (actor == null) return null;
+            return activeIcons.FirstOrDefault(t => t != null && t.IsSpellIcon && t.Owner == actor
+                && t.ActiveCast != null && !t.ActiveCast.IsInterrupted && !t.ActiveCast.IsComplete);
+        }
+
         // Track if we're currently processing a trigger to prevent double-triggers
         private bool isProcessingTrigger = false;
 
@@ -749,9 +759,14 @@ namespace Scripts.Canvas
                 switch (result.Outcome)
                 {
                     case Scripts.Services.CastInterruptOutcome.Clutch:
-                        // Rare LCK miracle save — cast shrugs the hit untouched. US-025 will add the
-                        // dramatic snap-to-u=1 resolve + flash/SFX; for now it simply survives.
-                        combatText?.Spawn("Clutch!", hero.Position, "Heal");
+                        // US-025 — rare LCK miracle save: the cast shrugs the hit AND snaps to the
+                        // trigger to resolve on the spot. Pause the icon now so it can't reach u=1 on
+                        // its own (resolving without the juice) before the queued ClutchSequence runs;
+                        // AddFirst makes the save fire right after the triggering attack. The sequence
+                        // plays the flash/SFX/"Clutch!" text, then ForceResolve() drives resolution.
+                        icon.Pause();
+                        Scripts.Helpers.GameHelper.SequenceManager?.AddFirst(
+                            new Scripts.Sequences.ClutchSequence(icon, hero));
                         break;
 
                     case Scripts.Services.CastInterruptOutcome.Resisted:

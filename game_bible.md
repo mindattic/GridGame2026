@@ -1217,7 +1217,7 @@ This is **one unified rule for hero casts AND enemy charge-casts** (US-026) — 
 
 **Audit / migration:**
 - US-024 shipped a three-outcome `CastInterruptResolver` (Fail/Pushback/Clutch, LCK-driven). **Superseded** by the stagger model above; `CastInterruptResolver` + `CastingState` + `TimelineBar.InterruptCastsByOwner` refactored to it.
-- **`US-025` ClutchSequence — RETAINED** (user, 2026-06-02): the resolver already returns `Clutch` on the rare LCK proc (cast shrugs the hit). US-025 is the *juice* — snap the spell-icon to `u = 1` + screen flash / SFX / "Clutch!" so the miracle save reads dramatically. Still to build.
+- **`US-025` ClutchSequence — DONE 2026-06-06.** On the rare LCK Clutch proc, `InterruptCastsByOwner` pauses the spell-icon and `AddFirst`-queues `Sequences/ClutchSequence`, which plays a white full-screen flash + "Heal" SFX + "Clutch!" combat text, then calls `TimelineIcon.ForceResolve()` — snapping the icon to `u = 1` and firing the **same** resolution closure a natural arrival uses (EnterResolvingMode → suspend input → apply effect → end turn). The dying-healer miracle save: the cast shrugs the hit AND resolves on the spot. Demo: "Clutch! (Force)".
 - **Enemies that actually cast** (`US-026`, still not built): charge-cast spawns a below-line cast icon; interrupting it uses the same stagger rule. **`US-027`**: cancel → mint a charge-color orb to the bank (how off-palette colors flow in).
 
 ---
@@ -1385,7 +1385,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~11~~ | — | ~~Cast-as-timeline-icon (`Resolving` mode)~~ — **DONE** (`TimelineIcon.cs:52,833`; `TurnManager.IsResolvingCast`) | — | — |
 | ~~—~~ | — | ~~Cast-time WIS/INT scaling~~ — **DONE** (`Formulas.cs:492`; `CastingState.cs:91`) | — | — |
 | ~~—~~ | US-024 | ~~**Clutch/Pushback/Fail resolver**~~ — **DONE 2026-06-01**: `CastInterruptResolver.Resolve` returns {Fail\|Pushback\|Clutch}; `InterruptCastsByOwner` routes through it (Fail interrupts, Pushback rewinds+stuns, Clutch survives). Demo: "Roll Cast Interrupt ×20". | P1 | `Services/CastInterruptResolver.cs` |
-| — | US-025 | **ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX | P2 | new `Sequences/ClutchSequence.cs` |
+| ~~—~~ | US-025 | ~~**ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX~~ — **DONE 2026-06-06**: `Sequences/ClutchSequence.cs` (flash + "Heal" SFX + "Clutch!" text) → `TimelineIcon.ForceResolve()` snaps to u=1 and resolves; queued from the Clutch branch of `InterruptCastsByOwner`. Demo: "Clutch! (Force)". | P2 | `Sequences/ClutchSequence.cs`, `TimelineIcon.cs`, `TimelineBarInstance.cs` |
 | — | US-026 | **Enemy charge/telegraph spells** — enemies cast (today: melee only) | P1 | `EnemyPlanner`, new `EnemyChargeSequence` |
 | — | US-027 | **Interrupt enemy cast → drop charge-color orb** (closes off-palette economy) | P1 | `TimelineBarInstance`, `ManaPoolManager` |
 
@@ -1566,7 +1566,7 @@ The dispatcher / dispatcher-edge-case table answers "what does the system do?"; 
 - **Pushback** — leftward shove applied to a damaged icon **only if** it was in the Prepare Zone; followed by `Stunned` mode while it stops.
 - **Train-cascade** — when a new/displaced icon arrives, neighbors are shoved further left in sequence to maintain `MinSpatialGap` — order-preserving.
 - **Cast bar** — colored shrinking line under the timeline showing a spell's remaining cast time.
-- **Interrupt outcomes** — *Fail* (cast canceled, MP gone), *Pushback* (cast delayed), *Clutch* (rare LCK-driven: cast snaps to trigger and resolves).
+- **Interrupt outcomes** (stagger model, §13.4) — *Clutch* (rare LCK pre-check: cast shrugs the hit and snaps to the trigger to resolve — US-025), *Shrug* (WIS poise ignores the hit), *Stagger* (cast-time delay added; accumulates), *Cancel* (total delay ≥ cast time → cast canceled, MP gone).
 
 ### Targeting
 

@@ -124,10 +124,11 @@ namespace Scripts.Sequences
         }
 
         /// <summary>
-        /// Interrupts a hero's active cast(s) when the hero takes damage. The {Fail | Pushback |
-        /// Clutch} outcome is rolled per cast by <see cref="Scripts.Services.CastInterruptResolver"/>
-        /// (US-024) — dominant factor caster Luck. Fail = interrupt (MP stays consumed); Pushback =
-        /// cast delayed (icon pushed back + stun); Clutch = miracle save (cast survives).
+        /// Interrupts a hero's active cast(s) when the hero takes damage (US-024 stagger model).
+        /// Each landed hit is resolved per cast by <see cref="Scripts.Services.CastInterruptResolver"/>:
+        /// a rare LCK <b>Clutch</b> snaps the cast to the trigger to resolve (US-025 ClutchSequence),
+        /// a WIS poise <b>shrug</b> ignores the hit, otherwise the hit adds WIS/STR-scaled cast-time
+        /// <b>delay</b> — and once the accumulated delay exceeds the cast time the cast is cancelled.
         /// </summary>
         private void InterruptCastingHero(ActorInstance hero, ActorInstance attacker)
         {
