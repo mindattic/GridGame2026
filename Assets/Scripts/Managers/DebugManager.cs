@@ -323,6 +323,26 @@ namespace Scripts.Managers
             g.SequenceManager.Execute();
         }
 
+        /// <summary>Demo (US-027): interrupt a charging enemy. Finds an enemy with an in-flight charge
+        /// (run "Enemy Charge" first) and hammers it with simulated hero hits until the cast-stagger
+        /// cancels it — which mints one charge-color orb to the team bank.</summary>
+        public void Demo_InterruptEnemyCharge()
+        {
+            var enemy = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying && g.TimelineBar?.GetSpellIconFor(e) != null);
+            if (enemy == null) { Debug.LogWarning("[Demo] No charging enemy on the board — run 'Enemy Charge' first."); return; }
+            var hero = g.Actors.Heroes?.FirstOrDefault(h => h != null && h.IsPlaying);
+
+            var color = EnemyChargeCatalog.ColorFor(enemy);
+            int before = g.ManaPoolManager?.Bank?.Count(color) ?? 0;
+            int hits = 0;
+            while (g.TimelineBar?.GetSpellIconFor(enemy) != null && hits < 25)
+            {
+                g.TimelineBar.InterruptCastsByOwner(enemy, hero);
+                hits++;
+            }
+            Debug.Log($"[Demo] Staggered {enemy.characterClass}'s charge across {hits} hit(s) → cancelled; minting a {color} orb (it bounces to the bank). Before={before} {color}.");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

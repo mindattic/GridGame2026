@@ -380,7 +380,7 @@ Magic-style 5-color pie plus a generic:
 
 Orbs are minted from gameplay events:
 - **Pincer completion**: each hero attacker contributes 1 orb of their **class color** (US-030, via `ManaColorAffinity.For`). Each supporter also contributes 1 (its own color).
-- **Enemy charge interruption** (Phase C, `US-027`, now unblocked): interrupting a charging enemy cast cancels the attack AND drops one orb of that charge's color. `US-026` (enemies casting) is **built** as of 2026-06-06, and `EnemyChargeCatalog.ColorFor` already exposes the charge color; the hero-side interrupt mechanic itself is wired (§13.4).
+- **Enemy charge interruption** (`US-027`, DONE 2026-06-06): a hero's landing hit on a charging enemy interrupts its cast via the US-024 stagger model (hooked centrally in `ActorInstance.DamageRoutine` — covers pincers, magic, shield); when the accumulated stagger **cancels** the charge, `TimelineBarInstance.MintInterruptOrb` drops one orb of the charge's color (`EnemyChargeCatalog.ColorFor`) via `ManaOrbFactory.Drop` — it bounces into the team bank. This is **how off-palette colors flow in** (§3.1.2). Clutch is hero-only (enemies never instant-resolve a charge on being hit).
 - **Critical hits** (**Built — US-031**): a hero's critical hit (pincer or magic — any damage routed through `ActorInstance.DamageRoutine`) mints one **Colorless "wild" orb** to the bank. Wild orbs render as an all-colors-at-once orb that **flashes through the spectrum** in the line (`ManaOrbLine.AnimateWildOrbs`), distinguishing them from the static elemental orbs. This is a primary off-palette source.
 - **Steal / Mug skills**: per-target LCK + 0.5 × AGI roll, success → random-color orb to the bank.
 
@@ -1303,7 +1303,7 @@ Different enemies should *feel* different by their `ActorData.Tags` + base stat 
 
 ### 14.3 Future AI hooks
 
-- **Casting enemies** (Phase C): telegraph a charge in the Prepare Zone. The icon shows a colored fill bar matching the charge type; if the player interrupts during the slow window, the cast is canceled AND drops an orb of that color into the team bank (§3.1.2).
+- **Casting enemies** (BUILT — US-026/US-027): telegraph a charge on the timeline (`EnemyChargeSequence`). The icon shows a colored cast bar matching the charge type; a hero's landing hit staggers it (US-024 model) and, on cancel, drops an orb of that color into the team bank (§3.1.2).
 - ~~**AI-driven supporter positioning**: enemy turn could include a "support" mode where an enemy moves to enable an ally's pincer.~~ **DONE — US-082 (2026-06-02; Legion chose supporter-adjacency over lane-clearing):** an enemy is rewarded (+25) for moving to a tile where it becomes a §1.2.3 **supporter** of another ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`); own-pincer formation still wins (+50). `EnemyPlanner.WouldSupportAllyPincer`. Demo: "Log Enemy Plans".
 - **Boss-specific scripted moves**: per-class override in `EnemyPlanner` that swaps the generic step logic for boss-authored sequences.
 - ~~**Threat tracking**: heroes who deal more damage become preferred targets (TODO).~~ **DONE — US-080 (2026-06-02):** `ThreatTracker` tallies hero→enemy damage; `EnemyPlanner` subtracts a normalized-threat × INT × 0.8 term from each candidate's target score, so **smarter (high-INT) enemies prefer the top damage-dealer** while dumb ones keep chasing nearest/wounded. Cleared at battle start. Demo: "Log Threat".
@@ -1387,7 +1387,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~—~~ | US-024 | ~~**Clutch/Pushback/Fail resolver**~~ — **DONE 2026-06-01**: `CastInterruptResolver.Resolve` returns {Fail\|Pushback\|Clutch}; `InterruptCastsByOwner` routes through it (Fail interrupts, Pushback rewinds+stuns, Clutch survives). Demo: "Roll Cast Interrupt ×20". | P1 | `Services/CastInterruptResolver.cs` |
 | ~~—~~ | US-025 | ~~**ClutchSequence** — rare LCK save: snap spell-icon to u=1 + flash/SFX~~ — **DONE 2026-06-06**: `Sequences/ClutchSequence.cs` (flash + "Heal" SFX + "Clutch!" text) → `TimelineIcon.ForceResolve()` snaps to u=1 and resolves; queued from the Clutch branch of `InterruptCastsByOwner`. Demo: "Clutch! (Force)". | P2 | `Sequences/ClutchSequence.cs`, `TimelineIcon.cs`, `TimelineBarInstance.cs` |
 | ~~—~~ | US-026 | ~~**Enemy charge/telegraph spells** — enemies cast (today: melee only)~~ — **DONE 2026-06-06**: `EnemyPlanner.PlanCast` (pure, Legion Option A) + new `EnemyChargeSequence` + `EnemyChargeCatalog`; `EnemyTakeTurnSequence` branches to the charge; IceMauler tagged `Magic\|IceAffinity` as the first live caster. Demo: "Enemy Charge". | P1 | `EnemyPlanner`, `EnemyChargeSequence`, `EnemyChargeCatalog`, `EnemyTakeTurnSequence`, `IceMauler` |
-| — | US-027 | **Interrupt enemy cast → drop charge-color orb** (closes off-palette economy) | P1 | `TimelineBarInstance`, `ManaPoolManager` |
+| ~~—~~ | US-027 | ~~**Interrupt enemy cast → drop charge-color orb** (closes off-palette economy)~~ — **DONE 2026-06-06**: `ActorInstance.DamageRoutine` interrupts a hit enemy's charge; cancel → `MintInterruptOrb` drops a charge-color orb (`ManaOrbFactory.Drop`) to the bank. Clutch gated hero-only. Demo: "Interrupt Charge". | P1 | `ActorInstance`, `TimelineBarInstance`, `CastInterruptResolver`, `EnemyChargeCatalog` |
 
 ### 16.3 Equipment / inventory
 

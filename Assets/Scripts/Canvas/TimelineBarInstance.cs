@@ -737,56 +737,73 @@ namespace Scripts.Canvas
         }
 
         /// <summary>
-        /// Interrupts any in-flight spell casts owned by <paramref name="hero"/>.
-        /// Looks through active spell icons, calls Interrupt() on each matching cast —
-        /// the icon's own UpdateCastBar will pick up IsInterrupted next frame and
-        /// fire its onInterrupted callback (which removes it from activeIcons).
-        /// Returns the number of casts interrupted (0 if hero wasn't casting).
+        /// Interrupts any in-flight spell casts owned by <paramref name="caster"/> (hero OR enemy)
+        /// when it takes a landing hit, via the US-024 cast-stagger model. Each hit adds WIS/STR-scaled
+        /// cast-time delay; accumulated delay past the original cast time cancels the cast. WIS poise
+        /// may shrug a hit. <b>Clutch</b> (the rare LCK miracle save, US-025) is HERO-ONLY — it is the
+        /// player's dramatic save and would be perverse on an enemy (instant-resolve its charge), so
+        /// enemy casters never roll it. <b>US-027:</b> a cancelled ENEMY charge mints one orb of the
+        /// charge's color to the team bank (how off-palette colors flow in). Returns the number of
+        /// casts affected (0 if the actor wasn't casting).
         /// </summary>
-        public int InterruptCastsByOwner(ActorInstance hero, ActorInstance attacker = null)
+        public int InterruptCastsByOwner(ActorInstance caster, ActorInstance attacker = null)
         {
-            if (hero == null) return 0;
+            if (caster == null) return 0;
+            bool isHero = caster.IsHero;
             int count = 0;
             // Snapshot the list — Interrupt may indirectly mutate activeIcons.
-            var snapshot = activeIcons.Where(i => i != null && i.IsSpellIcon && i.Owner == hero && i.ActiveCast != null && !i.ActiveCast.IsInterrupted && !i.ActiveCast.IsComplete).ToList();
+            var snapshot = activeIcons.Where(i => i != null && i.IsSpellIcon && i.Owner == caster && i.ActiveCast != null && !i.ActiveCast.IsInterrupted && !i.ActiveCast.IsComplete).ToList();
             foreach (var icon in snapshot)
             {
                 // US-024 (stagger model): each landed hit pushes the cast back (adds cast-time);
                 // accumulated delay past the original cast time cancels it. WIS resists both.
                 var cast = icon.ActiveCast;
-                var result = Scripts.Services.CastInterruptResolver.Resolve(hero, attacker, cast);
+                var result = Scripts.Services.CastInterruptResolver.Resolve(caster, attacker, cast, allowClutch: isHero);
                 var combatText = Scripts.Helpers.GameHelper.CombatTextManager;
                 switch (result.Outcome)
                 {
                     case Scripts.Services.CastInterruptOutcome.Clutch:
-                        // US-025 — rare LCK miracle save: the cast shrugs the hit AND snaps to the
-                        // trigger to resolve on the spot. Pause the icon now so it can't reach u=1 on
-                        // its own (resolving without the juice) before the queued ClutchSequence runs;
+                        // US-025 — rare LCK miracle save (hero-only): the cast shrugs the hit AND snaps
+                        // to the trigger to resolve on the spot. Pause the icon now so it can't reach u=1
+                        // on its own (resolving without the juice) before the queued ClutchSequence runs;
                         // AddFirst makes the save fire right after the triggering attack. The sequence
                         // plays the flash/SFX/"Clutch!" text, then ForceResolve() drives resolution.
                         icon.Pause();
                         Scripts.Helpers.GameHelper.SequenceManager?.AddFirst(
-                            new Scripts.Sequences.ClutchSequence(icon, hero));
+                            new Scripts.Sequences.ClutchSequence(icon, caster));
                         break;
 
                     case Scripts.Services.CastInterruptOutcome.Resisted:
-                        combatText?.Spawn("Resisted!", hero.Position, "Heal");
+                        combatText?.Spawn("Resisted!", caster.Position, isHero ? "Heal" : "Miss");
                         break;
 
                     case Scripts.Services.CastInterruptOutcome.Cancelled:
                         cast.AccumulatedInterruptDelay += result.DelayAdded;
                         cast.Interrupt(); // total stagger exceeded the original cast time
+                        // US-027: cancelling an enemy charge mints one charge-color orb to the bank.
+                        if (!isHero) MintInterruptOrb(caster);
                         break;
 
                     default: // Delayed — cast survives, pushed back on the timeline.
                         cast.AccumulatedInterruptDelay += result.DelayAdded;
                         icon.DelayCast(result.DelayAdded);
-                        combatText?.Spawn("Stagger!", hero.Position, "Miss");
+                        combatText?.Spawn("Stagger!", caster.Position, "Miss");
                         break;
                 }
                 count++;
             }
             return count;
+        }
+
+        /// <summary>US-027: drop a bouncing orb of the enemy's charge color (it lands in the team
+        /// bank). Reuses the pincer mint path (<see cref="Scripts.Factories.ManaOrbFactory.Drop"/>);
+        /// the color comes from <see cref="Scripts.Data.Actor.EnemyChargeCatalog.ColorFor"/>.</summary>
+        private void MintInterruptOrb(ActorInstance enemy)
+        {
+            if (enemy == null || enemy.transform == null) return;
+            var color = Scripts.Data.Actor.EnemyChargeCatalog.ColorFor(enemy);
+            Scripts.Factories.ManaOrbFactory.Drop(enemy.transform.position, color);
+            Scripts.Helpers.GameHelper.CombatTextManager?.Spawn("Interrupted!", enemy.Position, "Heal");
         }
 
         /// <summary>Updates the all endpoints.</summary>

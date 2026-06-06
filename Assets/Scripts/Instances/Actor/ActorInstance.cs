@@ -560,6 +560,12 @@ public partial class ActorInstance : MonoBehaviour
                 // both of which apply damage via this routine. Capped by the bank (Add no-ops if full).
                 if (attackResult.HitType == HitOutcome.Critical)
                     g.ManaPoolManager?.Bank?.Add(ManaType.Colorless, 1);
+
+                // US-027: a landing hit on a charging enemy interrupts its cast via the US-024
+                // stagger model (cancel mints a charge-color orb). Symmetric to the hero-cast
+                // interrupt in EnemyAttackSequence; a no-op if this enemy isn't casting.
+                if (attackResult.HitType != HitOutcome.Miss && attackResult.Damage > 0)
+                    g.TimelineBar?.InterruptCastsByOwner(this, attackResult.Attacker);
             }
         }
 

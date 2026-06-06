@@ -56,7 +56,10 @@ namespace Scripts.Services
         /// <summary>Cap on the Clutch chance.</summary>
         public const float ClutchMaxChance = 0.20f;
 
-        public static CastInterruptResult Resolve(ActorInstance caster, ActorInstance attacker, CastingState cast)
+        /// <param name="allowClutch">When false, the rare LCK Clutch pre-check is skipped. Clutch is
+        /// the player's miracle save (US-025) — callers pass false for enemy casters so a hit on a
+        /// charging enemy can never instant-resolve its charge.</param>
+        public static CastInterruptResult Resolve(ActorInstance caster, ActorInstance attacker, CastingState cast, bool allowClutch = true)
         {
             float lck = caster?.Stats?.Luck ?? 0f;
             float wis = caster?.Stats?.Wisdom ?? 0f;
@@ -64,9 +67,13 @@ namespace Scripts.Services
 
             // Clutch FIRST — rare, LCK-driven miracle save: the cast shrugs the hit entirely
             // (US-025 adds the snap-to-resolve + flash/SFX). LCK is the primary stat here.
-            float clutch = Mathf.Clamp(lck * ClutchChancePerLuck, 0f, ClutchMaxChance);
-            if (RNG.Float(0f, 1f) < clutch)
-                return new CastInterruptResult { Outcome = CastInterruptOutcome.Clutch, DelayAdded = 0f };
+            // Hero-only: enemy charges never clutch (would instant-resolve against the player).
+            if (allowClutch)
+            {
+                float clutch = Mathf.Clamp(lck * ClutchChancePerLuck, 0f, ClutchMaxChance);
+                if (RNG.Float(0f, 1f) < clutch)
+                    return new CastInterruptResult { Outcome = CastInterruptOutcome.Clutch, DelayAdded = 0f };
+            }
 
             // WIS poise: a hit may be shrugged off with no effect.
             float resist = Mathf.Clamp(wis * WisdomResistPerPoint, 0f, MaxResistChance);

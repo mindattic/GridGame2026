@@ -106,9 +106,11 @@ public partial class DebugWindow
         );
 
         // Enemy charge/telegraph (US-026) — make a caster enemy load a spell on the timeline that
-        // resolves into a magic hit at u=1 (enemies were melee-only before this).
+        // resolves into a magic hit at u=1 (enemies were melee-only before this). Interrupt (US-027)
+        // staggers a charging enemy until it cancels, minting a charge-color orb to the bank.
         RenderButtonRow(
-            ("Enemy Charge", () => g.DebugManager.Demo_EnemyCharge())
+            ("Enemy Charge", () => g.DebugManager.Demo_EnemyCharge()),
+            ("Interrupt Charge", () => g.DebugManager.Demo_InterruptEnemyCharge())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

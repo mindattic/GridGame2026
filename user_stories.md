@@ -165,7 +165,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a casting enemy spawns a colored charge timeline icon advancing via cast-time; resolves into an attack at u=1; `EnemyPlanner` chooses to charge.
   **Touch:** `Services/EnemyPlanner`, new `Sequences/EnemyChargeSequence`, `TimelineBarInstance.SpawnSpellIcon` (generalize beyond hero casts), enemy spell data. **Bible:** §2.8, §14.2 (Caster), §14.3. **Dep:** —
 
-- [ ] **US-027 — Interrupt enemy cast → drop charge-color orb.** `NOT-BUILT`.
+- [x] **US-027 — Interrupt enemy cast → drop charge-color orb.** ✅ DONE 2026-06-06. The trigger is centralized in `ActorInstance.DamageRoutine`: any hero landing-hit on an enemy (pincer via AttackHelper, magic via MagicAttackSequence, shield) calls `TimelineBar.InterruptCastsByOwner(enemy, attacker)` — a no-op unless the enemy is charging. `InterruptCastsByOwner` now branches hero vs enemy: enemies skip the Clutch pre-check (`CastInterruptResolver.Resolve(..., allowClutch:false)` — a hit must never instant-resolve an enemy charge), and on the **Cancelled** outcome `MintInterruptOrb` drops a charge-color orb (`EnemyChargeCatalog.ColorFor` → `ManaOrbFactory.Drop`, the same bouncing path pincers use) that lands in the team bank. This is **how off-palette colors enter the bank** (§3.1.2). Demo: "Interrupt Charge" (run "Enemy Charge" first). Bible §3.1.2/§13.4/§14.2/§16 updated. **Closes EPIC C.** **Dep:** US-026 ✓.
+  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
   **Why:** This is *how off-palette colors enter the bank* (§3.1.2). Closes the mana economy.
   **Done when:** a pincer/Shield hit that interrupts a charging enemy cancels the cast AND mints one orb of the charge color via `DropOrbAt`/`ManaOrbFactory`.
   **Touch:** `Canvas/TimelineBarInstance.InterruptCastsByOwner` (enemy branch), `Managers/PincerAttackManager`, `ManaPoolManager`. **Bible:** §3.1.2, §13.4. **Dep:** US-026.
