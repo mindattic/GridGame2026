@@ -296,11 +296,37 @@ namespace Scripts.Managers
             }
         }
 
+        // Brief cast/impact flashes are spawned-and-forgotten. A LOOPING asset, though, never
+        // auto-despawns (VisualEffectInstance keeps it alive until despawned by reference), so a
+        // looping prefab used as a one-shot flash sticks on the actor forever — which reads as
+        // "the spell's VFX parked on the caster." Bound looping flashes to a short lifetime; let
+        // non-looping assets self-complete via their Duration as before. Intentional persistent
+        // auras (LingerVfx) are spawned separately, parented to the target, and are unaffected.
+        private const float FlashSeconds = 0.6f;
+
         private static void PlayVfx(string name, Vector3 position)
         {
             if (string.IsNullOrEmpty(name) || g.VisualEffectManager == null) return;
             var asset = VisualEffectLibrary.Get(name);
-            if (asset != null) g.VisualEffectManager.Spawn(asset, position);
+            if (asset == null) return;
+
+            if (asset.IsLooping)
+            {
+                var instance = g.VisualEffectManager.SpawnInstance(asset, position, null);
+                if (instance != null)
+                    g.VisualEffectManager.StartCoroutine(DespawnAfter(instance, FlashSeconds));
+            }
+            else
+            {
+                g.VisualEffectManager.Spawn(asset, position);
+            }
+        }
+
+        private static IEnumerator DespawnAfter(Scripts.Instances.VisualEffectInstance instance, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            if (instance != null && g.VisualEffectManager != null)
+                g.VisualEffectManager.Despawn(instance);
         }
 
     }

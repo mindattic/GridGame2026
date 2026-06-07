@@ -895,6 +895,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2b940263c8b05b4d8be5a8f7f24e494
+    m_Address: Sprites/Spells/Quicken
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e2d8d7e39b14fb64e86789fb059bbd70
     m_Address: MechaArmor00
     m_ReadOnly: 0

@@ -273,7 +273,13 @@ public class PortraitManager : MonoBehaviour
     private (float a, float b) ComputeVerticalLanes(ActorInstance columnActor)
     {
         var container = g.PortraitsContainer as RectTransform;
-        float halfW = (container != null ? container.rect.width : 1920f) * 0.5f;
+        // Guard a degenerate rect: if the container hasn't been laid out yet its rect.width is 0,
+        // which collapses `offset` to 0 and stacks both pincer portraits on the exact same X
+        // (100% overlap). Fall back to a sane width whenever the measured rect is ~0, not only
+        // when the container is null.
+        float width = container != null ? container.rect.width : 0f;
+        if (width < 1f) width = 1920f;
+        float halfW = width * 0.5f;
         float colX = container != null
             ? UnitConversionHelper.World.ToCanvas(container, columnActor.Position).x
             : 0f;
@@ -298,7 +304,11 @@ public class PortraitManager : MonoBehaviour
     private (float a, float b) ComputeHorizontalLanes(ActorInstance rowActor)
     {
         var container = g.PortraitsContainer as RectTransform;
-        float halfH = (container != null ? container.rect.height : 1080f) * 0.5f;
+        // Same degenerate-rect guard as ComputeVerticalLanes: a 0-height container would stack
+        // both pincer portraits on the same Y. Fall back when the measured rect is ~0.
+        float height = container != null ? container.rect.height : 0f;
+        if (height < 1f) height = 1080f;
+        float halfH = height * 0.5f;
         float rowY = container != null
             ? UnitConversionHelper.World.ToCanvas(container, rowActor.Position).y
             : 0f;
