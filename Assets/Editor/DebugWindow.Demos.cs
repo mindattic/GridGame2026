@@ -127,8 +127,10 @@ public partial class DebugWindow
         );
 
         // AnnouncementWindow — queue a few event callouts to demo the flash/hold/fade cadence + SFX.
+        // Scan (US-077) reveals an enemy's stats in that window + flags it Seen.
         RenderButtonRow(
-            ("Announce (cadence)", () => g.DebugManager.Demo_Announce())
+            ("Announce (cadence)", () => g.DebugManager.Demo_Announce()),
+            ("Scan Enemy", () => g.DebugManager.Demo_ScanEnemy())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

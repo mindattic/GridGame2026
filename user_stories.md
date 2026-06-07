@@ -265,11 +265,13 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** slot shows the spell icon sprite; glyph fallback if missing.
   **Touch:** `Canvas/AbilityBar` (+ an icon Image per slot). **Bible:** §4.5, resolve §29.4 #15, delete §16.4 #21. **Dep:** —
 
-- [ ] **US-077 — Scan reveals enemy stats.** `PARTIAL` (spell + VFX exist `SpellLibrary.cs:107`; no reveal popup, no dispatcher branch).
+- [x] **US-077 — Scan reveals enemy stats.** ✅ DONE 2026-06-06. New `SpellDefinition.RevealsStats` (set on `SpellLibrary.Scan`); `SpellEffectDispatcher` reveals the target's HP/STR/VIT/AGI/INT via the cadenced **AnnouncementWindow** + "Scanned!" combat text + Select SFX, and flags the enemy class **Seen** in the Bestiary (`Bestiary.MarkSeen`) — which feeds US-093's seen-gated reveal. (Reuses the AnnouncementWindow as the reveal surface instead of a bespoke popup; a richer panel can come later.) Demo: "Scan Enemy". Bible §7/§16 updated. **Dep:** US-054 ✓.
+  *(Original spec — audit log)* **Was:** `PARTIAL` (spell + VFX exist `SpellLibrary.cs:107`; no reveal popup, no dispatcher branch).
   **Done when:** Scan opens a stat-reveal popup for the target + flags Bestiary `seen`.
   **Touch:** `SpellEffectDispatcher`, new info popup, `BestiaryProgress`. **Bible:** §7. **Dep:** US-054.
 
-- [ ] **US-090 — "No valid targets" toast.** `PARTIAL` (`TargetingMode.Begin` calls `onCancel` silently — `:81,100`).
+- [x] **US-090 — "No valid targets" toast.** ✅ DONE 2026-06-06. `TargetingMode.Begin` (Auto resolve + PickActor candidate scan) now `AnnouncementWindow.Announce("No valid targets")` before cancelling, instead of silently locking input. Reuses the cadenced AnnouncementWindow. Bible §16.6 #15 struck. **Dep:** —
+  *(Original spec — audit log)* **Was:** `PARTIAL` (`TargetingMode.Begin` calls `onCancel` silently — `:81,100`).
   **Done when:** Auto/pick resolving to 0 actors shows a toast.
   **Touch:** `Managers/TargetingMode`, in-battle toast. **Bible:** §5.2, delete §16.6 #15. **Dep:** —
 

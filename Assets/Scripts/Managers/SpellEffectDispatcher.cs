@@ -107,6 +107,19 @@ namespace Scripts.Managers
                 if (ctmH != null) ctmH.Spawn("Quickened!", target.transform.position, "Heal");
             }
 
+            // 5.6) US-077 Scan — reveal the target's stats (announced) and flag the enemy class as
+            // Seen in the Bestiary (unblocks US-093's seen-gated reveal). No damage.
+            if (spell.RevealsStats && target != null && target.IsPlaying && target.Stats != null)
+            {
+                if (target.IsEnemy)
+                    Scripts.Helpers.ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary?.MarkSeen(target.characterClass);
+                var s = target.Stats;
+                Scripts.Canvas.AnnouncementWindow.Announce(
+                    $"{target.characterClass}:  HP {s.HP:0}/{s.MaxHP:0}   STR {s.Strength:0}  VIT {s.Vitality:0}  AGI {s.Agility:0}  INT {s.Intelligence:0}");
+                g.CombatTextManager?.Spawn("Scanned!", target.transform.position, "Heal");
+                g.AudioManager?.Play("Select");
+            }
+
             // 6) Damage / heal / cleanse. Fix #9: target may have died / left the board between
             //    cast-start and impact — bail if no longer playing.
             if (target != null && target.IsPlaying && target.Stats != null && target.Stats.HP > 0f)

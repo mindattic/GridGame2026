@@ -1459,7 +1459,8 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | ~~20~~ | — | ~~AbilityBar save migration~~ — **DONE** (`Profile.cs:376-487`; `HeroLoadout.cs:183-268`) | — | — |
 | — | US-053 | **HP carry-over** — no `HpCurrent` in save; needed for wounds + defeat restore | P1 | `Profile.cs`, `PostBattleManager` |
 | — | US-054 | **BestiaryProgress writing** — record seen/defeated (gates US-093/US-077) | P2 | `Profile.cs`, spawn/death hooks |
-| 15 | US-090 | **"No valid targets" toast** — Auto resolve with 0 actors silent-cancels (`TargetingMode.cs:81`) | P2 | `TargetingMode.Begin` |
+| ~15~ | US-090 | ~~**"No valid targets" toast**~~ — **DONE 2026-06-06**: `TargetingMode.Begin` Auto + PickActor zero-target paths announce "No valid targets" (AnnouncementWindow) before cancelling, instead of silently locking. | P2 | `TargetingMode.Begin` |
+| ~—~ | US-077 | ~~**Scan reveals enemy stats**~~ — **DONE 2026-06-06**: `SpellDefinition.RevealsStats` (set on `SpellLibrary.Scan`); `SpellEffectDispatcher` announces the target's HP/STR/VIT/AGI/INT + flags the enemy class Seen in the Bestiary (unblocks US-093). Reuses the AnnouncementWindow as the reveal surface. Demo: "Scan Enemy". | P2 | `SpellDefinition`, `SpellLibrary`, `SpellEffectDispatcher` |
 |   | US-093 | **Bestiary unlock gating** — read `BestiaryProgress.seen` for silhouettes | P2 | `BestiaryView` |
 
 ### 16.7 Cross-reference

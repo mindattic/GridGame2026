@@ -64,6 +64,10 @@ namespace Scripts.Models
         /// arrival-at-trigger order). 0 = no timeline effect.</summary>
         public float HastenU { get; }
 
+        /// <summary>US-077 Scan: if true, the spell reveals the target's stats (announced + combat
+        /// text) and flags the enemy class as Seen in the Bestiary. No damage.</summary>
+        public bool RevealsStats { get; }
+
         public SpellDefinition(
             ManaAbility ability,
             TargetShape shape,
@@ -83,7 +87,8 @@ namespace Scripts.Models
             bool removesDebuffs = false,
             bool stealsMana = false,
             bool isTeleport = false,
-            float hastenU = 0f)
+            float hastenU = 0f,
+            bool revealsStats = false)
         {
             Ability = ability;
             Shape = shape;
@@ -104,6 +109,7 @@ namespace Scripts.Models
             StealsMana = stealsMana;
             IsTeleport = isTeleport;
             HastenU = hastenU;
+            RevealsStats = revealsStats;
         }
     }
 }

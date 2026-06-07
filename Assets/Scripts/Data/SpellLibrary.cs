@@ -117,13 +117,14 @@ namespace Scripts.Data
             impactVfx: "GoldSparkle",
             removesDebuffs: true);
 
-        // Scan: pick a single enemy; reveals stats (TBD).
+        // Scan (US-077): pick a single enemy; reveals its stats + flags it Seen in the Bestiary.
         public static readonly SpellDefinition Scan = new SpellDefinition(
             ability: ManaAbilities.Scan,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "GodRays", projectileVfx: "BlueGlow", motion: ProjectileMotion.Straight,
             impactVfx: "GodRays",
-            projectileSeconds: 0.4f);
+            projectileSeconds: 0.4f,
+            revealsStats: true);
 
         // Meteor: pick a tile, big diamond AOE hits all enemies in radius 2.
         public static readonly SpellDefinition Meteor = new SpellDefinition(

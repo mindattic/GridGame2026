@@ -394,6 +394,17 @@ namespace Scripts.Managers
             Debug.Log("[Demo] Queued 3 announcements — they play one at a time with flash/hold/fade cadence.");
         }
 
+        /// <summary>Demo (US-077): cast Scan on the first enemy — reveals its stats in the
+        /// AnnouncementWindow and flags it Seen in the Bestiary.</summary>
+        public void Demo_ScanEnemy()
+        {
+            var caster = g.Actors.Heroes?.FirstOrDefault(h => h != null && h.IsPlaying);
+            var target = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying);
+            if (target == null) { Debug.LogWarning("[Demo] No enemy to scan — start a battle first."); return; }
+            Scripts.Managers.SpellEffectDispatcher.Cast(Scripts.Data.SpellLibrary.Scan, caster, target);
+            Debug.Log($"[Demo] Scanning {target.characterClass} — watch the AnnouncementWindow for its stats.");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

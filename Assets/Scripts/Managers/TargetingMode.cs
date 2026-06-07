@@ -78,7 +78,7 @@ namespace Scripts.Managers
             var (w, h) = BoardSize();
             var tiles = TargetShapeResolver.Resolve(anchor, spell.Shape, spell.Radius, w, h);
             var actors = TargetShapeResolver.CollectActors(tiles, spell.Shape, spell.Filter, caster);
-            if (actors.Count == 0) { onCancel?.Invoke(); return; }
+            if (actors.Count == 0) { Scripts.Canvas.AnnouncementWindow.Announce("No valid targets"); onCancel?.Invoke(); return; } // US-090
             onConfirm(actors);
         }
 
@@ -98,7 +98,7 @@ namespace Scripts.Managers
                     if (a != null && a.IsPlaying && TargetShapeResolver.Matches(a, spell.Filter, caster))
                         candidates.Add(a);
 
-            if (candidates.Count == 0) { onCancel?.Invoke(); return; }
+            if (candidates.Count == 0) { Scripts.Canvas.AnnouncementWindow.Announce("No valid targets"); onCancel?.Invoke(); return; } // US-090
 
             IsActive = true;
             Scripts.Factories.TargetPickerOverlayFactory.CreateActorPicker(
