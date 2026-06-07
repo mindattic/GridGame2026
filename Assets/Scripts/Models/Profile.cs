@@ -87,6 +87,9 @@ public class ProfileSettings
     [SettingDisplayName("Mute SFX")]
     public bool MuteSfx;
 
+    [SettingDisplayName("Reduce Motion")]
+    public bool ReduceMotion;
+
     [SettingDisplayName("Reload Thumbnail Settings")]
     public bool ReloadThumbnailSettings;
 
@@ -108,6 +111,7 @@ public class ProfileSettings
         ApplyMovementTilt = other.ApplyMovementTilt;
         MuteMusic = other.MuteMusic;
         MuteSfx = other.MuteSfx;
+        ReduceMotion = other.ReduceMotion;
         ReloadThumbnailSettings = other.ReloadThumbnailSettings;
     }
 }

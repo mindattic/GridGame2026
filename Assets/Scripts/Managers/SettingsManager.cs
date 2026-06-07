@@ -156,6 +156,13 @@ public class SettingsManager : MonoBehaviour
             "Silence sound effects.",
             s => s.MuteSfx,
             (s, v) => { s.MuteSfx = v; Scripts.Helpers.AudioSettingsHelper.Apply(); }),
+
+        // US-095 — reduce motion: suppress particle VFX + straighten projectile arcs. Live-applied.
+        new ToggleSetting(
+            "Reduce Motion",
+            "Suppresses particle effects and straightens projectile arcs for reduced on-screen movement.",
+            s => s.ReduceMotion,
+            (s, v) => { s.ReduceMotion = v; Scripts.Helpers.MotionSettingsHelper.Apply(); }),
     };
 
     // Dropdown settings

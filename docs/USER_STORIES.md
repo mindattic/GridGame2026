@@ -323,7 +323,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** Settings toggle remaps mana/debuff/health palettes (Okabe-Ito/Wong); glyphs already carry the non-color signal.
   **Touch:** `Managers/SettingsManager`, palette sources (`HubTheme`/`ManaOrbLine`/`DebuffIconBar`). **Bible:** §31.1. **Dep:** —
 
-- [ ] **US-095 — Reduce-motion toggle.** `NOT-BUILT`.
+- [~] **US-095 — Reduce-motion toggle.** ⏳ BUILT 2026-06-07 (needs in-editor verify — the VFX-suppression/arc-straightening is visual). `ProfileSettings.ReduceMotion` (persisted; default false in `ProfileHelper.DefaultSettings`); new `VisualEffectManager.IntensityScale` (static, gated in `CreateInstance` — 0 suppresses all particle VFX at the single choke point every Spawn path funnels through) + `ProjectileMotionEval.ReduceMotion` (collapses every motion to a straight lerp); new `Helpers/MotionSettingsHelper.Apply()` pushes the flag to both; `SettingsManager` gains a "Reduce Motion" toggle (data-driven UI auto-renders) that live-applies; `MusicDirector.Apply` re-applies per scene change. Demo: "Toggle Reduce Motion". Bible §31.2 to flip on play-test confirm. **Dep:** —
+  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
   **Done when:** Settings toggle drives `VisualEffectManager.IntensityScale`→0 + skips long projectile arcs.
   **Touch:** `Managers/SettingsManager`, `VisualEffectManager`, `ProjectileMotionEval`. **Bible:** §31.2. **Dep:** —
 

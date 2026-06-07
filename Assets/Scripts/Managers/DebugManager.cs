@@ -424,6 +424,17 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] MuteSfx = {s.MuteSfx} — applied (sfx vol {s.SfxVolume:0.00}). Trigger an SFX to hear it.");
         }
 
+        /// <summary>Demo (US-095): toggle reduce-motion and re-apply — suppresses particle VFX and
+        /// straightens projectile arcs. Cast a spell afterward to see the difference.</summary>
+        public void Demo_ToggleReduceMotion()
+        {
+            var s = Scripts.Helpers.ProfileHelper.CurrentProfile?.Settings;
+            if (s == null) { Debug.LogWarning("[Demo] No profile loaded."); return; }
+            s.ReduceMotion = !s.ReduceMotion;
+            Scripts.Helpers.MotionSettingsHelper.Apply();
+            Debug.Log($"[Demo] ReduceMotion = {s.ReduceMotion} — VFX IntensityScale={Scripts.Managers.VisualEffectManager.IntensityScale}, arcs straightened={Scripts.Utilities.ProjectileMotionEval.ReduceMotion}.");
+        }
+
         /// <summary>Demo (US-077): cast Scan on the first enemy — reveals its stats in the
         /// AnnouncementWindow and flags it Seen in the Bestiary.</summary>
         public void Demo_ScanEnemy()

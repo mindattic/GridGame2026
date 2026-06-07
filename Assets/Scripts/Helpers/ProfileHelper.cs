@@ -90,6 +90,7 @@ namespace Scripts.Helpers
             ApplyMovementTilt = false,
             MuteMusic = false,
             MuteSfx = false,
+            ReduceMotion = false,
             ReloadThumbnailSettings = false
         };
 

@@ -14,6 +14,11 @@ namespace Scripts.Utilities
     /// </summary>
     public static class ProjectileMotionEval
     {
+        /// <summary>US-095 reduce-motion: when true, every motion collapses to a straight lerp —
+        /// no arcs, spirals, or drop-strikes. Driven by the ReduceMotion setting via
+        /// <see cref="Scripts.Helpers.MotionSettingsHelper"/>.</summary>
+        public static bool ReduceMotion = false;
+
         /// <summary>Evaluates the position along <paramref name="motion"/> at progress
         /// <paramref name="t"/> (0..1). <paramref name="target"/> can be null for non-homing motions.</summary>
         public static Vector3 Evaluate(
@@ -24,6 +29,12 @@ namespace Scripts.Utilities
             float t)
         {
             t = Mathf.Clamp01(t);
+
+            // Reduce-motion: skip the long/curvy arcs — a plain straight glide reads the same
+            // intent without the sweeping movement. (None still resolves at the caster.)
+            if (ReduceMotion)
+                return motion == global::Scripts.Models.ProjectileMotion.None ? from : Vector3.Lerp(from, to, t);
+
             switch (motion)
             {
                 case global::Scripts.Models.ProjectileMotion.None:    return from;

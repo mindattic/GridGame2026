@@ -94,9 +94,10 @@ namespace Scripts.Managers
 
         private static void Apply(string sceneName)
         {
-            // US-096: re-apply audio volumes on every scene change so a profile loaded after launch
-            // (or a settings change in another scene) is honored before music (re)starts.
+            // US-096/US-095: re-apply audio + motion settings on every scene change so a profile
+            // loaded after launch (or a change made in another scene) is honored.
             Scripts.Helpers.AudioSettingsHelper.Apply();
+            Scripts.Helpers.MotionSettingsHelper.Apply();
 
             var track = TrackFor(sceneName);
             if (string.IsNullOrEmpty(track)) Jukebox.StopMusic();

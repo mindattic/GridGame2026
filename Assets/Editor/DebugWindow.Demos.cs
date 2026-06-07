@@ -102,6 +102,12 @@ public partial class DebugWindow
             ("Toggle Mute SFX", () => g.DebugManager.Demo_ToggleMuteSfx())
         );
 
+        // Accessibility (US-095) — reduce-motion suppresses particle VFX + straightens projectile
+        // arcs; toggle then cast a spell to compare.
+        RenderButtonRow(
+            ("Toggle Reduce Motion", () => g.DebugManager.Demo_ToggleReduceMotion())
+        );
+
         // Bestiary (US-054) — log seen/defeated progress, written on enemy spawn + death.
         RenderButtonRow(
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())

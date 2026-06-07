@@ -78,6 +78,11 @@ public class VisualEffectManager : MonoBehaviour
     /// <summary>Active VFX instances keyed by unique name.</summary>
     private readonly Dictionary<string, VisualEffectInstance> collection = new Dictionary<string, VisualEffectInstance>();
 
+    /// <summary>US-095 reduce-motion: global VFX intensity (1 = normal, 0 = suppressed). Driven by
+    /// the ReduceMotion setting via <see cref="Scripts.Helpers.MotionSettingsHelper"/>; gated in
+    /// <see cref="CreateInstance"/>. Static so it applies before any instance is resolved.</summary>
+    public static float IntensityScale = 1f;
+
     #endregion
 
     #region Instance Creation
@@ -88,6 +93,12 @@ public class VisualEffectManager : MonoBehaviour
     private VisualEffectInstance CreateInstance(VisualEffectAsset asset, Vector3 position, Transform parentOverride = null)
     {
         if (asset == null)
+            return null;
+
+        // US-095 reduce-motion: IntensityScale 0 suppresses VFX entirely. Every Spawn/SpawnInstance
+        // path funnels through here and already null-checks the result, so returning null is the
+        // single safe choke point for "no particle effects."
+        if (IntensityScale <= 0f)
             return null;
 
         var go = new GameObject();
