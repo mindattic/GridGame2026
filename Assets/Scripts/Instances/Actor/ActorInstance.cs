@@ -110,6 +110,14 @@ public partial class ActorInstance : MonoBehaviour
         set => transform.position = value;
     }
 
+    /// <summary>World position where this actor's BODY should sit for its current
+    /// <see cref="location"/>: the footprint center for a multi-tile actor (2×2 boss sits between
+    /// its 4 tiles), the plain tile center for a 1×1. Movement/spawn target this so the body stays
+    /// centered over its whole footprint.</summary>
+    public Vector3 CenterPosition => IsMultiTile
+        ? Geometry.GetFootprintCenter(location, Footprint)
+        : Geometry.GetPositionByLocation(location);
+
     public Vector3 ThumbnailPosition
     {
         get => transform.GetChild("Thumbnail").position;
@@ -383,7 +391,8 @@ public partial class ActorInstance : MonoBehaviour
         location = startLocation;
         previousLocation = location;
 
-        Position = Geometry.GetPositionByLocation(location);
+        // CenterPosition centers a multi-tile body over its footprint; identical to the tile center for 1×1.
+        Position = CenterPosition;
         previousPosition = Position;
 
         Thumbnail.Initialize(this);
@@ -483,6 +492,9 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     public void CalculateAttackStrategy()
     {
+        // Multi-tile movement (footprint-aware step + hero-shove) lands in Phase 4. Until then a
+        // 2×2 boss stands pat so a raw single-anchor assignment can't teleport-overlap heroes.
+        if (IsMultiTile) return;
         location = Scripts.Services.EnemyPlanner.PlanStep(this, g.Actors.All, g.TileMap);
     }
 

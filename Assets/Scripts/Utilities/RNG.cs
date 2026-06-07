@@ -109,6 +109,33 @@ static class RNG
         /// <summary>Random unoccupied location or Nowhere if none available.</summary>
         public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
+        /// <summary>True if the whole <paramref name="footprint"/> rectangle anchored at
+        /// <paramref name="anchor"/> (lowest x,y) is on-board AND every tile is unoccupied.
+        /// Used to place multi-tile enemies (2×2 bosses) without overlapping anyone or the edge.</summary>
+        public static bool FootprintFitsFree(Vector2Int anchor, Vector2Int footprint)
+        {
+            for (int dy = 0; dy < footprint.y; dy++)
+                for (int dx = 0; dx < footprint.x; dx++)
+                {
+                    var tile = new Vector2Int(anchor.x + dx, anchor.y + dy);
+                    if (!g.Board.InBounds(tile)) return false;
+                    if (g.Actors.IsTileOccupied(tile)) return false;
+                }
+            return true;
+        }
+
+        /// <summary>A random anchor where the whole <paramref name="footprint"/> rectangle fits free,
+        /// or Nowhere if the board has no room. (Scans every tile as a candidate anchor.)</summary>
+        public static Vector2Int UnoccupiedFootprintAnchor(Vector2Int footprint)
+        {
+            var fit = g.Tiles
+                .Select(t => t.location)
+                .Where(a => FootprintFitsFree(a, footprint))
+                .Shuffle()
+                .ToList();
+            return fit.Count == 0 ? LocationHelper.Nowhere : fit[0];
+        }
+
         /// <summary>
         /// Random unoccupied interior location that is not on the border; Nowhere if none found.
         /// </summary>

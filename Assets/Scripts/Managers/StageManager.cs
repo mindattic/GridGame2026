@@ -297,6 +297,9 @@ public class StageManager : MonoBehaviour
         instance.name = $"{stageActor.CharacterClass}_{Guid.NewGuid():N}";
         instance.characterClass = stageActor.CharacterClass;
         instance.team = stageActor.Team;
+        // Multi-tile footprint (2×2 bosses). Heroes/normal enemies stay 1×1. Must be set BEFORE
+        // placement so the spawn rectangle + occupancy are footprint-aware.
+        instance.Footprint = data.Footprint == Vector2Int.zero ? Vector2Int.one : data.Footprint;
 
         // Stats and metadata
         instance.Stats = data.GetStats(stageActor.Level);
@@ -348,11 +351,31 @@ public class StageManager : MonoBehaviour
         if (stageActor.Team == Team.Enemy)
             ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary?.MarkSeen(stageActor.CharacterClass);
 
-        instance.transform.localScale = GameManager.instance.tileScale;
+        // Base body scale = one tile; a multi-tile actor grows to span its footprint (the centered
+        // body + collider follow in ActorInstance.Spawn via CenterPosition).
+        instance.transform.localScale = instance.IsMultiTile
+            ? Vector3.Scale(GameManager.instance.tileScale, new Vector3(instance.Footprint.x, instance.Footprint.y, 1f))
+            : GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
-        // Pick and assign location, then spawn
-        var location = RNG.UnoccupiedLocation;
+        // Pick and assign location, then spawn.
+        // 1×1 path is UNCHANGED (always re-roll a free tile at spawn — avoids the construct-time
+        // collisions the original guarded against). Multi-tile actors honor an explicit, fitting
+        // StageActor.Location (designer-placed boss), else find a whole free footprint rectangle.
+        Vector2Int location;
+        if (instance.IsMultiTile)
+        {
+            if (stageActor.Location.HasValue
+                && stageActor.Location.Value != LocationHelper.Nowhere
+                && RNG.FootprintFitsFree(stageActor.Location.Value, instance.Footprint))
+                location = stageActor.Location.Value;
+            else
+                location = RNG.UnoccupiedFootprintAnchor(instance.Footprint);
+        }
+        else
+        {
+            location = RNG.UnoccupiedLocation;
+        }
 
         // This ensures that the game's stage data "knows" where this actor is starting.
         // Used for saving, AI planning, and any systems that read StageActor info.

@@ -98,6 +98,18 @@ public class Geometry
         return g.TileMap.GetPosition(location);
     }
 
+    /// <summary>World-space CENTER of a multi-tile footprint anchored at <paramref name="anchor"/>
+    /// (lowest x,y). For 1×1 this equals the anchor tile center. A 2×2 sits between its 4 tiles:
+    /// +x to the right, -y downward, matching <see cref="CalculatePositionByLocation"/>'s sign
+    /// convention. Used to place/animate a boss body centered over its whole footprint.</summary>
+    public static Vector3 GetFootprintCenter(Vector2Int anchor, Vector2Int footprint)
+    {
+        var a = GetPositionByLocation(anchor);
+        float cx = a.x + g.TileSize * (footprint.x - 1) * 0.5f;
+        float cy = a.y - g.TileSize * (footprint.y - 1) * 0.5f;
+        return new Vector3(cx, cy, a.z);
+    }
+
     /// <summary>
     /// Retrieves the grid location corresponding to a given world position using the TileMap lookup.
     /// </summary>
