@@ -60,11 +60,10 @@ namespace Scripts.Sequences
 
             // Show Victory announcement when the victory sound is played
             g.VictoryAnnouncement?.Show();
+            g.AudioManager?.Play("Victory"); // resilient: real clip or chiptune fanfare
 
-            // Wait until clip length (approx) using a simple delay if available
-            var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Victory") ? SoundEffectLibrary.SoundEffects["Victory"] : null;
-            if (sfx != null)
-                yield return Wait.For(sfx.length);
+            // Hold a beat on the victory banner.
+            yield return Wait.For(1.2f);
 
             // Honor whatever the battle-launcher set (StageSelect → StageSelect,
             // OverworldManager → Overworld). Default in ExperienceTracker is StageSelect.

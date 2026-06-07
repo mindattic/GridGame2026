@@ -818,6 +818,8 @@ namespace Scripts.Canvas
             var color = Scripts.Data.Actor.EnemyChargeCatalog.ColorFor(enemy);
             Scripts.Factories.ManaOrbFactory.Drop(enemy.transform.position, color);
             Scripts.Helpers.GameHelper.CombatTextManager?.Spawn("Interrupted!", enemy.Position, "Heal");
+            Scripts.Helpers.GameHelper.AudioManager?.Play("Orb");
+            Scripts.Canvas.AnnouncementWindow.Announce($"{enemy.characterClass}'s cast interrupted!");
         }
 
         /// <summary>Updates the all endpoints.</summary>

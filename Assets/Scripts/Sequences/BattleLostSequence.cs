@@ -56,10 +56,10 @@ namespace Scripts.Sequences
 
             // Show Defeat announcement when the defeat sound is played
             g.DefeatAnnouncement?.Show();
+            g.AudioManager?.Play("Defeat"); // resilient: real clip or chiptune dirge
 
-            var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
-            if (sfx != null)
-                yield return Wait.For(sfx.length);
+            // Hold a beat on the defeat banner.
+            yield return Wait.For(1.2f);
             // US-053: defeat wipes carried-over wounds — the whole party returns at full HP for the
             // retry (no gold-heal needed after a loss).
             var save = ProfileHelper.CurrentProfile?.CurrentSave;

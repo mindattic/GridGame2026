@@ -251,6 +251,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         if (source == null || source.transform == null) return;
         Scripts.Factories.ManaOrbFactory.Drop(source.transform.position, color);
+        g.AudioManager?.Play("Orb"); // chiptune harvest blip
     }
 
     /// <summary>Finds the supporters for an attacker. Delegates to the pure detector service.</summary>

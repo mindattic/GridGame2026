@@ -93,6 +93,12 @@ namespace Scripts.Sequences
             if (pair.attackResults1?.Any() != true || pair.attackResults2?.Any() != true)
                 yield break;
 
+            // Announce + sound the core mechanic.
+            g.AudioManager?.Play("Pincer");
+            int trapped = pair.opponents != null ? pair.opponents.Count : 0;
+            Scripts.Canvas.AnnouncementWindow.Announce(
+                $"{pair.attacker1.characterClass} + {pair.attacker2.characterClass} pincer{(trapped > 1 ? $" {trapped}" : "")}!");
+
             // Display attackers portraits — canvas-space so they render on top of the HUD.
             yield return g.PortraitManager.SpawnPair2DRoutine(
                 new ActorPair(pair.attacker1, pair.attacker2)

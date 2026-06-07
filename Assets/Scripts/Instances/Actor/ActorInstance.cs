@@ -670,7 +670,9 @@ public partial class ActorInstance : MonoBehaviour
 
         var style = CombatTextHelper.GetStyle(attackResult);
         g.CombatTextManager.Spawn(attackResult.Damage.ToString(), Position, style);
-        g.AudioManager.Play("Click");
+        // Chiptune hit cue — crit gets its own flourish; every other landing hit reads as a punch
+        // (covers pincers, magic, and melee since they all resolve damage through this routine).
+        g.AudioManager.Play(attackResult != null && attackResult.HitType == HitOutcome.Critical ? "Crit" : "Hit");
         yield break;
     }
 
@@ -756,6 +758,7 @@ public partial class ActorInstance : MonoBehaviour
 
         g.PortraitManager.Dissolve(this);
         g.AudioManager.Play("Death");
+        Scripts.Canvas.AnnouncementWindow.Announce($"{characterClass} is defeated");
         g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt((ExperienceHelper.Calculate(this)) * s.CoinCountMulitiplier));
 
         location = LocationHelper.Nowhere;
