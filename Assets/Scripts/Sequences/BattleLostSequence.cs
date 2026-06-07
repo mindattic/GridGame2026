@@ -58,6 +58,11 @@ namespace Scripts.Sequences
             g.DefeatAnnouncement?.Show();
             g.AudioManager?.Play("Defeat"); // resilient: real clip or chiptune dirge
 
+            // Swap the battle bed for the defeat dirge now and hand it to PostBattleScreen so it
+            // carries seamlessly across the fade (Jukebox no-ops if the same track is playing).
+            Jukebox.PlayMusic("Defeat");
+            MusicDirector.PendingPostBattleTrack = "Defeat";
+
             // Hold a beat on the defeat banner.
             yield return Wait.For(1.2f);
             // US-053: defeat wipes carried-over wounds — the whole party returns at full HP for the

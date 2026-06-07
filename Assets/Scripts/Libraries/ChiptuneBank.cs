@@ -27,19 +27,42 @@ namespace Scripts.Libraries
             return clip;
         }
 
-        /// <summary>A cached looping music bed: "Battle" (driving minor pentatonic) or "Vendor"
-        /// (gentle major); any other key falls back to the vendor bed.</summary>
+        /// <summary>A cached looping music bed by key. Placeholder chiptune loops, one per context
+        /// ([[feedback_chiptune_audio]]): Battle / Vendor / Title / Overworld / Victory / Defeat.
+        /// Any unknown key falls back to the gentle Vendor bed.</summary>
         public static AudioClip Music(string key)
         {
             string ck = "music:" + key;
             if (cache.TryGetValue(ck, out var c) && c != null) return c;
-            AudioClip clip = (key == "Battle")
-                // A-minor pentatonic, driving.
-                ? ChiptuneSynth.MusicLoop("music_battle", new[] { 220f, 261.63f, 293.66f, 329.63f, 392f, 329.63f, 293.66f, 261.63f }, 140f, 16)
-                // C-major, gentle shopping tune.
-                : ChiptuneSynth.MusicLoop("music_vendor", new[] { 261.63f, 329.63f, 392f, 329.63f, 349.23f, 293.66f, 261.63f, 293.66f }, 92f, 16, volume: 0.18f);
+            AudioClip clip = BuildMusic(key);
             cache[ck] = clip;
             return clip;
+        }
+
+        private static AudioClip BuildMusic(string key)
+        {
+            switch (key)
+            {
+                // A-minor pentatonic, driving — combat.
+                case "Battle":
+                    return ChiptuneSynth.MusicLoop("music_battle", new[] { 220f, 261.63f, 293.66f, 329.63f, 392f, 329.63f, 293.66f, 261.63f }, 140f, 16);
+                // C-major, bright & spacious — title / splash, inviting.
+                case "Title":
+                    return ChiptuneSynth.MusicLoop("music_title", new[] { 261.63f, 392f, 523.25f, 392f, 329.63f, 392f, 440f, 392f }, 84f, 16, volume: 0.20f);
+                // G-major wandering melody, mid tempo — overworld exploration.
+                case "Overworld":
+                    return ChiptuneSynth.MusicLoop("music_overworld", new[] { 196f, 246.94f, 293.66f, 392f, 293.66f, 246.94f, 220f, 246.94f }, 108f, 16, volume: 0.20f);
+                // Bright ascending fanfare — battle won.
+                case "Victory":
+                    return ChiptuneSynth.MusicLoop("music_victory", new[] { 392f, 523.25f, 659.25f, 783.99f, 659.25f, 783.99f, 1046.5f, 783.99f }, 132f, 16, volume: 0.22f);
+                // Slow minor descent — battle lost, somber.
+                case "Defeat":
+                    return ChiptuneSynth.MusicLoop("music_defeat", new[] { 329.63f, 293.66f, 261.63f, 220f, 196f, 220f, 261.63f, 220f }, 72f, 16, volume: 0.18f);
+                // C-major, gentle shopping tune — vendor scenes (and the fallback).
+                case "Vendor":
+                default:
+                    return ChiptuneSynth.MusicLoop("music_vendor", new[] { 261.63f, 329.63f, 392f, 329.63f, 349.23f, 293.66f, 261.63f, 293.66f }, 92f, 16, volume: 0.18f);
+            }
         }
 
         private static AudioClip T(string n, float a, float b, float s, W w, float v = 0.45f) => ChiptuneSynth.Tone(n, a, b, s, w, v);

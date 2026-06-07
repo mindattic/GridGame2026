@@ -63,6 +63,12 @@ namespace Scripts.Managers
     /// </summary>
     public static class MusicDirector
     {
+        /// <summary>One-shot music override for the next PostBattleScreen load, set by
+        /// BattleWonSequence / BattleLostSequence ("Victory" / "Defeat"). PostBattleScreen is a
+        /// single scene for both outcomes, so the scene name alone can't pick the bed — the
+        /// outcome-aware sequence stashes it here and TrackFor consumes it once.</summary>
+        public static string PendingPostBattleTrack;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Init()
         {
@@ -90,8 +96,22 @@ namespace Scripts.Managers
                 case "Abilities":
                 case "StageSelect":
                     return "Vendor";
+                case "Overworld":
+                    return "Overworld";
+                case "TitleScreen":
+                case "SplashScreen":
+                    return "Title";
+                case "PostBattleScreen":
+                {
+                    // One scene serves both win and loss — use the outcome the won/lost sequence
+                    // stashed (consumed once). Falls back to quiet if entered some other way.
+                    var t = PendingPostBattleTrack;
+                    PendingPostBattleTrack = null;
+                    return t; // "Victory" / "Defeat" / null
+                }
                 default:
-                    return null; // title / splash / loading → quiet
+                    // loading / credits / profile / save-select / settings → quiet.
+                    return null;
             }
         }
     }

@@ -62,6 +62,11 @@ namespace Scripts.Sequences
             g.VictoryAnnouncement?.Show();
             g.AudioManager?.Play("Victory"); // resilient: real clip or chiptune fanfare
 
+            // Swap the battle bed for the victory bed now and hand it to PostBattleScreen so it
+            // carries seamlessly across the fade (Jukebox no-ops if the same track is playing).
+            Jukebox.PlayMusic("Victory");
+            MusicDirector.PendingPostBattleTrack = "Victory";
+
             // Hold a beat on the victory banner.
             yield return Wait.For(1.2f);
 
