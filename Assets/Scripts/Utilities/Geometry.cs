@@ -196,6 +196,23 @@ public class Geometry
     public static bool IsAdjacentTo(ActorInstance a, ActorInstance b)
         => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a.location, b.location).Equals(1);
 
+    /// <summary>Footprint-aware cardinal adjacency between two actors: true if ANY tile of
+    /// <paramref name="a"/>'s footprint is cardinally next to ANY tile of <paramref name="b"/>'s.
+    /// For two 1×1 actors this is exactly the old <see cref="IsAdjacentTo(ActorInstance,ActorInstance)"/>
+    /// (zero behavior change); the footprint scan (allocates via OccupiedTiles) only runs when one
+    /// side is a multi-tile enemy — a cold path (pincer/attack resolution, not per-frame).</summary>
+    public static bool AreAdjacent(ActorInstance a, ActorInstance b)
+    {
+        if (a == null || b == null) return false;
+        if (!a.IsMultiTile && !b.IsMultiTile)
+            return IsAdjacentTo(a.location, b.location);
+        foreach (var ta in a.OccupiedTiles())
+            foreach (var tb in b.OccupiedTiles())
+                if (Mathf.Abs(ta.x - tb.x) + Mathf.Abs(ta.y - tb.y) == 1)
+                    return true;
+        return false;
+    }
+
     // Grid location overloads:
     /// <summary>Returns whether the is same column condition is met.</summary>
     public static bool IsSameColumn(Vector2Int a, Vector2Int b) => a.x == b.x;

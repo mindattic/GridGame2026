@@ -54,18 +54,27 @@ namespace Scripts.Services
                         continue;
 
                     var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
+                    if (betweenLocs.Count == 0)
+                        continue; // attackers adjacent — no enemy between them
 
-                    var betweenActors = actors
-                        .Where(x => x.IsPlaying && betweenLocs.Contains(x.location))
-                        .ToList();
-
-                    bool hasEnemy = betweenActors.Any(x => x.team != team);
-                    bool allOpponents = betweenActors.All(x => x.IsPlaying && x.team != team);
-                    bool noGap = betweenLocs.Count == betweenActors.Count;
-
-                    if (hasEnemy && allOpponents && noGap)
+                    // Footprint-aware pincer rule: EVERY tile strictly between the two attackers
+                    // must be covered by some opposing actor, and none by an ally. A multi-tile
+                    // enemy (2×2 boss) covering several line tiles counts as ONE distinct opponent
+                    // (not a "gap"), so a boss flanked across its width is a valid single target.
+                    var covering = new HashSet<ActorInstance>();
+                    bool allCovered = true;
+                    foreach (var loc in betweenLocs)
                     {
-                        var opponents = betweenActors.Where(x => x.team != team).ToList();
+                        var occ = ActorCovering(actors, loc);
+                        if (occ == null) { allCovered = false; break; } // a real empty gap
+                        covering.Add(occ);
+                    }
+                    if (!allCovered) continue;
+
+                    bool allOpponents = covering.All(x => x.team != team);
+                    if (covering.Count > 0 && allOpponents)
+                    {
+                        var opponents = covering.ToList();
 
                         participants.pair.Add(new PincerAttackPair
                         {
@@ -196,7 +205,7 @@ namespace Scripts.Services
         {
             var candidates = actors
                 .Where(x => x.IsPlaying && x.team == attacker.team && x != attacker)
-                .Where(x => Geometry.IsAdjacentTo(x.location, attacker.location))
+                .Where(x => Geometry.AreAdjacent(x, attacker)) // footprint-aware (1×1 fast path unchanged)
                 .ToList();
 
             var result = new List<ActorInstance>();
@@ -215,9 +224,25 @@ namespace Scripts.Services
 
             var between = Geometry
                 .GetLocationsBetween(a.location, b.location)
-                .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
+                .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location))
+                .ToList();
 
-            return actors.Any(x => x.IsPlaying && between.Contains(x.location));
+            // Footprint-aware: a multi-tile enemy blocks the supporter line if ANY of its tiles
+            // sits between a and b (not just its anchor).
+            return actors.Any(x => x.IsPlaying && x != a && x != b && between.Any(loc => x.Occupies(loc)));
+        }
+
+        /// <summary>Pure footprint-aware "actor covering tile" — the playing actor whose footprint
+        /// includes <paramref name="loc"/>, or null. Kept local (takes the actor list) so this
+        /// service stays free of the g. switchboard and remains testable.</summary>
+        private static ActorInstance ActorCovering(IReadOnlyList<ActorInstance> actors, Vector2Int loc)
+        {
+            for (int i = 0; i < actors.Count; i++)
+            {
+                var a = actors[i];
+                if (a != null && a.IsPlaying && a.Occupies(loc)) return a;
+            }
+            return null;
         }
     }
 }
