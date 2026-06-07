@@ -208,10 +208,11 @@ using g = Scripts.Helpers.GameHelper;
 | Folder | Purpose |
 |---|---|
 | `Data/` | Static data definitions (items, actors, skills, recipes) |
-| `Models/` | Data structures, enums, `Singleton<T>` base |
-| `Managers/` | Singleton game systems (51 files) |
-| `Instances/` | Runtime MonoBehaviours on GameObjects |
+| `Models/` | Data structures, enums, `Singleton<T>` base — includes `Models/Actor/ActorStats.cs` |
+| `Managers/` | Singleton game systems (58 files) |
+| `Instances/` | Runtime MonoBehaviours on GameObjects (`ActorInstance`, `ActorMovement`, etc.) |
 | `Sequences/` | Async event queue for combat/UI flows |
+| `Services/` | Pure-logic helpers with no Unity scene access: `EnemyPlanner`, `PincerDetector`, `TargetShapeResolver`, `CastInterruptResolver`, `BossPhaseRunner` |
 | `Helpers/` | Static utility functions; `GameHelper` is the central accessor |
 | `Libraries/` | Lazy-loaded registries with `Ensure()` pattern |
 | `Factories/` | Object instantiation |
@@ -220,7 +221,7 @@ using g = Scripts.Helpers.GameHelper;
 | `Inventory/` | Inventory and equipment models |
 | `Overworld/` | Top-down exploration |
 | `Effects/` | Screen-space visual effects |
-| `Utilities/` | `Formulas.cs`, `RNG.cs`, `Extensions.cs`, `Geometry.cs` |
+| `Utilities/` | `Formulas.cs`, `RNG.cs`, `Extensions.cs`, `Geometry.cs`, `AspectGuard.cs` |
 
 ### Data Layer
 - **Static data classes** define instances: `ItemData_Weapons.IronSword`, `SkillData_Training.Fireball`

@@ -82,9 +82,12 @@ Full rationale: [§0.2 Non-goals](#02-non-goals-what-this-game-is-not).
    Managers/       Sequences/              Instances/        Canvas/
    (singletons:    (async combat/UI        (ActorInstance,   (TimelineBar,
    TurnManager,    event queue via         ActorMovement,    AbilityBar,
-   PincerAttack-   SequenceManager)        ActorStats)       ManaOrbLine,
-   Manager, Mana-                                            DebuffIconBar)
+   PincerAttack-   SequenceManager)        Models/Actor/     ManaOrbLine,
+   Manager, Mana-                          ActorStats)       DebuffIconBar)
    PoolManager)    Factories/  (the ONLY place Instantiate() is allowed)
+        |
+   Services/ (pure-logic: EnemyPlanner, PincerDetector, TargetShapeResolver,
+              CastInterruptResolver, BossPhaseRunner)
         |
    Data/ (static defs: SpellLibrary, Buffs, ActorLibrary, ItemLibrary, StageLibrary)
    Helpers/ (GameHelper global accessor `using g = ...`)  Utilities/ (Formulas, RNG, Geometry)
@@ -2523,8 +2526,17 @@ A black-bars background image (`AspectBars`) goes BEHIND `AspectGuard` (sibling,
 ### 26.7 Status
 
 The above is the **design intent**. Current implementation:
-- §26.2 (CanvasScaler) — ✅ done in every builder.
-- §26.3–§26.6 (AspectGuard, viewport math, safe area) — ❌ TODO. Tracked in §16.4 P0.
+- §26.2 (CanvasScaler) — ✅ done (normalized via `AspectGuard.NormalizeCanvases()` on scene load).
+- §26.3–§26.5 (AspectGuard, letterbox/pillarbox viewport math, black bars) — 🟡 CORE BUILT 2026-06-06.
+  `Utilities/AspectGuard.cs` self-installs on every scene via `[RuntimeInitializeOnLoadMethod]`, clamps
+  `Camera.main.rect` to the nearest valid portrait aspect, and ensures a black background camera fills
+  the bars. `NormalizeCanvases()` pins every `CanvasScaler` to the 1170×2532 reference with match 0.5.
+  **Remaining (in-editor only):** safe-area inset, board tile-fit pass, per-Overlay-canvas SafeFrame,
+  §26.4 separate UI Overlay Camera. Tracked in §16.4 #17.
+- §26.6 (`CameraViewportSync.cs`) — **Not built**; `AspectGuard` applies the camera rect directly
+  (no companion sync script needed with the current self-install approach).
+  The `CameraViewportSync.SetGuardRect` reference in the code snippet above is the original design
+  intent that was superseded by the simpler self-install model.
 
 ## 27. (removed) Dialog & Story — cut from the design
 

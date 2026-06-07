@@ -63,7 +63,7 @@ Mana ticks in real time while the timeline advances; bank it for burst, or spend
 
 | Layer | Technology |
 |---|---|
-| **Engine** | Unity **6000.3.2f1** (Unity 6) |
+| **Engine** | Unity **6000.4.3f1** (Unity 6) |
 | **Scripting** | C# 9, targeting .NET Standard 2.1 |
 | **Root namespace** | `Scripts.*` |
 | **Rendering** | 2D sprites on a 3D board, custom ShaderLab effects |
@@ -85,6 +85,7 @@ GridGame2026/
 │   │   ├── Canvas/                # In-game HUD (TimelineBar, TimelineIcon, ...)
 │   │   ├── Hub/                   # Shared vendor-UI utilities (HubTheme, HubToast)
 │   │   ├── Factories/             # Object instantiation (only place Instantiate() is allowed)
+│   │   ├── Services/              # Pure-logic helpers (EnemyPlanner, PincerDetector, CastInterruptResolver, ...)
 │   │   ├── Helpers/               # GameHelper (the global accessor — `using g = ...`)
 │   │   └── Utilities/             # Formulas.cs, RNG.cs, Extensions.cs, Geometry.cs
 │   └── Editor/
@@ -148,4 +149,4 @@ Auto-enforced pre-push via `.githooks/pre-push` (activated by Setup option 4):
 
 ## Status
 
-Active development. Single-developer project. The combat loop (slide / pincer / supporters / pushback) is implemented and playable; the cast-as-timeline-icon system and the Fail/Pushback/Clutch interrupt resolver are partially implemented — see `CLAUDE.md` for the design intent and current state.
+Active development. Single-developer project. The combat loop (slide / pincer / supporters / pushback / buffs / mana economy), the cast-as-timeline-icon system, the Fail/Pushback/Clutch cast-stagger interrupt resolver, enemy charge casts + interrupt→orb mint, boss scripted phases, and the full battle↔vendor macro loop are all implemented and play-tested. See `CLAUDE.md` and `docs/BIBLE.md §6` for the current verified state. Active frontier: Epic G (UI polish / accessibility) and Epic H (performance hardening).
