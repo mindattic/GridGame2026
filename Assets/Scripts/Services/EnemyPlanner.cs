@@ -226,7 +226,7 @@ namespace Scripts.Services
         }
 
         private static bool IsOccupied(Vector2Int loc, IReadOnlyList<ActorInstance> actors, ActorInstance self) =>
-            actors.Any(a => a != null && a != self && a.IsPlaying && a.location == loc);
+            actors.Any(a => a != null && a != self && a.IsPlaying && a.Occupies(loc));
 
         /// <summary>
         /// True if standing at <paramref name="loc"/> puts the enemy directly between two heroes

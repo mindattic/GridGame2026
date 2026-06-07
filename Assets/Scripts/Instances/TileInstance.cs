@@ -55,36 +55,14 @@ namespace Scripts.Instances
 /// </summary>
 public class TileInstance : MonoBehaviour
 {
-    /// <summary>True if any living actor's location matches this tile's location.
-    /// Manual loop (no LINQ closure) — called inside tight scan/displacement loops.</summary>
-    public bool IsOccupied
-    {
-        get
-        {
-            var all = g.Actors.All;
-            for (int i = 0; i < all.Count; i++)
-            {
-                var a = all[i];
-                if (a.IsPlaying && a.location == location) return true;
-            }
-            return false;
-        }
-    }
+    /// <summary>True if any living actor's FOOTPRINT covers this tile. Footprint-aware via the
+    /// single occupancy chokepoint (<see cref="GameHelper.Actors.IsTileOccupied"/>) so multi-tile
+    /// enemies (2×2 bosses) register on all their tiles. For 1×1 actors this is identical to before.</summary>
+    public bool IsOccupied => g.Actors.IsTileOccupied(location);
 
-    /// <summary>Returns the actor standing on this tile, or null if empty.</summary>
-    public ActorInstance Occupier
-    {
-        get
-        {
-            var all = g.Actors.All;
-            for (int i = 0; i < all.Count; i++)
-            {
-                var a = all[i];
-                if (a.location == location) return a;
-            }
-            return null;
-        }
-    }
+    /// <summary>Returns the playing actor whose footprint covers this tile, or null if empty.
+    /// (Footprint-aware chokepoint; also now correctly filters by IsPlaying.)</summary>
+    public ActorInstance Occupier => g.Actors.ActorAt(location);
 
     /// <summary>Event fired when the selected player leaves this tile location.</summary>
     public System.Action<Vector2Int> onSelectedPlayerLeaveLocation;

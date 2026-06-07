@@ -100,6 +100,9 @@ namespace Scripts.Services
             }
 
             // Tile-walking path: for each tile, find any playable actor on it; filter by team.
+            // A multi-tile enemy (2×2) covers several resolved tiles, so dedupe by actor identity —
+            // an AOE overlapping any of its tiles hits it exactly ONCE.
+            var seen = new HashSet<ActorInstance>();
             foreach (var tile in tiles)
             {
                 var occupant = FindActorAt(tile);
@@ -110,6 +113,7 @@ namespace Scripts.Services
                     // the tile list directly for FX positioning.
                     continue;
                 }
+                if (!seen.Add(occupant)) continue; // already collected via another footprint tile
                 if (Matches(occupant, filter, caster)) list.Add(occupant);
             }
             return list;
@@ -131,17 +135,9 @@ namespace Scripts.Services
             return false;
         }
 
-        public static ActorInstance FindActorAt(Vector2Int tile)
-        {
-            var all = g.Actors.All;
-            if (all == null) return null;
-            for (int i = 0; i < all.Count; i++)
-            {
-                var a = all[i];
-                if (a != null && a.IsPlaying && a.location == tile) return a;
-            }
-            return null;
-        }
+        /// <summary>The playing actor whose footprint covers <paramref name="tile"/> (footprint-aware
+        /// via the occupancy chokepoint), or null. A 2×2 enemy is found from any of its tiles.</summary>
+        public static ActorInstance FindActorAt(Vector2Int tile) => g.Actors.ActorAt(tile);
 
         private static bool IsPlayable(ActorInstance a) => a != null && a.IsPlaying;
     }

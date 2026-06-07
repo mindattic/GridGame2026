@@ -224,7 +224,7 @@ public class SupportLineManager : MonoBehaviour
             var loc = movingHero.location + d;
             while (g.TileMap.ContainsLocation(loc))
             {
-                var occupant = g.Actors.All.FirstOrDefault(a => a != null && a.IsPlaying && a.location == loc);
+                var occupant = g.Actors.ActorAt(loc); // footprint-aware: a 2×2 enemy blocks the ray from any of its tiles
                 if (occupant != null)
                 {
                     if (occupant.IsHero)

@@ -323,7 +323,7 @@ public partial class ActorInstance : MonoBehaviour
                 case Direction.West: check += new Vector2Int(-i, 0); break;
             }
 
-            if (g.Actors.All.Any(a => a.IsPlaying && a.location == check))
+            if (g.Actors.ActorAt(check) != null)
                 return true;
         }
         return false;
@@ -345,7 +345,7 @@ public partial class ActorInstance : MonoBehaviour
                 case Direction.SouthWest: check += new Vector2Int(-i, i); break;
             }
 
-            if (g.Actors.All.Any(a => a.IsPlaying && a.location == check))
+            if (g.Actors.ActorAt(check) != null)
                 return true;
         }
         return false;
@@ -737,8 +737,11 @@ public partial class ActorInstance : MonoBehaviour
         if (!g.Board.InBounds(newLocation))
             return;
 
-        var occupant = g.Actors.All.FirstOrDefault(x => x.IsPlaying && x.location == newLocation);
-        if (occupant.Exists())
+        var occupant = g.Actors.ActorAt(newLocation);
+        // A multi-tile enemy can't be kicked aside as if 1×1 — refuse to teleport onto its footprint.
+        if (occupant != null && occupant != this && occupant.IsMultiTile)
+            return;
+        if (occupant.Exists() && occupant != this)
             occupant.Teleport(RNG.Location);
 
         location = newLocation;
