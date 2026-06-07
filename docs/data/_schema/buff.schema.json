@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mindattic.com/gridgame2026/schema/buff.schema.json",
+  "title": "GridGame2026 Buff / Debuff",
+  "description": "L5 canon-as-data for the Buff catalog (BIBLE GG-§8.1). Source of truth: Data/Buffs.cs + BuffSystem.",
+  "type": "object",
+  "required": ["id", "name", "kind", "durationUnit", "duration"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^buff\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "kind": { "type": "string", "enum": ["Buff", "Debuff"] },
+    "durationUnit": { "type": "string", "enum": ["Turn", "Tick"] },
+    "duration": { "type": "integer", "minimum": 1 },
+    "damagePerTick": { "type": ["integer", "null"] },
+    "immobile": { "type": "boolean", "default": false },
+    "breaksOnDamage": { "type": "boolean", "default": false },
+    "breaksOnMove": { "type": "boolean", "default": false },
+    "onExpireApplyId": { "type": ["string", "null"], "description": "Buff id applied when this one expires (expire chain)." },
+    "knobs": { "type": "string", "description": "Prose summary of effect knobs." },
+    "status": { "type": "string", "enum": ["done", "partial", "planned", "cut"] }
+  }
+}

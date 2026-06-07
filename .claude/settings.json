@@ -12,10 +12,10 @@
               "-ExecutionPolicy",
               "Bypass",
               "-File",
-              ".claude/hooks/inject-bible.ps1"
+              ".claude/hooks/inject-digest.ps1"
             ],
             "timeout": 10,
-            "statusMessage": "Loading game_bible.md..."
+            "statusMessage": "Loading docs/BIBLE.digest.md..."
           }
         ]
       }

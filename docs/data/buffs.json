@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "codex": 1,
+    "project": "GridGame2026",
+    "code": "GG",
+    "layer": "data",
+    "type": "buff",
+    "status": "living",
+    "updated": "2026-06-07",
+    "generatedFrom": "GG-§8",
+    "source": "Assets/Scripts/Data/Buffs.cs",
+    "note": "Canon-as-data for the buff/debuff catalog. Cross-effect multipliers, the interaction matrix, and expire chains stay in BIBLE GG-§8 prose; this file is the per-buff field table."
+  },
+  "buffs": [
+    { "id": "buff.protection", "name": "protection", "kind": "Buff", "durationUnit": "Turn", "duration": 1, "knobs": "DR 15%", "status": "done" },
+    { "id": "buff.burning", "name": "burning", "kind": "Debuff", "durationUnit": "Tick", "duration": 5, "damagePerTick": 4, "onExpireApplyId": "buff.warm", "knobs": "4 dmg/tick; expires to warm", "status": "done" },
+    { "id": "buff.frozen", "name": "frozen", "kind": "Debuff", "durationUnit": "Turn", "duration": 1, "immobile": true, "onExpireApplyId": "buff.wet", "knobs": "Immobile (timeline halts); expires to wet", "status": "done" },
+    { "id": "buff.wet", "name": "wet", "kind": "Debuff", "durationUnit": "Tick", "duration": 6, "knobs": "Lightning x1.5 multiplier hook; Fire strips (Steam)", "status": "done" },
+    { "id": "buff.warm", "name": "warm", "kind": "Debuff", "durationUnit": "Tick", "duration": 3, "knobs": "Sleep-duration x1.5 bonus hook", "status": "done" },
+    { "id": "buff.sleep", "name": "sleep", "kind": "Debuff", "durationUnit": "Turn", "duration": 3, "immobile": true, "breaksOnDamage": true, "breaksOnMove": true, "knobs": "Immobile; breaks on damage / move", "status": "done" },
+    { "id": "buff.poisoned", "name": "poisoned", "kind": "Debuff", "durationUnit": "Tick", "duration": 6, "damagePerTick": 3, "knobs": "3 dmg/tick", "status": "done" },
+    { "id": "buff.slowed", "name": "slowed", "kind": "Debuff", "durationUnit": "Turn", "duration": 2, "knobs": "Timeline icon advances x0.5 (US-011)", "status": "done" },
+    { "id": "buff.silenced", "name": "silenced", "kind": "Debuff", "durationUnit": "Turn", "duration": 2, "knobs": "Spell clicks refused + slots blocked (US-012)", "status": "done" },
+    { "id": "buff.blinded", "name": "blinded", "kind": "Debuff", "durationUnit": "Turn", "duration": 2, "knobs": "Attacker accuracy x0.5 (US-013)", "status": "done" }
+  ]
+}

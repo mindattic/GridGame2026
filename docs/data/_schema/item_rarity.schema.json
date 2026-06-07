@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mindattic.com/gridgame2026/schema/item_rarity.schema.json",
+  "title": "GridGame2026 Item Rarity Tier",
+  "description": "L5 canon-as-data for ItemRarity tiers (BIBLE GG-§24.1.1). Source of truth: ItemRarity enum + HubItemRowFactory.RarityColor.",
+  "type": "object",
+  "required": ["id", "name", "color", "costMultiplier", "statRange", "dropBucket"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^rarity\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "color": { "type": "string" },
+    "costMultiplier": { "type": "number" },
+    "statRange": { "type": "string" },
+    "dropBucket": { "type": "string" },
+    "status": { "type": "string", "enum": ["done", "partial", "planned", "cut"] }
+  }
+}

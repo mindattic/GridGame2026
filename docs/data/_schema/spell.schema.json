@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mindattic.com/gridgame2026/schema/spell.schema.json",
+  "title": "GridGame2026 Spell / Skill",
+  "description": "L5 canon-as-data for the Spell Catalog (BIBLE GG-§7). Source of truth: Data/SpellLibrary.cs.",
+  "type": "object",
+  "required": ["id", "name", "kind", "cost", "shape", "mode", "filter", "role"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^spell\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "kind": { "type": "string", "enum": ["Spell", "Skill"] },
+    "cost": {
+      "type": "array",
+      "description": "Mana orb cost as palette letters (W U B R G C). Empty = free.",
+      "items": { "type": "string", "enum": ["W", "U", "B", "R", "G", "C"] }
+    },
+    "shape": { "type": "string" },
+    "mode": { "type": "string", "enum": ["PickActor", "PickTile", "Auto"] },
+    "filter": { "type": "string", "enum": ["AllyOnly", "EnemyOnly", "EmptyOnly", "Any"] },
+    "motion": { "type": "string", "enum": ["None", "Straight", "Twist", "Bezier", "Strike", "Homing"] },
+    "damage": { "type": ["integer", "null"], "description": "Base damage; null = no direct damage." },
+    "damageType": { "type": ["string", "null"], "enum": ["Physical", "Fire", "Ice", "Lightning", "Poison", "Holy", "Dark", "Arcane", null] },
+    "appliesBuff": { "type": ["string", "null"], "description": "id of a buff entity applied on hit." },
+    "hastenU": { "type": ["number", "null"], "description": "Forward timeline push (US-028 Quicken). 0/null = none." },
+    "revealsStats": { "type": "boolean", "default": false },
+    "effect": { "type": "string", "description": "Prose effect summary." },
+    "role": { "type": "string", "description": "Strategic role." },
+    "status": { "type": "string", "enum": ["done", "partial", "planned", "cut"] }
+  }
+}

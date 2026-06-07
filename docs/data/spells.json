@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "codex": 1,
+    "project": "GridGame2026",
+    "code": "GG",
+    "layer": "data",
+    "type": "spell",
+    "status": "living",
+    "updated": "2026-06-07",
+    "generatedFrom": "GG-§7",
+    "source": "Assets/Scripts/Data/SpellLibrary.cs",
+    "note": "Canon-as-data for the Spell Catalog. Cost is expressed in palette letters (see BIBLE GG-§9 / mana palette). Prose in BIBLE GG-§7 cites these by id and does not restate fields."
+  },
+  "spells": [
+    { "id": "spell.heal", "name": "Heal", "kind": "Spell", "cost": ["W"], "shape": "SingleActor", "mode": "PickActor", "filter": "AllyOnly", "motion": "None", "damage": -25, "damageType": null, "effect": "+25 HP", "role": "Spot-heal; cheap to repeat", "status": "done" },
+    { "id": "spell.mass_heal", "name": "Mass Heal", "kind": "Spell", "cost": ["W"], "shape": "AllAllies", "mode": "Auto", "filter": "AllyOnly", "motion": "None", "damage": -12, "damageType": null, "effect": "+12 HP everyone", "role": "Emergency top-up; bigger gross but smaller per-target", "status": "done" },
+    { "id": "spell.antidote", "name": "Antidote", "kind": "Spell", "cost": ["W"], "shape": "SingleActor", "mode": "PickActor", "filter": "AllyOnly", "motion": "None", "damage": null, "damageType": null, "effect": "Strips ALL debuffs", "role": "Cleanse — pair after a debuff-heavy enemy turn", "status": "done" },
+    { "id": "spell.scan", "name": "Scan", "kind": "Spell", "cost": ["W"], "shape": "SingleActor", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Straight", "damage": null, "damageType": null, "revealsStats": true, "effect": "Reveals target HP/STR/VIT/AGI/INT; flags Bestiary Seen", "role": "Recon — info, not damage", "status": "done" },
+    { "id": "spell.fire", "name": "Fire (Fireball)", "kind": "Spell", "cost": ["R", "R"], "shape": "SingleActor", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Twist", "damage": 18, "damageType": "Fire", "appliesBuff": "buff.burning", "effect": "18 Fire dmg + burning", "role": "High burst single target; DOT continues after", "status": "done" },
+    { "id": "spell.ice", "name": "Ice (Frost)", "kind": "Spell", "cost": ["U", "U"], "shape": "Square(r=1)", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Bezier", "damage": 10, "damageType": "Ice", "appliesBuff": "buff.frozen", "effect": "10 Ice dmg + frozen", "role": "Crowd-control AOE; frozen halts timeline", "status": "done" },
+    { "id": "spell.lightning", "name": "Lightning (Bolt)", "kind": "Spell", "cost": ["R", "R", "U"], "shape": "Row", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Strike", "damage": 14, "damageType": "Lightning", "appliesBuff": "buff.blinded", "effect": "14 Lightning dmg (x1.5 if target Wet) + 30% chance blinded", "role": "Row clear; pair after Frost expires -> Wet for combo", "status": "done" },
+    { "id": "spell.poison", "name": "Poison", "kind": "Spell", "cost": ["U", "U"], "shape": "Cross(r=1)", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Bezier", "damage": 6, "damageType": "Poison", "appliesBuff": "buff.poisoned", "effect": "6 Poison dmg + poisoned", "role": "Low burst, big tail (tick damage)", "status": "done" },
+    { "id": "spell.sleep", "name": "Sleep", "kind": "Spell", "cost": ["W"], "shape": "SingleActor", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Homing", "damage": null, "damageType": null, "appliesBuff": "buff.sleep", "effect": "sleep (breaks on damage / move)", "role": "Hard CC on a priority target; do NOT also attack them", "status": "done" },
+    { "id": "spell.slow", "name": "Slow", "kind": "Spell", "cost": ["U", "U"], "shape": "Row", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Bezier", "damage": null, "damageType": null, "appliesBuff": "buff.slowed", "effect": "slowed (timeline icon advances x0.5)", "role": "Row-wide tempo control; buys time across a rank", "status": "done" },
+    { "id": "spell.silence", "name": "Silence", "kind": "Spell", "cost": ["W"], "shape": "SingleActor", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Straight", "damage": null, "damageType": null, "appliesBuff": "buff.silenced", "effect": "silenced (cast-block)", "role": "Lock down enemy casters before they fire", "status": "done" },
+    { "id": "spell.meteor", "name": "Meteor", "kind": "Spell", "cost": ["R", "R"], "shape": "Diamond(r=2)", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Strike", "damage": 22, "damageType": "Fire", "appliesBuff": "buff.burning", "effect": "22 Fire dmg + burning", "role": "Massive AOE; the wipe-the-back-row option", "status": "done" },
+    { "id": "spell.shockwave", "name": "ShockWave", "kind": "Spell", "cost": ["R", "R", "U"], "shape": "Column", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Strike", "damage": 10, "damageType": "Lightning", "effect": "10 Lightning dmg", "role": "Vertical cleave; pair with Frost columns", "status": "done" },
+    { "id": "spell.crosshit", "name": "CrossHit", "kind": "Spell", "cost": ["R", "R", "U"], "shape": "Plus", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Strike", "damage": 8, "damageType": "Lightning", "effect": "8 Lightning dmg (board-wide +)", "role": "Hits ENTIRE row + column; spreads thin but covers ground", "status": "done" },
+    { "id": "spell.quicken", "name": "Quicken", "kind": "Spell", "cost": ["U"], "shape": "SingleActor", "mode": "PickActor", "filter": "Any", "motion": "None", "damage": null, "damageType": null, "hastenU": 0.30, "effect": "Slides target timeline icon forward (hastenU 0.30); no damage", "role": "Inverse of pushback; overtaking is emergent (US-028)", "status": "done" },
+    { "id": "spell.steal", "name": "Steal", "kind": "Skill", "cost": [], "shape": "Cross(r=1)", "mode": "Auto", "filter": "EnemyOnly", "motion": "Homing", "damage": null, "damageType": null, "effect": "LCK+AGI roll per adjacent enemy -> orb", "role": "Resource grab; no damage, costs a turn", "status": "done" },
+    { "id": "spell.mug", "name": "Mug", "kind": "Skill", "cost": [], "shape": "Cross(r=1)", "mode": "Auto", "filter": "EnemyOnly", "motion": "Straight", "damage": 10, "damageType": "Physical", "effect": "Same roll as Steal PLUS 10 Physical dmg each", "role": "Steal + attack; the rogue's signature", "status": "done" },
+    { "id": "spell.teleport", "name": "Teleport", "kind": "Skill", "cost": [], "shape": "SingleTile", "mode": "PickTile", "filter": "EmptyOnly", "motion": "None", "damage": null, "damageType": null, "effect": "Relocate caster; auto-resolves any new pincer", "role": "Repositioning into a flank; ninja mobility", "status": "done" }
+  ]
+}

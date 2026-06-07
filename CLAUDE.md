@@ -33,6 +33,34 @@ legion.exe ask "<question>" --tier low                # cheap one-shot when flag
 
 (Related: `legion.exe poll` for "how does the panel split?" distributions, `legion.exe generate` for bulk name/idea lists, `legion.exe tiers` for a once-per-session connectivity check. Same README briefing covers all four.)
 
+## Codex — the canonical documentation (read this first)
+
+This repo follows the **MindAttic Codex** standard. Canon lives under `docs/`, not in scattered prose:
+
+- **`docs/BIBLE.md`** (L0) — source of truth for what GridGame2026 IS, is NOT, and the **Laws**
+  (`{#GG-LAW-n}`). Nine-section L0 outline up top; the full historical canon is preserved verbatim in
+  its **Appendix A** (all `§N` cross-refs still resolve). Sections have stable IDs `{#GG-§N}` — cite
+  those, never line numbers.
+- **`docs/AMENDMENTS.md`** (L1) — append-only change log (`GG-A<n>`); **an amendment wins over the
+  bible**. Record a direction change here rather than rewriting the bible mid-stream.
+- **`docs/USER_STORIES.md`** (L2) — the dependency-ordered build board (`US-NNN` ids; audit log —
+  never delete a story's original spec).
+- **`docs/data/*.json`** (L5) — canon-as-data for spells, buffs, classes, enemy archetypes, item
+  rarities, validated by `docs/data/_schema/*.schema.json`. Prose cites entities by `id`; don't
+  restate their fields.
+- **`docs/rfc/`** — design notes that graduate into the bible + stories.
+- **`MindAttic.HouseRules.md`** (repo parent dir) — org-wide laws, inherited by reference from BIBLE
+  §5. Do not restate or modify it.
+
+**Tooling.** `tools/codex.ps1 doctor` validates front-matter, anchor IDs, cross-refs, data-vs-schema,
+and digest freshness (run it after editing docs). `tools/codex.ps1 digest` regenerates
+`docs/BIBLE.digest.md` (never hand-edit the digest). The SessionStart hook
+`.claude/hooks/inject-digest.ps1` injects that digest automatically.
+
+**Rule:** if a request contradicts the canon, surface it and either add a `docs/AMENDMENTS.md` entry
+or correct the assumption — never silently drift (GG-LAW-7). The legacy root `game_bible.md` /
+`user_stories.md` are now 1-line pointers to `docs/`.
+
 ## Project Overview
 
 Unity 6000.4.3f1 tactical RPG — grid-based combat with 2D sprites on a 3D board. C# 9.0 targeting .NET Standard 2.1. Namespace root: `Scripts.*`. (Editor version is authoritative in `ProjectSettings/ProjectVersion.txt` — compile/batchmode against that exact version; using a different installed editor corrupts the package cache.)

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mindattic.com/gridgame2026/schema/class.schema.json",
+  "title": "GridGame2026 Hero Class",
+  "description": "L5 canon-as-data for the V1 hero roster (BIBLE GG-§23.2). Source of truth: Helpers/CharacterClass.cs + HeroLoadouts.perClass + ManaColorAffinity.For.",
+  "type": "object",
+  "required": ["id", "name", "identity", "statLean", "colorAffinity", "loadout"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^class\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "identity": { "type": "string" },
+    "statLean": { "type": "string" },
+    "colorAffinity": { "type": "string", "enum": ["W", "U", "B", "R", "G", "C"], "description": "Palette letter of the mana orb minted when this hero contributes to a pincer." },
+    "loadout": {
+      "type": "array",
+      "description": "Default AbilityBar slots. Items are spell/skill names; Potion(n) denotes a stacked item slot.",
+      "items": { "type": "string" }
+    },
+    "signature": { "type": "string" },
+    "status": { "type": "string", "enum": ["done", "partial", "planned", "cut"] }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "codex": 1,
+    "project": "GridGame2026",
+    "code": "GG",
+    "layer": "data",
+    "type": "enemy_archetype",
+    "status": "living",
+    "updated": "2026-06-07",
+    "generatedFrom": "GG-§14",
+    "source": "Assets/Scripts/Data/ActorLibrary.cs (172 concrete classes), Services/EnemyPlanner.cs",
+    "note": "Design palette of archetypes, not the full bestiary. Concrete enemies (e.g. Cyclops00, IceMauler) pick an archetype's stat lean + tags. BIBLE GG-§14 cites these by id."
+  },
+  "archetypes": [
+    { "id": "enemy.rusher", "name": "Rusher", "statLean": "high SPD, low VIT", "tags": ["Humanoid", "Beast"], "behavior": "Loads timeline fast; closes distance every turn. Wants to be adjacent and swing.", "status": "done" },
+    { "id": "enemy.bruiser", "name": "Bruiser", "statLean": "high STR + VIT", "tags": ["Humanoid", "Soldier"], "behavior": "Slower load but high HP and threat. Best target for a pincer.", "status": "done" },
+    { "id": "enemy.flanker", "name": "Flanker", "statLean": "mid STR, high AGI", "tags": ["Humanoid"], "behavior": "Seeks pincer formation with another Flanker. Devastating if ignored.", "status": "done" },
+    { "id": "enemy.ranged", "name": "Ranged", "statLean": "high AGI, mid INT", "tags": ["Humanoid"], "behavior": "Wants distance; keeps gap from heroes; attacks across tiles (future: Line shape).", "status": "partial" },
+    { "id": "enemy.caster", "name": "Caster", "statLean": "high INT, low VIT", "tags": ["Humanoid", "Magic"], "behavior": "BUILT (US-026): when not adjacent, telegraphs an affinity charge-cast (EnemyPlanner.PlanCast -> EnemyChargeSequence) resolving at u=1; high reward for interrupting (US-027).", "status": "done" },
+    { "id": "enemy.beast", "name": "Beast", "statLean": "varies", "tags": ["Beast"], "behavior": "Cannot pincer (no Humanoid). Just rushes. Cheaper threat density.", "status": "done" },
+    { "id": "enemy.mechanical", "name": "Mechanical", "statLean": "high VIT, status-immune", "tags": ["Mechanical", "Boss"], "behavior": "Status immunities (Resistances 0 for Poison/Sleep). Pure HP race.", "status": "done" },
+    { "id": "enemy.boss", "name": "Boss", "statLean": "very high everything", "tags": ["Humanoid", "Boss", "Elite"], "behavior": "BUILT (US-083): authored HP-threshold phases via BossScriptLibrary -> BossPhaseRunner fires BossPhaseTransitionSequence on phase entry. Per-phase PrefersCharge knob. Cyclops enrages (Quicken) below 50% HP. Often a 2x2 (GG-§1.5).", "status": "done" }
+  ]
+}

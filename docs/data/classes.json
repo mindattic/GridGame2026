@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "codex": 1,
+    "project": "GridGame2026",
+    "code": "GG",
+    "layer": "data",
+    "type": "class",
+    "status": "living",
+    "updated": "2026-06-07",
+    "generatedFrom": "GG-§23",
+    "source": "Assets/Scripts/Helpers/CharacterClass.cs, HeroLoadouts.perClass, Data/Actor/ManaColorAffinity.cs",
+    "note": "V1 seeded hero roster. Color affinity BUILT (US-030). 'Assassain'/'GreenNinja'/'RedNinja' spellings preserved verbatim from the CharacterClass enum. Classes not in HeroLoadouts.perClass fall through to the default bar and are tracked in BIBLE GG-§23 prose, not here."
+  },
+  "classes": [
+    { "id": "class.cleric", "name": "Cleric", "identity": "White-magic healer; sustain-focused; reads enemy intentions", "statLean": "INT/WIS high, STR low", "colorAffinity": "W", "loadout": ["Heal", "Heal", "Frost", "Potion(3)"], "signature": "Back-line topple recovery via Heal/MassHeal/Antidote", "status": "done" },
+    { "id": "class.paladin", "name": "Paladin", "identity": "Front-line tank with healing on the side", "statLean": "VIT/STR high, mid WIS", "colorAffinity": "W", "loadout": ["Heal", "Fireball", "Potion(3)"], "signature": "Hybrid tank-with-heals; soaks pincer hits", "status": "done" },
+    { "id": "class.barbarian", "name": "Barbarian", "identity": "High-damage front line; brute force", "statLean": "STR/VIT high, low INT/WIS", "colorAffinity": "R", "loadout": ["Fireball", "Bolt", "Potion(3)"], "signature": "Row-clearing Fireball + Bolt; high HP pool", "status": "done" },
+    { "id": "class.alchemist", "name": "Alchemist", "identity": "Utility / consumable stacks / non-magical control", "statLean": "INT/AGI mid, high LCK", "colorAffinity": "G", "loadout": ["Frost", "Potion(5)", "Steal", "Heal", "Potion(5)"], "signature": "Per-slot stack economy + Steal", "status": "done" },
+    { "id": "class.assassain", "name": "Assassain", "identity": "High-damage flanker; rogue toolkit", "statLean": "AGI/LCK high", "colorAffinity": "B", "loadout": ["Steal", "Mug", "Bolt", "Potion(3)"], "signature": "Mug — Steal + damage in one click", "status": "done" },
+    { "id": "class.greenninja", "name": "GreenNinja", "identity": "Mobility specialist; thief variant", "statLean": "AGI/LCK high", "colorAffinity": "G", "loadout": ["Teleport", "Steal", "Fireball", "Potion(3)"], "signature": "Teleport into pincer formation", "status": "done" },
+    { "id": "class.redninja", "name": "RedNinja", "identity": "Mobility + striker", "statLean": "AGI/STR high", "colorAffinity": "R", "loadout": ["Teleport", "Mug", "Bolt", "Potion(3)"], "signature": "Teleport + Mug — relocate to steal", "status": "done" }
+  ]
+}

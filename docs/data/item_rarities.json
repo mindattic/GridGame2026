@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "codex": 1,
+    "project": "GridGame2026",
+    "code": "GG",
+    "layer": "data",
+    "type": "item_rarity",
+    "status": "living",
+    "updated": "2026-06-07",
+    "generatedFrom": "GG-§24",
+    "source": "Assets/Scripts/Data/Items (ItemRarity enum), Canvas/Hub/HubItemRowFactory.RarityColor, Data/ItemLibrary.cs",
+    "note": "Rarity tiers drive shop price, drop weight, and stat range. The concrete item catalog (Mage Robe, Wizard Robe, Sleep Dart, Sunfire Amulet, ...) lives in ItemLibrary.cs; this file captures the tiered scaling table from GG-§24.1.1."
+  },
+  "rarities": [
+    { "id": "rarity.common", "name": "Common", "color": "white-grey", "costMultiplier": 1.0, "statRange": "+1 to +3", "dropBucket": "most enemies, all stages", "status": "done" },
+    { "id": "rarity.uncommon", "name": "Uncommon", "color": "green", "costMultiplier": 2.5, "statRange": "+3 to +6", "dropBucket": "mid-tier enemies + low-tier vendors", "status": "done" },
+    { "id": "rarity.rare", "name": "Rare", "color": "blue", "costMultiplier": 6.0, "statRange": "+5 to +10", "dropBucket": "elite enemies, mid vendors", "status": "done" },
+    { "id": "rarity.epic", "name": "Epic", "color": "purple", "costMultiplier": 15.0, "statRange": "+8 to +15", "dropBucket": "bosses, high-tier crafting", "status": "done" },
+    { "id": "rarity.legendary", "name": "Legendary", "color": "gold", "costMultiplier": 40.0, "statRange": "+12 to +25 (sometimes unique passives)", "dropBucket": "end-game bosses, ultimate crafting", "status": "done" }
+  ]
+}

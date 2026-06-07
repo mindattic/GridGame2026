@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mindattic.com/gridgame2026/schema/enemy_archetype.schema.json",
+  "title": "GridGame2026 Enemy Archetype",
+  "description": "L5 canon-as-data for the enemy design palette (BIBLE GG-§14.2). NOTE: the 172 concrete enemy classes live in Assets/Scripts/Data/ActorLibrary.cs; this file captures the reusable ARCHETYPES designers stat against, not every concrete enemy.",
+  "type": "object",
+  "required": ["id", "name", "statLean", "tags", "behavior"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^enemy\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "statLean": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "behavior": { "type": "string" },
+    "status": { "type": "string", "enum": ["done", "partial", "planned", "cut"] }
+  }
+}
