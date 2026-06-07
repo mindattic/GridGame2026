@@ -1,9 +1,11 @@
 #!/bin/sh
-# pre-push — runs CheckAllGuardrails before any push leaves the developer machine.
+# pre-push — runs CheckCodeGuardrails before any push leaves the developer machine.
 #
-# Enforces the ban guardrails (SerializeField / Resources.Load / Instantiate)
-# and builder drift check introduced in Phases 1–6. One Unity batchmode launch
-# covers all four (~30–60s cold, ~10–20s warm).
+# BLOCKS the push on the three reliable code bans (SerializeField / Resources.Load /
+# Instantiate). BuilderDrift runs ADVISORY (logged, non-blocking) — it currently emits
+# resolution-dependent false positives under headless batchmode; re-promote it to blocking
+# (point this at CheckAllGuardrails) once the drift signature is fixed and Game/TitleScreen
+# drift is audited. One Unity batchmode launch covers all checks (~30–60s cold, ~10–20s warm).
 #
 # Activation:  git config core.hooksPath .githooks
 #              (or run GridGame.Console.ps1 -> Option 4 "Setup")
@@ -13,12 +15,22 @@ set -e
 
 PROJ="$(git rev-parse --show-toplevel)"
 
-# Locate Unity 6000.3.2f1 across common install paths.
+# Derive the editor version from ProjectVersion.txt (authoritative) instead of hardcoding it.
+# A hardcoded version silently breaks on every editor upgrade: the candidate paths stop
+# matching, UNITY stays empty, and the hook skips ALL guardrail enforcement without anyone
+# noticing (this happened — it was pinned to 6000.3.2f1 while the project moved to 6000.4.3f1).
+VER="$(sed -n 's/^m_EditorVersion: //p' "$PROJ/ProjectSettings/ProjectVersion.txt" | tr -d '\r')"
+if [ -z "$VER" ]; then
+    echo "[pre-push] Could not read editor version from ProjectVersion.txt; skipping guardrail check."
+    exit 0
+fi
+
+# Locate the Unity editor for that exact version across common install paths.
 UNITY=""
 for candidate in \
-    "/c/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Unity.exe" \
-    "/Applications/Unity/Hub/Editor/6000.3.2f1/Unity.app/Contents/MacOS/Unity" \
-    "$HOME/Unity/Hub/Editor/6000.3.2f1/Editor/Unity"
+    "/c/Program Files/Unity/Hub/Editor/$VER/Editor/Unity.exe" \
+    "/Applications/Unity/Hub/Editor/$VER/Unity.app/Contents/MacOS/Unity" \
+    "$HOME/Unity/Hub/Editor/$VER/Editor/Unity"
 do
     if [ -x "$candidate" ]; then UNITY="$candidate"; break; fi
 done
@@ -26,7 +38,7 @@ done
 if [ -z "$UNITY" ]; then
     # Unity missing locally (CI runner, fresh clone, etc.) — don't block,
     # since guardrails re-run server-side if CI is wired up.
-    echo "[pre-push] Unity 6000.3.2f1 not found on PATH; skipping guardrail check."
+    echo "[pre-push] Unity $VER not found on PATH; skipping guardrail check."
     exit 0
 fi
 
@@ -50,10 +62,13 @@ fi
 mkdir -p "$PROJ/Logs"
 LOG="$PROJ/Logs/pre-push-$(date +%Y%m%d-%H%M%S).log"
 
-echo "[pre-push] Running CheckAllGuardrails (log: $LOG)"
+# Gate on the three reliable CODE guardrails (SerializedField / Resources.Load / Instantiate).
+# BuilderDrift runs ADVISORY inside CheckCodeGuardrails (logged, non-blocking) because it emits
+# resolution-dependent false positives in headless batchmode — see CliEntryPoints.CheckCodeGuardrails.
+echo "[pre-push] Running CheckCodeGuardrails (log: $LOG)"
 "$UNITY" -batchmode -nographics \
     -projectPath "$PROJ" \
-    -executeMethod CliEntryPoints.CheckAllGuardrails \
+    -executeMethod CliEntryPoints.CheckCodeGuardrails \
     -quit -logFile "$LOG"
 RC=$?
 
