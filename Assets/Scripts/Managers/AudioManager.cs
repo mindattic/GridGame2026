@@ -47,17 +47,22 @@ namespace Scripts.Managers
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
-    /// <summary>Play.</summary>
+    /// <summary>Play a sound effect by key. Resilient ([[feedback_chiptune_audio]]): uses the real
+    /// authored clip when present, otherwise a generated CHIPTUNE clip — so every event makes a sound,
+    /// nothing is silent, and unknown keys never error-spam. Routes through the battle SoundSource when
+    /// available, else the cross-scene Jukebox (so vendor-scene SFX work too).</summary>
     public void Play(string sfx)
     {
-        var soundEffect = SoundEffectLibrary.SoundEffects[sfx];
-        if (soundEffect == null)
-        {
-            Debug.LogError($@"Sound Effect `{sfx}` was not found.");
-            return;
-        }
+        if (string.IsNullOrEmpty(sfx)) return;
 
-        g.SoundSource.PlayOneShot(soundEffect);
+        AudioClip clip = null;
+        var lib = SoundEffectLibrary.SoundEffects;
+        if (lib != null) lib.TryGetValue(sfx, out clip);
+        if (clip == null) clip = ChiptuneBank.Sfx(sfx); // chiptune fallback — never silent
+
+        if (clip == null) return;
+        if (g.SoundSource != null) g.SoundSource.PlayOneShot(clip);
+        else Jukebox.PlaySfx(clip); // no battle SoundSource (e.g. vendor scenes)
     }
 
     /// <summary>
@@ -65,18 +70,20 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void PlayAndThen(string sfx, IEnumerator routine)
     {
-        var soundEffect = SoundEffectLibrary.SoundEffects[sfx];
-        if (soundEffect == null)
+        AudioClip clip = null;
+        var lib = SoundEffectLibrary.SoundEffects;
+        if (lib != null && !string.IsNullOrEmpty(sfx)) lib.TryGetValue(sfx, out clip);
+        if (clip == null && !string.IsNullOrEmpty(sfx)) clip = ChiptuneBank.Sfx(sfx); // chiptune fallback
+
+        if (clip == null)
         {
-            Debug.LogError($@"Sound Effect `{sfx}` was not found.");
-            // Still proceed with follow-up routine so game flow is not blocked
-            if (routine != null)
-                StartCoroutine(routine);
+            if (routine != null) StartCoroutine(routine); // don't block game flow
             return;
         }
-        g.SoundSource.PlayOneShot(soundEffect);
+        if (g.SoundSource != null) g.SoundSource.PlayOneShot(clip);
+        else Jukebox.PlaySfx(clip);
         if (routine != null)
-            StartCoroutine(InvokeAfter(soundEffect.length, routine));
+            StartCoroutine(InvokeAfter(clip.length, routine));
     }
 
     /// <summary>Invoke after.</summary>

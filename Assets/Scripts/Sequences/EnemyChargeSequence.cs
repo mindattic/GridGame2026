@@ -67,6 +67,7 @@ namespace Scripts.Sequences
                 yield break;
 
             g.ActionTitle?.Show($"{enemy.characterClass} is charging {ability.name}!");
+            g.AudioManager?.Play("Charge"); // rising chiptune telegraph
 
             var state = new CastingState(enemy, ability, target);
 

@@ -56,6 +56,7 @@ namespace Scripts.Sequences
             // Announce the phase change (routes through the dedicated AnnouncementWindow once built).
             g.ActionTitle?.Show($"{boss.characterClass} is {label}");
             g.CombatTextManager?.Spawn(label, boss.Position, "Damage");
+            g.AudioManager?.Play("Enrage"); // chiptune phase-change sting
 
             if (healFraction > 0f && boss.Stats != null && boss.Stats.MaxHP > 0f)
             {
