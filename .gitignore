@@ -89,8 +89,9 @@ hidden_changes.conf
 /[Aa]ssets/[Ss]cripts/ExportedScripts.txt
 /ExportedScripts.txt
 
-# Builder drift diagnostic artifacts (regenerated on every VerifyBuilderDrift run)
+# Builder drift diagnostic artifacts (regenerated on every VerifyBuilderDrift / guardrail run)
 /Documentation/Builders/Drift/*.actual.txt
+/Documentation/Builders/Drift/*.diff.txt
 
 # Landing-page renderer (README -> index.htm) -- credentials and Node deps
 scripts/cli/deploy.settings.json
