@@ -205,6 +205,9 @@ namespace Scripts.Canvas
                     caster.location = anchor;
                     caster.transform.position = dest;
 
+                    AnnouncementWindow.Announce($"{caster.characterClass} casts Teleport");
+                    g.AudioManager?.Play("Quicken"); // zippy blink cue
+
                     if (vfx != null)
                     {
                         var impactAsset = Scripts.Libraries.VisualEffectLibrary.Get(spell.ImpactVfxName);

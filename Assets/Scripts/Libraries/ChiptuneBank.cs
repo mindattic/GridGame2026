@@ -73,6 +73,7 @@ namespace Scripts.Libraries
                 case "Orb":      return T("sfx_orb", 900, 1400, 0.10f, W.Pulse25, 0.4f);
                 case "Crit":     return ChiptuneSynth.Sequence("sfx_crit", new[] { (659.25f, 0.04f), (988f, 0.04f), (1318.5f, 0.08f) }, W.Square, 0.5f);
                 case "Pushback": return T("sfx_pushback", 400, 120, 0.12f, W.Saw, 0.45f);
+                case "Shield":   return ChiptuneSynth.Sequence("sfx_shield", new[] { (196f, 0.07f), (262f, 0.12f) }, W.Triangle, 0.45f);
                 // Status / drama
                 case "Debuff":   return T("sfx_debuff", 330, 160, 0.16f, W.Pulse25, 0.4f);
                 case "Enrage":   return ChiptuneSynth.Sequence("sfx_enrage", new[] { (110f, 0.10f), (146.83f, 0.10f), (220f, 0.16f) }, W.Saw, 0.55f);

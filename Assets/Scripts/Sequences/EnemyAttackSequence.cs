@@ -91,6 +91,7 @@ namespace Scripts.Sequences
 
             // Announce enemy attack on the top-center action title.
             g.ActionTitle?.Show($"{attacker.characterClass} attacks!");
+            Scripts.Canvas.AnnouncementWindow.Announce($"{attacker.characterClass} attacks!");
 
             // Find adjacent heroes
             var defendingHeroes = g.Actors.Heroes

@@ -27,6 +27,8 @@ namespace Scripts.Canvas
         {
             // Grant Protection to all heroes.
             Scripts.Managers.BuffSystem.ApplyToAllHeroes(Scripts.Data.Buffs.Protection);
+            AnnouncementWindow.Announce("Party raises Shield!");
+            g.AudioManager?.Play("Shield");
 
             // Auto-skip to the next enemy turn — same flow the old Bank button drove.
             g.ManaPoolManager?.OnBankButtonClicked();

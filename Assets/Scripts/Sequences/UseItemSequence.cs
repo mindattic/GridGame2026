@@ -75,8 +75,10 @@ namespace Scripts.Sequences
             // Lock input during sequence
             g.InputManager.InputMode = InputMode.None;
 
-            // "Using {Item}" on the top-center action title.
+            // "Using {Item}" on the top-center action title + dedicated announcement.
             g.ActionTitle?.Use(item);
+            Scripts.Canvas.AnnouncementWindow.Announce($"{user.characterClass} uses {item.DisplayName}");
+            g.AudioManager?.Play("Select");
 
             // Bounce the user portrait for visual feedback
             g.ActorPanel?.BouncePortrait();
