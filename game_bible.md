@@ -1440,7 +1440,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~16~~ | — | ~~`ManaOrbLine` full-width~~ — **DONE** (responsive/equidistant, `ManaOrbLineFactory.cs:38`) | — | — |
-| 17 | US-001 | **AspectGuard** — `Utilities/AspectGuard.cs` + insert into every Canvas + viewport math (§26.3–26.4) | P0 | new file; every `*Builder.cs` |
+| ~17~ | US-001 | **AspectGuard — CORE BUILT 2026-06-06** (needs in-editor visual pass): `Utilities/AspectGuard.cs` self-installs per scene — camera letterbox to the closest valid portrait aspect + black background camera (bars), and pins every CanvasScaler to 1170×2532/match-0.5 so HUD anchors are device-universal. Remaining: safe-area inset, board tile-fit, per-Overlay-canvas SafeFrame, §26.4 UI overlay camera. | P0 | `Utilities/AspectGuard.cs` |
 | 21 | US-076 | **Spell icons on bar** — render `SpriteLibrary.SpellIcons[name]` (today: glyphs only) | P2 | `AbilityBar.Refresh` |
 
 ### 16.5 Content / data layer
