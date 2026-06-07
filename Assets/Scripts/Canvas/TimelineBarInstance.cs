@@ -750,6 +750,39 @@ namespace Scripts.Canvas
             return icon;
         }
 
+        // ── Parallel cast lane (US-#3) ───────────────────────────────────────
+        // A spell cast renders as an ICON that loads left→right on a lane just BELOW the enemy-icon
+        // rows, in PARALLEL with them — distinct from SpawnSpellIcon (which rides the main rows and
+        // suspends input on resolve). Geometry only: SpellCastBar owns timing and travels the icon
+        // via anchoredPosition.x = Lerp(leftX, rightX, t); the lane Y keeps it clear of the rows.
+        private const float CastLaneIconSize = 28f;
+        private const float CastLaneTopY = -44f;   // first lane, below the enemy rows
+        private const float CastLaneStrideY = 32f; // each concurrent cast stacks one lane lower
+
+        /// <summary>Create a cast-lane icon below the enemy rows and return its RectTransform plus the
+        /// bar's u=0 (left) / u=1 (right/trigger) X bounds. <paramref name="laneIndex"/> stacks
+        /// concurrent casts downward. Caller owns lifetime + travel; no turn-state side effects.</summary>
+        public RectTransform CreateCastLaneIcon(Sprite sprite, Color tint, int laneIndex, out float leftX, out float rightX)
+        {
+            leftX = LeftX;
+            rightX = RightX;
+            var parent = iconsRoot != null ? iconsRoot : barRect;
+            var go = new GameObject("CastLaneIcon", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(parent, false);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(CastLaneIconSize, CastLaneIconSize);
+            rt.anchoredPosition = new Vector2(LeftX, CastLaneTopY - Mathf.Max(0, laneIndex) * CastLaneStrideY);
+            var img = go.GetComponent<UnityEngine.UI.Image>();
+            img.sprite = sprite;
+            img.color = tint;
+            img.preserveAspect = true;
+            img.raycastTarget = false;
+            return rt;
+        }
+
         /// <summary>
         /// Interrupts any in-flight spell casts owned by <paramref name="caster"/> (hero OR enemy)
         /// when it takes a landing hit, via the US-024 cast-stagger model. Each hit adds WIS/STR-scaled

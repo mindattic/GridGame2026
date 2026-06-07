@@ -44,3 +44,28 @@ authoritative digest injected at session start instead of the full ~180 KB bible
 - `doctor`'s "✅ names a test" check is **best-effort**: this project verifies via in-editor
   play-test + code-reading (headless Unity is unlicensed here, GG-§6), so doctor warns rather than
   hard-fails when a ✅ story's evidence token is a source file/demo rather than a test method.
+
+## GG-A2 — Player spell cast renders as a parallel cast-lane icon BELOW the timeline (not riding on it)
+
+**What changed.** The player-initiated spell cast (AbilityBar → `SpellCastBar`) now renders as the
+spell's ICON loading left→right on a dedicated lane just BELOW the enemy-icon rows, advancing in
+**parallel** with the enemy icons (real time — the player keeps dragging heroes while it loads). It
+was previously a shrinking colored line below the timeline. This supersedes the bible's description
+(GG-§2) of a cast as an icon that rides ON the main timeline rows and, on reaching the trigger,
+suspends all input as a "third turn state."
+
+**Why.** Design direction from the user: the cast countdown should read as a separate track that
+loads alongside the enemies, and casting should not seize the turn — leaving the player free to
+reposition while a spell loads preserves the real-time tension of the timeline.
+
+**Scope / what did NOT change.**
+- The on-timeline, turn-suspending path (`TimelineBarInstance.SpawnSpellIcon` →
+  `TimelineIconMode.Resolving` + `TurnManager.BeginCastResolution`) still EXISTS and is unchanged. It
+  remains available for flows that *want* a turn-suspending cast (e.g. enemy charge/telegraph casts,
+  Epic C). Only the player AbilityBar cast was routed to the new parallel lane.
+- Cast timing, MP-spent-at-cast-start, the caster-died interrupt, and the brief post-resolve input
+  lock are unchanged (still owned by `SpellCastBar`).
+
+**Code.** `Canvas/SpellCastBar.cs` (travels a sprite icon instead of shrinking a fill),
+`Factories/SpellCastBarFactory.cs` (builds the icon from `SpriteLibrary.SpellIcons`),
+`Canvas/TimelineBarInstance.cs` (`CreateCastLaneIcon` — geometry for the below-rows lane).
