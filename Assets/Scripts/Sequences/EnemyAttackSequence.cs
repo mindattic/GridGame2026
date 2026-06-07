@@ -94,7 +94,7 @@ namespace Scripts.Sequences
 
             // Find adjacent heroes
             var defendingHeroes = g.Actors.Heroes
-                .Where(x => x.IsPlaying && Geometry.IsAdjacentTo(x.location, attacker.location))
+                .Where(x => x.IsPlaying && Geometry.AreAdjacent(x, attacker)) // footprint-aware: a 2×2 boss melees any hero next to its footprint
                 .ToList();
 
             if (defendingHeroes.Count == 0)

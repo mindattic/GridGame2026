@@ -150,7 +150,8 @@ namespace Scripts.Instances.Actor
             flags.IsMoving = true;
             g.AudioManager.Play("Slide");
 
-            Vector3 destination = Geometry.GetPositionByLocation(location);
+            // CenterPosition centers a multi-tile body over its footprint; equals the tile center for 1×1.
+            Vector3 destination = instance.CenterPosition;
 
             const float MaxSeconds = 5.0f;
             const int MaxIterations = 2000;
@@ -273,9 +274,21 @@ namespace Scripts.Instances.Actor
             if (flags.IsSwapping)
                 return;
 
+            // A multi-tile actor's logical position is authoritative (set by StepFootprint); never
+            // re-derive it from the animating body, whose center sits between tiles.
+            if (instance.IsMultiTile)
+                return;
+
             var closestTile = Geometry.GetClosestTile(this.position);
 
             if (location == closestTile.location)
+                return;
+
+            // Decision 2: a multi-tile enemy (2×2 boss) is an IMMOVABLE WALL to a dragged hero — its
+            // footprint is a hard stop, exactly like the board edge. Reject the logical move into any
+            // boss tile (the sprite may visually press against it; drop re-snaps to the last valid tile).
+            var wall = g.Actors.ActorAt(closestTile.location);
+            if (wall != null && wall != instance && wall.IsEnemy && wall.IsMultiTile)
                 return;
 
             previousLocation = location;
@@ -287,7 +300,7 @@ namespace Scripts.Instances.Actor
             ActorInstance overlappingActor = g.Actors.All.FirstOrDefault(x =>
                 x != instance &&
                 x.IsPlaying &&
-                x.location == location);
+                x.Occupies(location));
 
             if (overlappingActor == null)
             {
@@ -353,6 +366,19 @@ namespace Scripts.Instances.Actor
             // displaced actors visibly slides into place even while briefly overlapping.
             flags.IsSwapping = true;
             location = currentTile.location;
+            instance.StartCoroutine(DisplaceRoutine());
+        }
+
+        /// <summary>Phase 4 (boss-shove): animate this actor to its ALREADY-SET logical
+        /// <see cref="ActorInstance.location"/> via the standard displacement slide. The caller
+        /// (<see cref="ActorInstance.StepFootprint"/>) has already committed the logical move and
+        /// validated the shove chain; this is purely the visible 1-tile slide.</summary>
+        public void SlideToLogicalLocation()
+        {
+            if (flags.IsSwapping)
+                return;
+            Scripts.Managers.BuffSystem.OnMoved(instance); // shoved → break BreaksOnMove buffs (e.g. Sleep)
+            flags.IsSwapping = true;
             instance.StartCoroutine(DisplaceRoutine());
         }
 

@@ -62,8 +62,18 @@ namespace Scripts.Services
             foreach (var dir in Cardinals)
             {
                 var c = enemy.location + dir;
-                if (tileMap.GetTile(c) == null) continue;            // off board
-                if (IsOccupied(c, actors, enemy)) continue;          // blocked by another actor
+                if (enemy.IsMultiTile)
+                {
+                    // A multi-tile mover steps its whole footprint to anchor c. Legal if the whole
+                    // rectangle is on-board and not blocked by ANOTHER ENEMY (heroes in the way are
+                    // shovable — StepFootprint cascades them); off-board / enemy overlap is illegal.
+                    if (!FootprintStepLegal(enemy, c, actors, tileMap)) continue;
+                }
+                else
+                {
+                    if (tileMap.GetTile(c) == null) continue;        // off board
+                    if (IsOccupied(c, actors, enemy)) continue;      // blocked by another actor
+                }
                 candidates.Add(c);
             }
 
@@ -227,6 +237,27 @@ namespace Scripts.Services
 
         private static bool IsOccupied(Vector2Int loc, IReadOnlyList<ActorInstance> actors, ActorInstance self) =>
             actors.Any(a => a != null && a != self && a.IsPlaying && a.Occupies(loc));
+
+        /// <summary>Phase 4: legality of stepping a multi-tile <paramref name="enemy"/>'s footprint to
+        /// anchor <paramref name="newAnchor"/>. Every destination tile must be on-board, and none may
+        /// be covered by ANOTHER ENEMY (heroes are shovable, handled by StepFootprint's cascade). The
+        /// enemy's own current tiles don't block (it's vacating them).</summary>
+        private static bool FootprintStepLegal(ActorInstance enemy, Vector2Int newAnchor, IReadOnlyList<ActorInstance> actors, TileMap tileMap)
+        {
+            for (int dy = 0; dy < enemy.Footprint.y; dy++)
+                for (int dx = 0; dx < enemy.Footprint.x; dx++)
+                {
+                    var t = new Vector2Int(newAnchor.x + dx, newAnchor.y + dy);
+                    if (tileMap.GetTile(t) == null) return false; // off board
+                    for (int i = 0; i < actors.Count; i++)
+                    {
+                        var a = actors[i];
+                        if (a == null || a == enemy || !a.IsPlaying) continue;
+                        if (a.team == Team.Enemy && a.Occupies(t)) return false; // can't shove another enemy
+                    }
+                }
+            return true;
+        }
 
         /// <summary>
         /// True if standing at <paramref name="loc"/> puts the enemy directly between two heroes

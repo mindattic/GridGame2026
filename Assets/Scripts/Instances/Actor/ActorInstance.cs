@@ -492,10 +492,69 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     public void CalculateAttackStrategy()
     {
-        // Multi-tile movement (footprint-aware step + hero-shove) lands in Phase 4. Until then a
-        // 2×2 boss stands pat so a raw single-anchor assignment can't teleport-overlap heroes.
-        if (IsMultiTile) return;
-        location = Scripts.Services.EnemyPlanner.PlanStep(this, g.Actors.All, g.TileMap);
+        var planned = Scripts.Services.EnemyPlanner.PlanStep(this, g.Actors.All, g.TileMap);
+        if (IsMultiTile)
+        {
+            // A 2×2 boss steps its whole footprint, shoving any heroes in the way (decision 4).
+            // StepFootprint commits the logical move + hero displacement; the body then animates
+            // to CenterPosition via the move sequence's TowardDestinationRoutine.
+            if (planned != location)
+                StepFootprint(planned);
+            return;
+        }
+        location = planned;
+    }
+
+    /// <summary>
+    /// Phase 4 (decision 4): move this multi-tile enemy one cardinal step so its footprint anchors
+    /// at <paramref name="newAnchor"/>, SHOVING any hero in the newly-entered tiles into the tile
+    /// this body is vacating on that lane (mirror of the hero-slide cascade). Heroes chain like
+    /// train cars; the whole step ABORTS (nothing changes) if any required shove would push a hero
+    /// off-board or into a non-shovable actor. Logical positions commit instantly (occupancy/pincer
+    /// correct the same frame); bodies animate afterward.
+    /// </summary>
+    public void StepFootprint(Vector2Int newAnchor)
+    {
+        var delta = newAnchor - location;
+        if (delta == Vector2Int.zero) return;
+
+        // Pre-validate the whole shove chain against CURRENT occupancy before mutating anything.
+        var shoves = new List<(ActorInstance hero, Vector2Int to)>();
+        for (int dy = 0; dy < Footprint.y; dy++)
+            for (int dx = 0; dx < Footprint.x; dx++)
+            {
+                var entered = new Vector2Int(newAnchor.x + dx, newAnchor.y + dy);
+                if (Occupies(entered)) continue; // already part of my current footprint — not "entered"
+                var occ = g.Actors.ActorAt(entered);
+                if (occ == null || occ == this) continue;
+                if (!occ.IsHero) return; // can't shove a non-hero (another enemy) — abort the step
+                if (!ResolveShoveChain(occ, entered - delta, delta, shoves))
+                    return; // a shove can't resolve (board edge / non-shovable) — abort
+            }
+
+        // Commit logical positions (targets are all distinct lanes), then animate.
+        previousLocation = location;
+        foreach (var s in shoves) s.hero.location = s.to;
+        location = newAnchor;
+        foreach (var s in shoves) s.hero.Move.SlideToLogicalLocation();
+    }
+
+    /// <summary>Recursively validates shoving <paramref name="hero"/> to <paramref name="target"/>
+    /// along <paramref name="delta"/>, cascading through any hero already there (train-car). Returns
+    /// false if blocked by the board edge or a non-shovable actor; on success appends every move
+    /// (deepest-first) to <paramref name="shoves"/>. Validates against CURRENT occupancy (no mutation).</summary>
+    private bool ResolveShoveChain(ActorInstance hero, Vector2Int target, Vector2Int delta,
+        List<(ActorInstance hero, Vector2Int to)> shoves)
+    {
+        if (!g.Board.InBounds(target)) return false; // can't shove off the board
+        var blocker = g.Actors.ActorAt(target);
+        if (blocker != null && blocker != hero && blocker != this) // 'this' (the boss) is vacating its tiles
+        {
+            if (!blocker.IsHero) return false; // can't shove into an enemy
+            if (!ResolveShoveChain(blocker, target - delta, delta, shoves)) return false;
+        }
+        shoves.Add((hero, target));
+        return true;
     }
 
     /// <summary>Fire damage.</summary>
