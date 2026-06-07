@@ -357,6 +357,24 @@ namespace Scripts.Helpers
                 set { if (gm != null) gm.targetActor = value; }
             }
             public static bool HasTargetActor => gm != null && gm.hasTargetActor;
+
+            /// <summary>The playing actor whose FOOTPRINT covers <paramref name="tile"/>, or null.
+            /// The single footprint-aware occupancy chokepoint (multi-tile enemies, US "Multi-tile
+            /// actors"). Manual loop — no LINQ/alloc — since it runs in occupancy scans.</summary>
+            public static ActorInstance ActorAt(Vector2Int tile)
+            {
+                var all = All;
+                if (all == null) return null;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    var a = all[i];
+                    if (a != null && a.IsPlaying && a.Occupies(tile)) return a;
+                }
+                return null;
+            }
+
+            /// <summary>True if any playing actor's footprint covers <paramref name="tile"/>.</summary>
+            public static bool IsTileOccupied(Vector2Int tile) => ActorAt(tile) != null;
         }
 
         public static TileMap TileMap => gm != null ? gm.tileMap : null;

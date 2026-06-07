@@ -229,6 +229,34 @@ public partial class ActorInstance : MonoBehaviour
     public Vector2Int previousLocation;
     public Vector3 previousPosition;
     public Vector2Int location;
+
+    /// <summary>Board footprint in tiles (width, height). <see cref="location"/> is the anchor
+    /// (lowest x,y = top-left); the actor covers anchor + (dx,dy) for dx∈[0,w), dy∈[0,h). Default
+    /// 1×1; only enemies may be larger (e.g. a 2×2 boss). Set from <c>ActorData.Footprint</c> at spawn.</summary>
+    public Vector2Int Footprint = Vector2Int.one;
+
+    /// <summary>True when this actor occupies more than one tile.</summary>
+    public bool IsMultiTile => Footprint.x > 1 || Footprint.y > 1;
+
+    /// <summary>Zero-alloc point test: does this actor's footprint cover <paramref name="tile"/>?
+    /// HOT PATH — used in every occupancy scan. For a 1×1 actor this reduces to
+    /// <c>tile == location</c> (same cost as the old equality check, no allocation).</summary>
+    public bool Occupies(Vector2Int tile)
+    {
+        int dx = tile.x - location.x;
+        int dy = tile.y - location.y;
+        return dx >= 0 && dx < Footprint.x && dy >= 0 && dy < Footprint.y;
+    }
+
+    /// <summary>Enumerates every tile this actor's footprint covers. ALLOCATES — call only on cold
+    /// paths (spawn, displacement planning, gizmos), never inside per-frame / per-actor scan loops.</summary>
+    public IEnumerable<Vector2Int> OccupiedTiles()
+    {
+        for (int dy = 0; dy < Footprint.y; dy++)
+            for (int dx = 0; dx < Footprint.x; dx++)
+                yield return new Vector2Int(location.x + dx, location.y + dy);
+    }
+
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
     public CharacterClass characterClass;
