@@ -53,8 +53,8 @@ namespace Scripts.Sequences
             if (boss == null || !boss.IsPlaying)
                 yield break;
 
-            // Announce the phase change (routes through the dedicated AnnouncementWindow once built).
-            g.ActionTitle?.Show($"{boss.characterClass} is {label}");
+            // Announce the phase change in the dedicated, cadenced AnnouncementWindow.
+            Scripts.Canvas.AnnouncementWindow.Announce($"{boss.characterClass} is {label}");
             g.CombatTextManager?.Spawn(label, boss.Position, "Damage");
             g.AudioManager?.Play("Enrage"); // chiptune phase-change sting
 

@@ -384,6 +384,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] {boss.characterClass} wounded to 45% HP → fired {transitions.Count} phase transition(s); now phase index {boss.Flags.BossPhaseIndex}.");
         }
 
+        /// <summary>Demo (AnnouncementWindow): queue a few event callouts to show the cadence —
+        /// each flashes a few times, holds, fades, then the next plays (with a chiptune sting).</summary>
+        public void Demo_Announce()
+        {
+            Scripts.Canvas.AnnouncementWindow.Announce("Rogue casts Teleport");
+            Scripts.Canvas.AnnouncementWindow.Announce("Slime A is poisoned");
+            Scripts.Canvas.AnnouncementWindow.Announce("Cyclops is ENRAGED!");
+            Debug.Log("[Demo] Queued 3 announcements — they play one at a time with flash/hold/fade cadence.");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

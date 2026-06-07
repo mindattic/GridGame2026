@@ -92,6 +92,10 @@ namespace Scripts.Managers
                 {
                     BuffSystem.Apply(target, buff);
                 }
+
+                // Dedicated, cadenced callout: "Slime A is poisoned", etc. + chiptune debuff cue.
+                Scripts.Canvas.AnnouncementWindow.Announce($"{target.characterClass} is {buff.Id}");
+                g.AudioManager?.Play("Debuff");
             }
 
             // 5.5) US-028 Quicken/Hasten — slide the target's timeline icon FORWARD (toward the

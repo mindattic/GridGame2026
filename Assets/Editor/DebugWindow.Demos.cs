@@ -126,6 +126,11 @@ public partial class DebugWindow
             ("Trigger Boss Enrage", () => g.DebugManager.Demo_TriggerBossEnrage())
         );
 
+        // AnnouncementWindow — queue a few event callouts to demo the flash/hold/fade cadence + SFX.
+        RenderButtonRow(
+            ("Announce (cadence)", () => g.DebugManager.Demo_Announce())
+        );
+
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).
         RenderButtonRow(
             ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())

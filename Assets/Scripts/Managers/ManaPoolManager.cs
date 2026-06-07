@@ -84,6 +84,7 @@ namespace Scripts.Managers
             if (canvas == null) return;
             OrbLine = ManaOrbLineFactory.Create(canvas.transform, Bank);
             ShieldButtonFactory.Create(canvas.transform);
+            Scripts.Factories.AnnouncementWindowFactory.Create(canvas.transform); // dedicated event-callout banner
 
             var abilityContainer = GameObject.Find("Canvas/AbilityButtonContainer");
             if (abilityContainer != null)

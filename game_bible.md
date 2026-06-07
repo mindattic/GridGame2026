@@ -1124,6 +1124,18 @@ When a new scene is created by `SceneBuilderHelper.OpenScene` (auto-creates if m
 
 ## 12. Asset Pipeline
 
+### 12.0 Audio — procedural chiptune (BUILT 2026-06-06)
+
+The game is never silent: **all SFX and background music are procedural chiptune**, generated in code (no art assets) — see the audio mandate.
+- **`Utilities/ChiptuneSynth`** synthesizes `AudioClip`s (tones w/ ADSR + pitch slide, multi-note jingles, tileable music loops).
+- **`Libraries/ChiptuneBank`** caches a semantic SFX vocabulary (`Click`/`Hit`/`Cast`/`Charge`/`Heal`/`Pincer`/`Orb`/`Crit`/`Pushback`/`Debuff`/`Enrage`/`Clutch`/`Death`/`Victory`/`Defeat`/…); **any unknown key resolves** to a deterministic hash-pitched blip, so no event is silent and there is no "sound not found" error. Plus `Battle` (driving minor) + `Vendor` (gentle major) music loops.
+- **`AudioManager.Play`/`PlayAndThen`** are resilient: real authored clip if present, else chiptune; via the battle `SoundSource` else the cross-scene **`Jukebox`**.
+- **`Managers/Jukebox`** owns persistent DontDestroyOnLoad audio sources (works in vendor scenes too); **`MusicDirector`** (`[RuntimeInitializeOnLoadMethod]` + `activeSceneChanged`) picks Battle/Vendor music per scene with no per-scene wiring.
+
+### 12.0.1 AnnouncementWindow — cadenced event callouts (BUILT 2026-06-06)
+
+Game events are announced in a dedicated **`Canvas/AnnouncementWindow`** (auto-spawned in the battle HUD by `AnnouncementWindowFactory` via `ManaPoolManager.Start`): "X casts Ice", "Cyclops is ENRAGED!", "Slime is poisoned", etc. **Cadence is mandatory — never an instant text swap:** each announcement is **queued** and played one at a time with a rapid **flash**, a readable **hold**, then a **fade**, plus an "Announce" chiptune sting. Call `AnnouncementWindow.Announce(text)` from anywhere (no-op outside battle). Already wired: hero casts, enemy charges, boss phase transitions, debuff application. See the effect-cadence rule (no instant anythings).
+
 ### 12.1 Sprites
 
 - PNGs on disk in `Assets/Sprites/...`, configured as Sprite by `TextureImporter`.
