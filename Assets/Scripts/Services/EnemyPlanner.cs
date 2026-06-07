@@ -127,7 +127,7 @@ namespace Scripts.Services
         /// afar. If it can melee (adjacent), it falls through to the normal chain. Immobilised or
         /// targetless enemies never charge. Returns null = "no charge, run the normal turn".</para>
         /// </summary>
-        public static EnemyChargePlan PlanCast(ActorInstance enemy, IReadOnlyList<ActorInstance> actors)
+        public static EnemyChargePlan PlanCast(ActorInstance enemy, IReadOnlyList<ActorInstance> actors, bool ignoreMeleeRange = false)
         {
             if (enemy == null || actors == null) return null;
             if (Scripts.Managers.BuffSystem.IsImmobile(enemy)) return null;
@@ -138,8 +138,9 @@ namespace Scripts.Services
             var heroes = actors.Where(a => a != null && a.IsPlaying && a.team == Team.Hero).ToList();
             if (heroes.Count == 0) return null;
 
-            // If it can melee, let it melee — only telegraph from range.
-            if (heroes.Any(h => IsCardinalAdjacent(enemy.location, h.location))) return null;
+            // If it can melee, let it melee — only telegraph from range. US-083: a boss phase that
+            // prefers charging (ignoreMeleeRange) telegraphs even point-blank.
+            if (!ignoreMeleeRange && heroes.Any(h => IsCardinalAdjacent(enemy.location, h.location))) return null;
 
             var target = heroes.OrderBy(h => Manhattan(enemy.location, h.location)).First();
             return new EnemyChargePlan { Target = target, Ability = ability };

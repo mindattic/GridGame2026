@@ -370,6 +370,20 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Spawned 2×2 {boss.characterClass} at anchor {boss.location} (footprint {boss.Footprint.x}×{boss.Footprint.y}). Flank its 2-tile width with two heroes to pincer it; drag into it and the slide stops at its edge; on its turn it shoves heroes aside.");
         }
 
+        /// <summary>Demo (US-083): wound the boss-scripted enemy past its phase-2 HP threshold and fire
+        /// the phase transition (the Cyclops ENRAGE: banner + Quicken). Run "Spawn 2×2 Boss" first.</summary>
+        public void Demo_TriggerBossEnrage()
+        {
+            var boss = g.Actors.Enemies?.FirstOrDefault(e => e != null && e.IsPlaying && Scripts.Data.Actor.BossScriptLibrary.IsScripted(e));
+            if (boss == null) { Debug.LogWarning("[Demo] No boss-scripted enemy on the board — run 'Spawn 2×2 Boss' first."); return; }
+            if (boss.Stats != null) { boss.Stats.HP = boss.Stats.MaxHP * 0.45f; boss.HealthText.Refresh(); }
+            var transitions = Scripts.Services.BossPhaseRunner.AdvancePhasesAndCollectTransitions(boss);
+            if (transitions.Count == 0) { Debug.Log($"[Demo] {boss.characterClass} entered no new phase (already at index {boss.Flags.BossPhaseIndex})."); return; }
+            foreach (var t in transitions) g.SequenceManager.Add(t);
+            g.SequenceManager.Execute();
+            Debug.Log($"[Demo] {boss.characterClass} wounded to 45% HP → fired {transitions.Count} phase transition(s); now phase index {boss.Flags.BossPhaseIndex}.");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()

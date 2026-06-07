@@ -60,11 +60,19 @@ namespace Scripts.Sequences
             // Small pacing
             yield return Wait.None();
 
+            // US-083: fire any boss-phase transitions whose HP threshold was crossed since last turn
+            // (e.g. the Cyclops enrage) BEFORE the turn proceeds. Queued ahead of the action below.
+            foreach (var transition in Scripts.Services.BossPhaseRunner.AdvancePhasesAndCollectTransitions(enemy))
+                g.SequenceManager.Add(transition);
+
             // US-026 (Legion Option A): a Caster may TELEGRAPH a charge instead of moving/meleeing.
             // PlanCast is pure and side-effect-free; we only branch on its result. Skip planning if a
             // charge is already in flight for this enemy (don't stack) — it then takes a normal turn.
+            // US-083 knob: in a "prefers charge" phase a caster boss charges even at melee range.
             bool alreadyCasting = g.TimelineBar != null && g.TimelineBar.GetSpellIconFor(enemy) != null;
-            var charge = alreadyCasting ? null : Scripts.Services.EnemyPlanner.PlanCast(enemy, g.Actors.All);
+            bool prefersCharge = Scripts.Services.BossPhaseRunner.Current(enemy)?.PrefersCharge ?? false;
+            var charge = alreadyCasting ? null
+                : Scripts.Services.EnemyPlanner.PlanCast(enemy, g.Actors.All, ignoreMeleeRange: prefersCharge);
 
             if (charge != null)
             {

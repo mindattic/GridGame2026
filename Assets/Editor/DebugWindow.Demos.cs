@@ -120,9 +120,10 @@ public partial class DebugWindow
         );
 
         // Multi-tile actors — spawn the 2x2 Cyclops boss (immovable wall to slides, pincered by
-        // flanking its width, shoves heroes when it moves).
+        // flanking its width, shoves heroes when it moves). Boss phases (US-083): enrage at <50% HP.
         RenderButtonRow(
-            ("Spawn 2x2 Boss", () => g.DebugManager.Demo_SpawnBoss())
+            ("Spawn 2x2 Boss", () => g.DebugManager.Demo_SpawnBoss()),
+            ("Trigger Boss Enrage", () => g.DebugManager.Demo_TriggerBossEnrage())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

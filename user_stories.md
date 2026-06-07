@@ -245,7 +245,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a support branch rewards moves completing an ally's pincer line.
   **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
 
-- [ ] **US-083 — Boss scripted phases.** `NOT-BUILT`.
+- [x] **US-083 — Boss scripted phases.** ✅ DONE 2026-06-06. **Architecture: Legion panel split 2/2 A↔C → synthesis = data-driven phase table (A) with the transition expressed as a `SequenceEvent` (the bespoke-code seam both camps endorsed).** New `Data/Actor/BossPhase` + `BossScriptLibrary` (per-`CharacterClass` ordered phases {HpThreshold, PrefersCharge, `Func<ActorInstance,SequenceEvent>` Transition}); pure `Services/BossPhaseRunner` (CurrentPhaseIndex / Current / `AdvancePhasesAndCollectTransitions` — fires each newly-crossed phase's transition, advances `ActorFlags.BossPhaseIndex`); `Sequences/BossPhaseTransitionSequence` (announce + optional self-heal + optional Quicken via US-028). `EnemyTakeTurnSequence` queues transitions at turn start and honors the `PrefersCharge` knob (new `EnemyPlanner.PlanCast(..., ignoreMeleeRange)`). **Cyclops00** = first scripted boss (enrages <50% HP: ENRAGED! banner + hasten). Demo: "Trigger Boss Enrage". Bible §14.2/§14.3 updated. **Dep:** US-026 ✓.
+  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
   **Done when:** a per-class boss override (or `BossScript` sequence) swaps generic stepping for authored phases via `SequenceManager`.
   **Touch:** `Services/EnemyPlanner`, new `Sequences/Boss*`. **Bible:** §14.2 (Boss), §14.3. **Dep:** US-026.
 

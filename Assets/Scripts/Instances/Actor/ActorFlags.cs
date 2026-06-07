@@ -111,6 +111,11 @@ namespace Scripts.Instances.Actor
         /// <summary>VFX instance name for root effect (for cleanup).</summary>
         public string RootedVfxInstanceName;
 
+        /// <summary>US-083: index of the boss-script phase this actor has already ENTERED (highest
+        /// reached). Advances as HP crosses a phase threshold; each new phase fires its one-time
+        /// transition once. 0 = the opening phase. Only meaningful for boss-scripted actors.</summary>
+        public int BossPhaseIndex;
+
         #endregion
     }
 }
