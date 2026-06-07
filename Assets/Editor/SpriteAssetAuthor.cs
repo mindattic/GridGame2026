@@ -46,13 +46,22 @@ public static class SpriteAssetAuthor
     public static void AuthorSpellIcons()
     {
         EnsureFolder(SpellFolder);
+        int created = 0, skipped = 0;
         foreach (var spell in Scripts.Data.SpellLibrary.All)
         {
             if (spell == null || spell.Ability == null) continue;
+            var assetPath = $"{SpellFolder}/{spell.Ability.Name}.png";
+
+            // Gap-fill only: an existing PNG may be hand-made art (the comment promises
+            // "drop a PNG to replace"), so never overwrite it. To regenerate a placeholder,
+            // delete its PNG first. This keeps the tool safe to re-run when SpellLibrary grows.
+            if (File.Exists(assetPath)) { skipped++; continue; }
+
             var tex = BuildSpellIcon(spell);
-            SavePngAndRegister(tex, $"{SpellFolder}/{spell.Ability.Name}.png");
+            SavePngAndRegister(tex, assetPath);
+            created++;
         }
-        Debug.Log("[SpriteAssetAuthor] Spell placeholder icons authored. Real art: drop a 64×64 PNG with the same name to replace.");
+        Debug.Log($"[SpriteAssetAuthor] Spell placeholder icons: {created} created, {skipped} already present (left untouched). Real art: drop a 64×64 PNG with the same name to replace; delete a PNG to regenerate its placeholder.");
     }
 
     [MenuItem("Tools/Sprites/Configure base-4 Frame 9-slice")]

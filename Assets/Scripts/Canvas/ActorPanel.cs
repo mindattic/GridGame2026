@@ -154,9 +154,10 @@ namespace Scripts.Canvas
                 tabButtonBgs[i] = btnBg;
             }
 
-            // Hero-cycle arrows (right side of the tab bar).
-            MakeArrow(tabBar, "◀", new Vector2(1f, 0.5f), -44f, () => OnPreviousHeroArrowClick());
-            MakeArrow(tabBar, "▶", new Vector2(1f, 0.5f), -6f,  () => OnNextHeroArrowClick());
+            // Hero-cycle arrows (right side of the tab bar). Use ASCII '<'/'>' — the Avenir TMP
+            // font has no glyph for the ◀/▶ triangles, so those render as .notdef squares.
+            MakeArrow(tabBar, "<", new Vector2(1f, 0.5f), -44f, () => OnPreviousHeroArrowClick());
+            MakeArrow(tabBar, ">", new Vector2(1f, 0.5f), -6f,  () => OnNextHeroArrowClick());
 
             // ── Content area (below the tab bar) holds the three tab panels. ──
             var content = MakeRect("Content", root);
@@ -186,15 +187,17 @@ namespace Scripts.Canvas
             str.offsetMax = new Vector2(-StatsRightReserve, -38f);
             statsText.enableWordWrapping = true;
 
-            // Large portrait bleeding off the lower-right corner (overlaps the panel edge, like the
-            // old card). Built last in the Stats tab so it draws over the (left-confined) text region.
+            // Large portrait anchored to the TOP-right: the top of the portrait aligns with the top
+            // of the panel and the figure is big enough that its lower ~half bleeds off the bottom
+            // edge (only the head/torso reads inside the panel). Built last in the Stats tab so it
+            // draws over the (left-confined) text region.
             portraitImg = MakeImage("Portrait", stats, Color.white);
             var prt = (RectTransform)portraitImg.transform;
-            prt.anchorMin = new Vector2(1f, 0f);
-            prt.anchorMax = new Vector2(1f, 0f);
-            prt.pivot = new Vector2(1f, 0f);
+            prt.anchorMin = new Vector2(1f, 1f);
+            prt.anchorMax = new Vector2(1f, 1f);
+            prt.pivot = new Vector2(1f, 1f);
             prt.sizeDelta = new Vector2(PortraitSize, PortraitSize);
-            prt.anchoredPosition = new Vector2(10f, -10f);   // slight bleed off the bottom-right corner
+            prt.anchoredPosition = new Vector2(-6f, 6f);     // top edge ≈ panel top; bottom bleeds off
             portraitImg.preserveAspect = true;
             portraitImg.raycastTarget = false;
             portraitCG = portraitImg.gameObject.AddComponent<CanvasGroup>();
@@ -243,7 +246,9 @@ namespace Scripts.Canvas
             var data = ActorLibrary.Get(cls);
 
             if (portraitImg != null && data != null) portraitImg.sprite = data.Portrait;
-            SetAlpha(portraitCG, 1f);
+            // Hide the Image entirely when it has no sprite — otherwise the default white quad
+            // renders as a blank white square in the panel.
+            SetAlpha(portraitCG, portraitImg != null && portraitImg.sprite != null ? 1f : 0f);
 
             var s = actor.Stats;
             int lvl = s.Level;
@@ -331,7 +336,8 @@ namespace Scripts.Canvas
             if (statsText != null) statsText.text = "";
             if (equipmentText != null) equipmentText.text = "";
             if (loreText != null) loreText.text = "";
-            SetAlpha(portraitCG, 1f);
+            // Nothing selected → no portrait sprite → hide it so no white square lingers.
+            SetAlpha(portraitCG, portraitImg != null && portraitImg.sprite != null ? 1f : 0f);
         }
 
         /// <summary>No-op kept for call-site compatibility (panel stays visible).</summary>
@@ -425,6 +431,11 @@ namespace Scripts.Canvas
             var target = heroes[next];
             if (target == null) return;
             g.SelectionManager?.Select(target);
+
+            // Select() clears every actor's focus indicator by design; re-show it on just the
+            // cycled-to hero so the cycle buttons visibly mark who's now selected on the board.
+            g.Actors.All?.ForEach(x => x?.Render?.SetFocusIndicatorEnabled(x == target));
+
             g.AudioManager?.Play("Click");
         }
         #endregion
