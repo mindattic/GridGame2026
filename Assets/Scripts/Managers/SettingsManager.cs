@@ -110,6 +110,21 @@ public class SettingsManager : MonoBehaviour
             0f, 5f, 0.05f,
             s => s.CoinCountMultiplier,
             (s, v) => s.CoinCountMultiplier = v),
+
+        // US-096 — audio volumes. Setters re-apply immediately so the slider is audible live.
+        new SliderSetting(
+            "Music Volume",
+            "Background music loudness.",
+            0f, 1f, 0.05f,
+            s => s.MusicVolume,
+            (s, v) => { s.MusicVolume = v; Scripts.Helpers.AudioSettingsHelper.Apply(); }),
+
+        new SliderSetting(
+            "SFX Volume",
+            "Sound-effect loudness.",
+            0f, 1f, 0.05f,
+            s => s.SfxVolume,
+            (s, v) => { s.SfxVolume = v; Scripts.Helpers.AudioSettingsHelper.Apply(); }),
     };
 
     /// <summary>Toggle-based settings configuration.</summary>
@@ -128,6 +143,19 @@ public class SettingsManager : MonoBehaviour
             "If enabled, thumbnails will be reloaded based on current settings.",
             s => s.ReloadThumbnailSettings,
             (s, v) => s.ReloadThumbnailSettings = v),
+
+        // US-096 — independent mutes; re-apply immediately so the toggle takes effect live.
+        new ToggleSetting(
+            "Mute Music",
+            "Silence the background music.",
+            s => s.MuteMusic,
+            (s, v) => { s.MuteMusic = v; Scripts.Helpers.AudioSettingsHelper.Apply(); }),
+
+        new ToggleSetting(
+            "Mute SFX",
+            "Silence sound effects.",
+            s => s.MuteSfx,
+            (s, v) => { s.MuteSfx = v; Scripts.Helpers.AudioSettingsHelper.Apply(); }),
     };
 
     // Dropdown settings

@@ -85,7 +85,11 @@ namespace Scripts.Helpers
             GameSpeed = 1.0f,
             DragSensitivity = 0.05f,
             CoinCountMultiplier = 0.05f,
+            MusicVolume = 0.6f,
+            SfxVolume = 0.85f,
             ApplyMovementTilt = false,
+            MuteMusic = false,
+            MuteSfx = false,
             ReloadThumbnailSettings = false
         };
 

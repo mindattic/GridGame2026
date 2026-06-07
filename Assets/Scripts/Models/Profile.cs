@@ -72,8 +72,20 @@ public class ProfileSettings
     [SettingDisplayName("Coin Count Multiplier"), SettingRange(0f, 5f, 0.05f)]
     public float CoinCountMultiplier;
 
+    [SettingDisplayName("Music Volume"), SettingRange(0f, 1f, 0.05f)]
+    public float MusicVolume;
+
+    [SettingDisplayName("SFX Volume"), SettingRange(0f, 1f, 0.05f)]
+    public float SfxVolume;
+
     [SettingDisplayName("Apply Movement Tilt")]
     public bool ApplyMovementTilt;
+
+    [SettingDisplayName("Mute Music")]
+    public bool MuteMusic;
+
+    [SettingDisplayName("Mute SFX")]
+    public bool MuteSfx;
 
     [SettingDisplayName("Reload Thumbnail Settings")]
     public bool ReloadThumbnailSettings;
@@ -91,7 +103,11 @@ public class ProfileSettings
         GameSpeed = other.GameSpeed;
         DragSensitivity = other.DragSensitivity;
         CoinCountMultiplier = other.CoinCountMultiplier;
+        MusicVolume = other.MusicVolume;
+        SfxVolume = other.SfxVolume;
         ApplyMovementTilt = other.ApplyMovementTilt;
+        MuteMusic = other.MuteMusic;
+        MuteSfx = other.MuteSfx;
         ReloadThumbnailSettings = other.ReloadThumbnailSettings;
     }
 }

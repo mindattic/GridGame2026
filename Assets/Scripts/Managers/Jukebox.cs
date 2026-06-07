@@ -18,15 +18,31 @@ namespace Scripts.Managers
         private static AudioSource sfx;
         private static string currentTrack;
 
+        // US-096: source volumes, driven by ProfileSettings via AudioSettingsHelper.Apply().
+        // Defaults match ProfileHelper.DefaultSettings so playback before settings load is sane.
+        private static float musicVolume = 0.6f;
+        private static float sfxVolume = 0.85f;
+
         private static void Ensure()
         {
             if (music != null) return;
             var go = new GameObject("ChiptuneJukebox");
             Object.DontDestroyOnLoad(go);
             music = go.AddComponent<AudioSource>();
-            music.loop = true; music.playOnAwake = false; music.volume = 0.45f;
+            music.loop = true; music.playOnAwake = false; music.volume = musicVolume;
             sfx = go.AddComponent<AudioSource>();
-            sfx.loop = false; sfx.playOnAwake = false; sfx.volume = 0.7f;
+            sfx.loop = false; sfx.playOnAwake = false; sfx.volume = sfxVolume;
+        }
+
+        /// <summary>US-096: set the Jukebox's music + sfx source volumes (already mute-folded by the
+        /// caller — pass 0 to mute). Applies live to the running sources.</summary>
+        public static void SetVolumes(float musicVol, float sfxVol)
+        {
+            Ensure();
+            musicVolume = Mathf.Clamp01(musicVol);
+            sfxVolume = Mathf.Clamp01(sfxVol);
+            music.volume = musicVolume;
+            sfx.volume = sfxVolume;
         }
 
         /// <summary>Start (or switch to) a looping music bed by key ("Battle"/"Vendor"). No-op if the
@@ -78,6 +94,10 @@ namespace Scripts.Managers
 
         private static void Apply(string sceneName)
         {
+            // US-096: re-apply audio volumes on every scene change so a profile loaded after launch
+            // (or a settings change in another scene) is honored before music (re)starts.
+            Scripts.Helpers.AudioSettingsHelper.Apply();
+
             var track = TrackFor(sceneName);
             if (string.IsNullOrEmpty(track)) Jukebox.StopMusic();
             else Jukebox.PlayMusic(track);

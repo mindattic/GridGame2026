@@ -93,6 +93,15 @@ public partial class DebugWindow
             ("Heal Party Full", () => g.DebugManager.Demo_HealParty())
         );
 
+        // Audio (US-096) — set music/SFX volume + toggle mutes; each re-applies live to the Jukebox
+        // music bed + battle SFX. Persisted in the active profile's settings.
+        RenderButtonRow(
+            ("Music Vol 25%", () => g.DebugManager.Demo_SetMusicVolume(0.25f)),
+            ("Music Vol 100%", () => g.DebugManager.Demo_SetMusicVolume(1f)),
+            ("Toggle Mute Music", () => g.DebugManager.Demo_ToggleMuteMusic()),
+            ("Toggle Mute SFX", () => g.DebugManager.Demo_ToggleMuteSfx())
+        );
+
         // Bestiary (US-054) — log seen/defeated progress, written on enemy spawn + death.
         RenderButtonRow(
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())

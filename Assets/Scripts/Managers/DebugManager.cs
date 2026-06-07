@@ -394,6 +394,36 @@ namespace Scripts.Managers
             Debug.Log("[Demo] Queued 3 announcements — they play one at a time with flash/hold/fade cadence.");
         }
 
+        /// <summary>Demo (US-096): set the active profile's music volume and re-apply live.</summary>
+        public void Demo_SetMusicVolume(float v)
+        {
+            var s = Scripts.Helpers.ProfileHelper.CurrentProfile?.Settings;
+            if (s == null) { Debug.LogWarning("[Demo] No profile loaded."); return; }
+            s.MusicVolume = Mathf.Clamp01(v);
+            Scripts.Helpers.AudioSettingsHelper.Apply();
+            Debug.Log($"[Demo] MusicVolume = {s.MusicVolume:0.00} (muted={s.MuteMusic}) — applied.");
+        }
+
+        /// <summary>Demo (US-096): toggle the music mute and re-apply live.</summary>
+        public void Demo_ToggleMuteMusic()
+        {
+            var s = Scripts.Helpers.ProfileHelper.CurrentProfile?.Settings;
+            if (s == null) { Debug.LogWarning("[Demo] No profile loaded."); return; }
+            s.MuteMusic = !s.MuteMusic;
+            Scripts.Helpers.AudioSettingsHelper.Apply();
+            Debug.Log($"[Demo] MuteMusic = {s.MuteMusic} — applied (music vol {s.MusicVolume:0.00}).");
+        }
+
+        /// <summary>Demo (US-096): toggle the SFX mute and re-apply live.</summary>
+        public void Demo_ToggleMuteSfx()
+        {
+            var s = Scripts.Helpers.ProfileHelper.CurrentProfile?.Settings;
+            if (s == null) { Debug.LogWarning("[Demo] No profile loaded."); return; }
+            s.MuteSfx = !s.MuteSfx;
+            Scripts.Helpers.AudioSettingsHelper.Apply();
+            Debug.Log($"[Demo] MuteSfx = {s.MuteSfx} — applied (sfx vol {s.SfxVolume:0.00}). Trigger an SFX to hear it.");
+        }
+
         /// <summary>Demo (US-077): cast Scan on the first enemy — reveals its stats in the
         /// AnnouncementWindow and flags it Seen in the Bestiary.</summary>
         public void Demo_ScanEnemy()
