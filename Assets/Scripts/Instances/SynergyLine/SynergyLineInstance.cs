@@ -305,19 +305,19 @@ public class SynergyLineInstance : MonoBehaviour
     /// </summary>
     private void UpdateAnchorsToTiles()
     {
-        if (supporter != null && supporter.currentTile != null)
-        {
-            Vector3 pa = supporter.currentTile.position;
-            pa.z = 0f;
-            aAnchor.position = pa;
-        }
+        if (supporter != null) aAnchor.position = AnchorPositionFor(supporter, aAnchor.position);
+        if (attacker != null)  bAnchor.position = AnchorPositionFor(attacker, bAnchor.position);
+    }
 
-        if (attacker != null && attacker.currentTile != null)
-        {
-            Vector3 pb = attacker.currentTile.position;
-            pb.z = 0f;
-            bAnchor.position = pb;
-        }
+    /// <summary>Anchor at the actor's tile; fall back to the actor's own transform when
+    /// <c>currentTile</c> is null. Without the fallback a null tile pins the anchor at world
+    /// origin, which renders the strand off-board (reads as "the strand doesn't appear").</summary>
+    private static Vector3 AnchorPositionFor(ActorInstance actor, Vector3 previous)
+    {
+        if (actor == null) return previous;
+        Vector3 p = actor.currentTile != null ? actor.currentTile.position : actor.transform.position;
+        p.z = 0f;
+        return p;
     }
 
     /// <summary>
