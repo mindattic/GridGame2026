@@ -119,6 +119,12 @@ public partial class DebugWindow
             ("Quicken", () => g.DebugManager.Demo_Quicken())
         );
 
+        // Multi-tile actors — spawn the 2x2 Cyclops boss (immovable wall to slides, pincered by
+        // flanking its width, shoves heroes when it moves).
+        RenderButtonRow(
+            ("Spawn 2x2 Boss", () => g.DebugManager.Demo_SpawnBoss())
+        );
+
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).
         RenderButtonRow(
             ("Log ItemDef Fields", () => g.DebugManager.Demo_LogItemDefFields())

@@ -240,6 +240,22 @@ After the sequence finishes: `OnResolved` fires. `TurnManager` checks `HasQueued
 
 That's the full beat: **drag → slide cascade → pincer detect → sequence resolve → orb mint → pushback → control returns or enemy turn**. Every other interaction is a variation on this — different shape, different cost, different VFX, same flow.
 
+### 1.5 Multi-tile actors (2×2 bosses) — BUILT 2026-06-06
+
+Most actors are 1×1, but **enemies may occupy a larger rectangle** (commonly a **2×2 boss**). **Heroes are always 1×1.** The footprint is authored on `ActorData.Footprint` (default `(1,1)`; e.g. `Cyclops00` = `(2,2)`) and carried at runtime on `ActorInstance.Footprint`.
+
+**Representation & occupancy.** `location` is the **anchor** (lowest x,y = top-left; the board is 1-based). The actor covers `anchor + (dx,dy)` for `dx∈[0,w), dy∈[0,h)`. Occupancy is centralized: `ActorInstance.Occupies(tile)` (zero-alloc; for 1×1 it reduces to `tile == location`) and the single accessor `GameHelper.Actors.ActorAt(tile)` / `IsTileOccupied(tile)`. `TileInstance.IsOccupied`/`Occupier` forward to these, so every occupancy check (movement, pincer, targeting, spawn, support lines) is footprint-aware. The body sprite is scaled by the footprint and centered between its tiles via `Geometry.GetFootprintCenter` / `ActorInstance.CenterPosition`.
+
+**Spawn.** A multi-tile enemy needs a whole free rectangle: `RNG.UnoccupiedFootprintAnchor` / `FootprintFitsFree` (on-board + all tiles free). `StageManager.SpawnActor` honors an explicit, fitting `StageActor.Location` (designer-placed boss) else rolls a free anchor; the 1×1 placement path is unchanged.
+
+**The four rules** (designer-locked):
+1. **Immovable anchor (vs hero slides).** A hero dragged into any boss tile is **blocked** — the slide stops at the footprint edge, exactly like the board edge (`ActorMovement.CheckLocationChanged` rejects the logical move into a multi-tile enemy). The boss is never displaced by a slide. Pincer damage still applies and pushes the boss's **timeline icon** (not its board position).
+2. **Pincer by flanking its width.** A 2×2 enemy is caught when every tile strictly between the two (1×1 hero) attackers is covered by an opposing actor and none by an ally; the boss's 2 tiles in the line count as **one** opponent, not a gap (`PincerDetector.Detect`, distinct-actor predicate). Harder to set up than a 1×1 — bosses are tougher but killable by the core mechanic.
+3. **Boss shoves heroes (on its turn).** A moving 2×2 enemy steps its footprint one cardinal tile and **displaces any hero in the entered tiles** into the tile it vacated on that lane — the same train-car cascade as a hero slide (`ActorInstance.StepFootprint` + `ResolveShoveChain`). The step **aborts** (nothing moves) if a required shove would push a hero off-board or into a non-shovable actor. `EnemyPlanner` only offers footprint-legal steps (`FootprintStepLegal`).
+4. **One timeline icon** regardless of size; the boss melees/pincers via footprint adjacency (`Geometry.AreAdjacent`).
+
+Demo: **"Spawn 2×2 Boss"** (DebugWindow) drops the Cyclops into a live battle. Sources: `ActorInstance.cs`, `TileInstance.cs`, `GameHelper.cs`, `PincerDetector.cs`, `ActorMovement.cs`, `EnemyPlanner.cs`, `StageManager.cs`, `RNG.cs`, `Geometry.cs`, `ActorData.cs`.
+
 ---
 
 ## 2. The Timeline

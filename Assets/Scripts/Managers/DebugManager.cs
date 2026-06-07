@@ -360,6 +360,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] Quickened {actor.characterClass} by {amount:0.##}u: u {before:0.00} → {icon.GetU():0.00} ({icon.GetSecondsRemaining():0.0}s to its turn now).");
         }
 
+        /// <summary>Demo (Multi-tile actors): spawn the 2×2 Cyclops boss into the current battle. It
+        /// occupies a free 2×2 rectangle, is an immovable wall to hero slides, is pincered by flanking
+        /// its width, and shoves heroes when it moves on its turn.</summary>
+        public void Demo_SpawnBoss()
+        {
+            var boss = g.StageManager.AddEnemy(CharacterClass.Cyclops00);
+            if (boss == null) { Debug.LogWarning("[Demo] Couldn't spawn the Cyclops (no free 2×2 space on the board?)."); return; }
+            Debug.Log($"[Demo] Spawned 2×2 {boss.characterClass} at anchor {boss.location} (footprint {boss.Footprint.x}×{boss.Footprint.y}). Flank its 2-tile width with two heroes to pincer it; drag into it and the slide stops at its edge; on its turn it shoves heroes aside.");
+        }
+
         /// <summary>Demo (US-040): scan all ItemDefinitions and report how many declare each new
         /// field — proves the data plumbing exists. Counts are 0 until EPIC E populates them.</summary>
         public void Demo_LogItemDefFields()
