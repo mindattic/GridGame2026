@@ -176,22 +176,31 @@ namespace Scripts.Factories
         }
 
         /// <summary>
-        /// Creates a spell-cast icon variant: same hierarchy as Create(), but the GameObject
-        /// is named after the caster + ability and the RectTransform is pre-positioned at
-        /// startU on the bar. Caller (TimelineBarInstance.SpawnSpellIcon) still wires up
-        /// the cast state and lifecycle via TimelineIcon.InitializeForSpell.
+        /// Creates a spell-cast icon variant. When isCastIcon=true (below-line lane, US-114)
+        /// the children are scaled to ~¼ size and laneY offsets the icon below the timeline center.
+        /// Caller (TimelineBarInstance.SpawnSpellIcon) wires up the cast state via InitializeForSpell.
         /// </summary>
-        public static GameObject CreateForCast(Transform parent, CastingState state, float leftX, float rightX, float startU, int dupRow)
+        public static GameObject CreateForCast(Transform parent, CastingState state, float leftX, float rightX, float startU, int dupRow, float laneY = 0f, bool isCastIcon = false)
         {
             var go = Create(parent);
             var icon = go.GetComponent<TimelineIcon>();
             icon.name = $"TimelineIcon_Cast_{state.Caster.name}_{state.Ability?.name}";
 
-            // Centered pivot so the box straddles the bar line, centered vertically by row.
             var tr = go.GetComponent<RectTransform>();
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
             tr.pivot = new Vector2(0.5f, 0.5f);
-            tr.anchoredPosition = new Vector2(Mathf.Lerp(leftX, rightX, startU), -dupRow * TimelineBarConfig.TagRowHeight);
+            tr.anchoredPosition = new Vector2(Mathf.Lerp(leftX, rightX, startU), laneY - dupRow * TimelineBarConfig.TagRowHeight);
+
+            if (isCastIcon)
+            {
+                // Scale children to ~¼ size for the below-the-line cast lane (US-114).
+                var tagRT  = tr.Find("Tag")?.GetComponent<RectTransform>();
+                var iconRT = tr.Find("Icon")?.GetComponent<RectTransform>();
+                var lblRT  = tr.Find("Label")?.GetComponent<RectTransform>();
+                if (tagRT  != null) { tagRT.sizeDelta = new Vector2(28f, 28f); tagRT.anchoredPosition = new Vector2(0f, -7f); }
+                if (iconRT != null) { iconRT.sizeDelta = new Vector2(14f, 14f); iconRT.anchoredPosition = new Vector2(0f, 11f); }
+                if (lblRT  != null) { var tmp = lblRT.GetComponent<TMPro.TextMeshProUGUI>(); if (tmp != null) tmp.fontSize = 10; lblRT.anchoredPosition = new Vector2(0f, -8f); }
+            }
 
             return go;
         }

@@ -16,6 +16,7 @@ namespace Scripts.Factories
     /// SpellCastBar's slot manager). The icon is the spell's placeholder sprite (already color-coded
     /// by its mana cost), with the spell name as a small label above it.
     /// </summary>
+    [System.Obsolete("Retired by US-114: use TimelineBarInstance.SpawnSpellIcon for cast-time spells. SpellCastBarFactory.Create no longer called from AbilityBar.")]
     public static class SpellCastBarFactory
     {
         public const float IconSize = 28f;

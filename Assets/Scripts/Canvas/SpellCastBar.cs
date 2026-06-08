@@ -21,6 +21,7 @@ namespace Scripts.Canvas
     /// <para>This component lives ON the cast-lane icon GameObject created by
     /// <see cref="TimelineBarInstance.CreateCastLaneIcon"/>, so destroying it removes the icon.</para>
     /// </summary>
+    [System.Obsolete("Retired by US-114: use TimelineBarInstance.SpawnSpellIcon for cast-time spells. SpellCastBar parallel-cast path removed from AbilityBar.HandleSpell.")]
     public sealed class SpellCastBar : MonoBehaviour
     {
         public const float ResolveLockSeconds = 0.30f;

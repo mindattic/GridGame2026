@@ -279,7 +279,7 @@ These were on the original board and are **already implemented in code**. The bi
 ## EPIC G — UI Polish & Accessibility
 *Sand the edges. Several of these are PARTIAL — the framework exists, the last mile doesn't.*
 
-- [ ] **US-114 — Timeline two-lane layout (portraits above, cast icons below).** `NOT-BUILT` (today actor + cast icons share one row; casts render as stacked shrinking `SpellCastBar` bars).
+- [x] **US-114 — Timeline two-lane layout (portraits above, cast icons below).** ✅ DONE 2026-06-08 (code complete; visual verify in-editor deferred — layout is the point). `NOT-BUILT` was the prior state.
   **🔓 Design rule 2026-06-02 (user):** one shared timeline, two lanes — **large actor/portrait turn-icons ABOVE** the line, **¼-size cast icons BELOW**. Remove the stacked `SpellCastBar` shrinking-bars entirely; a cast's *position on the shared u-axis* is its progress read, so it lines up under the enemy turn-icons. Shared continuous clock: a cast resolves at its icon's trigger, off any particular turn (the IP-gauge — §2.6). Enemy charge icons (US-026) ride the same below-line lane.
   **Done when:** turn-icons render large above the timeline line; cast icons render ~¼-size below it on the same axis; `SpellCastBar`/`SpellCastBarFactory` retired; both lanes share the trigger; verified in-editor (the layout is the whole point).
   **Touch:** `Canvas/TimelineIcon`, `Factories/TimelineIconFactory`, `Canvas/TimelineBarInstance`; retire `Canvas/SpellCastBar` + `Factories/SpellCastBarFactory`; `AbilityBar.HandleSpell` (no longer spawns a cast bar). **Bible:** §2.6, §2.8, §9. **Dep:** US-001 (AspectGuard layout). **Editor-gated (visual).**

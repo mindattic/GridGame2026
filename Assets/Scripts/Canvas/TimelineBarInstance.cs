@@ -683,7 +683,7 @@ namespace Scripts.Canvas
             // Tag rect: centered pivot so the box straddles the bar line, anchored at center for symmetric X
             tr.anchorMin = tr.anchorMax = new Vector2(0.5f, 0.5f);
             tr.pivot = new Vector2(0.5f, 0.5f);
-            tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), -dup * TimelineBarConfig.TagRowHeight);
+            tr.anchoredPosition = new Vector2(Mathf.Lerp(LeftX, RightX, startU), ActorLaneY - dup * TimelineBarConfig.TagRowHeight);
             float uSpeed = UnitsPerSecFromSpeed(enemy.Stats.Speed.ToInt());
             tag.InitializeNormalized(enemy, LeftX, RightX, startU, uSpeed, OnIconReachedTrigger, releaseDelay);
             activeIcons.Add(tag);
@@ -708,8 +708,11 @@ namespace Scripts.Canvas
             float uSpeed = UnitsPerSecFromSpeed(10);
             float startU = Mathf.Clamp01(1f - state.TotalCastTime * uSpeed);
 
+            int castRow = 0;
+            foreach (var ai in activeIcons) if (ai != null && ai.IsSpellIcon) castRow++;
+
             var parent = iconsRoot != null ? iconsRoot : barRect;
-            var iconGO = TimelineIconFactory.CreateForCast(parent, state, LeftX, RightX, startU, activeIcons.Count);
+            var iconGO = TimelineIconFactory.CreateForCast(parent, state, LeftX, RightX, startU, castRow, CastIconLaneY, isCastIcon: true);
             var icon = iconGO.GetComponent<TimelineIcon>();
 
             System.Action<TimelineIcon> onReached = (TimelineIcon self) =>
@@ -750,14 +753,18 @@ namespace Scripts.Canvas
             return icon;
         }
 
-        // ── Parallel cast lane (US-#3) ───────────────────────────────────────
-        // A spell cast renders as an ICON that loads left→right on a lane just BELOW the enemy-icon
-        // rows, in PARALLEL with them — distinct from SpawnSpellIcon (which rides the main rows and
-        // suspends input on resolve). Geometry only: SpellCastBar owns timing and travels the icon
-        // via anchoredPosition.x = Lerp(leftX, rightX, t); the lane Y keeps it clear of the rows.
+        // ── Two-lane layout (US-114) ──────────────────────────────────────────
+        // Actor/enemy icons render ABOVE the bar line; spell-cast icons render BELOW at ¼ size.
+        // Both share the same u-axis (leftX → rightX); Y offset separates the two visual lanes.
+        private const float ActorLaneY   =  40f;  // enemy turn-icons above the bar center line
+        private const float CastIconLaneY = -40f; // spell cast icons below the bar center line
+
+        // ── Retired parallel cast lane (SpellCastBar — retired US-114) ───────
+        // Constants kept to avoid breaking CreateCastLaneIcon callers, but the SpellCastBar
+        // path is no longer wired from AbilityBar (see AbilityBar.HandleSpell).
         private const float CastLaneIconSize = 28f;
-        private const float CastLaneTopY = -44f;   // first lane, below the enemy rows
-        private const float CastLaneStrideY = 32f; // each concurrent cast stacks one lane lower
+        private const float CastLaneTopY = -44f;
+        private const float CastLaneStrideY = 32f;
 
         /// <summary>Create a cast-lane icon below the enemy rows and return its RectTransform plus the
         /// bar's u=0 (left) / u=1 (right/trigger) X bounds. <paramref name="laneIndex"/> stacks

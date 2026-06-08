@@ -290,8 +290,6 @@ namespace Scripts.Canvas
                 return;
             }
 
-            var canvas = GameObject.Find("Canvas");
-            if (canvas == null) return;
             var spell = ResolveSpell(a);
             if (spell == null) { Debug.LogWarning($"[AbilityBar] Spell '{a.Name}' has no SpellDefinition wired."); return; }
             var caster = g.Actors.SelectedActor;
@@ -307,11 +305,6 @@ namespace Scripts.Canvas
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
                 {
-                    if (SpellCastBar.IsAtCapacity)
-                    {
-                        Debug.LogWarning($"[AbilityBar] Too many casts in flight (max {SpellCastBar.MaxConcurrent}) — wait for one to resolve.");
-                        return;
-                    }
                     if (!bank.Spend(a.Cost))
                     {
                         Debug.LogWarning($"[AbilityBar] Orbs changed mid-pick — couldn't afford '{a.Name}'.");
@@ -319,11 +312,29 @@ namespace Scripts.Canvas
                     }
                     Debug.Log($"[AbilityBar] Casting '{a.Name}' ({a.CastTimeSeconds:0.0}s) on {targets.Count} target(s)…");
 
-                    Scripts.Factories.SpellCastBarFactory.Create(canvas.transform, a, onResolved: () =>
+                    if (a.CastTimeSeconds > 0f)
                     {
+                        // Cast-time spell: timeline icon loads below the bar line (US-114 two-lane layout).
+                        var bar = g.TimelineBar;
+                        if (bar == null) { Debug.LogWarning("[AbilityBar] No TimelineBar — cannot cast spell."); return; }
+                        var capturedTargets = targets;
+                        var capturedSpell = spell;
+                        // CastingState expects the legacy Ability class; build a lightweight adapter
+                        // so ManaAbility's cast-time and name flow into the timeline visualization.
+                        var abilityAdapter = new Ability { name = a.Name, CastTimeSeconds = a.CastTimeSeconds };
+                        var state = new Scripts.Models.CastingState(caster, abilityAdapter, capturedTargets.Count > 0 ? capturedTargets[0] : null);
+                        bar.SpawnSpellIcon(state, onComplete: _ =>
+                        {
+                            foreach (var t in capturedTargets)
+                                Scripts.Managers.SpellEffectDispatcher.Cast(capturedSpell, caster, t);
+                        });
+                    }
+                    else
+                    {
+                        // Instant spell — apply effects immediately, no timeline icon.
                         foreach (var t in targets)
                             Scripts.Managers.SpellEffectDispatcher.Cast(spell, caster, t);
-                    }, caster: caster);
+                    }
                 },
                 onCancel: () => Debug.Log($"[AbilityBar] Cast of '{a.Name}' cancelled — no orbs spent."));
         }
