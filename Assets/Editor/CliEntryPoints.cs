@@ -6,7 +6,9 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.U2D;
 
 /// <summary>
 /// CLIENTRYPOINTS - Static entry points callable from Unity's -batchmode -executeMethod flag.
@@ -612,6 +614,117 @@ public static class CliEntryPoints
         if (lenSq < 1e-6f) return Vector2.Distance(p, a);
         float t = Mathf.Clamp01(Vector2.Dot(p - a, ab) / lenSq);
         return Vector2.Distance(p, a + t * ab);
+    }
+
+    // ===================== HUD Texture Atlas (US-103) =====================
+
+    /// <summary>
+    /// Creates (or re-creates) <c>Assets/Sprites/HudAtlas.spriteatlas</c> containing all small
+    /// in-battle HUD sprite folders and registers it as an Addressable with label <c>UI</c>.
+    ///
+    /// <para>Unity automatically batches any <see cref="UnityEngine.UI.Image"/> whose sprite lives
+    /// in the atlas into a single draw call — no changes to <c>SpriteLibrary</c> or builder code are
+    /// needed. Excluded: Backgrounds (large), generic Icons (246 entries / own setup), Portraits,
+    /// Thumbnails, and decorative sets not drawn every frame.</para>
+    ///
+    /// <para>Run via batchmode:
+    /// <c>Unity -batchmode -nographics -projectPath . -executeMethod CliEntryPoints.BuildHudAtlas -quit -logFile -</c>
+    /// </para>
+    /// </summary>
+    public static void BuildHudAtlas()
+    {
+        try
+        {
+            const string atlasPath = "Assets/Sprites/HudAtlas.spriteatlas";
+
+            AssetDatabase.DeleteAsset(atlasPath);
+
+            var atlas = new SpriteAtlas();
+
+            // Mobile-optimal: no mipmaps, bilinear, 2048 max, no alpha-split.
+            var tex = atlas.GetTextureSettings();
+            tex.generateMipMaps = false;
+            tex.filterMode = FilterMode.Bilinear;
+            tex.readable = false;
+            atlas.SetTextureSettings(tex);
+
+            var plat = atlas.GetPlatformSettings("DefaultTexturePlatform");
+            plat.maxTextureSize = 2048;
+            plat.format = TextureImporterFormat.Automatic;
+            plat.crunchedCompression = false;
+            plat.allowsAlphaSplitting = false;
+            atlas.SetPlatformSettings(plat);
+
+            // HUD sprite folders — in-battle UI elements that draw every frame.
+            var hudFolders = new[]
+            {
+                "Assets/Sprites/GUI",
+                "Assets/Sprites/ActionBar",
+                "Assets/Sprites/HealthBar",
+                "Assets/Sprites/Mana",
+                "Assets/Sprites/Statuses",
+                "Assets/Sprites/AbilityButtons",
+                "Assets/Sprites/Timeline/ActorTagIcons",
+                "Assets/Sprites/TimerBar",
+                "Assets/Sprites/Selection",
+                "Assets/Sprites/Actor/Masks",
+                "Assets/Sprites/Actor/Base",
+                "Assets/Sprites/Actor/Back",
+                "Assets/Sprites/Actor/Frames",
+                "Assets/Sprites/Actor/Armor",
+            };
+
+            var toAdd = new System.Collections.Generic.List<UnityEngine.Object>();
+            foreach (var folder in hudFolders)
+            {
+                if (!AssetDatabase.IsValidFolder(folder))
+                {
+                    Debug.LogWarning($"[Cli] BuildHudAtlas: folder not found, skipping: {folder}");
+                    continue;
+                }
+                var obj = AssetDatabase.LoadAssetAtPath<DefaultAsset>(folder);
+                if (obj != null) toAdd.Add(obj);
+            }
+
+            if (toAdd.Count == 0)
+            {
+                Debug.LogError("[Cli] BuildHudAtlas: no valid HUD sprite folders found — check Assets/Sprites/ structure.");
+                EditorApplication.Exit(1);
+                return;
+            }
+
+            atlas.Add(toAdd.ToArray());
+            AssetDatabase.CreateAsset(atlas, atlasPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"[Cli] HudAtlas created at {atlasPath} with {toAdd.Count} folder(s).");
+
+            // Register as Addressable: address "HudAtlas", label "UI".
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            if (settings != null)
+            {
+                settings.AddLabel("UI", true);
+                var guid = AssetDatabase.AssetPathToGUID(atlasPath);
+                var entry = settings.CreateOrMoveEntry(guid, settings.DefaultGroup);
+                entry.address = "HudAtlas";
+                entry.labels.Add("UI");
+                AssetDatabase.SaveAssets();
+                Debug.Log("[Cli] HudAtlas registered: address='HudAtlas' label='UI'.");
+            }
+            else
+            {
+                Debug.LogWarning("[Cli] Addressables not initialized; atlas saved but NOT registered. " +
+                    "Open Window → Asset Management → Addressables → Groups once, then re-run BuildHudAtlas.");
+            }
+
+            EditorApplication.Exit(0);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Cli] BuildHudAtlas failed: {e.Message}\n{e.StackTrace}");
+            EditorApplication.Exit(1);
+        }
     }
 
     // ===================== Command-line arg helper =====================
