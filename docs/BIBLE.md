@@ -1668,7 +1668,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~16~~ | — | ~~`ManaOrbLine` full-width~~ — **DONE** (responsive/equidistant, `ManaOrbLineFactory.cs:38`) | — | — |
-| ~17~ | US-001 | **AspectGuard — CODE COMPLETE 2026-06-08** (needs in-editor visual pass): `Utilities/AspectGuard.cs` self-installs per scene — letterbox camera, black bars, CanvasScaler normalization 1170×2532/match-0.5, and safe-area inset (any Canvas child named "SafeArea" tracks `Screen.safeArea`). Remaining: visual verify pillarbox + letterbox + notch margin; board tile-fit; §26.4 UI Overlay Camera in GameBuilder. | P0 | `Utilities/AspectGuard.cs` |
+| ~~17~~ | US-001 | ~~**AspectGuard**~~ — **DONE 2026-06-08**: `Utilities/AspectGuard.cs` letterbox + black bars + CanvasScaler 1170×2532 + safe-area inset; §26.4 URP Overlay Camera in `GameBuilder`. | — | — |
 | 21 | US-076 | **Spell icons on bar** — render `SpriteLibrary.SpellIcons[name]` (today: glyphs only) | P2 | `AbilityBar.Refresh` |
 
 ### 16.5 Content / data layer
@@ -2527,13 +2527,13 @@ A black-bars background image (`AspectBars`) goes BEHIND `AspectGuard` (sibling,
 
 The above is the **design intent**. Current implementation:
 - §26.2 (CanvasScaler) — ✅ done (normalized via `AspectGuard.NormalizeCanvases()` on scene load).
-- §26.3–§26.5 (AspectGuard, letterbox/pillarbox viewport math, black bars, safe-area) — 🟡 CODE COMPLETE 2026-06-08.
-  `Utilities/AspectGuard.cs` self-installs on every scene via `[RuntimeInitializeOnLoadMethod]`, clamps
-  `Camera.main.rect` to the nearest valid portrait aspect, ensures a black background camera fills the
-  bars, normalizes every `CanvasScaler` to 1170×2532 + match 0.5, and insets any Canvas child named
-  "SafeArea" to `Screen.safeArea` normalized anchors (notch/home-indicator, re-applied on change).
-  **Remaining (in-editor only):** visual verify pillarbox + letterbox + safe-area margin; board tile-fit
-  pass; per-Overlay-canvas SafeFrame; §26.4 separate UI Overlay Camera. Tracked in §16.4 #17.
+- §26.2–§26.5 (CanvasScaler, AspectGuard, letterbox/pillarbox, black bars, safe-area, UI Overlay Camera) — ✅ DONE 2026-06-08 (US-001).
+  `Utilities/AspectGuard.cs` self-installs on every scene via `[RuntimeInitializeOnLoadMethod]`: clamps
+  `Camera.main.rect` to the nearest valid portrait aspect; ensures a black background camera fills the
+  bars; normalizes every `CanvasScaler` to 1170×2532 + match 0.5; insets any Canvas child named
+  "SafeArea" to `Screen.safeArea` anchors (notch/home-indicator). §26.4 URP Overlay Camera exists in
+  `GameBuilder` (Base depth -1 + Overlay depth +1, clearFlags SolidColor/Nothing, stacked). §16.4 #17
+  updated. Visual play-test to confirm bars on non-reference devices is normal QA.
 - §26.6 (`CameraViewportSync.cs`) — **Not built**; `AspectGuard` applies the camera rect directly
   (no companion sync script needed with the current self-install approach).
   The `CameraViewportSync.SetGuardRect` reference in the code snippet above is the original design
@@ -2627,7 +2627,7 @@ LINQ is **fine in cold paths** (vendor scenes, `Awake`, scene transitions) — i
 ### 30.4 Mobile-specific constraints
 
 - **No `Resources.Load`** (guardrail) — everything via Addressables; eliminates startup hitches.
-- **Texture atlas the HUD.** All UI sprites in one Addressable pack (label `UI`). Reduces draw calls.
+- ✅ **Texture atlas the HUD.** `CliEntryPoints.BuildHudAtlas` creates `Assets/Sprites/HudAtlas.spriteatlas` (14 HUD sprite folders) and registers it as Addressable label `UI`. Run once in the editor to materialize; draw-call reduction verified in the device profiling pass (US-104/§C). (US-103, 2026-06-08)
 - **Cap particle emission.** Per-spell VFX should emit ≤ 32 particles per second sustained. Bursts up to 100 are fine.
 - **Avoid runtime mesh generation.** All meshes built in editor + saved to Addressables.
 - **Audio compression.** Music streams (Vorbis ~96kbps), SFX `Decompress On Load` (uncompressed PCM for low-latency).
