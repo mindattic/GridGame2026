@@ -424,6 +424,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] MuteSfx = {s.MuteSfx} — applied (sfx vol {s.SfxVolume:0.00}). Trigger an SFX to hear it.");
         }
 
+        /// <summary>Demo (US-094): toggle colorblind mode — swaps red/green mana orbs and debuff
+        /// icons to Okabe-Ito Vermillion/Bluish-green. Watch the orb line update immediately.</summary>
+        public void Demo_ToggleColorblindMode()
+        {
+            var s = Scripts.Helpers.ProfileHelper.CurrentProfile?.Settings;
+            if (s == null) { Debug.LogWarning("[Demo] No profile loaded."); return; }
+            s.ColorblindMode = !s.ColorblindMode;
+            Debug.Log($"[Demo] ColorblindMode = {s.ColorblindMode} — mana orb line and debuff icons now use {(s.ColorblindMode ? "Okabe-Ito" : "standard")} palette.");
+        }
+
         /// <summary>Demo (US-095): toggle reduce-motion and re-apply — suppresses particle VFX and
         /// straightens projectile arcs. Cast a spell afterward to see the difference.</summary>
         public void Demo_ToggleReduceMotion()

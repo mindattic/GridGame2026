@@ -163,6 +163,13 @@ public class SettingsManager : MonoBehaviour
             "Suppresses particle effects and straightens projectile arcs for reduced on-screen movement.",
             s => s.ReduceMotion,
             (s, v) => { s.ReduceMotion = v; Scripts.Helpers.MotionSettingsHelper.Apply(); }),
+
+        // US-094 — Okabe-Ito colorblind palette: replaces red/green mana orbs + debuff icons.
+        new ToggleSetting(
+            "Colorblind Mode",
+            "Replaces red and green with Okabe-Ito Vermillion and Bluish-green for colorblind accessibility.",
+            s => s.ColorblindMode,
+            (s, v) => s.ColorblindMode = v),
     };
 
     // Dropdown settings

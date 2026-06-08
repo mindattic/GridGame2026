@@ -110,8 +110,11 @@ namespace Scripts.Canvas
             return (filled < Capacity) ? filled : -1;
         }
 
-        /// <summary>The display color for each orb type. Tune freely — single source of truth for orb color.</summary>
-        public static Color ColorFor(ManaType t)
+        /// <summary>The display color for each orb type — routes through the colorblind palette when enabled (US-094).</summary>
+        public static Color ColorFor(ManaType t) => Scripts.Helpers.ColorblindHelper.GetManaColor(t);
+
+        /// <summary>Standard (non-colorblind) orb colors. Called by ColorblindHelper for unaffected types.</summary>
+        public static Color ColorForStandard(ManaType t)
         {
             switch (t)
             {

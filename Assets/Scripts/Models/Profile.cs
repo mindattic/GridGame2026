@@ -93,6 +93,10 @@ public class ProfileSettings
     [SettingDisplayName("Reload Thumbnail Settings")]
     public bool ReloadThumbnailSettings;
 
+    // US-094: Okabe-Ito colorblind-safe palette for mana orbs and debuff icons.
+    [SettingDisplayName("Colorblind Mode")]
+    public bool ColorblindMode;
+
 
     // Enum settings
     //[SettingDisplayName("Texture Resolution")]
@@ -113,6 +117,7 @@ public class ProfileSettings
         MuteSfx = other.MuteSfx;
         ReduceMotion = other.ReduceMotion;
         ReloadThumbnailSettings = other.ReloadThumbnailSettings;
+        ColorblindMode = other.ColorblindMode;
     }
 }
 

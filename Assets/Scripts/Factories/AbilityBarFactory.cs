@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using Scripts.Canvas;
@@ -55,6 +56,7 @@ namespace Scripts.Factories
             var costLabels = new TMP_Text[Slots];
             var frames = new Image[Slots];
             var iconImages = new Image[Slots];
+            var slotRects = new RectTransform[Slots];
 
             // The bar is added at the end; capture via closure variable so click handlers can route
             // through it (it knows the currently-selected-hero's loadout).
@@ -81,10 +83,21 @@ namespace Scripts.Factories
                 img.color = new Color(0.20f, 0.25f, 0.40f, 0.92f);
                 frames[i] = img;
 
+                slotRects[i] = rt;
+
                 var btn = slotGO.GetComponent<Button>();
                 btn.targetGraphic = img;
                 btn.onClick.AddListener(() => { if (barRef != null) barRef.OnSlotClicked(idx); });
                 buttons[i] = btn;
+
+                // US-091: hover/long-press shows an ability tooltip above the slot.
+                var et = slotGO.AddComponent<EventTrigger>();
+                var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+                enterEntry.callback.AddListener(_ => { if (barRef != null) barRef.ShowTooltipForSlot(idx); });
+                et.triggers.Add(enterEntry);
+                var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                exitEntry.callback.AddListener(_ => { if (barRef != null) barRef.HideTooltip(); });
+                et.triggers.Add(exitEntry);
 
                 nameLabels[i] = CreateLabel(slotGO.transform, "Name", font,
                     fontSize: 28,
@@ -115,7 +128,7 @@ namespace Scripts.Factories
 
             barRef = container.gameObject.GetComponent<AbilityBar>();
             if (barRef == null) barRef = container.gameObject.AddComponent<AbilityBar>();
-            barRef.Bind(bank, buttons, nameLabels, costLabels, frames, iconImages);
+            barRef.Bind(bank, buttons, nameLabels, costLabels, frames, iconImages, slotRects);
             return barRef;
         }
 

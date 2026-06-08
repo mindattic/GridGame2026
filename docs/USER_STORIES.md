@@ -313,7 +313,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** `AudioManager` gains music playback (Vorbis stream) + Music/SFX/UI volume + independent mutes in `SettingsManager`, persisted.
   **Touch:** `Managers/AudioManager`, `Managers/SettingsManager`, `Libraries/MusicTrackLibrary`. **Bible:** §12.1.1 audio, §30.4, §31.5; resolve §29.4 #18. **Dep:** —
 
-- [ ] **US-091 — AbilityBar tooltip (hover / long-press).** `NOT-BUILT`.
+- [x] **US-091 — AbilityBar tooltip (hover / long-press).** ✅ DONE 2026-06-07. `AbilityBarFactory` adds an `EventTrigger` (PointerEnter/PointerExit) to every slot and passes `slotRects[]` to `AbilityBar.Bind`. `AbilityBar.ShowTooltipForSlot(i)` builds a formatted string (name, kind, cost icons / charge count / "Free", cast time for spells) and calls `Tooltip.Show` with the slot's RectTransform as target, placement Top, fade enabled. `HideTooltip()` destroys the active tooltip on PointerExit. No separate demo button needed — hover any slot in play mode. Bible §4.5 updated. **Dep:** US-076 ✓.
   **Done when:** hover/long-press shows name, cost, target-shape preview, base dmg/heal.
   **Touch:** `Canvas/AbilityBar`, new tooltip. **Bible:** §4.5. **Dep:** US-076.
 
@@ -322,7 +322,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** skills can declare a reuse limit; bar renders the greyscale + radial sweep (§4.5).
   **Touch:** `Canvas/AbilityBar`, `Data/ManaAbility`. **Bible:** §4.5. **Dep:** —
 
-- [ ] **US-094 — Colorblind palette toggle.** `NOT-BUILT` (`SettingsManager` has toggles, not this).
+- [x] **US-094 — Colorblind palette toggle.** ✅ DONE 2026-06-07. `ProfileSettings.ColorblindMode` (bool, persisted; default false in `ProfileHelper.DefaultSettings`, copy-ctor updated). New `Helpers/ColorblindHelper.cs` with Okabe-Ito substitutions: Red → Vermillion (0.835, 0.369, 0), Green → Bluish-green (0, 0.620, 0.451), burning → Vermillion, poisoned → Bluish-green, protection → Orange (0.902, 0.624, 0). `ManaOrbLine.ColorFor` now delegates to `ColorblindHelper.GetManaColor`; standard palette extracted to `ColorForStandard`. `DebuffIconBar.ColorFor` delegates to `ColorblindHelper.GetDebuffColor`; standard palette extracted to `ColorForStandard`. `SettingsManager` Toggles gains "Colorblind Mode". Demo: "Toggle Colorblind" (logs mode + palette name). Bible §31.1 updated. **Dep:** —
   **Done when:** Settings toggle remaps mana/debuff/health palettes (Okabe-Ito/Wong); glyphs already carry the non-color signal.
   **Touch:** `Managers/SettingsManager`, palette sources (`HubTheme`/`ManaOrbLine`/`DebuffIconBar`). **Bible:** §31.1. **Dep:** —
 

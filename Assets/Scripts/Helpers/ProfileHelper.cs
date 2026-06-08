@@ -91,7 +91,8 @@ namespace Scripts.Helpers
             MuteMusic = false,
             MuteSfx = false,
             ReduceMotion = false,
-            ReloadThumbnailSettings = false
+            ReloadThumbnailSettings = false,
+            ColorblindMode = false
         };
 
         /// <summary>Default global save data.</summary>

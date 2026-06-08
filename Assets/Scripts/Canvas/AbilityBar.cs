@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Scripts.Data;
 using Scripts.Helpers;
+using Scripts.Instances;
 using Scripts.Libraries;
 using Scripts.Models;
 using g = Scripts.Helpers.GameHelper;
@@ -41,11 +42,13 @@ namespace Scripts.Canvas
         private TMP_Text[] costLabels;
         private Image[] frames;
         private Image[] iconImages;
+        private RectTransform[] slotRects;
+        private TooltipInstance activeTooltip;
 
         private IReadOnlyList<ManaAbility> currentLoadout;
         private CharacterClass currentClass = CharacterClass.None;
 
-        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null)
+        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null, RectTransform[] slotRects = null)
         {
             this.bank = bank;
             this.buttons = buttons;
@@ -53,6 +56,53 @@ namespace Scripts.Canvas
             this.costLabels = costLabels;
             this.frames = frames;
             this.iconImages = iconImages;
+            this.slotRects = slotRects;
+        }
+
+        // US-091: hover/long-press tooltip showing ability name, kind, cost, and cast time.
+        public void ShowTooltipForSlot(int i)
+        {
+            HideTooltip();
+            if (currentLoadout == null || i < 0 || i >= currentLoadout.Count) return;
+            var a = currentLoadout[i];
+            if (a == null) return;
+            var target = slotRects != null && i < slotRects.Length ? slotRects[i] : null;
+            activeTooltip = Tooltip.Show(new TooltipSettings
+            {
+                message   = BuildTooltipText(a),
+                target    = target,
+                placement = TooltipPlacement.Top,
+                useFade   = true,
+            });
+        }
+
+        public void HideTooltip()
+        {
+            if (activeTooltip != null)
+            {
+                UnityEngine.Object.Destroy(activeTooltip.gameObject);
+                activeTooltip = null;
+            }
+        }
+
+        private static string BuildTooltipText(ManaAbility a)
+        {
+            var parts = new List<string> { $"<b>{a.Name}</b>" };
+            switch (a.Kind)
+            {
+                case AbilityKind.Skill:
+                    parts.Add("Skill  ·  Free");
+                    if (a.CooldownTurns > 0) parts.Add($"Cooldown: {a.CooldownTurns} turn(s)");
+                    break;
+                case AbilityKind.Spell:
+                    parts.Add($"Spell  ·  {Scripts.Data.ManaAbilities.CostIcons(a)}");
+                    if (a.CastTimeSeconds > 0f) parts.Add($"Cast time: {a.CastTimeSeconds:0.0}s");
+                    break;
+                case AbilityKind.Item:
+                    parts.Add($"Item  ·  {a.Charges}/{a.MaxStackSize} charges");
+                    break;
+            }
+            return string.Join("\n", parts);
         }
 
         /// <summary>Click handler — dispatches by kind: Skill / Spell / Item.</summary>

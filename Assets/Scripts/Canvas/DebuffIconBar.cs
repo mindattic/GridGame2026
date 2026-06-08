@@ -112,7 +112,11 @@ namespace Scripts.Canvas
             }
         }
 
-        public static Color ColorFor(string buffId)
+        /// <summary>Debuff icon color — routes through the colorblind palette for red/green pairs when enabled (US-094).</summary>
+        public static Color ColorFor(string buffId) => Scripts.Helpers.ColorblindHelper.GetDebuffColor(buffId);
+
+        /// <summary>Standard (non-colorblind) debuff colors. Called by ColorblindHelper for unaffected buff IDs.</summary>
+        public static Color ColorForStandard(string buffId)
         {
             switch (buffId)
             {

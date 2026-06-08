@@ -108,6 +108,12 @@ public partial class DebugWindow
             ("Toggle Reduce Motion", () => g.DebugManager.Demo_ToggleReduceMotion())
         );
 
+        // Colorblind mode (US-094) — Okabe-Ito palette swaps red/green orbs + debuff icons;
+        // toggle and watch the mana orb line update immediately.
+        RenderButtonRow(
+            ("Toggle Colorblind", () => g.DebugManager.Demo_ToggleColorblindMode())
+        );
+
         // Bestiary (US-054 / US-093) — log seen/defeated progress + Enemy-filter count.
         RenderButtonRow(
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary()),
