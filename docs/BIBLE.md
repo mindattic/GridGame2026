@@ -1668,7 +1668,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~16~~ | — | ~~`ManaOrbLine` full-width~~ — **DONE** (responsive/equidistant, `ManaOrbLineFactory.cs:38`) | — | — |
-| ~17~ | US-001 | **AspectGuard — CORE BUILT 2026-06-06** (needs in-editor visual pass): `Utilities/AspectGuard.cs` self-installs per scene — camera letterbox to the closest valid portrait aspect + black background camera (bars), and pins every CanvasScaler to 1170×2532/match-0.5 so HUD anchors are device-universal. Remaining: safe-area inset, board tile-fit, per-Overlay-canvas SafeFrame, §26.4 UI overlay camera. | P0 | `Utilities/AspectGuard.cs` |
+| ~17~ | US-001 | **AspectGuard — CODE COMPLETE 2026-06-08** (needs in-editor visual pass): `Utilities/AspectGuard.cs` self-installs per scene — letterbox camera, black bars, CanvasScaler normalization 1170×2532/match-0.5, and safe-area inset (any Canvas child named "SafeArea" tracks `Screen.safeArea`). Remaining: visual verify pillarbox + letterbox + notch margin; board tile-fit; §26.4 UI Overlay Camera in GameBuilder. | P0 | `Utilities/AspectGuard.cs` |
 | 21 | US-076 | **Spell icons on bar** — render `SpriteLibrary.SpellIcons[name]` (today: glyphs only) | P2 | `AbilityBar.Refresh` |
 
 ### 16.5 Content / data layer
@@ -2577,7 +2577,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 15. **Spell-icon → ability-bar UI** — when do we wire `SpriteLibrary.SpellIcons[name]` into the AbilityBar slot's frame so the bar shows real icons instead of letter labels?
 16. ~~**Bestiary unlock gate** — only after first defeat, or always visible?~~ **RESOLVED 2026-06-02 (Legion 4/4): SEEN-gated.** A class reveals its full entry once `BestiaryProgress.Seen` is set (encountered in a played battle, or flagged by Scan US-077); never-seen classes render as a dark silhouette + "???". Not defeat-gated (too punishing, devalues Scan), not always-visible (no discovery beat). Drives US-093.
 17. **AspectGuard ratification** — confirm the strategy in §26 before coding the MonoBehaviour.
-18. **Soundtrack / audio system** — audio constraints sketched in §30.4 (compression, latency); full system (`AudioManager`, music transitions, SFX routing) is still TBD. Plan or defer?
+18. ~~**Soundtrack / audio system** — audio constraints sketched in §30.4 (compression, latency); full system (`AudioManager`, music transitions, SFX routing) is still TBD. Plan or defer?~~ **RESOLVED 2026-06-07 (US-096):** chiptune Jukebox/MusicDirector supplies music beds (Battle/Vendor/Title/Overworld/Victory/Defeat); `AudioSettingsHelper` exposes Music/SFX volume + mute sliders persisted in `ProfileSettings`; §31.5 updated.
 
 ### 29.5 How to resolve a question
 
@@ -2648,12 +2648,12 @@ The 5-color WUBRG mana system + tile-based combat + small mobile touch targets h
 - **Cost icons** in the AbilityBar render as `(W)(R)` glyph pairs, not pure color swatches.
 - **Debuff icons** carry a unique letter in addition to color (`B`urning, `F`rozen, `P`oisoned, etc.) — see §8.5.
 - **Health bars** use color + numeric overlay so "yellow vs orange" isn't the only signal.
-- **Future**: add a settings toggle that swaps the palette to colorblind-safe variants (Okabe-Ito or Wong palettes).
+- ✅ **Colorblind palette toggle** — `ProfileSettings.ColorblindMode` (persisted); `ColorblindHelper.cs` substitutes Okabe-Ito colors for Red/Green mana orbs and debuff icons; `SettingsManager` toggle live-applies. (US-094, 2026-06-07)
 
 ### 31.2 Motion / VFX sensitivity
 
 - **No screen-shaking by default** beyond mild impact hits (configurable via `VisualEffectManager.IntensityScale`).
-- **Reduce-motion toggle** in Settings (planned): clamps shakes to zero, slows or skips long projectile arcs, fades transitions.
+- ✅ **Reduce-motion toggle** — `ProfileSettings.ReduceMotion` (persisted, default false); `VisualEffectManager.IntensityScale = 0` suppresses all particle VFX at the single spawn choke-point; `ProjectileMotionEval.ReduceMotion` collapses projectile arcs to straight lerps; `MotionSettingsHelper.Apply()` pushes the flag to both; `SettingsManager` toggle live-applies per scene change. (US-095, 2026-06-07)
 - **Avoid stroboscopic flashes.** Lightning VFX should use ≤ 3 flashes/sec and total duration ≤ 0.4s to stay below seizure thresholds.
 
 ### 31.3 Touch targets
@@ -2670,11 +2670,15 @@ The 5-color WUBRG mana system + tile-based combat + small mobile touch targets h
 ### 31.5 Audio
 
 - **Subtitled SFX** — combat-text doubles as audio-cue confirmation. No important game event is audio-only.
-- **Volume sliders** for Music / SFX / UI in Settings; mute toggles independent.
+- ✅ **Volume sliders + mute** — `ProfileSettings.{MusicVolume, SfxVolume, MuteMusic, MuteSfx}` (persisted; defaults 0.6/0.85/false/false); `AudioSettingsHelper.Apply()` folds mute into effective volume and pushes to `Jukebox` (music/vendor SFX) and `g.SoundSource` (battle SFX); `SettingsManager` sliders/toggles live-apply; `MusicDirector.Apply` re-applies per scene change. UI audio folds into the SFX channel. (US-096, 2026-06-07)
 
 ### 31.6 Status
 
-All §31 items are **design commitments** — most code-side work is pending. Track concrete tasks in §16.
+- §31.1 color-blindness: ✅ colorblind toggle built (US-094).
+- §31.2 motion: ✅ reduce-motion toggle built (US-095).
+- §31.3 touch targets: design commitment, verify at min resolution during device testing.
+- §31.4 readability: design commitment, ongoing.
+- §31.5 audio: ✅ volume + mute sliders built (US-096); chiptune Jukebox supplies music beds.
 
 ---
 
