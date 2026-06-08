@@ -114,6 +114,11 @@ public partial class DebugWindow
             ("Toggle Colorblind", () => g.DebugManager.Demo_ToggleColorblindMode())
         );
 
+        // VFX pool (US-102) — log live instance count vs cap and pooled wrapper count.
+        RenderButtonRow(
+            ("VFX Pool Stats", () => g.DebugManager.Demo_VfxPoolStats())
+        );
+
         // Bestiary (US-054 / US-093) — log seen/defeated progress + Enemy-filter count.
         RenderButtonRow(
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary()),

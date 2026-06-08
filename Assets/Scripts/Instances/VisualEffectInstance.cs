@@ -248,6 +248,17 @@ public class VisualEffectInstance : MonoBehaviour
         g.VisualEffectManager.Despawn(name);
     }
 
+    /// <summary>US-102: called by VisualEffectManager before returning this wrapper to the pool.
+    /// Stops any in-flight coroutine, clears child prefab instances, and nulls cached references.</summary>
+    internal void ResetForPool()
+    {
+        StopAllCoroutines();
+        ClearChildren();
+        vfxComponents   = null;
+        particleSystems = null;
+        renderers       = null;
+    }
+
     // -------------------------------------------------------------------------
     // Internal helpers
     // -------------------------------------------------------------------------

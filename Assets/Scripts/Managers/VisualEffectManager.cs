@@ -83,38 +83,72 @@ public class VisualEffectManager : MonoBehaviour
     /// <see cref="CreateInstance"/>. Static so it applies before any instance is resolved.</summary>
     public static float IntensityScale = 1f;
 
+    // US-102: wrapper-GO pool + concurrent-instance cap.
+    // Cap: if >= MaxConcurrentVfx instances are alive, new spawns are silently dropped.
+    // Pool: despawned wrappers are deactivated and recycled instead of Destroyed.
+    private const int MaxConcurrentVfx = 48;
+    private readonly Queue<VisualEffectInstance> _pool = new Queue<VisualEffectInstance>();
+
     #endregion
 
     #region Instance Creation
 
     /// <summary>
-    /// Creates a wrapper GameObject for a VFX instance.
+    /// Creates (or recycles from the pool) a wrapper GameObject for a VFX instance.
+    /// Returns null when VFX is suppressed (reduce-motion) or the cap is reached.
     /// </summary>
     private VisualEffectInstance CreateInstance(VisualEffectAsset asset, Vector3 position, Transform parentOverride = null)
     {
         if (asset == null)
             return null;
 
-        // US-095 reduce-motion: IntensityScale 0 suppresses VFX entirely. Every Spawn/SpawnInstance
-        // path funnels through here and already null-checks the result, so returning null is the
-        // single safe choke point for "no particle effects."
+        // US-095 reduce-motion: IntensityScale 0 suppresses VFX entirely.
         if (IntensityScale <= 0f)
             return null;
 
-        var go = new GameObject();
+        // US-102: concurrent-instance cap — drop rather than spawn past the limit.
+        if (collection.Count >= MaxConcurrentVfx)
+            return null;
+
         string key = $"VFX_{asset.Name}_{Guid.NewGuid():N}";
-        go.name = key;
-        go.transform.position = position;
 
-        Transform parent = parentOverride != null ? parentOverride : (g.Board != null ? g.Board.transform : null);
+        // US-102: reuse a pooled wrapper rather than allocating a new GO.
+        VisualEffectInstance instance = null;
+        while (_pool.Count > 0)
+        {
+            var pooled = _pool.Dequeue();
+            if (pooled != null && pooled.gameObject != null) { instance = pooled; break; }
+        }
+
+        if (instance != null)
+        {
+            instance.gameObject.name = key;
+            instance.gameObject.SetActive(true);
+        }
+        else
+        {
+            var go = new GameObject(key);
+            instance = go.AddComponent<VisualEffectInstance>();
+        }
+
+        Transform parent = parentOverride ?? (g.Board != null ? g.Board.transform : null);
         if (parent != null)
-            go.transform.SetParent(parent, worldPositionStays: true);
+            instance.transform.SetParent(parent, worldPositionStays: true);
+        instance.transform.position = position;
 
-        var instance = go.AddComponent<VisualEffectInstance>();
         if (!collection.ContainsKey(key))
             collection.Add(key, instance);
 
         return instance;
+    }
+
+    /// <summary>US-102: stop, clear-children, and return a wrapper to the pool (deactivates it).</summary>
+    private void ReturnToPool(VisualEffectInstance inst)
+    {
+        if (inst == null || inst.gameObject == null) return;
+        inst.ResetForPool();
+        inst.gameObject.SetActive(false);
+        _pool.Enqueue(inst);
     }
 
     #endregion
@@ -182,21 +216,20 @@ public class VisualEffectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys and unregisters a VFX instance by name.
+    /// Returns a VFX instance to the pool (US-102) and unregisters it.
     /// </summary>
     public void Despawn(string name)
     {
         if (!collection.TryGetValue(name, out var inst) || inst == null)
             return;
 
-        Destroy(inst.gameObject);
         collection.Remove(name);
+        ReturnToPool(inst);
     }
 
     /// <summary>
-    /// Destroys and unregisters a VFX instance by reference. Use this for instances obtained from
-    /// <see cref="SpawnInstance"/>: they are registered under a unique GUID key, so the by-name
-    /// Despawn can never find them and would leak the dictionary entry.
+    /// Returns a VFX instance to the pool (US-102) and unregisters it by reference.
+    /// Use for instances obtained from <see cref="SpawnInstance"/> (unique GUID key).
     /// </summary>
     public void Despawn(VisualEffectInstance instance)
     {
@@ -207,20 +240,46 @@ public class VisualEffectManager : MonoBehaviour
             if (kv.Value == instance) { key = kv.Key; break; }
         if (key != null) collection.Remove(key);
 
-        if (instance.gameObject != null) Destroy(instance.gameObject);
+        ReturnToPool(instance);
     }
 
     /// <summary>
-    /// Destroys all VFX instances from the scene without using tags.
+    /// Resets all active instances and flushes the pool. Called at scene unload / battle-end.
     /// </summary>
     public void Clear()
     {
-        var instances = GameObject.FindObjectsByType<VisualEffectInstance>(FindObjectsSortMode.None);
-        foreach (var instance in instances)
-            Destroy(instance.gameObject);
-
+        // Reset and destroy active instances (FindObjectsByType excludes inactive pooled wrappers).
+        var active = GameObject.FindObjectsByType<VisualEffectInstance>(FindObjectsSortMode.None);
+        foreach (var inst in active)
+        {
+            if (inst != null && inst.gameObject != null)
+            {
+                inst.ResetForPool();
+                Destroy(inst.gameObject);
+            }
+        }
         collection.Clear();
+
+        // Destroy pooled (inactive) wrappers.
+        while (_pool.Count > 0)
+        {
+            var pooled = _pool.Dequeue();
+            if (pooled != null && pooled.gameObject != null) Destroy(pooled.gameObject);
+        }
     }
+
+    private void OnDestroy()
+    {
+        while (_pool.Count > 0)
+        {
+            var pooled = _pool.Dequeue();
+            if (pooled != null && pooled.gameObject != null) Destroy(pooled.gameObject);
+        }
+    }
+
+    /// <summary>US-102: current live/pooled/cap stats for DebugManager.</summary>
+    public string GetPoolStats() =>
+        $"Live={collection.Count}/{MaxConcurrentVfx}  Pooled={_pool.Count}";
 }
 
 }

@@ -434,6 +434,14 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] ColorblindMode = {s.ColorblindMode} — mana orb line and debuff icons now use {(s.ColorblindMode ? "Okabe-Ito" : "standard")} palette.");
         }
 
+        /// <summary>Demo (US-102): log VFX pool stats — live count vs cap, pooled wrappers.</summary>
+        public void Demo_VfxPoolStats()
+        {
+            var vm = g.VisualEffectManager;
+            if (vm == null) { Debug.LogWarning("[Demo] No VisualEffectManager (start a battle first)."); return; }
+            Debug.Log($"[Demo] VFX pool — {vm.GetPoolStats()}");
+        }
+
         /// <summary>Demo (US-095): toggle reduce-motion and re-apply — suppresses particle VFX and
         /// straightens projectile arcs. Cast a spell afterward to see the difference.</summary>
         public void Demo_ToggleReduceMotion()
