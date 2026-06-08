@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Scripts.Data;
 using Scripts.Helpers;
+using Scripts.Libraries;
 using Scripts.Models;
 using g = Scripts.Helpers.GameHelper;
 
@@ -39,17 +40,19 @@ namespace Scripts.Canvas
         private TMP_Text[] nameLabels;
         private TMP_Text[] costLabels;
         private Image[] frames;
+        private Image[] iconImages;
 
         private IReadOnlyList<ManaAbility> currentLoadout;
         private CharacterClass currentClass = CharacterClass.None;
 
-        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames)
+        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null)
         {
             this.bank = bank;
             this.buttons = buttons;
             this.nameLabels = nameLabels;
             this.costLabels = costLabels;
             this.frames = frames;
+            this.iconImages = iconImages;
         }
 
         /// <summary>Click handler — dispatches by kind: Skill / Spell / Item.</summary>
@@ -307,6 +310,7 @@ namespace Scripts.Canvas
                 {
                     if (buttons[i] != null && buttons[i].gameObject.activeSelf)
                         buttons[i].gameObject.SetActive(false);
+                    SetIcon(i, null);
                     continue;
                 }
 
@@ -320,6 +324,7 @@ namespace Scripts.Canvas
                     if (nameLabels[i] != null) nameLabels[i].text = "—";
                     if (costLabels[i] != null) costLabels[i].text = "Reserved";
                     if (frames[i] != null) frames[i].color = new Color(0.15f, 0.15f, 0.18f, 0.6f);
+                    SetIcon(i, null);
                     continue;
                 }
 
@@ -354,6 +359,11 @@ namespace Scripts.Canvas
                     if (onCooldown) fc.a *= 0.4f; // fade the whole slot out while recharging
                     frames[i].color = fc;
                 }
+                // US-076: spell icon sprite (glyph fallback = no icon = just text labels).
+                Sprite iconSprite = null;
+                if (a.Kind == AbilityKind.Spell && !string.IsNullOrEmpty(a.Name))
+                    SpriteLibrary.SpellIcons.TryGetValue(a.Name, out iconSprite);
+                SetIcon(i, iconSprite);
             }
         }
 
@@ -374,6 +384,13 @@ namespace Scripts.Canvas
             }
             if (!affordable) baseColor *= new Color(0.55f, 0.55f, 0.55f, 1f);
             return baseColor;
+        }
+
+        private void SetIcon(int i, Sprite sprite)
+        {
+            if (iconImages == null || i >= iconImages.Length || iconImages[i] == null) return;
+            iconImages[i].sprite  = sprite;
+            iconImages[i].enabled = sprite != null;
         }
     }
 }

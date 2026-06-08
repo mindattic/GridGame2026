@@ -108,9 +108,10 @@ public partial class DebugWindow
             ("Toggle Reduce Motion", () => g.DebugManager.Demo_ToggleReduceMotion())
         );
 
-        // Bestiary (US-054) — log seen/defeated progress, written on enemy spawn + death.
+        // Bestiary (US-054 / US-093) — log seen/defeated progress + Enemy-filter count.
         RenderButtonRow(
-            ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary())
+            ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary()),
+            ("Bestiary Filter", () => g.DebugManager.Demo_BestiaryFilter())
         );
 
         // Cast interrupt (US-024 stagger model) — report the selected hero's WIS-driven cast-stagger
@@ -146,6 +147,13 @@ public partial class DebugWindow
         RenderButtonRow(
             ("Announce (cadence)", () => g.DebugManager.Demo_Announce()),
             ("Scan Enemy", () => g.DebugManager.Demo_ScanEnemy())
+        );
+
+        // Spell icons (US-076) — log which Spell-kind abilities on the selected hero have a sprite.
+        // StageSelect order (US-110) — log stages newest-first with wave/enemy counts.
+        RenderButtonRow(
+            ("Spell Icons", () => g.DebugManager.Demo_SpellIcons()),
+            ("Stage Order", () => g.DebugManager.Demo_StageSelectOrder())
         );
 
         // ItemDefinition fields (US-040) — report how many items declare each new field (unblocks EPIC E).

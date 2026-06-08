@@ -54,6 +54,7 @@ namespace Scripts.Factories
             var nameLabels = new TMP_Text[Slots];
             var costLabels = new TMP_Text[Slots];
             var frames = new Image[Slots];
+            var iconImages = new Image[Slots];
 
             // The bar is added at the end; capture via closure variable so click handlers can route
             // through it (it knows the currently-selected-hero's loadout).
@@ -94,11 +95,27 @@ namespace Scripts.Factories
                     fontSize: 22,
                     anchorMin: new Vector2(0f, 0f), anchorMax: new Vector2(1f, 0.45f),
                     color: new Color(1f, 0.92f, 0.55f));
+
+                // US-076: spell icon — 36×36 in the top-left corner; hidden until Refresh sets a sprite.
+                var iconGO = new GameObject("Icon", typeof(RectTransform), typeof(Image));
+                iconGO.layer = LayerMask.NameToLayer("UI");
+                var iconRT = (RectTransform)iconGO.transform;
+                iconRT.SetParent(rt, false);
+                iconRT.anchorMin = new Vector2(0f, 1f);
+                iconRT.anchorMax = new Vector2(0f, 1f);
+                iconRT.pivot     = new Vector2(0f, 1f);
+                iconRT.anchoredPosition = new Vector2(4f, -4f);
+                iconRT.sizeDelta = new Vector2(36f, 36f);
+                var iconImg = iconGO.GetComponent<Image>();
+                iconImg.color = Color.white;
+                iconImg.raycastTarget = false;
+                iconImg.enabled = false; // hidden until a sprite is assigned
+                iconImages[i] = iconImg;
             }
 
             barRef = container.gameObject.GetComponent<AbilityBar>();
             if (barRef == null) barRef = container.gameObject.AddComponent<AbilityBar>();
-            barRef.Bind(bank, buttons, nameLabels, costLabels, frames);
+            barRef.Bind(bank, buttons, nameLabels, costLabels, frames, iconImages);
             return barRef;
         }
 

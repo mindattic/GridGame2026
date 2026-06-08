@@ -1523,6 +1523,68 @@ namespace Scripts.Managers
             SpawnVisualEffect(vfx);
         }
 
+        /// <summary>Demo (US-093): log how many Enemy-tagged actors the Bestiary shows vs total
+        /// actors registered, and how many have been seen in the current save.</summary>
+        public void Demo_BestiaryFilter()
+        {
+            var all = Scripts.Libraries.ActorLibrary.Actors;
+            if (all == null) { Debug.Log("[Demo] ActorLibrary not loaded."); return; }
+            int total = 0, enemies = 0;
+            foreach (var kv in all)
+            {
+                if (kv.Value == null) continue;
+                total++;
+                if (kv.Value.InGroups(ActorTag.Enemy)) enemies++;
+            }
+            var bestiary = ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary;
+            int seen = 0;
+            if (bestiary?.Entries != null)
+                foreach (var e in bestiary.Entries) if (e != null && e.Seen) seen++;
+            Debug.Log($"[Demo] Bestiary: {enemies} enemy actors (of {total} total). {seen} marked Seen in save.");
+            Debug.Log("[Demo] Open the Bestiary scene to confirm: Enemy entries only, unseen = silhouette + '???'.");
+        }
+
+        /// <summary>Demo (US-076): log how many spell-kind abilities on the selected hero's loadout
+        /// have a matching sprite in SpriteLibrary.SpellIcons.</summary>
+        public void Demo_SpellIcons()
+        {
+            var icons = Scripts.Libraries.SpriteLibrary.SpellIcons;
+            Debug.Log($"[Demo] SpellIcons: {icons?.Count ?? 0} sprites loaded in SpriteLibrary.");
+            var hero = g.Actors.SelectedActor;
+            if (hero == null) { Debug.Log("[Demo] No selected hero — click one first."); return; }
+            var loadout = Scripts.Data.HeroLoadouts.For(hero.characterClass);
+            if (loadout == null) { Debug.Log("[Demo] No loadout found for selected hero."); return; }
+            foreach (var a in loadout)
+            {
+                if (a == null || a.Kind != AbilityKind.Spell) continue;
+                bool hasIcon = icons != null && icons.ContainsKey(a.Name);
+                Debug.Log($"[Demo]   Spell '{a.Name}': icon={hasIcon}");
+            }
+        }
+
+        /// <summary>Demo (US-110): log StageSelect order (newest-first) and the drops hint for
+        /// each stage, confirming the new ordering and drops-hint logic.</summary>
+        public void Demo_StageSelectOrder()
+        {
+            var order = Scripts.Libraries.CampaignStages.Order;
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            int highestCleared = save?.Stage?.HighestClearedStageIndex ?? -1;
+            Debug.Log($"[Demo] StageSelect newest-on-top order ({order.Count} stages, cleared up to index {highestCleared}):");
+            for (int i = order.Count - 1; i >= 0; i--)
+            {
+                string stageName = order[i];
+                var stage = Scripts.Libraries.StageLibrary.Get(stageName);
+                bool unlocked = Scripts.Libraries.CampaignStages.IsUnlocked(i, highestCleared);
+                bool cleared  = highestCleared >= i;
+                int waves = stage?.Waves?.Count ?? 0;
+                int enemies = 0;
+                if (stage?.Waves != null)
+                    foreach (var w in stage.Waves) enemies += w.Actors?.Count ?? 0;
+                string status = cleared ? "★" : unlocked ? "○" : "🔒";
+                Debug.Log($"[Demo]   {status} {Scripts.Libraries.CampaignStages.LabelFor(i)}: {stageName} ({waves}w/{enemies}e)");
+            }
+        }
+
     }
 
 }

@@ -27,7 +27,12 @@
   CanvasRenderer
   CanvasScaler: mode=ConstantPixelSize, ref=1E-05,1E-05, match=0
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=585,1266, size=1170,2532, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+  [AbilityButtonContainer] layer=UI
+    CanvasRenderer
+    HorizontalLayoutGroup: spacing=0, align=MiddleLeft
+    Image: sprite=action-bar-1, color=#FFFFFF3C, type=Simple, raycast=True
+    RectTransform: anchor=(0,0)-(1,0), pos=0,422, size=0,168.8, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [AbilityCastConfirm] layer=UI
     AbilityCastConfirm: label=<null>
     CanvasGroup
@@ -61,11 +66,15 @@
     CanvasGroup
     CanvasRenderer
     Image: sprite=TitleBar, color=#FFFFFFFF, type=Simple, raycast=False
-    RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-32, size=720,96, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
+    RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-422, size=900,130, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=0,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       TextMeshProUGUI: font=Attic, text='Test', size=32, color=#FFFFFFFF, align=Center, raycast=True
+  [ActorPanel] layer=UI
+    ActorPanel
+    CanvasRenderer
+    RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,256, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
   [Announcements] layer=UI
     RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [DefeatAnnouncement] layer=UI
@@ -119,53 +128,6 @@
         Image: sprite=Transparent32x32, color=#FFFFFF00, type=Simple, raycast=True
         RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=161.95,261.7, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
         ScrollingImage
-  [Card] layer=UI
-    ActorCard
-    CanvasRenderer
-    RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,256, pivot=1,0, rotQ=(0,0,0,1), scale=1,1,1
-    [AbilityButtonContainer] layer=UI
-      CanvasRenderer
-      HorizontalLayoutGroup: spacing=0, align=MiddleLeft
-      Image: sprite=action-bar-1, color=#FFFFFF3C, type=Simple, raycast=True
-      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,128, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
-    [ArrowLeft] layer=UI
-      Button
-      CanvasRenderer
-      Image: sprite=ArrowLeft, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0)-(1,0), pos=-320,50, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Text (TMP)] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
-    [ArrowRight] layer=UI
-      Button
-      CanvasRenderer
-      Image: sprite=ArrowRight, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0)-(1,0), pos=-250,50, size=64,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Text (TMP)] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
-    [Backdrop] layer=UI
-      CanvasGroup
-      CanvasRenderer
-      Image: sprite=Back.1024x256, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
-    [Details] layer=UI
-      CanvasGroup
-      CanvasRenderer
-      RectTransform: anchor=(0,1)-(0,1), pos=25,-60, size=512,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Avenir, text='Description', size=24, color=#FFFFFFFF, align=TopLeft, raycast=True
-    [Portrait] layer=UI
-      CanvasGroup
-      CanvasRenderer
-      Image: sprite=Mannequin, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(1,0)-(1,0), pos=-128,-128, size=1024,1024, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [Title] layer=UI
-      CanvasGroup
-      CanvasRenderer
-      RectTransform: anchor=(0,1)-(0,1), pos=25,-20, size=512,0, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Name', size=32, color=#FFFFFFFF, align=TopLeft, raycast=True
   [Clock]
     CanvasRenderer
     Clock
@@ -211,37 +173,6 @@
     FadeOverlayInstance
     Image: sprite=Black32x32, color=#00000000, type=Simple, raycast=False
     RectTransform: anchor=(0,0)-(1,1), pos=-0.5,0.5, size=-1,-1, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-  [ManaPool]
-    RectTransform: anchor=(0.02,0.5)-(0.98,0.5), pos=0,761.5, size=-32.00003,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [BankButton]
-      Button
-      CanvasRenderer
-      Image: sprite=Coin, color=#408CFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-86.8,0, size=96,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Glow]
-        CanvasRenderer
-        Image: sprite=Coin, color=#66B2FF99, type=Simple, raycast=False
-        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=96,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [EnemyBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,-80, size=-176,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Back]
-        CanvasRenderer
-        Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Fill]
-        CanvasRenderer
-        Image: sprite=action-bar-1, color=#FFFFFFFF, type=Filled, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [HeroBar]
-      RectTransform: anchor=(0,0.5)-(1,0.5), pos=-72,0, size=-176,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Back]
-        CanvasRenderer
-        Image: sprite=action-bar-back-1, color=#FFFFFFFF, type=Simple, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Fill]
-        CanvasRenderer
-        Image: sprite=action-bar-1, color=#FFFFFFFF, type=Filled, raycast=False
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [PauseButton] layer=UI
     Button
     CanvasRenderer
@@ -386,7 +317,7 @@
   [Portraits] layer=UI
     RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [TimelineBar]
-    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,930, size=889.5,8, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+    RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,1012.8, size=1050,8, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     TimelineBarInstance
     [Left]
       CanvasRenderer
@@ -430,13 +361,13 @@
   DottedLineManager: dottedLines=[count=0: ]
   EnemyManager
   FootstepManager: target=→<null>
-  GameManager: abilityButtonManager=<null>, abilityCastConfirm=<null>, abilityManager=<null>, actionTitle=<null>, actorManager=<null>, actors=<null>, applyMovementTilt=False, attackLineManager=<null>, attackLines=<null>, audioManager=<null>, background=<null>, board=<null>, boardHorizontalPercent=0.96, boardManager=<null>, boardOverlay=<null>, bottomReservePercent=0.15, bumpFocus=0, cameraManager=<null>, canvas3D=→<null>, card=<null>, coinCountMultiplier=0.05, coinCounter=<null>, coinManager=<null>, combatTextManager=<null>, consoleManager=<null>, cursorFocus=0, debugManager=<null>, defeatAnnouncement=<null>, deviceType=<null>, dottedLineManager=<null>, dragSensitivity=0.05, dragThreshold=0, enemyManager=<null>, footstepManager=<null>, gameSpeed=1, ghostManager=<null>, heroManager=<null>, inputManager=<null>, itemPickupManager=<null>, logManager=<null>, manaPoolManager=<null>, moveFocus=0, movingHero=<null>, musicSource=→<null>, pauseMenu=<null>, pincerAttackManager=<null>, portraitManager=<null>, portraitsRect=→<null>, preselectHero=<null>, projectileManager=<null>, reloadThumbnailSettings=False, selectedActor=<null>, selectedHeroManager=<null>, sequenceManager=<null>, sortingManager=<null>, soundSource=→<null>, stageManager=<null>, supportLineManager=<null>, supportLines=<null>, swapFocus=0, synergyLineManager=<null>, targetActor=<null>, targetFramerate=Fps60, targetLineManager=<null>, targetModeOverlay=<null>, tileManager=<null>, tileMap=<null>, tileScale=(0,0,0), tileSize=0, tiles=<null>, timelineBar=<null>, topReservePercent=0.12, touchOffset=(0,0,0), touchPosition2D=(0,0,0), touchPosition3D=(0,0,0), turnManager=<null>, turnSelectionMode=FreeSelect, tutorialPopup=<null>, vSyncCount=VSync1, victoryAnnouncement=<null>, viewport=(0,0), visualEffectManager=<null>, waveAnnouncement=<null>
+  GameManager: abilityButtonManager=<null>, abilityCastConfirm=<null>, abilityManager=<null>, actionTitle=<null>, actorManager=<null>, actorPanel=<null>, actors=<null>, applyMovementTilt=False, attackLineManager=<null>, attackLines=<null>, audioManager=<null>, background=<null>, board=<null>, boardHorizontalPercent=0.96, boardManager=<null>, boardOverlay=<null>, bottomReservePercent=0.15, bumpFocus=0, cameraManager=<null>, canvas3D=→<null>, coinCountMultiplier=0.05, coinCounter=<null>, coinManager=<null>, combatTextManager=<null>, consoleManager=<null>, cursorFocus=0, debugManager=<null>, defeatAnnouncement=<null>, deviceType=<null>, dottedLineManager=<null>, dragSensitivity=0.05, dragThreshold=0, enemyManager=<null>, footstepManager=<null>, gameSpeed=1, ghostManager=<null>, heroManager=<null>, inputManager=<null>, itemPickupManager=<null>, logManager=<null>, manaPoolManager=<null>, moveFocus=0, movingHero=<null>, musicSource=→<null>, pauseMenu=<null>, pincerAttackManager=<null>, portraitManager=<null>, portraitsRect=→<null>, preselectHero=<null>, projectileManager=<null>, reloadThumbnailSettings=False, selectedActor=<null>, selectedHeroManager=<null>, sequenceManager=<null>, sortingManager=<null>, soundSource=→<null>, stageManager=<null>, supportLineManager=<null>, supportLines=<null>, swapFocus=0, synergyLineManager=<null>, targetActor=<null>, targetFramerate=Fps60, targetLineManager=<null>, targetModeOverlay=<null>, tileManager=<null>, tileMap=<null>, tileScale=(0,0,0), tileSize=0, tiles=<null>, timelineBar=<null>, topReservePercent=0.12, touchOffset=(0,0,0), touchPosition2D=(0,0,0), touchPosition3D=(0,0,0), turnManager=<null>, turnSelectionMode=FreeSelect, tutorialPopup=<null>, vSyncCount=VSync1, victoryAnnouncement=<null>, viewport=(0,0), visualEffectManager=<null>, waveAnnouncement=<null>
   GhostManager
   HeroManager
   InputManager: dragThreshold=0
   ItemPickupManager
   LogManager: logLevel=None
-  ManaPoolManager: enemyMana=0, manaHdrColor=#33FFFFFF, manaPerSecond=5, maxMana=100, showEnemyMana=False
+  ManaPoolManager: enemyMana=0, maxMana=100
   PincerAttackManager
   PortraitManager
   ProjectileManager

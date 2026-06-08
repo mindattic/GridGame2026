@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Scripts.Helpers;
 using Scripts.Libraries;
+using Scripts.Models;
 using Scripts.Models.Actor;
 
 namespace Scripts.Canvas
@@ -61,9 +62,16 @@ namespace Scripts.Canvas
             pages = new List<ActorData>();
             var actors = ActorLibrary.Actors;
             if (actors == null) return;
-            foreach (var kv in actors) if (kv.Value != null) pages.Add(kv.Value);
-            // Stable display order — alphabetical by character class for now.
+            // US-093: only Enemy-tagged entries (filters out heroes, NPCs, etc.)
+            foreach (var kv in actors)
+                if (kv.Value != null && kv.Value.InGroups(ActorTag.Enemy))
+                    pages.Add(kv.Value);
             pages = pages.OrderBy(d => d.CharacterClass.ToString()).ToList();
+        }
+
+        private static bool IsSeen(ActorData d)
+        {
+            return Scripts.Helpers.ProfileHelper.CurrentProfile?.CurrentSave?.Bestiary?.Get(d.CharacterClass)?.Seen ?? false;
         }
 
         public void Step(int delta)
@@ -82,20 +90,39 @@ namespace Scripts.Canvas
             }
 
             var d = pages[index];
+            bool seen = IsSeen(d);
             if (TitleLabel != null) TitleLabel.text = "BESTIARY";
             if (PageLabel  != null) PageLabel.text  = $"{index + 1} / {pages.Count}";
-            if (NameLabel  != null) NameLabel.text  = string.IsNullOrEmpty(d.CharacterName) ? d.CharacterClass.ToString() : d.CharacterName;
-            if (ClassLabel != null) ClassLabel.text = $"{d.CharacterClass} · Lv. {d.Level}";
-            // Fix #5: hide the Image when the actor has no portrait — otherwise it renders as a
-            // flat white square that looks like a placeholder bug.
-            if (PortraitImage != null)
+
+            if (seen)
             {
-                PortraitImage.sprite = d.Portrait;
-                PortraitImage.enabled = d.Portrait != null;
+                if (NameLabel  != null) NameLabel.text  = string.IsNullOrEmpty(d.CharacterName) ? d.CharacterClass.ToString() : d.CharacterName;
+                if (ClassLabel != null) ClassLabel.text = $"{d.CharacterClass} · Lv. {d.Level}";
+                if (PortraitImage != null)
+                {
+                    PortraitImage.sprite = d.Portrait;
+                    PortraitImage.enabled = d.Portrait != null;
+                    PortraitImage.color = Color.white;
+                }
+                if (StatsBlock     != null) StatsBlock.text     = FormatStats(d);
+                if (AbilitiesBlock != null) AbilitiesBlock.text = FormatAbilities(d);
+                if (LoreBlock      != null) LoreBlock.text      = FormatLore(d);
             }
-            if (StatsBlock != null) StatsBlock.text = FormatStats(d);
-            if (AbilitiesBlock != null) AbilitiesBlock.text = FormatAbilities(d);
-            if (LoreBlock != null) LoreBlock.text = FormatLore(d);
+            else
+            {
+                // US-093: unseen entry — silhouette portrait + "???" text
+                if (NameLabel  != null) NameLabel.text  = "???";
+                if (ClassLabel != null) ClassLabel.text = "<i>Unencountered</i>";
+                if (PortraitImage != null)
+                {
+                    PortraitImage.sprite  = d.Portrait;
+                    PortraitImage.enabled = d.Portrait != null;
+                    PortraitImage.color   = Color.black; // silhouette
+                }
+                if (StatsBlock     != null) StatsBlock.text     = "<i>(not yet encountered)</i>";
+                if (AbilitiesBlock != null) AbilitiesBlock.text = "<i>???</i>";
+                if (LoreBlock      != null) LoreBlock.text      = "<i>Defeat or Scan this enemy to reveal its entry.</i>";
+            }
         }
 
         private static string FormatStats(ActorData d)

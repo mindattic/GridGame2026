@@ -118,7 +118,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** a `BestiarySaveData : Dict<CharacterClass, {Seen, Defeated, TimesDefeated}>` added; populated on enemy spawn (seen) + death (defeated); persisted at battle end.
   **Touch:** `Models/Profile.cs`, spawn/death hooks, `PostBattleManager`. **Bible:** §15.1, §15.3. **Dep:** —
 
-- [ ] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
+- [x] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** ✅ DONE 2026-06-07. `StageSelectManager.RebuildList()` now iterates themes in reverse (CityRuins first → GreenValley last) and stages within each theme in reverse (stage 3 before stage 1), so the most recently unlocked stage appears at the top. Each row is 72px (was 56px) to accommodate a second-line drops hint. New `BuildDropsHint(stage)` walks each wave's enemy classes, looks up `DropTableLibrary.Get(cls)` entries, and shows the first ≤2 item names (`ItemLibrary.Get(id).DisplayName`) as `<size=18>drops: X, Y</size>` — farming target hint. Row colors, star prefix, lock suffix, and replay-ability unchanged. Demo: "Stage Order". Bible §22.3 / §11.2 marked built.
+  *(Original spec — audit log)* **Was:** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
   **Why:** The *only* nav surface (Overworld is cut). Load/save-screen look-and-feel; cleared stages stay replayable so the player can **farm a specific enemy's drop** (a Frost stage for Ice Shards, etc.) — the intended grind loop.
   **Done when:** the list is vertically scrollable in `SaveFileSelect` style; newly-unlocked levels **prepend to the top**; every unlocked level (incl. cleared) is re-enterable; locked stages dimmed/disabled; each row shows name, theme, cleared ✓, and a hint of notable drops/enemies. Tapping a row sets `StageSaveData.CurrentStage` → `Game`.
   **Touch:** `Managers/StageSelectManager`, `Editor/Builders/StageSelectBuilder`, `StageLibrary`/`CampaignStages`. **Bible:** §22.3 (now built), §11.2. **Dep:** —
@@ -286,7 +287,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** turn-icons render large above the timeline line; cast icons render ~¼-size below it on the same axis; `SpellCastBar`/`SpellCastBarFactory` retired; both lanes share the trigger; verified in-editor (the layout is the whole point).
   **Touch:** `Canvas/TimelineIcon`, `Factories/TimelineIconFactory`, `Canvas/TimelineBarInstance`; retire `Canvas/SpellCastBar` + `Factories/SpellCastBarFactory`; `AbilityBar.HandleSpell` (no longer spawns a cast bar). **Bible:** §2.6, §2.8, §9. **Dep:** US-001 (AspectGuard layout). **Editor-gated (visual).**
 
-- [ ] **US-076 — Spell icons on the AbilityBar.** `PARTIAL` (`SpriteLibrary.SpellIcons` populated `:127`; `AbilityBar.Refresh:248` renders name+cost glyphs only, no icon Image).
+- [x] **US-076 — Spell icons on the AbilityBar.** ✅ DONE 2026-06-07. `AbilityBarFactory` adds a 36×36 `Image` (top-left corner, `raycastTarget=false`, initially hidden) to each slot; `AbilityBar.Bind()` accepts `Image[] iconImages`; `Refresh()` calls `SpriteLibrary.SpellIcons.TryGetValue(a.Name)` and enables the Image when a sprite is found — glyph fallback (text labels only) when the key is absent. Demo: "Spell Icons". Bible §4.5, §29.4 #15 to verify in-editor.
+  *(Original spec — audit log)* **Was:** `PARTIAL` (`SpriteLibrary.SpellIcons` populated `:127`; `AbilityBar.Refresh:248` renders name+cost glyphs only, no icon Image).
   **Done when:** slot shows the spell icon sprite; glyph fallback if missing.
   **Touch:** `Canvas/AbilityBar` (+ an icon Image per slot). **Bible:** §4.5, resolve §29.4 #15, delete §16.4 #21. **Dep:** —
 
@@ -300,7 +302,8 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** Auto/pick resolving to 0 actors shows a toast.
   **Touch:** `Managers/TargetingMode`, in-battle toast. **Bible:** §5.2, delete §16.6 #15. **Dep:** —
 
-- [ ] **US-093 — Bestiary enemy filter + unlock gating.** `PARTIAL`→needs US-054 (`BestiaryView:59-98` lists all actors, no filter/progress/silhouette).
+- [x] **US-093 — Bestiary enemy filter + unlock gating.** ✅ DONE 2026-06-07. `BestiaryView.BuildPages()` now filters `ActorLibrary.Actors` to `ActorTag.Enemy` only (heroes, NPCs excluded). New `IsSeen(ActorData)` helper reads `Bestiary.Get(cls)?.Seen`. `Refresh()` branches: seen = full stats/portrait/lore as before; unseen = silhouette (portrait recolored black), "???" name, "Unencountered" class, hidden lore ("Defeat or Scan to reveal"). Demo: "Bestiary Filter" (logs enemy count vs total and seen count). Bible §15.3 status updated; §29.4 #16 resolved. **Dep:** US-054 ✓, US-077 ✓.
+  *(Original spec — audit log)* **Was:** `PARTIAL`→needs US-054 (`BestiaryView:59-98` lists all actors, no filter/progress/silhouette).
   **🔓 Design-locked 2026-06-02 (Legion 4/4): SEEN-gated reveal** — full entry once `BestiaryProgress.Seen` (encounter or Scan US-077); unseen = silhouette + "???". Dep US-054 now ✓ (Seen/Defeated are written). Remaining work is the editor-side `BestiaryView` UI (filter to `Enemy` tag + silhouette rendering).
   **Done when:** only `Enemy`-tagged entries; unseen show silhouettes per `BestiaryProgress.seen`.
   **Touch:** `Canvas/BestiaryView`. **Bible:** §11.2, §15.3, delete §16.5 #14 + §16.6 bestiary row; resolve §29.4 #16. **Dep:** US-054.

@@ -9,7 +9,7 @@
   CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
   Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
-  RectTransform: anchor=(0,0)-(0,0), pos=585,1266, size=978.8667,2118.368, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1.19525981,1.19525981,1.19525981
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.7688,1247.07654, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=0.384900182,0.384900182,0.384900182
   [BackButton] layer=UI
     Button
     CanvasRenderer

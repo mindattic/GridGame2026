@@ -11,7 +11,7 @@
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
   GraphicRaycaster
-  RectTransform: anchor=(0,0)-(0,0), pos=585,1266, size=978.8667,2118.368, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1.19525981,1.19525981,1.19525981
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1662.7688,1247.07654, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=0.384900182,0.384900182,0.384900182
   [Background] layer=UI
     CanvasRenderer
     Image: sprite=<null>, color=#FFFFFFFF, type=Simple, raycast=False

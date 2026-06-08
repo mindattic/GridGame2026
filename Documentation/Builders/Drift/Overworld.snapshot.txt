@@ -10,7 +10,7 @@
   GraphicRaycaster
   Image: sprite=GunMetal16x16, color=#0F1424EB, type=Simple, raycast=True
   OverworldPlaceholderInstance
-  RectTransform: anchor=(0,0)-(0,0), pos=585,1266, size=1170,2532, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+  RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance

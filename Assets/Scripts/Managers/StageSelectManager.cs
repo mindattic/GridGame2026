@@ -122,15 +122,22 @@ namespace Scripts.Managers
             var save = ProfileHelper.CurrentProfile?.CurrentSave;
             int highestCleared = save?.Stage?.HighestClearedStageIndex ?? -1;
 
-            int globalIndex = 0;
-            foreach (var theme in CampaignStages.Themes)
+            // US-110: newest-on-top — themes in reverse order, stages within each theme in reverse.
+            // Precompute each theme's starting global index.
+            int[] themeStart = new int[CampaignStages.Themes.Count];
+            int offset = 0;
+            for (int t = 0; t < CampaignStages.Themes.Count; t++)
             {
+                themeStart[t] = offset;
+                offset += CampaignStages.Themes[t].StageNames.Count;
+            }
+
+            for (int t = CampaignStages.Themes.Count - 1; t >= 0; t--)
+            {
+                var theme = CampaignStages.Themes[t];
                 CreateThemeHeader(theme);
-                foreach (var stageName in theme.StageNames)
-                {
-                    CreateStageRow(globalIndex, highestCleared);
-                    globalIndex++;
-                }
+                for (int s = theme.StageNames.Count - 1; s >= 0; s--)
+                    CreateStageRow(themeStart[t] + s, highestCleared);
             }
         }
 
@@ -180,7 +187,7 @@ namespace Scripts.Managers
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
-            rt.sizeDelta = new Vector2(0f, 56f);
+            rt.sizeDelta = new Vector2(0f, 72f);
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
@@ -196,7 +203,7 @@ namespace Scripts.Managers
             btn.onClick.AddListener(() => OnRowClicked(captured));
 
             var le = go.AddComponent<LayoutElement>();
-            le.minHeight = 56f; le.preferredHeight = 56f; le.flexibleWidth = 1f;
+            le.minHeight = 72f; le.preferredHeight = 72f; le.flexibleWidth = 1f;
 
             var labelGO = new GameObject("Label");
             labelGO.layer = LayerMask.NameToLayer("UI");
@@ -214,7 +221,13 @@ namespace Scripts.Managers
             if (stage?.Waves != null)
                 foreach (var w in stage.Waves) enemyCount += w.Actors?.Count ?? 0;
 
-            string label = $"{starPrefix}<b>{CampaignStages.LabelFor(globalIndex)}</b>   <color=#aaaaaa>{waveCount}w / {enemyCount}e</color>{lockSuffix}";
+            // US-110: notable drops hint on a second line
+            string dropsHint = BuildDropsHint(stage);
+            string dropsLine = !string.IsNullOrEmpty(dropsHint)
+                ? $"\n  <color=#7799aa><size=18>drops: {dropsHint}</size></color>"
+                : "";
+
+            string label = $"{starPrefix}<b>{CampaignStages.LabelFor(globalIndex)}</b>   <color=#aaaaaa>{waveCount}w / {enemyCount}e</color>{lockSuffix}{dropsLine}";
 
             tmp.text = label;
             tmp.fontSize = 24;
@@ -223,6 +236,31 @@ namespace Scripts.Managers
             tmp.enableWordWrapping = false;
             tmp.richText = true;
             tmp.raycastTarget = false;
+        }
+
+        private static string BuildDropsHint(Stage stage)
+        {
+            if (stage?.Waves == null) return "";
+            var seenIds = new System.Collections.Generic.HashSet<string>();
+            var names = new System.Collections.Generic.List<string>();
+            foreach (var wave in stage.Waves)
+            {
+                if (wave.Actors == null) continue;
+                foreach (var actor in wave.Actors)
+                {
+                    var table = DropTableLibrary.Get(actor.CharacterClass);
+                    if (table?.Entries == null) continue;
+                    foreach (var entry in table.Entries)
+                    {
+                        if (!seenIds.Add(entry.ItemId)) continue;
+                        var item = ItemLibrary.Get(entry.ItemId);
+                        if (item != null && !string.IsNullOrEmpty(item.DisplayName))
+                            names.Add(item.DisplayName);
+                        if (names.Count >= 2) return string.Join(", ", names);
+                    }
+                }
+            }
+            return string.Join(", ", names);
         }
 
         private void OnRowClicked(int index)
