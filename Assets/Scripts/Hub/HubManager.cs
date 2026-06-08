@@ -35,10 +35,7 @@ namespace Scripts.Hub
     /// </summary>
     public class HubManager : MonoBehaviour
     {
-        private void Awake()
-        {
-            // Hydrate profile so vendors have save data to read.
-            ProfileHelper.EnsureProfileLoaded();
-        }
+        // Stateless launcher — navigation buttons wired by HubBuilder; profile already
+        // loaded by ProfileSelect before this scene is reached.
     }
 }
