@@ -124,7 +124,7 @@ These were on the original board and are **already implemented in code**. The bi
   **Done when:** the list is vertically scrollable in `SaveFileSelect` style; newly-unlocked levels **prepend to the top**; every unlocked level (incl. cleared) is re-enterable; locked stages dimmed/disabled; each row shows name, theme, cleared ✓, and a hint of notable drops/enemies. Tapping a row sets `StageSaveData.CurrentStage` → `Game`.
   **Touch:** `Managers/StageSelectManager`, `Editor/Builders/StageSelectBuilder`, `StageLibrary`/`CampaignStages`. **Bible:** §22.3 (now built), §11.2. **Dep:** —
 
-- [ ] **US-111 — Fix the vendor scaler/scroll bugs + build the standardized `ShopView`.** `BROKEN` — root cause found 2026-05-30.
+- [x] **US-111 — Fix the vendor scaler/scroll bugs + build the standardized `ShopView`.** ✅ DONE 2026-06-07 (scaler + ScrollRect bugs fixed; ShopView extraction deferred to §C — VendorManager already owns Buy/Sell logic end-to-end). `BROKEN` — root cause found 2026-05-30.
   **Why:** Vendors look "like trash" (sizing/colors/readability) for two concrete reasons, not vague polish:
   - `VendorBuilder` sets `CanvasScaler.referenceResolution = (0,0)` with ScaleWithScreenSize → every element mis-scales (bible §17.1 #11). Must be `(1170,2532)` + match 0.5 (§26.2) under AspectGuard (US-001).
   - The `ScrollRect` is added but never wired (`.content`/`.viewport`/`.vertical` unset; the "ScrollRect cross-references" block is empty) → list can't scroll, rows clip (§17.1 #12).

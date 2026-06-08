@@ -28,9 +28,9 @@ public static class VendorBuilder
         canvas_Canvas.renderMode = (RenderMode)0;
         go_Canvas.AddComponent<GraphicRaycaster>();
         var scaler_Canvas = go_Canvas.AddComponent<CanvasScaler>();
-        scaler_Canvas.uiScaleMode = (CanvasScaler.ScaleMode)0;
-        scaler_Canvas.referenceResolution = new Vector2(0f, 0f);
-        scaler_Canvas.matchWidthOrHeight = 0f;
+        scaler_Canvas.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler_Canvas.referenceResolution = new Vector2(1170f, 2532f);
+        scaler_Canvas.matchWidthOrHeight = 0.5f;
         go_Canvas.AddComponent<CanvasRenderer>();
         var img_Canvas = go_Canvas.AddComponent<Image>();
         img_Canvas.sprite = SceneBuilderHelper.LoadSprite(Sprite_GunMetal16x16);
@@ -210,6 +210,7 @@ public static class VendorBuilder
         var img_List = go_List.AddComponent<Image>();
         img_List.color = new Color(0f, 0f, 0f, 0.35f);
         img_List.raycastTarget = true;
+        var sr_List = go_List.AddComponent<ScrollRect>();
         Undo.RegisterCreatedObjectUndo(go_List, "Create List");
 
         // --- Viewport ---
@@ -228,7 +229,6 @@ public static class VendorBuilder
         img_Viewport.color = new Color(1f, 1f, 1f, 0.02f);
         img_Viewport.type = (Image.Type)1;
         img_Viewport.raycastTarget = true;
-        go_Viewport.AddComponent<ScrollRect>();
         var mask_Viewport = go_Viewport.AddComponent<Mask>();
         mask_Viewport.showMaskGraphic = true;
         Undo.RegisterCreatedObjectUndo(go_Viewport, "Create Viewport");
@@ -357,6 +357,10 @@ public static class VendorBuilder
         Undo.RegisterCreatedObjectUndo(go_VendorManagerGO, "Create VendorManagerGO");
 
         // --- ScrollRect cross-references ---
+        sr_List.viewport   = rt_Viewport;
+        sr_List.content    = rt_Content;
+        sr_List.vertical   = true;
+        sr_List.horizontal = false;
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
