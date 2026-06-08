@@ -56,6 +56,7 @@ namespace Scripts.Factories
             var costLabels = new TMP_Text[Slots];
             var frames = new Image[Slots];
             var iconImages = new Image[Slots];
+            var cooldownSweeps = new Image[Slots]; // US-092: radial fill overlay
             var slotRects = new RectTransform[Slots];
 
             // The bar is added at the end; capture via closure variable so click handlers can route
@@ -124,11 +125,31 @@ namespace Scripts.Factories
                 iconImg.raycastTarget = false;
                 iconImg.enabled = false; // hidden until a sprite is assigned
                 iconImages[i] = iconImg;
+
+                // US-092: radial sweep overlay — Radial360 fill covers the slot from top as CD ticks.
+                var sweepGO = new GameObject("CooldownSweep", typeof(RectTransform), typeof(Image));
+                sweepGO.layer = LayerMask.NameToLayer("UI");
+                var sweepRT = (RectTransform)sweepGO.transform;
+                sweepRT.SetParent(rt, false);
+                sweepRT.anchorMin = Vector2.zero;
+                sweepRT.anchorMax = Vector2.one;
+                sweepRT.offsetMin = Vector2.zero;
+                sweepRT.offsetMax = Vector2.zero;
+                var sweepImg = sweepGO.GetComponent<Image>();
+                sweepImg.color = new Color(0f, 0f, 0f, 0.68f);
+                sweepImg.type = Image.Type.Filled;
+                sweepImg.fillMethod = Image.FillMethod.Radial360;
+                sweepImg.fillOrigin = (int)Image.Origin360.Top;
+                sweepImg.fillClockwise = true;
+                sweepImg.fillAmount = 1f;
+                sweepImg.raycastTarget = false;
+                sweepImg.enabled = false; // hidden until a cooldown is active
+                cooldownSweeps[i] = sweepImg;
             }
 
             barRef = container.gameObject.GetComponent<AbilityBar>();
             if (barRef == null) barRef = container.gameObject.AddComponent<AbilityBar>();
-            barRef.Bind(bank, buttons, nameLabels, costLabels, frames, iconImages, slotRects);
+            barRef.Bind(bank, buttons, nameLabels, costLabels, frames, iconImages, slotRects, cooldownSweeps);
             return barRef;
         }
 

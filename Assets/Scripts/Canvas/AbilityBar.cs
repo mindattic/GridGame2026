@@ -42,13 +42,14 @@ namespace Scripts.Canvas
         private TMP_Text[] costLabels;
         private Image[] frames;
         private Image[] iconImages;
+        private Image[] cooldownSweeps; // US-092: radial fill overlay per slot (Radial360, dark tint)
         private RectTransform[] slotRects;
         private TooltipInstance activeTooltip;
 
         private IReadOnlyList<ManaAbility> currentLoadout;
         private CharacterClass currentClass = CharacterClass.None;
 
-        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null, RectTransform[] slotRects = null)
+        public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null, RectTransform[] slotRects = null, Image[] cooldownSweeps = null)
         {
             this.bank = bank;
             this.buttons = buttons;
@@ -57,6 +58,7 @@ namespace Scripts.Canvas
             this.frames = frames;
             this.iconImages = iconImages;
             this.slotRects = slotRects;
+            this.cooldownSweeps = cooldownSweeps;
         }
 
         // US-091: hover/long-press tooltip showing ability name, kind, cost, and cast time.
@@ -361,6 +363,7 @@ namespace Scripts.Canvas
                     if (buttons[i] != null && buttons[i].gameObject.activeSelf)
                         buttons[i].gameObject.SetActive(false);
                     SetIcon(i, null);
+                    SetCooldownSweep(i, false, 0, 1);
                     continue;
                 }
 
@@ -409,6 +412,10 @@ namespace Scripts.Canvas
                     if (onCooldown) fc.a *= 0.4f; // fade the whole slot out while recharging
                     frames[i].color = fc;
                 }
+                // US-092: radial sweep overlay — fills from top (fillAmount=1) down to empty (0)
+                // as the cooldown ticks. Disabled when not on cooldown.
+                SetCooldownSweep(i, onCooldown, cooldown, a.CooldownTurns);
+
                 // US-076: spell icon sprite (glyph fallback = no icon = just text labels).
                 Sprite iconSprite = null;
                 if (a.Kind == AbilityKind.Spell && !string.IsNullOrEmpty(a.Name))
@@ -441,6 +448,16 @@ namespace Scripts.Canvas
             if (iconImages == null || i >= iconImages.Length || iconImages[i] == null) return;
             iconImages[i].sprite  = sprite;
             iconImages[i].enabled = sprite != null;
+        }
+
+        /// <summary>US-092: show/hide the radial sweep overlay and set its fill amount.</summary>
+        private void SetCooldownSweep(int i, bool onCooldown, int remaining, int maxTurns)
+        {
+            if (cooldownSweeps == null || i >= cooldownSweeps.Length || cooldownSweeps[i] == null) return;
+            var sweep = cooldownSweeps[i];
+            sweep.enabled = onCooldown;
+            if (onCooldown && maxTurns > 0)
+                sweep.fillAmount = (float)remaining / maxTurns;
         }
     }
 }
