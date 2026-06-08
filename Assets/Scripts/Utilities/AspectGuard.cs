@@ -19,11 +19,15 @@ namespace Scripts.Utilities
     ///   anchored positions (e.g. the AnnouncementWindow's −360) are in a CONSISTENT reference space on
     ///   every device — universal across aspect ratios. (Also fixes the VendorBuilder (0,0)-reference
     ///   bug, US-111.)</item>
+    ///   <item><b>Insets any "SafeArea" panel</b> — a RectTransform named exactly "SafeArea" as a direct
+    ///   child of a root Canvas — to match <see cref="Screen.safeArea"/> (notch / home-indicator margin),
+    ///   converting the pixel rect to normalized anchors. Builders opt in by adding that child; canvases
+    ///   without "SafeArea" are unaffected.</item>
     /// </list>
     ///
     /// <para>Self-installs on every scene (no per-builder wiring) via a runtime hook; re-applies on
-    /// resolution / orientation change. EDITOR-GATED: the exact bars/centering must be eyeballed across
-    /// aspect ratios in the editor.</para>
+    /// resolution / orientation / safe-area change. EDITOR-GATED: the exact bars/centering must be
+    /// eyeballed across aspect ratios in the editor.</para>
     /// </summary>
     [DefaultExecutionOrder(-200)]
     public sealed class AspectGuard : MonoBehaviour
@@ -40,6 +44,7 @@ namespace Scripts.Utilities
 
         private Camera cam;
         private int lastW, lastH;
+        private Rect lastSafeArea;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Install()
@@ -59,13 +64,15 @@ namespace Scripts.Utilities
         private void OnEnable()
         {
             cam = GetComponent<Camera>();
-            ApplyLetterbox();
+            ApplyLetterbox();   // also calls ApplySafeArea
         }
 
         private void Update()
         {
-            if (Screen.width != lastW || Screen.height != lastH)
-                ApplyLetterbox();
+            bool sizeChanged = Screen.width != lastW || Screen.height != lastH;
+            bool safeChanged = Screen.safeArea != lastSafeArea;
+            if (sizeChanged) ApplyLetterbox();
+            else if (safeChanged) ApplySafeArea();
         }
 
         private void ApplyLetterbox()
@@ -98,10 +105,40 @@ namespace Scripts.Utilities
             cam.backgroundColor = Color.black;
 
             EnsureBackgroundCamera();
+            ApplySafeArea();
 
             // Re-center the board within the new visible rect, if a board exists.
             var board = Scripts.Helpers.GameHelper.Board;
             if (board != null) board.SendMessage("AssignPosition", SendMessageOptions.DontRequireReceiver);
+        }
+
+        /// <summary>Apply the OS-reported safe-area inset to any RectTransform named "SafeArea" that is
+        /// a direct child of a Canvas. Builders opt in by adding that child panel; everything else is
+        /// unaffected. Converts the pixel-space <see cref="Screen.safeArea"/> to normalized anchors and
+        /// zeroes the offsets so the panel exactly tracks the notch/home-indicator margins.</summary>
+        private void ApplySafeArea()
+        {
+            lastSafeArea = Screen.safeArea;
+            if (Screen.width <= 0 || Screen.height <= 0) return;
+
+            float sw = Screen.width;
+            float sh = Screen.height;
+            Rect area = Screen.safeArea;
+
+            var anchorMin = new Vector2(area.x / sw, area.y / sh);
+            var anchorMax = new Vector2((area.x + area.width) / sw, (area.y + area.height) / sh);
+
+            var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            foreach (var canvas in canvases)
+            {
+                if (canvas == null || !canvas.isRootCanvas) continue;
+                var safePanel = canvas.transform.Find("SafeArea") as RectTransform;
+                if (safePanel == null) continue;
+                safePanel.anchorMin = anchorMin;
+                safePanel.anchorMax = anchorMax;
+                safePanel.offsetMin = Vector2.zero;
+                safePanel.offsetMax = Vector2.zero;
+            }
         }
 
         /// <summary>A persistent full-screen camera that clears the whole screen to black BEHIND the

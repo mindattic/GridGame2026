@@ -1225,7 +1225,7 @@ The full HUD layout lives in `Utilities/HudLayout.cs` (constants `Row{N}Y_FromTo
 | 14 | 12-slot mana orb belt — screen-wide "tray", sits just **above** the ability bar | `ManaOrbLineFactory` (runtime) |
 | 15 | `ActorPanel` — tabbed **Stats / Equipment / Lore** (contextual: selected hero or scanned enemy). Hero ◀▶ cycle arrows in the tab bar. | root in `GameBuilder`; tab UI built at runtime by `ActorPanel` |
 
-**Cast bars** (`SpellCastBar`) stack vertically below Row 2 (the timeline), each its own slot via `SpellCastBar.Active` registry. Max 4 concurrent (§2.6).
+**Cast icons** — small spell-sprite icons that travel left→right on a lane **below** the timeline bar line (US-114). Spawned via `TimelineBarInstance.SpawnSpellIcon`; the retired `SpellCastBar` parallel-cast path is soft-disabled ([Obsolete]).
 
 **Combat text popups** (red damage, green heal, "Miss" / "Steal!" / "Steam!") float up from the actor's world position via `CombatTextManager.Spawn(text, position, styleKey)`.
 
@@ -1732,9 +1732,9 @@ A running list — when you trip one of these, fix it AND amend this section so 
 
 10. ~~**`LayerMask.NameToLayer("UI")` can return -1.**~~ ✅ RESOLVED (US-003, verified 2026-05-31): the only `cullingMask` assignment in `Assets/` is `BestiaryBuilder.cs:55`, which already guards with `uiLayer >= 0 ? (1 << uiLayer) : ~0`. Other builder cameras don't cull at all (render everything). Keep the guard pattern for any future `1 << NameToLayer` camera site.
 
-11. **Vendor scenes look "like trash" because of a broken `CanvasScaler` — the #1 cause.** `VendorBuilder` (and the other vendor builders) set `CanvasScaler.referenceResolution = new Vector2(0f, 0f)` with `ScaleWithScreenSize`. Scaling against a **zero** reference resolution makes every element size/position nonsense — fonts, padding, buttons all wrong. **Fix:** every vendor Canvas MUST use the §26.2 baseline (`referenceResolution = (1170, 2532)`, `screenMatchMode = MatchWidthOrHeight`, `matchWidthOrHeight = 0.5`). This is *the* reason "sizing and colors and basic interface" came out broken.
+11. ~~**Vendor scenes look "like trash" because of a broken `CanvasScaler` — the #1 cause.** `VendorBuilder` (and the other vendor builders) set `CanvasScaler.referenceResolution = new Vector2(0f, 0f)` with `ScaleWithScreenSize`. Scaling against a **zero** reference resolution makes every element size/position nonsense — fonts, padding, buttons all wrong. **Fix:** every vendor Canvas MUST use the §26.2 baseline (`referenceResolution = (1170, 2532)`, `screenMatchMode = MatchWidthOrHeight`, `matchWidthOrHeight = 0.5`). This is *the* reason "sizing and colors and basic interface" came out broken.~~ ✅ RESOLVED (US-111, 2026-06-07): `VendorBuilder` now sets `ScaleWithScreenSize` + `referenceResolution = (1170, 2532)` + `matchWidthOrHeight = 0.5`.
 
-12. **The vendor list doesn't scroll because the `ScrollRect` is never wired.** `VendorBuilder` calls `AddComponent<ScrollRect>()` on the Viewport but never assigns `.content`, `.viewport`, `.horizontal`/`.vertical`, or `movementType` (the "ScrollRect cross-references" comment block at the file's end is empty). Result: rows overflow/clip and the list is unusable. **Fix:** wire `scroll.viewport = Viewport`, `scroll.content = Content`, `scroll.vertical = true`, `scroll.horizontal = false`, `scroll.movementType = Clamped`. Also pull all colors from `HubTheme` (the builders hardcode `new Color(...)` and drift from the palette). The lasting fix is the shared `ShopView` (US-111) so this is solved once, not six times.
+12. ~~**The vendor list doesn't scroll because the `ScrollRect` is never wired.** `VendorBuilder` calls `AddComponent<ScrollRect>()` on the Viewport but never assigns `.content`, `.viewport`, `.horizontal`/`.vertical`, or `movementType` (the "ScrollRect cross-references" comment block at the file's end is empty). Result: rows overflow/clip and the list is unusable. **Fix:** wire `scroll.viewport = Viewport`, `scroll.content = Content`, `scroll.vertical = true`, `scroll.horizontal = false`, `scroll.movementType = Clamped`. Also pull all colors from `HubTheme` (the builders hardcode `new Color(...)` and drift from the palette). The lasting fix is the shared `ShopView` (US-111) so this is solved once, not six times.~~ ✅ RESOLVED (US-111, 2026-06-07): `ScrollRect` now added to the List `go`, wired with `viewport`, `content`, `vertical = true`, `horizontal = false`.
 
 ### 17.2 Cadence
 
@@ -1829,7 +1829,7 @@ The dispatcher / dispatcher-edge-case table answers "what does the system do?"; 
 - **Prepare Zone** — rightmost 25–35% of the timeline (`u ≥ 1 - ZoneU`); in-Zone icons crawl at a uniform pace and are the prime interrupt window.
 - **Pushback** — leftward shove applied to a damaged icon **only if** it was in the Prepare Zone; followed by `Stunned` mode while it stops.
 - **Train-cascade** — when a new/displaced icon arrives, neighbors are shoved further left in sequence to maintain `MinSpatialGap` — order-preserving.
-- **Cast bar** — colored shrinking line under the timeline showing a spell's remaining cast time.
+- **Cast icon** — small spell-sprite icon (≈¼ normal size) that spawns at u=0 on a lane **below** the timeline bar line and travels to u=1 over the spell's cast time; resolves at trigger. Retired: the old `SpellCastBar` "colored shrinking line" parallel-cast path (US-114, 2026-06-08).
 - **Interrupt outcomes** (stagger model, §13.4) — *Clutch* (rare LCK pre-check: cast shrugs the hit and snaps to the trigger to resolve — US-025), *Shrug* (WIS poise ignores the hit), *Stagger* (cast-time delay added; accumulates), *Cancel* (total delay ≥ cast time → cast canceled, MP gone).
 
 ### Targeting
@@ -2527,12 +2527,13 @@ A black-bars background image (`AspectBars`) goes BEHIND `AspectGuard` (sibling,
 
 The above is the **design intent**. Current implementation:
 - §26.2 (CanvasScaler) — ✅ done (normalized via `AspectGuard.NormalizeCanvases()` on scene load).
-- §26.3–§26.5 (AspectGuard, letterbox/pillarbox viewport math, black bars) — 🟡 CORE BUILT 2026-06-06.
+- §26.3–§26.5 (AspectGuard, letterbox/pillarbox viewport math, black bars, safe-area) — 🟡 CODE COMPLETE 2026-06-08.
   `Utilities/AspectGuard.cs` self-installs on every scene via `[RuntimeInitializeOnLoadMethod]`, clamps
-  `Camera.main.rect` to the nearest valid portrait aspect, and ensures a black background camera fills
-  the bars. `NormalizeCanvases()` pins every `CanvasScaler` to the 1170×2532 reference with match 0.5.
-  **Remaining (in-editor only):** safe-area inset, board tile-fit pass, per-Overlay-canvas SafeFrame,
-  §26.4 separate UI Overlay Camera. Tracked in §16.4 #17.
+  `Camera.main.rect` to the nearest valid portrait aspect, ensures a black background camera fills the
+  bars, normalizes every `CanvasScaler` to 1170×2532 + match 0.5, and insets any Canvas child named
+  "SafeArea" to `Screen.safeArea` normalized anchors (notch/home-indicator, re-applied on change).
+  **Remaining (in-editor only):** visual verify pillarbox + letterbox + safe-area margin; board tile-fit
+  pass; per-Overlay-canvas SafeFrame; §26.4 separate UI Overlay Camera. Tracked in §16.4 #17.
 - §26.6 (`CameraViewportSync.cs`) — **Not built**; `AspectGuard` applies the camera rect directly
   (no companion sync script needed with the current self-install approach).
   The `CameraViewportSync.SetGuardRect` reference in the code snippet above is the original design
