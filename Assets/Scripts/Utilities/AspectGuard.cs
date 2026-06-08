@@ -128,7 +128,7 @@ namespace Scripts.Utilities
             var anchorMin = new Vector2(area.x / sw, area.y / sh);
             var anchorMax = new Vector2((area.x + area.width) / sw, (area.y + area.height) / sh);
 
-            var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+            var canvases = Object.FindObjectsByType<UnityEngine.Canvas>(FindObjectsSortMode.None);
             foreach (var canvas in canvases)
             {
                 if (canvas == null || !canvas.isRootCanvas) continue;
