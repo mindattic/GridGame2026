@@ -87,6 +87,7 @@ namespace Scripts.Helpers
         public const string Equip = "Equip";
         public const string Blacksmith = "Blacksmith";
         public const string Bestiary = "Bestiary";
+        public const string Hub = "Hub";
 
         #endregion
 
@@ -222,6 +223,8 @@ namespace Scripts.Helpers
             public static void ToBlacksmith() => To(Blacksmith);
             /// <summary>To bestiary.</summary>
             public static void ToBestiary() => To(Bestiary);
+            /// <summary>To hub (vendor launcher).</summary>
+            public static void ToHub() => To(Hub);
         }
 
         /// <summary>
@@ -292,6 +295,8 @@ namespace Scripts.Helpers
             public static void ToBlacksmith() => To(Blacksmith);
             /// <summary>To bestiary.</summary>
             public static void ToBestiary() => To(Bestiary);
+            /// <summary>To hub (vendor launcher).</summary>
+            public static void ToHub() => To(Hub);
         }
 
         #endregion

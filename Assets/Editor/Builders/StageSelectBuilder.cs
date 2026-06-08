@@ -74,6 +74,46 @@ public static class StageSelectBuilder
         title.anchoredPosition = new Vector2(40f, 0f);
         var tt = title.GetComponent<TextMeshProUGUI>();
         if (tt != null) { tt.fontSize = 48; tt.fontStyle = FontStyles.Bold; tt.color = HubTheme.Accent; tt.alignment = TextAlignmentOptions.MidlineLeft; }
+
+        // US-112: Hub button — top-right of header → Hub vendor launcher.
+        var hubBtn = header.Find("HubButton");
+        if (hubBtn == null)
+        {
+            var go = new GameObject("HubButton");
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(header, false);
+            rt.anchorMin = new Vector2(1f, 0.5f);
+            rt.anchorMax = new Vector2(1f, 0.5f);
+            rt.pivot = new Vector2(1f, 0.5f);
+            rt.sizeDelta = new Vector2(200f, 56f);
+            rt.anchoredPosition = new Vector2(-20f, 0f);
+            go.AddComponent<CanvasRenderer>();
+            var img = go.AddComponent<Image>();
+            img.color = HubTheme.NavActive;
+            img.sprite = SceneBuilderHelper.LoadBuiltinSprite("UISprite");
+            img.type = Image.Type.Sliced;
+            var btn = go.AddComponent<Button>();
+            btn.targetGraphic = img;
+            SceneBuilderHelper.WireOnClick(btn, () => Scripts.Helpers.SceneHelper.Fade.ToHub());
+            var lGO = new GameObject("Label");
+            lGO.layer = LayerMask.NameToLayer("UI");
+            var lRT = lGO.AddComponent<RectTransform>();
+            lRT.SetParent(rt, false);
+            lRT.anchorMin = Vector2.zero; lRT.anchorMax = Vector2.one;
+            lRT.offsetMin = Vector2.zero; lRT.offsetMax = Vector2.zero;
+            lGO.AddComponent<CanvasRenderer>();
+            var tmp = lGO.AddComponent<TextMeshProUGUI>();
+            tmp.text = "Shop";
+            tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
+            tmp.fontSize = 32; tmp.fontStyle = FontStyles.Bold;
+            tmp.color = Color.black;
+            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.raycastTarget = false;
+            UnityEditor.Undo.RegisterCreatedObjectUndo(go, "Create HubButton");
+            created++;
+        }
+        else found++;
     }
 
     private static void BuildBody(RectTransform canvas, ref int created, ref int found)
