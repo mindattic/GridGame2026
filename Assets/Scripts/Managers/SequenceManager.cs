@@ -74,8 +74,12 @@ public class SequenceManager : MonoBehaviour
     /// <summary>True while the queue is being processed.</summary>
     private bool isExecuting;
 
-    /// <summary>Reference to currently running coroutine.</summary>
+    /// <summary>Reference to currently running outer coroutine (ExecuteRoutine).</summary>
     private Coroutine runningCoroutine;
+
+    /// <summary>Reference to the inner coroutine (current ProcessRoutine). Tracked so
+    /// CancelAll() can stop it explicitly alongside the outer coroutine.</summary>
+    private Coroutine innerCoroutine;
 
     #endregion
 
@@ -178,9 +182,13 @@ public class SequenceManager : MonoBehaviour
 
                 OnSequenceEventStarted?.Invoke(current);
 
-                // Run to completion
+                // Run to completion; track inner handle so CancelAll() can stop it.
                 if (current != null)
-                    yield return StartCoroutine(current.ProcessRoutine());
+                {
+                    innerCoroutine = StartCoroutine(current.ProcessRoutine());
+                    yield return innerCoroutine;
+                    innerCoroutine = null;
+                }
 
                 // Track completion
                 lastCompletedSequenceName = current?.GetType().Name;
@@ -198,19 +206,27 @@ public class SequenceManager : MonoBehaviour
         }
     }
 
-    /// <summary>Called when the component becomes disabled.</summary>
+    /// <summary>Immediately cancels all pending and in-flight sequences and resets the manager.
+    /// Call this explicitly at battle-end (BattleWon/BattleLost) for a clean slate before the
+    /// scene transition fires and OnDisable cleans up the rest.</summary>
+    public void CancelAll()
+    {
+        // StopAllCoroutines kills both the outer ExecuteRoutine and the inner ProcessRoutine
+        // (which StopCoroutine(handle) alone would miss — nested StartCoroutine creates an
+        // independent coroutine on this MonoBehaviour that outlives the outer handle's cancel).
+        StopAllCoroutines();
+        runningCoroutine = null;
+        innerCoroutine   = null;
+        isExecuting      = false;
+        queue.Clear();
+    }
+
+    /// <summary>Called when the component becomes disabled (scene unload / GameObject destroy).
+    /// Delegates to CancelAll to catch any in-flight ProcessRoutine coroutines that the old
+    /// targeted StopCoroutine(handle) would have missed.</summary>
     private void OnDisable()
     {
-        // DespawnRoutine active run
-        if (runningCoroutine != null)
-        {
-            StopCoroutine(runningCoroutine);
-            runningCoroutine = null;
-        }
-
-        // Reset and drop pending items to avoid leaking into next scene
-        isExecuting = false;
-        queue.Clear();
+        CancelAll();
     }
 
     /// <summary>

@@ -42,9 +42,12 @@ namespace Scripts.Services
             if (Scripts.Managers.BuffSystem.IsImmobile(enemy))
                 return enemy.location;
 
-            var heroes = actors.Where(a => a != null && a.IsPlaying && a.team == Team.Hero).ToList();
-            if (heroes.Count == 0)
+            _heroScratch.Clear();
+            foreach (var a in actors)
+                if (a != null && a.IsPlaying && a.team == Team.Hero) _heroScratch.Add(a);
+            if (_heroScratch.Count == 0)
                 return enemy.location;
+            var heroes = _heroScratch;
 
             // Choose a target: prefer heroes that are both NEAR and WOUNDED (kill pressure).
             // Lower score wins (distance, plus a big bonus for low HP fraction).
@@ -53,12 +56,17 @@ namespace Scripts.Services
             // enemy barely weights threat and keeps chasing the nearest/most-wounded hero.
             float maxThreat = Scripts.Managers.ThreatTracker.MaxThreat(heroes);
             float intFactor = (enemy.Stats != null ? enemy.Stats.Intelligence : 0f) * ThreatIntScale;
-            ActorInstance target = heroes
-                .OrderBy(h => Manhattan(enemy.location, h.location) + HpFraction(h) * 8f - ThreatTerm(h, maxThreat, intFactor))
-                .First();
+            ActorInstance target = heroes[0];
+            float bestTargetScore = Manhattan(enemy.location, heroes[0].location) + HpFraction(heroes[0]) * 8f - ThreatTerm(heroes[0], maxThreat, intFactor);
+            for (int ti = 1; ti < heroes.Count; ti++)
+            {
+                float s = Manhattan(enemy.location, heroes[ti].location) + HpFraction(heroes[ti]) * 8f - ThreatTerm(heroes[ti], maxThreat, intFactor);
+                if (s < bestTargetScore) { bestTargetScore = s; target = heroes[ti]; }
+            }
 
             // Candidate steps: stay put + the four cardinal neighbors that are on-board and free.
-            var candidates = new List<Vector2Int> { enemy.location };
+            _candidateScratch.Clear();
+            _candidateScratch.Add(enemy.location);
             foreach (var dir in Cardinals)
             {
                 var c = enemy.location + dir;
@@ -74,7 +82,7 @@ namespace Scripts.Services
                     if (tileMap.GetTile(c) == null) continue;        // off board
                     if (IsOccupied(c, actors, enemy)) continue;      // blocked by another actor
                 }
-                candidates.Add(c);
+                _candidateScratch.Add(c);
             }
 
             Vector2Int best = enemy.location;
@@ -90,7 +98,7 @@ namespace Scripts.Services
             // Flank-avoidance still applies so it never backs into a pincer.
             bool wounded = HpFraction(enemy) < RetreatHpThreshold;
 
-            foreach (var c in candidates)
+            foreach (var c in _candidateScratch)
             {
                 float dist = Manhattan(c, target.location);
                 float score = wounded ? dist : -dist;               // flee (maximize) vs advance (minimize)
@@ -135,14 +143,26 @@ namespace Scripts.Services
             var ability = Scripts.Data.Actor.EnemyChargeCatalog.For(enemy);
             if (ability == null) return null; // not a caster
 
-            var heroes = actors.Where(a => a != null && a.IsPlaying && a.team == Team.Hero).ToList();
-            if (heroes.Count == 0) return null;
+            _heroScratch.Clear();
+            foreach (var a in actors)
+                if (a != null && a.IsPlaying && a.team == Team.Hero) _heroScratch.Add(a);
+            if (_heroScratch.Count == 0) return null;
+            var heroes = _heroScratch;
 
             // If it can melee, let it melee — only telegraph from range. US-083: a boss phase that
             // prefers charging (ignoreMeleeRange) telegraphs even point-blank.
-            if (!ignoreMeleeRange && heroes.Any(h => IsCardinalAdjacent(enemy.location, h.location))) return null;
+            if (!ignoreMeleeRange)
+            {
+                foreach (var h in heroes) if (IsCardinalAdjacent(enemy.location, h.location)) return null;
+            }
 
-            var target = heroes.OrderBy(h => Manhattan(enemy.location, h.location)).First();
+            ActorInstance target = heroes[0];
+            int bestCastDist = Manhattan(enemy.location, heroes[0].location);
+            for (int ti = 1; ti < heroes.Count; ti++)
+            {
+                int d = Manhattan(enemy.location, heroes[ti].location);
+                if (d < bestCastDist) { bestCastDist = d; target = heroes[ti]; }
+            }
             return new EnemyChargePlan { Target = target, Ability = ability };
         }
 
@@ -210,6 +230,10 @@ namespace Scripts.Services
             new Vector2Int(1, 0), new Vector2Int(-1, 0),
             new Vector2Int(0, 1), new Vector2Int(0, -1)
         };
+
+        // US-101: pre-allocated scratch collections — avoids per-call heap allocs on the hot enemy-turn path.
+        private static readonly List<ActorInstance> _heroScratch      = new List<ActorInstance>(8);
+        private static readonly List<Vector2Int>    _candidateScratch = new List<Vector2Int>(5);
 
         private static int Manhattan(Vector2Int a, Vector2Int b) =>
             Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
