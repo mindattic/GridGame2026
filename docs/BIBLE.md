@@ -1344,6 +1344,43 @@ Every scene EXCEPT `Game` and `Overworld` is reproducible from `Editor/Builders/
 
 When a new scene is created by `SceneBuilderHelper.OpenScene` (auto-creates if missing), it must be **manually added** to `File → Build Settings → Scenes in Build` to be playable from gameplay scene transitions.
 
+### 11.5 The visual language — UiKit / HubTheme / UiFonts (BUILT 2026-06-09, US-123)
+
+**One visual language for every scene** (FFBE-inspired mobile JRPG): simple boxes with thin steel
+borders, navy panels, gold accents, two fonts. Before this, two visual systems coexisted (the
+GreenButton-sprite meta screens vs. the navy/gold vendor screens), runtime list rows fell back to
+LiberationSans because no font was ever set, scrollbars were missing or off-palette, and the
+Bestiary was a third style entirely.
+
+**The three pillars:**
+- **`Scripts/Hub/HubTheme.cs`** — the palette (PanelBg, HeaderBg, NavIdle/Active/Hover, Accent
+  gold, PanelBorder steel, ListBg, RowBg/RowSelected/RowLocked, ScrollTrack/Handle, Danger,
+  Success, Text tiers) + `ButtonColors` (the ONE ColorBlock every button uses). **Never hand-type
+  a color that exists here.**
+- **`Scripts/Hub/UiFonts.cs`** — the two-font system: **Attic = display** (scene titles, headers,
+  announcements), **Outfit = body** (buttons, rows, stats, descriptions). Resolves via FontLibrary
+  (Addressables) at runtime and AssetDatabase in edit mode, so builders and runtime factories
+  render identically. **Every runtime-created TMP must set a UiFonts font** — an unfonted TMP
+  falls back to LiberationSans and instantly breaks the language.
+- **`Assets/Editor/Builders/UiKit.cs`** — the component factory every scene builder composes
+  from: `Header` (96px bar + 3px gold rule + Attic 48 bold gold title), `HeaderRightLabel`,
+  `Panel`/`Border` (flat fill + 2px steel edge frame), `Button` (Primary gold / Secondary navy /
+  Tab / Danger), `BackButton` (the ONE convention: bottom-left (24,24) 220×64 "← Label"),
+  `ScrollList` (bordered well + visible 12px themed scrollbar; hierarchy is exactly
+  `{name}/Viewport/Content` so manager paths keep resolving), `Label`/`DisplayLabel`.
+
+**Conventions the kit enforces:** every screen opens with the standard Header; one gold Primary
+button per screen (the commit action); all lists scroll with a visible themed scrollbar; canvases
+author at the §26.2 reference (1170×2532, match 0.5) so the editor preview matches the
+AspectGuard-normalized device; the legacy `CutoutOverlay` black bar is Game-scene-only (the Clock
+docks there) — meta scenes use the Header instead.
+
+**Rule:** a new screen is composed from UiKit components; a new runtime row sets `UiFonts.Body`
+and HubTheme constants. Hand-rolled per-scene buttons/labels/scroll-lists are how the scenes
+drifted apart — don't reintroduce them. *(Sources: `UiKit.cs`, `HubTheme.cs`, `UiFonts.cs`,
+`SceneBuilderHelper.cs` — EnsureCanvas/EnsureTitle/EnsureBackButton/EnsureButton/EnsureLabel/
+EnsureScrollView all route through the kit.)*
+
 ---
 
 ## 12. Asset Pipeline

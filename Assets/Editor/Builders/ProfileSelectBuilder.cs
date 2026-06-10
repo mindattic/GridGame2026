@@ -51,7 +51,6 @@ public static class ProfileSelectBuilder
         var canvas = SceneBuilderHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
             SceneBuilderHelper.EnsureTitle(canvas, "Select Profile", ref created, ref found);
             SceneBuilderHelper.EnsureScrollView(canvas, ref created, ref found);
             SceneBuilderHelper.EnsureBackButton(canvas, ref created, ref found);

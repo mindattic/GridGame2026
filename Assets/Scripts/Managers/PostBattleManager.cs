@@ -359,9 +359,10 @@ public class PostBattleManager : MonoBehaviour
 
         go.AddComponent<CanvasRenderer>();
         var tmp = go.AddComponent<TMPro.TextMeshProUGUI>();
+        tmp.font = UiFonts.Display;
         tmp.text = "Loot Collected";
         tmp.fontSize = 42;
-        tmp.color = new Color(1f, 0.85f, 0.3f, 1f);
+        tmp.color = HubTheme.Accent;
         tmp.alignment = TMPro.TextAlignmentOptions.Center;
         tmp.enableWordWrapping = false;
         tmp.raycastTarget = false;

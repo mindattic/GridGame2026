@@ -263,8 +263,8 @@ namespace Scripts.Vendor.Party
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
             bg.color = (selected == member.CharacterClass)
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -299,6 +299,7 @@ namespace Scripts.Vendor.Party
             labelRT.offsetMin = new Vector2(20f, 4f); labelRT.offsetMax = new Vector2(-12f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.text = $"{member.CharacterClass}    <color=#cccccc>Lv {level}</color>";
             tmp.fontSize = 24;
             tmp.color = HubTheme.TextLight;

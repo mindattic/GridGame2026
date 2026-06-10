@@ -43,11 +43,10 @@ public static class GameBuilder
     // at (0.5,0.5) — Y_center = (CanvasHeight/2) + fromTop  (fromTop is already negative).
     private const float Hud_Row2Y_Centered  = Hud_CanvasHeight * 0.5f + Hud_Row2Y_FromTop; // ≈1013
 
-    // Font asset paths
+    // Font asset paths — two-font system: Attic = display, Outfit = body (UiFonts.cs).
+    // The legacy Avenir / LiberationSans HUD stragglers were unified 2026-06-09 (US-123).
     private const string Font_Attic = "Assets/Fonts/Attic.asset";
-    private const string Font_Avenir = "Assets/Fonts/Avenir.asset";
-    private const string Font_LiberationSans_SDF_Fallback = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset";
-    private const string Font_LiberationSans_SDF = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset";
+    private const string Font_Body = "Assets/Fonts/Outfit.asset";
 
     public static void Build()
     {
@@ -123,8 +122,8 @@ public static class GameBuilder
         rt_Label5.anchoredPosition = new Vector2(0f, 0f);
         go_Label5.AddComponent<CanvasRenderer>();
         var tmp_Label5 = go_Label5.AddComponent<TextMeshProUGUI>();
-        tmp_Label5.font = SceneBuilderHelper.LoadFont(Font_LiberationSans_SDF);
-        tmp_Label5.text = "m_isRightToLeft: 0";
+        tmp_Label5.font = SceneBuilderHelper.LoadFont(Font_Body);
+        tmp_Label5.text = ""; // pause icon is the sprite; the legacy garbage label text is gone
         tmp_Label5.fontSize = 24f;
         tmp_Label5.color = new Color(0.1960784f, 0.1960784f, 0.1960784f, 1f);
         tmp_Label5.alignment = (TextAlignmentOptions)514;
@@ -596,7 +595,7 @@ public static class GameBuilder
         rt_Label3.anchoredPosition = new Vector2(0f, 0f);
         go_Label3.AddComponent<CanvasRenderer>();
         var tmp_Label3 = go_Label3.AddComponent<TextMeshProUGUI>();
-        tmp_Label3.font = SceneBuilderHelper.LoadFont(Font_Avenir);
+        tmp_Label3.font = SceneBuilderHelper.LoadFont(Font_Body);
         tmp_Label3.text = "X";
         tmp_Label3.fontSize = 24f;
         tmp_Label3.color = new Color(1f, 1f, 1f, 1f);
@@ -637,7 +636,7 @@ public static class GameBuilder
         rt_Label6.anchoredPosition = new Vector2(0f, 0f);
         go_Label6.AddComponent<CanvasRenderer>();
         var tmp_Label6 = go_Label6.AddComponent<TextMeshProUGUI>();
-        tmp_Label6.font = SceneBuilderHelper.LoadFont(Font_Avenir);
+        tmp_Label6.font = SceneBuilderHelper.LoadFont(Font_Body);
         tmp_Label6.text = "Ok";
         tmp_Label6.fontSize = 24f;
         tmp_Label6.color = new Color(1f, 1f, 1f, 1f);
@@ -724,7 +723,7 @@ public static class GameBuilder
         rt_Clock.anchoredPosition = new Vector2(0f, 1100f);
         go_Clock.AddComponent<CanvasRenderer>();
         var tmp_Clock = go_Clock.AddComponent<TextMeshProUGUI>();
-        tmp_Clock.font = SceneBuilderHelper.LoadFont(Font_LiberationSans_SDF_Fallback);
+        tmp_Clock.font = SceneBuilderHelper.LoadFont(Font_Body);
         tmp_Clock.text = "10:41 AM";
         tmp_Clock.fontSize = 24f;
         tmp_Clock.color = new Color(1f, 1f, 1f, 1f);

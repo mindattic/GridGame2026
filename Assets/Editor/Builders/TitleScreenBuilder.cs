@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 using TMPro;
+using Scripts.Hub;
 using Scripts.Managers;
 
 /// <summary>
@@ -78,8 +79,15 @@ public static class TitleScreenBuilder
         var canvas = SceneBuilderHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            // CutoutOverlay
-            SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            // Game title — Attic display, gold, above the menu (replaces the old empty
+            // CutoutOverlay black bar with an actual title treatment).
+            var logo = UiKit.DisplayLabel(canvas, "GameTitle", "GRIDGAME", 96f);
+            logo.anchorMin = logo.anchorMax = new Vector2(0.5f, 1f);
+            logo.pivot = new Vector2(0.5f, 1f);
+            logo.sizeDelta = new Vector2(900f, 140f);
+            logo.anchoredPosition = new Vector2(0f, -160f);
+            var logoTmp = logo.GetComponent<TextMeshProUGUI>();
+            if (logoTmp != null) { logoTmp.color = HubTheme.Accent; logoTmp.fontStyle = FontStyles.Bold; }
 
             // Panel — vertically centered, 600px tall, VerticalLayoutGroup
             var panel = SceneBuilderHelper.EnsureRectChild(canvas, "Panel", ref created, ref found);
@@ -183,44 +191,12 @@ public static class TitleScreenBuilder
 
     private static void CreateMenuButton(RectTransform parent, string name, string label, ref int created, ref int found)
     {
-        var existing = parent.Find(name);
-        if (existing != null) { found++; return; }
-
-        var go = new GameObject(name);
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
+        bool existed = parent.Find(name) != null;
+        var rt = UiKit.Button(parent, name, label, UiKit.UiButtonStyle.Secondary, 32f);
         rt.anchorMin = rt.anchorMax = Vector2.zero;
-        rt.sizeDelta = new Vector2(512f, 128f);
-
-        go.AddComponent<CanvasRenderer>();
-        var img = go.AddComponent<Image>();
-        img.sprite = SceneBuilderHelper.LoadSprite(SceneBuilderHelper.SpritePaths.Back512);
-        img.color = Color.white;
-        img.raycastTarget = true;
-        var btn = go.AddComponent<Button>();
-        btn.targetGraphic = img;
-
-        var labelGO = new GameObject("Label");
-        labelGO.layer = LayerMask.NameToLayer("UI");
-        var labelRT = labelGO.AddComponent<RectTransform>();
-        labelRT.SetParent(rt, false);
-        labelRT.anchorMin = Vector2.zero;
-        labelRT.anchorMax = Vector2.one;
-        labelRT.offsetMin = Vector2.zero;
-        labelRT.offsetMax = Vector2.zero;
-        labelGO.AddComponent<CanvasRenderer>();
-        var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
-        tmp.text = label;
-        tmp.fontSize = 32;
-        tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.enableWordWrapping = false;
-        tmp.raycastTarget = true;
-
-        Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
-        created++;
+        rt.sizeDelta = new Vector2(512f, 96f);
+        UiKit.Border(rt); // bordered box — the FFBE menu-tile look
+        if (existed) found++; else created++;
     }
 
 }

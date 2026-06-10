@@ -161,7 +161,7 @@ namespace Scripts.Managers
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = new Color(0.10f, 0.14f, 0.24f, 1f);
+            bg.color = HubTheme.HeaderBg;
             bg.raycastTarget = false;
 
             var le = go.AddComponent<LayoutElement>();
@@ -175,6 +175,7 @@ namespace Scripts.Managers
             labelRT.offsetMin = new Vector2(16f, 0f); labelRT.offsetMax = new Vector2(-16f, 0f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Display;
             tmp.text = $"<color=#ffcc44>{theme.DisplayName}</color>";
             tmp.fontSize = 22;
             tmp.fontStyle = FontStyles.Bold;
@@ -201,9 +202,9 @@ namespace Scripts.Managers
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            if (selected)        bg.color = new Color(0.36f, 0.50f, 0.78f, 1f);
-            else if (!unlocked)  bg.color = new Color(0.10f, 0.12f, 0.16f, 1f);
-            else                 bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
+            if (selected)        bg.color = HubTheme.RowSelected;
+            else if (!unlocked)  bg.color = HubTheme.RowLocked;
+            else                 bg.color = HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -223,6 +224,7 @@ namespace Scripts.Managers
             labelRT.offsetMin = new Vector2(28f, 4f); labelRT.offsetMax = new Vector2(-20f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
 
             string starPrefix = cleared ? "<color=#ffcc44>★</color> " : "  ";
             string lockSuffix = unlocked ? "" : "  <color=#888888>(locked)</color>";
@@ -241,7 +243,7 @@ namespace Scripts.Managers
 
             tmp.text = label;
             tmp.fontSize = 24;
-            tmp.color = unlocked ? Color.white : new Color(0.55f, 0.55f, 0.60f, 1f);
+            tmp.color = unlocked ? Color.white : HubTheme.TextDim;
             tmp.alignment = TextAlignmentOptions.MidlineLeft;
             tmp.enableWordWrapping = false;
             tmp.richText = true;

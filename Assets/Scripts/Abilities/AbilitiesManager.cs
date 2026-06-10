@@ -209,8 +209,8 @@ namespace Scripts.Vendor.Abilities
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
             bg.color = slot.IsEmpty
-                ? new Color(0.20f, 0.24f, 0.34f, 1f)
-                : new Color(0.36f, 0.50f, 0.78f, 1f);
+                ? HubTheme.RowBg
+                : HubTheme.RowSelected;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -233,6 +233,7 @@ namespace Scripts.Vendor.Abilities
             badgeRT.anchoredPosition = new Vector2(8f, -4f);
             badgeGO.AddComponent<CanvasRenderer>();
             var badgeTmp = badgeGO.AddComponent<TextMeshProUGUI>();
+            badgeTmp.font = UiFonts.Body;
             badgeTmp.text = (index + 1).ToString();
             badgeTmp.fontSize = 22;
             badgeTmp.color = HubTheme.Accent;
@@ -249,6 +250,7 @@ namespace Scripts.Vendor.Abilities
             labelRT.offsetMin = new Vector2(8f, 8f); labelRT.offsetMax = new Vector2(-8f, -8f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             string content;
             if (slot.IsEmpty) content = "<color=#888888>Empty</color>";
             else if (slot.IsItem)
@@ -276,7 +278,7 @@ namespace Scripts.Vendor.Abilities
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
+            bg.color = HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -295,6 +297,7 @@ namespace Scripts.Vendor.Abilities
             labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.text = $"{def.DisplayName}    <color=#cccccc>×{owned}</color>";
             tmp.fontSize = 22;
             tmp.color = HubItemRowFactory.RarityColor(def.Rarity);
@@ -312,6 +315,7 @@ namespace Scripts.Vendor.Abilities
             rt.SetParent(parent, false);
             go.AddComponent<CanvasRenderer>();
             var tmp = go.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.text = text;
             tmp.fontSize = 24;
             tmp.color = HubTheme.TextMuted;

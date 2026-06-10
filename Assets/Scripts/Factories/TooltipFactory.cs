@@ -126,7 +126,7 @@ namespace Scripts.Factories
             label.AddComponent<CanvasRenderer>();
 
             var labelTMP = label.AddComponent<TextMeshProUGUI>();
-            labelTMP.font = FontLibrary.Fonts["Chicago"];
+            labelTMP.font = UiFonts.Body; // Outfit — the game-wide body font (was Chicago pixel)
             labelTMP.text = "Message";
             labelTMP.fontSize = 18;
             labelTMP.color = Color.white;

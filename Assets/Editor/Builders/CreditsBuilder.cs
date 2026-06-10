@@ -51,7 +51,8 @@ public static class CreditsBuilder
         var canvas = SceneBuilderHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
+            // CutoutOverlay removed — the UiKit header is the top bar now (AspectGuard
+            // handles real letterboxing); kit scrollbar replaces the legacy red handle.
             SceneBuilderHelper.EnsureTitle(canvas, "Credits", ref created, ref found);
 
             // ScrollView — slightly offset for credits layout
@@ -60,15 +61,6 @@ public static class CreditsBuilder
             {
                 sv.pivot = new Vector2(0.5f, 1f);
                 sv.anchoredPosition = new Vector2(0f, -256f);
-
-                // Vertical scrollbar handle — red accent color from scene YAML: rgba(1, 0, 0.2, 1)
-                var vBarHandle = sv.Find("Scrollbar Vertical/Sliding Area/Handle");
-                if (vBarHandle != null)
-                {
-                    var handleImg = vBarHandle.GetComponent<Image>();
-                    if (handleImg != null)
-                        handleImg.color = new Color(1f, 0f, 0.2f, 1f);
-                }
 
                 // Textarea inside Content
                 var viewport = sv.Find("Viewport");

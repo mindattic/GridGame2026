@@ -304,7 +304,7 @@ namespace Scripts.Vendor
             rt.sizeDelta = new Vector2(0f, 64f);
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
+            bg.color = HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var le = go.AddComponent<LayoutElement>();
@@ -381,6 +381,7 @@ namespace Scripts.Vendor
             rt.SetParent(parent, false);
             go.AddComponent<CanvasRenderer>();
             var tmp = go.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.text = text;
             tmp.fontSize = 24;
             tmp.color = color;
@@ -420,6 +421,7 @@ namespace Scripts.Vendor
             labelRT.offsetMin = labelRT.offsetMax = Vector2.zero;
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.text = label;
             tmp.fontSize = 32;
             tmp.fontStyle = FontStyles.Bold;

@@ -312,8 +312,8 @@ namespace Scripts.Vendor.Alchemy
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
             bg.color = (selected != null && selected.Id == recipe.Id)
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -332,6 +332,7 @@ namespace Scripts.Vendor.Alchemy
             labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             bool can = recipe.CanCraft(Inventory);
             string costPart = HubTheme.ColorByAffordable(HubTheme.FormatGold(recipe.GoldCost), can);
             var result = ItemLibrary.Get(recipe.ResultItemId);

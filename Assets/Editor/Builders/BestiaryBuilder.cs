@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
 using TMPro;
+using Scripts.Hub;
 
 /// <summary>
 /// BESTIARYBUILDER - The "Bestiary" scene: a swipe-navigable encyclopedia of every actor in
@@ -15,8 +16,8 @@ using TMPro;
 public static class BestiaryBuilder
 {
     private const string SceneName = "Bestiary";
-    private const string Font_Attic  = "Assets/Fonts/Attic.asset";
-    private const string Font_Avenir = "Assets/Fonts/Avenir.asset";
+    private const string Font_Attic  = SceneBuilderHelper.FontPaths.Attic;
+    private const string Font_Body   = SceneBuilderHelper.FontPaths.Outfit; // body = Outfit game-wide
 
     public static void Build()
     {
@@ -36,7 +37,7 @@ public static class BestiaryBuilder
         SceneBuilderHelper.ClearAllRootObjectsSilent();
 
         var atticFont = SceneBuilderHelper.LoadFont(Font_Attic);
-        var bodyFont  = SceneBuilderHelper.LoadFont(Font_Avenir);
+        var bodyFont  = SceneBuilderHelper.LoadFont(Font_Body);
 
         // ── EventSystem ──
         var es = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
@@ -47,7 +48,7 @@ public static class BestiaryBuilder
         camGO.tag = "MainCamera";
         var cam = camGO.GetComponent<Camera>();
         cam.clearFlags = CameraClearFlags.SolidColor;
-        cam.backgroundColor = new Color(0.06f, 0.08f, 0.14f);
+        cam.backgroundColor = HubTheme.HeaderBg * 0.6f;
         cam.orthographic = true;
         // UI-only scene — exclude world geometry. Defensive: if "UI" layer doesn't exist in the
         // project, fall back to "everything" so the camera at least renders something.
@@ -70,21 +71,18 @@ public static class BestiaryBuilder
 
         // ── Background ──
         var bgGO = NewUI("Background", canvasRT, anchorMin: Vector2.zero, anchorMax: Vector2.one, addImage: true);
-        bgGO.GetComponent<Image>().color = new Color(0.06f, 0.08f, 0.14f, 1f);
+        bgGO.GetComponent<Image>().color = HubTheme.PanelBg;
 
-        // ── Title ──
-        var titleGO = NewUI("Title", canvasRT,
-            anchorMin: new Vector2(0f, 1f), anchorMax: new Vector2(1f, 1f),
-            pivot: new Vector2(0.5f, 1f), sizeDelta: new Vector2(0f, 120f), anchoredPos: new Vector2(0f, -16f));
-        var titleTMP = AddTMP(titleGO, atticFont, fontSize: 64, color: new Color(1f, 0.85f, 0.4f),
-            align: TextAlignmentOptions.Center, text: "BESTIARY");
+        // ── Header (the game-wide standard bar; BestiaryView.TitleLabel = the bar's title TMP) ──
+        var header = UiKit.Header(canvasRT, "Bestiary");
+        var titleTMP = header.Find("Title").GetComponent<TextMeshProUGUI>();
 
-        // ── Page indicator ──
-        var pageGO = NewUI("PageLabel", canvasRT,
-            anchorMin: new Vector2(0.5f, 1f), anchorMax: new Vector2(0.5f, 1f),
-            pivot: new Vector2(0.5f, 1f), sizeDelta: new Vector2(400f, 40f), anchoredPos: new Vector2(0f, -150f));
-        var pageTMP = AddTMP(pageGO, bodyFont, fontSize: 28, color: new Color(0.9f, 0.9f, 0.95f),
-            align: TextAlignmentOptions.Center, text: "1 / 1");
+        // ── Page indicator (in the header, right-aligned) ──
+        var pageRT = UiKit.HeaderRightLabel(header, "PageLabel", "1 / 1");
+        var pageTMP = pageRT.GetComponent<TextMeshProUGUI>();
+        pageTMP.font = bodyFont;
+        pageTMP.fontSize = 28;
+        pageTMP.color = HubTheme.TextMuted;
 
         // ── Portrait ──
         var portraitGO = NewUI("Portrait", canvasRT,
@@ -105,28 +103,28 @@ public static class BestiaryBuilder
         var classGO = NewUI("Class", canvasRT,
             anchorMin: new Vector2(0f, 0.5f), anchorMax: new Vector2(1f, 0.5f),
             pivot: new Vector2(0.5f, 0.5f), sizeDelta: new Vector2(0f, 36f), anchoredPos: new Vector2(0f, -180f));
-        var classTMP = AddTMP(classGO, bodyFont, fontSize: 24, color: new Color(0.8f, 0.9f, 1f),
+        var classTMP = AddTMP(classGO, bodyFont, fontSize: 24, color: HubTheme.TextMuted,
             align: TextAlignmentOptions.Center, text: "");
 
         // ── Stats panel (left side, mid-bottom) ──
         var statsGO = NewUI("Stats", canvasRT,
             anchorMin: new Vector2(0f, 0f), anchorMax: new Vector2(0.5f, 0f),
             pivot: new Vector2(0.5f, 0f), sizeDelta: new Vector2(-40f, 400f), anchoredPos: new Vector2(0f, 280f));
-        var statsTMP = AddTMP(statsGO, bodyFont, fontSize: 26, color: new Color(0.85f, 0.95f, 0.85f),
+        var statsTMP = AddTMP(statsGO, bodyFont, fontSize: 26, color: HubTheme.TextLight,
             align: TextAlignmentOptions.TopLeft, text: "");
 
         // ── Abilities panel (right side, mid-bottom) ──
         var abilitiesGO = NewUI("Abilities", canvasRT,
             anchorMin: new Vector2(0.5f, 0f), anchorMax: new Vector2(1f, 0f),
             pivot: new Vector2(0.5f, 0f), sizeDelta: new Vector2(-40f, 400f), anchoredPos: new Vector2(0f, 280f));
-        var abilitiesTMP = AddTMP(abilitiesGO, bodyFont, fontSize: 26, color: new Color(1f, 0.92f, 0.7f),
+        var abilitiesTMP = AddTMP(abilitiesGO, bodyFont, fontSize: 26, color: HubTheme.Accent,
             align: TextAlignmentOptions.TopLeft, text: "");
 
         // ── Lore (bottom strip) ──
         var loreGO = NewUI("Lore", canvasRT,
             anchorMin: new Vector2(0f, 0f), anchorMax: new Vector2(1f, 0f),
             pivot: new Vector2(0.5f, 0f), sizeDelta: new Vector2(-80f, 240f), anchoredPos: new Vector2(0f, 30f));
-        var loreTMP = AddTMP(loreGO, bodyFont, fontSize: 22, color: new Color(0.85f, 0.85f, 0.85f),
+        var loreTMP = AddTMP(loreGO, bodyFont, fontSize: 22, color: HubTheme.TextMuted,
             align: TextAlignmentOptions.TopLeft, text: "");
         loreTMP.enableWordWrapping = true;
 
@@ -134,10 +132,11 @@ public static class BestiaryBuilder
         var prev = AddNavButton(canvasRT, "Prev", new Vector2(0f, 0.5f), new Vector2(64f, 64f), atticFont, "<");
         var next = AddNavButton(canvasRT, "Next", new Vector2(1f, 0.5f), new Vector2(-64f, 64f), atticFont, ">");
 
-        // ── Back button (returns to TitleScreen). Wired AFTER BestiaryView is created so we can
-        // target view.OnBackButtonClicked (a UnityEngine.Object method) instead of a lambda —
-        // persistent UnityEvent listeners can't target closure classes.
-        var back = AddNavButton(canvasRT, "Back", new Vector2(0f, 1f), new Vector2(64f, -64f), atticFont, "←");
+        // ── Back button — the game-wide standard (bottom-left "← Back"). Wired AFTER
+        // BestiaryView is created so we can target view.OnBackButtonClicked (a
+        // UnityEngine.Object method) instead of a lambda — persistent UnityEvent listeners
+        // can't target closure classes.
+        var back = UiKit.BackButton(canvasRT, "Back").GetComponent<Button>();
 
         // ── BestiaryView controller ──
         var viewGO = new GameObject("BestiaryView", typeof(Scripts.Canvas.BestiaryView));
@@ -208,7 +207,10 @@ public static class BestiaryBuilder
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(96f, 96f);
         rt.anchoredPosition = anchoredPos;
-        go.GetComponent<Image>().color = new Color(0.15f, 0.20f, 0.30f, 0.95f);
+        go.GetComponent<Image>().color = HubTheme.NavIdle;
+        var navBtn = go.GetComponent<Button>();
+        navBtn.transition = Selectable.Transition.ColorTint;
+        navBtn.colors = HubTheme.ButtonColors;
 
         var labelGO = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer));
         var lrt = (RectTransform)labelGO.transform;

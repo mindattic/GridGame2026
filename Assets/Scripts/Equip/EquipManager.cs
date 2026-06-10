@@ -231,8 +231,8 @@ namespace Scripts.Vendor.Equip
             bool filled = !string.IsNullOrEmpty(itemId);
             var bg = go.AddComponent<Image>();
             bg.color = filled
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -255,6 +255,7 @@ namespace Scripts.Vendor.Equip
             badgeRT.anchoredPosition = new Vector2(0f, -4f);
             badgeGO.AddComponent<CanvasRenderer>();
             var badgeTmp = badgeGO.AddComponent<TextMeshProUGUI>();
+            badgeTmp.font = UiFonts.Body;
             badgeTmp.text = LabelForSlot(slot);
             badgeTmp.fontSize = 18;
             badgeTmp.color = HubTheme.Accent;
@@ -271,6 +272,7 @@ namespace Scripts.Vendor.Equip
             labelRT.offsetMin = new Vector2(8f, 8f); labelRT.offsetMax = new Vector2(-8f, -32f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             string content;
             if (!filled) content = "<color=#888888>Empty</color>";
             else
@@ -297,7 +299,7 @@ namespace Scripts.Vendor.Equip
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = new Color(0.20f, 0.24f, 0.34f, 1f);
+            bg.color = HubTheme.RowBg;
             bg.raycastTarget = true;
 
             var btn = go.AddComponent<Button>();
@@ -316,6 +318,7 @@ namespace Scripts.Vendor.Equip
             labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             string slotLabel = LabelForSlot(def.Slot);
             tmp.text = $"{def.DisplayName}    <color=#cccccc>{slotLabel} ×{owned}</color>";
             tmp.fontSize = 22;

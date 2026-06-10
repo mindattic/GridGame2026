@@ -52,8 +52,8 @@ public static class HubItemRowFactory
     // Rows need to read against HubTheme.PanelBg (~(0.06, 0.08, 0.14)). The previous row
     // background was so close in luminance the rows were effectively invisible — the player
     // could click them but couldn't see them. Push the row tone up to a clear separator step.
-    private static readonly Color RowBackgroundColor = new Color(0.20f, 0.24f, 0.34f, 1f);
-    private static readonly Color SelectedRowColor   = new Color(0.36f, 0.50f, 0.78f, 1f);
+    private static Color RowBackgroundColor => HubTheme.RowBg;
+    private static Color SelectedRowColor   => HubTheme.RowSelected;
 
     private static readonly ColorBlock RowButtonColors = new ColorBlock
     {
@@ -146,6 +146,7 @@ public static class HubItemRowFactory
         label.AddComponent<CanvasRenderer>();
 
         var tmp = label.AddComponent<TextMeshProUGUI>();
+        tmp.font = UiFonts.Body;
         tmp.text = "Item";
         tmp.fontSize = 26;
         tmp.color = Color.white;
@@ -170,9 +171,10 @@ public static class HubItemRowFactory
         sub.AddComponent<CanvasRenderer>();
 
         var subTmp = sub.AddComponent<TextMeshProUGUI>();
+        subTmp.font = UiFonts.Body;
         subTmp.text = "";
         subTmp.fontSize = 18;
-        subTmp.color = new Color(0.65f, 0.65f, 0.70f, 1f);
+        subTmp.color = HubTheme.TextDim;
         subTmp.alignment = TextAlignmentOptions.BottomLeft;
         subTmp.enableWordWrapping = false;
         subTmp.overflowMode = TextOverflowModes.Ellipsis;
@@ -231,9 +233,10 @@ public static class HubItemRowFactory
             arrowRT.sizeDelta = new Vector2(20f, 24f);
             arrow.AddComponent<CanvasRenderer>();
             var arrowTmp = arrow.AddComponent<TextMeshProUGUI>();
+            arrowTmp.font = UiFonts.Body;
             arrowTmp.text = "\u25B6";
             arrowTmp.fontSize = 18;
-            arrowTmp.color = new Color(1f, 0.85f, 0.35f, 1f);
+            arrowTmp.color = HubTheme.Accent;
             arrowTmp.alignment = TextAlignmentOptions.Center;
             arrowTmp.raycastTarget = false;
         }

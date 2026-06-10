@@ -437,8 +437,8 @@ namespace Scripts.Vendor.Blacksmith
             var go = MakeRowGO("Row_" + recipe.Id);
             var bg = go.GetComponent<Image>();
             bg.color = (selectedRecipe != null && selectedRecipe.Id == recipe.Id)
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
 
             var btn = go.GetComponent<Button>();
             var captured = recipe;
@@ -457,8 +457,8 @@ namespace Scripts.Vendor.Blacksmith
             var go = MakeRowGO("Salvage_" + entry.Definition.Id);
             var bg = go.GetComponent<Image>();
             bg.color = (selectedSalvage != null && selectedSalvage.Definition.Id == entry.Definition.Id)
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
 
             var btn = go.GetComponent<Button>();
             var captured = entry;
@@ -480,8 +480,8 @@ namespace Scripts.Vendor.Blacksmith
                 && selectedRepair.Hero == candidate.Hero
                 && selectedRepair.Slot == candidate.Slot;
             bg.color = isSelected
-                ? new Color(0.36f, 0.50f, 0.78f, 1f)
-                : new Color(0.20f, 0.24f, 0.34f, 1f);
+                ? HubTheme.RowSelected
+                : HubTheme.RowBg;
 
             var btn = go.GetComponent<Button>();
             var captured = candidate;
@@ -519,6 +519,7 @@ namespace Scripts.Vendor.Blacksmith
             labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
             labelGO.AddComponent<CanvasRenderer>();
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
             tmp.fontSize = 24;
             tmp.alignment = TextAlignmentOptions.MidlineLeft;
             tmp.enableWordWrapping = false;

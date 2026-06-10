@@ -103,8 +103,9 @@ public static class VendorNavBarBuilder
         rt.anchoredPosition = new Vector2(xPos, -(topInset + HamburgerInset + HamburgerSize + DropdownGap));
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.06f, 0.08f, 0.14f, 0.96f);
+        img.color = HubTheme.PanelBg;
         img.raycastTarget = true;
+        UiKit.Border(rt); // simple-box treatment on the dropdown panel
 
         var vlg = go.AddComponent<VerticalLayoutGroup>();
         vlg.padding = new RectOffset((int)DropdownPadding, (int)DropdownPadding, (int)DropdownPadding, (int)DropdownPadding);
@@ -129,21 +130,12 @@ public static class VendorNavBarBuilder
         rt.SetParent(parent, false);
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.14f, 0.18f, 0.28f, 1f);
+        img.color = HubTheme.NavIdle;
         img.raycastTarget = true;
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
         btn.transition = Selectable.Transition.ColorTint;
-        btn.colors = new ColorBlock
-        {
-            normalColor = Color.white,
-            highlightedColor = new Color(1.15f, 1.15f, 1.20f, 1f),
-            pressedColor = new Color(0.65f, 0.65f, 0.80f, 1f),
-            selectedColor = new Color(1.00f, 1.00f, 1.10f, 1f),
-            disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.85f),
-            colorMultiplier = 1f,
-            fadeDuration = 0.08f,
-        };
+        btn.colors = HubTheme.ButtonColors;
 
         var le = go.AddComponent<LayoutElement>();
         le.minHeight = DropdownButtonHeight;
@@ -159,7 +151,7 @@ public static class VendorNavBarBuilder
         labelRT.offsetMin = labelRT.offsetMax = Vector2.zero;
         labelGO.AddComponent<CanvasRenderer>();
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
+        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Outfit);
         tmp.text = label;
         tmp.fontSize = 22;
         tmp.color = HubTheme.TextLight;
@@ -183,21 +175,12 @@ public static class VendorNavBarBuilder
         rt.anchoredPosition = new Vector2(xPos, -(topInset + HamburgerInset));
         go.AddComponent<CanvasRenderer>();
         var img = go.AddComponent<Image>();
-        img.color = new Color(0.14f, 0.18f, 0.28f, 0.96f);
+        img.color = HubTheme.NavIdle;
         img.raycastTarget = true;
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
         btn.transition = Selectable.Transition.ColorTint;
-        btn.colors = new ColorBlock
-        {
-            normalColor = Color.white,
-            highlightedColor = new Color(1.15f, 1.15f, 1.20f, 1f),
-            pressedColor = new Color(0.65f, 0.65f, 0.80f, 1f),
-            selectedColor = new Color(1.00f, 1.00f, 1.10f, 1f),
-            disabledColor = new Color(0.55f, 0.55f, 0.55f, 0.85f),
-            colorMultiplier = 1f,
-            fadeDuration = 0.08f,
-        };
+        btn.colors = HubTheme.ButtonColors;
 
         BuildHamburgerStripe(rt, "Line1", 0.66f);
         BuildHamburgerStripe(rt, "Line2", 0.50f);

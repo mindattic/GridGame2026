@@ -68,10 +68,12 @@ public static class SceneBuilderHelper
         public const string SplashWindow = "Assets/Sprites/SplashScreen-Window.png";
     }
 
-    /// <summary>TMP font asset paths used across all buildered scenes.</summary>
+    /// <summary>TMP font asset paths used across all buildered scenes.
+    /// Attic = display (titles/headers); Outfit = body (buttons/rows/labels). See UiFonts.cs.</summary>
     public static class FontPaths
     {
         public const string Attic    = "Assets/Fonts/Attic.asset";
+        public const string Outfit   = "Assets/Fonts/Outfit.asset";
         public const string Consolas = "Assets/Fonts/Consolas.asset";
     }
 
@@ -182,9 +184,9 @@ public static class SceneBuilderHelper
 
     /// <summary>
     /// Creates a ScreenSpaceOverlay Canvas with CanvasScaler (ScaleWithScreenSize
-    /// 1920×1080, match 0.5), GraphicRaycaster, CanvasRenderer, and background Image.
-    /// Matches the actual scene pattern where Canvas always has a background Image.
-    /// Returns the Canvas RectTransform.
+    /// 1170×2532 portrait reference, match 0.5 — the §26.2 contract AspectGuard normalizes
+    /// to at runtime, so the editor preview matches the device), GraphicRaycaster,
+    /// CanvasRenderer, and a flat HubTheme.PanelBg background. Returns the Canvas RectTransform.
     /// </summary>
     public static RectTransform EnsureCanvas(string name, ref int created, ref int found)
     {
@@ -204,15 +206,14 @@ public static class SceneBuilderHelper
 
         var scaler = go.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.referenceResolution = new Vector2(1170f, 2532f);
         scaler.matchWidthOrHeight = 0.5f;
 
         go.AddComponent<GraphicRaycaster>();
         go.AddComponent<CanvasRenderer>();
 
         var bgImg = go.AddComponent<Image>();
-        bgImg.sprite = LoadSprite(SpritePaths.GunMetal);
-        bgImg.color = Color.white;
+        bgImg.color = HubTheme.PanelBg;
         bgImg.raycastTarget = true;
 
         Undo.RegisterCreatedObjectUndo(go, $"Create {name}");
@@ -315,171 +316,48 @@ public static class SceneBuilderHelper
     }
 
     /// <summary>
-    /// Creates a TMP title label anchored to top-center at y=-128, matching real scene data.
-    /// Used by ProfileSelect, SaveFileSelect, StageSelect, Settings, Credits scenes.
+    /// Creates the standard scene header (96px HeaderBg bar + gold rule + Attic 48 bold gold
+    /// title) via UiKit.Header. Used by ProfileSelect, SaveFileSelect, Settings, Credits, etc. —
+    /// the same header the Hub-family scenes use, so every screen opens with the same bar.
     /// </summary>
     public static RectTransform EnsureTitle(RectTransform parent, string text, ref int created, ref int found)
     {
         if (parent == null) return null;
-        var existing = parent.Find("Title");
-        if (existing != null) { found++; return existing.GetComponent<RectTransform>(); }
-
-        var go = new GameObject("Title");
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.sizeDelta = Vector2.zero;
-        rt.anchoredPosition = new Vector2(0f, -128f);
-
-        go.AddComponent<CanvasRenderer>();
-        var tmp = go.AddComponent<TextMeshProUGUI>();
-        tmp.font = LoadFont(FontPaths.Attic);
-        tmp.text = text;
-        tmp.fontSize = 64;
-        tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.Top;
-        tmp.enableWordWrapping = false;
-        tmp.raycastTarget = true;
-
-        Undo.RegisterCreatedObjectUndo(go, "Create Title");
-        created++;
-        return rt;
+        bool existed = parent.Find("Header") != null;
+        var header = UiKit.Header(parent, text);
+        if (existed) found++; else created++;
+        return header;
     }
 
     /// <summary>
-    /// Creates a BackButton anchored top-left at (120, -200) with 200×64 size
-    /// and a Label child. Matches real scene data from ProfileSelect, SaveFileSelect,
-    /// StageSelect, Settings, Credits scenes.
+    /// Creates the standard BackButton via UiKit.BackButton: bottom-left (24,24), 220×64,
+    /// navy fill, "← Back" Outfit label — the ONE back-button convention game-wide.
     /// </summary>
     public static RectTransform EnsureBackButton(RectTransform parent, ref int created, ref int found)
     {
         if (parent == null) return null;
-        var existing = parent.Find("BackButton");
-        if (existing != null) { found++; return existing.GetComponent<RectTransform>(); }
-
-        var go = new GameObject("BackButton");
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-        rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.sizeDelta = new Vector2(200f, 64f);
-        rt.anchoredPosition = new Vector2(120f, -200f);
-
-        go.AddComponent<CanvasRenderer>();
-        var img = go.AddComponent<Image>();
-        img.sprite = LoadSprite(SpritePaths.GreenButton);
-        img.color = Color.white;
-        img.raycastTarget = true;
-        var btn = go.AddComponent<Button>();
-        btn.targetGraphic = img;
-
-        var labelGO = new GameObject("Label");
-        labelGO.layer = LayerMask.NameToLayer("UI");
-        var labelRT = labelGO.AddComponent<RectTransform>();
-        labelRT.SetParent(rt, false);
-        labelRT.anchorMin = labelRT.anchorMax = new Vector2(0.5f, 0.5f);
-        labelRT.sizeDelta = new Vector2(64f, 64f);
-        labelRT.anchoredPosition = Vector2.zero;
-        labelGO.AddComponent<CanvasRenderer>();
-        var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-        tmp.font = LoadFont(FontPaths.Attic);
-        tmp.text = "Back";
-        tmp.fontSize = 32;
-        tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.enableWordWrapping = false;
-        tmp.raycastTarget = true;
-
-        Undo.RegisterCreatedObjectUndo(go, "Create BackButton");
-        created++;
+        bool existed = parent.Find("BackButton") != null;
+        var rt = UiKit.BackButton(parent, "Back");
+        if (existed) found++; else created++;
         return rt;
     }
 
     /// <summary>
-    /// Creates a standard ScrollView matching real scene data.
-    /// Root: stretch with sizeDelta=(0,-512) to leave room for title/buttons.
-    /// Contains Viewport (with Mask + ScrollRect), Content (VerticalLayoutGroup + ContentSizeFitter),
-    /// and Vertical + Horizontal scrollbars with correct anchoring.
+    /// Creates the standard themed ScrollView (delegates to UiKit.ScrollList, renamed root
+    /// "ScrollView" so existing manager paths keep resolving). Root: stretch with
+    /// sizeDelta=(0,-512) to leave room for header/buttons. ListBg well + 2px border +
+    /// Viewport/Content + a visible 12px themed vertical scrollbar. Vertical-only.
     /// </summary>
     public static RectTransform EnsureScrollView(RectTransform parent, ref int created, ref int found)
     {
         if (parent == null) return null;
-        var existing = parent.Find("ScrollView");
-        if (existing != null) { found++; return existing.GetComponent<RectTransform>(); }
-
-        // Root — stretch with vertical inset
-        var svGO = new GameObject("ScrollView");
-        svGO.layer = LayerMask.NameToLayer("UI");
-        var svRT = svGO.AddComponent<RectTransform>();
-        svRT.SetParent(parent, false);
+        bool existed = parent.Find("ScrollView") != null;
+        var svRT = UiKit.ScrollList(parent, "ScrollView");
         svRT.anchorMin = Vector2.zero;
         svRT.anchorMax = Vector2.one;
         svRT.sizeDelta = new Vector2(0f, -512f);
         svRT.anchoredPosition = Vector2.zero;
-
-        svGO.AddComponent<CanvasRenderer>();
-        var svImg = svGO.AddComponent<Image>();
-        svImg.color = new Color(1f, 1f, 1f, 0f);
-        svImg.type = Image.Type.Sliced;
-        svImg.raycastTarget = true;
-
-        // Viewport — stretch with -17px right for scrollbar, Mask + ScrollRect
-        var vpGO = new GameObject("Viewport");
-        vpGO.layer = LayerMask.NameToLayer("UI");
-        var vpRT = vpGO.AddComponent<RectTransform>();
-        vpRT.SetParent(svRT, false);
-        vpRT.anchorMin = Vector2.zero;
-        vpRT.anchorMax = Vector2.one;
-        vpRT.sizeDelta = new Vector2(-17f, 0f);
-        vpRT.pivot = new Vector2(0f, 1f);
-        vpRT.anchoredPosition = Vector2.zero;
-        vpGO.AddComponent<CanvasRenderer>();
-        var vpImg = vpGO.AddComponent<Image>();
-        vpImg.sprite = LoadBuiltinSprite("UIMask");
-        vpImg.type = Image.Type.Sliced;
-        vpImg.raycastTarget = true;
-        var mask = vpGO.AddComponent<Mask>();
-        mask.showMaskGraphic = false;
-        var scrollRect = vpGO.AddComponent<ScrollRect>();
-
-        // Content — anchored to top, VerticalLayoutGroup + ContentSizeFitter
-        var contentGO = new GameObject("Content");
-        contentGO.layer = LayerMask.NameToLayer("UI");
-        var contentRT = contentGO.AddComponent<RectTransform>();
-        contentRT.SetParent(vpRT, false);
-        contentRT.anchorMin = new Vector2(0f, 1f);
-        contentRT.anchorMax = Vector2.one;
-        contentRT.pivot = new Vector2(0f, 1f);
-        contentRT.sizeDelta = Vector2.zero;
-        contentRT.anchoredPosition = Vector2.zero;
-        var vlg = contentGO.AddComponent<VerticalLayoutGroup>();
-        vlg.childAlignment = TextAnchor.UpperLeft;
-        vlg.childControlWidth = true;
-        vlg.childControlHeight = false;
-        vlg.childForceExpandWidth = true;
-        vlg.childForceExpandHeight = false;
-        vlg.spacing = 4f;
-        var csf = contentGO.AddComponent<ContentSizeFitter>();
-        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-        scrollRect.viewport = vpRT;
-        scrollRect.content = contentRT;
-
-        // Vertical scrollbar — right edge
-        var vBar = CreateScrollbar(svRT, "Scrollbar Vertical", true);
-        scrollRect.verticalScrollbar = vBar.GetComponent<Scrollbar>();
-        scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
-
-        // Horizontal scrollbar — bottom edge
-        var hBar = CreateScrollbar(svRT, "Scrollbar Horizontal", false);
-        scrollRect.horizontalScrollbar = hBar.GetComponent<Scrollbar>();
-        scrollRect.horizontalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
-
-        Undo.RegisterCreatedObjectUndo(svGO, "Create ScrollView");
-        created++;
+        if (existed) found++; else created++;
         return svRT;
     }
 
@@ -564,14 +442,16 @@ public static class SceneBuilderHelper
         }
         else
         {
-            img.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+            img.color = HubTheme.NavIdle;
         }
         img.raycastTarget = true;
 
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
+        btn.transition = Selectable.Transition.ColorTint;
+        btn.colors = HubTheme.ButtonColors;
 
-        // Label child
+        // Label child — Outfit body font (buttons are body text, not display)
         var labelGO = new GameObject("Label");
         labelGO.layer = LayerMask.NameToLayer("UI");
         var labelRT = labelGO.AddComponent<RectTransform>();
@@ -579,7 +459,7 @@ public static class SceneBuilderHelper
         StretchFill(labelRT);
         labelGO.AddComponent<CanvasRenderer>();
         var tmp = labelGO.AddComponent<TextMeshProUGUI>();
-        tmp.font = LoadFont(FontPaths.Attic);
+        tmp.font = LoadFont(FontPaths.Outfit);
         tmp.text = label;
         tmp.fontSize = 24;
         tmp.color = Color.white;
@@ -592,7 +472,8 @@ public static class SceneBuilderHelper
         return rt;
     }
 
-    /// <summary>Creates a TMP label child. Uses Attic font, Top alignment, no-wrap by default.
+    /// <summary>Creates a TMP label child. Uses Outfit (body) font, Top alignment, no-wrap by
+    /// default — body text everywhere; use UiKit.DisplayLabel for Attic display text.
     /// Callers can override font/alignment/wrapping on the returned RectTransform's TMP component.</summary>
     public static RectTransform EnsureLabel(RectTransform parent, string name, string text, ref int created, ref int found)
     {
@@ -608,7 +489,7 @@ public static class SceneBuilderHelper
 
         go.AddComponent<CanvasRenderer>();
         var tmp = go.AddComponent<TextMeshProUGUI>();
-        tmp.font = LoadFont(FontPaths.Attic);
+        tmp.font = LoadFont(FontPaths.Outfit);
         tmp.text = text;
         tmp.fontSize = 24;
         tmp.color = Color.white;
@@ -759,65 +640,4 @@ public static class SceneBuilderHelper
         return rt;
     }
 
-    /// <summary>Creates a scrollbar with Sliding Area and Handle.</summary>
-    private static RectTransform CreateScrollbar(RectTransform parent, string name, bool vertical)
-    {
-        var go = new GameObject(name);
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-
-        // Position scrollbar at edge
-        if (vertical)
-        {
-            rt.anchorMin = new Vector2(1f, 0f);
-            rt.anchorMax = Vector2.one;
-            rt.pivot = Vector2.one;
-            rt.sizeDelta = new Vector2(20f, 0f);
-            rt.offsetMin = new Vector2(-20f, 0f);
-            rt.offsetMax = Vector2.zero;
-        }
-        else
-        {
-            rt.anchorMin = Vector2.zero;
-            rt.anchorMax = new Vector2(1f, 0f);
-            rt.pivot = Vector2.zero;
-            rt.sizeDelta = new Vector2(0f, 20f);
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = new Vector2(0f, 20f);
-        }
-
-        go.AddComponent<CanvasRenderer>();
-        var bgImg = go.AddComponent<Image>();
-        bgImg.sprite = LoadBuiltinSprite("Background");
-        bgImg.type = Image.Type.Sliced;
-        bgImg.color = vertical ? Color.white : new Color(1f, 1f, 1f, 0f);
-
-        var scrollbar = go.AddComponent<Scrollbar>();
-        scrollbar.direction = vertical ? Scrollbar.Direction.BottomToTop : Scrollbar.Direction.LeftToRight;
-
-        // Sliding Area
-        var saGO = new GameObject("Sliding Area");
-        saGO.layer = LayerMask.NameToLayer("UI");
-        var saRT = saGO.AddComponent<RectTransform>();
-        saRT.SetParent(rt, false);
-        StretchFill(saRT);
-
-        // Handle
-        var hGO = new GameObject("Handle");
-        hGO.layer = LayerMask.NameToLayer("UI");
-        var hRT = hGO.AddComponent<RectTransform>();
-        hRT.SetParent(saRT, false);
-        StretchFill(hRT);
-        hGO.AddComponent<CanvasRenderer>();
-        var hImg = hGO.AddComponent<Image>();
-        hImg.sprite = LoadBuiltinSprite("UISprite");
-        hImg.type = Image.Type.Sliced;
-        hImg.color = Color.white;
-
-        scrollbar.handleRect = hRT;
-        scrollbar.targetGraphic = hImg;
-
-        return rt;
-    }
 }

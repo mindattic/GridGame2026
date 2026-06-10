@@ -49,25 +49,24 @@ public static class SettingsBuilder
         var canvas = SceneBuilderHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
             SceneBuilderHelper.EnsureTitle(canvas, "Settings", ref created, ref found);
             SceneBuilderHelper.EnsureScrollView(canvas, ref created, ref found);
 
-            // DefaultsButton — bottom-left area
-            var defaults = SceneBuilderHelper.EnsureButton(canvas, "DefaultsButton", "Defaults", ref created, ref found, SceneBuilderHelper.SpritePaths.Button128);
+            // DefaultsButton — bottom-left area (kit Secondary; was a Button128 sprite)
+            var defaults = UiKit.Button(canvas, "DefaultsButton", "Defaults", UiKit.UiButtonStyle.Secondary, 24f);
             if (defaults != null)
             {
                 defaults.anchorMin = defaults.anchorMax = new Vector2(0.5f, 0.5f);
-                defaults.sizeDelta = new Vector2(128f, 64f);
+                defaults.sizeDelta = new Vector2(160f, 64f);
                 defaults.anchoredPosition = new Vector2(-467.31f, -968.7f);
             }
 
-            // SaveButton — bottom-right area
-            var save = SceneBuilderHelper.EnsureButton(canvas, "SaveButton", "Save", ref created, ref found, SceneBuilderHelper.SpritePaths.Button128);
+            // SaveButton — bottom-right area (kit Primary: the screen's commit action)
+            var save = UiKit.Button(canvas, "SaveButton", "Save", UiKit.UiButtonStyle.Primary, 24f);
             if (save != null)
             {
                 save.anchorMin = save.anchorMax = new Vector2(0.5f, 0.5f);
-                save.sizeDelta = new Vector2(128f, 64f);
+                save.sizeDelta = new Vector2(160f, 64f);
                 save.anchoredPosition = new Vector2(460.2f, -968.7f);
             }
 

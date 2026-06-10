@@ -12,7 +12,7 @@ using Scripts.Managers;
 /// SCENE HIERARCHY:
 /// ```
 /// Main Camera / EventSystem / HubManagerGO / Canvas
-///   ├── Header            "Shop District" title + gold count
+///   ├── Header            "Shop District" title
 ///   ├── ButtonGrid        GridLayoutGroup — 6 vendor buttons
 ///   │   ├── Vendor        → VendorScene
 ///   │   ├── Blacksmith    → BlacksmithScene
@@ -54,7 +54,8 @@ public static class HubBuilder
 
         BuildHeader(canvas, ref created, ref found);
         BuildGrid(canvas, ref created, ref found);
-        BuildBackButton(canvas, ref created, ref found);
+        UiKit.BackButton(canvas, "Stages");
+        created++;
 
         SceneBuilderHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         SceneBuilderHelper.LogResults(SceneName, created, found);
@@ -64,28 +65,8 @@ public static class HubBuilder
 
     private static void BuildHeader(RectTransform canvas, ref int created, ref int found)
     {
-        var header = FindOrMake(canvas, "Header", ref created, ref found);
-        header.anchorMin = new Vector2(0f, 1f);
-        header.anchorMax = new Vector2(1f, 1f);
-        header.pivot = new Vector2(0.5f, 1f);
-        header.sizeDelta = new Vector2(0f, HeaderH);
-        header.anchoredPosition = Vector2.zero;
-        Paint(header.gameObject, HubTheme.HeaderBg);
-
-        var title = MakeLabel(header, "Title", "Shop District");
-        title.anchorMin = new Vector2(0f, 0.5f);
-        title.anchorMax = new Vector2(1f, 0.5f);
-        title.pivot = new Vector2(0.5f, 0.5f);
-        title.sizeDelta = new Vector2(0f, 72f);
-        title.anchoredPosition = Vector2.zero;
-        var tt = title.GetComponent<TextMeshProUGUI>();
-        if (tt != null)
-        {
-            tt.fontSize = 52;
-            tt.fontStyle = FontStyles.Bold;
-            tt.color = HubTheme.Accent;
-            tt.alignment = TextAlignmentOptions.Center;
-        }
+        UiKit.Header(canvas, "Shop District");
+        created++;
     }
 
     // ─── 2×3 button grid ─────────────────────────────────────────────────────
@@ -104,7 +85,8 @@ public static class HubBuilder
         grid.anchorMax = new Vector2(1f, 1f);
         grid.offsetMin = new Vector2(GridPad, BackH + GridPad);
         grid.offsetMax = new Vector2(-GridPad, -(HeaderH + GridPad));
-        Paint(grid.gameObject, new Color(0f, 0f, 0f, 0f));
+        var gridImg = grid.GetComponent<Image>();
+        if (gridImg != null) { gridImg.color = new Color(0f, 0f, 0f, 0f); gridImg.raycastTarget = false; }
 
         var glg = grid.gameObject.GetComponent<GridLayoutGroup>();
         if (glg == null) glg = grid.gameObject.AddComponent<GridLayoutGroup>();
@@ -133,98 +115,13 @@ public static class HubBuilder
         var existing = parent.Find(label);
         if (existing != null) { found++; return; }
 
-        var go = new GameObject(label);
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-        go.AddComponent<CanvasRenderer>();
-        var img = go.AddComponent<Image>();
-        img.color = HubTheme.NavIdle;
-        img.sprite = SceneBuilderHelper.LoadBuiltinSprite("UISprite");
-        img.type   = Image.Type.Sliced;
-
-        var btn = go.AddComponent<Button>();
-        btn.targetGraphic = img;
-        var cb = new ColorBlock
-        {
-            normalColor      = HubTheme.NavIdle,
-            highlightedColor = HubTheme.NavHover,
-            pressedColor     = HubTheme.NavActive,
-            selectedColor    = HubTheme.NavIdle,
-            disabledColor    = new Color(0.4f, 0.4f, 0.4f, 0.5f),
-            colorMultiplier  = 1f,
-            fadeDuration     = 0.1f,
-        };
-        btn.colors = cb;
+        // Use UiKit.Button with Secondary style (navy/white), then re-apply the 42pt
+        // Attic Bold display font and bold style the Hub grid uses.
+        var rt = UiKit.Button(parent, label, label, UiKit.UiButtonStyle.Secondary, 42f);
+        var lbl = rt.GetComponentInChildren<TextMeshProUGUI>();
+        if (lbl != null) lbl.fontStyle = FontStyles.Bold;
 
         // onClick is wired at runtime by HubManager (lambdas can't persist in scene YAML).
-
-        // Label child.
-        var lGO = new GameObject("Label");
-        lGO.layer = LayerMask.NameToLayer("UI");
-        var lRT = lGO.AddComponent<RectTransform>();
-        lRT.SetParent(rt, false);
-        lRT.anchorMin = Vector2.zero;
-        lRT.anchorMax = Vector2.one;
-        lRT.offsetMin = new Vector2(12f, 12f);
-        lRT.offsetMax = new Vector2(-12f, -12f);
-        lGO.AddComponent<CanvasRenderer>();
-        var tmp = lGO.AddComponent<TextMeshProUGUI>();
-        tmp.text = label;
-        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
-        tmp.fontSize = 42;
-        tmp.fontStyle = FontStyles.Bold;
-        tmp.color = HubTheme.TextLight;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
-
-        created++;
-    }
-
-    // ─── Back button ─────────────────────────────────────────────────────────
-
-    private static void BuildBackButton(RectTransform canvas, ref int created, ref int found)
-    {
-        var existing = canvas.Find("BackButton");
-        if (existing != null) { found++; return; }
-
-        var go = new GameObject("BackButton");
-        go.layer = LayerMask.NameToLayer("UI");
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(canvas, false);
-        rt.anchorMin = new Vector2(0f, 0f);
-        rt.anchorMax = new Vector2(0f, 0f);
-        rt.pivot = new Vector2(0f, 0f);
-        rt.sizeDelta = new Vector2(220f, BackH - 8f);
-        rt.anchoredPosition = new Vector2(GridPad, GridPad);
-
-        go.AddComponent<CanvasRenderer>();
-        var img = go.AddComponent<Image>();
-        img.color = HubTheme.NavIdle;
-        img.sprite = SceneBuilderHelper.LoadBuiltinSprite("UISprite");
-        img.type   = Image.Type.Sliced;
-
-        var btn = go.AddComponent<Button>();
-        btn.targetGraphic = img;
-        // onClick is wired at runtime by HubManager (lambdas can't persist in scene YAML).
-
-        var lGO = new GameObject("Label");
-        lGO.layer = LayerMask.NameToLayer("UI");
-        var lRT = lGO.AddComponent<RectTransform>();
-        lRT.SetParent(rt, false);
-        lRT.anchorMin = Vector2.zero;
-        lRT.anchorMax = Vector2.one;
-        lRT.offsetMin = Vector2.zero;
-        lRT.offsetMax = Vector2.zero;
-        lGO.AddComponent<CanvasRenderer>();
-        var tmp = lGO.AddComponent<TextMeshProUGUI>();
-        tmp.text = "← Stages";
-        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
-        tmp.fontSize = 32;
-        tmp.color = HubTheme.TextLight;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
-
         created++;
     }
 
@@ -243,32 +140,6 @@ public static class HubBuilder
         go.AddComponent<CanvasRenderer>();
         go.AddComponent<Image>();
         created++;
-        return rt;
-    }
-
-    private static void Paint(GameObject go, Color c)
-    {
-        var img = go.GetComponent<Image>();
-        if (img != null) img.color = c;
-    }
-
-    private static RectTransform MakeLabel(RectTransform parent, string name, string text)
-    {
-        var existing = parent.Find(name);
-        if (existing != null) return existing.GetComponent<RectTransform>();
-
-        var go = new GameObject(name);
-        go.layer = parent.gameObject.layer;
-        var rt = go.AddComponent<RectTransform>();
-        rt.SetParent(parent, false);
-        go.AddComponent<CanvasRenderer>();
-        var tmp = go.AddComponent<TextMeshProUGUI>();
-        tmp.text = text;
-        tmp.font = SceneBuilderHelper.LoadFont(SceneBuilderHelper.FontPaths.Attic);
-        tmp.fontSize = 32;
-        tmp.color = HubTheme.TextLight;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.raycastTarget = false;
         return rt;
     }
 }

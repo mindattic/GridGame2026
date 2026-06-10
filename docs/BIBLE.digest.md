@@ -114,7 +114,7 @@ For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossar
 <a id="gg-appendix-a"></a>
 
 ## Status index (from docs/USER_STORIES.md)
-- done: 49  partial: 0  planned: 0  cut: 0
+- done: 50  partial: 0  planned: 0  cut: 0
 
 ## Latest amendment
 - GG-A1 — Adopt the MindAttic Codex documentation standard (supersedes the root `game_bible.md` + `user_stories.md`)

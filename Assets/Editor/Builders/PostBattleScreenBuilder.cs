@@ -79,7 +79,7 @@ public static class PostBattleScreenBuilder
             c.renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = canvasGO.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            scaler.referenceResolution = new Vector2(1170f, 2532f); // §26.2 portrait contract
             scaler.matchWidthOrHeight = 0.5f;
             canvasGO.AddComponent<GraphicRaycaster>();
             Undo.RegisterCreatedObjectUndo(canvasGO, "Create Canvas");
@@ -89,24 +89,19 @@ public static class PostBattleScreenBuilder
 
         if (canvas != null)
         {
-            // Background (UI) — canvas child with Image
+            // Background (UI) — canvas child with Image, themed PanelBg
             var uiBg = SceneBuilderHelper.EnsureImage(canvas, "Background", false, ref created, ref found);
             if (uiBg != null)
             {
                 uiBg.anchorMin = Vector2.zero; uiBg.anchorMax = Vector2.one;
-                uiBg.sizeDelta = new Vector2(840f, 1817.8464f);
+                uiBg.sizeDelta = Vector2.zero;
                 uiBg.anchoredPosition = Vector2.zero;
+                var bgImg = uiBg.GetComponent<Image>();
+                if (bgImg != null) bgImg.color = Scripts.Hub.HubTheme.PanelBg;
             }
 
-            // Title — anchored to top, full width, 64px tall
-            var title = SceneBuilderHelper.EnsureLabel(canvas, "Title", "Battle Results", ref created, ref found);
-            if (title != null)
-            {
-                title.anchorMin = new Vector2(0f, 1f); title.anchorMax = new Vector2(1f, 1f);
-                title.pivot = new Vector2(0.5f, 1f);
-                title.sizeDelta = new Vector2(0f, 64f);
-                title.anchoredPosition = new Vector2(0f, -200f);
-            }
+            // Header — the game-wide standard bar
+            UiKit.Header(canvas, "Battle Results");
 
             // ScrollView
             var sv = SceneBuilderHelper.EnsureScrollView(canvas, ref created, ref found);
@@ -116,23 +111,23 @@ public static class PostBattleScreenBuilder
                 sv.anchoredPosition = new Vector2(0f, -256f);
             }
 
-            // BottomBar with NextButton
+            // BottomBar with NextButton — footer strip + gold Primary commit, matching Vendor
             var bottomBar = SceneBuilderHelper.EnsureImage(canvas, "BottomBar", false, ref created, ref found);
             if (bottomBar != null)
             {
                 bottomBar.anchorMin = Vector2.zero;
                 bottomBar.anchorMax = new Vector2(1f, 0f);
-                bottomBar.sizeDelta = new Vector2(840f, 110f);
-                bottomBar.anchoredPosition = new Vector2(0f, 225f);
+                bottomBar.pivot = new Vector2(0.5f, 0f);
+                bottomBar.sizeDelta = new Vector2(0f, 110f);
+                bottomBar.anchoredPosition = Vector2.zero;
+                var barImg = bottomBar.GetComponent<Image>();
+                if (barImg != null) barImg.color = Scripts.Hub.HubTheme.HeaderBg;
 
-                var next = SceneBuilderHelper.EnsureButton(bottomBar, "NextButton", "Next", ref created, ref found);
-                if (next != null)
-                {
-                    next.anchorMin = next.anchorMax = new Vector2(1f, 0.5f);
-                    next.pivot = new Vector2(1f, 0.5f);
-                    next.sizeDelta = new Vector2(260f, 64f);
-                    next.anchoredPosition = new Vector2(-40f, 0f);
-                }
+                var next = UiKit.Button(bottomBar, "NextButton", "Next", UiKit.UiButtonStyle.Primary, 28f);
+                next.anchorMin = next.anchorMax = new Vector2(1f, 0.5f);
+                next.pivot = new Vector2(1f, 0.5f);
+                next.sizeDelta = new Vector2(260f, 64f);
+                next.anchoredPosition = new Vector2(-40f, 0f);
             }
 
             SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);

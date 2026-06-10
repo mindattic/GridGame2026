@@ -47,8 +47,6 @@ public static class ProfileCreateBuilder
         var canvas = SceneBuilderHelper.EnsureCanvas("Canvas", ref created, ref found);
         if (canvas != null)
         {
-            SceneBuilderHelper.EnsureCutoutOverlay(canvas, ref created, ref found);
-
             // BackButton — starts inactive, centered with offset
             var backBtn = SceneBuilderHelper.EnsureButton(canvas, "BackButton", "Back", ref created, ref found);
             if (backBtn != null)

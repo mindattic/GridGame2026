@@ -153,7 +153,7 @@ namespace Scripts.Factories
             label.AddComponent<CanvasRenderer>();
 
             var labelTMP = label.AddComponent<TextMeshProUGUI>();
-            labelTMP.font = FontLibrary.Fonts["Avenir"];
+            labelTMP.font = UiFonts.Body; // Outfit — the game-wide body font (was Avenir)
             labelTMP.text = "0.0";
             labelTMP.fontSize = 24;
             labelTMP.color = Color.white;
