@@ -39,7 +39,12 @@ namespace Scripts.Vendor.Alchemy
     /// Wisdom 0 → 40%, Wisdom 14 → ~96% capped at 95%. Reads max Wisdom across party
     /// members at Level 1 base stats — refine when ExperienceHelper-driven level lookup
     /// is wired (slice 4+).</para>
-    /// <para>RELATED FILES: AlchemistBuilder.cs, RecipeLibrary.cs, CraftingRecipe.cs</para>
+    /// <para>HEAL SERVICE (US-122, §29.3 #12 model A): wounds persist between battles
+    /// (CharacterLevelPair.HpCurrent, US-053); the Alchemist sells the cut Inn's role — a
+    /// gold-cost full-heal of every wounded party member, priced per missing HP at the
+    /// Healing Potion's rate (25g / 50 HP).</para>
+    /// <para>RELATED FILES: AlchemistBuilder.cs, RecipeLibrary.cs, CraftingRecipe.cs,
+    /// Profile.cs (CharacterLevelPair.HpCurrent)</para>
     /// </summary>
     public class AlchemistManager : MonoBehaviour
     {
@@ -47,8 +52,12 @@ namespace Scripts.Vendor.Alchemy
         public const string ItemListContentPath = "Body/ItemList/Viewport/Content";
         public const string DetailLabelName = "Body/DetailLabel";
         public const string MixButtonName = "Body/MixButton";
+        public const string HealButtonName = "Body/HealButton";
         public const string BackButtonName = "BackButton";
         public const string FlashLabelName = "Body/FlashLabel";
+
+        /// <summary>Gold per missing HP point — anchored to the Healing Potion (25g heals 50).</summary>
+        public const float HealGoldPerHp = 0.5f;
 
         public PlayerInventory Inventory { get; private set; }
 
@@ -58,6 +67,8 @@ namespace Scripts.Vendor.Alchemy
         private TextMeshProUGUI flashLabel;
         private RectTransform listContent;
         private Button mixButton;
+        private Button healButton;
+        private TextMeshProUGUI healButtonLabel;
 
         private void Awake()
         {
@@ -114,6 +125,10 @@ namespace Scripts.Vendor.Alchemy
 
             var mixT = canvas.transform.Find(MixButtonName);
             mixButton = mixT != null ? mixT.GetComponent<Button>() : null;
+
+            var healT = canvas.transform.Find(HealButtonName);
+            healButton = healT != null ? healT.GetComponent<Button>() : null;
+            healButtonLabel = healButton != null ? healButton.GetComponentInChildren<TextMeshProUGUI>() : null;
         }
 
         private void WireButtons()
@@ -122,6 +137,12 @@ namespace Scripts.Vendor.Alchemy
             {
                 mixButton.onClick.RemoveAllListeners();
                 mixButton.onClick.AddListener(ConfirmMix);
+            }
+
+            if (healButton != null)
+            {
+                healButton.onClick.RemoveAllListeners();
+                healButton.onClick.AddListener(ConfirmHeal);
             }
 
             var canvas = GameObject.Find("Canvas");
@@ -153,6 +174,68 @@ namespace Scripts.Vendor.Alchemy
             RebuildList();
             UpdateDetail();
             UpdateMixButtonInteractable();
+            UpdateHealButton();
+        }
+
+        // ---------- Heal service (US-122, §29.3 #12 model A) ----------
+
+        /// <summary>Sums missing HP across wounded party members (HpCurrent > 0 = carrying a
+        /// wound; 0 = full). MaxHP is approximated from class base stats at the derived level —
+        /// the same out-of-battle estimate PartyManager shows; spawn-time clamping makes any
+        /// equipment-bonus difference harmless.</summary>
+        private (int wounded, int missingHp) WoundedPartyInfo()
+        {
+            int wounded = 0, missing = 0;
+            var members = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+            if (members == null) return (0, 0);
+            foreach (var m in members)
+            {
+                if (m == null || m.HpCurrent <= 0f) continue;
+                wounded++;
+                var data = ActorLibrary.Get(m.CharacterClass);
+                if (data == null) { missing += 1; continue; }
+                var (level, _) = ExperienceHelper.DeriveFromTotalXP(m.TotalXP);
+                float maxHp = data.GetStats(level).MaxHP;
+                missing += Mathf.Max(1, Mathf.CeilToInt(maxHp - m.HpCurrent));
+            }
+            return (wounded, missing);
+        }
+
+        private int HealCost(int missingHp) => Mathf.Max(1, Mathf.CeilToInt(missingHp * HealGoldPerHp));
+
+        private void UpdateHealButton()
+        {
+            if (healButton == null) return;
+            var (wounded, missingHp) = WoundedPartyInfo();
+            if (wounded == 0)
+            {
+                if (healButtonLabel != null) healButtonLabel.text = "Party Healthy";
+                healButton.interactable = false;
+                return;
+            }
+            int cost = HealCost(missingHp);
+            if (healButtonLabel != null) healButtonLabel.text = $"Heal Party\n{HubTheme.FormatGold(cost)}";
+            healButton.interactable = Inventory.Gold >= cost;
+        }
+
+        private void ConfirmHeal()
+        {
+            var (wounded, missingHp) = WoundedPartyInfo();
+            if (wounded == 0) return;
+            int cost = HealCost(missingHp);
+            if (Inventory.Gold < cost) return;
+
+            Inventory.Gold -= cost;
+            var members = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+            if (members != null)
+                foreach (var m in members)
+                    if (m != null) m.HpCurrent = 0f; // 0 = spawn at full MaxHP
+
+            if (flashLabel != null)
+                flashLabel.text = $"<color=#66cc88>Healed {wounded} hero(es) to full for {HubTheme.FormatGold(cost)}!</color>";
+
+            PersistInventory(); // saves the whole profile — gold + the HpCurrent we just cleared
+            Refresh();
         }
 
         private void UpdateGoldLabel()

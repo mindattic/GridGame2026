@@ -8,7 +8,7 @@ using Scripts.Vendor.Blacksmith;
 /// <summary>
 /// BLACKSMITHSCAFFOLD - Editor tool that builds the Blacksmith scene from code.
 ///
-/// SCENE HIERARCHY: Forge / Salvage tabs over the left list (slice 9 update).
+/// SCENE HIERARCHY: Forge / Salvage / Repair tabs over the left list (slice 9 + US-121).
 /// ```
 /// Main Camera / EventSystem / BlacksmithManagerGO / Canvas
 ///   ├── Header                Title + GoldLabel
@@ -16,10 +16,11 @@ using Scripts.Vendor.Blacksmith;
 ///   ├── Body
 ///   │   ├── ForgeTab          Mode tab (top-left)
 ///   │   ├── SalvageTab        Mode tab (top-left, right of Forge)
-///   │   ├── ItemList          Recipes (Forge) or Equipment (Salvage), left 60%
+///   │   ├── RepairTab         Mode tab (top-left, right of Salvage)
+///   │   ├── ItemList          Recipes (Forge) / Equipment (Salvage) / Worn gear (Repair), left 60%
 ///   │   ├── DetailLabel       Selected row preview (right, top)
 ///   │   ├── FlashLabel        Action result line (right, mid)
-///   │   └── ForgeButton       Gold accent action button — label flips Forge ⇄ Salvage at runtime
+///   │   └── ForgeButton       Gold accent action button — label flips Forge / Salvage / Repair at runtime
 ///   ├── BackButton            ← StageSelect
 ///   └── FadeOverlay
 /// ```
@@ -116,11 +117,20 @@ public static class BlacksmithBuilder
         var salvage = MakeButton(body, "SalvageTab", "Salvage");
         salvage.anchorMin = new Vector2(0.30f, 0.92f);
         salvage.anchorMax = new Vector2(0.60f, 1f);
-        salvage.offsetMin = new Vector2(4f, 0f); salvage.offsetMax = new Vector2(-12f, 0f);
+        salvage.offsetMin = new Vector2(4f, 0f); salvage.offsetMax = new Vector2(-4f, 0f);
         var sImg = salvage.GetComponent<Image>();
         if (sImg != null) sImg.color = HubTheme.NavIdle;
         var sLbl = salvage.GetComponentInChildren<TextMeshProUGUI>();
         if (sLbl != null) { sLbl.fontSize = 24; sLbl.fontStyle = FontStyles.Bold; }
+
+        var repair = MakeButton(body, "RepairTab", "Repair");
+        repair.anchorMin = new Vector2(0.60f, 0.92f);
+        repair.anchorMax = new Vector2(0.90f, 1f);
+        repair.offsetMin = new Vector2(4f, 0f); repair.offsetMax = new Vector2(-12f, 0f);
+        var rImg = repair.GetComponent<Image>();
+        if (rImg != null) rImg.color = HubTheme.NavIdle;
+        var rLbl = repair.GetComponentInChildren<TextMeshProUGUI>();
+        if (rLbl != null) { rLbl.fontSize = 24; rLbl.fontStyle = FontStyles.Bold; }
     }
 
     private static void BuildItemList(RectTransform body, ref int created, ref int found)

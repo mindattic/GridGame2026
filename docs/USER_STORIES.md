@@ -340,6 +340,15 @@ These were on the original board and are **already implemented in code**. The bi
 
 ---
 
+## EPIC I — Loop-closure follow-ons
+*Two bible-specified vendor services found missing during the 2026-06-09 full-loop audit (the bible promised them; the code didn't have them). Both close holes in the battle↔vendor macro loop.*
+
+- [x] **US-121 — Blacksmith Repair tab.** ✅ DONE 2026-06-09 (code complete; play-test on next editor session). Bible §25.2 #3 promised "Repair — restore weapon durability" and §25.8's sketch shows the tab, but `BlacksmithManager` had only Forge/Salvage — `WeaponDurabilityHelper.RepairCost` (built in §A) had **zero callers**, so worn gear could never be fixed. Now: third `Mode.Repair` tab lists every hero's equipped weapon/armor with a durability pool (`RepairCandidates()` walks `save.Equipment.Heroes`; worn pieces sort first); rows show `Class — Item cur/effMax cost`; detail pane shows factory max, repair count, the post-repair ceiling drop, and the `IsUneconomical` "costs as much as a new one" warning; Repair button deducts gold, restores to `EffectiveMaxDurability` (factory − prior repairs), increments the slot's RepairCount, persists. `BlacksmithBuilder` adds the RepairTab button (Forge/Salvage/Repair at 0–0.30/0.30–0.60/0.60–0.90). Demo: "Wear Gear −5" (DebugWindow) wears all equipped gear so the tab has work to show. **Touch:** `BlacksmithManager`, `BlacksmithBuilder`, `DebugManager`, `DebugWindow.Demos`. **Bible:** §25.2, §25.8. **Dep:** — (uses §A's `WeaponDurabilityHelper`).
+
+- [x] **US-122 — Alchemist heal service (the cut Inn's role).** ✅ DONE 2026-06-09 (code complete; play-test on next editor session). The §29.3 #12 resolution (Legion 4/4, model A) made wounds persist (US-053) with recovery as a *gold-cost full-heal at the Alchemist* — but the heal-service UI was an unbuilt "small follow-on", meaning wounds accumulated with **no out-of-battle recovery at all** (short of losing a battle). Now: green "Heal Party" button beside Mix (`AlchemistBuilder.BuildHealButton`; Mix shrinks to 0.6–0.79, Heal 0.79–1); `WoundedPartyInfo()` sums missing HP across `save.Party.Members` where `HpCurrent > 0` (MaxHP from class stats at the derived level — same estimate PartyManager shows); price = `0.5g × missing HP` (anchored to the Healing Potion's 25g/50HP rate); paying clears every member's `HpCurrent` to 0 (= spawn at full) and persists. Button shows live cost, disables when unaffordable, reads "Party Healthy" when nobody is wounded. Test path: "Wound Party 50%" → win battle → visit Alchemist. **Touch:** `AlchemistManager`, `AlchemistBuilder`. **Bible:** §25.3, §15.1, §29.3 #12. **Dep:** US-053 ✓.
+
+---
+
 # §C — Backlog / Deferred (NOT in the build window)
 
 - **US-104 — 60fps profiling pass (mid-tier device).** Moved from Epic H 2026-06-08. Requires a physical Android/iOS mid-tier device + Unity Profiler capture of a dense battle (4+ enemies, full VFX). **Done when:** frame budget stays within §30.1 limits; overages become new stories. US-100–103 laid the groundwork (coroutine hygiene, GC cleanup, VFX pooling, HUD atlas); run the profiling pass once hardware is available. **Bible:** §30.1, §30.5.

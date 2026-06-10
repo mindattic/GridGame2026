@@ -237,6 +237,48 @@ namespace Scripts.Managers
             Debug.Log(n > 0 ? $"[Demo] Healed {n} hero(es) to full." : "[Demo] No living heroes to heal.");
         }
 
+        /// <summary>Demo (US-121): wear every hero's equipped weapon/armor down by 5 durability —
+        /// then visit the Blacksmith's Repair tab to see costs and repair them back up.</summary>
+        public void Demo_WearPartyGear()
+        {
+            var heroes = ProfileHelper.CurrentProfile?.CurrentSave?.Equipment?.Heroes;
+            if (heroes == null || heroes.Count == 0)
+            {
+                Debug.LogWarning("[Demo] No hero equipment saves found (equip some gear first).");
+                return;
+            }
+            int worn = 0;
+            foreach (var h in heroes)
+            {
+                if (!string.IsNullOrEmpty(h.WeaponId))
+                {
+                    var def = Scripts.Data.Items.ItemLibrary.Get(h.WeaponId);
+                    if (def != null && def.Durability > 0)
+                    {
+                        int cur = h.WeaponDurability > 0 ? h.WeaponDurability : def.Durability;
+                        h.WeaponDurability = Mathf.Max(1, cur - 5);
+                        worn++;
+                        Debug.Log($"[Demo] {h.CharacterClass} {def.DisplayName}: durability → {h.WeaponDurability}.");
+                    }
+                }
+                if (!string.IsNullOrEmpty(h.ArmorId))
+                {
+                    var def = Scripts.Data.Items.ItemLibrary.Get(h.ArmorId);
+                    if (def != null && def.Durability > 0)
+                    {
+                        int cur = h.ArmorDurability > 0 ? h.ArmorDurability : def.Durability;
+                        h.ArmorDurability = Mathf.Max(1, cur - 5);
+                        worn++;
+                        Debug.Log($"[Demo] {h.CharacterClass} {def.DisplayName}: durability → {h.ArmorDurability}.");
+                    }
+                }
+            }
+            if (worn > 0) ProfileHelper.Save(overwrite: true);
+            Debug.Log(worn > 0
+                ? $"[Demo] Wore down {worn} piece(s) — open the Blacksmith's Repair tab to fix them."
+                : "[Demo] No durable gear equipped on any hero.");
+        }
+
         /// <summary>Demo (US-054): log Bestiary progress — seen vs defeated enemy classes
         /// (written on enemy spawn + death).</summary>
         public void Demo_LogBestiary()

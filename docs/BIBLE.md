@@ -1619,7 +1619,7 @@ Profile                       (one per player, top-level)
                           (seen, defeated, lore-unlock flags)
 ```
 
-XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelper.DeriveFromTotalXP(totalXP)` — no need to migrate when the curve changes. HP carry-over (wounds between battles) is intentional and gives the **Alchemist** a job (full-heal for gold — the Inn was cut, so its gold-for-HP role moves there; §29.3 #12 model A). **Built — US-053**: `CharacterLevelPair.HpCurrent` persists on victory and is hydrated on spawn; defeat resets to full.
+XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelper.DeriveFromTotalXP(totalXP)` — no need to migrate when the curve changes. HP carry-over (wounds between battles) is intentional and gives the **Alchemist** a job (full-heal for gold — the Inn was cut, so its gold-for-HP role moves there; §29.3 #12 model A). **Built — US-053**: `CharacterLevelPair.HpCurrent` persists on victory and is hydrated on spawn; defeat resets to full. **The heal vendor itself is built — US-122 (2026-06-09)**: the Alchemist's "Heal Party" button charges 0.5g per missing HP and clears `HpCurrent` (§25.3).
 
 ### 15.2 Persistence flow
 
@@ -2294,15 +2294,16 @@ Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `Pla
 ### 25.2 Blacksmith
 
 `Blacksmith.unity` / `BlacksmithManager.cs`. Three workflows:
-1. **Forge** — combine materials + gold → new weapon/armor per `CraftingRecipe`. Pulls from `RecipeLibrary.All().Where(r => r.ResultItemId is equipment)`.
-2. **Upgrade** — improve an existing piece's stats (per `UpgradeLibrary`). Each upgrade appends `_plus` to the item id and bumps stat tiers.
-3. **Repair** — restore weapon durability. Each repair erodes the max by 1 (§24.5).
+1. **Forge** (built) — combine materials + gold → new weapon/armor per `CraftingRecipe`. Pulls from `RecipeLibrary.All().Where(r => r.ResultItemId is equipment)`.
+2. **Salvage** (built; took the planned "Upgrade" tab's slot) — break an inventory equipment piece into 50% of its recipe's ingredients (floor, min 1). `UpgradeLibrary`/`UpgradeRecipe` data exists but no UI consumes it — stat-improvement is covered by **Enchant** at the Alchemist; wire an Upgrade tab only if enchanting proves insufficient.
+3. **Repair** (built — US-121, 2026-06-09) — third tab listing every hero's equipped weapon/armor with a durability pool (worn pieces first). Cost from `WeaponDurabilityHelper.RepairCost` (per-point price ×1.6 per prior repair); restores to the effective max (factory − prior repairs, §24.5), then the ceiling drops 1 for next time. The detail pane warns when repairing costs as much as a new copy (`IsUneconomical`). Demo: "Wear Gear −5".
 
 ### 25.3 Alchemist
 
 `Alchemist.unity` / `AlchemistManager.cs`. Brews consumables from materials + gold per recipes. Pulls `RecipeLibrary.All().Where(r => r.ResultItemId is consumable)`.
 
 - **Enchant** (built, `EnchantLibrary.cs:58-174`) — apply one of 4 elemental affinities (Flame/Frost/Spark/Shadow) to a base weapon; each recipe = 1 element-essence + 2 ArcaneDust + 150g, elevates rarity and adds element-themed stats.
+- **Heal service** (built — US-122, 2026-06-09; §29.3 #12 model A — the cut Inn's role): a green "Heal Party" button beside Mix. Prices the party's total missing HP at the Healing Potion's rate (`HealGoldPerHp = 0.5` g/HP — 25g heals 50); paying clears every party member's `CharacterLevelPair.HpCurrent` to 0 (= spawn at full). Shows "Party Healthy" (disabled) when nobody is wounded. Test: "Wound Party 50%" in battle, win, visit the Alchemist.
 
 ### 25.4 Equip
 
@@ -2348,13 +2349,15 @@ Each vendor follows the same skeleton: NavBar at top, scene-specific body in the
 **Blacksmith**
 ```
 ┌──[≡ NavBar]──────────────────────────────┐
-│ ┌─ Forge ─┐┌─ Upgrade ─┐┌─ Repair ─┐      │
+│ ┌─ Forge ─┐┌─ Salvage ─┐┌─ Repair ─┐      │
 │ │ Recipe: Iron Sword                  │
 │ │   Inputs: ×2 Iron, ×1 Wood, 100g    │
 │ │   Owned:  ×3 Iron, ×0 Wood ✗        │  ← red on missing
 │ │ [Craft] (disabled)                  │
 │ └────────────────────────────────────┘    │
 └──────────────────────────────────────────┘
+   Repair tab → "Paladin — Iron Sword 3/9  12g" rows; worn gear first;
+   repairs to (factory − prior repairs), price ×1.6 per prior repair.
 ```
 
 **Alchemist** mirrors Blacksmith but for consumables.
@@ -2582,7 +2585,7 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 
 10. ~~**Material drop tables per enemy class**~~ — **DONE**: 16 per-enemy drop tables populated (`DropTableLibrary.cs:53-68`).
 11. ~~**Crafting recipe completeness**~~ — **DONE**: 22 recipes including Iron→Steel; Blacksmith Forge/Salvage + Alchemist Brew menus built (`RecipeLibrary.cs:53-82`). Wizard Robe recipe included.
-12. ~~**Inn / rest / healing** — between-stage healing free, gold cost, or tied to a specific vendor?~~ **RESOLVED 2026-06-01 (Legion panel 4/4, model A):** wounds **persist** across stages (`HpCurrent`, US-053); recovery is a **gold-cost full-heal at the Alchemist** (the cut Inn's role). Defeat resets to full for free. *(The Alchemist heal-service UI is a small follow-on; the carry-over mechanism + heal API are built.)*
+12. ~~**Inn / rest / healing** — between-stage healing free, gold cost, or tied to a specific vendor?~~ **RESOLVED 2026-06-01 (Legion panel 4/4, model A):** wounds **persist** across stages (`HpCurrent`, US-053); recovery is a **gold-cost full-heal at the Alchemist** (the cut Inn's role). Defeat resets to full for free. **Heal-service UI BUILT 2026-06-09 (US-122):** "Heal Party" button in the Alchemist, priced at 0.5g per missing HP (§25.3).
 13. **Out-of-battle status** — do debuffs carry between stages or always cleared on PostBattle?
 14. **Save autosave cadence** — only at PostBattle, or also on entering a vendor?
 

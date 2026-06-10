@@ -20,7 +20,9 @@ using Scripts.Vendor.Alchemy;
 ///   │   ├── ItemList         ScrollView (left 60%)
 ///   │   ├── DetailLabel      Multi-line TMP (right 40%, top 64%)
 ///   │   ├── FlashLabel       Single-line success/fail line (right 40%, middle band)
-///   │   └── MixButton        Gold accent (right 40%, bottom)
+///   │   ├── MixButton        Gold accent (right 40%, bottom-left)
+///   │   └── HealButton       Green accent (right 40%, bottom-right) — gold-cost party
+///   │                        full-heal (US-122, §29.3 #12 model A — the cut Inn's role)
 ///   ├── BackButton           Bottom-left, fades to Overworld
 ///   └── FadeOverlay
 /// ```
@@ -101,6 +103,7 @@ public static class AlchemistBuilder
         BuildDetail(body, ref created, ref found);
         BuildFlash(body, ref created, ref found);
         BuildMixButton(body, ref created, ref found);
+        BuildHealButton(body, ref created, ref found);
     }
 
     private static void BuildItemList(RectTransform body, ref int created, ref int found)
@@ -204,13 +207,26 @@ public static class AlchemistBuilder
     {
         var btn = MakeButton(body, "MixButton", "Mix");
         btn.anchorMin = new Vector2(0.6f, 0f);
-        btn.anchorMax = new Vector2(1f, 0.18f);
+        btn.anchorMax = new Vector2(0.79f, 0.18f);
         btn.offsetMin = new Vector2(12f, 8f);
-        btn.offsetMax = new Vector2(0f, -8f);
+        btn.offsetMax = new Vector2(-4f, -8f);
         var img = btn.GetComponent<Image>();
         if (img != null) img.color = HubTheme.Accent;
         var labelTmp = btn.GetComponentInChildren<TextMeshProUGUI>();
         if (labelTmp != null) { labelTmp.fontSize = 32; labelTmp.color = Color.black; }
+    }
+
+    private static void BuildHealButton(RectTransform body, ref int created, ref int found)
+    {
+        var btn = MakeButton(body, "HealButton", "Heal Party");
+        btn.anchorMin = new Vector2(0.79f, 0f);
+        btn.anchorMax = new Vector2(1f, 0.18f);
+        btn.offsetMin = new Vector2(4f, 8f);
+        btn.offsetMax = new Vector2(0f, -8f);
+        var img = btn.GetComponent<Image>();
+        if (img != null) img.color = new Color(0.40f, 0.80f, 0.53f, 1f); // heal green
+        var labelTmp = btn.GetComponentInChildren<TextMeshProUGUI>();
+        if (labelTmp != null) { labelTmp.fontSize = 24; labelTmp.color = Color.black; labelTmp.enableWordWrapping = true; }
     }
 
     private static void BuildBackButton(RectTransform canvas, ref int created, ref int found)

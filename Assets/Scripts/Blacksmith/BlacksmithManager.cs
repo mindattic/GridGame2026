@@ -37,11 +37,16 @@ namespace Scripts.Vendor.Blacksmith
     /// row to break that piece down into <see cref="SalvageRefundFraction"/> of the original
     /// recipe's ingredients (floor, min 1 of each). Item slots that have no recipe in the
     /// library cannot be salvaged.</para>
-    /// <para>RELATED FILES: BlacksmithBuilder.cs, RecipeLibrary.cs, AlchemistManager.cs (parallel)</para>
+    /// <para>REPAIR (US-121): Lists every hero's equipped weapon/armor with a durability
+    /// pool. Click a worn piece to preview the gold cost (WeaponDurabilityHelper.RepairCost —
+    /// escalates ×1.6 per prior repair) and "Repair" restores it to its effective max
+    /// (factory max − prior repair count, so gear naturally retires per §24.5).</para>
+    /// <para>RELATED FILES: BlacksmithBuilder.cs, RecipeLibrary.cs, WeaponDurabilityHelper.cs,
+    /// AlchemistManager.cs (parallel)</para>
     /// </summary>
     public class BlacksmithManager : MonoBehaviour
     {
-        public enum Mode { Forge, Salvage }
+        public enum Mode { Forge, Salvage, Repair }
 
         public const string GoldLabelName = "GoldLabel";
         public const string ItemListContentPath = "Body/ItemList/Viewport/Content";
@@ -51,16 +56,31 @@ namespace Scripts.Vendor.Blacksmith
         public const string FlashLabelName = "Body/FlashLabel";
         public const string ForgeTabName = "Body/ForgeTab";
         public const string SalvageTabName = "Body/SalvageTab";
+        public const string RepairTabName = "Body/RepairTab";
         public const string BackButtonName = "BackButton";
 
         // Salvage refunds floor(ing.Count * 0.5), min 1 per ingredient.
         private const float SalvageRefundFraction = 0.5f;
+
+        /// <summary>A hero's equipped piece with a durability pool — one Repair-tab row.</summary>
+        private class RepairCandidate
+        {
+            public HeroEquipmentSave Hero;
+            public EquipmentSlot Slot;
+            public ItemDefinition Item;
+            public int Current;
+            public int RepairCount;
+            public int EffectiveMax => WeaponDurabilityHelper.EffectiveMaxDurability(Item, RepairCount);
+            public bool NeedsRepair => Current < EffectiveMax;
+            public int Cost => WeaponDurabilityHelper.RepairCost(Item, Current, RepairCount);
+        }
 
         public PlayerInventory Inventory { get; private set; }
 
         private Mode mode = Mode.Forge;
         private CraftingRecipe selectedRecipe;
         private PlayerInventory.Entry selectedSalvage;
+        private RepairCandidate selectedRepair;
 
         private TextMeshProUGUI goldLabel;
         private TextMeshProUGUI detailLabel;
@@ -70,6 +90,7 @@ namespace Scripts.Vendor.Blacksmith
         private TextMeshProUGUI actionButtonLabel;
         private Button forgeTab;
         private Button salvageTab;
+        private Button repairTab;
 
         private void Awake()
         {
@@ -127,6 +148,8 @@ namespace Scripts.Vendor.Blacksmith
             forgeTab = forgeT != null ? forgeT.GetComponent<Button>() : null;
             var salvageT = canvas.transform.Find(SalvageTabName);
             salvageTab = salvageT != null ? salvageT.GetComponent<Button>() : null;
+            var repairT = canvas.transform.Find(RepairTabName);
+            repairTab = repairT != null ? repairT.GetComponent<Button>() : null;
         }
 
         private void WireButtons()
@@ -146,6 +169,11 @@ namespace Scripts.Vendor.Blacksmith
                 salvageTab.onClick.RemoveAllListeners();
                 salvageTab.onClick.AddListener(() => SetMode(Mode.Salvage));
             }
+            if (repairTab != null)
+            {
+                repairTab.onClick.RemoveAllListeners();
+                repairTab.onClick.AddListener(() => SetMode(Mode.Repair));
+            }
 
             var canvas = GameObject.Find("Canvas");
             var backT = canvas != null ? canvas.transform.Find(BackButtonName) : null;
@@ -163,6 +191,7 @@ namespace Scripts.Vendor.Blacksmith
             mode = newMode;
             selectedRecipe = null;
             selectedSalvage = null;
+            selectedRepair = null;
             if (flashLabel != null) flashLabel.text = "";
             Refresh();
         }
@@ -190,6 +219,11 @@ namespace Scripts.Vendor.Blacksmith
                 var img = salvageTab.GetComponent<Image>();
                 if (img != null) img.color = mode == Mode.Salvage ? active : idle;
             }
+            if (repairTab != null)
+            {
+                var img = repairTab.GetComponent<Image>();
+                if (img != null) img.color = mode == Mode.Repair ? active : idle;
+            }
         }
 
         private static IEnumerable<CraftingRecipe> EquipmentRecipes()
@@ -198,6 +232,40 @@ namespace Scripts.Vendor.Blacksmith
             {
                 var result = ItemLibrary.Get(r.ResultItemId);
                 return result != null && result.Type == ItemType.Equipment;
+            });
+        }
+
+        /// <summary>Every hero's equipped weapon/armor that has a durability pool. Worn pieces
+        /// come first so the repairable work is at the top of the list.</summary>
+        private static List<RepairCandidate> RepairCandidates()
+        {
+            var list = new List<RepairCandidate>();
+            var heroes = ProfileHelper.CurrentProfile?.CurrentSave?.Equipment?.Heroes;
+            if (heroes == null) return list;
+
+            foreach (var heroSave in heroes)
+            {
+                AddCandidate(list, heroSave, EquipmentSlot.Weapon, heroSave.WeaponId, heroSave.WeaponDurability, heroSave.WeaponRepairCount);
+                AddCandidate(list, heroSave, EquipmentSlot.Armor, heroSave.ArmorId, heroSave.ArmorDurability, heroSave.ArmorRepairCount);
+            }
+            return list.OrderByDescending(c => c.NeedsRepair).ThenBy(c => c.Hero.CharacterClass.ToString()).ToList();
+        }
+
+        private static void AddCandidate(List<RepairCandidate> list, HeroEquipmentSave heroSave,
+            EquipmentSlot slot, string itemId, int savedDurability, int repairCount)
+        {
+            if (string.IsNullOrEmpty(itemId)) return;
+            var def = ItemLibrary.Get(itemId);
+            if (def == null || def.Durability <= 0) return;
+            // Saved 0 = fresh-equip default (full factory durability), matching WeaponDurabilityHelper.
+            int current = savedDurability > 0 ? savedDurability : def.Durability;
+            list.Add(new RepairCandidate
+            {
+                Hero = heroSave,
+                Slot = slot,
+                Item = def,
+                Current = current,
+                RepairCount = repairCount,
             });
         }
 
@@ -212,10 +280,15 @@ namespace Scripts.Vendor.Blacksmith
                 foreach (var recipe in EquipmentRecipes())
                     CreateForgeRow(recipe);
             }
-            else
+            else if (mode == Mode.Salvage)
             {
                 foreach (var entry in Inventory.ByType(ItemType.Equipment))
                     CreateSalvageRow(entry);
+            }
+            else
+            {
+                foreach (var candidate in RepairCandidates())
+                    CreateRepairRow(candidate);
             }
         }
 
@@ -256,6 +329,12 @@ namespace Scripts.Vendor.Blacksmith
                 return;
             }
 
+            if (mode == Mode.Repair)
+            {
+                UpdateRepairDetail();
+                return;
+            }
+
             // Salvage mode
             if (selectedSalvage == null)
             {
@@ -292,6 +371,46 @@ namespace Scripts.Vendor.Blacksmith
             detailLabel.text = sb2.ToString();
         }
 
+        private void UpdateRepairDetail()
+        {
+            if (selectedRepair == null)
+            {
+                detailLabel.text = "<b>Repair</b>\nRestore your heroes' equipped gear for gold.\n" +
+                                   "Each repair lowers the piece's max durability by 1 and raises the " +
+                                   "next repair's price — eventually replacing it is the better deal.\n\n" +
+                                   "Click a worn piece to see the cost.";
+                return;
+            }
+
+            var c = selectedRepair;
+            var sb = new System.Text.StringBuilder();
+            sb.Append("<b>").Append(c.Hero.CharacterClass).Append(" — ").Append(c.Item.DisplayName).Append("</b>\n");
+            if (!string.IsNullOrEmpty(c.Item.Description))
+                sb.Append("<i>").Append(c.Item.Description).Append("</i>\n");
+            sb.Append('\n');
+            sb.Append("Durability: ").Append(c.Current).Append('/').Append(c.EffectiveMax);
+            if (c.RepairCount > 0)
+                sb.Append("  <color=#888888>(factory ").Append(c.Item.Durability)
+                  .Append(", repaired ×").Append(c.RepairCount).Append(")</color>");
+            sb.Append('\n');
+
+            if (!c.NeedsRepair)
+            {
+                sb.Append("\n<color=#66cc88>In perfect shape — nothing to repair.</color>");
+            }
+            else
+            {
+                bool affordable = Inventory.Gold >= c.Cost;
+                sb.Append("Repair cost: ").Append(HubTheme.ColorByAffordable(HubTheme.FormatGold(c.Cost), affordable)).Append('\n');
+                sb.Append("Restores to ").Append(c.EffectiveMax)
+                  .Append(" <color=#888888>(max drops to ").Append(Mathf.Max(1, c.EffectiveMax - 1))
+                  .Append(" after)</color>\n");
+                if (WeaponDurabilityHelper.IsUneconomical(c.Item, c.Current, c.RepairCount))
+                    sb.Append("\n<color=#cc6666>Costs as much as a new one — consider forging or buying a replacement.</color>");
+            }
+            detailLabel.text = sb.ToString();
+        }
+
         private void UpdateActionButton()
         {
             if (actionButton == null) return;
@@ -300,10 +419,16 @@ namespace Scripts.Vendor.Blacksmith
                 if (actionButtonLabel != null) actionButtonLabel.text = "Forge";
                 actionButton.interactable = selectedRecipe != null && selectedRecipe.CanCraft(Inventory);
             }
-            else
+            else if (mode == Mode.Salvage)
             {
                 if (actionButtonLabel != null) actionButtonLabel.text = "Salvage";
                 actionButton.interactable = selectedSalvage != null && FindRecipeFor(selectedSalvage.Definition.Id) != null;
+            }
+            else
+            {
+                if (actionButtonLabel != null) actionButtonLabel.text = "Repair";
+                actionButton.interactable = selectedRepair != null && selectedRepair.NeedsRepair
+                                            && Inventory.Gold >= selectedRepair.Cost;
             }
         }
 
@@ -347,6 +472,30 @@ namespace Scripts.Vendor.Blacksmith
             tmp.color = HubItemRowFactory.RarityColor(entry.Definition.Rarity);
         }
 
+        private void CreateRepairRow(RepairCandidate candidate)
+        {
+            var go = MakeRowGO($"Repair_{candidate.Hero.CharacterClass}_{candidate.Slot}");
+            var bg = go.GetComponent<Image>();
+            bool isSelected = selectedRepair != null
+                && selectedRepair.Hero == candidate.Hero
+                && selectedRepair.Slot == candidate.Slot;
+            bg.color = isSelected
+                ? new Color(0.36f, 0.50f, 0.78f, 1f)
+                : new Color(0.20f, 0.24f, 0.34f, 1f);
+
+            var btn = go.GetComponent<Button>();
+            var captured = candidate;
+            btn.onClick.AddListener(() => { selectedRepair = captured; if (flashLabel != null) flashLabel.text = ""; Refresh(); });
+
+            var tmp = go.GetComponentInChildren<TextMeshProUGUI>();
+            string durPart = $"<color=#888888>{candidate.Current}/{candidate.EffectiveMax}</color>";
+            string costPart = candidate.NeedsRepair
+                ? HubTheme.ColorByAffordable(HubTheme.FormatGold(candidate.Cost), Inventory.Gold >= candidate.Cost)
+                : "<color=#66cc88>OK</color>";
+            tmp.text = $"{candidate.Hero.CharacterClass} — {candidate.Item.DisplayName}  {durPart}    {costPart}";
+            tmp.color = HubItemRowFactory.RarityColor(candidate.Item.Rarity);
+        }
+
         private GameObject MakeRowGO(string name)
         {
             var go = new GameObject(name);
@@ -381,7 +530,37 @@ namespace Scripts.Vendor.Blacksmith
         private void ConfirmAction()
         {
             if (mode == Mode.Forge) ConfirmForge();
-            else ConfirmSalvage();
+            else if (mode == Mode.Salvage) ConfirmSalvage();
+            else ConfirmRepair();
+        }
+
+        private void ConfirmRepair()
+        {
+            var c = selectedRepair;
+            if (c == null || !c.NeedsRepair) return;
+            int cost = c.Cost;
+            if (Inventory.Gold < cost) return;
+
+            Inventory.Gold -= cost;
+            int restored = c.EffectiveMax;
+            if (c.Slot == EquipmentSlot.Weapon)
+            {
+                c.Hero.WeaponDurability = restored;
+                c.Hero.WeaponRepairCount = c.RepairCount + 1;
+            }
+            else
+            {
+                c.Hero.ArmorDurability = restored;
+                c.Hero.ArmorRepairCount = c.RepairCount + 1;
+            }
+            c.Current = restored;
+            c.RepairCount += 1;
+
+            if (flashLabel != null)
+                flashLabel.text = $"<color=#66cc88>Repaired {c.Item.DisplayName} → {restored} durability!</color>";
+
+            PersistInventory(); // saves the whole profile — gold + the equipment durability we just wrote
+            Refresh();
         }
 
         private void ConfirmForge()

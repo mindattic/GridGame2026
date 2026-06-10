@@ -87,10 +87,12 @@ public partial class DebugWindow
         );
 
         // HP carry-over (US-053) — wound the party, win, and the next battle spawns them still hurt;
-        // Heal Party previews the gold-cost Alchemist full-heal (§29.3 #12, model A).
+        // Heal Party previews the gold-cost Alchemist full-heal (§29.3 #12, model A). Wear Gear −5
+        // (US-121) wears equipped weapons/armor so the Blacksmith's Repair tab has work to show.
         RenderButtonRow(
             ("Wound Party 50%", () => g.DebugManager.Demo_WoundParty()),
-            ("Heal Party Full", () => g.DebugManager.Demo_HealParty())
+            ("Heal Party Full", () => g.DebugManager.Demo_HealParty()),
+            ("Wear Gear −5", () => g.DebugManager.Demo_WearPartyGear())
         );
 
         // Audio (US-096) — set music/SFX volume + toggle mutes; each re-applies live to the Jukebox
