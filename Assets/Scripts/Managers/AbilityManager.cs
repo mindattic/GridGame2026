@@ -351,6 +351,10 @@ namespace Scripts.Managers
         /// </summary>
         private void BeginCastTimeAbility()
         {
+            // Teardown guard: a cast can't ride the timeline if the bar is gone (scene unload /
+            // restart mid-frame) — bail BEFORE the mana is spent.
+            if (g.TimelineBar == null) return;
+
             if (!g.ManaPoolManager.Spend(currentUser.IsHero ? Team.Hero : Team.Enemy, currentAbility.ManaCost))
                 return;
 

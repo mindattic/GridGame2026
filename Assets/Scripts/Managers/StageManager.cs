@@ -196,7 +196,14 @@ public class StageManager : MonoBehaviour
         g.SynergyLineManager.Clear();
         g.CoinCounter.Refresh();
         g.TileManager.Reset();
-        //g.TurnManager.Initialize();
+        // Per-battle static state must reset with the actors — ghost buffs, stale skill
+        // cooldowns, and threat scores otherwise survive into the restarted run.
+        // TurnManager.Initialize() itself is intentionally NOT called here: on first load
+        // GameManager.Start() runs it right after this, and calling BeginHeroWindow twice
+        // double-ticks cooldowns and queues two HeroStartSequences.
+        BuffSystem.Clear();
+        SkillCooldownManager.Clear();
+        ThreatTracker.Clear();
 
         // Show persistent hero actors from ProfileHelper
         foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)

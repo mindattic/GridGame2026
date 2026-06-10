@@ -116,7 +116,10 @@ namespace Scripts.Managers
                 case "Party":
                 case "Abilities":
                 case "StageSelect":
+                case "Hub":       // vendor launcher — same shop-district bed
                     return "Vendor";
+                case "Bestiary":  // codex screen reached from Title — keep the title bed
+                    return "Title";
                 case "Overworld":
                     return "Overworld";
                 case "TitleScreen":

@@ -406,13 +406,13 @@ public partial class ActorInstance : MonoBehaviour
         {
             Render.SetBackdropColor(ColorHelper.Solid.White);
             Render.SetFrameColor(ColorHelper.Solid.White);
-            Vfx.Attack = VisualEffectLibrary.VisualEffects["BlueSlash1"];
+            Vfx.Attack = VisualEffectLibrary.Get("BlueSlash1"); // Get() logs + null-returns on a renamed key; the raw indexer throws
         }
         else if (IsEnemy)
         {
             Render.SetBackdropColor(ColorHelper.Solid.GunMetal);
             Render.SetFrameColor(ColorHelper.Solid.White);
-            Vfx.Attack = VisualEffectLibrary.VisualEffects["DoubleClaw"];
+            Vfx.Attack = VisualEffectLibrary.Get("DoubleClaw");
 
             // Enemy frame flickers between black and dark red using Quake's broken-fluorescent
             // pattern — same effect ActorPanel uses for the enemy backdrop, applied here to the

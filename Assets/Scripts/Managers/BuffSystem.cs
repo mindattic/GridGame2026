@@ -23,6 +23,13 @@ namespace Scripts.Managers
         private static readonly Dictionary<ActorInstance, List<BuffInstance>> active =
             new Dictionary<ActorInstance, List<BuffInstance>>();
 
+        /// <summary>
+        /// Drops every tracked buff. Must run whenever the battle's actors are torn down
+        /// (battle start, stage restart) — the dictionary is static, so destroyed
+        /// ActorInstance keys otherwise survive into the next run as ghost buffs.
+        /// </summary>
+        public static void Clear() => active.Clear();
+
         /// <summary>Apply a buff with its default duration. Stacks if already present (latest wins on duration).</summary>
         public static void Apply(ActorInstance target, Buff buff)
         {

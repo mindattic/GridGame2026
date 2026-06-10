@@ -2645,6 +2645,17 @@ LINQ is **fine in cold paths** (vendor scenes, `Awake`, scene transitions) — i
 - **Stacked coroutines from the same trigger.** If a UI button starts a coroutine and the user clicks again before it ends, you get two parallel coroutines. Track via a flag (`bool isRunning`) or kill the previous one.
 - **Awaiting a `null` actor.** A targeted spell coroutine that yields on the target — but the target died between yield points. Null-guard after every `yield return`.
 
+**Static state hygiene (added 2026-06-09).** Per-battle static stores keyed by `ActorInstance`
+(`BuffSystem.active`, `ThreatTracker`, `SkillCooldownManager`) survive scene loads and actor
+teardown — destroyed actors linger as ghost keys carrying buffs/cooldowns/threat into the next
+run. Rule: every such store exposes a static `Clear()` and is cleared in BOTH
+`TurnManager.Initialize()` (battle start) and `StageManager.RestartStage()` (mid-battle
+restart, which intentionally does NOT call `Initialize()` — `BeginHeroWindow` is not
+idempotent). When adding a new per-battle static store, wire its `Clear()` into both sites.
+Related teardown rule: any `g.TimelineBar` (or similar scene-bound singleton) use that can run
+during scene unload needs a null-guard, and event subscribers on cross-scene singletons must
+unsubscribe in `OnDestroy` (see `TargetModeOverlay`).
+
 ### 30.4 Mobile-specific constraints
 
 - **No `Resources.Load`** (guardrail) — everything via Addressables; eliminates startup hitches.

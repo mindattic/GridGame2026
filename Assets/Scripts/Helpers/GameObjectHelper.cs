@@ -98,7 +98,17 @@ namespace Scripts.Helpers
         /// <summary>Game scene paths.</summary>
         public static class Game
         {
-            public static UnityEngine.Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<UnityEngine.Canvas>();
+            // Null-safe: "Canvas3D" only exists in the Game scene (GameBuilder); calling this
+            // from any menu scene returns null with a log instead of an opaque NRE.
+            public static UnityEngine.Canvas Canvas3D
+            {
+                get
+                {
+                    var go = GameObject.Find("Canvas3D");
+                    if (go == null) { Debug.LogError("[GameObjectHelper] Canvas3D not found — Game-scene-only object."); return null; }
+                    return go.GetComponent<UnityEngine.Canvas>();
+                }
+            }
 
 
 

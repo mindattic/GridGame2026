@@ -158,6 +158,7 @@ namespace Scripts.Managers
         public void OnBankButtonClicked()
         {
             if (!g.TurnManager.IsHeroTurn) return;
+            if (g.TimelineBar == null) return; // teardown guard (scene unload / restart mid-frame)
 
             var (arrivingEnemy, secondsSkipped) = g.TimelineBar.GetNextBankTarget();
             if (arrivingEnemy == null) return;

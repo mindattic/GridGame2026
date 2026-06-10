@@ -119,8 +119,11 @@ public class TargetModeOverlay : MonoBehaviour
     /// <summary>Cleans up resources when the object is destroyed.</summary>
     private void OnDestroy()
     {
-        //if (g.InputManager != null)
-        //    g.InputManager.OnInputModeChanged -= HandleModeChanged;
+        // Unsubscribe or the InputManager singleton keeps firing into this destroyed
+        // instance on the next play session (MissingReferenceException with domain
+        // reload disabled). Initialize()'s dedup only protects the live instance.
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
     /// <summary>Subscribes to input mode changes, fits to board, applies sorting, and snaps to current state.</summary>
