@@ -4,7 +4,7 @@ project: GridGame2026
 code: GG
 layer: stories
 status: living
-updated: 2026-06-07
+updated: 2026-06-09
 ---
 
 # GridGame2026 — User Stories

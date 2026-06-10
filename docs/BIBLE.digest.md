@@ -98,9 +98,9 @@ pillarbox via `AspectGuard` — the game never stretches or squashes. *(Source: 
   shoves its turn back toward spawn. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
 - **Hasten / Quicken** — the inverse: slide a target icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse-built-us-028))
 - **Cast icon** — a spell with `CastTimeSeconds > 0` rides the timeline as a below-the-line icon;
-  resolves at u=1 in the third "resolving" turn state. ([§13.4](#134-the-interrupt-path-partially-built))
+  resolves at u=1 in the third "resolving" turn state. ([§13.4](#134-the-interrupt-path))
 - **Clutch** — rare LCK-driven interrupt outcome: the caster shrugs the hit, the cast snaps to u=1
-  and resolves on the spot. ([§13.4](#134-the-interrupt-path-partially-built))
+  and resolves on the spot. ([§13.4](#134-the-interrupt-path))
 - **ManaBank / orb** — shared 12-orb colored pool (W U B R G C). ([§3.1](#31-mana-the-orb-economy))
 - **Wild orb** — a Colorless orb (crit-minted) that satisfies any single color on spend. ([§3.1.6](#316-pressure-valve--colorless-wildcard-built-us-033))
 - **AbilityBar** — the 6-slot per-hero Skill / Spell / Item loadout. ([§4 AbilityBar](#4-the-abilitybar))

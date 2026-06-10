@@ -4,7 +4,7 @@ project: GridGame2026
 code: GG
 layer: bible
 status: living
-updated: 2026-06-07
+updated: 2026-06-09
 ---
 
 # GridGame2026 — Project Bible
@@ -42,7 +42,7 @@ The feel target: *Final Fantasy timeline + Disgaea grid + FF8 draw economy.* See
 - **Shared, visible mana.** A 12-orb colored `ManaBank` is the whole party's spell budget; pincers,
   crits, and enemy-cast interrupts refill it. ([§3.1 Mana](#31-mana-the-orb-economy), data: [`spells.json`](data/spells.json))
 - **Casts ride the Timeline.** Cast time advances an icon to the trigger; take a hit mid-cast and
-  roll Fail / Pushback / Clutch. A dying healer can still let off one last miracle. ([§13.4](#134-the-interrupt-path-partially-built))
+  roll Fail / Pushback / Clutch. A dying healer can still let off one last miracle. ([§13.4](#134-the-interrupt-path))
 - **Beyond the battlefield.** Themed campaigns of hand-built stages, six vendor scenes, weapon
   durability with shatter rebound, original Undearth lore. ([§22 Macro Loop](#22-the-macro-loop), [§25 Hub](#25-the-hub-vendor-scenes))
 
@@ -213,24 +213,20 @@ pillarbox via `AspectGuard` — the game never stretches or squashes. *(Source: 
 - ✅ Entire battle ↔ vendor macro loop + content layer: 15+ stages, 6 vendors, 172 enemy classes,
   drop/recipe/enchant libraries, save round-trip (USER_STORIES §A).
 
-**Partial / planned frontier:** see [§7](#gg-§7) and [`USER_STORIES.md`](USER_STORIES.md) Epics G–H
-(timeline two-lane layout, ability-bar icons/tooltips, music + volume sliders, accessibility
-toggles, performance hardening).
+**All V1 user stories complete as of 2026-06-09.** See [`USER_STORIES.md`](USER_STORIES.md) §A–§B (all `[x]`). Remaining scope (deferred / cut) lives in USER_STORIES.md §C.
 
 ## 7. Active frontier {#GG-§7}
 
-The remaining build window, dependency-ordered, lives in [`USER_STORIES.md`](USER_STORIES.md):
+**Build complete — all V1 stories verified done as of 2026-06-09** (USER_STORIES.md §B, all `[x]`).
 
-- **Epic G — UI Polish & Accessibility** (`US-114`, `US-076`, `US-091`, `US-093`, `US-094`,
-  `US-095`, `US-096`): timeline two-lane layout; spell icons + tooltips on the AbilityBar; bestiary
-  filter/silhouette; colorblind + reduce-motion toggles; music playback + volume sliders.
-- **Epic H — Performance & Hardening** (`US-100`..`US-104`): coroutine hygiene, GC hot-path cleanup,
-  VFX pooling, HUD atlas, a 60fps profiling pass.
-- **Design questions to settle first** (USER_STORIES §D, from [§29](#29-open-design-questions)):
-  out-of-battle debuff carry (§29.3 #13), AspectGuard strategy ratification (§29.4 #17).
-- **Design notes / RFCs:** [`docs/rfc/`](rfc/) — see [`0001-timeline-two-lane-layout.md`](rfc/0001-timeline-two-lane-layout.md).
-- **Deferred / cut:** USER_STORIES §C (merged hub, roster/party composition, roguelike/NG+, tutorial,
-  relic passives) and the cut Dialog/Overworld layers.
+The following are complete:
+- **Epic G — UI Polish & Accessibility** (`US-114`, `US-076`, `US-091`, `US-093`, `US-094`, `US-095`, `US-096`): ✅ all done.
+- **Epic H — Performance & Hardening** (`US-100`..`US-103`): ✅ all done. US-104 (60fps profiling pass on a physical device) deferred to §C.
+- **Design notes / RFCs:** [`docs/rfc/`](rfc/) — `0001-timeline-two-lane-layout.md` implemented as US-114.
+
+**Deferred / cut** (USER_STORIES §C): US-104 (device profiling pass), merged hub, roster/party composition, roguelike/NG+, tutorial, relic passives, and the cut Dialog/Overworld layers.
+
+**Open design questions** (USER_STORIES §D, from [§29](#29-open-design-questions)): out-of-battle debuff carry (§29.3 #13), save autosave cadence (§29.3 #14), party size cap (§29.2 #7), inventory cap (§25.8).
 
 ## 8. Quality bar {#GG-§8}
 
@@ -260,9 +256,9 @@ the org-wide [`HOUSE-LAW-8`](../../MindAttic.HouseRules.md#HOUSE-LAW-8).
   shoves its turn back toward spawn. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
 - **Hasten / Quicken** — the inverse: slide a target icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse-built-us-028))
 - **Cast icon** — a spell with `CastTimeSeconds > 0` rides the timeline as a below-the-line icon;
-  resolves at u=1 in the third "resolving" turn state. ([§13.4](#134-the-interrupt-path-partially-built))
+  resolves at u=1 in the third "resolving" turn state. ([§13.4](#134-the-interrupt-path))
 - **Clutch** — rare LCK-driven interrupt outcome: the caster shrugs the hit, the cast snaps to u=1
-  and resolves on the spot. ([§13.4](#134-the-interrupt-path-partially-built))
+  and resolves on the spot. ([§13.4](#134-the-interrupt-path))
 - **ManaBank / orb** — shared 12-orb colored pool (W U B R G C). ([§3.1](#31-mana-the-orb-economy))
 - **Wild orb** — a Colorless orb (crit-minted) that satisfies any single color on spend. ([§3.1.6](#316-pressure-valve--colorless-wildcard-built-us-033))
 - **AbilityBar** — the 6-slot per-hero Skill / Spell / Item loadout. ([§4 AbilityBar](#4-the-abilitybar))
@@ -809,10 +805,10 @@ Each slot in the AbilityBar can be in one of these visual states, driven by `Abi
 | **Unaffordable** | full color frame, icon at 40% opacity, cost text red | spell — `Bank.CanAfford(cost) == false` |
 | **Out-of-charges** | item frame, "0/N" overlay, icon at 30% opacity, slot is non-interactive | item with `Charges == 0` |
 | **Selected / targeting** | thick yellow outline + slight scale-up | `TargetingMode.IsActive && AbilityBar.SelectedSlot == i` |
-| **Cooldown** (future) | greyscale icon + radial sweep | reserved for skills with reuse limits |
-| **Disabled (Silenced)** | red diagonal stripe overlay on Spell slots | caster has `silenced` debuff (gameplay hook TODO) |
+| **Cooldown** | greyscale icon + radial sweep (`CooldownSweep` Image, `Radial360`) | skill `CooldownTurns > 0` and remaining > 0; countdown ticked per hero window (`SkillCooldownManager`, US-092) |
+| **Disabled (Silenced)** | red frame overlay on Spell slots | caster has `silenced` debuff; `AbilityBar.HandleSpell` refuses the cast with "Silenced!" popup (US-012) |
 
-**Hover/long-press** (future): show a tooltip with name, cost, target shape preview, base damage/heal.
+**Hover/long-press**: shows name, cost, cast time, and charge count in a `Tooltip` positioned above the slot (US-091).
 
 ### 4.6 Cancel paths
 
@@ -1009,14 +1005,14 @@ All entries in `Data/SpellLibrary.cs`. Cost references `ManaAbilities.<Name>`.
 | **Heal** | (W) | SingleActor / PickActor / AllyOnly | None | +25 HP | Spot-heal; cheap to repeat |
 | **Mass Heal** | (W) | AllAllies / Auto / AllyOnly | None | +12 HP everyone | Emergency top-up; bigger gross but smaller per-target |
 | **Antidote** | (W) | SingleActor / PickActor / AllyOnly | None | strips ALL debuffs | Cleanse — pair after a debuff-heavy enemy turn |
-| **Scan** | (W) | SingleActor / PickActor / EnemyOnly | Straight | reveals stats (TODO) | Recon — info, not damage |
+| **Scan** | (W) | SingleActor / PickActor / EnemyOnly | Straight | reveals HP/STR/VIT/AGI/INT via AnnouncementWindow + flags Bestiary Seen (US-077) | Recon — info, not damage |
 | **Fire (Fireball)** | (R)(R) | SingleActor / PickActor / EnemyOnly | Twist | 18 Fire dmg + `burning` | High burst single target; DOT continues after |
 | **Ice (Frost)** | (U)(U) | Square(r=1) / PickTile / EnemyOnly | Bezier | 10 Ice dmg + `frozen` | Crowd-control AOE; frozen halts timeline (§8.4) |
 | **Lightning (Bolt)** | (R)(R)(U) | Row / PickActor / EnemyOnly | Strike | 14 Lightning dmg (×1.5 if target Wet) + 30% chance `blinded` | Row clear; pair after Frost expires → Wet for combo |
 | **Poison** | (U)(U) | Cross(r=1) / PickTile / EnemyOnly | Bezier | 6 Poison dmg + `poisoned` | Low burst, big tail (tick damage) |
 | **Sleep** | (W) | SingleActor / PickActor / EnemyOnly | Homing | `sleep` (breaks on damage / move) | Hard CC on a priority target; do NOT also attack them |
-| **Slow** | (U)(U) | Row / PickActor / EnemyOnly | Bezier | `slowed` (TODO: timeline-speed mult) | Row-wide tempo control; buys time across a rank |
-| **Silence** | (W) | SingleActor / PickActor / EnemyOnly | Straight | `silenced` (TODO: cast-block) | Lock down enemy casters before they fire |
+| **Slow** | (U)(U) | Row / PickActor / EnemyOnly | Bezier | `slowed` — icon speed ×0.5 (`TimelineIcon.GetEffectiveUPerSec`, US-011) | Row-wide tempo control; buys time across a rank |
+| **Silence** | (W) | SingleActor / PickActor / EnemyOnly | Straight | `silenced` — Spell slots blocked; casts refused with "Silenced!" popup (US-012) | Lock down enemy casters before they fire |
 | **Meteor** | (R)(R) | Diamond(r=2) / PickTile / EnemyOnly | Strike | 22 Fire dmg + `burning` | Massive AOE; the wipe-the-back-row option |
 | **ShockWave** | (R)(R)(U) | Column / PickActor / EnemyOnly | Strike | 10 Lightning dmg | Vertical cleave; pair with Frost columns |
 | **CrossHit** | (R)(R)(U) | Plus / PickTile / EnemyOnly | Strike | 8 Lightning dmg (board-wide +) | Hits ENTIRE row + column; spreads thin but covers ground |
@@ -1132,7 +1128,7 @@ V1 uses **Refresh** uniformly via `BuffSystem.Apply(actor, buff)`: if the target
        │ Application source:                              │
        │  • Spell impact (SpellEffectDispatcher)         │
        │  • Buff expire-chain (Burning → Warm)           │
-       │  • Item use / passive (TODO)                    │
+       │  • Item use (`OnUseSpellName`, e.g. Sleep Dart US-042) / passive │
        └────────────────────┬─────────────────────────────┘
                             ▼
                   BuffSystem.Apply(target, buff)
@@ -1488,7 +1484,7 @@ No resistance applies; no crit on heal in V1 (designer call later — could add 
 
 HP reaching 0 = death. Handled by existing `DeathHelper` / death sequence (separate from spell dispatcher). Coins drop on enemy death via existing `CoinManager`.
 
-### 13.4 The interrupt path (partially built)
+### 13.4 The interrupt path
 
 When an enemy is in the Prepare Zone and casting/charging, a pincer or shield press should **interrupt** their charge.
 
@@ -1584,7 +1580,7 @@ Different enemies should *feel* different by their `ActorData.Tags` + base stat 
 | **Mechanical** | high VIT, status-immune | `Mechanical, Boss` | Status immunities (Resistances 0 for Poison/Sleep). Pure HP race. |
 | **Boss** | very high everything | `Humanoid, Boss, Elite` | **BUILT (US-083):** authored HP-threshold phases via `BossScriptLibrary` (data-driven) → `BossPhaseRunner` fires a one-time `BossPhaseTransitionSequence` on phase entry, queued through `SequenceManager`. Per-phase `PrefersCharge` knob. Cyclops enrages (Quicken) below 50% HP. Often a 2×2 (§1.5). |
 
-### 14.3 Future AI hooks
+### 14.3 AI hooks (all built)
 
 - **Casting enemies** (BUILT — US-026/US-027): telegraph a charge on the timeline (`EnemyChargeSequence`). The icon shows a colored cast bar matching the charge type; a hero's landing hit staggers it (US-024 model) and, on cancel, drops an orb of that color into the team bank (§3.1.2).
 - ~~**AI-driven supporter positioning**: enemy turn could include a "support" mode where an enemy moves to enable an ally's pincer.~~ **DONE — US-082 (2026-06-02; Legion chose supporter-adjacency over lane-clearing):** an enemy is rewarded (+25) for moving to a tile where it becomes a §1.2.3 **supporter** of another ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`); own-pincer formation still wins (+50). `EnemyPlanner.WouldSupportAllyPincer`. Demo: "Log Enemy Plans".
@@ -1690,7 +1686,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 |---|---|---|---|---|
 | ~~16~~ | — | ~~`ManaOrbLine` full-width~~ — **DONE** (responsive/equidistant, `ManaOrbLineFactory.cs:38`) | — | — |
 | ~~17~~ | US-001 | ~~**AspectGuard**~~ — **DONE 2026-06-08**: `Utilities/AspectGuard.cs` letterbox + black bars + CanvasScaler 1170×2532 + safe-area inset; §26.4 URP Overlay Camera in `GameBuilder`. | — | — |
-| 21 | US-076 | **Spell icons on bar** — render `SpriteLibrary.SpellIcons[name]` (today: glyphs only) | P2 | `AbilityBar.Refresh` |
+| ~~21~~ | US-076 | ~~**Spell icons on bar**~~ — **DONE 2026-06-07**: `AbilityBarFactory` adds a 36×36 icon `Image` per slot; `AbilityBar.Refresh` reads `SpriteLibrary.SpellIcons[name]` and enables it when found; text glyph fallback when absent. | — | — |
 
 ### 16.5 Content / data layer
 
@@ -1698,7 +1694,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 |---|---|---|---|---|
 | 12 | ✅ done 2026-06-09 | **Spell-VFX per-spell prefabs** — all 10 generated, registered, and referenced from `SpellLibrary` | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
 | ~~13~~ | US-030 | ~~**Per-hero color affinity**~~ — **DONE 2026-06-02**: `ManaColorAffinity.For(class)` (W/W/R/G/B/G/R); `PincerAttackManager` mints each contributor's color instead of Blue. Demo: "Log Color Affinities". | P1 | `Data/Actor/ManaColorAffinity`, `PincerAttackManager` |
-| 14 | US-093 | **Bestiary enemy filter** — show only `ActorTag.Enemy` entries | P2 | `BestiaryView` |
+| ~~14~~ | US-093 | ~~**Bestiary enemy filter**~~ — **DONE 2026-06-07**: `BestiaryView.BuildPages()` filters to `ActorTag.Enemy`; unseen entries show silhouette + "???" (US-093). | — | — |
 | ~~22~~ | — | ~~Drop tables per enemy class~~ — **DONE** (16 tables, `DropTableLibrary.cs:53-68`) | — | — |
 
 ### 16.6 Save / state
@@ -1706,11 +1702,11 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
 | ~~20~~ | — | ~~AbilityBar save migration~~ — **DONE** (`Profile.cs:376-487`; `HeroLoadout.cs:183-268`) | — | — |
-| — | US-053 | **HP carry-over** — no `HpCurrent` in save; needed for wounds + defeat restore | P1 | `Profile.cs`, `PostBattleManager` |
-| — | US-054 | **BestiaryProgress writing** — record seen/defeated (gates US-093/US-077) | P2 | `Profile.cs`, spawn/death hooks |
-| ~15~ | US-090 | ~~**"No valid targets" toast**~~ — **DONE 2026-06-06**: `TargetingMode.Begin` Auto + PickActor zero-target paths announce "No valid targets" (AnnouncementWindow) before cancelling, instead of silently locking. | P2 | `TargetingMode.Begin` |
-| ~—~ | US-077 | ~~**Scan reveals enemy stats**~~ — **DONE 2026-06-06**: `SpellDefinition.RevealsStats` (set on `SpellLibrary.Scan`); `SpellEffectDispatcher` announces the target's HP/STR/VIT/AGI/INT + flags the enemy class Seen in the Bestiary (unblocks US-093). Reuses the AnnouncementWindow as the reveal surface. Demo: "Scan Enemy". | P2 | `SpellDefinition`, `SpellLibrary`, `SpellEffectDispatcher` |
-|   | US-093 | **Bestiary unlock gating** — read `BestiaryProgress.seen` for silhouettes | P2 | `BestiaryView` |
+| ~~—~~ | US-053 | ~~**HP carry-over**~~ — **DONE 2026-06-01**: `CharacterLevelPair.HpCurrent`; `StageManager.SpawnActor` hydrates wounds; `BattleWonSequence` persists HP; `BattleLostSequence` resets to full. | — | — |
+| ~~—~~ | US-054 | ~~**BestiaryProgress writing**~~ — **DONE 2026-06-01**: `BestiarySaveData` (list-based); Seen on spawn, Defeated/TimesDefeated on death; persisted at battle end. | — | — |
+| ~~15~~ | US-090 | ~~**"No valid targets" toast**~~ — **DONE 2026-06-06**: `TargetingMode.Begin` Auto + PickActor zero-target paths announce "No valid targets" (AnnouncementWindow) before cancelling, instead of silently locking. | — | — |
+| ~~—~~ | US-077 | ~~**Scan reveals enemy stats**~~ — **DONE 2026-06-06**: `SpellDefinition.RevealsStats` (set on `SpellLibrary.Scan`); `SpellEffectDispatcher` announces the target's HP/STR/VIT/AGI/INT + flags the enemy class Seen in the Bestiary (unblocks US-093). Reuses the AnnouncementWindow as the reveal surface. Demo: "Scan Enemy". | — | — |
+| ~~—~~ | US-093 | ~~**Bestiary unlock gating**~~ — **DONE 2026-06-07**: `BestiaryView` reads `BestiaryProgress.Seen`; unseen = silhouette + "???". | — | — |
 
 ### 16.7 Cross-reference
 
@@ -2072,12 +2068,12 @@ Heroes and enemies share the `CharacterClass` enum in `Helpers/CharacterClass.cs
 - **Tags** (`Hero / Enemy / Humanoid / Soldier / Beast / Boss / Mechanical` + elemental affinity flags).
 - **Elemental resistance** (`ActorData.Resistances`) — per-`DamageType` multiplier.
 - **Default AbilityBar loadout** — `HeroLoadouts.perClass` keyed by `CharacterClass`.
-- **Color affinity** (TODO) — when this hero contributes to a pincer harvest, the dropped orb is this color. V1 placeholder: all Blue.
-- **Story role / dialogue** (TODO) — placeholder.
+- **Color affinity** — when this hero contributes to a pincer harvest, the dropped orb is this color. `ManaColorAffinity.For(class)` in `PincerAttackManager` (US-030, 2026-06-02). See §23.2 for the per-class map.
+- **Story role / dialogue** — cut from V1 design (§27); no dialog or narrative system.
 
 ### 23.2 V1 hero roster (seeded loadouts)
 
-| Class | Identity | Stat lean | Color affinity (planned) | Loadout |
+| Class | Identity | Stat lean | Color affinity | Loadout |
 |---|---|---|---|---|
 | **Cleric** | white-magic healer; sustain-focused; reads enemy intentions | INT/WIS high, STR low | White | Heal, Heal, Frost, Potion(3) |
 | **Paladin** | front-line tank with healing on the side | VIT/STR high, mid WIS | **White** (US-030) | Heal, Fireball, Potion(3) |
@@ -2451,11 +2447,11 @@ The reference aspect is `1170/2532 ≈ 0.4625`. Wider or narrower devices get pi
 
 The above is the design contract. Aspect ratios narrower than 0.4625 letterbox; wider pillarbox. The game **never** stretches to fill — it would ruin the HUD's vertical-row composition.
 
-**Implementation plan** (planned, not yet built):
-- A `Utilities/AspectGuard.cs` MonoBehaviour. Each `OnRectTransformDimensionsChange`, resize its own RectTransform to the **largest centered rectangle** that fits the parent Canvas while preserving aspect `0.4625`.
-- Insert `AspectGuard` as the FIRST child under every Canvas (in every builder). All HUD content reparents under it.
-- A full-screen black `Image` sits BEHIND the AspectGuard so the bars render solid black.
-- The world camera (board) sets its `viewport rect` to the AspectGuard's screen rect so the board only renders within the guard, never into the bars.
+**Implementation (BUILT — US-001, 2026-06-08).** See §26.7 for the current implementation. Original design intent (preserved for reference):
+- A `Utilities/AspectGuard.cs` MonoBehaviour — self-installs via `[RuntimeInitializeOnLoadMethod]` instead of per-builder insertion.
+- Clamps `Camera.main.rect` to the nearest valid portrait aspect; a persistent black background camera fills the bars; normalizes every `CanvasScaler` to 1170×2532 + match 0.5.
+- Insets any Canvas child named "SafeArea" to `Screen.safeArea` anchors (notch/home-indicator).
+- `CameraViewportSync.cs` from the original design was not needed — `AspectGuard` applies the camera rect directly.
 
 ### 26.4 Camera framing
 
@@ -2468,9 +2464,9 @@ The above is the design contract. Aspect ratios narrower than 0.4625 letterbox; 
 
 Modern phones have rounded corners + camera notches. AspectGuard insets its rect by `Screen.safeArea` so HUD content respects them. The letterbox bars + background art can still extend to the screen edge.
 
-### 26.6 AspectGuard implementation sketch
+### 26.6 AspectGuard implementation sketch (original design — superseded by §26.7)
 
-When the AspectGuard TODO is picked up (§16.4 P0), the work shape:
+Original design intent (for reference — actual implementation is described in §26.7):
 
 ```csharp
 // Utilities/AspectGuard.cs
@@ -2555,10 +2551,7 @@ The above is the **design intent**. Current implementation:
   "SafeArea" to `Screen.safeArea` anchors (notch/home-indicator). §26.4 URP Overlay Camera exists in
   `GameBuilder` (Base depth -1 + Overlay depth +1, clearFlags SolidColor/Nothing, stacked). §16.4 #17
   updated. Visual play-test to confirm bars on non-reference devices is normal QA.
-- §26.6 (`CameraViewportSync.cs`) — **Not built**; `AspectGuard` applies the camera rect directly
-  (no companion sync script needed with the current self-install approach).
-  The `CameraViewportSync.SetGuardRect` reference in the code snippet above is the original design
-  intent that was superseded by the simpler self-install model.
+- §26.6 (`CameraViewportSync.cs`) — **Not needed / intentionally absent**: `AspectGuard` applies the camera rect directly in its self-install approach. The `CameraViewportSync.SetGuardRect` call in the code snippet above was the original design intent; the simpler self-install model superseded it (no companion script required).
 
 ## 27. (removed) Dialog & Story — cut from the design
 
@@ -2583,21 +2576,21 @@ The bible is the resolved answer; this section is the **queue** of decisions sti
 
 7. **Party size cap** — 4 heroes? 5? Variable per stage?
 8. ~~**Color identity per class** — each hero contributes their color to a pincer. Which classes are which color?~~ **RESOLVED 2026-06-02 (US-030; Legion panel for the two ambiguous):** Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R. See §23.2 / `ManaColorAffinity`.
-9. **Per-hero AbilityBar (not per-class)** — when do we migrate from `HeroLoadouts.perClass` defaults to player-assigned bars saved in `HeroEquipmentSave.AbilityBarSlots`?
+9. ~~**Per-hero AbilityBar (not per-class)**~~ — **DONE** (already migrated): `HeroEquipmentSave.AbilityBarSlots` is the source of truth; `HeroLoadouts.perClass` is the fallback default only when a hero has no saved bar (`Profile.cs:376-487`, `HeroLoadout.cs:183-268`).
 
 ### 29.3 Content economy
 
-10. **Material drop tables per enemy class** — framework exists (`DropTableLibrary`); per-enemy tables aren't fully populated.
-11. **Crafting recipe completeness** — Mage Robe / Wizard Robe / Sleep Dart need recipes + Blacksmith/Alchemist menu entries.
+10. ~~**Material drop tables per enemy class**~~ — **DONE**: 16 per-enemy drop tables populated (`DropTableLibrary.cs:53-68`).
+11. ~~**Crafting recipe completeness**~~ — **DONE**: 22 recipes including Iron→Steel; Blacksmith Forge/Salvage + Alchemist Brew menus built (`RecipeLibrary.cs:53-82`). Wizard Robe recipe included.
 12. ~~**Inn / rest / healing** — between-stage healing free, gold cost, or tied to a specific vendor?~~ **RESOLVED 2026-06-01 (Legion panel 4/4, model A):** wounds **persist** across stages (`HpCurrent`, US-053); recovery is a **gold-cost full-heal at the Alchemist** (the cut Inn's role). Defeat resets to full for free. *(The Alchemist heal-service UI is a small follow-on; the carry-over mechanism + heal API are built.)*
 13. **Out-of-battle status** — do debuffs carry between stages or always cleared on PostBattle?
 14. **Save autosave cadence** — only at PostBattle, or also on entering a vendor?
 
 ### 29.4 UI / presentation
 
-15. **Spell-icon → ability-bar UI** — when do we wire `SpriteLibrary.SpellIcons[name]` into the AbilityBar slot's frame so the bar shows real icons instead of letter labels?
+15. ~~**Spell-icon → ability-bar UI**~~ — **DONE 2026-06-07** (US-076): `AbilityBarFactory` adds a 36×36 icon `Image` per slot; `AbilityBar.Refresh` reads `SpriteLibrary.SpellIcons[name]` and enables it when found; glyph fallback when absent.
 16. ~~**Bestiary unlock gate** — only after first defeat, or always visible?~~ **RESOLVED 2026-06-02 (Legion 4/4): SEEN-gated.** A class reveals its full entry once `BestiaryProgress.Seen` is set (encountered in a played battle, or flagged by Scan US-077); never-seen classes render as a dark silhouette + "???". Not defeat-gated (too punishing, devalues Scan), not always-visible (no discovery beat). Drives US-093.
-17. **AspectGuard ratification** — confirm the strategy in §26 before coding the MonoBehaviour.
+17. ~~**AspectGuard ratification**~~ — **DONE 2026-06-08** (US-001): strategy ratified + `Utilities/AspectGuard.cs` built; §26.7 updated.
 18. ~~**Soundtrack / audio system** — audio constraints sketched in §30.4 (compression, latency); full system (`AudioManager`, music transitions, SFX routing) is still TBD. Plan or defer?~~ **RESOLVED 2026-06-07 (US-096):** chiptune Jukebox/MusicDirector supplies music beds (Battle/Vendor/Title/Overworld/Victory/Defeat); `AudioSettingsHelper` exposes Music/SFX volume + mute sliders persisted in `ProfileSettings`; §31.5 updated.
 
 ### 29.5 How to resolve a question
