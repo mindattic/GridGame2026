@@ -7,10 +7,10 @@ namespace Scripts.Data
     /// SPELLLIBRARY - Common-RPG spell catalog using the holistic targeting triad
     /// (<see cref="TargetShape"/> + <see cref="TargetMode"/> + <see cref="TargetFilter"/>).
     ///
-    /// <para>VFX names refer to entries in <c>VisualEffectLibrary</c>. After the VFX-prefab author
-    /// menus run (see <c>Editor/VfxPrefabAuthor.cs</c>) and library registrations land, the names
-    /// here can be swapped to the new custom prefabs (FlamingTwist, IcyWind, ShockBolt, …) without
-    /// changing the gameplay shape.</para>
+    /// <para>VFX names refer to entries in <c>VisualEffectLibrary</c>. The custom per-spell prefabs
+    /// (FlamingTwist, IcyWind, ShockBolt, …) authored by <c>Editor/VfxPrefabAuthor.cs</c> are now
+    /// generated, registered, and referenced below — re-run <c>Tools/VFX/Author ALL Custom
+    /// Prefabs</c> to regenerate them; gameplay shape is unaffected by VFX swaps.</para>
     /// </summary>
     public static class SpellLibrary
     {
@@ -20,7 +20,7 @@ namespace Scripts.Data
         public static readonly SpellDefinition Fire = new SpellDefinition(
             ability: ManaAbilities.Fireball,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
-            castVfx: "Flame", projectileVfx: "Fireball", motion: ProjectileMotion.Twist,
+            castVfx: "Flame", projectileVfx: "FlamingTwist", motion: ProjectileMotion.Twist,
             impactVfx: "PuffyExplosion", lingerVfx: "Flame",
             debuffId: "burning", baseDamage: 18f, damageType: DamageType.Fire, projectileSeconds: 0.55f);
 
@@ -31,7 +31,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Frost,
             shape: TargetShape.Square, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly, radius: 1,
             castVfx: null, projectileVfx: "IceSparkle", motion: ProjectileMotion.Bezier,
-            impactVfx: "BlueGlow", lingerVfx: "IceSparkle",
+            impactVfx: "IcyWind", lingerVfx: "IceSparkle",
             debuffId: "frozen", baseDamage: 10f, damageType: DamageType.Ice, projectileSeconds: 0.6f);
 
         // Lightning: pick an enemy, hits the entire ROW (chains through everyone in that line).
@@ -39,7 +39,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Bolt,
             shape: TargetShape.Row, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "RayBlast", projectileVfx: "LightningStrike", motion: ProjectileMotion.Strike,
-            impactVfx: "LightningExplosion",
+            impactVfx: "ShockBolt",
             baseDamage: 14f, damageType: DamageType.Lightning, projectileSeconds: 0.35f);
 
         // Poison: pick a tile, CROSS pattern (center + 4 cardinals = 5 tiles). Toxic spread.
@@ -47,7 +47,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Poison,
             shape: TargetShape.Cross, mode: TargetMode.PickTile, filter: TargetFilter.EnemyOnly, radius: 1,
             castVfx: "ToxicCloud", projectileVfx: "AcidSplash", motion: ProjectileMotion.Bezier,
-            impactVfx: "AcidSplash", lingerVfx: "ToxicCloud",
+            impactVfx: "AcidSplash", lingerVfx: "PoisonCloud",
             debuffId: "poisoned", baseDamage: 6f, damageType: DamageType.Poison, projectileSeconds: 0.55f);
 
         // ── Control / status ──
@@ -57,7 +57,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Sleep,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "PinkDust", projectileVfx: "PinkDust", motion: ProjectileMotion.Homing,
-            impactVfx: "PinkSpark",
+            impactVfx: "SleepDust",
             debuffId: "sleep", projectileSeconds: 0.6f);
 
         // Slow: pick an enemy, applies to their entire ROW (slows a whole rank).
@@ -65,7 +65,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Slow,
             shape: TargetShape.Row, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "BlueGlow", projectileVfx: "BlueGlow", motion: ProjectileMotion.Bezier,
-            impactVfx: "Bubble", lingerVfx: "Bubble",
+            impactVfx: "SlowShimmer", lingerVfx: "Bubble",
             debuffId: "slowed", damageType: DamageType.Ice,
             projectileSeconds: 0.5f);
 
@@ -87,7 +87,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Silence,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "PinkSpark", projectileVfx: "PinkDust", motion: ProjectileMotion.Straight,
-            impactVfx: "PinkSpark",
+            impactVfx: "SilenceMute",
             debuffId: "silenced", damageType: DamageType.Arcane,
             projectileSeconds: 0.4f);
 
@@ -98,7 +98,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Heal,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.AllyOnly,
             castVfx: "BuffLife", motion: ProjectileMotion.None,
-            impactVfx: "GreenSparkle", lingerVfx: "BuffLife",
+            impactVfx: "HealAura", lingerVfx: "BuffLife",
             baseHeal: 25f);
 
         // Mass Heal: all allies (no pick).
@@ -106,7 +106,7 @@ namespace Scripts.Data
             ability: ManaAbilities.MassHeal,
             shape: TargetShape.AllAllies, mode: TargetMode.Auto, filter: TargetFilter.AllyOnly,
             castVfx: "BuffLife", motion: ProjectileMotion.None,
-            impactVfx: "GreenSparkle", lingerVfx: "BuffLife",
+            impactVfx: "HealAura", lingerVfx: "BuffLife",
             baseHeal: 12f);
 
         // Antidote: pick a single ally; cleanses ALL debuffs on impact.
@@ -114,7 +114,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Antidote,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.AllyOnly,
             castVfx: "GoldSparkle", motion: ProjectileMotion.None,
-            impactVfx: "GoldSparkle",
+            impactVfx: "AntidoteSparkle",
             removesDebuffs: true);
 
         // Scan (US-077): pick a single enemy; reveals its stats + flags it Seen in the Bestiary.
@@ -122,7 +122,7 @@ namespace Scripts.Data
             ability: ManaAbilities.Scan,
             shape: TargetShape.SingleActor, mode: TargetMode.PickActor, filter: TargetFilter.EnemyOnly,
             castVfx: "GodRays", projectileVfx: "BlueGlow", motion: ProjectileMotion.Straight,
-            impactVfx: "GodRays",
+            impactVfx: "ScanRays",
             projectileSeconds: 0.4f,
             revealsStats: true);
 

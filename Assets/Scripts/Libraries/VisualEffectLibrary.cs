@@ -678,6 +678,150 @@ namespace Scripts.Libraries
                             IsLooping = true
                         }
                     },
+
+                    // ── Custom per-spell prefabs authored by Editor/VfxPrefabAuthor.cs
+                    //    (Tools/VFX/Author ALL Custom Prefabs). Durations = particle system
+                    //    duration + startLifetime so the wrapper outlives the last particle.
+                    {
+                        "IcyWind",
+                        new VisualEffectAsset
+                        {
+                            Name = "IcyWind",
+                            Prefab = LoadPrefab("VisualEffects/IcyWind"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "FlamingTwist",
+                        new VisualEffectAsset
+                        {
+                            Name = "FlamingTwist",
+                            Prefab = LoadPrefab("VisualEffects/FlamingTwist"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 1.5f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "ShockBolt",
+                        new VisualEffectAsset
+                        {
+                            Name = "ShockBolt",
+                            Prefab = LoadPrefab("VisualEffects/ShockBolt"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 0.8f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "SleepDust",
+                        new VisualEffectAsset
+                        {
+                            Name = "SleepDust",
+                            Prefab = LoadPrefab("VisualEffects/SleepDust"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2.2f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "HealAura",
+                        new VisualEffectAsset
+                        {
+                            Name = "HealAura",
+                            Prefab = LoadPrefab("VisualEffects/HealAura"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2.7f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "PoisonCloud",
+                        new VisualEffectAsset
+                        {
+                            Name = "PoisonCloud",
+                            Prefab = LoadPrefab("VisualEffects/PoisonCloud"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2.8f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "AntidoteSparkle",
+                        new VisualEffectAsset
+                        {
+                            Name = "AntidoteSparkle",
+                            Prefab = LoadPrefab("VisualEffects/AntidoteSparkle"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 1.7f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "ScanRays",
+                        new VisualEffectAsset
+                        {
+                            Name = "ScanRays",
+                            Prefab = LoadPrefab("VisualEffects/ScanRays"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "SlowShimmer",
+                        new VisualEffectAsset
+                        {
+                            Name = "SlowShimmer",
+                            Prefab = LoadPrefab("VisualEffects/SlowShimmer"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 2.2f,
+                            IsLooping = false
+                        }
+                    },
+                    {
+                        "SilenceMute",
+                        new VisualEffectAsset
+                        {
+                            Name = "SilenceMute",
+                            Prefab = LoadPrefab("VisualEffects/SilenceMute"),
+                            RelativeOffset = Vector3.zero,
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(1f, 1f, 1f),
+                            Apex = 0f,
+                            Duration = 1.3f,
+                            IsLooping = false
+                        }
+                    },
                 };
 
             isLoaded = true;

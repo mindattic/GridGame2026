@@ -1423,7 +1423,7 @@ Run via `Tools/Sprites/Author Mana Orb Sprites` and `Tools/Sprites/Author Spell 
 
 VFX are the documented EXCEPTION to "no prefabs" because particle systems have dozens of tightly-coupled modules best authored as prefab. Authoring still stays in code (`Editor/VfxPrefabAuthor.cs`) — each `Tools/VFX/Author '<Name>'` menu builds a `ParticleSystem` GameObject programmatically (Main / Emission / Shape / Velocity / Size / Color modules), saves a `.prefab` to `Assets/VisualEffects/`, deterministic + regeneratable.
 
-Per-spell custom VFX in the catalog: IcyWind, FlamingTwist, ShockBolt, SleepDust, HealAura, PoisonCloud, AntidoteSparkle, ScanRays, SlowShimmer, SilenceMute. After running, paste the suggested registration line into `Libraries/VisualEffectLibrary.cs`.
+Per-spell custom VFX in the catalog: IcyWind, FlamingTwist, ShockBolt, SleepDust, HealAura, PoisonCloud, AntidoteSparkle, ScanRays, SlowShimmer, SilenceMute. **Generated, registered, and referenced 2026-06-09** — all 10 prefabs exist in `Assets/VisualEffects/`, are registered in `VisualEffectLibrary`, and `SpellLibrary` references each from its themed spell (FlamingTwist = Fire's twist projectile, IcyWind = Frost impact, ShockBolt = Bolt impact, SleepDust/SlowShimmer/SilenceMute = status impacts, HealAura = Heal/MassHeal impact, AntidoteSparkle = Antidote impact, ScanRays = Scan impact, PoisonCloud = Poison linger). `VfxPrefabAuthor.SavePrefab` now auto-registers the Addressable (was a forgettable manual step). Visual tuning happens in play-test; regenerating is idempotent.
 
 Shader fallback chain in the author: URP → built-in → Sprites/Default → magenta error, so render-pipeline switches don't silently break.
 
@@ -1696,7 +1696,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 
 | # | US | TODO | Priority | Touch |
 |---|---|---|---|---|
-| 12 | (backlog) | **Spell-VFX per-spell prefabs** — author menus exist; run + register as art lands | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
+| 12 | ✅ done 2026-06-09 | **Spell-VFX per-spell prefabs** — all 10 generated, registered, and referenced from `SpellLibrary` | P2 | `Tools/VFX/Author *`, `VisualEffectLibrary` |
 | ~~13~~ | US-030 | ~~**Per-hero color affinity**~~ — **DONE 2026-06-02**: `ManaColorAffinity.For(class)` (W/W/R/G/B/G/R); `PincerAttackManager` mints each contributor's color instead of Blue. Demo: "Log Color Affinities". | P1 | `Data/Actor/ManaColorAffinity`, `PincerAttackManager` |
 | 14 | US-093 | **Bestiary enemy filter** — show only `ActorTag.Enemy` entries | P2 | `BestiaryView` |
 | ~~22~~ | — | ~~Drop tables per enemy class~~ — **DONE** (16 tables, `DropTableLibrary.cs:53-68`) | — | — |

@@ -170,6 +170,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 206d1d1d2d9b441438621f110ec2757f
+    m_Address: VisualEffects/SleepDust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 21e1c8f30cdf7484ebf1e4f59e8a717e
     m_Address: Lurker00
     m_ReadOnly: 0
@@ -187,6 +192,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2465f45958f3cc441a0352ff3c2b03ea
     m_Address: Templar01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2482a62308e63364fa5e5fdb124f0eb3
+    m_Address: VisualEffects/SlowShimmer
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -305,6 +315,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45a711e99baa28d429c9040e63bc7367
+    m_Address: VisualEffects/IcyWind
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47c28ba45b56e0d4c99e3b56da9074b2
     m_Address: Slime02
     m_ReadOnly: 0
@@ -372,6 +387,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5720882a0e529b94fb881e8ec34ddacf
     m_Address: MarshShambler00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58ce973e4ca74214993f7fd7c2dcbbb5
+    m_Address: VisualEffects/SilenceMute
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -505,6 +525,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7858a62f4b5e8c84a977db68ed13db2c
+    m_Address: VisualEffects/ShockBolt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a29d580e9a268e48ba7239bb01fe28a
     m_Address: Toad00
     m_ReadOnly: 0
@@ -630,6 +655,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 990cb8462ada9fb449e80d874a46f485
+    m_Address: VisualEffects/ScanRays
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9966fb95220f18540a3fcdc7c7550497
     m_Address: CyberZombie01
     m_ReadOnly: 0
@@ -647,6 +677,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9e3cd1bed5f1dee4481c333c10494b48
     m_Address: PrizeFighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fa3559356a8a0049bbecbb9aa56123d
+    m_Address: VisualEffects/PoisonCloud
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -840,6 +875,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c31104a3f99d6054faea7708e99967e9
+    m_Address: VisualEffects/FlamingTwist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3f273b408c1a664baa6677659855123
     m_Address: SteppinRazor04
     m_ReadOnly: 0
@@ -857,6 +897,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7d57550becb1ff44a737a0cf6ed9788
     m_Address: TreeGolem06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca2fb23cefdf3444b8fc8403f79f56d0
+    m_Address: VisualEffects/HealAura
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1027,6 +1072,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eda777dccd3d21242af730c27c5c827e
     m_Address: Mannequin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eda7e460721d12444ae240eef0e3c5eb
+    m_Address: VisualEffects/AntidoteSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

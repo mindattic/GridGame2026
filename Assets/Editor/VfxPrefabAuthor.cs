@@ -260,9 +260,28 @@ public static class VfxPrefabAuthor
         PrefabUtility.SaveAsPrefabAsset(go, path);
         Object.DestroyImmediate(go);
         AssetDatabase.Refresh();
-        Debug.Log($"[VfxPrefabAuthor] {path} saved.\n" +
-                  $"To register: add to Libraries/VisualEffectLibrary.cs:\n" +
+        RegisterAddressable(path, $"VisualEffects/{name}");
+        Debug.Log($"[VfxPrefabAuthor] {path} saved + registered as Addressable 'VisualEffects/{name}'.\n" +
+                  $"If new, also add to Libraries/VisualEffectLibrary.cs:\n" +
                   $"  {{ \"{name}\", new VisualEffectAsset {{ Name = \"{name}\", Prefab = LoadPrefab(\"VisualEffects/{name}\"), Duration = 1.2f, IsLooping = false }} }}");
+    }
+
+    /// <summary>Adds the prefab to the default Addressables group so the runtime LoadPrefab
+    /// address resolves — previously a silent manual step that was easy to forget (the Shuriken
+    /// library-entry gap shipped that way).</summary>
+    private static void RegisterAddressable(string assetPath, string address)
+    {
+        var settings = UnityEditor.AddressableAssets.AddressableAssetSettingsDefaultObject.Settings;
+        if (settings == null)
+        {
+            Debug.LogWarning("[VfxPrefabAuthor] AddressableAssetSettings missing — prefab saved but not addressable.");
+            return;
+        }
+        string guid = AssetDatabase.AssetPathToGUID(assetPath);
+        if (string.IsNullOrEmpty(guid)) return;
+        var entry = settings.CreateOrMoveEntry(guid, settings.DefaultGroup);
+        entry.address = address;
+        settings.SetDirty(UnityEditor.AddressableAssets.Settings.AddressableAssetSettings.ModificationEvent.EntryModified, entry, true);
     }
 }
 #endif
