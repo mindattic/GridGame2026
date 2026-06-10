@@ -5,6 +5,7 @@ using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -128,19 +129,21 @@ public class CombatTextInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Floats the text upward while fading out.
+    /// Floats the text upward — fully readable for CombatTextHoldSeconds, then fades.
     /// </summary>
     private IEnumerator FloatRoutine()
     {
         float alpha = 1;
         Color color = textMesh.color;
         Vector3 startPos = transform.position;
+        float elapsed = 0f;
 
-        while (textMesh.color.a > 0)
+        while (alpha > 0)
         {
-            alpha = Mathf.Max(alpha - Increment.Percent3, 0);
-            if (alpha < 0.5f)
+            elapsed += Time.deltaTime;
+            if (elapsed >= PacingConfig.CombatTextHoldSeconds)
             {
+                alpha = Mathf.Max(alpha - Time.deltaTime / PacingConfig.CombatTextFadeSeconds, 0);
                 color.a = alpha;
                 textMesh.color = color;
             }
@@ -152,7 +155,8 @@ public class CombatTextInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Oscillates the text horizontally while rising and fading out.
+    /// Oscillates the text horizontally while rising — fully readable for
+    /// CombatTextHoldSeconds, then fades.
     /// </summary>
     private IEnumerator OscillateRoutine()
     {
@@ -160,12 +164,14 @@ public class CombatTextInstance : MonoBehaviour
         Color color = textMesh.color;
         Vector3 startPos = transform.position;
         float timer = 0f, duration = 0.25f;
+        float elapsed = 0f;
 
-        while (textMesh.color.a > 0)
+        while (alpha > 0)
         {
-            alpha = Mathf.Max(alpha - Increment.Percent3, 0);
-            if (alpha < 0.5f)
+            elapsed += Time.deltaTime;
+            if (elapsed >= PacingConfig.CombatTextHoldSeconds)
             {
+                alpha = Mathf.Max(alpha - Time.deltaTime / PacingConfig.CombatTextFadeSeconds, 0);
                 color.a = alpha;
                 textMesh.color = color;
             }

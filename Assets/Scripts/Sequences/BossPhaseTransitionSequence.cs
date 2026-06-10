@@ -4,6 +4,7 @@ using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -70,7 +71,7 @@ namespace Scripts.Sequences
             if (hastenU > 0f)
                 g.TimelineBar?.HastenIcon(boss, hastenU);
 
-            yield return Wait.For(0.4f); // a beat so the announcement reads before the turn proceeds
+            yield return Wait.For(PacingConfig.BossPhaseBeatSeconds); // a beat so the announcement reads before the turn proceeds
         }
     }
 }

@@ -434,6 +434,24 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] ColorblindMode = {s.ColorblindMode} — mana orb line and debuff icons now use {(s.ColorblindMode ? "Okabe-Ito" : "standard")} palette.");
         }
 
+        /// <summary>Demo (pacing): log every PacingConfig beat so the current combat-feel
+        /// tuning is inspectable in one place. Tune values in Data/Config/PacingConfig.cs.</summary>
+        public void Demo_LogPacing()
+        {
+            Debug.Log(
+                "[Demo] PacingConfig —\n" +
+                $"  BeforeEnemyMove={Scripts.Data.Config.PacingConfig.BeforeEnemyMoveSeconds}s, " +
+                $"BeforeEnemyAttack={Scripts.Data.Config.PacingConfig.BeforeEnemyAttackSeconds}s, " +
+                $"BeforePlayerAttack={Scripts.Data.Config.PacingConfig.BeforePlayerAttackSeconds}s\n" +
+                $"  HeroDropSettle={Scripts.Data.Config.PacingConfig.HeroDropSettleSeconds}s, " +
+                $"CounterAnnounce={Scripts.Data.Config.PacingConfig.CounterAnnounceSeconds}s, " +
+                $"BossPhaseBeat={Scripts.Data.Config.PacingConfig.BossPhaseBeatSeconds}s\n" +
+                $"  CombatText hold={Scripts.Data.Config.PacingConfig.CombatTextHoldSeconds}s fade={Scripts.Data.Config.PacingConfig.CombatTextFadeSeconds}s, " +
+                $"BattleEndHold={Scripts.Data.Config.PacingConfig.BattleEndHoldSeconds}s\n" +
+                $"  Attack windup/lunge/return={Scripts.Data.Config.PacingConfig.AttackWindupSeconds}/{Scripts.Data.Config.PacingConfig.AttackLungeSeconds}/{Scripts.Data.Config.PacingConfig.AttackReturnSeconds}s, " +
+                $"Dodge twist/return={Scripts.Data.Config.PacingConfig.DodgeTwistSeconds}/{Scripts.Data.Config.PacingConfig.DodgeReturnSeconds}s");
+        }
+
         /// <summary>Demo (US-102): log VFX pool stats — live count vs cap, pooled wrappers.</summary>
         public void Demo_VfxPoolStats()
         {

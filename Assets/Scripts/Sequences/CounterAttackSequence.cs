@@ -5,6 +5,7 @@ using System.Collections;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -77,7 +78,7 @@ namespace Scripts.Sequences
             // Visual feedback
             g.CombatTextManager.Spawn("Counter!", defender.Position, "Damage");
 
-            yield return Wait.For(Interval.TenthSecond);
+            yield return Wait.For(PacingConfig.CounterAnnounceSeconds);
 
             // Calculate and apply counter-attack damage
             var counterResult = Formulas.CalculateAttackResult(defender, attacker);

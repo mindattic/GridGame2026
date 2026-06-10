@@ -1364,6 +1364,21 @@ The game is never silent: **all SFX and background music are procedural chiptune
 
 Game events are announced in a dedicated **`Canvas/AnnouncementWindow`** (auto-spawned in the battle HUD by `AnnouncementWindowFactory` via `ManaPoolManager.Start`): "X casts Ice", "Cyclops is ENRAGED!", "Slime is poisoned", etc. **Cadence is mandatory — never an instant text swap:** each announcement is **queued** and played one at a time with a rapid **flash**, a readable **hold**, then a **fade**, plus an "Announce" chiptune sting. Call `AnnouncementWindow.Announce(text)` from anywhere (no-op outside battle). Already wired: hero casts, enemy charges, boss phase transitions, debuff application. See the effect-cadence rule (no instant anythings).
 
+### 12.0.2 PacingConfig — centralized combat-feel beats (BUILT 2026-06-09)
+
+Every "breathing room" duration in the combat flow lives in **`Data/Config/PacingConfig.cs`** —
+the single tuning surface for game feel (sibling of `TimelineBarConfig`/`ActionTitleConfig`).
+The long-stubbed `Intermission.Before.*` accessors in `Common.cs` now read from it, so enemy
+turns finally have a telegraph beat (move 0.35s, attack 0.45s — they were 0 = instant), pincer
+damage gets a 0.2s pre-hit beat, floating combat text holds fully readable for 0.45s before a
+0.30s fade (it previously began fading on frame 1), the "Counter!" callout holds 0.35s, the
+forced-drop settle is 0.25s (was an imperceptible 0.05s), and the strike/dodge animation beats
+are floored at the ~0.12s perception threshold. The Victory/Defeat 1.2s banner hold and the
+timeline queue-delay formula (now `TimelineBarConfig.QueueDelayFromSpeed`, previously
+triplicated) are deduplicated into config. Debug: **"Log Pacing"** button →
+`DebugManager.Demo_LogPacing()`. Per the effect-cadence rule: nothing the player must read may
+resolve in a single frame.
+
 ### 12.1 Sprites
 
 - PNGs on disk in `Assets/Sprites/...`, configured as Sprite by `TextureImporter`.

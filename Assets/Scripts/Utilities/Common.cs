@@ -155,23 +155,23 @@ public static class Increment
 /// </summary>
 public static class Intermission
 {
-    /// <summary>Delays before actions begin.</summary>
+    /// <summary>Delays before actions begin. Values live in PacingConfig (single source of truth).</summary>
     public static class Before
     {
         public static class Enemy
         {
-            public static float Move = 0;
-            public static float Attack = 0;
+            public static float Move => Scripts.Data.Config.PacingConfig.BeforeEnemyMoveSeconds;
+            public static float Attack => Scripts.Data.Config.PacingConfig.BeforeEnemyAttackSeconds;
         }
 
         public static class Player
         {
-            public static float Attack = 0;
+            public static float Attack => Scripts.Data.Config.PacingConfig.BeforePlayerAttackSeconds;
         }
 
         public static class Portrait
         {
-            public static float SlideIn = 0;
+            public const float SlideIn = 0f;
         }
     }
 
@@ -180,7 +180,7 @@ public static class Intermission
     {
         public static class Player
         {
-            public static float Attack = 0;
+            public const float Attack = 0f;
         }
     }
 }

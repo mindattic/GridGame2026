@@ -6,6 +6,7 @@ using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -158,8 +159,8 @@ namespace Scripts.Instances.Actor
             var rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var scaleCurve = AnimationCurve.EaseInOut(0, 1, 1, 0.9f);
 
-            float duration = 0.075f;
-            float returnDuration = 0.2f;
+            float duration = PacingConfig.DodgeTwistSeconds;
+            float returnDuration = PacingConfig.DodgeReturnSeconds;
 
             var startRotation = Vector3.zero;
             var targetRotation = new Vector3(15f, 70f, 15f);
@@ -240,9 +241,9 @@ namespace Scripts.Instances.Actor
             var bumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var returnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-            var windupDuration = 0.15f;
-            var bumpDuration = 0.1f;
-            var returnDuration = 0.3f;
+            var windupDuration = PacingConfig.AttackWindupSeconds;
+            var bumpDuration = PacingConfig.AttackLungeSeconds;
+            var returnDuration = PacingConfig.AttackReturnSeconds;
 
             var startPosition = instance.currentTile.position;
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), g.TileSize * Increment.Percent33);

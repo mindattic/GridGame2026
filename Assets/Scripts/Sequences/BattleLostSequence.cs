@@ -5,6 +5,7 @@ using scene = Scripts.Helpers.SceneHelper;
 using Scripts.Managers;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -64,7 +65,7 @@ namespace Scripts.Sequences
             MusicDirector.PendingPostBattleTrack = "Defeat";
 
             // Hold a beat on the defeat banner.
-            yield return Wait.For(1.2f);
+            yield return Wait.For(PacingConfig.BattleEndHoldSeconds);
             // US-053: defeat wipes carried-over wounds — the whole party returns at full HP for the
             // retry (no gold-heal needed after a loss).
             var save = ProfileHelper.CurrentProfile?.CurrentSave;

@@ -5,6 +5,7 @@ using scene = Scripts.Helpers.SceneHelper;
 using Scripts.Managers;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -68,7 +69,7 @@ namespace Scripts.Sequences
             MusicDirector.PendingPostBattleTrack = "Victory";
 
             // Hold a beat on the victory banner.
-            yield return Wait.For(1.2f);
+            yield return Wait.For(PacingConfig.BattleEndHoldSeconds);
 
             // Honor whatever the battle-launcher set (StageSelect → StageSelect,
             // OverworldManager → Overworld). Default in ExperienceTracker is StageSelect.

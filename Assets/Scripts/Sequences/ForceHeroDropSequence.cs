@@ -3,6 +3,7 @@ using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
+using Scripts.Data.Config;
 using Scripts.Data.Items;
 using Scripts.Data.Skills;
 using Scripts.Effects;
@@ -78,8 +79,8 @@ namespace Scripts.Sequences
             g.Actors.MovingHero = null;
             g.SelectionManager.ResetState();
 
-            // Small visual pause for the drop
-            yield return Wait.For(0.05f);
+            // Settle beat so the forced drop reads before the enemy turn begins.
+            yield return Wait.For(PacingConfig.HeroDropSettleSeconds);
         }
     }
 }

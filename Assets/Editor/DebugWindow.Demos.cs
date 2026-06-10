@@ -119,6 +119,11 @@ public partial class DebugWindow
             ("VFX Pool Stats", () => g.DebugManager.Demo_VfxPoolStats())
         );
 
+        // Pacing — log every PacingConfig combat-feel beat (tune in Data/Config/PacingConfig.cs).
+        RenderButtonRow(
+            ("Log Pacing", () => g.DebugManager.Demo_LogPacing())
+        );
+
         // Bestiary (US-054 / US-093) — log seen/defeated progress + Enemy-filter count.
         RenderButtonRow(
             ("Log Bestiary", () => g.DebugManager.Demo_LogBestiary()),

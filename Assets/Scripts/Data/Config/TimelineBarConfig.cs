@@ -66,6 +66,18 @@ namespace Scripts.Data.Config
         // Height of the Zone's left-edge line in pixels.
         public const float ZoneEdgeHeight = 16f;
 
+        // ── Queue delay (post-turn wait at spawn before re-approaching) ──────
+        // After an enemy acts, its icon waits at spawn before re-entering the
+        // race. Faster enemies wait less: Speed 20 ≈ QueueDelayMin, Speed 5 ≈
+        // QueueDelayMax. The wait is the player's window to set up pincers.
+        public const float QueueDelayMin = 1.5f;
+        public const float QueueDelayMax = 4f;
+
+        /// <summary>Speed-scaled queue delay — the single implementation
+        /// (was duplicated across TimelineIcon and TimelineBarInstance).</summary>
+        public static float QueueDelayFromSpeed(int speed) =>
+            UnityEngine.Mathf.Clamp(QueueDelayMax - (speed / 20f) * 2.5f, QueueDelayMin, QueueDelayMax);
+
         // ── Zone Pace (Grandia-style "final stretch") ────────────────────────
         // Once an icon enters the Zone (u >= 1 - ZoneU), every icon moves at the
         // same slow fixed pace regardless of Speed stat. The race outside the

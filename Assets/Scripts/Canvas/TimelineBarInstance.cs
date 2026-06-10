@@ -271,15 +271,8 @@ namespace Scripts.Canvas
             return Mathf.Max(0.01f, speedMultiplier / crossing);
         }
 
-        /// <summary>Gets the queue delay from speed.</summary>
-        private float GetQueueDelayFromSpeed(int speed)
-        {
-            // Queue delay based on speed: faster enemies wait less before starting approach
-            // Speed 20 = ~1.5 second wait, Speed 5 = ~4 seconds wait
-            // Gives player time to set up pincer attacks
-            float delay = 4f - (speed / 20f) * 2.5f;
-            return Mathf.Clamp(delay, 1.5f, 4f);
-        }
+        /// <summary>Gets the queue delay from speed (single implementation in TimelineBarConfig).</summary>
+        private float GetQueueDelayFromSpeed(int speed) => TimelineBarConfig.QueueDelayFromSpeed(speed);
 
         /// <summary>
         /// Speed-derived wait scaled by a per-spawn random multiplier so enemies of the

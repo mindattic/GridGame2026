@@ -370,7 +370,7 @@ namespace Scripts.Canvas
 
             // Assign queue delay based on speed: faster enemies wait less (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
-            queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
+            queueDelay = TimelineBarConfig.QueueDelayFromSpeed(speed);
             queueTimer = queueDelay;
 
             // Enter Queued mode (or Approaching if no delay)
@@ -405,7 +405,7 @@ namespace Scripts.Canvas
             ApplyPosition();
             // Assign queue delay based on speed (1.5-4 seconds)
             int speed = Owner != null ? Owner.Stats.Speed.ToInt() : 10;
-            queueDelay = Mathf.Clamp(4f - (speed / 20f) * 2.5f, 1.5f, 4f);
+            queueDelay = TimelineBarConfig.QueueDelayFromSpeed(speed);
             queueTimer = queueDelay;
             Mode = queueDelay > 0f ? TimelineIconMode.Queued : TimelineIconMode.Approaching;
 
