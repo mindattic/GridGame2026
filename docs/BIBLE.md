@@ -1405,6 +1405,12 @@ Addresses are pathlike strings without file extensions. The convention mirrors t
 `Editor/SpriteAssetAuthor.cs` builds placeholder sprites at edit-time:
 - **Mana orbs**: `orb-body.png` (radial gradient white→transparent, 256×256) + `orb-glass.png` (white highlight upper-left, 256×256).
 - **Spell icons**: `<SpellName>.png` (64×64 colored disk + first-letter glyph via tiny 5×7 pixel font), one per `SpellLibrary` entry.
+- **Timeline tag icons** (added 2026-06-09): `<TagName>.png` (64×64 colored **diamond** + two-letter
+  code — diamond so tag icons read differently from circular spell icons), one per tag in
+  `SpriteLibrary.GetActorTagIcon`'s priority list. Gap-fill only (never overwrites the 9 hand-made
+  icons). Previously 13 of the 22 priority tags (Boss, Elite, Dragonkin, Demonkin, Humanoid,
+  Mechanical, Elemental, Magic, Construct, Aquatic, PlantBased, ShadowCreature, Healer) had no icon
+  AND no dictionary key, so every such actor silently fell through to "Unknown".
 
 Each save:
 1. Writes the PNG to `Assets/Sprites/Mana/` or `Assets/Sprites/Spells/`.

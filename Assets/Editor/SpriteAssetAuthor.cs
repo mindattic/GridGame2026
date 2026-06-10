@@ -28,8 +28,9 @@ public static class SpriteAssetAuthor
     private const int OrbSize  = 256;   // crisp gradient
     private const int IconSize = 64;    // user-spec icon size
 
-    private const string ManaFolder  = "Assets/Sprites/Mana";
-    private const string SpellFolder = "Assets/Sprites/Spells";
+    private const string ManaFolder    = "Assets/Sprites/Mana";
+    private const string SpellFolder   = "Assets/Sprites/Spells";
+    private const string TagIconFolder = "Assets/Sprites/Timeline/ActorTagIcons";
 
     // ── Menu entries ──────────────────────────────────────────────
 
@@ -62,6 +63,52 @@ public static class SpriteAssetAuthor
             created++;
         }
         Debug.Log($"[SpriteAssetAuthor] Spell placeholder icons: {created} created, {skipped} already present (left untouched). Real art: drop a 64×64 PNG with the same name to replace; delete a PNG to regenerate its placeholder.");
+    }
+
+    // Every tag SpriteLibrary.GetActorTagIcon's priority list can ask for. The 9 with hand-made
+    // PNGs are skipped by the gap-fill check; the rest previously fell through to "Unknown".
+    // Two-letter code + distinct color so same-initial tags (Boss/Beast, Elite/Elemental/Enemy)
+    // stay tellable apart at timeline-icon size.
+    private static readonly (string name, string code, Color color)[] TagIcons =
+    {
+        ("Hero",           "HE", new Color(0.25f, 0.60f, 0.95f)),
+        ("Boss",           "BO", new Color(0.75f, 0.10f, 0.10f)),
+        ("Elite",          "EL", new Color(0.95f, 0.80f, 0.20f)),
+        ("Dragonkin",      "DK", new Color(0.95f, 0.50f, 0.15f)),
+        ("Demonkin",       "DM", new Color(0.55f, 0.20f, 0.65f)),
+        ("Undead",         "UN", new Color(0.55f, 0.65f, 0.55f)),
+        ("Beast",          "BE", new Color(0.70f, 0.45f, 0.20f)),
+        ("Humanoid",       "HU", new Color(0.80f, 0.65f, 0.45f)),
+        ("Mechanical",     "MC", new Color(0.60f, 0.62f, 0.66f)),
+        ("Flying",         "FL", new Color(0.70f, 0.85f, 0.95f)),
+        ("Insect",         "IN", new Color(0.55f, 0.60f, 0.25f)),
+        ("Elemental",      "EM", new Color(0.30f, 0.80f, 0.90f)),
+        ("Magic",          "MG", new Color(0.45f, 0.40f, 0.95f)),
+        ("Construct",      "CN", new Color(0.55f, 0.45f, 0.35f)),
+        ("Aquatic",        "AQ", new Color(0.20f, 0.50f, 0.95f)),
+        ("PlantBased",     "PL", new Color(0.35f, 0.75f, 0.30f)),
+        ("ShadowCreature", "SH", new Color(0.25f, 0.22f, 0.35f)),
+        ("Soldier",        "SO", new Color(0.50f, 0.55f, 0.70f)),
+        ("Goblin",         "GO", new Color(0.45f, 0.70f, 0.30f)),
+        ("Healer",         "HL", new Color(0.95f, 0.95f, 0.90f)),
+        ("Enemy",          "EN", new Color(0.70f, 0.25f, 0.25f)),
+        ("Unknown",        "??", new Color(0.45f, 0.45f, 0.50f)),
+    };
+
+    [MenuItem("Tools/Sprites/Author Tag Icons (Placeholders)")]
+    public static void AuthorTagIcons()
+    {
+        EnsureFolder(TagIconFolder);
+        int created = 0, skipped = 0;
+        foreach (var (name, code, color) in TagIcons)
+        {
+            var assetPath = $"{TagIconFolder}/{name}.png";
+            // Gap-fill only — existing PNGs may be hand-made art; never overwrite.
+            if (File.Exists(assetPath)) { skipped++; continue; }
+            SavePngAndRegister(BuildTagIcon(code, color), assetPath);
+            created++;
+        }
+        Debug.Log($"[SpriteAssetAuthor] Tag placeholder icons: {created} created, {skipped} already present (left untouched). Real art: overwrite the PNG; delete it to regenerate the placeholder.");
     }
 
     [MenuItem("Tools/Sprites/Configure base-4 Frame 9-slice")]
@@ -194,6 +241,46 @@ public static class SpriteAssetAuthor
         return tex;
     }
 
+    /// <summary>64×64 placeholder tag icon — colored gradient diamond + white rim + two-letter
+    /// code. Diamond silhouette keeps tag icons visually distinct from the circular spell icons
+    /// on the shared timeline. Real art replaces by overwriting the PNG; address stays the same.</summary>
+    private static Texture2D BuildTagIcon(string code, Color body)
+    {
+        var tex = new Texture2D(IconSize, IconSize, TextureFormat.RGBA32, false);
+        float r = IconSize * 0.5f;
+        var pixels = new Color[IconSize * IconSize];
+
+        for (int y = 0; y < IconSize; y++)
+        for (int x = 0; x < IconSize; x++)
+        {
+            float dx = Mathf.Abs(x - r + 0.5f), dy = Mathf.Abs(y - r + 0.5f);
+            float d = dx + dy; // Manhattan distance → diamond
+            if (d > r) { pixels[y * IconSize + x] = new Color(0f, 0f, 0f, 0f); continue; }
+
+            // White rim (~2px, AA at the outer edge).
+            if (d >= r - 2.5f)
+            {
+                float a = Mathf.SmoothStep(1f, 0f, (d - (r - 1f)) / 1.5f);
+                pixels[y * IconSize + x] = new Color(1f, 1f, 1f, 0.9f * Mathf.Max(a, 0.6f));
+                continue;
+            }
+
+            // Gradient: brighter center → darker edge.
+            float t = d / r;
+            Color c = Color.Lerp(LightenedColor(body, 0.35f), DarkenedColor(body, 0.25f), t);
+            c.a = 1f;
+            pixels[y * IconSize + x] = c;
+        }
+
+        // Two-letter code, auto-contrast against the body color.
+        var textColor = (0.299f * body.r + 0.587f * body.g + 0.114f * body.b) > 0.6f
+            ? Color.black : Color.white;
+        DrawTextCentered(pixels, IconSize, IconSize, code, textColor, scale: 3);
+        tex.SetPixels(pixels);
+        tex.Apply();
+        return tex;
+    }
+
     private static Color ColorForSpell(Scripts.Models.SpellDefinition spell)
     {
         // Reuse the orb palette for thematic consistency. Mana cost wins; fall back to DamageType.
@@ -215,13 +302,28 @@ public static class SpriteAssetAuthor
     private static Color LightenedColor(Color c, float amount) => Color.Lerp(c, Color.white, amount);
     private static Color DarkenedColor (Color c, float amount) => Color.Lerp(c, Color.black, amount);
 
-    // ── Tiny 5×7 pixel font, scaled by `scale`. Covers A–Z capitals (lazy lookup). ──
+    // ── Tiny 5×7 pixel font, scaled by `scale`. Covers A–Z capitals + '?' (lazy lookup). ──
+
+    /// <summary>Draws a short string (2–3 chars) centered, 1-scale-px letter spacing.</summary>
+    private static void DrawTextCentered(Color[] pixels, int w, int h, string text, Color color, int scale)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        int gw = text.Length * 5 * scale + (text.Length - 1) * scale;
+        int x0 = (w - gw) / 2;
+        foreach (var ch in text)
+        {
+            DrawCharAt(pixels, w, h, ch, color, scale, x0, (h - 7 * scale) / 2);
+            x0 += 6 * scale;
+        }
+    }
+
     private static void DrawCharCentered(Color[] pixels, int w, int h, char ch, Color color, int scale)
+        => DrawCharAt(pixels, w, h, ch, color, scale, (w - 5 * scale) / 2, (h - 7 * scale) / 2);
+
+    private static void DrawCharAt(Color[] pixels, int w, int h, char ch, Color color, int scale, int x0, int y0)
     {
         var glyph = PixelFont.Get(ch);
         if (glyph == null) return;
-        int gw = 5 * scale, gh = 7 * scale;
-        int x0 = (w - gw) / 2, y0 = (h - gh) / 2;
         for (int gy = 0; gy < 7; gy++)
         {
             byte row = glyph[6 - gy]; // flip y so row 0 = top
@@ -331,6 +433,7 @@ internal static class PixelFont
             case 'X': return new byte[] { 0b10001, 0b10001, 0b01010, 0b00100, 0b01010, 0b10001, 0b10001 };
             case 'Y': return new byte[] { 0b10001, 0b10001, 0b10001, 0b01010, 0b00100, 0b00100, 0b00100 };
             case 'Z': return new byte[] { 0b11111, 0b00001, 0b00010, 0b00100, 0b01000, 0b10000, 0b11111 };
+            case '?': return new byte[] { 0b01110, 0b10001, 0b00001, 0b00010, 0b00100, 0b00000, 0b00100 };
             default:  return null;
         }
     }

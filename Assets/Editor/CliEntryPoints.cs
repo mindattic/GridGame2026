@@ -595,9 +595,10 @@ public static class CliEntryPoints
         {
             SpriteAssetAuthor.AuthorManaOrbSprites();
             SpriteAssetAuthor.AuthorSpellIcons();
+            SpriteAssetAuthor.AuthorTagIcons();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("[Cli] AuthorPlaceholderSprites: mana orbs + spell icons authored and registered.");
+            Debug.Log("[Cli] AuthorPlaceholderSprites: mana orbs + spell icons + tag icons authored and registered.");
             EditorApplication.Exit(0);
         }
         catch (Exception e)

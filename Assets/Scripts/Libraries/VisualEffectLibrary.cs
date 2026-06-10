@@ -481,6 +481,22 @@ namespace Scripts.Libraries
                         }
                     },
                     {
+                        // Projectile for SpellLibrary.Mug — prefab existed but was never
+                        // registered, so the Mug projectile rendered invisible.
+                        "Shuriken",
+                        new VisualEffectAsset
+                        {
+                            Name = "Shuriken",
+                            Prefab = LoadPrefab("VisualEffects/Shuriken"),
+                            RelativeOffset = new Vector3(0f, 0f, 0f),
+                            AngularRotation = new Vector3(0f, 0f, 0f),
+                            RelativeScale = new Vector3(0.25f, 0.25f, 0f),
+                            Apex = 0f,
+                            Duration = 1f,
+                            IsLooping = false
+                        }
+                    },
+                    {
                         "ToxicCloud",
                         new VisualEffectAsset
                         {

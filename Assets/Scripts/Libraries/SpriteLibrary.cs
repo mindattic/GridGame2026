@@ -300,14 +300,30 @@ namespace Scripts.Libraries
                 { "Tutorial.1-3", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-3") },
             };
 
+            // Keys must cover GetActorTagIcon's full priority list — a key absent here silently
+            // falls through to "Unknown". Placeholders for the non-hand-made ones are authored
+            // by SpriteAssetAuthor.AuthorTagIcons (Tools/Sprites/Author Tag Icons).
             actorTagIcon = new Dictionary<string, Sprite>
             {
+                { "Aquatic", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Aquatic") },
                 { "Beast", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Beast") },
+                { "Boss", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Boss") },
+                { "Construct", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Construct") },
+                { "Demonkin", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Demonkin") },
+                { "Dragonkin", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Dragonkin") },
+                { "Elemental", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Elemental") },
+                { "Elite", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Elite") },
                 { "Enemy", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Enemy") },
                 { "Flying", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Flying") },
                 { "Goblin", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Goblin") },
+                { "Healer", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Healer") },
                 { "Hero", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Hero") },
+                { "Humanoid", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Humanoid") },
                 { "Insect", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Insect") },
+                { "Magic", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Magic") },
+                { "Mechanical", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Mechanical") },
+                { "PlantBased", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/PlantBased") },
+                { "ShadowCreature", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/ShadowCreature") },
                 { "Soldier", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Soldier") },
                 { "Undead", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Undead") },
                 { "Unknown", AssetHelper.LoadAsset<Sprite>("Sprites/Timeline/ActorTagIcons/Unknown") },

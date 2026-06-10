@@ -95,6 +95,9 @@ namespace Scripts.Libraries
             actors = new Dictionary<CharacterClass, ActorData>()
             {
                 { CharacterClass.Alchemist, Alchemist.Data() },
+                // Assassain (sic — spelling is consistent across the enum/data/portrait) was the
+                // one hero with data + loadout + portrait but no registration → Get() returned null.
+                { CharacterClass.Assassain, Assassain.Data() },
                 { CharacterClass.Barbarian, Barbarian.Data() },
                 { CharacterClass.Basher, Basher.Data() },
                 { CharacterClass.Bat00, Bat00.Data() },

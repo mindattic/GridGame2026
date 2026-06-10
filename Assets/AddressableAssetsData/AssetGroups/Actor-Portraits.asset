@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 087b9caefc14d5248bf2b88c606743ad
+    m_Address: Sprites/Timeline/ActorTagIcons/PlantBased
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 09279c42bb0256b4397d7b062cfac0a5
     m_Address: TreeGolem04
     m_ReadOnly: 0
@@ -245,6 +250,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34bc07d900c06a547802ad1599c17bdf
+    m_Address: Sprites/Timeline/ActorTagIcons/Boss
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 35215e8ad5dbaa747b1efff8a7f90dcf
     m_Address: Bat00
     m_ReadOnly: 0
@@ -257,6 +267,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 37601c11f4a1ee44d824c114232d63c4
     m_Address: Sprites/Spells/Heal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 377e85d7f07e02d4a9c17cfa13b80ef3
+    m_Address: Sprites/Timeline/ActorTagIcons/Humanoid
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -277,6 +292,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3eb1ace197e3e55449917de4001b6299
     m_Address: Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 440ed6b695e95684385f5ce22e29fa47
+    m_Address: Sprites/Timeline/ActorTagIcons/Elemental
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -312,6 +332,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5028cf563b6c16c44909095387ce8bed
     m_Address: TreeGolem03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50f581b82903ff340a6adf4e5c7837ba
+    m_Address: Sprites/Timeline/ActorTagIcons/Mechanical
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -390,6 +415,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61644731edb6e504c9ba1904f472e859
+    m_Address: Sprites/Timeline/ActorTagIcons/Construct
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 620238ba270f09f4e991f28682decdc6
     m_Address: BlueLion
     m_ReadOnly: 0
@@ -457,6 +487,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e2be5d62877b7142a1446f5e31635c0
     m_Address: PurplePrototype04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e62486525d369c4da71eb6af6d8cd48
+    m_Address: Sprites/Timeline/ActorTagIcons/Dragonkin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -585,6 +620,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97aa5849ffab70441b1c3a37a2a39a10
+    m_Address: Sprites/Timeline/ActorTagIcons/Magic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99021fed4cdb0cc4ca20657636188bd6
     m_Address: Drifter
     m_ReadOnly: 0
@@ -700,6 +740,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b002987d6fb476b47a27705bb6fcb331
+    m_Address: Sprites/Timeline/ActorTagIcons/Demonkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0ac77ee4981d344fbe6ca95958657a7
     m_Address: Hag01
     m_ReadOnly: 0
@@ -707,6 +752,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b374acad88e1eeb4a8a739b1d36e8856
     m_Address: Cyclops02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b782378a6857ebd4087bf847099d1497
+    m_Address: Sprites/Timeline/ActorTagIcons/ShadowCreature
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -722,6 +772,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b899e8450b615ef41b4267ee5b459b96
     m_Address: Knight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba0eb995e9ab2e84dbf22087be11a534
+    m_Address: Sprites/Timeline/ActorTagIcons/Aquatic
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -805,6 +860,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca8635d46b5178448b89b18dcb8ba871
+    m_Address: Sprites/Timeline/ActorTagIcons/Elite
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb414eb2320b07e4fb8f2f49e949b196
     m_Address: MountainTroll
     m_ReadOnly: 0
@@ -857,6 +917,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d1d2d55555e53344faceb9f7d11899ee
     m_Address: SteppinRazor00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2150ff562222f348a083fb9e50dc2d6
+    m_Address: Sprites/Timeline/ActorTagIcons/Healer
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
