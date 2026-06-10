@@ -95,7 +95,6 @@ public static class StageSelectBuilder
             img.type = Image.Type.Sliced;
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
-            SceneBuilderHelper.WireOnClick(btn, () => Scripts.Helpers.SceneHelper.Fade.ToHub());
             var lGO = new GameObject("Label");
             lGO.layer = LayerMask.NameToLayer("UI");
             var lRT = lGO.AddComponent<RectTransform>();

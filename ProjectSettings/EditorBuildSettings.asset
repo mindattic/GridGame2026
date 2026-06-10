@@ -62,6 +62,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bestiary.unity
     guid: 945fd3bc7a1c1504ca429de3e49bfcbe
+  - enabled: 1
+    path: Assets/Scenes/Hub.unity
+    guid: a5f10ed0451acf84b913af93575fbcf9
   m_configObjects:
     com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 29211708ed7c6c74285d0bb75534fd4c, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d2635e6bd816c834798f0eb915bff615, type: 2}

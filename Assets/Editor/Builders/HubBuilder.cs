@@ -90,14 +90,11 @@ public static class HubBuilder
 
     // ─── 2×3 button grid ─────────────────────────────────────────────────────
 
-    private static readonly (string label, System.Action navigate)[] Vendors =
+    // Button names only — navigation is wired at runtime by HubManager.WireButtons
+    // (persistent onClick listeners can't serialize lambdas or plain delegates).
+    private static readonly string[] Vendors =
     {
-        ("Vendor",      () => SceneHelper.Fade.ToVendor()),
-        ("Blacksmith",  () => SceneHelper.Fade.ToBlacksmith()),
-        ("Alchemist",   () => SceneHelper.Fade.ToAlchemist()),
-        ("Equip",       () => SceneHelper.Fade.ToEquip()),
-        ("Party",       () => SceneHelper.Fade.ToParty()),
-        ("Abilities",   () => SceneHelper.Fade.ToAbilities()),
+        "Vendor", "Blacksmith", "Alchemist", "Equip", "Party", "Abilities",
     };
 
     private static void BuildGrid(RectTransform canvas, ref int created, ref int found)
@@ -126,12 +123,12 @@ public static class HubBuilder
         var csf = grid.gameObject.GetComponent<ContentSizeFitter>();
         if (csf != null) Object.DestroyImmediate(csf);
 
-        foreach (var (label, navigate) in Vendors)
-            EnsureVendorButton(grid, label, navigate, ref created, ref found);
+        foreach (var label in Vendors)
+            EnsureVendorButton(grid, label, ref created, ref found);
     }
 
     private static void EnsureVendorButton(RectTransform parent, string label,
-        System.Action navigate, ref int created, ref int found)
+        ref int created, ref int found)
     {
         var existing = parent.Find(label);
         if (existing != null) { found++; return; }
@@ -160,8 +157,7 @@ public static class HubBuilder
         };
         btn.colors = cb;
 
-        // Wired at build time so it survives scene rebuild without a manager hook.
-        SceneBuilderHelper.WireOnClick(btn, navigate.Invoke);
+        // onClick is wired at runtime by HubManager (lambdas can't persist in scene YAML).
 
         // Label child.
         var lGO = new GameObject("Label");
@@ -210,7 +206,7 @@ public static class HubBuilder
 
         var btn = go.AddComponent<Button>();
         btn.targetGraphic = img;
-        SceneBuilderHelper.WireOnClick(btn, () => SceneHelper.Fade.ToStageSelect());
+        // onClick is wired at runtime by HubManager (lambdas can't persist in scene YAML).
 
         var lGO = new GameObject("Label");
         lGO.layer = LayerMask.NameToLayer("UI");

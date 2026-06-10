@@ -109,6 +109,12 @@ public static class SceneBuilderHelper
     public static void WireOnClick(Button button, UnityAction action)
     {
         if (button == null || action == null) return;
+        if (!(action.Target is UnityEngine.Object))
+            throw new System.ArgumentException(
+                $"WireOnClick on '{button.name}': persistent listeners only serialize methods on a " +
+                $"UnityEngine.Object target (got {action.Target?.GetType().Name ?? "a static/closure target"}). " +
+                "Lambdas and plain delegates bake a dead button — wire those at runtime in the scene's manager instead.",
+                nameof(action));
         for (int i = button.onClick.GetPersistentEventCount() - 1; i >= 0; i--)
             UnityEventTools.RemovePersistentListener(button.onClick, i);
         UnityEventTools.AddVoidPersistentListener(button.onClick, action);

@@ -48,11 +48,13 @@ namespace Scripts.Managers
         public const string DetailLabelName = "Body/DetailPanel/DetailLabel";
         public const string ConfirmButtonName = "Body/DetailPanel/ConfirmButton";
         public const string CancelButtonName = "Body/DetailPanel/CancelButton";
+        public const string HubButtonName = "Header/HubButton";
 
         private RectTransform listContent;
         private TextMeshProUGUI detailLabel;
         private Button confirmButton;
         private Button cancelButton;
+        private Button hubButton;
 
         private int selectedIndex = -1;
 
@@ -90,6 +92,9 @@ namespace Scripts.Managers
 
             var cancelT = canvas.transform.Find(CancelButtonName);
             cancelButton = cancelT != null ? cancelT.GetComponent<Button>() : null;
+
+            var hubT = canvas.transform.Find(HubButtonName);
+            hubButton = hubT != null ? hubT.GetComponent<Button>() : null;
         }
 
         private void WireButtons()
@@ -103,6 +108,11 @@ namespace Scripts.Managers
             {
                 cancelButton.onClick.RemoveAllListeners();
                 cancelButton.onClick.AddListener(ClearSelection);
+            }
+            if (hubButton != null)
+            {
+                hubButton.onClick.RemoveAllListeners();
+                hubButton.onClick.AddListener(() => scene.Fade.ToHub());
             }
         }
 
