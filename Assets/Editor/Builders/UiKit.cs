@@ -39,6 +39,11 @@ public static class UiKit
     public const float HeaderHeight = 96f;
     public const float BorderPx = 2f;
 
+    /// <summary>Extra pixels reserved at the top for the phone notch / status bar.</summary>
+    public const float SafeAreaTop = 88f;
+    /// <summary>Extra pixels reserved at the bottom for the home indicator.</summary>
+    public const float SafeAreaBottom = 48f;
+
     // ===================== Header =====================
 
     /// <summary>The standard scene header: 96px HeaderBg bar across the top, 3px gold rule on
@@ -49,7 +54,7 @@ public static class UiKit
         header.anchorMin = new Vector2(0f, 1f);
         header.anchorMax = new Vector2(1f, 1f);
         header.pivot = new Vector2(0.5f, 1f);
-        header.sizeDelta = new Vector2(0f, HeaderHeight);
+        header.sizeDelta = new Vector2(0f, HeaderHeight + SafeAreaTop);
         header.anchoredPosition = Vector2.zero;
         SetImage(header.gameObject, HubTheme.HeaderBg, raycast: true);
 
@@ -67,7 +72,7 @@ public static class UiKit
         titleRT.anchorMax = new Vector2(0f, 0.5f);
         titleRT.pivot = new Vector2(0f, 0.5f);
         titleRT.sizeDelta = new Vector2(700f, 72f);
-        titleRT.anchoredPosition = new Vector2(40f, 0f);
+        titleRT.anchoredPosition = new Vector2(40f, -(SafeAreaTop / 2f));
         var tmp = SetText(titleRT.gameObject, title, UiFonts.Display, 48, HubTheme.Accent);
         tmp.fontStyle = FontStyles.Bold;
         tmp.alignment = TextAlignmentOptions.MidlineLeft;
@@ -84,7 +89,7 @@ public static class UiKit
         rt.anchorMax = new Vector2(1f, 0.5f);
         rt.pivot = new Vector2(1f, 0.5f);
         rt.sizeDelta = new Vector2(400f, 60f);
-        rt.anchoredPosition = new Vector2(-40f, 0f);
+        rt.anchoredPosition = new Vector2(-40f, -(SafeAreaTop / 2f));
         var tmp = SetText(rt.gameObject, text, UiFonts.Display, 36, HubTheme.Accent);
         tmp.alignment = TextAlignmentOptions.MidlineRight;
         return rt;
@@ -170,7 +175,7 @@ public static class UiKit
         rt.anchorMax = new Vector2(0f, 0f);
         rt.pivot = new Vector2(0f, 0f);
         rt.sizeDelta = new Vector2(220f, 64f);
-        rt.anchoredPosition = new Vector2(24f, 24f);
+        rt.anchoredPosition = new Vector2(24f, SafeAreaBottom);
         return rt;
     }
 
@@ -188,6 +193,9 @@ public static class UiKit
         var rootRT = FindOrMake(parent, name, out _);
         SetImage(rootRT.gameObject, HubTheme.ListBg, raycast: true);
         Border(rootRT);
+        // ScrollRect lives on the root — standard Unity pattern (root scrolls, viewport masks).
+        var scroll = rootRT.gameObject.GetComponent<ScrollRect>();
+        if (scroll == null) scroll = rootRT.gameObject.AddComponent<ScrollRect>();
 
         var vpRT = FindOrMake(rootRT, "Viewport", out _);
         vpRT.anchorMin = Vector2.zero;
@@ -195,14 +203,11 @@ public static class UiKit
         vpRT.offsetMin = new Vector2(BorderPx, BorderPx);
         vpRT.offsetMax = new Vector2(-(14f + BorderPx), -BorderPx); // room for the scrollbar
         vpRT.pivot = new Vector2(0f, 1f);
-        var vpImg = SetImage(vpRT.gameObject, new Color(1f, 1f, 1f, 0.02f), raycast: true);
-        vpImg.sprite = SceneBuilderHelper.LoadBuiltinSprite("UIMask");
-        vpImg.type = Image.Type.Sliced;
-        var mask = vpRT.gameObject.GetComponent<Mask>();
-        if (mask == null) mask = vpRT.gameObject.AddComponent<Mask>();
-        mask.showMaskGraphic = false;
-        var scroll = vpRT.gameObject.GetComponent<ScrollRect>();
-        if (scroll == null) scroll = vpRT.gameObject.AddComponent<ScrollRect>();
+        // RectMask2D is Unity's recommended clipping for scroll views — no stencil dependency.
+        // The old stencil Mask + showMaskGraphic=false + alpha=0.02 combination prevented the
+        // stencil write in Unity 6, making all children invisible.
+        if (vpRT.gameObject.GetComponent<RectMask2D>() == null)
+            vpRT.gameObject.AddComponent<RectMask2D>();
 
         var contentRT = FindOrMake(vpRT, "Content", out _);
         contentRT.anchorMin = new Vector2(0f, 1f);
@@ -213,7 +218,7 @@ public static class UiKit
         var vlg = contentRT.gameObject.GetComponent<VerticalLayoutGroup>();
         if (vlg == null) vlg = contentRT.gameObject.AddComponent<VerticalLayoutGroup>();
         vlg.childAlignment = TextAnchor.UpperLeft;
-        vlg.childControlWidth = true;
+        vlg.childControlWidth = false;
         vlg.childControlHeight = false;
         vlg.childForceExpandWidth = true;
         vlg.childForceExpandHeight = false;

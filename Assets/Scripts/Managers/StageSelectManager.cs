@@ -68,7 +68,18 @@ namespace Scripts.Managers
         private void Start()
         {
             scene.FadeIn();
+            if (selectedIndex < 0)
+                selectedIndex = FirstUnlockedIndex();
             Refresh();
+        }
+
+        private static int FirstUnlockedIndex()
+        {
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            int highestCleared = save?.Stage?.HighestClearedStageIndex ?? -1;
+            for (int i = 0; i < CampaignStages.Order.Count; i++)
+                if (CampaignStages.IsUnlocked(i, highestCleared)) return i;
+            return -1;
         }
 
         private static void BootstrapProfile()
@@ -84,6 +95,27 @@ namespace Scripts.Managers
 
             var contentT = canvas.transform.Find(ListContentPath);
             listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
+            var vlg = listContent?.GetComponent<VerticalLayoutGroup>();
+            if (vlg != null) vlg.childControlWidth = false;
+            // The builder sets a stencil Mask on the Viewport with showMaskGraphic=false and
+            // Image alpha=0.02. In Unity 6 this combination prevents the stencil write, so all
+            // children fail the stencil test and are invisible. Replace with RectMask2D.
+            var viewport = listContent?.parent as RectTransform;
+            if (viewport != null)
+            {
+                var stencilMask = viewport.GetComponent<Mask>();
+                if (stencilMask != null) stencilMask.enabled = false;
+                if (viewport.GetComponent<RectMask2D>() == null)
+                    viewport.gameObject.AddComponent<RectMask2D>();
+            }
+            if (listContent == null)
+            {
+                // Step-by-step traversal to pinpoint the break.
+                var b = canvas.transform.Find("Body");
+                Debug.LogError($"[StageSelectManager] '{ListContentPath}' not found. Body={b != null}, " +
+                    $"StageList={(b != null ? b.Find("StageList") != null : false)}, " +
+                    $"Viewport={(b?.Find("StageList") != null ? b.Find("StageList/Viewport") != null : false)}");
+            }
 
             detailLabel = FindLabel(canvas.transform, DetailLabelName);
 
@@ -125,7 +157,11 @@ namespace Scripts.Managers
 
         private void RebuildList()
         {
-            if (listContent == null) return;
+            if (listContent == null)
+            {
+                Debug.LogError("[StageSelectManager] listContent is null — stage list cannot be populated. Check CacheUiReferences logs.");
+                return;
+            }
             for (int i = listContent.childCount - 1; i >= 0; i--)
                 Object.Destroy(listContent.GetChild(i).gameObject);
 
@@ -149,6 +185,10 @@ namespace Scripts.Managers
                 for (int s = theme.StageNames.Count - 1; s >= 0; s--)
                     CreateStageRow(themeStart[t] + s, highestCleared);
             }
+
+            // Force the VLG + ContentSizeFitter to run synchronously now that rows exist,
+            // rather than waiting for the end-of-frame layout pass.
+            LayoutRebuilder.ForceRebuildLayoutImmediate(listContent);
         }
 
         private void CreateThemeHeader(CampaignTheme theme)
@@ -157,6 +197,9 @@ namespace Scripts.Managers
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 44f);
 
             go.AddComponent<CanvasRenderer>();
@@ -198,6 +241,9 @@ namespace Scripts.Managers
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 72f);
 
             go.AddComponent<CanvasRenderer>();

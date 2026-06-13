@@ -134,6 +134,16 @@ namespace Scripts.Vendor.Equip
 
             var contentT = canvas.transform.Find(InventoryContentPath);
             inventoryContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
+            var vlg = inventoryContent?.GetComponent<VerticalLayoutGroup>();
+            if (vlg != null) vlg.childControlWidth = false;
+            var viewport = inventoryContent?.parent as RectTransform;
+            if (viewport != null)
+            {
+                var stencilMask = viewport.GetComponent<Mask>();
+                if (stencilMask != null) stencilMask.enabled = false;
+                if (viewport.GetComponent<RectMask2D>() == null)
+                    viewport.gameObject.AddComponent<RectMask2D>();
+            }
         }
 
         private void WireBackButton()
@@ -216,6 +226,8 @@ namespace Scripts.Vendor.Equip
                 .ThenBy(e => e.Definition.DisplayName);
 
             foreach (var entry in rows) CreateInventoryRow(entry.Definition, entry.Count);
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryContent);
         }
 
         // ---------- UI factories ----------
@@ -295,6 +307,9 @@ namespace Scripts.Vendor.Equip
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(inventoryContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 56f);
 
             go.AddComponent<CanvasRenderer>();

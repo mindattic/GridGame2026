@@ -94,6 +94,16 @@ namespace Scripts.Vendor.Party
             var rosterT = canvas.transform.Find(RosterContentPath);
             rosterContent = rosterT != null ? rosterT.GetComponent<RectTransform>() : null;
             if (rosterContent == null) Debug.LogError("[PartyManager] Roster Content not found at " + RosterContentPath);
+            var vlg = rosterContent?.GetComponent<VerticalLayoutGroup>();
+            if (vlg != null) vlg.childControlWidth = false;
+            var viewport = rosterContent?.parent as RectTransform;
+            if (viewport != null)
+            {
+                var stencilMask = viewport.GetComponent<Mask>();
+                if (stencilMask != null) stencilMask.enabled = false;
+                if (viewport.GetComponent<RectMask2D>() == null)
+                    viewport.gameObject.AddComponent<RectMask2D>();
+            }
 
             var actionT = canvas.transform.Find(ActionButtonName);
             actionButton = actionT != null ? actionT.GetComponent<Button>() : null;
@@ -179,6 +189,8 @@ namespace Scripts.Vendor.Party
                 if (partyClasses.Contains(member.CharacterClass)) continue;
                 CreateRow(member, inParty: false);
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rosterContent);
         }
 
         private void UpdateDetail()
@@ -258,6 +270,9 @@ namespace Scripts.Vendor.Party
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(rosterContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 64f);
 
             go.AddComponent<CanvasRenderer>();

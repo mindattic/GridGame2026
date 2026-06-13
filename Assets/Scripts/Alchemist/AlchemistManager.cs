@@ -122,6 +122,16 @@ namespace Scripts.Vendor.Alchemy
             var contentT = canvas.transform.Find(ItemListContentPath);
             listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
             if (listContent == null) Debug.LogError("[AlchemistManager] ItemList Content not found at " + ItemListContentPath);
+            var vlg = listContent?.GetComponent<VerticalLayoutGroup>();
+            if (vlg != null) vlg.childControlWidth = false;
+            var viewport = listContent?.parent as RectTransform;
+            if (viewport != null)
+            {
+                var stencilMask = viewport.GetComponent<Mask>();
+                if (stencilMask != null) stencilMask.enabled = false;
+                if (viewport.GetComponent<RectMask2D>() == null)
+                    viewport.gameObject.AddComponent<RectMask2D>();
+            }
 
             var mixT = canvas.transform.Find(MixButtonName);
             mixButton = mixT != null ? mixT.GetComponent<Button>() : null;
@@ -251,6 +261,8 @@ namespace Scripts.Vendor.Alchemy
 
             foreach (var recipe in PotionRecipes())
                 CreateRow(recipe);
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(listContent);
         }
 
         private void UpdateDetail()
@@ -307,6 +319,9 @@ namespace Scripts.Vendor.Alchemy
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 56f);
 
             go.AddComponent<CanvasRenderer>();

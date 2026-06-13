@@ -125,6 +125,16 @@ namespace Scripts.Vendor
             var contentT = canvas.transform.Find(ListContentPath);
             listContent = contentT != null ? contentT.GetComponent<RectTransform>() : null;
             if (listContent == null) Debug.LogError("[VendorManager] List Content not found at " + ListContentPath);
+            var vlg = listContent?.GetComponent<VerticalLayoutGroup>();
+            if (vlg != null) vlg.childControlWidth = false;
+            var viewport = listContent?.parent as RectTransform;
+            if (viewport != null)
+            {
+                var stencilMask = viewport.GetComponent<Mask>();
+                if (stencilMask != null) stencilMask.enabled = false;
+                if (viewport.GetComponent<RectMask2D>() == null)
+                    viewport.gameObject.AddComponent<RectMask2D>();
+            }
 
             var buyT = canvas.transform.Find("ModeBar/" + BuyTabButtonName);
             buyTabButton = buyT != null ? buyT.GetComponent<Button>() : null;
@@ -218,6 +228,8 @@ namespace Scripts.Vendor
                 foreach (var entry in SellCatalogue())
                     CreateSellRow(entry);
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(listContent);
         }
 
         private void UpdateFooter()
@@ -301,6 +313,9 @@ namespace Scripts.Vendor
             go.layer = LayerMask.NameToLayer("UI");
             var rt = go.AddComponent<RectTransform>();
             rt.SetParent(listContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
             rt.sizeDelta = new Vector2(0f, 64f);
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();

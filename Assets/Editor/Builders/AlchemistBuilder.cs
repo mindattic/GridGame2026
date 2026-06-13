@@ -52,9 +52,9 @@ public static class AlchemistBuilder
         if (canvasBg != null) canvasBg.color = HubTheme.PanelBg;
 
         BuildHeader(canvas, ref created, ref found);
-        VendorNavBarBuilder.Build(canvas, topInset: HeaderH, anchorLeft: true);
+        VendorNavBarBuilder.Build(canvas, topInset: HeaderH + UiKit.SafeAreaTop, anchorLeft: true);
         BuildBody(canvas, ref created, ref found);
-        UiKit.BackButton(canvas, "Overworld");
+        UiKit.BackButton(canvas, "Stage Select");
         created++;
 
         SceneBuilderHelper.EnsureFadeOverlay(canvas, ref created, ref found);
@@ -75,9 +75,8 @@ public static class AlchemistBuilder
         var body = FindOrMake(canvas, "Body", ref created, ref found);
         body.anchorMin = new Vector2(0f, 0f);
         body.anchorMax = new Vector2(1f, 1f);
-        body.offsetMin = new Vector2(24f, 96f);
-        // Header (96) + nav bar (56) = 152 of top inset.
-        body.offsetMax = new Vector2(-24f, -(HeaderH + VendorNavBarBuilder.HeightPx + 8f));
+        body.offsetMin = new Vector2(24f, UiKit.SafeAreaBottom + 64f + 8f);
+        body.offsetMax = new Vector2(-24f, -(HeaderH + UiKit.SafeAreaTop + VendorNavBarBuilder.HeightPx + 8f));
         var bodyImg = body.GetComponent<Image>();
         if (bodyImg != null) { bodyImg.color = new Color(0f, 0f, 0f, 0f); bodyImg.raycastTarget = false; }
 

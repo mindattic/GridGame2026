@@ -84,11 +84,11 @@ public static class HubItemRowFactory
         root.layer = LayerMask.NameToLayer("UI");
 
         var rootRT = root.AddComponent<RectTransform>();
-        rootRT.anchorMin = new Vector2(0f, 0.5f);
-        rootRT.anchorMax = new Vector2(1f, 0.5f);
+        rootRT.anchorMin = new Vector2(0f, 1f);
+        rootRT.anchorMax = new Vector2(1f, 1f);
         rootRT.anchoredPosition = Vector2.zero;
         rootRT.sizeDelta = new Vector2(0f, 72f);
-        rootRT.pivot = new Vector2(0.5f, 0.5f);
+        rootRT.pivot = new Vector2(0.5f, 1f);
 
         root.AddComponent<CanvasRenderer>();
 

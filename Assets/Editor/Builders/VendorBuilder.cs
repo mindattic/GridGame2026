@@ -52,7 +52,7 @@ public static class VendorBuilder
         modeBar.anchorMax = new Vector2(1f, 1f);
         modeBar.pivot = new Vector2(0.5f, 1f);
         modeBar.sizeDelta = new Vector2(-48f, 88f);
-        modeBar.anchoredPosition = new Vector2(0f, -(UiKit.HeaderHeight + 8f));
+        modeBar.anchoredPosition = new Vector2(0f, -(UiKit.HeaderHeight + UiKit.SafeAreaTop + 8f));
         var hlg = modeBar.gameObject.GetComponent<HorizontalLayoutGroup>();
         if (hlg == null) hlg = modeBar.gameObject.AddComponent<HorizontalLayoutGroup>();
         hlg.spacing = 16f;
@@ -70,7 +70,7 @@ public static class VendorBuilder
         list.anchorMin = new Vector2(0f, 0.1f);
         list.anchorMax = new Vector2(1f, 1f);
         list.offsetMin = new Vector2(24f, 8f);
-        list.offsetMax = new Vector2(-24f, -(UiKit.HeaderHeight + 8f + 88f + 8f));
+        list.offsetMax = new Vector2(-24f, -(UiKit.HeaderHeight + UiKit.SafeAreaTop + 8f + 88f + 8f));
 
         // FooterBar — total + commit action.
         var footer = MakeRect(canvas, "FooterBar");
@@ -96,7 +96,7 @@ public static class VendorBuilder
         action.offsetMin = new Vector2(8f, 12f);
         action.offsetMax = new Vector2(-24f, -12f);
 
-        VendorNavBarBuilder.Build(canvas, topInset: 0f, anchorLeft: true);
+        VendorNavBarBuilder.Build(canvas, topInset: UiKit.SafeAreaTop, anchorLeft: true);
 
         SceneBuilderHelper.EnsureFadeOverlay(canvas, ref created, ref found);
         SceneBuilderHelper.LogResults(SceneName, created, found);
