@@ -93,6 +93,10 @@ public class ActorRenderers
     public SpriteRenderer activeIndicator;
     public SpriteRenderer focusIndicator;
     public SpriteRenderer targetIndicator;
+    /// <summary>The 4 thin border-edge SpriteRenderers that make up the actor's frame.</summary>
+    public SpriteRenderer[] frameBorders;
+    /// <summary>The 4 thin gold-edge SpriteRenderers that make up the selection highlight.</summary>
+    public SpriteRenderer[] focusIndicatorBorders;
 
     private ActorInstance instance;
     /// <summary>Initializes initialize.</summary>
@@ -103,14 +107,26 @@ public class ActorRenderers
         front = instance.transform.GetChild(ActorLayer.Name.Front);
 
         backdrop = front.GetChild(ActorLayer.Name.Backdrop).GetComponent<SpriteRenderer>();
-        frame = front.GetChild(ActorLayer.Name.Frame).GetComponent<SpriteRenderer>();
+
+        var frameT = front.GetChild(ActorLayer.Name.Frame);
+        frame = frameT.GetComponent<SpriteRenderer>();
+        frameBorders = new SpriteRenderer[frameT.childCount];
+        for (int i = 0; i < frameBorders.Length; i++)
+            frameBorders[i] = frameT.GetChild(i).GetComponent<SpriteRenderer>();
+
         thumbnail = front.GetChild(ActorLayer.Name.Thumbnail).GetComponent<SpriteRenderer>();
         mask = front.GetChild(ActorLayer.Name.Mask).GetComponent<SpriteMask>();
         gradient = front.GetChild(ActorLayer.Name.Gradient).GetComponent<SpriteRenderer>();
         nameTagText = front.GetChild(ActorLayer.Name.NameTagText).GetComponent<TextMeshPro>();
         healthText = front.GetChild(ActorLayer.Name.HealthText).GetComponent<TextMeshPro>();
         activeIndicator = front.GetChild(ActorLayer.Name.ActiveIndicator).GetComponent<SpriteRenderer>();
-        focusIndicator = front.GetChild(ActorLayer.Name.FocusIndicator).GetComponent<SpriteRenderer>();
+
+        var focusT = front.GetChild(ActorLayer.Name.FocusIndicator);
+        focusIndicator = focusT.GetComponent<SpriteRenderer>();
+        focusIndicatorBorders = new SpriteRenderer[focusT.childCount];
+        for (int i = 0; i < focusIndicatorBorders.Length; i++)
+            focusIndicatorBorders[i] = focusT.GetChild(i).GetComponent<SpriteRenderer>();
+
         targetIndicator = front.GetChild(ActorLayer.Name.TargetIndicator).GetComponent<SpriteRenderer>();
 
         back = instance.transform.GetChild(ActorLayer.Name.Back);
@@ -144,20 +160,26 @@ public class ActorRenderers
     public void SetFrameColor(Color color)
     {
         frameColor = new Color(color.r, color.g, color.b, Mathf.Clamp(color.a, Opacity.Transparent, frameAlphaMax));
-        if (frame != null) frame.color = frameColor;
+        if (frameBorders != null)
+            foreach (var sr in frameBorders) if (sr != null) sr.color = frameColor;
+        else if (frame != null) frame.color = frameColor;
     }
 
     /// <summary>Sets the frame alpha.</summary>
     public void SetFrameAlpha(float alpha)
     {
         frameColor.a = Mathf.Clamp(alpha, Opacity.Transparent, frameAlphaMax);
-        if (frame != null) this.frame.color = frameColor;
+        if (frameBorders != null)
+            foreach (var sr in frameBorders) if (sr != null) sr.color = frameColor;
+        else if (frame != null) this.frame.color = frameColor;
     }
 
     /// <summary>Sets the frame enabled.</summary>
     public void SetFrameEnabled(bool isEnabled)
     {
-        if (frame != null) frame.enabled = isEnabled;
+        if (frameBorders != null)
+            foreach (var sr in frameBorders) if (sr != null) sr.enabled = isEnabled;
+        else if (frame != null) frame.enabled = isEnabled;
     }
 
     /// <summary>Sets the thumbnail alpha.</summary>
@@ -214,7 +236,11 @@ public class ActorRenderers
     { if (activeIndicator != null) activeIndicator.enabled = isEnabled; }
     /// <summary>Sets the focus indicator enabled.</summary>
     public void SetFocusIndicatorEnabled(bool isEnabled)
-    { if (focusIndicator != null) focusIndicator.enabled = isEnabled; }
+    {
+        if (focusIndicatorBorders != null)
+            foreach (var sr in focusIndicatorBorders) if (sr != null) sr.enabled = isEnabled;
+        else if (focusIndicator != null) focusIndicator.enabled = isEnabled;
+    }
     /// <summary>Sets the target indicator enabled.</summary>
     public void SetTargetIndicatorEnabled(bool isEnabled)
     { if (targetIndicator != null) targetIndicator.enabled = isEnabled; }

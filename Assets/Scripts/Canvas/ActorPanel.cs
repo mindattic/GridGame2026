@@ -63,15 +63,14 @@ namespace Scripts.Canvas
         #region Layout constants
         private const float TabBarHeight = 44f;
         private const float Pad = 12f;
-        private const float FrameInset = 40f;           // keep content inside the base-4 frame's border (~44px)
+        private const float FrameInset = 8f;             // small padding inside the UiKit-style 2px border
         private const float PortraitSize = 440f;        // large; bleeds off the lower-right corner
         private const float StatsRightReserve = 450f;   // keep title/stats text out of the portrait's overlap margin
-        private static readonly Color TabSelected     = new Color(0.22f, 0.27f, 0.42f, 0.98f);
-        private static readonly Color TabUnselected   = new Color(0.12f, 0.12f, 0.16f, 0.85f);
-        // The backdrop is the base-4 frame sprite; tinting white shows it true, red flickers it for enemies.
-        private static readonly Color HeroBackdrop    = Color.white;
-        private static readonly Color EnemyBackdropBase = new Color(1f, 0.55f, 0.55f, 1f);
-        private static readonly Color EnemyBackdropPeak = new Color(1f, 0.25f, 0.25f, 1f);
+        private static readonly Color TabSelected     = HubTheme.NavActive;
+        private static readonly Color TabUnselected   = HubTheme.NavIdle;
+        private static readonly Color HeroBackdrop    = HubTheme.PanelBg;
+        private static readonly Color EnemyBackdropBase = new Color(0.22f, 0.06f, 0.06f, 0.95f);
+        private static readonly Color EnemyBackdropPeak = new Color(0.38f, 0.06f, 0.06f, 0.95f);
         private static readonly string[] TabNames = { "Stats", "Equipment", "Lore" };
         private static readonly EquipmentSlot[] EquipSlots =
             { EquipmentSlot.Weapon, EquipmentSlot.Armor, EquipmentSlot.Relic1, EquipmentSlot.Relic2, EquipmentSlot.Relic3 };
@@ -113,17 +112,11 @@ namespace Scripts.Canvas
             // tabbed UI built below remains — defensive against an un-pruned GameBuilder root.
             for (int i = root.childCount - 1; i >= 0; i--) Destroy(root.GetChild(i).gameObject);
 
-            // Backdrop — the base-4 actor frame as a 9-slice, sized to the whole panel (the metallic
-            // border stays crisp at any size; the black center stretches). Also the enemy-flicker tint.
-            backdropImage = MakeImage("Backdrop", root, HeroBackdrop);
+            // Backdrop — dark navy panel (HubTheme) + thin UiKit-style steel border. Also the enemy-flicker tint.
+            backdropImage = MakeImage("Backdrop", root, HubTheme.PanelBg);
             Stretch((RectTransform)backdropImage.transform);
-            if (Scripts.Libraries.SpriteLibrary.Sprites != null
-                && Scripts.Libraries.SpriteLibrary.Sprites.TryGetValue("Base4", out var frameSprite) && frameSprite != null)
-            {
-                backdropImage.sprite = frameSprite;
-                backdropImage.type = Image.Type.Sliced;
-            }
             backdropImage.raycastTarget = false;
+            AddBorder((RectTransform)backdropImage.transform);
 
             // ── Tab bar (top strip): 3 tab buttons + the two hero-cycle arrows on the right. ──
             var tabBar = MakeRect("TabBar", root);
@@ -148,7 +141,7 @@ namespace Scripts.Canvas
                 var btn = btnBg.gameObject.AddComponent<Button>();
                 btn.targetGraphic = btnBg;
                 btn.onClick.AddListener(() => { ShowTab(idx); g.AudioManager?.Play("Click"); });
-                var lbl = MakeText(btnBg.transform, "Attic", 26f, TextAlignmentOptions.Center);
+                var lbl = MakeText(btnBg.transform, "Outfit", 26f, TextAlignmentOptions.Center);
                 Stretch((RectTransform)lbl.transform);
                 lbl.text = TabNames[i];
                 tabButtonBgs[i] = btnBg;
@@ -180,7 +173,7 @@ namespace Scripts.Canvas
             ttr.offsetMin = new Vector2(0f, -34f);
             ttr.offsetMax = new Vector2(-StatsRightReserve, 0f);
 
-            statsText = MakeText(stats, "Avenir", 22f, TextAlignmentOptions.TopLeft);
+            statsText = MakeText(stats, "Outfit", 22f, TextAlignmentOptions.TopLeft);
             var str = (RectTransform)statsText.transform;
             str.anchorMin = new Vector2(0f, 0f); str.anchorMax = new Vector2(1f, 1f); str.pivot = new Vector2(0f, 1f);
             str.offsetMin = new Vector2(0f, 0f);
@@ -204,13 +197,13 @@ namespace Scripts.Canvas
 
             // Tab 1 — Equipment.
             var equip = MakeRect("EquipmentTab", content); Stretch(equip); tabPanels[1] = equip.gameObject;
-            equipmentText = MakeText(equip, "Avenir", 24f, TextAlignmentOptions.TopLeft);
+            equipmentText = MakeText(equip, "Outfit", 24f, TextAlignmentOptions.TopLeft);
             Stretch((RectTransform)equipmentText.transform);
             equipmentText.enableWordWrapping = true;
 
             // Tab 2 — Lore.
             var lore = MakeRect("LoreTab", content); Stretch(lore); tabPanels[2] = lore.gameObject;
-            loreText = MakeText(lore, "Avenir", 22f, TextAlignmentOptions.TopLeft);
+            loreText = MakeText(lore, "Outfit", 22f, TextAlignmentOptions.TopLeft);
             Stretch((RectTransform)loreText.transform);
             loreText.enableWordWrapping = true;
 
@@ -482,7 +475,7 @@ namespace Scripts.Canvas
             var btn = bg.gameObject.AddComponent<Button>();
             btn.targetGraphic = bg;
             btn.onClick.AddListener(() => onClick());
-            var lbl = MakeText(bg.transform, "Avenir", 24f, TextAlignmentOptions.Center);
+            var lbl = MakeText(bg.transform, "Outfit", 24f, TextAlignmentOptions.Center);
             Stretch((RectTransform)lbl.transform);
             lbl.text = glyph;
         }
@@ -491,6 +484,29 @@ namespace Scripts.Canvas
         {
             rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one; rt.pivot = new Vector2(0.5f, 0.5f);
             rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+        }
+
+        /// <summary>Adds a 2px UiKit-style steel border (4 thin Images) to any rect.</summary>
+        private static void AddBorder(RectTransform rt)
+        {
+            MakeEdgeImage(rt, "BorderTop",    new Vector2(0f,1f), new Vector2(1f,1f), new Vector2(0.5f,1f), new Vector2(0f,2f));
+            MakeEdgeImage(rt, "BorderBottom", new Vector2(0f,0f), new Vector2(1f,0f), new Vector2(0.5f,0f), new Vector2(0f,2f));
+            MakeEdgeImage(rt, "BorderLeft",   new Vector2(0f,0f), new Vector2(0f,1f), new Vector2(0f,0.5f), new Vector2(2f,0f));
+            MakeEdgeImage(rt, "BorderRight",  new Vector2(1f,0f), new Vector2(1f,1f), new Vector2(1f,0.5f), new Vector2(2f,0f));
+        }
+
+        private static void MakeEdgeImage(RectTransform parent, string name,
+            Vector2 aMin, Vector2 aMax, Vector2 pivot, Vector2 size)
+        {
+            var go = new GameObject(name, typeof(RectTransform));
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(parent, false);
+            rt.anchorMin = aMin; rt.anchorMax = aMax; rt.pivot = pivot;
+            rt.sizeDelta = size; rt.anchoredPosition = Vector2.zero;
+            var img = go.AddComponent<Image>();
+            img.color = HubTheme.PanelBorder;
+            img.raycastTarget = false;
         }
 
         private static void SetAlpha(CanvasGroup cg, float a) { if (cg != null) cg.alpha = a; }

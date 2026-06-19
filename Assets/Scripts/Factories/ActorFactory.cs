@@ -194,17 +194,31 @@ namespace Scripts.Factories
                 new Vector2(1f, 1f));
         }
 
-        /// <summary>Creates the frame.</summary>
+        /// <summary>Creates the frame — 4 thin UiKit-style steel border edges (replaces Base4 thick sprite).</summary>
         private static void CreateFrame(GameObject parent)
         {
             var go = CreateChild(parent, "Frame");
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["Base4"],
-                new Color(1f, 1f, 1f, 0f),
-                "SpritesDefault",
-                5,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f));
+            // Invisible root SR — keeps ActorRenderers.frame alive as a color-state reference.
+            // The visible border is the 4 thin children below.
+            AddSpriteRenderer(go, SpriteLibrary.Sprites["White32x32"],
+                new Color(1f, 1f, 1f, 0f), "SpritesDefault", 5,
+                SpriteDrawMode.Sliced, new Vector2(1f, 1f), enabled: false);
+            // 4 thin edges — transparent until SetFrameColor/SetFrameAlpha tints them.
+            const float t = 0.05f;
+            CreateActorBorderEdge(go, "FrameTop",    5, new Vector3(0f,  0.475f, 0f), new Vector2(1f, t));
+            CreateActorBorderEdge(go, "FrameBottom", 5, new Vector3(0f, -0.475f, 0f), new Vector2(1f, t));
+            CreateActorBorderEdge(go, "FrameLeft",   5, new Vector3(-0.475f, 0f, 0f), new Vector2(t, 1f));
+            CreateActorBorderEdge(go, "FrameRight",  5, new Vector3( 0.475f, 0f, 0f), new Vector2(t, 1f));
+        }
+
+        private static void CreateActorBorderEdge(GameObject parent, string name, int sortOrder,
+            Vector3 localPos, Vector2 size)
+        {
+            var go = CreateChild(parent, name);
+            go.transform.localPosition = localPos;
+            AddSpriteRenderer(go, SpriteLibrary.Sprites["White32x32"],
+                new Color(1f, 1f, 1f, 0f), "SpritesDefault", sortOrder,
+                SpriteDrawMode.Sliced, size);
         }
 
         /// <summary>Creates the thumbnail.</summary>
@@ -330,18 +344,30 @@ namespace Scripts.Factories
                 enabled: false);
         }
 
-        /// <summary>Creates the focus indicator.</summary>
+        /// <summary>Creates the focus indicator — 4 thin gold border edges that light up on selection.</summary>
         private static void CreateFocusIndicator(GameObject parent)
         {
             var go = CreateChild(parent, "FocusIndicator");
-            AddSpriteRenderer(go,
-                SpriteLibrary.Actor["FocusIndicator"],
-                new Color(1f, 1f, 1f, 1f),
-                "SpriteUnlitDefault",
-                28,
-                SpriteDrawMode.Sliced,
-                new Vector2(1f, 1f),
-                enabled: false);
+            // Invisible root SR — keeps ActorRenderers.focusIndicator alive as a reference.
+            AddSpriteRenderer(go, SpriteLibrary.Sprites["White32x32"],
+                new Color(1f, 1f, 1f, 0f), "SpriteUnlitDefault", 28,
+                SpriteDrawMode.Sliced, new Vector2(1f, 1f), enabled: false);
+            // Gold highlight border — enabled via SetFocusIndicatorEnabled when actor is selected.
+            var gold = new Color(1f, 0.78f, 0.28f, 1f);
+            const float t = 0.06f;
+            CreateFocusBorderEdge(go, "FocusTop",    28, new Vector3(0f,  0.47f, 0f), new Vector2(1f, t), gold);
+            CreateFocusBorderEdge(go, "FocusBottom", 28, new Vector3(0f, -0.47f, 0f), new Vector2(1f, t), gold);
+            CreateFocusBorderEdge(go, "FocusLeft",   28, new Vector3(-0.47f, 0f, 0f), new Vector2(t, 1f), gold);
+            CreateFocusBorderEdge(go, "FocusRight",  28, new Vector3( 0.47f, 0f, 0f), new Vector2(t, 1f), gold);
+        }
+
+        private static void CreateFocusBorderEdge(GameObject parent, string name, int sortOrder,
+            Vector3 localPos, Vector2 size, Color color)
+        {
+            var go = CreateChild(parent, name);
+            go.transform.localPosition = localPos;
+            AddSpriteRenderer(go, SpriteLibrary.Sprites["White32x32"],
+                color, "SpriteUnlitDefault", sortOrder, SpriteDrawMode.Sliced, size, enabled: false);
         }
 
         /// <summary>Creates the target indicator.</summary>
