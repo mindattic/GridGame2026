@@ -2,28 +2,27 @@
 
 ## Overview
 
-Every scene in the game (except Game and Overworld) can be **fully recreated from code** using
-Editor builder scripts under `Assets/Editor/Builders/`. This means scene `.unity` files are
-reproducible artifacts — if a scene gets corrupted or needs resetting, run the builder.
+Every scene in the game is **fully recreated from code** using Editor builder scripts under `Assets/Editor/Builders/`. Scene `.unity` files are reproducible artifacts — if a scene gets corrupted or needs resetting, run the builder. The builder is the source of truth; the `.unity` is the build artifact.
 
 ## Menu Structure
 
 All builders live under **Tools › Scenes › {SceneName}** with three options:
 
-| Menu Item          | Description |
-|--------------------|-------------|
+| Menu Item | Description |
+|---|---|
 | **Create Building** | Idempotent — creates missing objects, skips existing ones |
-| **Clear Scene**        | Destroys all root objects (confirmation dialog, Ctrl+Z undoable) |
-| **Clear & Recreate**   | Wipes + rebuilds in one step (no confirmation, undoable) |
+| **Clear Scene** | Destroys all root objects (confirmation dialog, Ctrl+Z undoable) |
+| **Clear & Recreate** | Wipes + rebuilds in one step (no confirmation, undoable) |
 
-Every menu item **auto-switches** to the correct `.unity` scene file first. If the scene doesn't
-exist, a new empty one is created at `Assets/Scenes/{SceneName}.unity`.
+Every menu item **auto-switches** to the correct `.unity` scene file first. If the scene does not exist, a new empty one is created at `Assets/Scenes/{SceneName}.unity`.
 
-## Files
+## Builder Files
 
 | File | Scene |
-|------|-------|
+|---|---|
 | `SceneBuilderHelper.cs` | Shared helper (EnsureCamera, EnsureCanvas, EnsureButton, etc.) |
+| `UiKit.cs` | Shared UI primitives used by builders |
+| `VendorNavBarBuilder.cs` | VendorNavBar (floating hamburger — injected into vendor scenes) |
 | `SplashScreenBuilder.cs` | SplashScreen.unity |
 | `TitleScreenBuilder.cs` | TitleScreen.unity |
 | `ProfileSelectBuilder.cs` | ProfileSelect.unity |
@@ -35,12 +34,31 @@ exist, a new empty one is created at `Assets/Scenes/{SceneName}.unity`.
 | `PostBattleScreenBuilder.cs` | PostBattleScreen.unity |
 | `SettingsBuilder.cs` | Settings.unity |
 | `CreditsBuilder.cs` | Credits.unity |
-| `PartyManagerBuilder.cs` | PartyManager.unity |
+| `PartyBuilder.cs` | Party.unity |
+| `AbilitiesBuilder.cs` | Abilities.unity |
+| `AlchemistBuilder.cs` | Alchemist.unity |
+| `BlacksmithBuilder.cs` | Blacksmith.unity |
+| `EquipBuilder.cs` | Equip.unity |
+| `VendorBuilder.cs` | Vendor.unity |
+| `BestiaryBuilder.cs` | Bestiary.unity |
+| `GameBuilder.cs` | Game.unity |
+| `OverworldBuilder.cs` | Overworld.unity |
+
+## Auto-Rebuild
+
+`BuilderAutoRebuild.cs` (`[InitializeOnLoad]`) runs after every domain reload. It diffs each `*Builder.cs` mtime against `Library/BuilderMTimes.json` and rebuilds the matching `Assets/Scenes/{Name}.unity` automatically.
+
+- If the rebuilt scene is currently loaded in the Editor, it is reloaded in place (in-editor edits are lost — builders win).
+- Rebuilds are deferred while in Play Mode and resume on exit.
+- First launch with no cache records mtimes silently — no rebuild on a fresh checkout.
+- Manual escape hatch: **Tools › Scenes › Rebuild All** or `CliEntryPoints.BuilderAllScenes` in batchmode.
+
+**The reverse direction (`.unity` → builder) is intentionally absent.** A `.unity` is YAML; a builder is C#. Translating one to the other requires judgment. Hand-edited scenes are caught by `BuilderDriftChecker` at pre-push.
 
 ## How to Add New Objects to a Scene
 
 1. Open the builder `.cs` file for the target scene
-2. Add `SceneBuilderHelper.Ensure*()` calls in `Build()`
+2. Add `SceneBuilderHelper.Ensure*()` or `UiKit.*()` calls in `Build()`
 3. Run **Tools › Scenes › {Scene} › Create Building** — new objects appear, existing ones untouched
 4. Save the scene
 
@@ -73,9 +91,9 @@ exist, a new empty one is created at `Assets/Scenes/{SceneName}.unity`.
 - `ClearAllRootObjects()` — Destroys all with confirmation dialog
 - `ClearAllRootObjectsSilent()` — Destroys all without dialog (for Clear & Recreate)
 
-## Common Scene Patterns
+## Common Scene Pattern
 
-Most scenes share this structure:
+Most non-game scenes share this structure:
 ```
 Main Camera ............ Camera (ortho, depth -1) + AudioListener
 EventSystem ............ EventSystem + StandaloneInputModule
@@ -90,15 +108,14 @@ Canvas ................. Canvas (Overlay) + CanvasScaler + GraphicRaycaster + Im
 
 ## Scene Hierarchies (Authoritative Source)
 
-See `Documentation/Builders/SceneHierarchies.txt` for the complete parsed output of every scene
-file, including exact RectTransform anchoring, component lists, and child ordering.
+See `Documentation/Builders/SceneHierarchies.txt` for the complete parsed output of every scene file, including exact RectTransform anchoring, component lists, and child ordering.
 
-## Regenerating SceneHierarchies.txt
+## Drift Snapshots
 
-Run from project root:
+`Documentation/Builders/Drift/` contains `*.snapshot.txt` files used by `BuilderDriftChecker`. Each snapshot is the expected YAML fingerprint of a builder's output. If a scene's live YAML diverges from its snapshot, the pre-push guardrail blocks the push.
+
+Regenerate snapshots after an intentional builder change:
 ```powershell
-$scenes = @('SplashScreen','TitleScreen','ProfileSelect','ProfileCreate','SaveFileSelect','StageSelect','LoadingScreen','Hub','PostBattleScreen','Settings','Credits','PartyManager')
-foreach ($s in $scenes) {
-    powershell -ExecutionPolicy Bypass -File "Tools\ParseScene.ps1" -ScenePath "Assets\Scenes\$s.unity"
-}
+Unity -batchmode -nographics -projectPath . `
+  -executeMethod CliEntryPoints.RegenerateBuilderSnapshots -quit -logFile -
 ```

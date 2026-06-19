@@ -16,7 +16,7 @@ You command a band of light-bearing invaders descending into the Undearth — a 
 
 **Why GridGame2026:**
 
-- **Position is the only weapon.** Movement deals zero damage. Damage is dealt by the *pincer* the new position completes. Every drop is a question: does this finish the line?
+- **Position is the only weapon.** Movement deals zero damage. Damage is dealt by the *pincer* the new position completes. Every drag is a question: does this finish the line?
 - **The slide.** Drag a hero onto an occupied tile and the displaced actor — friend or foe — slides into the tile you just left. Use the shove to set up flanks, eject allies from danger, or feed an enemy into a kill zone.
 - **The Timeline is a clock you can control.** Enemies "load" left-to-right along a strip at the top of the screen. The rightmost stretch is the **Pushback Zone** — strike a foe whose icon sits inside it and their turn is shoved back toward spawn. Time your pincers to delay the heaviest hitters indefinitely.
 - **Code-only Unity.** Every scene is the rebuilt output of a `*Builder.cs` file. No prefab dragging, no inspector wiring, no `[SerializeField]`. Builders edit, the editor rebuilds, the scene catches up — all without opening Unity's UI.
@@ -40,14 +40,14 @@ You command a band of light-bearing invaders descending into the Undearth — a 
 
 ## Slide. Pincer. Pushback.
 
-- **Pincer combat.** Damage is never dealt by movement — it's dealt by *position*. Line up two heroes on the same row or column with an unbroken file of enemies between them and the pincer fires. Chain pairs together for cascading volleys that clear entire ranks in a single drop.
+- **Pincer combat.** Damage is never dealt by movement — it's dealt by *position*. Line up two heroes on the same row or column with an unbroken file of enemies between them and the pincer fires. Chain pairs together for cascading volleys that clear entire ranks in a single drag.
 - **The slide.** Drag a hero onto an occupied tile and the displaced actor — friend or foe — slides into the tile you just left. Use the shove to set up flanks, eject allies from danger, or feed an enemy into a kill zone.
 - **The Timeline.** Enemies "load" left-to-right along a strip at the top of the screen. The rightmost stretch is the **Pushback Zone** — strike a foe whose icon sits inside it and their turn is shoved back toward spawn. Time your pincers to delay the heaviest hitters indefinitely.
 - **Supporters.** Allies adjacent to either end of a pincer pile on bonus damage. Stack your formation to turn a routine attack into a cleave.
 
 ## Casts, Interrupts, and Clutch Moments
 
-Mana ticks in real time while the timeline advances; bank it for burst, or spend it on spells that travel their own icon down the strip. Take a hit mid-cast and roll one of three outcomes — **Fail**, **Pushback**, or, when your luck holds, **Clutch!** — where the spell snaps to the trigger and resolves in the same instant the caster crumples. A dying healer can still let off one last miracle.
+Mana is a shared 12-orb bank harvested from pincers; spend it on abilities that travel their own icon down the timeline strip. Take a hit mid-cast and roll one of three outcomes — **Fail**, **Pushback**, or, when your luck holds, **Clutch!** — where the spell snaps to the trigger and resolves in the same instant the caster crumples. A dying healer can still let off one last miracle.
 
 ## Beyond the Battlefield
 
@@ -66,10 +66,10 @@ Mana ticks in real time while the timeline advances; bank it for burst, or spend
 | **Engine** | Unity **6000.4.3f1** (Unity 6) |
 | **Scripting** | C# 9, targeting .NET Standard 2.1 |
 | **Root namespace** | `Scripts.*` |
-| **Rendering** | 2D sprites on a 3D board, custom ShaderLab effects |
+| **Rendering** | 2D sprites on a 3D board, URP 17.4.0, custom ShaderLab effects |
+| **Asset loading** | Addressables 2.9.1 only — no `Resources.Load` in new code |
 | **Persistence** | `Profile` → `SaveState` JSON; XP stored as `TotalXP`, derived at runtime |
-| **Asset loading** | Addressables only — no `Resources.Load` in new code |
-| **Testing** | Unity Test Framework — Edit Mode + Play Mode |
+| **Testing** | Unity Test Framework 1.6.0 — Edit Mode + Play Mode |
 
 ## Repository layout
 
@@ -85,16 +85,32 @@ GridGame2026/
 │   │   ├── Canvas/                # In-game HUD (TimelineBar, TimelineIcon, ...)
 │   │   ├── Hub/                   # Shared vendor-UI utilities (HubTheme, HubToast)
 │   │   ├── Factories/             # Object instantiation (only place Instantiate() is allowed)
+│   │   ├── Libraries/             # Lazy-loaded registries (ItemLibrary, ActorLibrary, ...)
 │   │   ├── Services/              # Pure-logic helpers (EnemyPlanner, PincerDetector, CastInterruptResolver, ...)
 │   │   ├── Helpers/               # GameHelper (the global accessor — `using g = ...`)
+│   │   ├── Abilities/             # Ability scene UI and logic
+│   │   ├── Alchemist/             # Alchemist vendor scene
+│   │   ├── Blacksmith/            # Blacksmith vendor scene
+│   │   ├── Equip/                 # Equipment vendor scene
+│   │   ├── Inventory/             # Inventory and equipment models
+│   │   ├── Party/                 # Party management scene
+│   │   ├── Vendor/                # Shared vendor utilities
+│   │   ├── Overworld/             # Top-down exploration
+│   │   ├── Effects/               # Screen-space visual effects
+│   │   ├── Serialization/         # Save/load helpers
 │   │   └── Utilities/             # Formulas.cs, RNG.cs, Extensions.cs, Geometry.cs
-│   └── Editor/
-│       ├── Builders/              # *Builder.cs — the source of truth for every scene
-│       ├── BuilderAutoRebuild.cs  # [InitializeOnLoad] watcher — rebuilds scenes on builder edit
-│       ├── CliEntryPoints.cs      # Batchmode entry points (BuildStandaloneWindows, guardrails, ...)
-│       └── *Allowlist.txt         # Curated exceptions to the four guardrails
-├── Documentation/                 # Builder snapshots, scene hierarchies, design docs
-├── Tests/                         # Edit Mode + Play Mode test fixtures
+│   ├── Editor/
+│   │   ├── Builders/              # *Builder.cs — the source of truth for every scene
+│   │   ├── BuilderDriftChecker.cs # Guardrail: scene YAML vs. builder output
+│   │   ├── CliEntryPoints.cs      # Batchmode entry points (BuildStandaloneWindows, guardrails, ...)
+│   │   ├── InstantiateBan.cs      # Guardrail: Instantiate() outside *Factory.cs
+│   │   ├── ResourcesLoadBan.cs    # Guardrail: Resources.Load* call-sites
+│   │   ├── SerializedFieldBan.cs  # Guardrail: new [SerializeField] in Scripts/
+│   │   └── *Allowlist.txt         # Curated exceptions to the four guardrails
+│   └── Tests/                     # Edit Mode + Play Mode test fixtures
+├── Documentation/                 # Builder snapshots, scene hierarchies, style guides
+├── docs/                          # Codex canon (BIBLE.md, AMENDMENTS.md, USER_STORIES.md, rfc/)
+├── Tools/                         # codex.ps1 (doctor/digest), ParseScene.ps1
 ├── GridGame.Console.ps1           # Top-level operator console
 └── README.md                      # ← you are here
 ```
@@ -149,4 +165,4 @@ Auto-enforced pre-push via `.githooks/pre-push` (activated by Setup option 4):
 
 ## Status
 
-Active development. Single-developer project. The combat loop (slide / pincer / supporters / pushback / buffs / mana economy), the cast-as-timeline-icon system, the Fail/Pushback/Clutch cast-stagger interrupt resolver, enemy charge casts + interrupt→orb mint, boss scripted phases, and the full battle↔vendor macro loop are all implemented and play-tested. See `CLAUDE.md` and `docs/BIBLE.md §6` for the current verified state. Active frontier: Epic G (UI polish / accessibility) and Epic H (performance hardening).
+Active development. Single-developer project. The combat loop (slide / pincer / supporters / pushback / buffs / mana economy), the cast-as-timeline-icon system, the Fail/Pushback/Clutch cast-stagger interrupt resolver, enemy charge casts + interrupt→orb mint, boss scripted phases, and the full battle↔vendor macro loop are all implemented and play-tested. See `CLAUDE.md` and `docs/BIBLE.md` for the current verified state. Active frontier: Epic G (UI polish / accessibility) and Epic H (performance hardening).
