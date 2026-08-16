@@ -108,7 +108,9 @@ namespace Scripts.Helpers
             CurrentWave = 0,
         };
 
-        /// <summary>Default roster (all unlocked heroes).</summary>
+        /// <summary>Default roster: the starting trio only (US-132 / GG-A5). Every other built
+        /// hero class is recruited for gold at the Summon Circle (SummonService.Pool) — roster
+        /// growth is progression, not a handout. Existing saves keep whatever roster they had.</summary>
         public static RosterSaveData DefaultRoster = new RosterSaveData()
         {
             Members = new List<CharacterLevelPair>()
@@ -116,13 +118,6 @@ namespace Scripts.Helpers
                 new CharacterLevelPair(CharacterClass.Paladin),
                 new CharacterLevelPair(CharacterClass.Barbarian),
                 new CharacterLevelPair(CharacterClass.Cleric),
-                new CharacterLevelPair(CharacterClass.GreenNinja),
-                new CharacterLevelPair(CharacterClass.Pugilist),
-                new CharacterLevelPair(CharacterClass.RedNinja),
-                new CharacterLevelPair(CharacterClass.Ronin),
-                new CharacterLevelPair(CharacterClass.Sellsword),
-                new CharacterLevelPair(CharacterClass.Thief),
-                new CharacterLevelPair(CharacterClass.Vampire),
             }
         };
 

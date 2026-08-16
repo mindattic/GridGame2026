@@ -46,6 +46,8 @@ namespace Scripts.Tests.PlayMode
             "Credits",
             "Bestiary",
             "LoadingScreen",
+            "Summon",
+            "StoryCrawl",
         };
 
         [OneTimeSetUp]

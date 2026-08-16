@@ -87,6 +87,8 @@ namespace Scripts.Helpers
         public const string Equip = "Equip";
         public const string Blacksmith = "Blacksmith";
         public const string Bestiary = "Bestiary";
+        public const string Summon = "Summon";
+        public const string StoryCrawl = "StoryCrawl";
         public const string Hub = "Hub";
 
         #endregion
@@ -221,6 +223,10 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
+            /// <summary>To summon circle.</summary>
+            public static void ToSummon() => To(Summon);
+            /// <summary>To story crawl (set StoryCrawlManager.Carrier first).</summary>
+            public static void ToStoryCrawl() => To(StoryCrawl);
             /// <summary>To bestiary.</summary>
             public static void ToBestiary() => To(Bestiary);
             /// <summary>To hub (vendor launcher).</summary>
@@ -293,6 +299,10 @@ namespace Scripts.Helpers
             public static void ToEquip() => To(Equip);
             /// <summary>To blacksmith.</summary>
             public static void ToBlacksmith() => To(Blacksmith);
+            /// <summary>To summon circle.</summary>
+            public static void ToSummon() => To(Summon);
+            /// <summary>To story crawl (set StoryCrawlManager.Carrier first).</summary>
+            public static void ToStoryCrawl() => To(StoryCrawl);
             /// <summary>To bestiary.</summary>
             public static void ToBestiary() => To(Bestiary);
             /// <summary>To hub (vendor launcher).</summary>

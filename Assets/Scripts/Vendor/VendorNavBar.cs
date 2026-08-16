@@ -52,6 +52,7 @@ namespace Scripts.Vendor
         public const string AbilitiesButtonName = "VendorNavBar_AbilitiesButton";
         public const string EquipButtonName = "VendorNavBar_EquipButton";
         public const string BlacksmithButtonName = "VendorNavBar_BlacksmithButton";
+        public const string SummonButtonName = "VendorNavBar_SummonButton";
         public const string StageSelectButtonName = "VendorNavBar_StageSelectButton";
 
         // Single source of truth for the buttons that exist in the dropdown.
@@ -61,6 +62,7 @@ namespace Scripts.Vendor
             (VendorButtonName,      scene.Vendor,      "Merchant"),
             (AlchemistButtonName,   scene.Alchemist,   "Alchemist"),
             (BlacksmithButtonName,  scene.Blacksmith,  "Blacksmith"),
+            (SummonButtonName,      scene.Summon,      "Summon"),
             (PartyButtonName,       scene.Party,       "Party"),
             (AbilitiesButtonName,   scene.Abilities,   "Abilities"),
             (EquipButtonName,       scene.Equip,       "Equip"),

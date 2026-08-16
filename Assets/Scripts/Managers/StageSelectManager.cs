@@ -526,11 +526,25 @@ namespace Scripts.Managers
             string stageName = CampaignStages.Order[selectedIndex];
             save.Stage.CurrentStage = stageName;
             save.Stage.CurrentWave = 0;
-            ProfileHelper.Save(overwrite: true);
 
             // Post-battle returns the player to StageSelect (the new gateway).
             ExperienceTracker.NextSceneAfterPostBattleScreen = scene.StageSelect;
 
+            // US-131: first entry into a theme plays its story crawl (skippable), then Game.
+            var theme = CampaignStages.Themes.FirstOrDefault(t => t.StageNames.Contains(stageName));
+            if (theme != null &&
+                Scripts.Data.StoryCrawlData.Get(theme.Id) != null &&
+                save.Global?.SeenStoryCrawls != null &&
+                !save.Global.SeenStoryCrawls.Contains(theme.Id))
+            {
+                save.Global.SeenStoryCrawls.Add(theme.Id);
+                ProfileHelper.Save(overwrite: true);
+                Scripts.StoryCrawl.StoryCrawlManager.PendingThemeId = theme.Id;
+                scene.Fade.ToStoryCrawl();
+                return;
+            }
+
+            ProfileHelper.Save(overwrite: true);
             scene.Fade.ToGame();
         }
 

@@ -129,7 +129,7 @@
     [VendorNavBar_Dropdown] (inactive) layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
-      RectTransform: anchor=(0,1)-(0,1), pos=16,-256, size=220,344, pivot=0,1, rotQ=(0,0,0,1), scale=1,1,1
+      RectTransform: anchor=(0,1)-(0,1), pos=16,-256, size=220,392, pivot=0,1, rotQ=(0,0,0,1), scale=1,1,1
       VerticalLayoutGroup: spacing=4, align=UpperCenter
       [BorderTop @0] layer=UI
         CanvasRenderer
@@ -181,7 +181,17 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Outfit, text='Blacksmith', size=22, color=#FFFFFFFF, align=Center, raycast=False
-      [VendorNavBar_PartyButton @7] layer=UI
+      [VendorNavBar_SummonButton @7] layer=UI
+        Button
+        CanvasRenderer
+        Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+        LayoutElement: pref=(-1,44), flex=(1,0)
+        RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,0, size=100,100, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+        [Label] layer=UI
+          CanvasRenderer
+          RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+          TextMeshProUGUI: font=Outfit, text='Summon', size=22, color=#FFFFFFFF, align=Center, raycast=False
+      [VendorNavBar_PartyButton @8] layer=UI
         Button
         CanvasRenderer
         Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
@@ -191,7 +201,7 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Outfit, text='Party', size=22, color=#FFFFFFFF, align=Center, raycast=False
-      [VendorNavBar_AbilitiesButton @8] layer=UI
+      [VendorNavBar_AbilitiesButton @9] layer=UI
         Button
         CanvasRenderer
         Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
@@ -201,7 +211,7 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Outfit, text='Abilities', size=22, color=#FFFFFFFF, align=Center, raycast=False
-      [VendorNavBar_EquipButton @9] layer=UI
+      [VendorNavBar_EquipButton @10] layer=UI
         Button
         CanvasRenderer
         Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
@@ -211,7 +221,7 @@
           CanvasRenderer
           RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
           TextMeshProUGUI: font=Outfit, text='Equip', size=22, color=#FFFFFFFF, align=Center, raycast=False
-      [VendorNavBar_StageSelectButton @10] layer=UI
+      [VendorNavBar_StageSelectButton @11] layer=UI
         Button
         CanvasRenderer
         Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True

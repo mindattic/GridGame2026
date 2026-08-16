@@ -275,10 +275,17 @@ namespace Scripts.Models
     {
         public int TotalCoins;
 
+        // US-131: theme ids whose story crawl has been shown (crawl plays once per save,
+        // on first entry into the theme; always skippable).
+        public List<string> SeenStoryCrawls = new List<string>();
+
         public GlobalSaveData() { }
         public GlobalSaveData(GlobalSaveData other)
         {
             this.TotalCoins = other.TotalCoins;
+            this.SeenStoryCrawls = other.SeenStoryCrawls != null
+                ? new List<string>(other.SeenStoryCrawls)
+                : new List<string>();
         }
     }
 

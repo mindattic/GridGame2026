@@ -1,11 +1,8 @@
 # signature_version: 2
-# scene: Blacksmith
+# scene: Summon
 # regenerate via: CliEntryPoints.RegenerateBuilderSnapshots
 # comments (lines starting with #) are stripped before comparison
 
-[BlacksmithManagerGO]
-  BlacksmithManager
-  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
@@ -13,49 +10,22 @@
   GraphicRaycaster
   Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
   RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=1987.44067,1490.58044, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=0.3220222,0.3220222,0.3220222
-  [BackButton] layer=UI
-    Button
-    CanvasRenderer
-    Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-    RectTransform: anchor=(0,0)-(0,0), pos=24,48, size=220,64, pivot=0,0, rotQ=(0,0,0,1), scale=1,1,1
-    [Label] layer=UI
-      CanvasRenderer
-      RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Outfit, text='← Stage Select', size=26, color=#FFFFFFFF, align=Center, raycast=False
   [Body] layer=UI
     CanvasRenderer
     Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
-    RectTransform: anchor=(0,0)-(1,1), pos=0,-36, size=-48,-312, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [DetailLabel] layer=UI
-      CanvasRenderer
-      RectTransform: anchor=(0.6,0.32)-(1,1), pos=6,0, size=-12,-16, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Outfit, text='', size=22, color=#FFFFFFFF, align=TopLeft, raycast=False
+    RectTransform: anchor=(0,0)-(1,1), pos=0,-68, size=-48,-248, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [FlashLabel] layer=UI
       CanvasRenderer
-      RectTransform: anchor=(0.6,0.18)-(1,0.32), pos=6,0, size=-12,-8, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Outfit, text='', size=26, color=#FFFFFFFF, align=Center, raycast=False
-    [ForgeButton] layer=UI
-      Button
+      RectTransform: anchor=(0,0)-(1,0), pos=0,8, size=-16,40, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      TextMeshProUGUI: font=Outfit, text='', size=24, color=#FFFFFFFF, align=TopLeft, raycast=False
+    [GoldLabel] layer=UI
       CanvasRenderer
-      Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=True
-      RectTransform: anchor=(0.6,0)-(1,0.18), pos=6,0, size=-12,-16, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Label] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Outfit, text='Forge', size=32, color=#000000FF, align=Center, raycast=False
-    [ForgeTab] layer=UI
-      Button
-      CanvasRenderer
-      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0.92)-(0.3,1), pos=-2,0, size=-4,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Label] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Outfit, text='Forge', size=24, color=#FFFFFFFF, align=Center, raycast=False
-    [ItemList] layer=UI
+      RectTransform: anchor=(0,0)-(1,0), pos=0,58, size=-16,44, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      TextMeshProUGUI: font=Outfit, text='', size=26, color=#FFFFFFFF, align=TopLeft, raycast=False
+    [SummonList] layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#00000059, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0.6,0.92), pos=-6,-2, size=-12,-4, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      RectTransform: anchor=(0,0)-(1,1), pos=0,60, size=0,-120, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
       ScrollRect
       [BorderBottom] layer=UI
         CanvasRenderer
@@ -95,24 +65,6 @@
           ContentSizeFitter: h=Unconstrained, v=PreferredSize
           RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,8, pivot=0,1, rotQ=(0,0,0,1), scale=1,1,1
           VerticalLayoutGroup: spacing=4, align=UpperLeft
-    [RepairTab] layer=UI
-      Button
-      CanvasRenderer
-      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-      RectTransform: anchor=(0.6,0.92)-(0.9,1), pos=-4,0, size=-16,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Label] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Outfit, text='Repair', size=24, color=#FFFFFFFF, align=Center, raycast=False
-    [SalvageTab] layer=UI
-      Button
-      CanvasRenderer
-      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
-      RectTransform: anchor=(0.3,0.92)-(0.6,1), pos=0,0, size=-8,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [Label] layer=UI
-        CanvasRenderer
-        RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Outfit, text='Salvage', size=24, color=#FFFFFFFF, align=Center, raycast=False
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
@@ -122,10 +74,6 @@
     CanvasRenderer
     Image: sprite=<null>, color=#1A243DFF, type=Simple, raycast=True
     RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,184, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
-    [GoldLabel] layer=UI
-      CanvasRenderer
-      RectTransform: anchor=(1,0.5)-(1,0.5), pos=-40,-44, size=400,60, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Gold: 0g', size=36, color=#FFC747FF, align=MidlineRight, raycast=False
     [Rule] layer=UI
       CanvasRenderer
       Image: sprite=<null>, color=#FFC747FF, type=Simple, raycast=False
@@ -133,7 +81,7 @@
     [Title] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0.5)-(0,0.5), pos=40,-44, size=700,72, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Blacksmith', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
+      TextMeshProUGUI: font=Attic, text='Summon Circle', size=48, color=#FFC747FF, align=MidlineLeft, raycast=False
   [VendorNavBar] layer=UI
     CanvasRenderer
     Image: sprite=<null>, color=#00000000, type=Simple, raycast=False
@@ -273,4 +221,7 @@
 [Main Camera]
   AudioListener
   Camera: ortho=True, size=5, fov=60, depth=-1, clear=SolidColor, bg=#000000FF
+  Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
+[SummonManagerGO]
+  SummonManager
   Transform: pos=0,0,0, rotQ=(0,0,0,1), scale=1,1,1
