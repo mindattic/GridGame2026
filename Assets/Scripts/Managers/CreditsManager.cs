@@ -70,6 +70,8 @@ public class CreditsManager : MonoBehaviour
             + $"<size=10%>https://sagak-art-pururu.itch.io/24pxminicharacters</size>{NL}{NL}"
             + $"<size=150%>Hannemann - Virtual Joystick</size>{NL}"
             + $"<size=10%>https://hannemann.itch.io/virtual-joystick-pack-free</size>{NL}{NL}"
+            // US-137: full audio attribution, data-driven — add entries in Data/AudioCredits.cs.
+            + Scripts.Data.AudioCredits.BuildCreditsSection(NL)
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"

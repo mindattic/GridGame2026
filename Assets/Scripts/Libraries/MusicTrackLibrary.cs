@@ -56,28 +56,31 @@ namespace Scripts.Libraries
             }
         }
 
-        /// <summary>Load.</summary>
+        /// <summary>Load. Keys are the MusicDirector track keys ("Title"/"Vendor"/"Battle"/
+        /// "Victory"/"Defeat") — the Jukebox tries an authored track first and falls back to
+        /// ChiptuneBank when a key has none (US-137 / GG-A5). Every authored track's license
+        /// + attribution lives in <see cref="Scripts.Data.AudioCredits"/>, rendered in the
+        /// Credits scene — add a row there whenever a track is added here.</summary>
         private static void Load()
         {
             if (isLoaded) return;
             musicTracks = new Dictionary<string, AudioClip>
             {
-                { "MelancholyLull", AssetHelper.LoadAsset<AudioClip>("MusicTracks/MelancholyLull") }
+                { "Title",   AssetHelper.LoadAsset<AudioClip>("MusicTracks/TellerOfTheTales") },
+                { "Vendor",  AssetHelper.LoadAsset<AudioClip>("MusicTracks/MinstrelGuild") },
+                { "Battle",  AssetHelper.LoadAsset<AudioClip>("MusicTracks/Crusade") },
+                { "Victory", AssetHelper.LoadAsset<AudioClip>("MusicTracks/Triumph") },
+                { "Defeat",  AssetHelper.LoadAsset<AudioClip>("MusicTracks/MelancholyLull") },
             };
             isLoaded = true;
         }
 
-        /// <summary>
-        /// Retrieves a single music track asynchronously by key.
-        /// </summary>
+        /// <summary>The authored track for a MusicDirector key, or null (quietly) when the key
+        /// has no authored bed — the Jukebox then falls back to generated chiptune.</summary>
         public static AudioClip Get(string key)
         {
             if (!isLoaded) Load();
-            if (musicTracks.TryGetValue(key, out var clip))
-                return clip;
-
-            Debug.LogError($"Music track '{key}' not found in MusicTrackRepo.");
-            return null;
+            return !string.IsNullOrEmpty(key) && musicTracks.TryGetValue(key, out var clip) ? clip : null;
         }
     }
 }

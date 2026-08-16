@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 012ba7235f1c3d043823c4e8437189ef
+    m_Address: SoundEffects/Vefects_SFX_Fire_Big_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0251a78b56c0a0f4f8b6f75ef07571c3
     m_Address: Myrmidon
     m_ReadOnly: 0
@@ -50,6 +55,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 048ba7ddb11987440b8eef17436b6d74
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Snow_Storm_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0594f86f76c8df14caf73629192aab26
+    m_Address: SoundEffects/SFX_Arrow_Shot_Hit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0651fe5df9e061b479db0f0db6deb8f5
     m_Address: Paladin
     m_ReadOnly: 0
@@ -57,6 +72,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 06cb1203e0f062847bd9dc1e1ed3e3eb
     m_Address: PandaGirl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0717c388e689c0c478891f3462e9e266
+    m_Address: SoundEffects/Portrait
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -75,6 +95,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a72938603bb2e84b8e838d07ed2fa52
+    m_Address: SoundEffects/Vefects_SFX_GunShot_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b01310010891094699fd9afe1dd969f
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Sand_Storm_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b09a0b248cfebc419f3e8c61051dbf6
+    m_Address: SoundEffects/Vefects_SFX_Orb_Water_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0c81b7f692e708440b7073be556a0887
     m_Address: Sprites/Spells/MassHeal
     m_ReadOnly: 0
@@ -82,6 +117,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e72edbbb10f9184b8361896f0d83055
     m_Address: Dervish
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0eb96697cc6f1014f824ba34f8e63ab3
+    m_Address: SoundEffects/Vefects_SFX_Shrapnel_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0fc17236f67ee6b4b93e09eee791ee4e
+    m_Address: SoundEffects/Vefects_SFX_Impact_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -100,6 +145,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12026bc9a21b1094585436da1e8c480a
+    m_Address: SoundEffects/Vefects_SFX_Poison_Puff_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 13fb54c22afaad447ba4f152864e608c
     m_Address: Sister
     m_ReadOnly: 0
@@ -107,6 +157,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 155d36fd68efdf045829faace0d66a46
     m_Address: WarChief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15c4c05e917ae594d997d4d93fedea31
+    m_Address: SoundEffects/SFX_Explosion_Ice
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -140,6 +195,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a21c3fb53f06a6468862c892d6e7625
+    m_Address: SoundEffects/Vefects_SFX_Shrapnel_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1aa4c21b174363345ac76e3276e18fa0
+    m_Address: SoundEffects/Vefects_SFX_Slash_Classic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c8c805addb594b4997fbc1cb52ccdb7
+    m_Address: SoundEffects/SFX_Bomb_Bounce
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1cb35f7cbd05cf2479e40045961cc294
+    m_Address: SoundEffects/SFX_Demo_FireBall
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ce61d19ba8b0c44491022c570912df2
     m_Address: Phantom
     m_ReadOnly: 0
@@ -147,6 +222,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1d3585346d230254bb3da9638f2742dc
     m_Address: Templar03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f21a62824862a949a79017ee04089ac
+    m_Address: MusicTracks/Triumph
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -175,6 +255,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 218eb0551f6dcfa448cde94dfb92d698
+    m_Address: SoundEffects/SFX_Buff_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 21e1c8f30cdf7484ebf1e4f59e8a717e
     m_Address: Lurker00
     m_ReadOnly: 0
@@ -185,8 +270,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22333ae2b8afc0240bee138760768c40
+    m_Address: SoundEffects/Vefects_SFX_Shrapnel_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23a0dbf98120a4346b5ed20940149a00
+    m_Address: SoundEffects/SFX_Lightning_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 23b08ec5bb7666e4e941da216cd85c1c
     m_Address: Frog00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23ed0b75854ec2443ac83dfe524cd1aa
+    m_Address: SoundEffects/Heal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 240f9af032a6d394a8606eead675513a
+    m_Address: SoundEffects/Vefects_SFX_Slash_Fire
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -212,6 +317,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 27ef9f99da2012e43a5591c4f27a6e08
     m_Address: Cyclops06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2acb1f09df74a6646b0bd817b6f3e1c6
+    m_Address: SoundEffects/SFX_Vefects_Level_Up_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b1c412db4a43e44aadb409153489f21
+    m_Address: SoundEffects/Vefects_SFX_Smoke_Poison_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b698d0a70244194baf325314c6b855e
+    m_Address: SoundEffects/Slash06
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -245,6 +365,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 319961673d6e92b4483cca7ed8b4f95b
+    m_Address: SoundEffects/Vefects_SFX_Loot_Rare_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3254f1a14b41b69489d31e26344d8016
     m_Address: Captain
     m_ReadOnly: 0
@@ -257,6 +382,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 33577a238575de4429ce50e40241bf34
     m_Address: Sprites/Spells/Slow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3444a5bf4b39c6c4d9435eb34496fd8e
+    m_Address: SoundEffects/Move04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -290,8 +420,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 388f35b1a513bd14d94f83918607fa10
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Hit_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 388fc641f09e87641bbe22efa9e0cd9e
     m_Address: Ghost
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 392320453da1f6b4881da0a03f842fb9
+    m_Address: SoundEffects/SFX_Pick_Up
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3989b987d2b839448a485c420a838652
+    m_Address: SoundEffects/Vefects_SFX_Fire_Burst_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 399ad94a0473980449a31be84f318918
+    m_Address: SoundEffects/Slash02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -300,13 +450,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c36d176c81626541a9d6d07546e1a3b
+    m_Address: SoundEffects/SFX_Vefects_Level_Up_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e60821c1de4d25418e59c6026acaca4
+    m_Address: SoundEffects/Vefects_SFX_Item_Epic_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3eb1ace197e3e55449917de4001b6299
     m_Address: Thief
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f8feb85c7ab6924694cdacde17e5cf7
+    m_Address: SoundEffects/Vefects_SFX_Charge_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4310ae8b2c1fa964187f76e379d335bd
+    m_Address: SoundEffects/Vefects_SFX_Orb_Poison_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43b8e4913a755114ca1536665cf6c3a3
+    m_Address: SoundEffects/Vefects_SFX_Fire_Small_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 440ed6b695e95684385f5ce22e29fa47
     m_Address: Sprites/Timeline/ActorTagIcons/Elemental
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 447e97f44e7d0fd4eb6ddec82c319992
+    m_Address: SoundEffects/SFX_FireBig_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44eba7ca8fbbd3340b0be1ed9622d0c7
+    m_Address: SoundEffects/Move05
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -325,8 +510,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b17ce71db473104ba443ddcfe82f910
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Puff_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b28c5c347f8d254db419105b4385b7a
     m_Address: Materials/SpriteUnlitDefault
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b2d4196af9881b46b18b39f7f78f15f
+    m_Address: SoundEffects/SFX_Bomb_Launch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b4969b0c245adb45a833cd0c1efb8e1
+    m_Address: SoundEffects/SFX_Gun_Shot_Impact
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -335,8 +535,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4bcf02c046dfced4687aa5f42534ea16
+    m_Address: SoundEffects/Vefects_SFX_Dust_Puff_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4cbff7d2d1e709e4a959a1726bcdd250
     m_Address: Fencer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d1d04697c36664478df734fcea554c9
+    m_Address: SoundEffects/SFX_Vefects_Level_Up_03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -355,6 +565,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 514021757893bcc4c8e160f33c837d6a
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Projectile_Loop_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 52a4dcfa1a4f08d438901430a6117cf2
     m_Address: ShieldMaiden
     m_ReadOnly: 0
@@ -362,6 +577,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 536943cbb712b304e8fab33faf1abddd
     m_Address: Ritualist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5533f461de377ff4fba7d83b296f91a1
+    m_Address: SoundEffects/Vefects_SFX_Poison_Puff_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -380,6 +600,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 561d4ba8e9fabb543a0998dc07c15b4d
+    m_Address: SoundEffects/Vefects_SFX_Item_Legendary_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 56b08ac261f969d45ba82a61909bbc5e
     m_Address: Bruiser
     m_ReadOnly: 0
@@ -387,6 +612,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5720882a0e529b94fb881e8ec34ddacf
     m_Address: MarshShambler00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58a047619b7c41845a8aeaa47cee56bd
+    m_Address: SoundEffects/Move00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -410,8 +640,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b8b38e976406184d84cc11541835e7b
+    m_Address: SoundEffects/Move02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c17928f3e5be8842a977d793720632b
     m_Address: Scorpion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ce8d6c3b95b1624f8e73c1306a21ae1
+    m_Address: SoundEffects/Vefects_SFX_Impact_Blood_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -427,6 +667,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5e5e4c74409a8a44e933d784aee70fc6
     m_Address: Cyclops01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f415884d28eb2f48878fc94784c273f
+    m_Address: SoundEffects/SFX_Demo_Gun_Shot
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -455,6 +700,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 637de542947c55b47bb071b190dcebd0
+    m_Address: SoundEffects/Vefects_SFX_Smoke_Classic_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 638061a09d305ad42b5b3b59806f2aec
     m_Address: Speedster
     m_ReadOnly: 0
@@ -462,6 +712,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64cd3b68c25c89c4796e2b7180a62b6b
     m_Address: Hag02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64f5bf581e632ee40a4b43308fa486f1
+    m_Address: SoundEffects/NextTurn
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -485,6 +740,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 683f1cbe1e1b30a49b5f90aa7f6cb84d
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Classic_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6895a8cc98e7e334897d44f67697fd6a
     m_Address: Soldier03
     m_ReadOnly: 0
@@ -497,6 +757,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6abf684d9701e2b4c967aa68cda0a2e4
     m_Address: Ganger04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b3a53966de3bf54b8fcd332390e0f07
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Sound_Storm_L
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -515,8 +780,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70ce488998a1eec47b5865002f84dccc
+    m_Address: SoundEffects/Move03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70daf228913dc394a8df08f1eaaa41cc
     m_Address: Undead00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72709874135c74e49a984f1cef4b73bc
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Magic_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 758339350a68d5a4fbfbd7206376f55d
+    m_Address: SoundEffects/Slash04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -525,13 +805,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76079cc78fbdb4a4897133aa64ced989
+    m_Address: SoundEffects/Select
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77da6ad20dfc9174aaa0314f52eafea0
+    m_Address: SoundEffects/Vefects_SFX_Fire_Charge_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7858a62f4b5e8c84a977db68ed13db2c
     m_Address: VisualEffects/ShockBolt
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79153e85b25004b4aa25ffc54829db31
+    m_Address: SoundEffects/Slash00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79d0b5ca3f96f21459562a8e03cda876
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Aqua_Storm_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a121435da2fee6479e5c533dd6604bc
+    m_Address: SoundEffects/Vefects_SFX_Lightning_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a29d580e9a268e48ba7239bb01fe28a
     m_Address: Toad00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a6ad08faa107a242b7e25dce4a16081
+    m_Address: SoundEffects/Vefects_SFX_Dust_Puff_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd25cb59cfec274ab281a34d5da044c
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Hit_03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -560,6 +875,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ef7f9e4cab05ac43baf29a23d341c1d
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Fire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f46379d95dc1cd40a8ad9e0dabeaa7d
     m_Address: Raider
     m_ReadOnly: 0
@@ -570,13 +890,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81573894d556b094aabe935d639baeb6
+    m_Address: SoundEffects/SFX_Explosion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 826b88fe53a09bf41b5d9845f788e44c
     m_Address: Frog02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 828b641198d9cdb4aa8becf1db8d4037
+    m_Address: SoundEffects/Slash01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8328b4d4f3f7c6a49be228e3a1234079
     m_Address: Hag00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 855f803447a7f8f4a9ba42fcc9f297ce
+    m_Address: SoundEffects/Vefects_SFX_Orb_Psychic_Loop
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -610,8 +945,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88a7e6f964ae7b84baa612d0cc643443
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Magic_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ac82d2689a0c7a4a99eb589841d487e
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Devil_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b2cf1e395da8c94cbbe71f11c7f001c
     m_Address: Oni01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c0f40d9d2aac9242bf5b7f70cb431f2
+    m_Address: SoundEffects/Move01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -625,8 +975,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d3eb3c8421a3fd44825151619ab1350
+    m_Address: MusicTracks/TellerOfTheTales
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ec1c1e48eeb9ff49b95a7c4e0b3368c
+    m_Address: SoundEffects/Vefects_SFX_Dust_Puff_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f9c27c737a2ff747807d525b3178e2c
+    m_Address: SoundEffects/SFX_Arrow_Shot_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90b358482bf999f49a6ce2e59d57639d
+    m_Address: SoundEffects/SFX_Demo_Bomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90d9a1ecbf7dbee498b29f2290be589a
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Toxic_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9269238740f94b24f96fad657016cabe
     m_Address: WhiteWitch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 941ad2f9d2d831a47aed5b396c6f6e97
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Darkness_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 944fc21edac9d7b47b9c38f0c6ae4671
+    m_Address: SoundEffects/SFX_Heal_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94bc8546fe222904c9fd6e0438c1b6fc
+    m_Address: SoundEffects/SFX_FireSmall_L
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -650,6 +1040,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 980b61aa720be2242bff8dcba06f3571
+    m_Address: SoundEffects/SFX_BasicAttack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99021fed4cdb0cc4ca20657636188bd6
     m_Address: Drifter
     m_ReadOnly: 0
@@ -657,6 +1052,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 990cb8462ada9fb449e80d874a46f485
     m_Address: VisualEffects/ScanRays
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9941028263cee734cacbfc3397fc42eb
+    m_Address: SoundEffects/Vefects_SFX_Slash_Poison
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -670,8 +1070,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b0b6ffe25ebbcb4f823bac6dc9ec79e
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Explosion_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9b97e3dde827b6945874bca23901ff71
     m_Address: Ganger03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bd48373d0616e44aaadbabebca96c7e
+    m_Address: SoundEffects/Vefects_SFX_GunShot_03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -715,13 +1125,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a44f2f375374ce0449a253e1fb69dd58
+    m_Address: SoundEffects/Vefects_SFX_Item_Rare_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a514eb4fab727e144bfd058bb10f86c5
     m_Address: CyberZombie03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6b7e778ced91a4439ec10820d51d0b3
+    m_Address: SoundEffects/SFX_FireBall_Hit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a6c31d98b76980741b50253793fc61d7
     m_Address: Sprites/Spells/Steal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6de7f6a947afcc488dc16cdf428d55d
+    m_Address: SoundEffects/Vefects_SFX_Charge_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -735,8 +1160,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a86b5bc6deef07042bf24eb377b94537
+    m_Address: MusicTracks/MelancholyLull
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a8ffd1bd7287602408d42fc7baa72b00
     m_Address: SteppinRazor01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9d4a085f430e5f428b6a057d28304e6
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Poison
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa54b23a22ae34a489ba5c76969f76ff
+    m_Address: SoundEffects/Defeat
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -760,6 +1200,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af0e33a1b1f847f4f80e106592282d96
+    m_Address: SoundEffects/SFX_FireMedium_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af38aba6bf0e928418a6176c54d7820b
     m_Address: SandMaw
     m_ReadOnly: 0
@@ -780,6 +1225,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b013a2c121b73894cba95e15ab84b0e1
+    m_Address: SoundEffects/SFX_Buff_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0ac77ee4981d344fbe6ca95958657a7
     m_Address: Hag01
     m_ReadOnly: 0
@@ -787,6 +1237,26 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b374acad88e1eeb4a8a739b1d36e8856
     m_Address: Cyclops02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3de44ee747bcc447bfd2a61ee03c3c9
+    m_Address: SoundEffects/Vefects_SFX_GunShot_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4997f33c1896274c984f48cb0e1b22d
+    m_Address: SoundEffects/Click
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b66f229c49a87474bbf83fb351db91de
+    m_Address: SoundEffects/SFX_FireBall_Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7540a7cbeb5b6f4caed12f1cbbff06a
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Magic_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -810,13 +1280,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ffdc07e1e3ed845838454d2fde076e
+    m_Address: SoundEffects/Rumble
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9b93ea1e892aaa41b8f01077c4eb667
+    m_Address: SoundEffects/SFX_Pick_Up_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba0eb995e9ab2e84dbf22087be11a534
     m_Address: Sprites/Timeline/ActorTagIcons/Aquatic
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba5d0c2ad7755984981d61271dfeb081
+    m_Address: SoundEffects/SFX_Gun_Shot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: baa7ec4fe6c12d04685a4fbdfa834943
     m_Address: Sprites/Actor/Thumbnails/thumbnail-fade
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: baaa47e767670434995bf6542801d12d
+    m_Address: SoundEffects/SFX_Heal_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbb0e91035e649240bace55137e26bd0
+    m_Address: SoundEffects/Vefects_SFX_Poison_Puff_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -835,6 +1330,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc63c82a84cfd0d46a9c012bba93b0e9
+    m_Address: SoundEffects/Vefects_SFX_Item_Unique_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bdb49062979d5f14ca582fbe450c22c7
     m_Address: SteppinRazor02
     m_ReadOnly: 0
@@ -842,6 +1342,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bdcc922b173276e49b3ff73224259277
     m_Address: Skelepede00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bde5a11e6a94d6644b54cc27e26ab423
+    m_Address: SoundEffects/SFX_Lightning_Hit
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -870,6 +1375,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1421ec50e73c12459ea9ec02809de30
+    m_Address: MusicTracks/Crusade
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c22cb3b5e901fec4f80d3910ea5fda00
     m_Address: CeramicKnight04
     m_ReadOnly: 0
@@ -895,13 +1405,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c70b2952693e5f54f809b94998925d05
+    m_Address: SoundEffects/Vefects_SFX_Loot_Common_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7d57550becb1ff44a737a0cf6ed9788
     m_Address: TreeGolem06
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9062e41a99f83d4c83cb0e76d4c0a84
+    m_Address: SoundEffects/SFX_FireBall_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c91e02962bf08a6479d2c02b81f9b4bf
     m_Address: CombatFeedIcons
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9ec4c77b9312c5419e661edb5a3edf7
+    m_Address: SoundEffects/SFX_Bomb_Cast
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -932,6 +1457,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd0bad8f8a09f84429ded45a5e3bd44d
     m_Address: Wolf03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd1aa738dcc809748ba263497b163462
+    m_Address: SoundEffects/Slide
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -985,6 +1515,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7a586bb4e90a4f41a6870985114f924
+    m_Address: SoundEffects/Vefects_SFX_Loot_Legendary_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d839661aecfc68149823b266daf69d1b
     m_Address: Sprites/Spells/Meteor
     m_ReadOnly: 0
@@ -1000,13 +1535,58 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db8231501116cb04290b3ed54ff277cf
+    m_Address: SoundEffects/SFX_Bomb_Explosion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbc2af4b7bdceb7409ba0e26f4cef022
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Projectile_Loop_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbe1ac64408d6b64ea802bcc798ad55b
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Explosion_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc0e2c64c40fd5c4d8684e13d714d350
     m_Address: Striker
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dddeaa2d4e1fd2147b6f97e48cf8e3d0
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Projectile_Loop_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de0ebaf8af9004247966ca72792875a8
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Cursed_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df0e70e286d64db43bdfcbf80847f015
+    m_Address: SoundEffects/Vefects_SFX_Fire_Medium_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df6453c7c68d2694dbd71512e234e9de
+    m_Address: SoundEffects/SFX_Debuff_Cast
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e017683fe7a09b54eaa3e589c0075850
+    m_Address: SoundEffects/Vefects_SFX_Loot_Uncommon_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e102844aa2988194a8cda1e37e62a45c
     m_Address: Sprites/HealthBar/health-bar-back-3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2ace617606080345a481c4f2fc966b9
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Hit_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1030,6 +1610,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3eac243ea9324045bb430632f689c3d
+    m_Address: SoundEffects/SFX_Bomb_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e41ad6102273ead4fa02d24cfdfc43c7
     m_Address: Assassain
     m_ReadOnly: 0
@@ -1045,8 +1630,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5da21e1dd73c1d45a39d5b9b91575d8
+    m_Address: SoundEffects/Slash03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e61841d3e59f89d4caf454e7b2b324ee
     m_Address: Fighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e730c3c03091a2e49a3cce227adb89dc
+    m_Address: SoundEffects/Death
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e78ee39c4d8316c4999ad3df556acdf3
+    m_Address: SoundEffects/Vefects_SFX_Lightning_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e79916dd3c45d32498dc10be254c166d
+    m_Address: SoundEffects/Vefects_SFX_Impact_Magic_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1055,8 +1660,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e82aa751c1523b546b4499a93ec37e02
+    m_Address: SoundEffects/Vefects_SFX_Item_Uncommon_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9b9cf17913042c4098a4a73fd7c89d7
     m_Address: YellowNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea221d54331b0264a8ea1819632c1c45
+    m_Address: MusicTracks/MinstrelGuild
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1105,6 +1720,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0633d3872efeb6418fa499976f6a443
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Psychic_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f163fd56e0a41b54b8725fadee6c23df
+    m_Address: SoundEffects/SFX_Demo_Lightning
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1c634c06d6a41542a3c565e7f29045d
+    m_Address: SoundEffects/Vefects_SFX_Loot_Epic_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f31e740b9e92f914f803b59aaa890e32
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Thunder_Storm_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f37ed818f85ffba458f280788d9ff707
     m_Address: Slime03
     m_ReadOnly: 0
@@ -1112,6 +1747,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f3af790074342ad46b3deb1e410d7998
     m_Address: Materials/RadialFill
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4132b52ebf29a14ea411f624b9bf314
+    m_Address: SoundEffects/Vefects_SFX_Loot_Unique_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4633d7034cf09f40a897c4acb49454e
+    m_Address: SoundEffects/SFX_Lightning_Launch
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1125,6 +1770,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6dcf327a82f0614d8028a2deb096ade
+    m_Address: SoundEffects/Slash05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f750e4142fffc7d4ea1cf58fa42b06eb
     m_Address: WildChild
     m_ReadOnly: 0
@@ -1135,8 +1785,43 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f92055867267d65458c3bbd8c7cf1d90
+    m_Address: SoundEffects/Vefects_SFX_Item_Common_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f92a7dcedf7367b4d975628d9c0c007d
+    m_Address: SoundEffects/SFX_Demo_Arrow_Shot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f99be86c795a0c241a32f0fa422ef2e0
     m_Address: Sprites/Mana/orb-glass
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa19fe10008be7e419cfea1d4f8be98e
+    m_Address: SoundEffects/SFX_Debuff_Loop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb276463bd6b0464ab1822cc7937587d
+    m_Address: SoundEffects/SFX_Dash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb300897b0f18be4db2834d1c93652ff
+    m_Address: SoundEffects/Vefects_SFX_Explosion_Classic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc32ab59afd3cfc468728618369233da
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Golden_Sand_Storm_L
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fca4d588fd01c7440a4943e1ed2bb154
+    m_Address: SoundEffects/SFX_Smoke_Bombs_Fire_Storm_L
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -1145,8 +1830,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fddf4ae90b536f0468f1caa7ba9e80ab
+    m_Address: SoundEffects/Vefects_SFX_Liquid_Hit_04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fe0ab6ba96c0d134bb9b0ef3893b04a1
     m_Address: CyberZombie04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe79495325781994f99af02eac97381e
+    m_Address: SoundEffects/Victory
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

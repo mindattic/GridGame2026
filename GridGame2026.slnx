@@ -1,7 +1,7 @@
 ﻿<Solution>
   <Project Path="Scripts.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Tests.EditMode.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Tests.PlayMode.csproj" />
 </Solution>

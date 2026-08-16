@@ -53,7 +53,9 @@ namespace Scripts.Managers
             if (string.IsNullOrEmpty(trackKey)) { music.Stop(); currentTrack = null; return; }
             if (currentTrack == trackKey && music.isPlaying) return;
             currentTrack = trackKey;
-            music.clip = ChiptuneBank.Music(trackKey);
+            // US-137: authored royalty-free track first (MusicTrackLibrary, credited in the
+            // Credits scene); generated chiptune only as the never-silent fallback.
+            music.clip = MusicTrackLibrary.Get(trackKey) ?? ChiptuneBank.Music(trackKey);
             music.Play();
         }
 

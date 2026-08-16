@@ -14,12 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: MusicTracks
   m_GUID: 96b8f93a155a15449b5b01aec6cce2b7
-  m_SerializeEntries:
-  - m_GUID: a86b5bc6deef07042bf24eb377b94537
-    m_Address: MusicTracks/MelancholyLull
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
   m_SchemaSet:
