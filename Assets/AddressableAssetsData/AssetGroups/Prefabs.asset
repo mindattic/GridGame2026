@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: Prefabs
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   m_GroupName: Prefabs
   m_GUID: 764698fc62482f24687b22443d200806
   m_SerializeEntries:
@@ -33,4 +33,6 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: 3582481a90b3a0d4fbf90292cf0ed81d, type: 2}
+    - {fileID: 11400000, guid: b23490e0a2d44e544a7e28061877508a, type: 2}
