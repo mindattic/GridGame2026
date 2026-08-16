@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
 using Scripts.Data.Items;

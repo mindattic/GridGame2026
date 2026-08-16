@@ -56,6 +56,14 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     private static readonly object objLock = new object();
     private bool isPersistent = false;
 
+    /// <summary>True while a live (not-yet-destroyed) instance is cached. NEVER auto-creates,
+    /// unlike <see cref="instance"/> — so it is the safe probe for OnDestroy/teardown paths.
+    /// Touching <c>instance</c> (via the g. switchboard) during scene unload resurrects the
+    /// singleton mid-teardown: the getter finds the cached instance destroyed, the active scene
+    /// is still "Game", and it news up a fresh GameManager whose Awake needs a camera that no
+    /// longer exists — leaking objects into the next scene. Guard with this first.</summary>
+    public static bool HasLiveInstance => _instance != null && !isQuitting;
+
     /// <summary>
     /// Public property to access the singleton instance.
     /// Creates or finds instance if needed.

@@ -122,7 +122,9 @@ public class TargetModeOverlay : MonoBehaviour
         // Unsubscribe or the InputManager singleton keeps firing into this destroyed
         // instance on the next play session (MissingReferenceException with domain
         // reload disabled). Initialize()'s dedup only protects the live instance.
-        if (g.InputManager != null)
+        // HasLiveInstance guard: during scene unload the g. switchboard would auto-create
+        // a fresh GameManager mid-teardown (Camera.main exception + leaked objects).
+        if (GameManager.HasLiveInstance && g.InputManager != null)
             g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 

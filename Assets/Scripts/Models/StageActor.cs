@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using static Scripts.Instances.Actor.ActorLayer;
 using UnityEngine.UIElements;
-using static UnityEditor.FilePathAttribute;
 using UnityEngine.TextCore.Text;
 using Scripts.Libraries;
 using Scripts.Helpers;

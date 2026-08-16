@@ -31,6 +31,7 @@ public static class StageSelectBuilder
 {
     private const string SceneName = "StageSelect";
     private const float HeaderH = 96f;
+    private const float BountyBarH = 84f;
 
     public static void Build()
     {
@@ -59,16 +60,10 @@ public static class StageSelectBuilder
 
     private static void BuildHeader(RectTransform canvas, ref int created, ref int found)
     {
-        var header = UiKit.Header(canvas, "Select Stage");
+        // GG-A3: the Hub launcher scene is retired — the VendorNavBar hamburger (built below
+        // in Build()) is the one way to reach vendors, so the header carries no Shop button.
+        UiKit.Header(canvas, "Select Stage");
         created++;
-
-        // US-112: Hub button — top-right of header → Hub vendor launcher.
-        var hubBtn = UiKit.Button(header, "HubButton", "Shop", UiKit.UiButtonStyle.Primary, 26f);
-        hubBtn.anchorMin = new Vector2(1f, 0.5f);
-        hubBtn.anchorMax = new Vector2(1f, 0.5f);
-        hubBtn.pivot = new Vector2(1f, 0.5f);
-        hubBtn.sizeDelta = new Vector2(200f, 56f);
-        hubBtn.anchoredPosition = new Vector2(-20f, 0f);
     }
 
     private static void BuildBody(RectTransform canvas, ref int created, ref int found)
@@ -83,6 +78,7 @@ public static class StageSelectBuilder
 
         BuildStageList(body, ref created, ref found);
         BuildDetailPanel(body, ref created, ref found);
+        BuildBountyBar(body, ref created, ref found);
     }
 
     private static void BuildStageList(RectTransform body, ref int created, ref int found)
@@ -90,7 +86,7 @@ public static class StageSelectBuilder
         var stageList = UiKit.ScrollList(body, "StageList");
         stageList.anchorMin = new Vector2(0f, 0f);
         stageList.anchorMax = new Vector2(0.48f, 1f);
-        stageList.offsetMin = Vector2.zero;
+        stageList.offsetMin = new Vector2(0f, BountyBarH + 12f); // clear the BountyBar strip
         stageList.offsetMax = new Vector2(-12f, 0f);
         created++;
     }
@@ -101,7 +97,7 @@ public static class StageSelectBuilder
         var panelRT = UiKit.Panel(body, "DetailPanel");
         panelRT.anchorMin = new Vector2(0.50f, 0f);
         panelRT.anchorMax = new Vector2(1f, 1f);
-        panelRT.offsetMin = Vector2.zero;
+        panelRT.offsetMin = new Vector2(0f, BountyBarH + 12f); // clear the BountyBar strip
         panelRT.offsetMax = Vector2.zero;
         created++;
 
@@ -122,6 +118,38 @@ public static class StageSelectBuilder
         confirm.anchorMin = new Vector2(0.55f, 0.04f);
         confirm.anchorMax = new Vector2(0.95f, 0.16f);
         confirm.offsetMin = Vector2.zero; confirm.offsetMax = Vector2.zero;
+    }
+
+    /// <summary>Bottom strip of Body: the single-slot bounty board (browse → Accept →
+    /// kill-progress → Claim gold). Runtime state/wiring lives in StageSelectManager;
+    /// BountyHelper/BountyLibrary hold the contract logic.</summary>
+    private static void BuildBountyBar(RectTransform body, ref int created, ref int found)
+    {
+        var bar = UiKit.Panel(body, "BountyBar");
+        bar.anchorMin = new Vector2(0f, 0f);
+        bar.anchorMax = new Vector2(1f, 0f);
+        bar.pivot = new Vector2(0.5f, 0f);
+        bar.offsetMin = Vector2.zero;
+        bar.offsetMax = new Vector2(0f, BountyBarH);
+        created++;
+
+        var label = UiKit.Label(bar, "BountyLabel", "", 22f);
+        label.anchorMin = new Vector2(0f, 0f);
+        label.anchorMax = new Vector2(0.60f, 1f);
+        label.offsetMin = new Vector2(16f, 10f);
+        label.offsetMax = new Vector2(-8f, -10f);
+
+        var cycle = UiKit.Button(bar, "CycleButton", "Next", UiKit.UiButtonStyle.Secondary, 20f);
+        cycle.anchorMin = new Vector2(0.61f, 0.15f);
+        cycle.anchorMax = new Vector2(0.76f, 0.85f);
+        cycle.offsetMin = Vector2.zero;
+        cycle.offsetMax = Vector2.zero;
+
+        var action = UiKit.Button(bar, "ActionButton", "Accept", UiKit.UiButtonStyle.Primary, 20f);
+        action.anchorMin = new Vector2(0.78f, 0.15f);
+        action.anchorMax = new Vector2(0.97f, 0.85f);
+        action.offsetMin = Vector2.zero;
+        action.offsetMax = Vector2.zero;
     }
 
     // ---------- Primitives ----------

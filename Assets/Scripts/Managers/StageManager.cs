@@ -96,17 +96,20 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var latestSave = ProfileHelper.CurrentProfile.LatestSave;
-        if (latestSave == null)
+        // CurrentSave is the live save the rest of this class reads (RestartStage included);
+        // reading LatestSave here diverged when the player loaded an older save file.
+        var currentSave = ProfileHelper.CurrentProfile.CurrentSave;
+        if (currentSave == null)
         {
             Debug.LogError("No saved game state found.");
             return;
         }
 
         // Begin a new XP session with current party participants
-        var participants = ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Select(m => m.CharacterClass);
+        var participants = currentSave.Party.Members.Select(m => m.CharacterClass);
         ExperienceTracker.StartSession(participants);
         LootTracker.StartSession();
+        GoldTracker.StartSession();
 
         if (IsEndless)
         {
@@ -114,8 +117,10 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        currentStage = StageLibrary.Get(latestSave.Stage.CurrentStage);
+        Debug.Log($"[StageManager] Initialize: stage='{currentSave.Stage.CurrentStage}' wave={currentSave.Stage.CurrentWave}");
+        currentStage = StageLibrary.Get(currentSave.Stage.CurrentStage);
         RestartStage();
+        Debug.Log("[StageManager] Initialize complete");
     }
 
     #endregion
@@ -189,6 +194,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void RestartStage()
     {
+        Debug.Log("[StageManager] RestartStage: resetting managers");
         // Reset everything for a new stage.
         currentWave = ProfileHelper.CurrentProfile.CurrentSave.Stage.CurrentWave;
         g.ActorManager.Clear();
@@ -206,6 +212,7 @@ public class StageManager : MonoBehaviour
         ThreatTracker.Clear();
 
         // Show persistent hero actors from ProfileHelper
+        Debug.Log("[StageManager] RestartStage: spawning heroes");
         foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
         {
             // Derive level from TotalXP in save
@@ -216,6 +223,7 @@ public class StageManager : MonoBehaviour
             SpawnActor(stageActor, rebuildTimeline: false);
         }
 
+        Debug.Log("[StageManager] RestartStage: loading wave");
         // Load the wave based on currentWave.
         if (currentStage.Waves != null && currentStage.Waves.Count > 0)
         {

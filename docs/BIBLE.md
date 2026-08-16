@@ -2032,28 +2032,27 @@ EnemyPlanner now treats it as a Rusher-Beast: closes distance, swings in melee, 
 The game's beat-to-beat shape. **V1 target loop** (the *connective membrane*):
 
 ```
-TitleScreen
-   ↓
+SplashScreen → TitleScreen
+   ↓ (Continue / New Game → ProfileCreate → Title)
 ProfileSelect / ProfileCreate / SaveFileSelect
    ↓
-StageSelect  ◀════════════════════════════════╗   (scrollable level list, §22.3)
-   │  ↕ "Hub" button                          ║
-   │  Hub.unity — grid of vendor buttons       ║   (§25.0; each button → a vendor
-   │   → Vendor / Blacksmith / Alchemist /     ║    scene, "Back" returns to Hub)
-   │     Equip / Party / Abilities → back      ║
-   ↓                                           ║
+StageSelect  ◀════════════════════════════════╗   (scrollable level list, §22.3;
+   │  ↕ VendorNavBar (hamburger)              ║    BountyBar contract strip, GG-A4)
+   │   → Vendor / Blacksmith / Alchemist /     ║   (the same NavBar rides every vendor
+   │     Equip / Party / Abilities → back      ║    scene — hop freely, "Campaign" = home)
+   ↓  Confirm stage                            ║
 Game.unity — clear ALL waves of the stage      ║   (waves spawn in sequence)
    ↓                                           ║
-PostBattleScreen — XP + items + gold awarded   ║
-   ↓                                           ║
+PostBattleScreen — XP + items + GOLD awarded   ║   (gold = coins collected in-battle,
+   ↓                                           ║    bridged by GoldTracker — GG-A3)
 └════════ back to StageSelect (next stage now unlocked, on top) ═╝
 ```
 
 - **Stage = waves.** A stage runs its waves in sequence (`StageLibrary`); clearing the **last** wave ends the battle → PostBattle. Beating a stage unlocks the next, which appears **on top** of the list (§22.3).
-- **Reward beat.** PostBattle awards XP, items, and gold, commits the save, then returns to StageSelect.
-- **Hub is a launcher, not a mega-screen.** From StageSelect the player can open **`Hub.unity`** — a simple **grid of buttons**, one per vendor, that forwards into that vendor's own scene (§25.0). It replaces the floating `VendorNavBar` as the primary way to reach vendors. (Long-term the vendor *UIs* may compose into one screen — §25.9 — but that's separate from this lightweight launcher.)
+- **Reward beat.** PostBattle awards XP, items, and gold (coins collected in-battle, committed by `GoldTracker` — GG-A3), commits the save, then returns to StageSelect.
+- **VendorNavBar is the vendor navigation** (GG-A3). The floating hamburger dropdown on StageSelect and every vendor scene hops directly between vendors; its "Campaign" entry returns home. `Hub.unity` (the old grid-of-buttons launcher) is retired from the flow — soft-disabled, files kept. (Long-term the vendor *UIs* may compose into one screen — §25.9.)
 - **Failure path**: all heroes die in Game → PostBattleScreen with "Defeat" → StageSelect (no permadeath V1; the run can be retried).
-- **No Overworld.** There is no world-map / exploration scene. Stage navigation is the scrollable level list in StageSelect (§22.3). (A stray `Overworld.unity` file may linger in the project; it is dead — ignore it.)
+- **No Overworld.** There is no world-map / exploration scene. Stage navigation is the scrollable level list in StageSelect (§22.3). (`Overworld.unity` lingers on disk but is out of the build list — dead, ignore it.)
 
 `SceneHelper.Fade.ToX()` / `SceneHelper.Switch.ToX()` are the canonical scene-switch entry points.
 
@@ -2063,7 +2062,7 @@ Each scene transition has a **side-effect contract** — what state must be comm
 
 | From → To | Commit before | Hydrate on arrival |
 |---|---|---|
-| `Game` → `PostBattleScreen` | `BattleResult` (winners, XP earned, gold dropped, items rolled) into a static carrier `BattleResultCarrier.Pending` | PostBattle reads `Pending`, plays reveal anim, then calls `SaveStateService.ApplyBattleResult(...)` (XP add, HP carry-over, inventory add) |
+| `Game` → `PostBattleScreen` | The static session-tracker trio carries the result (GG-A3): `ExperienceTracker` (XP gains), `LootTracker` (drop-table items), `GoldTracker` (coins collected this battle) — all sessions started in `StageManager.Initialize()` | `PostBattleManager` plays the XP phase, then the loot phase (Gold row first), commits via `*.CommitToInventory()` + `ProfileHelper.Save(true)` |
 | `PostBattleScreen` → vendor (any) | Saved profile already has the new XP/HP/inventory | Vendor scene Awake: `PlayerInventory.HydrateFromCurrentSave()` |
 | Vendor → Vendor (via NavBar) | Active vendor commits its inventory mutations to `ProfileHelper.CurrentProfile.CurrentSave` | New vendor hydrates from same save |
 | Vendor → `StageSelect` | Commit (same as above) | StageSelect reads `StageProgress` for unlocks |
@@ -2072,7 +2071,7 @@ Each scene transition has a **side-effect contract** — what state must be comm
 ### 22.2 Failure path detail
 
 When all heroes hit `HP <= 0`:
-1. `TurnManager.CheckBattleEnd()` detects party wipe → posts `BattleResult{Outcome=Defeat}` to `BattleResultCarrier`.
+1. `StageManager.CheckBattleLost()` detects party wipe → queues `BattleLostSequence` → PostBattleScreen.
 2. `PostBattleScreen` shows "Defeat" banner, plays sad fanfare, and does **not** apply XP or rewards (per V1 — defeat is a retry, not a permanent loss).
 3. Heroes' HP is restored to MaxHP (since defeat doesn't carry wounds).
 4. "Continue" → `SceneHelper.Fade.ToStageSelect()`.
@@ -2278,15 +2277,27 @@ Battle-start grant: `ManaPoolManager.ApplyBattleStartManaOrbs` (run once at batt
 
 ### 24.9 Currency
 
-Gold is the universal currency. Lives on `SaveState`. Coin pickups via `CoinManager`. Vendor purchases / Blacksmith forging / Alchemist brewing deduct gold; selling at vendor returns ~50% `BaseCost`.
+Gold is the universal currency, and the save carries **two distinct fields** (GG-A3):
+
+- **`Inventory.Gold`** — the wallet. The only field vendors read/spend: purchases / Blacksmith
+  forging & repair / Alchemist brewing deduct it; selling at vendor returns ~50% `BaseCost`;
+  bounty claims credit it.
+- **`Global.TotalCoins`** — the lifetime pickup ticker behind the in-battle CoinCounter HUD.
+  A stat, never spent, never reset.
+
+The bridge between them is **`GoldTracker`**: it snapshots `TotalCoins` at battle start and commits
+the per-battle delta (the coins the player actually collected via `CoinManager` pickups) into
+`Inventory.Gold` at the PostBattle loot phase, shown as the leading "Gold +N" row.
 
 ## 25. The Hub: Vendor Scenes
 
-Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `PlayerInventory` hydration. The old *monolithic* `Hub.unity` was deleted in the scene-per-section migration ([[project_scene_per_section_migration]]); `Hub.unity` is now **re-created as a lightweight launcher** (§25.0), not a mega-screen.
+Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `PlayerInventory` hydration. The old *monolithic* `Hub.unity` was deleted in the scene-per-section migration ([[project_scene_per_section_migration]]); a lightweight launcher rebuild (§25.0) was later **retired in favor of the VendorNavBar** (GG-A3).
 
-### 25.0 Hub.unity — the vendor launcher (grid of buttons)
+### 25.0 Vendor navigation — VendorNavBar (Hub launcher retired per GG-A3)
 
-`Hub.unity` / `HubBuilder.cs` / `HubManager.cs`. The hub is a **plain grid of buttons**, one per vendor — nothing more. Reached from StageSelect via a "Hub" button; each button fades into that vendor's own scene; the vendor's "Back" returns to the Hub.
+**Canonical navigation:** the floating **`VendorNavBar`** hamburger dropdown, built into StageSelect and every vendor scene (`VendorNavBarBuilder.Build`). It hops directly between Vendor / Alchemist / Blacksmith / Party / Abilities / Equip, and its "Campaign" entry returns to StageSelect.
+
+**Retired:** the `Hub.unity` grid-of-buttons launcher below (kept on disk per HOUSE-LAW-2, out of the build list — historical):
 
 ```
 ┌──────────── The Hub ────────────┐
@@ -2298,7 +2309,7 @@ Six dedicated scenes, each with its own `<X>Builder.cs` + `<X>Manager.cs` + `Pla
 ```
 
 - **Layout:** a `GridLayoutGroup` of equal-size buttons, themed via `HubTheme` (navy panels, gold accents), under the §26.2 CanvasScaler + AspectGuard. Each button: vendor icon + name.
-- **Navigation:** button → `SceneHelper.Fade.To<Vendor>()`; this is the primary path to vendors and **replaces the floating `VendorNavBar`** as the main navigation. (The NavBar may stay as an in-vendor quick-jump, but the Hub grid is the canonical launcher.)
+- ~~**Navigation:** button → `SceneHelper.Fade.To<Vendor>()`; this is the primary path to vendors and **replaces the floating `VendorNavBar`** as the main navigation.~~ **Superseded by GG-A3** — the VendorNavBar is the primary (and only) vendor navigation; the Hub grid is retired.
 - **No shopping logic in the Hub** — it only routes. All buy/sell/craft happens in the destination vendor scene.
 
 ### 25.1 Vendor (general merchant) — the standardized shop pattern

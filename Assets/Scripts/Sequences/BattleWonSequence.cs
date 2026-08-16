@@ -37,12 +37,11 @@ namespace Scripts.Sequences
     /// 2. Show victory announcement
     /// 3. Play victory SFX
     /// 4. Wait for SFX duration
-    /// 5. Set next scene to Hub
-    /// 6. Fade to PostBattleScreen
-    /// 
+    /// 5. Fade to PostBattleScreen
+    ///
     /// POST-BATTLE:
-    /// PostBattleScreen awards XP, shows level-ups, then
-    /// transitions to the Hub.
+    /// PostBattleScreen awards XP + loot + gold, shows level-ups, then
+    /// returns to StageSelect (the campaign gateway; Hub is retired — GG-A3).
     /// 
     /// RELATED FILES:
     /// - VictoryAnnouncement.cs: Victory UI

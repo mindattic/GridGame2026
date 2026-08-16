@@ -399,7 +399,9 @@ namespace Scripts.Helpers
 
         public static class StageSelect
         {
-            public const string Title = "Canvas/Title";
+            // US-123 moved scene titles into the UiKit.Header container ("Header/Title");
+            // managers that still looked for the pre-header "Canvas/Title" found nothing.
+            public const string Title = "Canvas/Header/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
         }
@@ -439,7 +441,8 @@ namespace Scripts.Helpers
             public const string Panel = Keyboard + "/Panel";
             public const string Prompt = Panel + "/Prompt";
             public const string InputBackdrop = Panel + "/InputBackdrop";
-            public const string InputLabel = Panel + "/InputLabel";
+            // KeyboardDialogFactory nests the label INSIDE the backdrop (see its hierarchy doc).
+            public const string InputLabel = InputBackdrop + "/InputLabel";
             public const string KeysContainer = Panel + "/KeysContainer";
 
             // Row 1: digits

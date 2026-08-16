@@ -6,36 +6,19 @@
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
-  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1170,2532, match=0.5
   GraphicRaycaster
-  Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
+  Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
   RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [BackButton] (inactive) layer=UI
     Button
     CanvasRenderer
-    Image: sprite=<null>, color=#333333CC, type=Simple, raycast=True
+    Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
     RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=-435,1220, size=48,48, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Back', size=24, color=#FFFFFFFF, align=Center, raycast=True
-  [CutoutOverlay] layer=UI
-    CutoutOverlay
-    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [Bottom] (inactive) layer=UI
-      CanvasRenderer
-      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.15384, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
-    [Top] layer=UI
-      CanvasRenderer
-      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.153839, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
-      [CenterPane] layer=UI
-        RectTransform: anchor=(0.3333333,0)-(0.6666667,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [LeftPane] layer=UI
-        RectTransform: anchor=(0,0)-(0.3333333,1), pos=0,0, size=0,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [RightPane] layer=UI
-        RectTransform: anchor=(0.6666667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      TextMeshProUGUI: font=Outfit, text='Back', size=24, color=#FFFFFFFF, align=Center, raycast=True
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance

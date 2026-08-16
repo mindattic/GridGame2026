@@ -1,6 +1,5 @@
 using Scripts.Data.Actor;
 using Scripts.Helpers;
-using Sentry.Protocol;
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;

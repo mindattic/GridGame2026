@@ -21,7 +21,7 @@
   [LoreText] layer=UI
     CanvasRenderer
     RectTransform: anchor=(0.5,0)-(0.5,1), pos=0,499.92, size=1024,-2506, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    TextMeshProUGUI: font=Attic, text='', size=24, color=#FFFFFFFF, align=Top, raycast=True
+    TextMeshProUGUI: font=Outfit, text='', size=24, color=#FFFFFFFF, align=Top, raycast=True
   [ProgressPanel] layer=UI
     CanvasGroup
     CanvasRenderer
@@ -47,7 +47,7 @@
     [ProgressLabel] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,0.5)-(0.5,0.5), pos=0,-50, size=200,50, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Loading...', size=24, color=#FFFFFFFF, align=Top, raycast=True
+      TextMeshProUGUI: font=Outfit, text='Loading...', size=24, color=#FFFFFFFF, align=Top, raycast=True
 [EventSystem]
   EventSystem: m_DragThreshold=10, m_FirstSelected=→<null>, m_sendNavigationEvents=True
   StandaloneInputModule: m_CancelButton='Cancel', m_ForceModuleActive=False, m_HorizontalAxis='Horizontal', m_InputActionsPerSecond=10, m_RepeatDelay=0.5, m_SubmitButton='Submit', m_VerticalAxis='Vertical'

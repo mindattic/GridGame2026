@@ -4,7 +4,7 @@ AUTHORITATIVE -- full detail in docs/BIBLE.md
 # GridGame2026 (GG) -- Bible Digest
 
 > Source of truth for what GridGame2026 IS, is NOT, and the laws that keep it coherent.
-> Generated 2026-06-09. Regenerate with: tools/codex.ps1 digest.
+> Generated 2026-08-15. Regenerate with: tools/codex.ps1 digest.
 
 ## 1. The one sentence {#GG-§1}
 
@@ -114,7 +114,7 @@ For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossar
 <a id="gg-appendix-a"></a>
 
 ## Status index (from docs/USER_STORIES.md)
-- done: 50  partial: 0  planned: 0  cut: 0
+- done: 57  partial: 0  planned: 3  cut: 0
 
 ## Latest amendment
 - GG-A1 — Adopt the MindAttic Codex documentation standard (supersedes the root `game_bible.md` + `user_stories.md`)

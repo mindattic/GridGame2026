@@ -59,7 +59,18 @@ public static class StartSceneAuthority
             return;
         }
 
-        ApplyPlayModeStartScene(path, sceneName);
+        // During a Test Runner session (-runTests) or any batchmode run, forcing
+        // playModeStartScene would hijack the test framework's own init scene — Play Mode
+        // would boot the real game (Splash → Title) and every PlayMode test would hang
+        // waiting for control it never gets. Tests load scenes by name themselves; only
+        // the build-settings order matters there.
+        bool testOrBatchRun = Application.isBatchMode ||
+            System.Environment.GetCommandLineArgs().Any(a =>
+                string.Equals(a, "-runTests", System.StringComparison.OrdinalIgnoreCase));
+
+        if (!testOrBatchRun)
+            ApplyPlayModeStartScene(path, sceneName);
+
         ApplyBuildSettingsOrder(path, sceneName);
     }
 

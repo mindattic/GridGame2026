@@ -910,8 +910,8 @@ public static class GameBuilder
         rt_Slide1.sizeDelta = new Vector2(0f, 0f);
         rt_Slide1.anchoredPosition = new Vector2(0f, 0f);
         go_Slide1.AddComponent<CanvasRenderer>();
-        // TODO: unresolved script GUID=1344c3c82d62a2a41a3576d8abb8e3ea — component skipped.
-        go_Slide1.AddComponent<Scripts.Canvas.ScrollingRawImage>();
+        // ScrollingRawImage removed: the RawImage it scrolls was an unresolved-GUID component
+        // that never made it into the builder, so the scroller only logged errors on Start.
         Undo.RegisterCreatedObjectUndo(go_Slide1, "Create Slide1");
 
         // --- Slide3 ---
@@ -925,8 +925,7 @@ public static class GameBuilder
         rt_Slide3.sizeDelta = new Vector2(0f, 0f);
         rt_Slide3.anchoredPosition = new Vector2(0f, 0f);
         go_Slide3.AddComponent<CanvasRenderer>();
-        // TODO: unresolved script GUID=1344c3c82d62a2a41a3576d8abb8e3ea — component skipped.
-        go_Slide3.AddComponent<Scripts.Canvas.ScrollingRawImage>();
+        // ScrollingRawImage removed: see Slide1 note.
         Undo.RegisterCreatedObjectUndo(go_Slide3, "Create Slide3");
 
         // --- Slide2 ---
@@ -940,8 +939,7 @@ public static class GameBuilder
         rt_Slide2.sizeDelta = new Vector2(0f, 0f);
         rt_Slide2.anchoredPosition = new Vector2(0f, 0f);
         go_Slide2.AddComponent<CanvasRenderer>();
-        // TODO: unresolved script GUID=1344c3c82d62a2a41a3576d8abb8e3ea — component skipped.
-        go_Slide2.AddComponent<Scripts.Canvas.ScrollingRawImage>();
+        // ScrollingRawImage removed: see Slide1 note.
         Undo.RegisterCreatedObjectUndo(go_Slide2, "Create Slide2");
 
         // --- Inner ---

@@ -44,6 +44,11 @@ public static class DebugWindowBootstrapper
     /// <summary>Handles the scene loaded event.</summary>
     private static void OnSceneLoaded()
     {
+        // Never auto-open an EditorWindow during batchmode / -runTests sessions: with no
+        // editor GUI pump, GetWindow wedges the main loop and the whole test run freezes
+        // (observed 2026-08-15 — PlayMode suite hung 40 min on a floating "Debug Window").
+        if (Application.isBatchMode || IsTestRun()) return;
+
         EnsureSceneSubscription();
         EnsurePlayModeSubscription();
 
@@ -136,11 +141,22 @@ public static class DebugWindowBootstrapper
         RemoveUpdateSubscription();
     }
 
+    /// <summary>True when this editor session is a Test Runner invocation (-runTests).</summary>
+    private static bool IsTestRun()
+    {
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+            if (string.Equals(args[i], "-runTests", System.StringComparison.OrdinalIgnoreCase))
+                return true;
+        return false;
+    }
+
     /// <summary>Safe open window.</summary>
     private static void SafeOpenWindow()
     {
         try
         {
+            if (Application.isBatchMode || IsTestRun()) return;
             if (Application.isPlaying && IsActiveSceneGame())
                 DebugWindow.ShowWindow();
         }

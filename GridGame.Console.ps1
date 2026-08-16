@@ -14,7 +14,10 @@ $root = $PSScriptRoot
 if ([string]::IsNullOrWhiteSpace($root)) { $root = (Get-Location).Path }
 $backupBase = "R:\Backup\GridGame"
 $repoUrl = "https://github.com/mindattic/GridGame2026.git"
-$unityEditor = "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe"
+# Derive the editor version from ProjectVersion.txt (authoritative) instead of hardcoding it.
+# A hardcoded version silently breaks on every editor upgrade (see .githooks/pre-push).
+$editorVersion = ((Get-Content (Join-Path $root "ProjectSettings\ProjectVersion.txt") | Select-Object -First 1) -replace '^m_EditorVersion:\s*', '').Trim()
+$unityEditor = "C:\Program Files\Unity\Hub\Editor\$editorVersion\Editor\Unity.exe"
 
 # === Helpers ===============================================================
 

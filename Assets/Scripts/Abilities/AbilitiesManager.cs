@@ -194,16 +194,37 @@ namespace Scripts.Vendor.Abilities
             for (int i = consumablesContent.childCount - 1; i >= 0; i--)
                 Object.Destroy(consumablesContent.GetChild(i).gameObject);
 
-            // Live inventory pulled from the save — same source of truth as Vendor / Alchemist.
-            var save = ProfileHelper.CurrentProfile?.CurrentSave;
-            if (save?.Inventory?.Items == null) return;
-
-            foreach (var entry in save.Inventory.Items)
+            // Section 1: the hero's own active skills & spells (ActorData.Abilities) —
+            // assignable to bar slots by name; combat resolves them via AbilityLibrary.Get
+            // (HeroLoadout.LoadFromSave handles the IsAbility slot kind already).
+            if (hero != CharacterClass.None)
             {
-                if (entry.Count <= 0) continue;
-                var def = ItemLibrary.Get(entry.ItemId);
-                if (def == null || def.Type != ItemType.Consumable) continue;
-                CreateConsumableRow(def, entry.Count);
+                var actorData = ActorLibrary.Get(hero);
+                var known = actorData?.Abilities;
+                if (known != null && known.Count > 0)
+                {
+                    CreateSectionHeader("Skills & Spells");
+                    foreach (var ability in known)
+                    {
+                        if (ability == null || !ability.IsActive) continue;
+                        CreateAbilityRow(ability);
+                    }
+                }
+            }
+
+            // Section 2: consumables from the live inventory — same source of truth as
+            // Vendor / Alchemist.
+            var save = ProfileHelper.CurrentProfile?.CurrentSave;
+            if (save?.Inventory?.Items != null)
+            {
+                CreateSectionHeader("Items");
+                foreach (var entry in save.Inventory.Items)
+                {
+                    if (entry.Count <= 0) continue;
+                    var def = ItemLibrary.Get(entry.ItemId);
+                    if (def == null || def.Type != ItemType.Consumable) continue;
+                    CreateConsumableRow(def, entry.Count);
+                }
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(consumablesContent);
@@ -276,6 +297,76 @@ namespace Scripts.Vendor.Abilities
             tmp.color = HubTheme.TextLight;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.enableWordWrapping = true;
+            tmp.richText = true;
+            tmp.raycastTarget = false;
+        }
+
+        /// <summary>Non-clickable section divider in the assignables list.</summary>
+        private void CreateSectionHeader(string text)
+        {
+            var go = new GameObject("Section_" + text);
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(consumablesContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
+            rt.sizeDelta = new Vector2(0f, 44f);
+
+            go.AddComponent<CanvasRenderer>();
+            var le = go.AddComponent<LayoutElement>();
+            le.minHeight = 44f; le.preferredHeight = 44f; le.flexibleWidth = 1f;
+
+            var tmp = go.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
+            tmp.text = text;
+            tmp.fontSize = 22;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.color = HubTheme.Accent;
+            tmp.alignment = TextAlignmentOptions.MidlineLeft;
+            tmp.raycastTarget = false;
+        }
+
+        /// <summary>Clickable row for one of the hero's known active abilities.</summary>
+        private void CreateAbilityRow(Ability ability)
+        {
+            var go = new GameObject("Ability_" + ability.name);
+            go.layer = LayerMask.NameToLayer("UI");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(consumablesContent, false);
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
+            rt.sizeDelta = new Vector2(0f, 56f);
+
+            go.AddComponent<CanvasRenderer>();
+            var bg = go.AddComponent<Image>();
+            bg.color = HubTheme.RowBg;
+            bg.raycastTarget = true;
+
+            var btn = go.AddComponent<Button>();
+            btn.targetGraphic = bg;
+            var captured = ability;
+            btn.onClick.AddListener(() => OnAbilityClicked(captured));
+
+            var le = go.AddComponent<LayoutElement>();
+            le.minHeight = 56f; le.preferredHeight = 56f; le.flexibleWidth = 1f;
+
+            var labelGO = new GameObject("Label");
+            labelGO.layer = LayerMask.NameToLayer("UI");
+            var labelRT = labelGO.AddComponent<RectTransform>();
+            labelRT.SetParent(rt, false);
+            labelRT.anchorMin = Vector2.zero; labelRT.anchorMax = Vector2.one;
+            labelRT.offsetMin = new Vector2(16f, 4f); labelRT.offsetMax = new Vector2(-16f, -4f);
+            labelGO.AddComponent<CanvasRenderer>();
+            var tmp = labelGO.AddComponent<TextMeshProUGUI>();
+            tmp.font = UiFonts.Body;
+            string cost = ability.ManaCost > 0 ? $"    <color=#7db8e8>{ability.ManaCost} mana</color>" : "";
+            tmp.text = $"{ability.name}{cost}";
+            tmp.fontSize = 22;
+            tmp.color = HubTheme.TextLight;
+            tmp.alignment = TextAlignmentOptions.MidlineLeft;
+            tmp.enableWordWrapping = false;
             tmp.richText = true;
             tmp.raycastTarget = false;
         }
@@ -356,6 +447,42 @@ namespace Scripts.Vendor.Abilities
             Refresh();
             // suppress unused warning
             _ = cleared;
+        }
+
+        /// <summary>Assigns a known skill/spell to the first empty bar slot (by name — the
+        /// IsAbility slot kind; combat resolves it via AbilityLibrary.Get at loadout time).</summary>
+        private void OnAbilityClicked(Ability ability)
+        {
+            if (hero == CharacterClass.None || ability == null) return;
+            var slots = SlotsFor(hero);
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                if (!slots[i].IsEmpty && slots[i].AbilityName == ability.name)
+                {
+                    if (flashLabel != null)
+                        flashLabel.text = $"<color=#e5c878>{ability.name} is already on the bar.</color>";
+                    return;
+                }
+            }
+
+            int firstEmpty = -1;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                if (slots[i].IsEmpty) { firstEmpty = i; break; }
+            }
+            if (firstEmpty < 0)
+            {
+                if (flashLabel != null)
+                    flashLabel.text = "<color=#e57878>All slots full — clear one first.</color>";
+                return;
+            }
+
+            slots[firstEmpty] = new AbilityBarSlotSave(abilityName: ability.name, itemId: null);
+            Persist();
+            if (flashLabel != null)
+                flashLabel.text = $"<color=#66cc88>Assigned {ability.name} to slot {firstEmpty + 1}.</color>";
+            Refresh();
         }
 
         private void OnConsumableClicked(ItemDefinition def)

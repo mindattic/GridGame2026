@@ -1,7 +1,6 @@
 // --- File: Assets/Scripts/Instances/SynergyLine/SynergyStrand.cs ---
 
 using UnityEngine;
-using UnityEditor;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
 using Scripts.Data.Config;

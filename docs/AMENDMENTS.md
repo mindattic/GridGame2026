@@ -69,3 +69,134 @@ reposition while a spell loads preserves the real-time tension of the timeline.
 **Code.** `Canvas/SpellCastBar.cs` (travels a sprite icon instead of shrinking a fill),
 `Factories/SpellCastBarFactory.cs` (builds the icon from `SpriteLibrary.SpellIcons`),
 `Canvas/TimelineBarInstance.cs` (`CreateCastLaneIcon` — geometry for the below-rows lane).
+
+## GG-A3 — The game loop is StageSelect-centric: Hub retired, boot = SplashScreen, coins bridge into gold
+
+**What changed.** Four connected corrections that make the macro loop (§22) actually playable
+end-to-end, superseding the bible's Hub-centric prose:
+
+1. **Boot scene is `SplashScreen`** (`StartSceneConfig.StartScene`). It had drifted to `"Hub"`,
+   which skipped the entire front door (Splash → Title → Profile → StageSelect) and silently
+   auto-created a "Dev" profile. TitleScreen **Continue now routes to StageSelect** (was: straight
+   to Game, which dropped fresh profiles into a random `Test-*` stage) —
+   `StageSelectManager.ConfirmLaunch` is the only surface that sets `Stage.CurrentStage/CurrentWave`
+   and the post-battle return scene.
+2. **Hub.unity is retired from the flow** (soft-disabled per HOUSE-LAW-2: removed from
+   `EditorBuildSettings.scenes` and the StageSelect "Shop" button deleted; files remain). The
+   **`VendorNavBar` hamburger is the primary — and only — vendor navigation**, on StageSelect and
+   every vendor scene. This supersedes §25.0's claim that the Hub "replaces the floating
+   VendorNavBar as the primary way to reach vendors" (it was the other way around in practice:
+   nothing routed back to the Hub). `Overworld.unity` (already cut per §3) also left the build list.
+3. **PostBattle → StageSelect is canonical** (was already true in code; comments/§22 diagram said
+   "Hub"). The reward pipeline is the static session-tracker trio
+   **`ExperienceTracker` / `LootTracker` / `GoldTracker`** consumed by `PostBattleManager` — the
+   bible's `BattleResultCarrier` / `SaveStateService.ApplyBattleResult` classes were never built and
+   are hereby struck.
+4. **Battle coins now become spendable gold.** Coin pickups increment the lifetime ticker
+   (`save.Global.TotalCoins`) which vendors never read; vendors spend `save.Inventory.Gold`.
+   Nothing bridged them — the CoinCounter racked up coins the shop never saw. New
+   **`GoldTracker`** (mirror of `LootTracker`) snapshots the ticker at battle start and commits the
+   per-battle delta into `Inventory.Gold` at the PostBattle loot phase, which now leads with a
+   "Gold +N" row. Gold-per-stage = coins actually collected fighting it (no invented flat bonus);
+   the lifetime ticker itself is untouched (it is a stat, not a wallet — supersedes §24.9's implied
+   direct pickup→gold flow).
+
+**Why.** Play-testing found "a bunch of half-baked parts": the shipped boot scene bypassed the whole
+front door, StageSelect was unreachable before a first battle, and the economy loop was severed. The
+automated test harness (see GG-A4) reproduced all of it headless.
+
+**Code.** `StartSceneConfig.cs`, `TitleScreenManager.cs`, `StageSelectBuilder.cs` /
+`StageSelectManager.cs`, `ProjectSettings/EditorBuildSettings.asset`, `Managers/GoldTracker.cs`
+(new), `StageManager.cs` (also fixed: `Initialize()` read `LatestSave` while `RestartStage()` read
+`CurrentSave` — divergence when loading older saves), `PostBattleManager.cs`.
+
+## GG-A4 — Automated verification harness; bounty board on StageSelect; skills/spells slottable in Abilities
+
+**What changed.**
+
+1. **The project now verifies headless.** Game code moved into an assembly definition
+   (`Assets/Scripts/Scripts.asmdef`, name "Scripts") so test assemblies can reference it —
+   supersedes GG-A1's note that verification is play-test-only and §6's "headless Unity is
+   unlicensed" (licensing works; verified). Suites: `Assets/Tests/EditMode` (pure logic: formulas,
+   pincer rules, save round-trip, campaign unlocks, gold bridge, bounty flow, ability slotting) and
+   `Assets/Tests/PlayMode` (scene-boot smokes for every live scene + battle-loop scenarios on the
+   new deterministic `Test-Harness` stage). Runner: `tools/run-tests.ps1` (3-signal gating: results
+   XML + zero `error CS` + exit code). Production hooks: `Scripts/Helpers/TestHooks.cs`,
+   `RNG.Seed/Unseed`, `FolderHelper.Folder.TestProfileRootOverride` (tests never touch real saves).
+   Editor hooks that hijacked test runs now stand down during batch/`-runTests` sessions:
+   `StartSceneAuthority` (playModeStartScene), `DebugWindowBootstrapper` (auto-opened an
+   EditorWindow that wedged the main loop), `CustomPlayBehaviour` (cancelled/re-entered play mode).
+2. **Bounty board (US backlog → built).** The fully-coded but unreachable bounty system
+   (`BountyHelper`/`BountyLibrary`/`BountyData_Hunts`) got its UI: a **BountyBar strip on
+   StageSelect** — browse the posted contracts, Accept (single active slot), watch kill progress
+   (`RecordKill` was already wired at enemy death), Claim gold + reward item.
+3. **Abilities scene slots skills/spells, not just consumables.** The assignables list now leads
+   with the hero's own active abilities (`ActorData.Abilities`), assigned by name via the existing
+   `AbilityBarSlotSave.AbilityName` path that combat already resolves
+   (`HeroLoadout.LoadFromSave` → `AbilityLibrary.Get`).
+
+**Why.** Owner directive 2026-08-15: complete the game to a working, showable proof of concept with
+automated verification as far as possible; wire the bounty system rather than delete it; make the
+RPG loadout loop real.
+
+**Code.** `Scripts.asmdef`, `Assets/Tests/**`, `tools/run-tests.ps1`, `TestHooks.cs`,
+`StageLibrary.cs` (`Test-Harness` fixture stage), `StageSelectBuilder.cs`/`StageSelectManager.cs`
+(BountyBar), `AbilitiesManager.cs` (Skills & Spells section), `Singleton.cs`
+(`HasLiveInstance` teardown-safe probe — fixes GameManager resurrection during scene unload).
+
+## GG-A5 — Minimal story crawl (partially reverses the §27 Dialog & Story cut); summon vendor; combat announcement feed
+
+**What changed.** Three player-facing additions for the proof-of-concept build (owner directive
+2026-08-15 evening):
+
+1. **Story crawl — the §27 cut is PARTIALLY reversed.** §3 / §27 cut Dialog & Story entirely
+   ("do not re-story"). The owner now wants a barebones plot: a **skippable text-crawl screen**
+   shown before selected stages — per-theme intro paragraphs, data-driven, nothing more. What
+   stays cut: the dialog system, character dialogue, branching, cutscenes, and the Overworld.
+   (US-131.)
+2. **Summon vendor.** Roster growth leaves the backlog: a NavBar-reachable vendor scene where the
+   player spends **gold** to recruit one of the built hero classes into the roster, with a rising
+   cost per hero owned. Deliberate purchase, not a pull — GG's "not a gacha" pillar stands.
+   (US-132.)
+3. **Combat announcement feed.** Every combat event (pincers, spells, supporter assists,
+   buff/status ticks, deaths, loot) narrates through the AnnouncementWindow as a scrolling feed —
+   "Paladin casts Heal", "Enemy bites Rogue; Rogue is poisoned" — with **inline icons via TMP
+   `<sprite>` tags** (class/spell/status sprite asset). Reinforces the effect-cadence rule: every
+   event announces. (US-133.)
+
+**Why.** The PoC bar is "a full loop, polished enough to show"; the owner enumerated the genre
+staples the demo must visibly have. Supporters remain passive-bonus-only for the PoC (active
+support abilities are a future story).
+
+**Code (planned).** New `StoryCrawl` scene + builder + data (US-131); new `Summon` scene +
+builder/manager + `VendorNavBar` entry (US-132); `AnnouncementWindow` feed mode + TMP sprite
+asset + combat-event call sites (US-133).
+
+## GG-A6 — Ability gating split (cooldowns / MP / stock) + time-banked orbs + progressive bar slots
+
+**What changed** (owner direction 2026-08-15, late session):
+
+1. **Three-way ability gating.** Skills are **innate and cooldown-gated** (new
+   `Ability.CooldownSeconds`, free to use); **Spells cost MP** from the shared orb bank
+   (unchanged, GG-LAW-6); **Items consume stock** from the shared inventory stack
+   (unchanged). Previously skills and spells both gated on mana. (US-141.)
+2. **Time-banking returns — as an orb mint (hybrid ruling).** The Phase-B orb-harvest economy
+   STAYS (pincer mints, interrupt mints, colors, wilds, 12-cap). ADDED: when the hero window
+   ends (an enemy icon reaches the trigger), the **unspent remainder of the window converts to
+   orbs** (rate designer-tuned, e.g. 1 orb per N seconds remaining) — deliberately ending your
+   window early is now a resource play. This revives the *fantasy* of the retired Bank button
+   without unwinding the orb economy. (US-142.)
+3. **Progressive ability-bar slots.** The 5-slot bar starts partially locked and unlocks with
+   campaign progress (max 5 — one clear button each). (US-143.)
+4. **Touch tooltips everywhere.** Dynamically generated press-hold tooltips for ability buttons
+   (name, description, cost/cooldown) and tap-info for heroes/enemies (stats/statuses), built on
+   `TooltipFactory` + `ActorPanel`. (US-144.)
+
+**Why.** Owner's combat-UX spec: each of the ≤5 buttons must be legible at a glance, resources
+must be readable (cooldown wheel vs orb cost vs stack count), and the timeline's tempo decisions
+should extend into the resource game.
+
+**Code (planned).** `Ability` (+CooldownSeconds, +UsesThisBattle stays), `AbilityButtonManager`
+(cooldown wheel/dim states), `TurnManager`/`TimelineBarInstance` (window-remainder measure at
+trigger), `ManaPoolManager` (mint path), `HeroEquipmentSave`/progression flag (slot unlocks),
+`TooltipFactory` call sites.

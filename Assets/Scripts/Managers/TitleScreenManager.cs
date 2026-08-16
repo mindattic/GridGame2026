@@ -57,11 +57,14 @@ public class TitleScreenManager : MonoBehaviour
         scene.FadeIn();
     }
 
-    /// <summary>Handles the continue button clicked event.</summary>
+    /// <summary>Handles the continue button clicked event. Routes through StageSelect — the
+    /// only surface that sets Stage.CurrentStage/CurrentWave and the post-battle return scene
+    /// (StageSelectManager.ConfirmLaunch); jumping straight to Game dropped fresh profiles
+    /// into a random Test-* stage.</summary>
     public void OnContinueButtonClicked()
     {
         ProfileHelper.CurrentProfile.CurrentSave = ProfileHelper.CurrentProfile.LatestSave;
-        scene.Fade.ToGame();
+        scene.Fade.ToStageSelect();
     }
 
     /// <summary>Handles the load game button clicked event.</summary>

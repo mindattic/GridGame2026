@@ -47,7 +47,7 @@
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Avenir, text='X', size=24, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='X', size=24, color=#FFFFFFFF, align=Center, raycast=True
     [CastButton] layer=UI
       Button
       CanvasRenderer
@@ -56,7 +56,7 @@
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Avenir, text='Ok', size=24, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Ok', size=24, color=#FFFFFFFF, align=Center, raycast=True
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0.5)-(0,0.5), pos=64,0, size=0,64, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
@@ -132,7 +132,7 @@
     CanvasRenderer
     Clock
     RectTransform: anchor=(0,0.5)-(0,0.5), pos=0,1100, size=280,32, pivot=0,1, rotQ=(0,0,0,1), scale=1,1,1
-    TextMeshProUGUI: font=LiberationSans SDF - Fallback, text='10:41 AM', size=24, color=#FFFFFFFF, align=Center, raycast=False
+    TextMeshProUGUI: font=Outfit, text='10:41 AM', size=24, color=#FFFFFFFF, align=Center, raycast=False
   [CoinCounter] layer=UI
     CoinCounter: glow=<null>, glowCurve=<null>, icon=<null>, value=<null>
     RectTransform: anchor=(0,1)-(1,1), pos=-402.37,-1200, size=-980,100, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
@@ -181,7 +181,7 @@
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=LiberationSans SDF, text='m_isRightToLeft: 0', size=24, color=#323232FF, align=Center, raycast=True
+      TextMeshProUGUI: font=Outfit, text='', size=24, color=#323232FF, align=Center, raycast=True
   [PauseMenu] layer=UI
     CanvasRenderer
     Image: sprite=Black32x32, color=#000000C4, type=Simple, raycast=False
@@ -300,15 +300,12 @@
       [Slide1] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
-        ScrollingRawImage: scrollFocus=(0,0)
       [Slide2] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
-        ScrollingRawImage: scrollFocus=(0,0)
       [Slide3] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
-        ScrollingRawImage: scrollFocus=(0,0)
   [Pointer] layer=UI
     CanvasGroup
     CanvasRenderer

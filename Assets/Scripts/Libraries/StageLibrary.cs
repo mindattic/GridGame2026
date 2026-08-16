@@ -555,6 +555,30 @@ namespace Scripts.Libraries
                         Waves = GenerateWaves(4, new List<CharacterClass> { CharacterClass.Slime00, CharacterClass.Scorpion, CharacterClass.Bat00 })
                     }
                 },
+                // Automated-test fixture: ONE wave, two weak enemies, fully hand-authored (no
+                // GenerateWaves RNG) so PlayMode battle-loop tests are deterministic and fast.
+                // Used by Assets/Tests/PlayMode/BattleLoopScenarioTests; not player-reachable
+                // (StageSelect lists campaign stages only).
+                { $"{Map.Test}-Harness", new Stage
+                    {
+                        Name = $"{Map.Test}-Harness",
+                        Description = "Test harness fixture",
+                        Biome = Biome.Field,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave
+                            {
+                                Actors = new List<StageActor>
+                                {
+                                    new StageActor { CharacterClass = CharacterClass.Slime00, Team = Team.Enemy },
+                                    new StageActor { CharacterClass = CharacterClass.Slime01, Team = Team.Enemy },
+                                }
+                            }
+                        }
+                    }
+                },
             };
 
             isLoaded = true;

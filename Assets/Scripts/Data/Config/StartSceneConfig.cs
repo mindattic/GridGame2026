@@ -16,7 +16,7 @@ namespace Scripts.Data.Config
     public static class StartSceneConfig
     {
         // START_SCENE_BEGIN â€” PS1 rewrites the single line below. Keep markers intact.
-        public const string StartScene = "Hub";
+        public const string StartScene = "SplashScreen";
         // START_SCENE_END
     }
 }

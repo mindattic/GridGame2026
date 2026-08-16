@@ -130,7 +130,9 @@ public class AbilityButtonManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (g.InputManager != null)
+        // HasLiveInstance guard: touching the g. switchboard during scene unload would
+        // auto-create a fresh GameManager mid-teardown (see Singleton.HasLiveInstance).
+        if (GameManager.HasLiveInstance && g.InputManager != null)
             g.InputManager.OnInputModeChanged -= OnInputModeChanged;
     }
 

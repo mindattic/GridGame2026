@@ -290,15 +290,16 @@ public class PostBattleManager : MonoBehaviour
         }
         ExperienceTracker.Clear();
 
-        // Transition to loot display phase
-        if (LootTracker.HasLoot)
+        // Transition to loot display phase (gold collected in-battle counts as loot too)
+        if (LootTracker.HasLoot || GoldTracker.Collected > 0)
         {
             ShowLootPhase();
         }
         else
         {
-            // No loot — go directly to next scene
+            // No loot and no gold — go directly to next scene
             LootTracker.Clear();
+            GoldTracker.Clear();
             SceneHelper.Fade.To(nextSceneName);
         }
     }
@@ -325,14 +326,21 @@ public class PostBattleManager : MonoBehaviour
         // Build loot header
         BuildLootHeader();
 
+        // Gold collected this battle leads the list (bridged into spendable Inventory.Gold)
+        if (GoldTracker.Collected > 0)
+        {
+            BuildLootRow($"Gold  +{HubTheme.FormatGold(GoldTracker.Collected)}", 1);
+        }
+
         // Build loot rows
         foreach (var loot in LootTracker.AllLoot)
         {
             BuildLootRow(loot.DisplayName, loot.Count);
         }
 
-        // Commit loot to inventory save data
+        // Commit loot + gold to inventory save data
         LootTracker.CommitToInventory();
+        GoldTracker.CommitToInventory();
         ProfileHelper.Save(true);
 
         // Show Done button (reuse Next button position or create new)
@@ -407,6 +415,7 @@ public class PostBattleManager : MonoBehaviour
     private void OnDone()
     {
         LootTracker.Clear();
+        GoldTracker.Clear();
 
         // After loot, return to the campaign gateway (StageSelect) post-slice 9.
         string destination = ExperienceTracker.NextSceneAfterPostBattleScreen;

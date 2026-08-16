@@ -71,6 +71,14 @@ static class RNG
     [ThreadStatic] private static System.Random _rng;
     private static System.Random Rng => _rng ??= new System.Random();
 
+    /// <summary>Seeds the thread-local RNG for deterministic automated-test runs. Production
+    /// code never calls this — unseeded, the stream stays time-based. Pair with <see cref="Unseed"/>
+    /// in test teardown so play sessions after a test run are unaffected.</summary>
+    public static void Seed(int seed) => _rng = new System.Random(seed);
+
+    /// <summary>Returns the thread-local RNG to its unseeded (time-based) state.</summary>
+    public static void Unseed() => _rng = null;
+
     #region Collection Selection
 
     /// <summary>

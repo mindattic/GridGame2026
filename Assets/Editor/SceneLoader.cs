@@ -1,3 +1,7 @@
+// DEAD CODE — superseded by Scripts.Utilities.SceneLoader (the config-driven loader the
+// LoadingScreen scene actually binds; see LoadingScreenBuilder.cs). This editor-assembly
+// duplicate is unreferenced and kept only per HOUSE-LAW-2 (soft-disable over delete).
+// Do not extend it; work in Assets/Scripts/Utilities/SceneLoader.cs instead.
 using System;
 using System.Collections;
 using TMPro;

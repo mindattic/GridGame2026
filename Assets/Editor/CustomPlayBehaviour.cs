@@ -33,6 +33,15 @@ public class CustomPlayBehaviour
 
     static CustomPlayBehaviour()
     {
+        // This hook CANCELS every play-mode entry and re-enters 0.15s later through its own
+        // state machine. That fights the Unity Test Framework (which owns play-mode entry
+        // during -runTests) and serves no purpose headless — stand down entirely there.
+        if (Application.isBatchMode) return;
+        var args = Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+            if (string.Equals(args[i], "-runTests", StringComparison.OrdinalIgnoreCase))
+                return;
+
         EditorApplication.playModeStateChanged += OnPlayModeStateChanging;
         EditorApplication.update += OnUpdate;
     }

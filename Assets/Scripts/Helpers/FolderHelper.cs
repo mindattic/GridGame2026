@@ -43,6 +43,11 @@ namespace Scripts.Helpers
             WebGL       | IndexedDB (no filesystem access)
             */
 
+            /// <summary>Test-only override: when set, <see cref="Profiles"/> resolves under this
+            /// root instead of Application.persistentDataPath, so automated tests never read or
+            /// write the player's real saves. Null/empty (the default) = production behavior.</summary>
+            public static string TestProfileRootOverride;
+
             public static string Profiles
             {
                 get
@@ -51,7 +56,10 @@ namespace Scripts.Helpers
                 Debug.LogError("File system operations are not supported on WebGL.");
                 return string.Empty;
 #else
-                    string path = Path.Combine(Application.persistentDataPath, "Profiles");
+                    string basePath = string.IsNullOrEmpty(TestProfileRootOverride)
+                        ? Application.persistentDataPath
+                        : TestProfileRootOverride;
+                    string path = Path.Combine(basePath, "Profiles");
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
 

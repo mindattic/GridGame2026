@@ -6,32 +6,19 @@
 [Canvas] layer=UI
   Canvas: mode=ScreenSpaceOverlay, order=0, layer=Default
   CanvasRenderer
-  CanvasScaler: mode=ScaleWithScreenSize, ref=1920,1080, match=0.5
+  CanvasScaler: mode=ScaleWithScreenSize, ref=1170,2532, match=0.5
   GraphicRaycaster
-  Image: sprite=GunMetal16x16, color=#FFFFFFFF, type=Simple, raycast=True
+  Image: sprite=<null>, color=#0F1424EB, type=Simple, raycast=True
   RectTransform: anchor=(0,0)-(0,0), pos=320,240, size=640,480, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-  [CutoutOverlay] layer=UI
-    CutoutOverlay
-    RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-    [Bottom] (inactive) layer=UI
-      CanvasRenderer
-      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,94.15384, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
-    [Top] layer=UI
-      CanvasRenderer
-      Image: sprite=Black32x32, color=#FFFFFFFF, type=Simple, raycast=False
-      RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,130.153839, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
-      [CenterPane] layer=UI
-        RectTransform: anchor=(0.3333333,0)-(0.6666667,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [LeftPane] layer=UI
-        RectTransform: anchor=(0,0)-(0.3333333,1), pos=0,0, size=0,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      [RightPane] layer=UI
-        RectTransform: anchor=(0.6666667,0)-(1,1), pos=0,0, size=0,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
   [FadeOverlay] layer=UI
     CanvasRenderer
     FadeOverlayInstance
     Image: sprite=Black32x32, color=#000000FF, type=Simple, raycast=True
     RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+  [GameTitle] layer=UI
+    CanvasRenderer
+    RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-160, size=900,140, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
+    TextMeshProUGUI: font=Attic, text='GRIDGAME', size=96, color=#FFC747FF, align=Center, raycast=False
   [Panel] layer=UI
     RectTransform: anchor=(0,0.5)-(1,0.5), pos=0,0, size=0,600, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
     VerticalLayoutGroup: spacing=8, align=MiddleCenter
@@ -42,66 +29,206 @@
     [ContinueButton @1] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Continue', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Continue', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [LoadGameButton @2] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Load Game', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Load Game', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [SettingsButton @3] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Settings', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Settings', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [CreditsButton @4] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Credits', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Credits', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [EndlessModeButton @5] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Endless Mode', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Endless Mode', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [PartyManagerButton @6] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Party Manager', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Party Manager', size=32, color=#FFFFFFFF, align=Center, raycast=False
     [BestiaryButton @7] layer=UI
       Button
       CanvasRenderer
-      Image: sprite=Back.512x128, color=#FFFFFFFF, type=Simple, raycast=True
-      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,128, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      Image: sprite=<null>, color=#242E47FF, type=Simple, raycast=True
+      RectTransform: anchor=(0,0)-(0,0), pos=0,0, size=512,96, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderBottom] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(1,0), pos=0,0, size=0,2, pivot=0.5,0, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderLeft] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,0)-(0,1), pos=0,0, size=2,0, pivot=0,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderRight] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(1,0)-(1,1), pos=0,0, size=2,0, pivot=1,0.5, rotQ=(0,0,0,1), scale=1,1,1
+      [BorderTop] layer=UI
+        CanvasRenderer
+        Image: sprite=<null>, color=#526694FF, type=Simple, raycast=False
+        LayoutElement: pref=(-1,-1), flex=(-1,-1)
+        RectTransform: anchor=(0,1)-(1,1), pos=0,0, size=0,2, pivot=0.5,1, rotQ=(0,0,0,1), scale=1,1,1
       [Label] layer=UI
         CanvasRenderer
         RectTransform: anchor=(0,0)-(1,1), pos=0,0, size=0,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-        TextMeshProUGUI: font=Attic, text='Bestiary', size=32, color=#FFFFFFFF, align=Center, raycast=True
+        TextMeshProUGUI: font=Outfit, text='Bestiary', size=32, color=#FFFFFFFF, align=Center, raycast=False
   [ProfileButton] layer=UI
     Button
     CanvasRenderer
@@ -110,7 +237,7 @@
     [Label] layer=UI
       CanvasRenderer
       RectTransform: anchor=(0.5,1)-(0.5,1), pos=0,-100, size=64,0, pivot=0.5,0.5, rotQ=(0,0,0,1), scale=1,1,1
-      TextMeshProUGUI: font=Attic, text='Profile', size=24, color=#FFFFFFFF, align=Center, raycast=True
+      TextMeshProUGUI: font=Outfit, text='Profile', size=24, color=#FFFFFFFF, align=Center, raycast=True
 [EventSystem]
   EventSystem: m_DragThreshold=10, m_FirstSelected=→<null>, m_sendNavigationEvents=True
   StandaloneInputModule: m_CancelButton='Cancel', m_ForceModuleActive=False, m_HorizontalAxis='Horizontal', m_InputActionsPerSecond=10, m_RepeatDelay=0.5, m_SubmitButton='Submit', m_VerticalAxis='Vertical'

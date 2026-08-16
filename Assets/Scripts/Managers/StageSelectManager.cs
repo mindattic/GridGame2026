@@ -48,15 +48,20 @@ namespace Scripts.Managers
         public const string DetailLabelName = "Body/DetailPanel/DetailLabel";
         public const string ConfirmButtonName = "Body/DetailPanel/ConfirmButton";
         public const string CancelButtonName = "Body/DetailPanel/CancelButton";
-        public const string HubButtonName = "Header/HubButton";
+        public const string BountyLabelName = "Body/BountyBar/BountyLabel";
+        public const string BountyCycleButtonName = "Body/BountyBar/CycleButton";
+        public const string BountyActionButtonName = "Body/BountyBar/ActionButton";
 
         private RectTransform listContent;
         private TextMeshProUGUI detailLabel;
         private Button confirmButton;
         private Button cancelButton;
-        private Button hubButton;
+        private TextMeshProUGUI bountyLabel;
+        private Button bountyCycleButton;
+        private Button bountyActionButton;
 
         private int selectedIndex = -1;
+        private int bountyBrowseIndex;
 
         private void Awake()
         {
@@ -125,8 +130,11 @@ namespace Scripts.Managers
             var cancelT = canvas.transform.Find(CancelButtonName);
             cancelButton = cancelT != null ? cancelT.GetComponent<Button>() : null;
 
-            var hubT = canvas.transform.Find(HubButtonName);
-            hubButton = hubT != null ? hubT.GetComponent<Button>() : null;
+            bountyLabel = FindLabel(canvas.transform, BountyLabelName);
+            var bountyCycleT = canvas.transform.Find(BountyCycleButtonName);
+            bountyCycleButton = bountyCycleT != null ? bountyCycleT.GetComponent<Button>() : null;
+            var bountyActionT = canvas.transform.Find(BountyActionButtonName);
+            bountyActionButton = bountyActionT != null ? bountyActionT.GetComponent<Button>() : null;
         }
 
         private void WireButtons()
@@ -141,10 +149,15 @@ namespace Scripts.Managers
                 cancelButton.onClick.RemoveAllListeners();
                 cancelButton.onClick.AddListener(ClearSelection);
             }
-            if (hubButton != null)
+            if (bountyCycleButton != null)
             {
-                hubButton.onClick.RemoveAllListeners();
-                hubButton.onClick.AddListener(() => scene.Fade.ToHub());
+                bountyCycleButton.onClick.RemoveAllListeners();
+                bountyCycleButton.onClick.AddListener(CycleBounty);
+            }
+            if (bountyActionButton != null)
+            {
+                bountyActionButton.onClick.RemoveAllListeners();
+                bountyActionButton.onClick.AddListener(OnBountyAction);
             }
         }
 
@@ -153,6 +166,106 @@ namespace Scripts.Managers
             RebuildList();
             UpdateDetail();
             UpdateButtons();
+            RefreshBounty();
+        }
+
+        // ---------- Bounty board (single-slot contract; BountyHelper owns the rules) ----------
+
+        /// <summary>Redraws the bottom bounty strip: browse mode when no contract is active,
+        /// progress + Abandon while hunting, Claim when complete.</summary>
+        private void RefreshBounty()
+        {
+            if (bountyLabel == null) return;
+
+            var active = BountyHelper.ActiveBounty();
+            if (active != null)
+            {
+                if (BountyHelper.IsComplete())
+                {
+                    bountyLabel.text =
+                        $"<b>{active.DisplayName}</b> — complete!  Reward: {HubTheme.FormatGold(active.RewardGold)}";
+                    SetBountyButton(bountyActionButton, "Claim", true);
+                    SetBountyButton(bountyCycleButton, null, false);
+                }
+                else
+                {
+                    bountyLabel.text =
+                        $"<b>{active.DisplayName}</b> — {BountyHelper.ActiveProgress()}/{active.RequiredCount} {active.TargetClass} slain";
+                    SetBountyButton(bountyActionButton, "Abandon", true);
+                    SetBountyButton(bountyCycleButton, null, false);
+                }
+                return;
+            }
+
+            var all = BountyLibrary.All().ToList();
+            if (all.Count == 0)
+            {
+                bountyLabel.text = "<color=#888888>No bounties posted.</color>";
+                SetBountyButton(bountyActionButton, null, false);
+                SetBountyButton(bountyCycleButton, null, false);
+                return;
+            }
+
+            bountyBrowseIndex = Mathf.Clamp(bountyBrowseIndex, 0, all.Count - 1);
+            var b = all[bountyBrowseIndex];
+            bountyLabel.text =
+                $"<b>Bounty:</b> {b.DisplayName} — slay {b.RequiredCount} {b.TargetClass} → {HubTheme.FormatGold(b.RewardGold)}";
+            SetBountyButton(bountyActionButton, "Accept", true);
+            SetBountyButton(bountyCycleButton, "Next", all.Count > 1);
+        }
+
+        private void CycleBounty()
+        {
+            int count = BountyLibrary.All().Count();
+            if (count == 0) return;
+            bountyBrowseIndex = (bountyBrowseIndex + 1) % count;
+            RefreshBounty();
+        }
+
+        private void OnBountyAction()
+        {
+            var active = BountyHelper.ActiveBounty();
+            if (active == null)
+            {
+                var all = BountyLibrary.All().ToList();
+                if (all.Count == 0) return;
+                bountyBrowseIndex = Mathf.Clamp(bountyBrowseIndex, 0, all.Count - 1);
+                BountyHelper.Accept(all[bountyBrowseIndex].Id);
+                ProfileHelper.Save(overwrite: true);
+                RefreshBounty();
+                return;
+            }
+
+            if (BountyHelper.IsComplete())
+            {
+                // ClaimReward credits gold + reward item onto a hydrated inventory; write it back.
+                var save = ProfileHelper.CurrentProfile?.CurrentSave;
+                if (save == null) return;
+                var inventory = new PlayerInventory();
+                inventory.LoadFromSaveData(save.Inventory);
+                if (BountyHelper.ClaimReward(inventory))
+                {
+                    save.Inventory = inventory.ToSaveData();
+                    ProfileHelper.Save(overwrite: true);
+                    RefreshBounty();
+                    bountyLabel.text =
+                        $"<color=#66cc88>Claimed {HubTheme.FormatGold(active.RewardGold)}!</color>  " + bountyLabel.text;
+                }
+                return;
+            }
+
+            BountyHelper.Abandon();
+            ProfileHelper.Save(overwrite: true);
+            RefreshBounty();
+        }
+
+        private static void SetBountyButton(Button button, string label, bool visible)
+        {
+            if (button == null) return;
+            button.gameObject.SetActive(visible);
+            if (!visible || string.IsNullOrEmpty(label)) return;
+            var tmp = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (tmp != null) tmp.text = label;
         }
 
         private void RebuildList()

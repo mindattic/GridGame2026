@@ -72,8 +72,18 @@ public class ProfileCreateManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        // Begin scene fade-in, then present the keyboard dialog.
-        scene.FadeIn(showKeyboardRoutine());
+        // Stash the routine; the fade itself starts in Start() — during Awake the
+        // FadeOverlayInstance's own Awake may not have run yet (undefined cross-object
+        // Awake order), so fading here NRE'd on its uncached Image.
+        keyboardRoutine = showKeyboardRoutine();
+    }
+
+    private IEnumerator keyboardRoutine;
+
+    /// <summary>Begins the scene fade-in, then presents the keyboard dialog.</summary>
+    private void Start()
+    {
+        scene.FadeIn(keyboardRoutine);
     }
 }
 

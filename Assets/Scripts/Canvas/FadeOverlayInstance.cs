@@ -176,9 +176,13 @@ public class FadeOverlayInstance : MonoBehaviour
 
     #region Helper Methods
 
-    /// <summary>Sets the overlay color with specified alpha.</summary>
+    /// <summary>Sets the overlay color with specified alpha. Lazily resolves the Image —
+    /// callers may fade before this component's Awake has run (cross-object Awake order
+    /// is undefined), and a fade must never NRE over caching order.</summary>
     private void SetAlpha(float alpha)
     {
+        if (image == null) image = GetComponent<Image>();
+        if (image == null) return;
         image.color = new Color(1f, 1f, 1f, Mathf.Clamp01(alpha));
     }
 
