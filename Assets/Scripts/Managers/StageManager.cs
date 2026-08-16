@@ -210,6 +210,7 @@ public class StageManager : MonoBehaviour
         BuffSystem.Clear();
         SkillCooldownManager.Clear();
         ThreatTracker.Clear();
+        TrapManager.Clear();
 
         // Show persistent hero actors from ProfileHelper
         Debug.Log("[StageManager] RestartStage: spawning heroes");

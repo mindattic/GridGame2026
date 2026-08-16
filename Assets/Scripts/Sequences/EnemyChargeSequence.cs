@@ -66,8 +66,25 @@ namespace Scripts.Sequences
             if (g.TimelineBar == null || g.TimelineBar.GetSpellIconFor(enemy) != null)
                 yield break;
 
-            Scripts.Canvas.AnnouncementWindow.Announce(
-                $"{enemy.characterClass} charges {Scripts.Canvas.CombatFeed.Icon(ability.name)}{ability.name}!");
+            // US-138: fire-affinity casters lock a cardinal LINE at telegraph time and hit every
+            // hero on it at resolution — sliding off the line before u=1 is the counter-play.
+            bool isLine = Scripts.Data.Actor.EnemyChargeCatalog.ShapeFor(enemy)
+                          == Scripts.Data.Actor.ChargeShape.Line;
+            System.Collections.Generic.List<Vector2Int> threatTiles = null;
+            Scripts.Instances.Board.LineTelegraph telegraph = null;
+            if (isLine && g.Board != null)
+            {
+                threatTiles = Scripts.Services.LineThreat.ComputeThreat(
+                    enemy.location, target.location, g.Board.columnCount, g.Board.rowCount);
+                if (threatTiles.Count > 0)
+                    telegraph = Scripts.Instances.Board.LineTelegraph.Show(threatTiles);
+                else
+                    isLine = false; // edge-pinned degenerate line — fall back to single target
+            }
+
+            Scripts.Canvas.AnnouncementWindow.Announce(isLine
+                ? $"{enemy.characterClass} charges {Scripts.Canvas.CombatFeed.Icon(ability.name)}{ability.name} down the line!"
+                : $"{enemy.characterClass} charges {Scripts.Canvas.CombatFeed.Icon(ability.name)}{ability.name}!");
             g.AudioManager?.Play("Charge"); // rising chiptune telegraph
 
             var state = new CastingState(enemy, ability, target);
@@ -86,12 +103,33 @@ namespace Scripts.Sequences
                     // icon's onReached). Resolve into a magic attack, clean up, then return control.
                     // No EndTurnSequence here: this resolves on the shared clock, not as a turn.
                     if (Scripts.Managers.AbilityManager.TryGetMagicEffect(ability.Effect, out var element, out var vfxKey))
-                        g.SequenceManager.Add(new MagicAttackSequence(enemy, target, element, vfxKey));
+                    {
+                        if (isLine && threatTiles != null)
+                        {
+                            // Hit every hero still standing on the locked line (dodging = escape).
+                            int hits = 0;
+                            foreach (var hero in g.Actors.Heroes)
+                            {
+                                if (hero == null || !hero.IsPlaying) continue;
+                                if (!threatTiles.Contains(hero.location)) continue;
+                                g.SequenceManager.Add(new MagicAttackSequence(enemy, hero, element, vfxKey));
+                                hits++;
+                            }
+                            if (hits == 0)
+                                Scripts.Canvas.CombatFeed.Post(
+                                    $"{enemy.characterClass}'s {ability.name} streaks down an empty line — dodged!");
+                        }
+                        else
+                        {
+                            g.SequenceManager.Add(new MagicAttackSequence(enemy, target, element, vfxKey));
+                        }
+                    }
                     g.SequenceManager.Add(new DeathSequence());
                     g.SequenceManager.Add(new SequenceCallback(() =>
                     {
                         spellIcon?.FadeAndDestroy(0.25f);
                         g.TargetLineManager?.Hide(arcKey);
+                        if (telegraph != null) Object.Destroy(telegraph.gameObject);
                         g.TurnManager?.EndCastResolution();
                     }));
                     g.SequenceManager.Execute();
@@ -100,6 +138,7 @@ namespace Scripts.Sequences
                 {
                     // US-027 will mint the charge-color orb here; for now just drop the arc with the icon.
                     g.TargetLineManager?.Hide(arcKey);
+                    if (telegraph != null) Object.Destroy(telegraph.gameObject);
                 });
 
             yield return Wait.None();

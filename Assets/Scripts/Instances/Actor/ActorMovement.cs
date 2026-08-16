@@ -294,6 +294,9 @@ namespace Scripts.Instances.Actor
             previousLocation = location;
             location = closestTile.location;
 
+            // US-139: sliding onto an armed trap springs it.
+            TryTriggerTrap();
+
             if (isSelectedHero)
                 g.TileManager.Hightlight(previousLocation, location);
 
@@ -366,7 +369,43 @@ namespace Scripts.Instances.Actor
             // displaced actors visibly slides into place even while briefly overlapping.
             flags.IsSwapping = true;
             location = currentTile.location;
+
+            // US-139: being DISPLACED onto an armed trap springs it too — enemies weaponize
+            // your own slides, and you can weaponize theirs.
+            TryTriggerTrap();
+
             instance.StartCoroutine(DisplaceRoutine());
+        }
+
+        /// <summary>US-139: springs the trap under this actor's new tile, if any. Heroes only —
+        /// enemies step over their allies' snares. Applies flat damage + the trap's status
+        /// directly (no AttackResult — the layer may already be dead).</summary>
+        private void TryTriggerTrap()
+        {
+            if (instance == null || !instance.IsHero || !instance.IsPlaying) return;
+            if (!Scripts.Managers.TrapManager.TryConsume(location, out var trap)) return;
+
+            g.AudioManager?.Play("Debuff");
+            Scripts.Canvas.AnnouncementWindow.Announce(
+                $"{instance.characterClass} springs a {trap.DisplayName}!");
+
+            if (trap.Damage > 0f && !instance.IsInvincible)
+            {
+                instance.Stats.PreviousHP = instance.Stats.HP;
+                instance.Stats.HP = Mathf.Clamp(instance.Stats.HP - trap.Damage, 0, instance.Stats.MaxHP);
+                instance.HealthText.Refresh();
+                g.CombatTextManager?.Spawn(trap.Damage.ToString("0"), instance.Position, "Damage");
+                Scripts.Canvas.CombatFeed.Post(
+                    $"{instance.characterClass} takes <color=#e57878>-{trap.Damage:0}</color> from the {trap.DisplayName}");
+            }
+
+            if (!string.IsNullOrEmpty(trap.BuffId) &&
+                Scripts.Data.Buffs.ById.TryGetValue(trap.BuffId, out var buff))
+            {
+                Scripts.Managers.BuffSystem.Apply(instance, buff);
+                Scripts.Canvas.CombatFeed.Post(
+                    $"{instance.characterClass} is {Scripts.Canvas.CombatFeed.Icon(buff.Id)}{buff.Id}");
+            }
         }
 
         /// <summary>Phase 4 (boss-shove): animate this actor to its ALREADY-SET logical

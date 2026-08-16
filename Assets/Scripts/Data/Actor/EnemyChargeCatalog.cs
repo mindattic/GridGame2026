@@ -22,10 +22,25 @@ namespace Scripts.Data.Actor
     ///
     /// RELATED FILES: EnemyPlanner.cs (PlanCast), EnemyChargeSequence.cs, ManaColorAffinity.cs.
     /// </summary>
+    /// <summary>How a charge resolves: at its single target, or down a locked cardinal line
+    /// hitting every hero on it (US-138).</summary>
+    public enum ChargeShape { SingleTarget, Line }
+
     public static class EnemyChargeCatalog
     {
         /// <summary>How long (seconds, before WIS/INT scaling in CastingState) a charge takes to load.</summary>
         public const float DefaultChargeCastSeconds = 2.5f;
+
+        /// <summary>US-138: fire-affinity casters hurl their bolt down a LINE (locked at telegraph
+        /// time — slide out before u=1); every other element stays single-target.</summary>
+        public static ChargeShape ShapeFor(ActorInstance enemy)
+        {
+            var data = ActorLibrary.Get(enemy != null ? enemy.characterClass : default);
+            var (effect, _) = ElementFor(data != null ? data.Tags : ActorTag.None);
+            return effect == AbilityEffect.Fireball && IsCaster(enemy)
+                ? ChargeShape.Line
+                : ChargeShape.SingleTarget;
+        }
 
         /// <summary>True if this enemy is a spellcaster (carries the <see cref="ActorTag.Magic"/> flag).</summary>
         public static bool IsCaster(ActorInstance enemy)

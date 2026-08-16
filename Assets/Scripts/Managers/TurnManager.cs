@@ -110,7 +110,7 @@ namespace Scripts.Managers
         /// <summary>Initializes turn manager and begins first hero window. Clears all per-battle
         /// static state — these dictionaries survive scene loads, so without this a buff or
         /// cooldown from the previous battle ghosts into the new one.</summary>
-        public void Initialize() { BuffSystem.Clear(); SkillCooldownManager.Clear(); ThreatTracker.Clear(); BeginHeroWindow(); }
+        public void Initialize() { BuffSystem.Clear(); SkillCooldownManager.Clear(); ThreatTracker.Clear(); TrapManager.Clear(); BeginHeroWindow(); }
 
         #endregion
 

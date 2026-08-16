@@ -1,5 +1,6 @@
 // --- File: Assets/Scripts/Sequences/EnemyTakeTurnSequence.cs ---
 using System.Collections;
+using System.Linq;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Canvas;
 using Scripts.Data.Actor;
@@ -73,6 +74,21 @@ namespace Scripts.Sequences
             bool prefersCharge = Scripts.Services.BossPhaseRunner.Current(enemy)?.PrefersCharge ?? false;
             var charge = alreadyCasting ? null
                 : Scripts.Services.EnemyPlanner.PlanCast(enemy, g.Actors.All, ignoreMeleeRange: prefersCharge);
+
+            // US-139: a trap-layer with no adjacent hero may spend its turn arming a snare
+            // (RNG-rolled; deterministic under RNG.Seed). Cornered layers fight normally.
+            if (Scripts.Data.Actor.TrapCatalog.IsTrapLayer(enemy) && charge == null)
+            {
+                bool heroAdjacent = g.Actors.Heroes.Any(h =>
+                    h != null && h.IsPlaying && Scripts.Utilities.Geometry.AreAdjacent(h, enemy));
+                if (!heroAdjacent && RNG.Percent < Scripts.Data.Actor.TrapCatalog.LayChancePerTurn)
+                {
+                    g.SequenceManager.Add(new PlaceTrapSequence(enemy));
+                    g.SequenceManager.Add(new EndTurnSequence());
+                    g.SequenceManager.Execute();
+                    yield break;
+                }
+            }
 
             if (charge != null)
             {
