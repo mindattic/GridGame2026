@@ -317,8 +317,14 @@ public class StageManager : MonoBehaviour
         // placement so the spawn rectangle + occupancy are footprint-aware.
         instance.Footprint = data.Footprint == Vector2Int.zero ? Vector2Int.one : data.Footprint;
 
-        // Stats and metadata
-        instance.Stats = data.GetStats(stageActor.Level);
+        // Stats and metadata.
+        // US-135: campaign difficulty curve — enemies floor to the stage's recommended level
+        // (stage 1 → lvl 1 … stage 15 → lvl 15). Authored per-actor levels still win when
+        // higher; Test-*/Endless stages return 1 from RecommendedLevel and are unaffected.
+        int spawnLevel = stageActor.Level;
+        if (stageActor.Team == Team.Enemy && currentStage != null)
+            spawnLevel = Mathf.Max(spawnLevel, CampaignStages.RecommendedLevel(currentStage.Name));
+        instance.Stats = data.GetStats(spawnLevel);
 
         // Seed hero progress from save: derive Level/CurrentXP from TotalXP
         if (stageActor.Team == Team.Hero)

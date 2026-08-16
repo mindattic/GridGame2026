@@ -474,7 +474,9 @@ namespace Scripts.Managers
                 sb.Append("<i>").Append(stage.Description).Append("</i>\n\n");
 
             sb.Append("Waves: ").Append(stage.Waves?.Count ?? 0).Append('\n');
-            sb.Append("Enemies: ").Append(totalEnemies).Append("\n\n");
+            sb.Append("Enemies: ").Append(totalEnemies).Append('\n');
+            // US-135: the difficulty curve, surfaced so "challenging but fair" is legible.
+            sb.Append("Recommended level: ").Append(CampaignStages.RecommendedLevel(stageName)).Append("\n\n");
 
             if (stage.Waves != null)
             {

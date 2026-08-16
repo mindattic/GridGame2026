@@ -83,24 +83,7 @@ namespace Scripts.Utilities
             lastW = Screen.width;
             lastH = Screen.height;
 
-            float device = (float)Screen.width / Screen.height;
-            float target = ClosestValidAspect(device);
-
-            Rect r;
-            if (device > target)
-            {
-                // Device wider than target → pillarbox (bars left/right).
-                float w = target / device;
-                r = new Rect((1f - w) * 0.5f, 0f, w, 1f);
-            }
-            else
-            {
-                // Device taller/narrower than target → letterbox (bars top/bottom).
-                float h = device / target;
-                r = new Rect(0f, (1f - h) * 0.5f, 1f, h);
-            }
-
-            cam.rect = r;
+            cam.rect = LetterboxRect(Screen.width, Screen.height);
             cam.clearFlags = CameraClearFlags.SolidColor;
             cam.backgroundColor = Color.black;
 
@@ -121,12 +104,7 @@ namespace Scripts.Utilities
             lastSafeArea = Screen.safeArea;
             if (Screen.width <= 0 || Screen.height <= 0) return;
 
-            float sw = Screen.width;
-            float sh = Screen.height;
-            Rect area = Screen.safeArea;
-
-            var anchorMin = new Vector2(area.x / sw, area.y / sh);
-            var anchorMax = new Vector2((area.x + area.width) / sw, (area.y + area.height) / sh);
+            var (anchorMin, anchorMax) = SafeAreaAnchors(Screen.safeArea, Screen.width, Screen.height);
 
             var canvases = Object.FindObjectsByType<UnityEngine.Canvas>(FindObjectsSortMode.None);
             foreach (var canvas in canvases)
@@ -157,7 +135,37 @@ namespace Scripts.Utilities
             background.depth = cam != null ? cam.depth - 1 : -100;
         }
 
-        private static float ClosestValidAspect(float device)
+        /// <summary>US-136: the pure letterbox math, extracted so the multi-aspect suite can
+        /// verify every supported device ratio headless. Returns the camera's normalized
+        /// viewport rect: full-screen when the device matches a valid aspect, pillarboxed when
+        /// wider, letterboxed when taller — always centered, content fit and never cropped.</summary>
+        public static Rect LetterboxRect(int screenWidth, int screenHeight)
+        {
+            float device = (float)screenWidth / screenHeight;
+            float target = ClosestValidAspect(device);
+
+            if (device > target)
+            {
+                // Device wider than target → pillarbox (bars left/right).
+                float w = target / device;
+                return new Rect((1f - w) * 0.5f, 0f, w, 1f);
+            }
+            // Device taller/narrower than target → letterbox (bars top/bottom).
+            float h = device / target;
+            return new Rect(0f, (1f - h) * 0.5f, 1f, h);
+        }
+
+        /// <summary>US-136: pure safe-area→anchor conversion (see ApplySafeArea).</summary>
+        public static (Vector2 anchorMin, Vector2 anchorMax) SafeAreaAnchors(Rect safeArea, float screenWidth, float screenHeight)
+        {
+            var anchorMin = new Vector2(safeArea.x / screenWidth, safeArea.y / screenHeight);
+            var anchorMax = new Vector2((safeArea.x + safeArea.width) / screenWidth,
+                                        (safeArea.y + safeArea.height) / screenHeight);
+            return (anchorMin, anchorMax);
+        }
+
+        /// <summary>The valid portrait aspect nearest the device's (public for the US-136 suite).</summary>
+        public static float ClosestValidAspect(float device)
         {
             float best = ValidAspects[0];
             float bestDelta = Mathf.Abs(device - best);

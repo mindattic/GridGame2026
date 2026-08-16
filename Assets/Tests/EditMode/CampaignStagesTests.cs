@@ -73,5 +73,16 @@ namespace Scripts.Tests.EditMode
             Assert.AreEqual(-1, TestHooks.HighestClearedStageIndex,
                 "Test fixtures are not campaign stages and must not advance progression.");
         }
+
+        [Test]
+        public void Recommended_level_follows_the_campaign_curve()
+        {
+            // US-135: stage 1 → level 1 … stage 15 → level 15; non-campaign stages → 1.
+            Assert.AreEqual(1, CampaignStages.RecommendedLevel(CampaignStages.Order[0]));
+            Assert.AreEqual(5, CampaignStages.RecommendedLevel(CampaignStages.Order[4]));
+            Assert.AreEqual(15, CampaignStages.RecommendedLevel(CampaignStages.Order[14]));
+            Assert.AreEqual(1, CampaignStages.RecommendedLevel("Test-Harness"), "Fixtures stay authored.");
+            Assert.AreEqual(1, CampaignStages.RecommendedLevel("NotAStage"));
+        }
     }
 }

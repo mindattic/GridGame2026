@@ -126,6 +126,16 @@ namespace Scripts.Libraries
             return highestClearedStageIndex >= globalIndex - 1;
         }
 
+        /// <summary>US-135: the campaign difficulty curve — recommended enemy (and party) level
+        /// for a stage: stage 1 → level 1 … stage 15 → level 15. Non-campaign stages
+        /// (Test-*, Endless) return 1 (their authored levels stand alone). Enemy spawns floor
+        /// to this (StageManager.SpawnActor); StageSelect shows it on the detail panel.</summary>
+        public static int RecommendedLevel(string stageName)
+        {
+            int index = IndexOf(stageName);
+            return index < 0 ? 1 : index + 1;
+        }
+
         /// <summary>Updates the save's HighestClearedStageIndex if the cleared stage is higher than current.
         /// Call from StageManager when victory is detected.</summary>
         public static void MarkCleared(int globalIndex)
