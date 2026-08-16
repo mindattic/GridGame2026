@@ -197,6 +197,8 @@ namespace Scripts.Managers
  // per-hero counter reaches 0 at the start of a window (see SkillCooldownManager / AbilityBar).
  SkillCooldownManager.TickAll();
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Hero);
+ // US-142: fresh window — nothing banked until the player's first action lands.
+ g.ManaPoolManager?.ResetTimeBank();
  g.InputManager.InputMode = InputMode.PlayerTurn;
 
  // Reset the trigger flag so new enemy triggers can happen
@@ -230,6 +232,8 @@ namespace Scripts.Managers
  
  IsHeroTurn = false; ActiveActor = enemy; lastEnemy = enemy;
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Enemy);
+ // US-142: convert the hero window's unspent timeline remainder into Blue orbs.
+ g.ManaPoolManager?.MintTimeBankedOrbs();
  g.InputManager.InputMode = InputMode.EnemyTurn;
  g.SelectionManager.Select(enemy);
  UpdateActiveIndicators();

@@ -111,6 +111,12 @@ namespace Scripts.Canvas
         public void OnSlotClicked(int slot)
         {
             if (currentLoadout == null || slot < 0 || slot >= currentLoadout.Count) return;
+            // US-143: locked slots never fire, even if a stale loadout has content there.
+            if (slot >= Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave())
+            {
+                Debug.Log("[AbilityBar] Slot locked — clear more campaign stages.");
+                return;
+            }
             var a = currentLoadout[slot];
             if (a == null) { Debug.Log("[AbilityBar] Reserved slot."); return; }
 
@@ -367,6 +373,8 @@ namespace Scripts.Canvas
             var owner = g.Actors.SelectedActor;
             bool silenced = active && owner != null
                 && Scripts.Managers.BuffSystem.Has(owner, Scripts.Data.Buffs.Silenced.Id);
+            // US-143: campaign progress opens slots 3..5 (AbilitySlotProgression gates).
+            int unlockedSlots = Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave();
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (!active)
@@ -380,6 +388,18 @@ namespace Scripts.Canvas
 
                 if (buttons[i] != null && !buttons[i].gameObject.activeSelf)
                     buttons[i].gameObject.SetActive(true);
+
+                if (i >= unlockedSlots)
+                {
+                    if (buttons[i] != null) buttons[i].interactable = false;
+                    if (nameLabels[i] != null) nameLabels[i].text = "Locked";
+                    int gate = Scripts.Services.AbilitySlotProgression.GateForSlot(i);
+                    if (costLabels[i] != null) costLabels[i].text = gate >= 0 ? $"Stage {gate + 1}" : "";
+                    if (frames[i] != null) frames[i].color = new Color(0.10f, 0.10f, 0.13f, 0.85f);
+                    SetIcon(i, null);
+                    SetCooldownSweep(i, false, 0, 1);
+                    continue;
+                }
 
                 var a = i < currentLoadout.Count ? currentLoadout[i] : null;
                 if (a == null)

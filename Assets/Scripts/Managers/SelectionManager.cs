@@ -285,6 +285,10 @@ public class SelectionManager : MonoBehaviour
  // Clear compatibility field at the start of resolution
  g.Actors.MovingHero = null;
 
+ // US-142: this drop is (potentially) the window's last action — record the seconds still
+ // remaining before the next enemy triggers, so the handoff can bank them as orbs.
+ g.ManaPoolManager?.RecordHeroActionForTimeBank();
+
  // Determine if an enemy was queued by the Timeline (tag hit TriggerX)
  bool enemyQueuedByTimeline = g.TurnManager != null && g.TurnManager.HasQueuedEnemyAfterHero;
 

@@ -185,7 +185,8 @@ namespace Scripts.Vendor.Abilities
             }
 
             var slots = SlotsFor(hero);
-            for (int i = 0; i < SlotCount; i++) CreateSlotButton(i, slots[i]);
+            int unlocked = Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave();
+            for (int i = 0; i < SlotCount; i++) CreateSlotButton(i, slots[i], locked: i >= unlocked);
         }
 
         private void RebuildConsumables()
@@ -232,7 +233,7 @@ namespace Scripts.Vendor.Abilities
 
         // ---------- UI factories ----------
 
-        private void CreateSlotButton(int index, AbilityBarSlotSave slot)
+        private void CreateSlotButton(int index, AbilityBarSlotSave slot, bool locked = false)
         {
             var go = new GameObject($"{SlotButtonNamePrefix}{index}");
             go.layer = LayerMask.NameToLayer("UI");
@@ -241,15 +242,18 @@ namespace Scripts.Vendor.Abilities
 
             go.AddComponent<CanvasRenderer>();
             var bg = go.AddComponent<Image>();
-            bg.color = slot.IsEmpty
-                ? HubTheme.RowBg
-                : HubTheme.RowSelected;
-            bg.raycastTarget = true;
+            bg.color = locked
+                ? HubTheme.RowLocked
+                : slot.IsEmpty ? HubTheme.RowBg : HubTheme.RowSelected;
+            bg.raycastTarget = !locked;
 
-            var btn = go.AddComponent<Button>();
-            btn.targetGraphic = bg;
-            int captured = index;
-            btn.onClick.AddListener(() => OnSlotClicked(captured));
+            if (!locked)
+            {
+                var btn = go.AddComponent<Button>();
+                btn.targetGraphic = bg;
+                int captured = index;
+                btn.onClick.AddListener(() => OnSlotClicked(captured));
+            }
 
             var le = go.AddComponent<LayoutElement>();
             le.minWidth = 120f; le.preferredWidth = 140f; le.flexibleWidth = 1f;
@@ -285,7 +289,14 @@ namespace Scripts.Vendor.Abilities
             var tmp = labelGO.AddComponent<TextMeshProUGUI>();
             tmp.font = UiFonts.Body;
             string content;
-            if (slot.IsEmpty) content = "<color=#888888>Empty</color>";
+            if (locked)
+            {
+                int gate = Scripts.Services.AbilitySlotProgression.GateForSlot(index);
+                content = gate >= 0
+                    ? $"<color=#666666>Locked\nclear stage {gate + 1}</color>"
+                    : "<color=#666666>Locked</color>";
+            }
+            else if (slot.IsEmpty) content = "<color=#888888>Empty</color>";
             else if (slot.IsItem)
             {
                 var def = ItemLibrary.Get(slot.ItemId);
@@ -466,15 +477,16 @@ namespace Scripts.Vendor.Abilities
                 }
             }
 
+            int unlockedForAbility = Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave();
             int firstEmpty = -1;
-            for (int i = 0; i < slots.Count; i++)
+            for (int i = 0; i < Mathf.Min(slots.Count, unlockedForAbility); i++)
             {
                 if (slots[i].IsEmpty) { firstEmpty = i; break; }
             }
             if (firstEmpty < 0)
             {
                 if (flashLabel != null)
-                    flashLabel.text = "<color=#e57878>All slots full — clear one first.</color>";
+                    flashLabel.text = "<color=#e57878>No open slot — clear one, or unlock more by clearing stages.</color>";
                 return;
             }
 
@@ -489,15 +501,16 @@ namespace Scripts.Vendor.Abilities
         {
             if (hero == CharacterClass.None || def == null) return;
             var slots = SlotsFor(hero);
+            int unlockedForItem = Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave();
             int firstEmpty = -1;
-            for (int i = 0; i < slots.Count; i++)
+            for (int i = 0; i < Mathf.Min(slots.Count, unlockedForItem); i++)
             {
                 if (slots[i].IsEmpty) { firstEmpty = i; break; }
             }
             if (firstEmpty < 0)
             {
                 if (flashLabel != null)
-                    flashLabel.text = "<color=#e57878>All slots full — clear one first.</color>";
+                    flashLabel.text = "<color=#e57878>No open slot — clear one, or unlock more by clearing stages.</color>";
                 return;
             }
             slots[firstEmpty] = new AbilityBarSlotSave(abilityName: null, itemId: def.Id);

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using g = Scripts.Helpers.GameHelper;
 using Scripts.Helpers;
@@ -66,6 +67,48 @@ namespace Scripts.Managers
         {
             get => Bank.Count(ManaType.Blue) * ManaPerOrb;
             set { /* PHASE B: no-op — orbs are added/spent through Bank now. */ }
+        }
+
+        // ── US-142 (GG-A6): time-banked orbs ─────────────────────────────────────
+        // The Grandia "bank the clock" fantasy, rebuilt on the orb economy: when the player's
+        // LAST action of the hero window lands, the seconds still remaining before the next
+        // enemy reaches the trigger are recorded; at the enemy handoff that remainder converts
+        // to Blue orbs. Acting decisively (finishing your moves while the enemy is still far
+        // from the trigger) banks more. Never spends or resets the lifetime economy — it only
+        // ADDS via the same bouncing-orb path as pincer mints.
+
+        /// <summary>Seconds of timeline remaining per banked orb (designer-tunable).</summary>
+        public const float SecondsPerTimeBankOrb = 3f;
+        /// <summary>Cap per hero window so idling near a slow enemy can't flood the bank.</summary>
+        public const int MaxTimeBankOrbsPerWindow = 3;
+
+        private float bankableSecondsAtLastAction;
+
+        /// <summary>Record the bankable remainder at the moment of a hero action (Drop).</summary>
+        public void RecordHeroActionForTimeBank()
+        {
+            var bar = Scripts.Helpers.GameHelper.TimelineBar;
+            bankableSecondsAtLastAction = bar != null ? bar.GetSecondsUntilNextEnemyReachesTrigger() : 0f;
+        }
+
+        /// <summary>New hero window — nothing banked yet.</summary>
+        public void ResetTimeBank() => bankableSecondsAtLastAction = 0f;
+
+        /// <summary>Converts the recorded remainder into Blue orbs at the enemy handoff.</summary>
+        public void MintTimeBankedOrbs()
+        {
+            int orbs = Mathf.Min(MaxTimeBankOrbsPerWindow,
+                Mathf.FloorToInt(bankableSecondsAtLastAction / SecondsPerTimeBankOrb));
+            bankableSecondsAtLastAction = 0f;
+            if (orbs <= 0) return;
+
+            var origin = Scripts.Helpers.GameHelper.Actors.Heroes?
+                .FirstOrDefault(h => h != null && h.IsPlaying)?.transform.position ?? Vector3.zero;
+            for (int i = 0; i < orbs; i++)
+                Scripts.Factories.ManaOrbFactory.Drop(origin, ManaType.Blue);
+
+            Scripts.Helpers.GameHelper.AudioManager?.Play("Orb");
+            Scripts.Canvas.CombatFeed.Post($"Banked <color=#7db8e8>{orbs} mana</color> from the timeline");
         }
 
         /// <summary>PHASE B: spawn the new HUD pieces under the main Canvas — orb line (Row 14),
