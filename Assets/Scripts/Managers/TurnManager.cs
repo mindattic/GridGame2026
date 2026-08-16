@@ -110,6 +110,9 @@ namespace Scripts.Managers
         /// <summary>Initializes turn manager and begins first hero window. Clears all per-battle
         /// static state — these dictionaries survive scene loads, so without this a buff or
         /// cooldown from the previous battle ghosts into the new one.</summary>
+        // NOTE: SnakeBossManager is cleared in StageManager.RestartStage ONLY — this method runs
+        // AFTER RestartStage on first load (see its comment), so clearing chains here would wipe
+        // the snake chain LoadWave just built.
         public void Initialize() { BuffSystem.Clear(); SkillCooldownManager.Clear(); ThreatTracker.Clear(); TrapManager.Clear(); BeginHeroWindow(); }
 
         #endregion

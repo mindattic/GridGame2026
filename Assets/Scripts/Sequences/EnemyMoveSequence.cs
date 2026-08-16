@@ -81,9 +81,15 @@ namespace Scripts.Sequences
             // Optional pacing before movement.
             yield return Wait.For(Intermission.Before.Enemy.Move);
 
+            // US-140: snapshot a snake head's tile so its body can follow the vacated trail.
+            Scripts.Managers.SnakeBossManager.RecordPreMove(enemy);
+
             // Decide path and Move toward destination.
             enemy.CalculateAttackStrategy();
             yield return enemy.Move.TowardDestinationRoutine();
+
+            // US-140: ripple the body segments into the vacated tiles, front to back.
+            yield return Scripts.Managers.SnakeBossManager.FollowRoutine(enemy);
 
             // No chaining here. EnemyStartSequence enqueued the follow-up attack explicitly.
         }

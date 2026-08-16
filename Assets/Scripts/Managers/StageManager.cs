@@ -211,6 +211,7 @@ public class StageManager : MonoBehaviour
         SkillCooldownManager.Clear();
         ThreatTracker.Clear();
         TrapManager.Clear();
+        SnakeBossManager.Clear();
 
         // Show persistent hero actors from ProfileHelper
         Debug.Log("[StageManager] RestartStage: spawning heroes");
@@ -264,7 +265,17 @@ public class StageManager : MonoBehaviour
             foreach (var stageActor in actors)
             {
                 // Defer timeline rebuild until all spawns are finished
-                SpawnActor(stageActor, rebuildTimeline: false);
+                var spawned = SpawnActor(stageActor, rebuildTimeline: false);
+
+                // US-140 canon rule: every spawned Naga00 is a snake-boss chain head — grow its
+                // body segments behind it (segments are real enemies but never act on their own).
+                if (spawned != null && spawned.characterClass == CharacterClass.Naga00
+                    && !SnakeBossManager.IsChainMember(spawned))
+                {
+                    SnakeBossManager.CreateChain(spawned, SnakeBossManager.DefaultSegmentCount,
+                        loc => SpawnActor(new StageActor(CharacterClass.Naga00, Team.Enemy,
+                            Mathf.Max(1, spawned.Stats.Level), location: loc), rebuildTimeline: false));
+                }
             }
         }
 
@@ -396,7 +407,16 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            location = RNG.UnoccupiedLocation;
+            // US-140: honor an explicit, FREE 1×1 location (snake-boss segments chain behind
+            // their head); everything else keeps the safe re-roll.
+            if (stageActor.Location.HasValue
+                && stageActor.Location.Value != LocationHelper.Nowhere
+                && g.TileMap != null
+                && g.TileMap.ContainsLocation(stageActor.Location.Value)
+                && !g.Actors.IsTileOccupied(stageActor.Location.Value))
+                location = stageActor.Location.Value;
+            else
+                location = RNG.UnoccupiedLocation;
         }
 
         // This ensures that the game's stage data "knows" where this actor is starting.

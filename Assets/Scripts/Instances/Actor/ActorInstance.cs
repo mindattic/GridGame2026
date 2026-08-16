@@ -640,6 +640,17 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     public IEnumerator DamageRoutine(AttackResult attackResult)
     {
+        // US-140: snake-boss chain members are ARMORED except the current tail — the chain is
+        // broken down from the back (pincer the pieces off before the head can be hurt).
+        if (attackResult != null && attackResult.Damage > 0 &&
+            Scripts.Managers.SnakeBossManager.IsArmored(this))
+        {
+            attackResult.Damage = 0;
+            g.CombatTextManager?.Spawn("Armored!", Position, "Miss");
+            Scripts.Canvas.CombatFeed.Post(
+                $"{characterClass}'s armor holds — <color=#e5c878>strike the tail first!</color>");
+        }
+
         if (!IsInvincible)
         {
             Stats.PreviousHP = Stats.HP;

@@ -287,8 +287,11 @@ namespace Scripts.Instances.Actor
             // Decision 2: a multi-tile enemy (2×2 boss) is an IMMOVABLE WALL to a dragged hero — its
             // footprint is a hard stop, exactly like the board edge. Reject the logical move into any
             // boss tile (the sprite may visually press against it; drop re-snaps to the last valid tile).
+            // US-140: snake-boss chain members are equally immovable — displacing a segment
+            // would tear the chain apart.
             var wall = g.Actors.ActorAt(closestTile.location);
-            if (wall != null && wall != instance && wall.IsEnemy && wall.IsMultiTile)
+            if (wall != null && wall != instance && wall.IsEnemy
+                && (wall.IsMultiTile || Scripts.Managers.SnakeBossManager.IsChainMember(wall)))
                 return;
 
             previousLocation = location;

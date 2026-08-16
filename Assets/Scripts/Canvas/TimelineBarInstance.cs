@@ -349,7 +349,10 @@ namespace Scripts.Canvas
                 }
             }
 
-            var playing = g.Actors.Enemies.Where(e => e != null && e.IsPlaying).ToList();
+            // US-140: snake-boss body segments never act on their own — only the head gets an
+            // icon and turns; the body follows the head's movement.
+            var playing = g.Actors.Enemies.Where(e => e != null && e.IsPlaying
+                && !Scripts.Managers.SnakeBossManager.IsSegment(e)).ToList();
             if (playing.Count == 0)
             {
                 return;

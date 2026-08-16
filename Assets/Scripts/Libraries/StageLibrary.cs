@@ -555,6 +555,27 @@ namespace Scripts.Libraries
                         Waves = GenerateWaves(4, new List<CharacterClass> { CharacterClass.Slime00, CharacterClass.Scorpion, CharacterClass.Bat00 })
                     }
                 },
+                // Automated-test fixture (US-140): a lone Naga00 — StageManager auto-grows its
+                // snake-boss chain (head + 3 segments). Used by SnakeBossTests; not player-reachable.
+                { $"{Map.Test}-Snake", new Stage
+                    {
+                        Name = $"{Map.Test}-Snake",
+                        Description = "Snake-boss test fixture",
+                        Biome = Biome.Swamp,
+                        CompletionCondition = "DefeatAllEnemies",
+                        CompletionValue = 0,
+                        Waves = new List<StageWave>
+                        {
+                            new StageWave
+                            {
+                                Actors = new List<StageActor>
+                                {
+                                    new StageActor { CharacterClass = CharacterClass.Naga00, Team = Team.Enemy },
+                                }
+                            }
+                        }
+                    }
+                },
                 // Automated-test fixture: ONE wave, two weak enemies, fully hand-authored (no
                 // GenerateWaves RNG) so PlayMode battle-loop tests are deterministic and fast.
                 // Used by Assets/Tests/PlayMode/BattleLoopScenarioTests; not player-reachable

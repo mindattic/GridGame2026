@@ -84,6 +84,22 @@ public class PortraitManager : MonoBehaviour
         yield return instance.SlideInRoutine();
     }
 
+    /// <summary>US-145: entrance patterns for the pincer portrait pair — picked per attack so
+    /// repeated fights stay visually interesting. All patterns keep the flank-the-attacked-line
+    /// lane placement; only the ENTRY choreography varies.</summary>
+    private enum PairEntryPattern
+    {
+        CounterSweep,        // classic: the two portraits sweep in from opposite ends
+        ReverseCounterSweep, // same, mirrored
+        SameSideStagger,     // both from one end, the second a beat behind (chase feel)
+        StaggeredCounter,    // opposite ends, second delayed (one-two punch)
+    }
+
+    private static readonly PairEntryPattern[] PairPatterns =
+        (PairEntryPattern[])System.Enum.GetValues(typeof(PairEntryPattern));
+
+    private const float StaggerSeconds = 0.14f;
+
     /// <summary>Spawns a pair of canvas-space portraits for pincer attackers.</summary>
     public IEnumerator SpawnPair2DRoutine(ActorPair actorPair)
     {
@@ -91,6 +107,16 @@ public class PortraitManager : MonoBehaviour
         g.AudioManager.Play("Click");
 
         var (d1, d2) = GetDirections(actorPair);
+
+        // US-145: choreograph the entry (seeded-RNG friendly — deterministic under RNG.Seed).
+        var pattern = RNG.Pick(PairPatterns);
+        float delay2 = 0f;
+        switch (pattern)
+        {
+            case PairEntryPattern.ReverseCounterSweep: (d1, d2) = (d2, d1); break;
+            case PairEntryPattern.SameSideStagger:     d2 = d1; delay2 = StaggerSeconds; break;
+            case PairEntryPattern.StaggeredCounter:    delay2 = StaggerSeconds; break;
+        }
 
         if (actorPair.axis == Axis.Vertical)
         {
@@ -101,7 +127,7 @@ public class PortraitManager : MonoBehaviour
 
             yield return CoroutineHelper.WaitForAll(this,
                 SlideIn2DRoutine(actorPair.actor1, d1, fixedX: xA, fixedY: null),
-                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: xB, fixedY: null)
+                DelayedSlideIn2DRoutine(delay2, actorPair.actor2, d2, fixedX: xB, fixedY: null)
             );
         }
         else
@@ -112,11 +138,19 @@ public class PortraitManager : MonoBehaviour
 
             yield return CoroutineHelper.WaitForAll(this,
                 SlideIn2DRoutine(actorPair.actor1, d1, fixedX: null, fixedY: yA),
-                SlideIn2DRoutine(actorPair.actor2, d2, fixedX: null, fixedY: yB)
+                DelayedSlideIn2DRoutine(delay2, actorPair.actor2, d2, fixedX: null, fixedY: yB)
             );
         }
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
+    }
+
+    /// <summary>US-145: a slide-in that waits a beat first (the stagger patterns).</summary>
+    private IEnumerator DelayedSlideIn2DRoutine(float delaySeconds, ActorInstance actor,
+        Direction direction, float? fixedX = null, float? fixedY = null)
+    {
+        if (delaySeconds > 0f) yield return Wait.For(delaySeconds);
+        yield return SlideIn2DRoutine(actor, direction, fixedX, fixedY);
     }
 
     #endregion
