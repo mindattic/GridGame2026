@@ -366,7 +366,8 @@ namespace Scripts.Managers
 
             // "Casting {Spell}" — the cast-time path that ticks on the timeline before resolving.
             g.ActionTitle?.Cast(ability);
-            Scripts.Canvas.AnnouncementWindow.Announce($"{caster.characterClass} casts {ability.name}");
+            Scripts.Canvas.AnnouncementWindow.Announce(
+                $"{caster.characterClass} casts {Scripts.Canvas.CombatFeed.Icon(ability.name)}{ability.name}");
             g.AudioManager?.Play("Cast"); // chiptune cast cue
 
             var state = new CastingState(caster, ability, target);

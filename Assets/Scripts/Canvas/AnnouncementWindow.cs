@@ -39,17 +39,28 @@ namespace Scripts.Canvas
         private void OnDestroy() { if (Instance == this) Instance = null; }
 
         /// <summary>Wires the visual parts (called by the factory). Starts hidden.</summary>
-        public void Bind(CanvasGroup canvasGroup, TextMeshProUGUI text)
+        public async void Bind(CanvasGroup canvasGroup, TextMeshProUGUI text)
         {
             group = canvasGroup;
             label = text;
             if (group != null) group.alpha = 0f;
+
+            // Share the combat-feed icon asset so banner lines can carry <sprite> tags too.
+            if (label != null && label.spriteAsset == null)
+            {
+                var icons = CombatFeed.Icons
+                    ?? await Scripts.Helpers.AssetHelper.LoadAssetAsync<TMPro.TMP_SpriteAsset>("CombatFeedIcons");
+                if (label != null && icons != null) label.spriteAsset = icons;
+            }
         }
 
         /// <summary>Queue an announcement (deduped against the one currently showing to avoid spam).</summary>
         public void Enqueue(string text)
         {
             if (string.IsNullOrEmpty(text)) return;
+            // Every banner moment also lands in the persistent play-by-play log (US-133);
+            // the banner is the spotlight, the feed is the history.
+            CombatFeed.Post(text);
             queue.Enqueue(text);
             if (!running) StartCoroutine(Run());
         }

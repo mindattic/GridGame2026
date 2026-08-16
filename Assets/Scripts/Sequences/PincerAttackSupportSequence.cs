@@ -63,6 +63,7 @@ namespace Scripts.Sequences
 
             // "Whack-a-mole" flourish: the supporter's portrait pops up at its tile, holds, then
             // pops back out — telegraphing who's lending support before the pincer resolves.
+            Scripts.Canvas.CombatFeed.Post($"{supporter.characterClass} lends support to {attacker.characterClass}!");
             yield return g.PortraitManager.PopInOutRoutine(supporter);
 
             // If supporter is a Cleric, heal the attacker

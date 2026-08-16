@@ -94,7 +94,8 @@ namespace Scripts.Managers
                 }
 
                 // Dedicated, cadenced callout: "Slime A is poisoned", etc. + chiptune debuff cue.
-                Scripts.Canvas.AnnouncementWindow.Announce($"{target.characterClass} is {buff.Id}");
+                Scripts.Canvas.AnnouncementWindow.Announce(
+                    $"{target.characterClass} is {Scripts.Canvas.CombatFeed.Icon(buff.Id)}{buff.Id}");
                 g.AudioManager?.Play("Debuff");
             }
 

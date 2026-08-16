@@ -66,7 +66,8 @@ namespace Scripts.Sequences
             if (g.TimelineBar == null || g.TimelineBar.GetSpellIconFor(enemy) != null)
                 yield break;
 
-            Scripts.Canvas.AnnouncementWindow.Announce($"{enemy.characterClass} charges {ability.name}!");
+            Scripts.Canvas.AnnouncementWindow.Announce(
+                $"{enemy.characterClass} charges {Scripts.Canvas.CombatFeed.Icon(ability.name)}{ability.name}!");
             g.AudioManager?.Play("Charge"); // rising chiptune telegraph
 
             var state = new CastingState(enemy, ability, target);

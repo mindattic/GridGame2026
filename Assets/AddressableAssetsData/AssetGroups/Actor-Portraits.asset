@@ -900,6 +900,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c91e02962bf08a6479d2c02b81f9b4bf
+    m_Address: CombatFeedIcons
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca2fb23cefdf3444b8fc8403f79f56d0
     m_Address: VisualEffects/HealAura
     m_ReadOnly: 0

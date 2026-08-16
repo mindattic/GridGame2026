@@ -85,6 +85,7 @@ namespace Scripts.Managers
             OrbLine = ManaOrbLineFactory.Create(canvas.transform, Bank);
             ShieldButtonFactory.Create(canvas.transform);
             Scripts.Factories.AnnouncementWindowFactory.Create(canvas.transform); // dedicated event-callout banner
+            Scripts.Factories.CombatFeedFactory.Create(canvas.transform); // scrolling play-by-play log (US-133)
 
             var abilityContainer = GameObject.Find("Canvas/AbilityButtonContainer");
             if (abilityContainer != null)

@@ -9,11 +9,12 @@ namespace Scripts.Data
     /// <para><b>Protection</b> is fully wired (Shield button → 1-turn 15% DR on all heroes; hook in
     /// Formulas/damage code reads <see cref="BuffSystem.GetIncomingDamageMultiplier"/>).</para>
     ///
-    /// <para>The rest (Burning / Frozen / Wet / Warm / Sleep) are <b>data-registered</b> with their
-    /// intended parameters but their gameplay hooks (tick damage, immobility, lightning×wet
-    /// multiplier, sleep×warm multiplier, slide-through breaks-sleep) are TODO — surface them in
-    /// the appropriate places (timeline-tick handler, action gating, damage formula) as we wire up
-    /// each spell's impact.</para>
+    /// <para>ALL hooks are live (verified 2026-08-15, US-134): tick damage/regen —
+    /// EndTurnSequence → ActorInstance.TickStatusesRoutine; immobility — BuffSystem.IsImmobile
+    /// gates EnemyPlanner; Slowed — TimelineIcon effective-speed ×SlowedTimelineMultiplier
+    /// (US-011); Silenced — AbilityBar blocks Spell slots (US-012); Blinded —
+    /// Formulas.CalculateHitType ×BlindedAccuracyMultiplier (US-013); lightning×wet —
+    /// SpellEffectDispatcher ×LightningWhenWetMultiplier.</para>
     /// </summary>
     public static class Buffs
     {
@@ -39,7 +40,7 @@ namespace Scripts.Data
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Ticks,
             defaultDuration: 5,
-            damagePerTick: 4f,           // TODO: balance pass
+            damagePerTick: 4f,           // balance pass: US-135
             onExpireApplyId: "warm");    // fire wears off → Warm
 
         public static readonly Buff Frozen = new Buff(
@@ -71,28 +72,28 @@ namespace Scripts.Data
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Ticks,
             defaultDuration: 6,
-            damagePerTick: 3f);              // TODO: hook tick-damage into timeline clock tick
+            damagePerTick: 3f);              // ticks apply via EndTurnSequence → TickStatusesRoutine
 
         public static readonly Buff Slowed = new Buff(
             id: "slowed",
             displayName: "Slowed",
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Turns,
-            defaultDuration: 2);             // TODO: hook timeline-speed multiplier in TimelineBarInstance
+            defaultDuration: 2);             // wired: TimelineIcon effective speed ×SlowedTimelineMultiplier (US-011)
 
         public static readonly Buff Silenced = new Buff(
             id: "silenced",
             displayName: "Silenced",
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Turns,
-            defaultDuration: 2);             // TODO: hook cast-block in AbilityBar / AbilityManager
+            defaultDuration: 2);             // wired: AbilityBar blocks Spell slots while Silenced (US-012)
 
         public static readonly Buff Blinded = new Buff(
             id: "blinded",
             displayName: "Blinded",
             kind: BuffKind.Debuff,
             durationUnit: BuffDurationUnit.Turns,
-            defaultDuration: 2);             // TODO: hook hit-chance multiplier in Formulas.CalculateAttackResult
+            defaultDuration: 2);             // wired: Formulas.CalculateHitType ×BlindedAccuracyMultiplier (US-013)
 
         public static readonly Buff Sleep = new Buff(
             id: "sleep",

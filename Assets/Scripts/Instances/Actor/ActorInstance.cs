@@ -594,6 +594,7 @@ public partial class ActorInstance : MonoBehaviour
 
         g.CombatTextManager.Spawn(amount.ToString(), Position, "Heal");
         g.AudioManager.Play("Heal");
+        Scripts.Canvas.CombatFeed.Post($"{characterClass} recovers <color=#66cc88>+{amount}</color>");
         yield break;
     }
 
@@ -624,6 +625,9 @@ public partial class ActorInstance : MonoBehaviour
 
             string style = result.HpDelta < 0 ? "Damage" : "Heal";
             g.CombatTextManager.Spawn(Mathf.Abs(result.HpDelta).ToString(), Position, style);
+            Scripts.Canvas.CombatFeed.Post(result.HpDelta < 0
+                ? $"{characterClass} suffers <color=#b88ae0>-{-result.HpDelta}</color> from status effects"
+                : $"{characterClass} regenerates <color=#66cc88>+{result.HpDelta}</color>");
             if (result.HpDelta < 0 && Stats.HP <= 0)
                 _lastAttacker = null; // DoT kill — no single attacker to credit
         }
@@ -645,6 +649,16 @@ public partial class ActorInstance : MonoBehaviour
             if (Stats.HP <= 0 && attackResult != null && attackResult.Attacker != null)
             {
                 _lastAttacker = attackResult.Attacker;
+            }
+
+            // Play-by-play (feed-only — the banner would flood at damage frequency).
+            if (attackResult != null && attackResult.Damage > 0)
+            {
+                string crit = attackResult.HitType == HitOutcome.Critical ? " <color=#ffd75e>CRIT!</color>" : "";
+                string line = attackResult.Attacker != null
+                    ? $"{attackResult.Attacker.characterClass} hits {characterClass} <color=#e57878>-{attackResult.Damage}</color>{crit}"
+                    : $"{characterClass} takes <color=#e57878>-{attackResult.Damage}</color>{crit}";
+                Scripts.Canvas.CombatFeed.Post(line);
             }
 
             // Rewards for a hero damaging an enemy (not enemy→hero, not ally hits).
