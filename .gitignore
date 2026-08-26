@@ -1,4 +1,4 @@
-# This .gitignore file should be placed at the root of your Unity project directory
+﻿# This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
@@ -97,7 +97,7 @@ hidden_changes.conf
 scripts/cli/deploy.settings.json
 node_modules/
 package-lock.json
-.claude/checkpoint.md
 
 # Unity Test Framework init scenes leak into Assets/ when a test run is force-killed
 Assets/InitTestScene*
+.claude/quicksave.md
