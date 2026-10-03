@@ -45,8 +45,8 @@ namespace Scripts.Canvas
     /// component's GameObject, so its look is defined in code — not baked into Game.unity.
     /// Visibility is driven by a CanvasGroup fade.</para>
     ///
-    /// <para>BUTTON WIRING: Cancel → AbilityManager.OnCancelButtonClickedEvent(),
-    /// OK → AbilityManager.OnCastButtonClicked().</para>
+    /// <para>BUTTON WIRING: both buttons clear and close the modal. No combat flow opens it; the
+    /// Debug Window's cast-confirm demo does.</para>
     ///
     /// ACCESS: AbilityCastConfirm.instance
     /// </summary>
@@ -87,9 +87,9 @@ namespace Scripts.Canvas
             castBtn.gameObject.SetActive(false);
 
             cancelBtn.onClick.RemoveAllListeners();
-            cancelBtn.onClick.AddListener(() => GameHelper.AbilityManager.OnCancelButtonClickedEvent());
+            cancelBtn.onClick.AddListener(Close);
             castBtn.onClick.RemoveAllListeners();
-            castBtn.onClick.AddListener(() => GameHelper.AbilityManager.OnCastButtonClicked());
+            castBtn.onClick.AddListener(Close);
         }
 
         /// <summary>Constructs the modal hierarchy on this GameObject (dim + card + texts + buttons).</summary>
@@ -204,30 +204,11 @@ namespace Scripts.Canvas
         /// <summary>Sets the modal description text.</summary>
         public void SetDescription(string text) => description.text = text ?? string.Empty;
 
-        /// <summary>Builds a verb-dispatched title + description prompt for the given ability.</summary>
-        public void SetTitleFor(Scripts.Instances.Ability ability)
+        /// <summary>Clears and closes the modal.</summary>
+        private void Close()
         {
-            if (ability == null) { ClearTitle(); return; }
-
-            if (ability.IsItemAbility && ability.SourceItem != null)
-            {
-                SetTitle($"Use {ability.SourceItem.DisplayName}?");
-                SetDescription(ability.SourceItem.Description);
-                return;
-            }
-
-            if (ability.IsWeaponAbility && ability.SourceWeapon != null)
-            {
-                int max = ability.SourceWeapon.Durability;
-                SetTitle(max > 0
-                    ? $"Equip {ability.SourceWeapon.DisplayName} ({max}/{max})?"
-                    : $"Equip {ability.SourceWeapon.DisplayName}?");
-                SetDescription(ability.Description);
-                return;
-            }
-
-            SetTitle($"Cast {ability.name}?");
-            SetDescription(ability.Description);
+            ClearTitle();
+            FadeOut();
         }
 
         /// <summary>Clears the title and description.</summary>
@@ -262,20 +243,6 @@ namespace Scripts.Canvas
             castBtn.gameObject.SetActive(false);
             StopAllCoroutines();
             StartCoroutine(FadeGroupTo(0f, 0.12f));
-        }
-
-        /// <summary>Activates the buttons without changing alpha.</summary>
-        public void ShowButtons()
-        {
-            cancelBtn.gameObject.SetActive(true);
-            castBtn.gameObject.SetActive(true);
-        }
-
-        /// <summary>Deactivates the buttons without changing alpha.</summary>
-        public void HideButtons()
-        {
-            cancelBtn.gameObject.SetActive(false);
-            castBtn.gameObject.SetActive(false);
         }
 
         /// <summary>Lerps the canvas group alpha to the target over the given duration.</summary>

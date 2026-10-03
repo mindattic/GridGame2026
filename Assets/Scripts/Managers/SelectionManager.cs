@@ -382,12 +382,6 @@ public class SelectionManager : MonoBehaviour
      Color.red);
  }
 
- /// <summary>Hides the enemy-select arc. Call from external clear paths (e.g., AbilityManager.ClearFocusAndUI).</summary>
- public void HideEnemySelectArc()
- {
- g.TargetLineManager?.Hide(EnemySelectArcKey);
- }
-
  #endregion
 }
 

@@ -29,7 +29,7 @@ namespace Scripts.Managers
 /// <summary>
 /// TARGETLINEMANAGER - Owns persistent FFXII-style targeting arcs keyed by caller string.
 ///
-/// <para>PURPOSE: Callers (SelectionManager enemy-select, AbilityManager cast arcs, etc.) show
+/// <para>PURPOSE: Callers (SelectionManager enemy-select, etc.) show
 /// a named arc between two <see cref="TargetPoint"/> endpoints and hide it by the same key.
 /// Arcs follow moving actors / canvas UI each frame until hidden. Two flavors are available:
 /// <see cref="Show2D"/> builds the arc under the main ScreenSpaceOverlay Canvas so it draws

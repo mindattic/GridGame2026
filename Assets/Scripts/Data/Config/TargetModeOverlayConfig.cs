@@ -9,7 +9,7 @@ namespace Scripts.Data.Config
     /// <c>static readonly</c> because Color is not a const-legal type.</para>
     /// <para>USAGE: Referenced from TargetModeOverlay.Awake / HandleModeChanged /
     /// ApplyInstant / ApplySorting / SetAlpha.</para>
-    /// <para>RELATED FILES: TargetModeOverlay.cs, AbilityManager.cs, InputManager.cs</para>
+    /// <para>RELATED FILES: TargetModeOverlay.cs, InputManager.cs</para>
     /// </summary>
     public static class TargetModeOverlayConfig
     {

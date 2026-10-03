@@ -34,11 +34,11 @@ namespace Scripts.Sequences
     /// /Wisdom), apply it through the same <see cref="ActorInstance.Damage"/> pipeline pincers use,
     /// and push the target's timeline icon back when a hero casts during the hero window.</para>
     ///
-    /// <para>USAGE: AbilityManager builds one of these from the ability's AbilityEffect, picking the
-    /// element + impact VFX. A DeathSequence is queued by the caller after the cast so kills resolve
+    /// <para>USAGE: EnemyChargeSequence builds one of these from the charge's AbilityEffect, picking
+    /// the element + impact VFX (AbilityManager.TryGetMagicEffect). A DeathSequence is queued by the caller after the cast so kills resolve
     /// exactly like pincer kills.</para>
     ///
-    /// <para>RELATED FILES: AbilityManager.cs (dispatch), Formulas.cs (CalculateMagicDamage),
+    /// <para>RELATED FILES: AbilityManager.cs (TryGetMagicEffect), Formulas.cs (CalculateMagicDamage),
     /// AttackHelper.cs (the physical-attack analogue), DeathSequence.cs.</para>
     /// </summary>
     public class MagicAttackSequence : SequenceEvent

@@ -29,7 +29,7 @@ namespace Scripts.Managers
     ///
     /// <para>PURPOSE: owns the team's <see cref="ManaBank"/> (a capped line of colored orbs) and
     /// translates between the legacy float-mana API and orb spends/grants so existing callers
-    /// (AbilityManager, FX/pickups) keep working unchanged.</para>
+    /// (FX/pickups) keep working unchanged.</para>
     ///
     /// <para>PHASE B CHANGES:</para>
     /// <list type="bullet">

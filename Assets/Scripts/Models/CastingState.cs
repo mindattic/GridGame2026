@@ -48,7 +48,6 @@ namespace Scripts.Models
     /// - Ability.cs: CastTimeSeconds property
     /// - TimelineIcon.cs: Cast bar visualization
     /// - EnemyAttackSequence.cs: Triggers interruption
-    /// - AbilityManager.cs: Initiates casting
     /// </summary>
     [System.Serializable]
     public class CastingState

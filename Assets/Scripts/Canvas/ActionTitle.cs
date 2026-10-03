@@ -40,15 +40,11 @@ namespace Scripts.Canvas
     ///         fades after a beat
     /// </code></para>
     /// <para>USAGE:</para>
-    /// <para><c>g.ActionTitle.Cast(ability)</c> → "Casting Flames"</para>
-    /// <para><c>g.ActionTitle.Use(item)</c> → "Using Cure Potion"</para>
-    /// <para><c>g.ActionTitle.Equip(weapon)</c> → "Equipping Thunder Sword"</para>
     /// <para><c>g.ActionTitle.Show(rawText)</c> → free-form passthrough</para>
     /// <para>NOT THE ABILITY BAR. The bottom 5-slot UI that holds abilities/items/weapons is a
     /// different concept (see AbilityBarSlot* in save data). This component is a top transient
     /// title strip, not an interactive bar.</para>
-    /// <para>RELATED FILES: AbilityManager.cs, UseItemSequence.cs, EnemyAttackSequence.cs,
-    /// ChangeEquippedWeaponSequence.cs (planned), GameBuilder.cs (placement), HubTheme.cs (palette)</para>
+    /// <para>RELATED FILES: EnemyAttackSequence.cs, GameBuilder.cs (placement), HubTheme.cs (palette)</para>
     /// <para>ACCESS: <c>g.ActionTitle</c></para>
     /// </summary>
     [DisallowMultipleComponent]
@@ -126,28 +122,6 @@ namespace Scripts.Canvas
         }
 
         // ---------- Verb-dispatched API (FF6-style, no actor prefix) ----------
-
-        /// <summary>"Casting {Ability.name}". Used for spells with a cast bar.</summary>
-        public void Cast(Ability ability)
-        {
-            if (ability == null) return;
-            Show($"Casting {ability.name}");
-        }
-
-        /// <summary>"Using {Item.DisplayName}". Used for consumables / item-sourced abilities.</summary>
-        public void Use(ItemDefinition item)
-        {
-            if (item == null) return;
-            Show($"Using {item.DisplayName}");
-        }
-
-        /// <summary>"Equipping {Weapon.DisplayName}". Used by ChangeEquippedWeaponSequence
-        /// when a bar-slot weapon swaps into the wielder's equipped slot.</summary>
-        public void Equip(ItemDefinition weapon)
-        {
-            if (weapon == null) return;
-            Show($"Equipping {weapon.DisplayName}");
-        }
 
         /// <summary>Generic passthrough — used for enemy attacks ("{EnemyName} attacks!") and
         /// any case where the verb-dispatched overloads don't apply.</summary>

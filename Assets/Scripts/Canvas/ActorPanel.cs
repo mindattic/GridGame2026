@@ -292,32 +292,6 @@ namespace Scripts.Canvas
             return sb.ToString();
         }
 
-        /// <summary>Preview an ability in the Stats tab (portrait → icon, title → name, body → cost/desc).</summary>
-        public void AssignAbility(Ability ability)
-        {
-            if (!built || ability == null) return;
-            ShowTab(0);
-            if (portraitImg != null && ability.button != null) portraitImg.sprite = ability.button;
-            SetAlpha(portraitCG, 1f);
-            if (titleText != null) titleText.text = ability.name;
-
-            if (statsText != null)
-            {
-                var sb = new System.Text.StringBuilder();
-                sb.Append("<color=#88CCFF>MP Cost:</color> ").AppendLine(ability.ManaCost.ToString());
-                var formula = Formulas.DescribeAbility(ability);
-                if (!string.IsNullOrEmpty(formula)) sb.AppendLine(formula);
-                if (!string.IsNullOrEmpty(ability.Description))
-                {
-                    sb.AppendLine();
-                    sb.Append("<color=#AAAAAA><i>").Append(ability.Description).Append("</i></color>");
-                }
-                statsText.text = sb.ToString();
-            }
-            backdropImage?.gameObject.SetActive(true);
-            ApplyBackdropFor(isEnemy: false);
-        }
-
         /// <summary>Blanks the panel's text/portrait.</summary>
         public void Clear()
         {
@@ -368,13 +342,6 @@ namespace Scripts.Canvas
         #endregion
 
         #region Portrait helpers
-        /// <summary>World position of the portrait — used as the origin for ability projectiles.</summary>
-        public Vector3 PortraitWorldPosition()
-        {
-            if (portraitImg == null) return transform.position;
-            return UnitConversionHelper.Canvas.ToWorld(portraitImg.transform);
-        }
-
         /// <summary>Plays a vertical bounce on the portrait.</summary>
         public void BouncePortrait(float percentOfScreenHeight = 0.03f, float bounceDuration = 0.3333f)
         {

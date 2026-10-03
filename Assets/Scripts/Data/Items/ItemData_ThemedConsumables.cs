@@ -25,7 +25,7 @@ namespace Scripts.Data.Items
     /// ITEMDATA_THEMEDCONSUMABLES - Offensive consumables tuned against specific enemy tags.
     /// <para>PURPOSE: Tactical picks for specific biomes. Stock Holy Water before the Ruins
     /// (bonus vs Undead), Flame Oil before the Forest/Cave (bonus vs Beast / IceAffinity).</para>
-    /// <para>RELATED FILES: ItemData_Consumables.cs, ItemLibrary.cs, UseItemSequence.cs</para>
+    /// <para>RELATED FILES: ItemData_Consumables.cs, ItemLibrary.cs</para>
     /// </summary>
     public static class ItemData_ThemedConsumables
     {

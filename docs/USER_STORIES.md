@@ -35,7 +35,7 @@ updated: 2026-10-03
 **Equipment & durability**
 - ✅ Weapon shatter dual-damage — target bonus + wielder self-damage (`WeaponDurabilityHelper.cs`).
 - ✅ Repair max-durability cap + escalating cost (`WeaponDurabilityHelper.cs`).
-- ✅ Ability-bar weapon swap end-to-end (`ChangeEquippedWeaponSequence.cs`; `AbilityLibrary.FromWeapon`).
+- ⬜ Ability-bar weapon swap — the combat bar has no weapon-swap kind, so saved weapon slots (`AbilityLibrary.FromWeapon`) show empty in battle (`CombatLoadouts`, Bible §4.2).
 
 **Save & macro loop**
 - ✅ `HeroEquipmentSave.AbilityBarSlots` round-trip (`Profile.cs`; `HeroLoadout.cs`; `SaveRoundTripTests`).

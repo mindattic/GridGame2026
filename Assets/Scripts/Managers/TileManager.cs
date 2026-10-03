@@ -68,31 +68,6 @@ public class TileManager : MonoBehaviour
         g.TileMap.GetTile(current).color = ColorHelper.Tile.Yellow;
     }
 
-    /// <summary>
-    /// Tint tiles in 4 cardinal directions from a source until an occupied tile or board edge is reached.
-    /// Does not tint the occupied tile itself. Used by LinearTarget mode.
-    /// </summary>
-    public void HighlightLinearPaths(Vector2Int source)
-    {
-        Reset();
-
-        // 4 directions: up, right, down, left
-        var dirs = new Vector2Int[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
-        foreach (var d in dirs)
-        {
-            var loc = source + d;
-            while (true)
-            {
-                if (!g.TileMap.ContainsLocation(loc)) break;
-                var tile = g.TileMap.GetTile(loc);
-                if (tile == null) break;
-                if (tile.IsOccupied) break; // stop before the first occupied tile
-
-                tile.color = ColorHelper.Tile.Yellow;
-                loc += d;
-            }
-        }
-    }
 }
 
 }

@@ -562,8 +562,7 @@ namespace Scripts.Models
 
     /// <summary>A single slot in a hero's ability bar. Stores exactly one of: an ability name
     /// (class skill), a consumable item ID (item-backed ability), or a weapon ID (weapon-swap
-    /// slot — activating it swaps the hero's currently equipped weapon with the bar weapon
-    /// via ChangeEquippedWeaponSequence).</summary>
+    /// slot; the combat bar has no weapon-swap kind and shows it empty).</summary>
     [Serializable]
     public class AbilityBarSlotSave
     {

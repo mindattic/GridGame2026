@@ -359,38 +359,6 @@ namespace Scripts.Models
         }
 
         /// <summary>
-        /// Enumerates tiles strictly between two aligned locations. Empty if not aligned.
-        /// O(distance).
-        /// </summary>
-        public IEnumerable<TileInstance> EnumerateBetween(Vector2Int a, Vector2Int b)
-        {
-            if (a.x == b.x)
-            {
-                int c = a.x;
-                int start = Math.Min(a.y, b.y) + 1;
-                int end = Math.Max(a.y, b.y) - 1;
-                for (int r = start; r <= end; r++)
-                {
-                    if (!InBounds(c, r)) continue;
-                    var e = grid[c, r];
-                    if (e != null) yield return e.Tile;
-                }
-            }
-            else if (a.y == b.y)
-            {
-                int r = a.y;
-                int start = Math.Min(a.x, b.x) + 1;
-                int end = Math.Max(a.x, b.x) - 1;
-                for (int c = start; c <= end; c++)
-                {
-                    if (!InBounds(c, r)) continue;
-                    var e = grid[c, r];
-                    if (e != null) yield return e.Tile;
-                }
-            }
-        }
-
-        /// <summary>
         /// Parses a board name like "A3" into a location. Throws on invalid input.
         /// </summary>
         public Vector2Int GetLocationOrThrow(string coordName)

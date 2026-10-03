@@ -1563,9 +1563,6 @@ public static class GameBuilder
         SceneBuilderHelper.WireOnClick(
             go_CancelButton.GetComponent<Button>(),
             new UnityAction(go_Game.GetComponent<Scripts.Managers.InputManager>().OnCancelButtonClickedEvent));
-        SceneBuilderHelper.WireOnClick(
-            go_CastButton.GetComponent<Button>(),
-            new UnityAction(go_Game.GetComponent<Scripts.Managers.AbilityManager>().OnCastButtonClicked));
         // (Hero-cycle arrows + tab buttons now live inside ActorPanel and wire their own onClick
         //  in ActorPanel.BuildUi — no scene-side wiring needed.)
         // PHASE B: BankButton onClick removed — the legacy button is gone (see ManaPool removal

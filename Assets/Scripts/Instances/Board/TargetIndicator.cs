@@ -48,7 +48,6 @@ namespace Scripts.Instances.Board
 /// Scales to match tile size (g.TileScale * 1.1f) for proper fit.
 /// 
 /// RELATED FILES:
-/// - AbilityManager.cs: Sets target during ability targeting
 /// - FocusIndicator.cs: Similar indicator for selection
 /// - TargetModeOverlay.cs: Board dimming during targeting
 /// </summary>

@@ -44,7 +44,6 @@ namespace Scripts.Libraries
     ///
     /// RELATED FILES:
     /// - Ability.cs: Ability data structure
-    /// - AbilityManager.cs: Ability execution
     /// - SkillData_Training.cs: Trainable skill definitions
     /// - SpriteLibrary.cs: Ability button sprites
     /// </summary>
@@ -512,11 +511,9 @@ namespace Scripts.Libraries
             };
         }
 
-        /// <summary>Synthesizes an Ability that represents a weapon-swap bar slot.
-        /// Activating it fires <see cref="Scripts.Sequences.ChangeEquippedWeaponSequence"/>
-        /// which swaps this weapon with the hero's currently equipped weapon. Targeting is
-        /// Self (no enemy/ally selection required) and the cost is 0 mana — the cost is
-        /// implicit in the turn it consumes.</summary>
+        /// <summary>Synthesizes an Ability that represents a saved weapon-swap bar slot
+        /// (Self targeting, 0 mana). The combat AbilityBar has no weapon-swap kind, so these
+        /// slots render empty in battle (§4.2).</summary>
         public static Ability FromWeapon(ItemDefinition weapon)
         {
             if (weapon == null || weapon.Type != ItemType.Equipment ||

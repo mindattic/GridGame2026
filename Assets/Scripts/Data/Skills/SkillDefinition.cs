@@ -41,7 +41,6 @@ namespace Scripts.Data.Skills
 /// RELATED FILES:
 /// - SkillLibrary.cs: Skill registry
 /// - HeroLoadout.cs: Equipped skills
-/// - AbilityManager.cs: Skill execution
 /// </summary>
 [System.Serializable]
 public class SkillDefinition

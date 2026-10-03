@@ -7,8 +7,7 @@ namespace Scripts.Data.Config
     /// GetComponent / GetComponentInChildren in ActionTitle.Awake rather than Inspector
     /// drag-drop.</para>
     /// <para>USAGE: Referenced from ActionTitle.AutoHideRoutine / FadeOutRoutine.</para>
-    /// <para>RELATED FILES: ActionTitle.cs, AbilityManager.cs, EnemyAttackSequence.cs,
-    /// UseItemSequence.cs, ChangeEquippedWeaponSequence.cs (planned)</para>
+    /// <para>RELATED FILES: ActionTitle.cs, EnemyAttackSequence.cs</para>
     /// </summary>
     public static class ActionTitleConfig
     {

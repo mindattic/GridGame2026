@@ -56,7 +56,6 @@ namespace Scripts.Canvas
 /// and applies it when re-enabled.
 /// 
 /// RELATED FILES:
-/// - AbilityManager.cs: Triggers targeting mode
 /// - InputManager.cs: InputMode changes
 /// - TileManager.cs: Tile highlighting
 /// 

@@ -91,9 +91,6 @@ public class InputManager : MonoBehaviour
 
     private InputMode inputMode = InputMode.PlayerTurn;
 
-    // Ability user cache (delegated to AbilityManager)
-    private ActorInstance pendingAbilityUser => g.AbilityManager != null ? g.AbilityManager.PendingAbilityUser : null;
-
     /// <summary>
     /// Current input mode. Setting this fires OnInputModeChanged.
     /// </summary>
@@ -152,38 +149,13 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Prepare a user for a targeting flow.
-    /// </summary>
-    public void BeginAbilityTargeting(ActorInstance user) => g.AbilityManager?.BeginAbilityTargeting(user);
-
-    /// <summary>
-    /// Show the global Cancel button (if found).
-    /// </summary>
-    public void ShowCancelButton() => g.AbilityManager?.ShowCancelButton();
-
-    /// <summary>
-    /// Hide the global Cancel button (if found).
-    /// </summary>
-    public void HideCancelButton() => g.AbilityManager?.HideCancelButton();
-
-    /// <summary>
-    /// Bind this to the Canvas/CancelButton OnClick. Cancels targeting and returns to PlayerTurn.
+    /// Bound to the cast-confirm modal's CancelButton OnClick: clears and closes the modal.
     /// </summary>
     public void OnCancelButtonClickedEvent()
     {
-        // Also hide the TitleBar explicitly
         g.AbilityCastConfirm?.ClearTitle();
-        g.AbilityManager?.OnCancelButtonClickedEvent();
+        g.AbilityCastConfirm?.FadeOut();
     }
-
-    /// <summary>
-    /// Ability targeting flow. Tap toggles selection; CastButton confirms.
-    /// </summary>
-    private void UpdateAbilityTarget(Touch touch) => g.AbilityManager?.UpdateAbilityTarget(touch);
-
-    // Linear target: select an enemy in same row/column with clear line; move hero and bump
-    /// <summary>Updates the linear target.</summary>
-    private void UpdateLinearTarget(Touch touch) => g.AbilityManager?.UpdateLinearTarget(touch);
 
     /// <summary>
     /// Player turn flow. Focus on touch, drag past threshold, drop on release.
@@ -280,8 +252,6 @@ public class InputManager : MonoBehaviour
 
             switch (InputMode)
             {
-                case InputMode.AnyTarget:   UpdateAbilityTarget(touch); break;
-                case InputMode.LinearTarget: UpdateLinearTarget(touch);  break;
                 case InputMode.PlayerTurn:   UpdatePlayerTurn(touch);    break;
                 case InputMode.EnemyTurn:    UpdateEnemyTurn(touch);     break;
             }
@@ -290,23 +260,6 @@ public class InputManager : MonoBehaviour
         {
             switch (InputMode)
             {
-                case InputMode.AnyTarget:
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        var target = TouchHelper.GetActorAtTouchPosition();
-                        if (target != null && target.IsPlaying)
-                            g.AbilityManager?.ToggleTarget(target);
-                    }
-                    break;
-                case InputMode.LinearTarget:
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        var hero = pendingAbilityUser;
-                        var target = TouchHelper.GetActorAtTouchPosition();
-                        if (hero != null && target != null)
-                            g.AbilityManager?.ToggleTarget(target);
-                    }
-                    break;
                 case InputMode.PlayerTurn:
                     if (Input.GetMouseButtonDown(0)) { g.SelectionManager.Select(); initialTouchPosition = g.TouchPosition3D; }
                     else if (Input.GetMouseButton(0)) { if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold) g.SelectionManager.Drag(); }
