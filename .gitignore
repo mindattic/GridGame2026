@@ -96,3 +96,6 @@ hidden_changes.conf
 # Unity Test Framework init scenes leak into Assets/ when a test run is force-killed
 Assets/InitTestScene*
 .claude/quicksave.md
+
+# Root-level Unity/tool run logs (local only)
+/*.log

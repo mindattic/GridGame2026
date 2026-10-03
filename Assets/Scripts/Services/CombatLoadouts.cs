@@ -25,6 +25,11 @@ namespace Scripts.Services
     ///
     /// <para>CACHE: resolved bars are cached per class for one battle so item charges survive
     /// re-selecting a hero. <see cref="Scripts.Canvas.AbilityBar"/> clears it when the bar is built.</para>
+    ///
+    /// <para>CONSUMPTION: items are single-use consumables. An item slot built from the saved bar
+    /// draws its charges from the inventory, so <see cref="TryUseItem(ManaAbility)"/> spends one
+    /// charge AND removes one of that item from the save's inventory. Preset item slots
+    /// (<see cref="HeroLoadouts"/>) are not backed by the inventory and only spend a charge.</para>
     /// </summary>
     public static class CombatLoadouts
     {
@@ -34,8 +39,42 @@ namespace Scripts.Services
         private static readonly Dictionary<CharacterClass, IReadOnlyList<ManaAbility>> cache =
             new Dictionary<CharacterClass, IReadOnlyList<ManaAbility>>();
 
+        /// <summary>Item slots whose charges came from the inventory (reference identity).</summary>
+        private static readonly HashSet<ManaAbility> inventoryBacked = new HashSet<ManaAbility>();
+
         /// <summary>Forget every resolved bar (call at battle start).</summary>
-        public static void ResetForBattle() => cache.Clear();
+        public static void ResetForBattle()
+        {
+            cache.Clear();
+            inventoryBacked.Clear();
+        }
+
+        /// <summary>True when <paramref name="item"/> is a saved-bar item slot drawn from the inventory.</summary>
+        public static bool IsInventoryBacked(ManaAbility item) => item != null && inventoryBacked.Contains(item);
+
+        /// <summary>Use one charge of an item slot against the live save's inventory.</summary>
+        public static bool TryUseItem(ManaAbility item)
+            => TryUseItem(item, ProfileHelper.CurrentProfile?.CurrentSave?.Inventory);
+
+        /// <summary>Spend one charge of <paramref name="item"/>; when the slot is inventory-backed, also
+        /// remove one of its item from <paramref name="inventory"/>. False (nothing changes) when the
+        /// slot is empty.</summary>
+        public static bool TryUseItem(ManaAbility item, InventorySaveData inventory)
+        {
+            if (item == null || !item.TryConsumeCharge()) return false;
+            if (IsInventoryBacked(item) && inventory?.Items != null)
+            {
+                for (int i = 0; i < inventory.Items.Count; i++)
+                {
+                    var e = inventory.Items[i];
+                    if (e == null || e.ItemId != item.SourceItemId || e.Count <= 0) continue;
+                    e.Count--;
+                    if (e.Count <= 0) inventory.Items.RemoveAt(i);
+                    break;
+                }
+            }
+            return true;
+        }
 
         /// <summary>Debug-only: replace the bar a class shows for the rest of this battle.</summary>
         public static void SetBattleOverride(CharacterClass characterClass, IReadOnlyList<ManaAbility> loadout)
@@ -89,7 +128,9 @@ namespace Scripts.Services
                     return null;
                 }
                 int stack = Math.Max(0, Math.Min(def.MaxStack, OwnedCount(inventory, def.Id)));
-                return ManaAbilities.NewConsumable(def.DisplayName, stack, def.Id);
+                var consumable = ManaAbilities.NewConsumable(def.DisplayName, stack, def.Id);
+                inventoryBacked.Add(consumable);
+                return consumable;
             }
             if (slot.IsAbility)
             {

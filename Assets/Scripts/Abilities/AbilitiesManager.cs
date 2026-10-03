@@ -31,9 +31,9 @@ namespace Scripts.Vendor.Abilities
     /// ABILITIESMANAGER - Runtime controller for the Abilities scene.
     /// <para>PURPOSE: Configures the 5-slot ability bar for the hero handed off via
     /// <see cref="HeroHandoff.Pending"/>. The bar binds consumables (e.g. healing
-    /// potions) so they can be triggered from slots 1–5 in combat (combat wiring
-    /// lands in slice 7). Each slot stores a consumable item ID; the actual item
-    /// stack stays in the shared inventory and is consumed at use time.</para>
+    /// potions) so they can be triggered from slots 1–5 in combat (the combat bar reads
+    /// these slots through CombatLoadouts). Each slot stores a consumable item ID; the
+    /// actual item stack stays in the shared inventory and is consumed at use time.</para>
     /// <para>UX: Click a consumable in the right pane to assign it to the first
     /// empty slot. Click a filled slot to clear it. If all slots are full and the
     /// player clicks a consumable, the flash label tells them to clear a slot first.</para>

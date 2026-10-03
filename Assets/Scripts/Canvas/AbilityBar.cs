@@ -133,7 +133,8 @@ namespace Scripts.Canvas
             }
         }
 
-        // ── Item: instant; consumes one charge from THIS slot's stack ──
+        // ── Item: instant; consumes one charge from THIS slot's stack (and, for a saved-bar slot,
+        //    one of the item from the inventory — CombatLoadouts.TryUseItem) ──
         private void HandleItem(ManaAbility a)
         {
             // US-042: an item that casts a spell on use (ItemDefinition.OnUseSpellName, e.g. Sleep
@@ -141,7 +142,7 @@ namespace Scripts.Canvas
             // confirm. Falls through to plain-consume for ordinary items.
             if (TryHandleItemSpell(a)) return;
 
-            if (a.TryConsumeCharge())
+            if (Scripts.Services.CombatLoadouts.TryUseItem(a))
                 Debug.Log($"[AbilityBar] Item '{a.Name}' used ({a.Charges}/{a.MaxStackSize} left).");
             else
                 Debug.LogWarning($"[AbilityBar] Item '{a.Name}' empty (0/{a.MaxStackSize}). Buy/craft to restock.");
@@ -176,7 +177,7 @@ namespace Scripts.Canvas
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
                 {
-                    if (!a.TryConsumeCharge())
+                    if (!Scripts.Services.CombatLoadouts.TryUseItem(a))
                     {
                         Debug.LogWarning($"[AbilityBar] '{a.Name}' emptied mid-pick — nothing cast.");
                         return;

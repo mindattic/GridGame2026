@@ -801,9 +801,11 @@ Items are **per-slot instances** — each call to `ManaAbilities.NewPotion(stack
 
 `TryConsumeCharge()` decrements; `Refill(amount)` clamps to `MaxStackSize`.
 
+Items are single-use consumables. Every use goes through `CombatLoadouts.TryUseItem`: it spends one charge, and when the slot came from the player's saved bar (charges = owned count, §4.2) it also removes one of that item from the save's inventory, so charges and owned count stay in step. Preset item slots (`HeroLoadouts`) are not drawn from the inventory and only spend a charge. *(Verified by `CombatLoadoutTests`.)*
+
 ### 4.4 Click flow per kind
 
-**Item**: if the item declares `OnUseSpellName` (e.g. Sleep Dart), route through that spell's targeting flow → `SpellEffectDispatcher.Cast`, spending one charge **on confirm** + costing a turn (US-042, via `ManaAbility.SourceItemId`); otherwise `TryConsumeCharge` → log. Instant (no cast icon).
+**Item**: if the item declares `OnUseSpellName` (e.g. Sleep Dart), route through that spell's targeting flow → `SpellEffectDispatcher.Cast`, spending one charge **on confirm** + costing a turn (US-042, via `ManaAbility.SourceItemId`); otherwise spend one charge → log. Both paths spend through `CombatLoadouts.TryUseItem` (§4.3), which also removes the item from the inventory for saved-bar slots. Instant (no cast icon).
 
 **Skill**: `TargetingMode.Begin` → on confirm, dispatch (or run the Skill's bespoke flow), then call `ManaPoolManager.OnBankButtonClicked()` to advance the timeline ("costs a turn"). Free.
 
@@ -1245,7 +1247,7 @@ The full HUD layout lives in `Utilities/HudLayout.cs` (constants `Row{N}Y_FromTo
 | 14 | 12-slot mana orb belt — screen-wide "tray", sits just **above** the ability bar | `ManaOrbLineFactory` (runtime) |
 | 15 | `ActorPanel` — tabbed **Stats / Equipment / Lore** (contextual: selected hero or scanned enemy). Hero ◀▶ cycle arrows in the tab bar. | root in `GameBuilder`; tab UI built at runtime by `ActorPanel` |
 
-**Cast icons** — small spell-sprite icons that travel left→right on a lane **below** the timeline bar line (§2.6). Spawned via `TimelineBarInstance.SpawnSpellIcon`. (`SpellCastBar` / `SpellCastBarFactory` are marked `[Obsolete]` and have no live caller.)
+**Cast icons** — small spell-sprite icons that travel left→right on a lane **below** the timeline bar line (§2.6). Spawned via `TimelineBarInstance.SpawnSpellIcon`.
 
 **Combat feed** — `Canvas/CombatFeed` (built by `CombatFeedFactory`) shows the last 7 combat events as aging lines under the ActionTitle banner, newest at the bottom, raycast-transparent. Every `AnnouncementWindow.Announce` is mirrored into it, plus feed-only lines for damage (attacker / target / amount, crits colored), status ticks, heals, supporter assists and time-banked orbs. Inline icons come from the `CombatFeedIcons` TMP sprite asset (authored by `CombatFeedSpriteAssetAuthor`: spell icons, tag icons and one glyph per buff); `CombatFeed.Icon(name)` emits a `<sprite>` tag only for glyphs that exist.
 

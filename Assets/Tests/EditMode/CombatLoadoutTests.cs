@@ -1,6 +1,7 @@
 // COMBATLOADOUTTESTS — EditMode tests that the combat AbilityBar shows the per-hero bar the
 // player saved in the Abilities scene (HeroEquipmentSave.AbilityBarSlots), falling back to the
-// class preset (HeroLoadouts) only when that saved bar is empty.
+// class preset (HeroLoadouts) only when that saved bar is empty — and that using a saved-bar
+// item (a consumable) removes it from the inventory its charges came from.
 
 using System.Collections.Generic;
 using System.IO;
@@ -79,6 +80,44 @@ namespace Scripts.Tests.EditMode
             Assert.IsNull(bar[2]);
         }
 
+        private static int Owned(InventorySaveData inv, string itemId)
+        {
+            int n = 0;
+            foreach (var e in inv.Items) if (e.ItemId == itemId) n += e.Count;
+            return n;
+        }
+
+        [Test]
+        public void Using_a_saved_item_removes_it_from_inventory()
+        {
+            var inv = Owning(DartId, 3);
+            var bar = CombatLoadouts.Resolve(CharacterClass.Cleric, SaveWith(new AbilityBarSlotSave(null, DartId)), inv);
+            var dart = bar[0];
+
+            Assert.IsTrue(CombatLoadouts.TryUseItem(dart, inv));
+            Assert.AreEqual(2, dart.Charges);
+            Assert.AreEqual(2, Owned(inv, DartId), "Charges and owned count stay in step.");
+
+            Assert.IsTrue(CombatLoadouts.TryUseItem(dart, inv));
+            Assert.IsTrue(CombatLoadouts.TryUseItem(dart, inv));
+            Assert.AreEqual(0, dart.Charges);
+            Assert.AreEqual(0, Owned(inv, DartId));
+            Assert.IsEmpty(inv.Items, "An emptied stack leaves the inventory.");
+
+            Assert.IsFalse(CombatLoadouts.TryUseItem(dart, inv), "No charges left → refused.");
+        }
+
+        [Test]
+        public void Preset_item_slots_do_not_touch_inventory()
+        {
+            var inv = Owning(DartId, 3);
+            var presetDart = ManaAbilities.NewConsumable("Sleep Dart", 5, DartId);
+
+            Assert.IsTrue(CombatLoadouts.TryUseItem(presetDart, inv));
+            Assert.AreEqual(4, presetDart.Charges);
+            Assert.AreEqual(3, Owned(inv, DartId), "Preset charges are not drawn from the inventory.");
+        }
+
         // ── Live save path (what AbilityBar actually calls) ──
 
         private string isolatedRoot;
@@ -116,6 +155,23 @@ namespace Scripts.Tests.EditMode
 
             Assert.AreSame(HeroLoadouts.For(CharacterClass.Barbarian), CombatLoadouts.For(CharacterClass.Barbarian),
                 "A hero with no saved bar uses the class preset.");
+        }
+
+        [Test]
+        public void Live_item_use_spends_from_the_current_save()
+        {
+            var save = ProfileHelper.CurrentProfile.CurrentSave;
+            if (save.Equipment == null) save.Equipment = new EquipmentSaveData();
+            save.Inventory = Owning(DartId, 2);
+            save.Equipment.GetOrCreate(CharacterClass.Paladin).AbilityBarSlots = new List<AbilityBarSlotSave>
+            {
+                new AbilityBarSlotSave(null, DartId),
+            };
+
+            var dart = CombatLoadouts.For(CharacterClass.Paladin)[0];
+            Assert.AreEqual(2, dart.Charges);
+            Assert.IsTrue(CombatLoadouts.TryUseItem(dart));
+            Assert.AreEqual(1, Owned(ProfileHelper.CurrentProfile.CurrentSave.Inventory, DartId));
         }
     }
 }

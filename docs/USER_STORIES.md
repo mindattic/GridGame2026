@@ -176,6 +176,7 @@ updated: 2026-10-03
 - [x] **US-145 ✅ Portrait pop-in variety.** `PortraitManager.SpawnPair2DRoutine` picks a `PairEntryPattern` per pincer (CounterSweep, ReverseCounterSweep, SameSideStagger, StaggeredCounter; seed-deterministic); supporters keep their pop-in.
 - [x] **US-146 ✅ Saved ability bar drives combat.** The Row-13 `AbilityBar` binds `Services/CombatLoadouts.For(class)`: the per-hero `HeroEquipmentSave.AbilityBarSlots` chosen in the Abilities scene, falling back to the `HeroLoadouts` class preset when that bar is empty. *(Verified by `CombatLoadoutTests`.)* Bible §4.2.
 - [x] **US-147 ✅ Cast cap.** At most 4 hero spells load on the timeline at once (`Services/SpellCastCapacity`, `TimelineBarInstance.HeroCastsInFlight`); `AbilityBar.HandleSpell` refuses a further cast-time spell at click and at confirm with "Too many spells!", spending no orbs. *(Verified by `SpellCastCapacityTests`.)* Bible §4.4.
+- [x] **US-148 ✅ Items are consumed.** Using a saved-bar item slot (`CombatLoadouts.TryUseItem`, called by both `AbilityBar` item paths) spends a charge and removes one of the item from `save.Inventory`; preset item slots only spend a charge. *(Verified by `CombatLoadoutTests`.)* Bible §4.3.
 
 ---
 

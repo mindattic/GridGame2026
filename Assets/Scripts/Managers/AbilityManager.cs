@@ -32,11 +32,11 @@ namespace Scripts.Managers
     /// validation, casting, and ability effects.
     /// 
     /// ABILITY FLOW:
-    /// 1. BeginTargeting() (no live caller: the combat AbilityBar targets via TargetingMode)
-    /// 2. InputMode changes to AnyTarget or LinearTarget
-    /// 3. Player taps valid targets → ToggleTarget() adds/removes from targetList
-    /// 4. Player confirms → Cast() executes ability
-    /// 5. Cancel → CancelTargeting() returns to PlayerTurn mode
+    /// 1. A targeting InputMode (AnyTarget or LinearTarget) is active (the combat AbilityBar
+    ///    itself targets via TargetingMode, not this manager)
+    /// 2. Player taps valid targets → ToggleTarget() adds/removes from targetList
+    /// 3. Player confirms → Cast() executes ability
+    /// 4. Cancel → CancelTargeting() returns to PlayerTurn mode
     /// 
     /// TARGETING MODES (AbilityTargetingMode):
     /// - AnyTarget: Select any valid target(s)
@@ -92,28 +92,6 @@ namespace Scripts.Managers
         #endregion
 
         #region Targeting
-
-        /// <summary>
-        /// Begins target selection for an ability.
-        /// Changes InputMode to targeting state.
-        /// </summary>
-        public void BeginTargeting(ActorInstance user, Ability ability)
-        {
-            if (IsInteractionLocked()) return;
-
-            ClearAllIndicators();
-            targetList.Clear();
-
-            currentUser = user;
-            currentAbility = ability;
-
-            // Clear movement state to prevent contamination
-            ClearMovementState();
-
-            g.AbilityCastConfirm.ClearTitle();
-            g.InputManager.InputMode = ability.TargetingMode == AbilityTargetingMode.Linear ? InputMode.LinearTarget : InputMode.AnyTarget;
-            g.InputManager.RequireTouchRelease();
-        }
 
         /// <summary>Caches the pending ability user.</summary>
         public void BeginAbilityTargeting(ActorInstance user)

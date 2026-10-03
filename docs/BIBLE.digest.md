@@ -124,5 +124,5 @@ For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossar
 <a id="gg-appendix-a"></a>
 
 ## Status index (from docs/USER_STORIES.md)
-- done: 73  partial: 0  planned: 1
+- done: 74  partial: 0  planned: 1
 
