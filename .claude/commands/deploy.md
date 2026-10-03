@@ -1,21 +1,7 @@
-Deploy the GridGame2026 landing page (`mindattic.com/gridgame2026.htm`) via **MindAttic.Deploy** (sibling repo at `D:\Projects\MindAttic\MindAttic.Deploy`).
+# /deploy -- no web deploy
 
-Renders this repo's `README.md` through the catalog template (`template/index.template.htm`, Cyberspace theme, MindAttic.UiUx components loaded via jsDelivr) and FTPS-uploads the single-file result. One repo owns the whole FTP pipeline — there is no per-project deploy state in this folder.
+**GridGame2026 has no web deploy.** Its README on GitHub -- https://github.com/mindattic/GridGame2026 -- is the project page. To update the project page, edit `README.md` and push to `main`.
 
-Run this command and report the result:
+The README-driven landing page `mindattic.com/gridgame2026.htm` was retired together with MindAttic.Deploy's catalog mode (amendment DEP-A6 in `MindAttic.Deploy/docs/AMENDMENTS.md`, 2026-10-03). `npm run deploy -- --only gridgame2026` is now rejected, so do not run MindAttic.Deploy for this project.
 
-```
-powershell -NoProfile -ExecutionPolicy Bypass -Command "cd D:\Projects\MindAttic\MindAttic.Deploy; npm run deploy -- --only gridgame2026"
-```
-
-It will:
-
-1. Render `D:\Projects\MindAttic\GridGame2026\README.md` through the catalog template.
-2. FTPS-upload `out/gridgame2026.htm` to `/mindattic.com/gridgame2026.htm`.
-
-After running, summarize the result and flag any failures.
-
-Notes:
-- Catalog entry: `MindAttic.Deploy/projects.json` -> `projects[]` slug `gridgame2026` (theme: Cyberspace).
-- Credentials: MindAttic.Vault at `%APPDATA%\MindAttic\Deploy\ftp.json` (transitional fallback: `MindAttic.Deploy/secrets/ftp.json`, gitignored).
-- GridGame2026 is a Unity project — this command only ships the landing page, not the game build.
+When invoked, tell the user the above and stop.
