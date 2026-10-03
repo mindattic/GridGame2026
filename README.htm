@@ -378,10 +378,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\build-readme.ps1</code
 <li><code>Backup.ps1</code> is left over from the previous project; the real backup logic is inline in the console (option 3).</li>
 <li><code>COMMIT.cmd</code> is an empty, dead file.</li>
 <li><code>Tools/SceneHierarchies.txt</code> appears to be a stray duplicate of the authoritative <code>Documentation/Builders/SceneHierarchies.txt</code>.</li>
-<li>The root <code>package.json</code> describes an old Node landing-page build (<code>scripts/cli/build-html.js</code>, <code>scripts/cli/deploy.ps1</code>) whose scripts no longer exist. README.htm is now built by <code>Tools/build-readme.ps1</code>.</li>
+<li>The root <code>package.json</code> describes an old Node landing-page build (<code>scripts/cli/build-html.js</code>, <code>scripts/cli/deploy.ps1</code>) whose scripts are not in the repo. README.htm is built by <code>Tools/build-readme.ps1</code>.</li>
 </ul>
 <h2 id="status">Status</h2>
-<p>Single-developer project. The bible records all V1 stories as verified done as of 2026-06-09, including Epic G (UI polish and accessibility) and Epic H (performance and hardening). Deferred or cut: a 60 fps profiling pass on a physical device, a merged hub, roster composition, roguelike and new-game-plus modes, a tutorial, relic passives, and the dialog and overworld layers. See the active frontier in <a href="docs/BIBLE.md">docs/BIBLE.md</a>.</p>
+<p>Single-developer project. Every V1 user story is done except US-104, the 60 fps profiling pass on a physical device. The backlog also holds a merged vendor hub, roguelike and new-game-plus modes, a tutorial and relic passives. There is no dialog system and no overworld. See the active frontier in <a href="docs/BIBLE.md">docs/BIBLE.md</a>.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Docs are split between two folders with different roles.</p>
 <table><thead><tr>
@@ -390,7 +390,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\build-readme.ps1</code
 </tr></thead><tbody>
 <tr>
 <td><a href="docs">docs</a></td>
-<td>The MindAttic Codex canon, the source of truth for what the game is: <a href="docs/BIBLE.md">BIBLE.md</a> (the laws and full design), <a href="docs/AMENDMENTS.md">AMENDMENTS.md</a> (append-only, wins over the bible), <a href="docs/USER_STORIES.md">User stories</a> (the build board), <code>data/</code> (spells, buffs, classes, enemy archetypes and item rarities as schema-validated JSON), <code>rfc/</code> (design notes) and <code>BIBLE.digest.md</code> (generated).</td>
+<td>The MindAttic Codex canon, the source of truth for what the game is: <a href="docs/BIBLE.md">BIBLE.md</a> (the laws and full design), <a href="docs/AMENDMENTS.md">AMENDMENTS.md</a> (pending decisions not yet folded into the bible; normally empty), <a href="docs/USER_STORIES.md">User stories</a> (the build board), <code>data/</code> (spells, buffs, classes, enemy archetypes and item rarities as schema-validated JSON), <code>rfc/</code> (design notes) and <code>BIBLE.digest.md</code> (generated).</td>
 </tr>
 <tr>
 <td><a href="Documentation">Documentation</a></td>
@@ -400,9 +400,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\build-readme.ps1</code
 <ul>
 <li><a href="Assets/Scripts/ARCHITECTURE.md">Assets/Scripts/ARCHITECTURE.md</a>: architecture reference for AI-assisted development, including the global access pattern</li>
 <li><a href="AGENTS.md">AGENTS.md</a>: instructions for AI agents working in this repo</li>
-<li>The root <code>game_bible.md</code> and <code>user_stories.md</code> are one-line redirects to <code>docs/</code>, kept so old links still work.</li>
 </ul>
-<p>This README on GitHub is the project page; the old mindattic.com landing page was retired.</p>
+<p>This README on GitHub is the project page; there is no mindattic.com landing page.</p>
 <h2 id="license">License</h2>
 <p>This repo has no LICENSE file. All rights reserved.</p>
 <p>Part of <a href="https://mindattic.com">MindAttic</a> — see more projects at <a href="https://github.com/mindattic">github.com/mindattic</a>. Related: <a href="https://github.com/mindattic/GridGame2025">GridGame2025</a>, <a href="https://github.com/mindattic/GridGame">GridGame</a>, <a href="https://github.com/mindattic/BattleTrinity">BattleTrinity</a>.</p>

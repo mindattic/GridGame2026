@@ -5,7 +5,7 @@ using TMPro;
 namespace Scripts.Canvas
 {
     /// <summary>
-    /// COMBATFEED - The scrolling play-by-play log of the battle (US-133 / GG-A5).
+    /// COMBATFEED - The scrolling play-by-play log of the battle (US-133).
     ///
     /// <para>PURPOSE: The <see cref="AnnouncementWindow"/> banner shows ONE event at a time and
     /// fades; this feed keeps the recent history visible so the player can follow the fight:

@@ -75,7 +75,7 @@ public class ActorData
     /// <summary>Board footprint in tiles (width, height). Default 1×1; enemies may be larger
     /// (e.g. a 2×2 boss). The anchor is the lowest-x,y (top-left) tile. Heroes are always 1×1.
     /// Drives occupancy, spawn placement, sprite scale/center, and the pincer/shove rules — see
-    /// game_bible.md "Multi-tile actors".</summary>
+    /// docs/BIBLE.md "Multi-tile actors".</summary>
     public Vector2Int Footprint = Vector2Int.one;
 
     public List<Ability> Abilities = new List<Ability>();

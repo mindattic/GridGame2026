@@ -4,8 +4,8 @@
 // loads the scene and lets it settle. Scenes are free to auto-navigate (SplashScreen fades
 // to TitleScreen, LoadingScreen chains onward); navigation is not a failure.
 //
-// Hub and Overworld are intentionally absent: both are retired from the live flow
-// (docs/AMENDMENTS.md GG-A3) and scheduled for removal from the build list.
+// Hub and Overworld are intentionally absent: neither is in the build list and nothing
+// routes to them (docs/BIBLE.md §11.2).
 //
 // Profile isolation: every test runs against a throwaway profile under temporaryCachePath —
 // the player's real saves are never read or written (FolderHelper.TestProfileRootOverride).

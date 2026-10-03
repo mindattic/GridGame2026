@@ -1,5 +1,5 @@
 // ABILITYSLOTPROGRESSIONTESTS — EditMode tests for the ability-bar slot unlock gates
-// (US-143 / GG-A6): 2 slots on a fresh save, +1 at each campaign gate, hard max 5.
+// (US-143): 2 slots on a fresh save, +1 at each campaign gate, hard max 5.
 
 using NUnit.Framework;
 using Scripts.Services;

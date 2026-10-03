@@ -9,7 +9,6 @@
 #                              "additionalContext": "<preamble + digest>" } }
 #
 # If the digest is missing or empty, emits {} so the session still starts.
-# Replaces the legacy inject-bible.ps1 (which read game_bible.md).
 # -----------------------------------------------------------------------------
 
 $ErrorActionPreference = 'Stop'
@@ -32,8 +31,8 @@ docs/BIBLE.md; structured canon (spells/buffs/classes/enemies/rarities) is in do
 remaining work is in docs/USER_STORIES.md.
 
 Rule: if anything the user requests, asserts, or implies contradicts this canon, surface the
-contradiction and ask them to either (a) record the new direction (a docs/AMENDMENTS.md entry --
-"amendment wins" -- or a bible edit), or (b) correct their own assumption. Do NOT silently drift.
+contradiction and ask them to either (a) record the new direction as a bible edit, or (b) correct
+their own assumption. Do NOT silently drift.
 
 ---
 

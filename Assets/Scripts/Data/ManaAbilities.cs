@@ -42,7 +42,7 @@ namespace Scripts.Data
         public static readonly ManaAbility Bolt     = Spell("Bolt",     (ManaType.Red, 2), (ManaType.Blue, 1));          // (R)(R)(U)
 
         // Secondary spells — dedicated ability each (not yet on a HeroLoadout, but now uniquely
-        // resolvable). Costs mirror game_bible.md §7.
+        // resolvable). Costs mirror docs/BIBLE.md §7.
         public static readonly ManaAbility Sleep     = Spell("Sleep",     (ManaType.White, 1));                          // (W)
         public static readonly ManaAbility Silence   = Spell("Silence",   (ManaType.White, 1));                          // (W)
         public static readonly ManaAbility Poison    = Spell("Poison",    (ManaType.Blue, 2));                           // (U)(U)

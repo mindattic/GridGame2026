@@ -69,7 +69,7 @@ namespace Scripts.Managers
             set { /* PHASE B: no-op — orbs are added/spent through Bank now. */ }
         }
 
-        // ── US-142 (GG-A6): time-banked orbs ─────────────────────────────────────
+        // ── US-142: time-banked orbs ─────────────────────────────────────
         // The Grandia "bank the clock" fantasy, rebuilt on the orb economy: when the player's
         // LAST action of the hero window lands, the seconds still remaining before the next
         // enemy reaches the trigger are recorded; at the enemy handoff that remainder converts

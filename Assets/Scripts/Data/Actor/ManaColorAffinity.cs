@@ -8,7 +8,7 @@ namespace Scripts.Data.Actor
     /// contributes to a pincer (US-030), replacing the V1 all-Blue placeholder. So the team bank's
     /// color profile reflects party composition (§23.2.1).
     ///
-    /// <para>Mapping resolved from game_bible.md §23.2 + the Legion panel (2026-06-02): the five
+    /// <para>Mapping resolved from docs/BIBLE.md §23.2 + the Legion panel (2026-06-02): the five
     /// unambiguous classes plus Paladin=White (anchored by the §23.2.1 "3 Paladins = W/W/W" example)
     /// and Alchemist=Green ("never runs out of resources" = Green ramp/economy). Unlisted classes
     /// (enemies, future heroes) default to Blue until assigned.</para>

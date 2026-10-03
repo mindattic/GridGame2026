@@ -6,7 +6,7 @@
     "layer": "data",
     "type": "spell",
     "status": "living",
-    "updated": "2026-06-07",
+    "updated": "2026-10-03",
     "generatedFrom": "GG-§7",
     "source": "Assets/Scripts/Data/SpellLibrary.cs",
     "note": "Canon-as-data for the Spell Catalog. Cost is expressed in palette letters (see BIBLE GG-§9 / mana palette). Prose in BIBLE GG-§7 cites these by id and does not restate fields."
@@ -26,7 +26,7 @@
     { "id": "spell.meteor", "name": "Meteor", "kind": "Spell", "cost": ["R", "R"], "shape": "Diamond(r=2)", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Strike", "damage": 22, "damageType": "Fire", "appliesBuff": "buff.burning", "effect": "22 Fire dmg + burning", "role": "Massive AOE; the wipe-the-back-row option", "status": "done" },
     { "id": "spell.shockwave", "name": "ShockWave", "kind": "Spell", "cost": ["R", "R", "U"], "shape": "Column", "mode": "PickActor", "filter": "EnemyOnly", "motion": "Strike", "damage": 10, "damageType": "Lightning", "effect": "10 Lightning dmg", "role": "Vertical cleave; pair with Frost columns", "status": "done" },
     { "id": "spell.crosshit", "name": "CrossHit", "kind": "Spell", "cost": ["R", "R", "U"], "shape": "Plus", "mode": "PickTile", "filter": "EnemyOnly", "motion": "Strike", "damage": 8, "damageType": "Lightning", "effect": "8 Lightning dmg (board-wide +)", "role": "Hits ENTIRE row + column; spreads thin but covers ground", "status": "done" },
-    { "id": "spell.quicken", "name": "Quicken", "kind": "Spell", "cost": ["U"], "shape": "SingleActor", "mode": "PickActor", "filter": "Any", "motion": "None", "damage": null, "damageType": null, "hastenU": 0.30, "effect": "Slides target timeline icon forward (hastenU 0.30); no damage", "role": "Inverse of pushback; overtaking is emergent (US-028)", "status": "done" },
+    { "id": "spell.quicken", "name": "Quicken", "kind": "Spell", "cost": ["U"], "shape": "SingleActor", "mode": "PickActor", "filter": "Any", "motion": "Straight", "damage": null, "damageType": null, "hastenU": 0.30, "effect": "Slides target timeline icon forward (hastenU 0.30); no damage", "role": "Inverse of pushback; overtaking is emergent (US-028)", "status": "done" },
     { "id": "spell.steal", "name": "Steal", "kind": "Skill", "cost": [], "shape": "Cross(r=1)", "mode": "Auto", "filter": "EnemyOnly", "motion": "Homing", "damage": null, "damageType": null, "effect": "LCK+AGI roll per adjacent enemy -> orb", "role": "Resource grab; no damage, costs a turn", "status": "done" },
     { "id": "spell.mug", "name": "Mug", "kind": "Skill", "cost": [], "shape": "Cross(r=1)", "mode": "Auto", "filter": "EnemyOnly", "motion": "Straight", "damage": 10, "damageType": "Physical", "effect": "Same roll as Steal PLUS 10 Physical dmg each", "role": "Steal + attack; the rogue's signature", "status": "done" },
     { "id": "spell.teleport", "name": "Teleport", "kind": "Skill", "cost": [], "shape": "SingleTile", "mode": "PickTile", "filter": "EmptyOnly", "motion": "None", "damage": null, "damageType": null, "effect": "Relocate caster; auto-resolves any new pincer", "role": "Repositioning into a flank; ninja mobility", "status": "done" }

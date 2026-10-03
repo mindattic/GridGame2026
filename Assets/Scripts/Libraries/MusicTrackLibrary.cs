@@ -58,7 +58,7 @@ namespace Scripts.Libraries
 
         /// <summary>Load. Keys are the MusicDirector track keys ("Title"/"Vendor"/"Battle"/
         /// "Victory"/"Defeat") — the Jukebox tries an authored track first and falls back to
-        /// ChiptuneBank when a key has none (US-137 / GG-A5). Every authored track's license
+        /// ChiptuneBank when a key has none (US-137). Every authored track's license
         /// + attribution lives in <see cref="Scripts.Data.AudioCredits"/>, rendered in the
         /// Credits scene — add a row there whenever a track is added here.</summary>
         private static void Load()

@@ -9,7 +9,8 @@
               citations exist, generatedFrom artifacts not stale, digest freshness.
               Exit non-zero on any HARD error.
       digest  Regenerate docs/BIBLE.digest.md from BIBLE.md (the one-sentence, what-it-is-NOT,
-              Laws, Glossary) + a status index + the latest amendment head.
+              Laws, Glossary) + a status index + any pending-decision heads from
+              docs/AMENDMENTS.md (section omitted when there are none).
 
     No build step. Windows PowerShell 5.1 safe (no pwsh-only syntax).
 
@@ -106,7 +107,7 @@ function Invoke-Digest {
     $gloss = Section $bible ("GG-{0}9" -f $S)
 
     # Status index: count story status glyphs in USER_STORIES.md.
-    $counts = [ordered]@{ done = 0; partial = 0; planned = 0; cut = 0 }
+    $counts = [ordered]@{ done = 0; partial = 0; planned = 0 }
     if (Test-Path $StoriesPath) {
         $stories = Read-Text $StoriesPath
         $lines = $stories -split "`n"
@@ -120,12 +121,11 @@ function Invoke-Digest {
         }
     }
 
-    # Latest amendment head (first '## ' heading in AMENDMENTS.md).
-    $amendHead = ''
+    # Pending decisions: every '## ' entry heading in AMENDMENTS.md (normally none).
+    $pendingHeads = @()
     if (Test-Path $AmendPath) {
         $am = Read-Text $AmendPath
-        $hm = [regex]::Match($am, '(?m)^##\s+(.+)$')
-        if ($hm.Success) { $amendHead = $hm.Groups[1].Value.Trim() }
+        foreach ($hm in [regex]::Matches($am, '(?m)^##\s+(.+)$')) { $pendingHeads += $hm.Groups[1].Value.Trim() }
     }
 
     $nl = "`n"
@@ -140,8 +140,11 @@ function Invoke-Digest {
     if ($laws)  { [void]$sb.Append($laws.Trim() + $nl + $nl) }
     if ($gloss) { [void]$sb.Append($gloss.Trim() + $nl + $nl) }
     [void]$sb.Append("## Status index (from docs/USER_STORIES.md)" + $nl)
-    [void]$sb.Append(("- done: {0}  partial: {1}  planned: {2}  cut: {3}" -f $counts.done, $counts.partial, $counts.planned, $counts.cut) + $nl + $nl)
-    if ($amendHead) { [void]$sb.Append("## Latest amendment" + $nl + "- " + $amendHead + $nl) }
+    [void]$sb.Append(("- done: {0}  partial: {1}  planned: {2}" -f $counts.done, $counts.partial, $counts.planned) + $nl + $nl)
+    if ($pendingHeads.Count -gt 0) {
+        [void]$sb.Append("## Pending decisions (docs/AMENDMENTS.md)" + $nl)
+        foreach ($h in $pendingHeads) { [void]$sb.Append("- " + $h + $nl) }
+    }
 
     [IO.File]::WriteAllText($DigestPath, $sb.ToString(), (New-Object System.Text.UTF8Encoding($false)))
     Write-Host ("Wrote " + $DigestPath) -ForegroundColor Cyan
@@ -314,7 +317,7 @@ function Invoke-Doctor {
             if (-not $isDone) { continue }
             $doneCount++
             # evidence = a backtick-quoted token (file/method/demo). This project verifies by
-            # play-test + code-reading (GG-§6), so any cited token counts; absence is a warn.
+            # source file/demo or test (GG-§6), so any cited token counts; absence is a warn.
             if ($ln -notmatch '`[^`]+`') {
                 $idm = [regex]::Match($ln, 'US-\d+')
                 Warn "story $($idm.Value): done but cites no evidence token (file/demo/test)"

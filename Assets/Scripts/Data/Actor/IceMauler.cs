@@ -33,7 +33,7 @@ namespace Scripts.Data.Actor
             {
                 CharacterName = "IceMauler",
                 CharacterClass = CharacterClass.IceMauler, // If this enum does not exist, replace accordingly.
-                // US-026: the Magic tag makes a spawned IceMauler a Caster (game_bible.md §14.2) —
+                // US-026: the Magic tag makes a spawned IceMauler a Caster (docs/BIBLE.md §14.2) —
                 // when not adjacent to a hero it telegraphs an Ice charge on the timeline instead of
                 // closing to melee. IceAffinity routes the charge to the Ice spell (EnemyChargeCatalog).
                 Tags = Tag.Hero | Tag.Humanoid | Tag.Magic | Tag.IceAffinity,

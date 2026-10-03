@@ -5,7 +5,7 @@ using Scripts.Utilities;
 
 namespace Scripts.Services
 {
-    /// <summary>What a single landed hit does to an in-flight cast (game_bible.md §13.4 stagger model).</summary>
+    /// <summary>What a single landed hit does to an in-flight cast (docs/BIBLE.md §13.4 stagger model).</summary>
     public enum CastInterruptOutcome
     {
         /// <summary>Rare LCK "miracle save" — the cast shrugs the hit entirely (US-025 adds the

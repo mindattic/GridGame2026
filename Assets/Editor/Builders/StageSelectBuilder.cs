@@ -60,8 +60,8 @@ public static class StageSelectBuilder
 
     private static void BuildHeader(RectTransform canvas, ref int created, ref int found)
     {
-        // GG-A3: the Hub launcher scene is retired — the VendorNavBar hamburger (built below
-        // in Build()) is the one way to reach vendors, so the header carries no Shop button.
+        // The VendorNavBar hamburger (built below in Build()) is the one way to reach vendors,
+        // so the header carries no Shop button (docs/BIBLE.md §25.0).
         UiKit.Header(canvas, "Select Stage");
         created++;
     }

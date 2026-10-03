@@ -108,7 +108,7 @@ namespace Scripts.Helpers
             CurrentWave = 0,
         };
 
-        /// <summary>Default roster: the starting trio only (US-132 / GG-A5). Every other built
+        /// <summary>Default roster: the starting trio only (US-132). Every other built
         /// hero class is recruited for gold at the Summon Circle (SummonService.Pool) — roster
         /// growth is progression, not a handout. Existing saves keep whatever roster they had.</summary>
         public static RosterSaveData DefaultRoster = new RosterSaveData()

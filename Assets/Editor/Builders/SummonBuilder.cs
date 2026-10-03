@@ -6,7 +6,7 @@ using Scripts.Hub;
 using Scripts.Vendor.Summon;
 
 /// <summary>
-/// SUMMONSCAFFOLD - Editor tool that builds the Summon Circle scene from code (US-132 / GG-A5).
+/// SUMMONSCAFFOLD - Editor tool that builds the Summon Circle scene from code (US-132).
 ///
 /// SCENE HIERARCHY:
 /// ```

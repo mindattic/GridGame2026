@@ -35,7 +35,7 @@ namespace Scripts.Data.Actor
                 CharacterClass = CharacterClass.Cyclops00, // If this enum does not exist, replace accordingly.
                 Tags = Tag.Hero | Tag.Humanoid,
 
-                // Multi-tile boss: the Cyclops occupies a 2×2 footprint (game_bible.md "Multi-tile
+                // Multi-tile boss: the Cyclops occupies a 2×2 footprint (docs/BIBLE.md "Multi-tile
                 // actors"). It's an immovable anchor to hero slides, pincered by flanking its width,
                 // and shoves heroes when it moves. The first live 2×2 enemy.
                 Footprint = new Vector2Int(2, 2),

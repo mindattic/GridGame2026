@@ -4,7 +4,7 @@ using Scripts.Helpers;
 namespace Scripts.Services
 {
     /// <summary>
-    /// ABILITYSLOTPROGRESSION - Pure unlock rules for the ability bar's 5 slots (US-143 / GG-A6).
+    /// ABILITYSLOTPROGRESSION - Pure unlock rules for the ability bar's 5 slots (US-143).
     ///
     /// <para>PURPOSE: The bar starts with 2 usable slots; campaign progress unlocks the rest —
     /// one per gate stage — up to the hard max of 5 (one clear button each, per the owner's

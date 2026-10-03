@@ -10,7 +10,7 @@ namespace Scripts.Data.Actor
     /// ENEMYCHARGECATALOG - Picks the telegraphed "charge" spell a caster enemy casts (US-026).
     ///
     /// <para>PURPOSE: Enemies are otherwise melee-only. An enemy tagged <see cref="ActorTag.Magic"/>
-    /// is a <b>Caster</b> (game_bible.md §14.2) — it can telegraph a spell in the Prepare Zone instead
+    /// is a <b>Caster</b> (docs/BIBLE.md §14.2) — it can telegraph a spell in the Prepare Zone instead
     /// of meleeing. This static, pure-data helper answers "is this a caster?" and "what does it cast?",
     /// deriving the spell <b>element</b> from the enemy's affinity tags (FireAffinity → Fireball, etc.)
     /// and a fixed <b>charge cast time</b>. Kept pure (no scene access, only the static

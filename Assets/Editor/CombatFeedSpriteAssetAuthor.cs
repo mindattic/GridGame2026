@@ -13,7 +13,7 @@ using UnityEditor.AddressableAssets.Settings;
 
 /// <summary>
 /// COMBATFEEDSPRITEASSETAUTHOR - Builds the TMP Sprite Asset that lets battle text render
-/// inline icons via &lt;sprite name="..."&gt; tags (US-133 / GG-A5).
+/// inline icons via &lt;sprite name="..."&gt; tags (US-133).
 ///
 /// <para>PIPELINE: (1) gap-fill 64×64 status glyphs (one per Buff id — Poisoned, Burning, …)
 /// in the same two-letter placeholder style as the tag icons; (2) pack every spell icon,

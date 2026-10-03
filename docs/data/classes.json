@@ -6,10 +6,10 @@
     "layer": "data",
     "type": "class",
     "status": "living",
-    "updated": "2026-06-07",
+    "updated": "2026-10-03",
     "generatedFrom": "GG-§23",
     "source": "Assets/Scripts/Helpers/CharacterClass.cs, HeroLoadouts.perClass, Data/Actor/ManaColorAffinity.cs",
-    "note": "V1 seeded hero roster. Color affinity BUILT (US-030). 'Assassain'/'GreenNinja'/'RedNinja' spellings preserved verbatim from the CharacterClass enum. Classes not in HeroLoadouts.perClass fall through to the default bar and are tracked in BIBLE GG-§23 prose, not here."
+    "note": "Hero classes with seeded loadouts. Color affinity per US-030. 'Assassain'/'GreenNinja'/'RedNinja' spellings preserved verbatim from the CharacterClass enum. Classes not in HeroLoadouts.perClass fall through to the default bar and are tracked in BIBLE GG-§23 prose, not here."
   },
   "classes": [
     { "id": "class.cleric", "name": "Cleric", "identity": "White-magic healer; sustain-focused; reads enemy intentions", "statLean": "INT/WIS high, STR low", "colorAffinity": "W", "loadout": ["Heal", "Heal", "Frost", "Potion(3)"], "signature": "Back-line topple recovery via Heal/MassHeal/Antidote", "status": "done" },

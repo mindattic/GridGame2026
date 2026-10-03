@@ -10,7 +10,7 @@ using UnityEditor.AddressableAssets.Settings;
 /// <summary>
 /// AUDIOADDRESSABLEREGISTRAR - Registers every audio file under Assets/MusicTracks and
 /// Assets/SoundEffects as an Addressable with the address pattern the libraries expect
-/// ("MusicTracks/&lt;name&gt;" / "SoundEffects/&lt;name&gt;"), idempotently (US-137 / GG-A5).
+/// ("MusicTracks/&lt;name&gt;" / "SoundEffects/&lt;name&gt;"), idempotently (US-137).
 /// Run after dropping new royalty-free audio into either folder — and add the matching
 /// attribution row in Data/AudioCredits.cs.
 ///

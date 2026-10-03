@@ -1,4 +1,4 @@
-// AUDIOCREDITSTESTS — EditMode tests for the audio attribution rule (US-137 / GG-A5):
+// AUDIOCREDITSTESTS — EditMode tests for the audio attribution rule (US-137):
 // every authored music key resolves, and every credited entry carries author + license +
 // usage; CC-BY entries carry the license URL (MacLeod's required format needs it).
 

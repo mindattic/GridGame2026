@@ -20,8 +20,9 @@ namespace Scripts.Canvas
     /// <list type="bullet">
     ///   <item><b>Skill</b> (usually class-based) — free, reusable, costs the player's turn.
     ///   Examples: Steal, Mug.</item>
-    ///   <item><b>Spell</b> — costs colored mana orbs (e.g. Fireball = (R)(R)); the dispatcher
-    ///   runs a <see cref="SpellCastBar"/> countdown before resolving.</item>
+    ///   <item><b>Spell</b> — costs colored mana orbs (e.g. Fireball = (R)(R)); a spell with a
+    ///   cast time rides the timeline as a cast icon (TimelineBarInstance.SpawnSpellIcon)
+    ///   before resolving.</item>
     ///   <item><b>Item</b> — instant consumable with a per-slot stack (drained one charge per
     ///   use). Two stacks of 5 = two slots, each holding 5 charges that drain independently.</item>
     /// </list>

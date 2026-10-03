@@ -3,11 +3,11 @@ using System.Collections.Generic;
 namespace Scripts.Data
 {
     /// <summary>
-    /// STORYCRAWLDATA - The barebones plot, one crawl per campaign theme (US-131 / GG-A5).
+    /// STORYCRAWLDATA - The barebones plot, one crawl per campaign theme (US-131).
     ///
     /// <para>PURPOSE: Data-driven text for the skippable Star-Wars-style crawl shown on first
     /// entry into each theme. Keyed by <c>CampaignTheme.Id</c>. Prose only — no dialog system,
-    /// no branching (those stay cut per §27/GG-A5). Writers edit THIS file; nothing else.</para>
+    /// no branching (docs/BIBLE.md §27). Writers edit THIS file; nothing else.</para>
     ///
     /// <para>LORE FRAME: the light-bearing invaders descend into the Undearth — a sunless world —
     /// chasing the stolen dawn, from the pastoral edge (Green Valley) down to the drowned city

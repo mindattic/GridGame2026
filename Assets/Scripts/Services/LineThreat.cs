@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Scripts.Services
 {
     /// <summary>
-    /// LINETHREAT - Pure math for line-shaped enemy attacks (US-138 / GG-A5).
+    /// LINETHREAT - Pure math for line-shaped enemy attacks (US-138).
     ///
     /// <para>PURPOSE: A line-caster locks a CARDINAL direction toward its target at telegraph
     /// time; the threatened tiles run from the tile beside the caster to the board edge. The

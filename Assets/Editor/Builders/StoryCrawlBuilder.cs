@@ -6,7 +6,7 @@ using Scripts.Hub;
 using Scripts.StoryCrawl;
 
 /// <summary>
-/// STORYCRAWLSCAFFOLD - Editor tool that builds the StoryCrawl scene from code (US-131 / GG-A5).
+/// STORYCRAWLSCAFFOLD - Editor tool that builds the StoryCrawl scene from code (US-131).
 ///
 /// SCENE HIERARCHY:
 /// ```

@@ -27,7 +27,7 @@ using Scripts.Utilities;
 namespace Scripts.Sequences
 {
     /// <summary>
-    /// CLUTCHSEQUENCE - The Clutch! miracle save (US-025, game_bible.md §13.4 casting prose).
+    /// CLUTCHSEQUENCE - The Clutch! miracle save (US-025, docs/BIBLE.md §13.4 casting prose).
     ///
     /// <para>PURPOSE: When the rare LCK-driven Clutch outcome procs on an interrupted cast
     /// (<see cref="Scripts.Services.CastInterruptResolver"/> rolls it first, before the WIS poise

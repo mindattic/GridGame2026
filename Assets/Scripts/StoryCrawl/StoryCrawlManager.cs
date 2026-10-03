@@ -30,7 +30,7 @@ using scene = Scripts.Helpers.SceneHelper;
 namespace Scripts.StoryCrawl
 {
     /// <summary>
-    /// STORYCRAWLMANAGER - Runtime controller for the StoryCrawl scene (US-131 / GG-A5).
+    /// STORYCRAWLMANAGER - Runtime controller for the StoryCrawl scene (US-131).
     /// <para>PURPOSE: Plays the theme's intro text as a Star-Wars-style upward crawl, then fades
     /// to Game. Always skippable (Skip button or tap anywhere). StageSelect routes here on first
     /// entry into a theme (per-save, GlobalSaveData.SeenStoryCrawls); every other launch goes

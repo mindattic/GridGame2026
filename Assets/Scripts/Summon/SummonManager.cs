@@ -29,7 +29,7 @@ using scene = Scripts.Helpers.SceneHelper;
 namespace Scripts.Vendor.Summon
 {
     /// <summary>
-    /// SUMMONMANAGER - Runtime controller for the Summon Circle scene (US-132 / GG-A5).
+    /// SUMMONMANAGER - Runtime controller for the Summon Circle scene (US-132).
     /// <para>PURPOSE: Roster growth as a vendor: lists the summonable hero classes
     /// (SummonService.Pool) with the rising recruit cost; a recruit deducts gold, appends the
     /// class to the save roster, and persists — the new hero then appears in Party's carousel.

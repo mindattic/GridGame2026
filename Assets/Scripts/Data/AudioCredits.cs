@@ -3,7 +3,7 @@ using System.Text;
 namespace Scripts.Data
 {
     /// <summary>
-    /// AUDIOCREDITS - Every sourced audio asset with its full attribution (US-137 / GG-A5).
+    /// AUDIOCREDITS - Every sourced audio asset with its full attribution (US-137).
     ///
     /// <para>RULE (owner directive 2026-08-15): all sound and music comes from royalty-free
     /// sources and EVERYTHING is attributed in the Credits scene — CC0/no-attribution-required

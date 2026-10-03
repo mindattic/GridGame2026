@@ -38,7 +38,7 @@ namespace Scripts.Tests.EditMode
         public void Fresh_save_starts_with_trio_and_full_pool_unowned()
         {
             var save = ProfileHelper.CurrentProfile.CurrentSave;
-            Assert.AreEqual(3, save.Roster.Members.Count, "Fresh roster = the starting trio (GG-A5).");
+            Assert.AreEqual(3, save.Roster.Members.Count, "Fresh roster = the starting trio.");
             foreach (var characterClass in SummonService.Pool)
                 Assert.IsFalse(SummonService.IsOwned(save, characterClass), $"{characterClass} must start unowned.");
         }

@@ -41,7 +41,7 @@ namespace Scripts.Sequences
     ///
     /// POST-BATTLE:
     /// PostBattleScreen awards XP + loot + gold, shows level-ups, then
-    /// returns to StageSelect (the campaign gateway; Hub is retired — GG-A3).
+    /// returns to StageSelect (the campaign gateway).
     /// 
     /// RELATED FILES:
     /// - VictoryAnnouncement.cs: Victory UI

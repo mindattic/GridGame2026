@@ -45,8 +45,8 @@ namespace Scripts.Models
     ///   Each use "costs the player's turn" — after the dispatcher resolves, the AbilityBar
     ///   auto-advances the timeline to the next enemy. Example: Steal, Mug.</item>
     ///
-    ///   <item><b>Spell</b> — pays mana orbs from the team's <see cref="ManaBank"/>. Goes through
-    ///   a <see cref="Scripts.Canvas.SpellCastBar"/> countdown before resolving. Cost is a
+    ///   <item><b>Spell</b> — pays mana orbs from the team's <see cref="ManaBank"/>. A spell with a
+    ///   cast time rides the timeline as a cast icon (TimelineBarInstance.SpawnSpellIcon) before resolving. Cost is a
     ///   <see cref="ManaRecipe"/>. Example: Fireball (2 Red), Bolt (2 Red + 1 Blue).</item>
     ///
     ///   <item><b>Item</b> — consumable from a PER-SLOT stack. Each instance carries its own

@@ -8,7 +8,7 @@ using Scripts.Models;
 namespace Scripts.Services
 {
     /// <summary>
-    /// SUMMONSERVICE - Pure recruit rules for the Summon vendor (US-132 / GG-A5).
+    /// SUMMONSERVICE - Pure recruit rules for the Summon vendor (US-132).
     ///
     /// <para>PURPOSE: The BRAIN for roster growth — which classes are summonable, what the next
     /// recruit costs, and the save mutation for a recruit. No scene access, no g. switchboard,
@@ -20,7 +20,7 @@ namespace Scripts.Services
     /// a long-term gold sink alongside gear.</para>
     ///
     /// <para>RELATED FILES: SummonManager.cs, SummonBuilder.cs, ProfileHelper.cs (DefaultRoster
-    /// = the starting trio), docs/AMENDMENTS.md GG-A5.</para>
+    /// = the starting trio), docs/BIBLE.md §25.10.</para>
     /// </summary>
     public static class SummonService
     {

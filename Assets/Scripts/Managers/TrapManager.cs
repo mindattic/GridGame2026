@@ -6,7 +6,7 @@ using Scripts.Instances.Board;
 namespace Scripts.Managers
 {
     /// <summary>
-    /// TRAPMANAGER - Per-battle tile-trap state (US-139 / GG-A5).
+    /// TRAPMANAGER - Per-battle tile-trap state (US-139).
     ///
     /// <para>PURPOSE: Trap-layer enemies spend a turn arming a tile; any HERO who enters that
     /// tile — by drag-slide OR by being displaced there — springs it (damage + a status).

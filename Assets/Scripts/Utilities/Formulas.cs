@@ -206,13 +206,13 @@ public static class Formulas
         return Def(stats) + armorRating;
     }
 
-    /// <summary>Magic offense — scales off Intelligence (game_bible.md §3.2: INT = magic damage).</summary>
+    /// <summary>Magic offense — scales off Intelligence (docs/BIBLE.md §3.2: INT = magic damage).</summary>
     public static float MagicOffense(ActorStats stats)
     {
         return stats.Intelligence;
     }
 
-    /// <summary>Magic resistance — scales off Wisdom (game_bible.md §3.2: WIS = magic defense).</summary>
+    /// <summary>Magic resistance — scales off Wisdom (docs/BIBLE.md §3.2: WIS = magic defense).</summary>
     public static float MagicResistance(ActorStats stats)
     {
         return stats.Wisdom;

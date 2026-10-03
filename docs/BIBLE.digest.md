@@ -4,7 +4,7 @@ AUTHORITATIVE -- full detail in docs/BIBLE.md
 # GridGame2026 (GG) -- Bible Digest
 
 > Source of truth for what GridGame2026 IS, is NOT, and the laws that keep it coherent.
-> Generated 2026-08-16. Regenerate with: tools/codex.ps1 digest.
+> Generated 2026-10-03. Regenerate with: tools/codex.ps1 digest.
 
 ## 1. The one sentence {#GG-§1}
 
@@ -23,13 +23,15 @@ GridGame2026 is **NOT**:
 - **Not turn-based in the JRPG sense** — the Timeline is continuous; thinking time is game-clock time.
 - **Not a deck-builder** — AbilityBars are deliberate loadouts, not randomized hands.
 - **Not a roguelike** — V1 has no permadeath, no procedural runs; stages are authored, saves persist.
-- **Not a gacha / live service** — no pulls, no energy, no premium currency.
+- **Not a gacha / live service** — no pulls, no energy, no premium currency. Heroes are recruited
+  deliberately for gold at the Summon Circle.
 - **Not multiplayer** — solo offline; no co-op, PvP, or leaderboards in V1.
 - **Not a grid-puzzle** — no match-3/Tetris piece-color matching; tile state is just "who's standing there".
 - **Not free-form movement** — one tile at a time, cardinal only, no pathfinding or diagonals.
 - **Not a stat-spreadsheet** — if a player needs a wiki to build, the design failed.
-- **Cut entirely:** Dialog & Story (§27) and the Overworld (§28) — replaced by the scrollable
-  stage-select list. Do not re-story them.
+- **No dialog system, no world map.** The only narrative is a skippable per-theme text crawl
+  ([§27](#27-story-crawl-no-dialog)); there is no character dialogue, branching or cutscene, and no
+  Overworld — stage navigation is the scrollable StageSelect list ([§28](#28-no-overworld)).
 
 Full rationale: [§0.2 Non-goals](#02-non-goals-what-this-game-is-not).
 
@@ -57,13 +59,15 @@ No diagonal pincers. A 2×2 boss counts as one opponent flanked by its width. *(
 
 ### {#GG-LAW-3} Code is the source of truth; the `.unity` is the print-out
 Every scene is the regenerated output of an `Editor/Builders/*Builder.cs`. `BuilderAutoRebuild`
-rebuilds on save. The reverse (`.unity` → builder) is intentionally absent; hand-edits are caught by
-`BuilderDriftChecker` at pre-push. *(Source: `BuilderAutoRebuild.cs`, [§11.1](#111-code-only--builder-driven).)*
+rebuilds on save. The reverse (`.unity` → builder) is intentionally absent; hand-edits are flagged by
+`BuilderDriftChecker` (advisory) at pre-push. *(Source: `BuilderAutoRebuild.cs`, [§11.1](#111-code-only--builder-driven).)*
 
-### {#GG-LAW-4} Four guardrails are enforced at pre-push, not by convention
-`SerializedFieldBan`, `ResourcesLoadBan`, `InstantiateBan`, `BuilderDriftChecker` — each with a
-curated allowlist; bypass only with `git push --no-verify` for hotfixes. No new `[SerializeField]`,
-no `Resources.Load`, no `Instantiate(` outside `*Factory.cs`. *(Source: `.githooks/pre-push`,
+### {#GG-LAW-4} Guardrails are enforced at pre-push, not by convention
+`SerializedFieldBan`, `ResourcesLoadBan`, `InstantiateBan` block the push (one Unity batchmode run of
+`CheckCodeGuardrails`); `BuilderDriftChecker` runs in the same hook as an advisory, logged check.
+Each has a curated allowlist; bypass only with `git push --no-verify` for hotfixes. No new
+`[SerializeField]`, no `Resources.Load`, no `Instantiate(` outside `*Factory.cs`. *(Source:
+`.githooks/pre-push` — active via `git config core.hooksPath .githooks` — and
 `CliEntryPoints.CheckAllGuardrails`.)*
 
 ### {#GG-LAW-5} Every spell is a (shape × mode × filter) triad
@@ -75,10 +79,10 @@ A single 12-orb `ManaBank` for the whole party — no per-hero MP. Over-minting 
 (felt as "leaving value on the table"). *(Source: `ManaBank.cs`, [§3.1.4](#314-bank-full-rules-overflow).)*
 
 ### {#GG-LAW-7} Verify-then-checkpoint; the bible is the brief
-Land a feature end-to-end + play-test before committing — no mid-phase commits. Every new system
-ships a `DebugManager.Demo_*` button. If code and bible disagree, reconcile in writing; never let
-drift accumulate. *(Reinforces [`HOUSE-LAW-8`](../../MindAttic.HouseRules.md#HOUSE-LAW-8);
-[§17.2](#172-cadence), [§32](#32-document-discipline-was-30--31).)*
+Land a feature end-to-end and verify it (automated suite + play-test) before committing — no
+mid-phase commits. Every new system ships a `DebugManager.Demo_*` button. If code and bible disagree,
+reconcile in writing; never let drift accumulate. *(Reinforces [`HOUSE-LAW-8`](../../MindAttic.HouseRules.md#HOUSE-LAW-8);
+[§17.2](#172-cadence), [§32](#32-document-discipline).)*
 
 ### {#GG-LAW-8} Portrait-mobile is locked; never stretch
 The UI is locked to portrait mobile (reference 1170×2532). Off-aspect devices letterbox /
@@ -96,17 +100,23 @@ pillarbox via `AspectGuard` — the game never stretches or squashes. *(Source: 
 - **Timeline / IP gauge** — horizontal strip; icons "load" left (u=0, spawn) → right (u=1, trigger).
 - **Pushback Zone** — the rightmost `ZoneU` of the timeline; hitting a foe whose icon is inside it
   shoves its turn back toward spawn. ([§2.3](#23-pushback-the-interrupt-by-hitting-mechanic))
-- **Hasten / Quicken** — the inverse: slide a target icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse-built-us-028))
-- **Cast icon** — a spell with `CastTimeSeconds > 0` rides the timeline as a below-the-line icon;
-  resolves at u=1 in the third "resolving" turn state. ([§13.4](#134-the-interrupt-path))
+- **Hasten / Quicken** — the inverse: slide a target icon forward toward the trigger. ([§2.7.1](#271-hasten--quicken--the-inverse))
+- **Cast icon** — a spell with `CastTimeSeconds > 0` rides the timeline as a small icon below the
+  line; it resolves at u=1 in the third "resolving" turn state. ([§2.6](#26-one-timeline-two-lanes--turn-icons-above-cast-icons-below))
 - **Clutch** — rare LCK-driven interrupt outcome: the caster shrugs the hit, the cast snaps to u=1
   and resolves on the spot. ([§13.4](#134-the-interrupt-path))
 - **ManaBank / orb** — shared 12-orb colored pool (W U B R G C). ([§3.1](#31-mana-the-orb-economy))
-- **Wild orb** — a Colorless orb (crit-minted) that satisfies any single color on spend. ([§3.1.6](#316-pressure-valve--colorless-wildcard-built-us-033))
-- **AbilityBar** — the 6-slot per-hero Skill / Spell / Item loadout. ([§4 AbilityBar](#4-the-abilitybar))
+- **Wild orb** — a Colorless orb (crit-minted) that satisfies any single color on spend. ([§3.1.6](#316-pressure-valve--colorless-wildcard))
+- **Time-banked orbs** — orbs minted at the enemy-turn handoff from the time left in the hero window
+  when the last hero action was taken. ([§3.1.8](#318-time-banked-orbs))
+- **AbilityBar** — the Row-13 Skill / Spell / Item bar for the selected hero: 2 usable slots on a
+  fresh save, unlocked by campaign progress up to 5. ([§4 AbilityBar](#4-the-abilitybar))
 - **Builder** — an `Editor/Builders/*Builder.cs`; the authoritative source of a `.unity` scene. ([GG-LAW-3](#GG-LAW-3))
 - **Sequence** — an async unit on the `SequenceManager` event queue (combat/UI steps).
 - **Undearth** — the sunless game world the light-bearing invaders descend into (lore).
+- **Story crawl** — the skippable per-theme intro text shown on first entry into a campaign theme. ([§27](#27-story-crawl-no-dialog))
+- **Summon Circle** — the vendor scene where gold recruits a new hero class into the roster. ([§25.10](#2510-summon-circle))
+- **Bounty** — a posted kill contract on StageSelect: accept one, track kills, claim gold + an item. ([§22.4](#224-bounty-board))
 
 For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossary).
 
@@ -114,7 +124,5 @@ For combat/targeting/VFX sub-vocabulary see [Appendix §18 Glossary](#18-glossar
 <a id="gg-appendix-a"></a>
 
 ## Status index (from docs/USER_STORIES.md)
-- done: 72  partial: 0  planned: 0  cut: 0
+- done: 71  partial: 0  planned: 1
 
-## Latest amendment
-- GG-A1 — Adopt the MindAttic Codex documentation standard (supersedes the root `game_bible.md` + `user_stories.md`)

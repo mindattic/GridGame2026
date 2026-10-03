@@ -1,1 +1,0 @@
-> **Moved.** The user-story build board now lives at [`docs/USER_STORIES.md`](docs/USER_STORIES.md) under the MindAttic Codex standard (migrated 2026-06-07). Story IDs (`US-NNN`) are unchanged, so existing cross-references still resolve. This pointer remains for any tooling that still reads the old path.

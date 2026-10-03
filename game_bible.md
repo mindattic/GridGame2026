@@ -1,1 +1,0 @@
-> **Moved.** The Game Bible now lives at [`docs/BIBLE.md`](docs/BIBLE.md) under the MindAttic Codex standard (migrated 2026-06-07). The full historical canon is preserved verbatim in that file's Appendix A. Structured canon (spells/buffs/classes/enemies/rarities) is extracted to `docs/data/*.json`. This pointer remains for any tooling that still reads the old path.

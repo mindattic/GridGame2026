@@ -9,7 +9,7 @@ using Scripts.Models;
 namespace Scripts.Managers
 {
     /// <summary>
-    /// SNAKEBOSSMANAGER - The segmented snake boss chain (US-140 / GG-A5; LttP Lanmola-style).
+    /// SNAKEBOSSMANAGER - The segmented snake boss chain (US-140; LttP Lanmola-style).
     ///
     /// <para>PURPOSE: A snake boss is a HEAD (the only chain member with a timeline icon and
     /// turns) plus N body SEGMENTS, each a real 1×1 enemy on its own tile. The chain moves as a

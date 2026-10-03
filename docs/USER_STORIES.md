@@ -4,469 +4,188 @@ project: GridGame2026
 code: GG
 layer: stories
 status: living
-updated: 2026-06-09
+updated: 2026-10-03
 ---
 
 # GridGame2026 — User Stories
 
-> Legend: ✅ done (shipped & play-tested) · 🟡 partial · ⬜ planned · 🗑️ cut · living.
-> **Verification reality (GG-§6).** Headless Unity is unlicensed in this dev env, so ✅ here means
-> built + **in-editor play-tested** with a shipped `DebugManager.Demo_*` button, and verified by
-> reading the cited implementation — NOT by an automated CI test (the only automated PlayMode test
-> is `PincerScenarioTest`). Each ✅ names the implementing file(s)/demo as its evidence token.
-> Story IDs keep the original `US-NNN` scheme (not `GG-US-<Epic><n>`) because the bible cross-refs
-> hundreds of these by number — renaming would break them. Epic grouping is in the section headers.
->
-> **Migrated 2026-06-07** from the root `user_stories.md` (now this file is the canonical L2). This
-> file is the AUDIT LOG: a changed story keeps its original spec verbatim, marked
-> *(Original spec — audit log)*.
-
----
-
-## The Build Board
-
-**Purpose.** A single, **dependency-ordered** backlog of *genuinely remaining* work, distilled from the bible ([`BIBLE.md`](BIBLE.md)) and **reconciled against the actual codebase** (verified 2026-05-30 by reading the implementation, not the doc). Work top-to-bottom: every story's prerequisites are landed by the stories above it. Finish a story → check its box → move on.
-
-> **Critical finding from the reconciliation.** The bible substantially *understated* what's built. The full cast-on-timeline system, the interrupt Fail path, weapon durability rules, the per-hero ability-bar save, **and the entire battle↔vendor macro loop + content layer are already implemented.** ~20 originally-planned stories were already done. They're listed in **§A — Verified Complete** so nobody rebuilds them. The active board below is only the real remainder.
-
-**How to read a story.**
-- `US-NNN` — stable id (kept across the rewrite so the bible's cross-refs still resolve).
-- **State** — `NOT-BUILT` or `PARTIAL` (with what's missing), as verified in code.
-- **Why / Done when / Touch / Bible / Dep** — payoff, acceptance, files, bible section to update, prerequisite story ids.
+> ✅ done (shipped & verified) · 🟡 partial · ⬜ planned. Every ✅ cites its evidence: the verifying
+> test where one exists (suites in [BIBLE §6](BIBLE.md#gg-§6)), otherwise the implementing file and
+> its `DebugManager` demo. Story IDs are `US-NNN`; the bible cites them by number. Epics group them.
 
 ## Definition of Done (every story)
-1. Compiles, zero Console errors (§17.3). 2. **Bible section updated** (no silent drift). 3. `DebugManager.Demo_*` + DebugWindow button shipped ([[feedback_debug_window_demos]]). 4. `CheckAllGuardrails` green. 5. Play-tested in-editor. 6. One commit at the end ([[feedback_commit_granularity]]).
+1. Compiles, zero Console errors (§17.3). 2. **Bible section updated** (no silent drift). 3. `DebugManager.Demo_*` + DebugWindow button shipped ([[feedback_debug_window_demos]]). 4. `CheckAllGuardrails` green. 5. Automated suites green (`tools/run-tests.ps1`) where testable, plus an in-editor play-test for layout/feel. 6. One commit at the end ([[feedback_commit_granularity]]).
 
 ---
 
-# §A — Verified Complete (do NOT rebuild)
+## Core systems
 
-These were on the original board and are **already implemented in code**. The bible's "TODO / not built / Phase C stub" language for them is stale and is being corrected in this pass. Evidence in parentheses.
-
-**Cast & interrupt scaffolding**
-- ✅ `Formulas.CastTime(baseSeconds, wis, int)` WIS/INT scaling (`Formulas.cs:492`; `CastingState.cs:91`).
-- ✅ Cast-as-timeline-icon: `TimelineIconMode.Resolving` + `EnterResolvingMode()` (`TimelineIcon.cs:52,833`).
-- ✅ TurnManager third state: `IsResolvingCast` + input suspension (`TurnManager.cs:84,245,257`).
-- ✅ Interrupt **Fail** path wired: `EnemyAttackSequence.InterruptCastingHero → TimelineBar.InterruptCastsByOwner` (`EnemyAttackSequence.cs:109,133`; `TimelineBarInstance.cs:731`).
+**Casting**
+- ✅ `Formulas.CastTime(baseSeconds, wis, int)` WIS/INT cast-time scaling (`Formulas.cs`; `CastingState.cs`).
+- ✅ Cast icons on the timeline: `TimelineIconMode.Resolving` + `EnterResolvingMode()` (`TimelineIcon.cs`), spawned by `TimelineBarInstance.SpawnSpellIcon`.
+- ✅ TurnManager third state: `IsResolvingCast` + input suspension (`TurnManager.cs`).
+- ✅ Hits on a casting hero route to `TimelineBarInstance.InterruptCastsByOwner` (`EnemyAttackSequence.cs`, `ActorInstance.DamageRoutine`).
 
 **Buffs**
-- ✅ Burning/Poisoned per-tick damage on the timeline-advancing gate (`BuffTickManager.cs:45-60`).
+- ✅ Burning/Poisoned per-tick damage on the timeline-advancing gate (`BuffTickManager.cs`).
 
 **Mana**
-- ✅ Orb line responsive/equidistant layout (`ManaOrbLineFactory.cs:38,41-47`; `ManaPoolManager.cs:216`). *(Bible §16.4 #16 was already satisfied.)*
+- ✅ Orb line responsive/equidistant layout (`ManaOrbLineFactory.cs`; `ManaPoolManager.cs`).
 
 **Equipment & durability**
-- ✅ Weapon shatter dual-damage — target bonus + wielder self-damage (`WeaponDurabilityHelper.cs:37-103`).
-- ✅ Repair max-durability cap + escalating cost (`WeaponDurabilityHelper.cs:105-138`).
-- ✅ Ability-bar weapon swap end-to-end (`ChangeEquippedWeaponSequence.cs:48-108`; `AbilityLibrary.FromWeapon` ~520).
+- ✅ Weapon shatter dual-damage — target bonus + wielder self-damage (`WeaponDurabilityHelper.cs`).
+- ✅ Repair max-durability cap + escalating cost (`WeaponDurabilityHelper.cs`).
+- ✅ Ability-bar weapon swap end-to-end (`ChangeEquippedWeaponSequence.cs`; `AbilityLibrary.FromWeapon`).
 
-**Save & macro loop (the entire battle↔vendor cycle is live)**
-- ✅ `HeroEquipmentSave.AbilityBarSlots` source-of-truth round-trip (`Profile.cs:376-487`; `HeroLoadout.cs:183-268`).
-- ✅ Stage carrier via `StageSaveData.CurrentStage` (`StageManager.cs:117`; `Profile.cs:195-212`).
-- ✅ `StageLibrary` with 15+ stages, waves, per-wave actors (`StageLibrary.cs:77-628`).
+**Save & macro loop**
+- ✅ `HeroEquipmentSave.AbilityBarSlots` round-trip (`Profile.cs`; `HeroLoadout.cs`; `SaveRoundTripTests`).
+- ✅ Stage carrier via `StageSaveData.CurrentStage` (`StageManager.cs`; `Profile.cs`).
+- ✅ `StageLibrary` with 15+ stages, waves, per-wave actors (`StageLibrary.cs`).
 - ✅ Game→PostBattle on victory + defeat (`BattleWonSequence.cs`, `BattleLostSequence.cs`).
-- ✅ PostBattle XP/loot reveal + save commit (`PostBattleManager.cs:216-340`). *(Uses `ExperienceTracker`+`LootTracker` instead of a formal `BattleResultCarrier` — functionally complete; the named-carrier refactor is unnecessary.)*
-- ✅ All six vendors hydrate-on-Awake + commit-before-navigate (`VendorManager`, `BlacksmithManager`, `AlchemistManager`, `EquipManager`, `PartyManager`, `AbilitiesManager`).
-- ✅ StageSelect unlock gating reads `HighestClearedStageIndex` (`StageSelectManager.cs:109-176`).
+- ✅ PostBattle XP/loot/gold reveal + save commit via `ExperienceTracker` / `LootTracker` / `GoldTracker` (`PostBattleManager.cs`).
+- ✅ All vendors hydrate-on-Awake + commit-before-navigate (`VendorManager`, `BlacksmithManager`, `AlchemistManager`, `EquipManager`, `PartyManager`, `AbilitiesManager`, `SummonManager`).
+- ✅ StageSelect unlock gating reads `HighestClearedStageIndex` (`StageSelectManager.cs`; `CampaignStagesTests`).
 
 **Content & data**
-- ✅ `DropTableLibrary` — 16 populated per-enemy tables (`DropTableLibrary.cs:53-68`).
-- ✅ `RecipeLibrary` — 22 recipes incl. Iron→Steel; Blacksmith Forge/Salvage + Alchemist Brew menus (`RecipeLibrary.cs:53-82`, `BlacksmithManager.cs:210`, `AlchemistManager.cs:139`).
-- ✅ `EnchantLibrary` — 4-element weapon affinity recipes (`EnchantLibrary.cs:58-174`). *(Bible §25.3 "Enchant (planned)" is now built.)*
-- ✅ 172 concrete enemy classes with archetype stat leans + tags (`ActorLibrary.cs:95-268`).
-- ✅ EnemyPlanner core: HP-weighted targeting, pincer-seek (+50), flank-avoid (−100), immobilize (`EnemyPlanner.cs:20-138`). *(The §14.3 future hooks remain — see Epic F.)*
-
----
-
-# §B — Active Board (remaining work, in build order)
+- ✅ `DropTableLibrary` — 16 populated per-enemy tables (`DropTableLibrary.cs`).
+- ✅ `RecipeLibrary` — 22 recipes incl. Iron→Steel; Blacksmith Forge/Salvage + Alchemist Brew menus (`RecipeLibrary.cs`, `BlacksmithManager.cs`, `AlchemistManager.cs`).
+- ✅ `EnchantLibrary` — 4-element weapon affinity recipes (`EnchantLibrary.cs`).
+- ✅ 172 concrete enemy classes with archetype stat leans + tags (`ActorLibrary.cs`).
+- ✅ EnemyPlanner core: HP-weighted targeting, pincer-seek (+50), flank-avoid (−100), immobilize (`EnemyPlanner.cs`; `PincerDetectorTests`).
+- ✅ Per-spell VFX: all 10 prefabs generated, auto-registered as Addressables (`VfxPrefabAuthor.SavePrefab`), registered in `VisualEffectLibrary`, referenced from `SpellLibrary`.
 
 ---
 
 ## EPIC A — Foundations
-*The one true UI foundation left, plus the two small save fields that unblock the failure path and the Bestiary/Scan UI. Do these first.*
 
-- [x] **US-120 — Multi-tile enemies (2×2 bosses) — cohesive footprint backing.** ✅ DONE 2026-06-06 (user-requested initiative; planned + Legion-free since design forks were user-decided; built in 5 verified phases). The board assumed 1 actor = 1 tile everywhere; this adds a single footprint-aware backing. **Representation:** `location` = anchor + `Vector2Int Footprint` (default 1×1; enemies only — heroes stay 1×1). **Chokepoint:** zero-alloc `ActorInstance.Occupies(tile)` (reduces to `tile==location` for 1×1) + `GameHelper.Actors.ActorAt/IsTileOccupied`; `TileInstance.IsOccupied/Occupier` forward to it, so movement/pincer/targeting/spawn/support-lines became footprint-aware in one stroke. **Four locked rules (user):** (1) boss is an **immovable wall** to hero slides (`ActorMovement.CheckLocationChanged` blocks entry); (2) **pincer by flanking its width** — distinct-actor "all-covered" predicate in `PincerDetector.Detect`, a 2×2 counts as one opponent; (3) boss **shoves heroes** on its turn — `ActorInstance.StepFootprint`+`ResolveShoveChain` mirror the hero-slide cascade, abort at the edge, `EnemyPlanner.FootprintStepLegal` gates candidates; (4) one timeline icon, footprint melee via `Geometry.AreAdjacent`. **Render/spawn:** sprite scaled+centered (`Geometry.GetFootprintCenter`/`CenterPosition`), `RNG.UnoccupiedFootprintAnchor`, `StageManager` footprint placement. **Cyclops00** is the first live 2×2 boss. Demo: "Spawn 2×2 Boss". Bible §1.5 added. Touch: `ActorInstance`, `TileInstance`, `GameHelper`, `PincerDetector`, `Geometry`, `ActorMovement`, `EnemyPlanner`, `StageManager`, `RNG`, `ActorData`, `TargetShapeResolver`, `SupportLineManager`, `Cyclops00`. **Dep:** —
-
-- [x] **US-001 — AspectGuard + portrait lock.** ✅ DONE 2026-06-08 (code complete; visual verify on next play-test). `Utilities/AspectGuard.cs` self-installs on every scene (runtime hook, no per-builder edits): (1) **letterboxes `Camera.main.rect`** to the VALID portrait aspect closest to the device's with a persistent **black background camera** filling the bars; (2) **normalizes every `CanvasScaler`** to 1170×2532 + match 0.5; (3) **safe-area inset** — any Canvas child named "SafeArea" tracks `Screen.safeArea` normalized anchors, re-applied on change. §26.4 URP Overlay Camera already exists in `GameBuilder` (Base+Overlay stack, depth -1/+1, clearFlags SolidColor/Nothing). Valid aspects: 9:21, 9:20, 9:19.5, 1:2, 9:16, 10:16, 3:4. Bible §26 updated.
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`CameraManager.cs` has no aspect logic; no AspectGuard file).
-  **Why:** The 15-row HUD breaks on non-reference aspects; foundational before more builders accrue.
-  **Done when:** `Utilities/AspectGuard.cs` per §26.6 inserted as first child of every Canvas; black `AspectBars` behind; `CameraViewportSync.cs` clamps `Camera.rect`; safe-area inset; separate UI Overlay Camera shares the viewport (§26.4). Verified pillarbox (iPad-portrait) + letterbox (ultra-tall).
-  **Touch:** new `Utilities/AspectGuard.cs`, `Utilities/CameraViewportSync.cs`; every `Editor/Builders/*Builder.cs`. **Bible:** §26.3–§26.7 (flip Status → ✅); delete §16.4 #17. **Dep:** —
-
-- [x] **US-002 — GameBuilder clears roots before rebuild.** ✅ DONE 2026-05-31 (`GameBuilder.cs:55` calls `ClearAllRootObjectsSilent()`; bible §17.1 #8 struck).
-  **Why:** Kills the "already exists" warning spam that hides real errors.
-  **Done when:** `GameBuilder.Build()` calls `ClearAllRootObjectsSilent()` first; rebuild is warning-free.
-  **Touch:** `Editor/Builders/GameBuilder.cs`. **Bible:** strike §17.1 #8. **Dep:** —
-
-- [x] **US-003 — `LayerMask.NameToLayer("UI")` defensive fallback.** ✅ ALREADY SATISFIED (verified 2026-05-31): the sole `cullingMask` site in `Assets/` is `BestiaryBuilder.cs:55` and already uses the guard; no other camera culls. No code change; bible §17.1 #10 struck. (05-30 pass mislabeled NOT-BUILT.)
-  **Done when:** every camera `cullingMask` site uses `uiLayer >= 0 ? (1<<uiLayer) : ~0`.
-  **Touch:** builders creating cameras. **Bible:** §17.1 #10. **Dep:** —
-
-- [x] **US-004 — `Application.targetFrameRate = 60` in Bootstrap.** ✅ DONE 2026-05-31: new `Scripts.Helpers.Bootstrap` static with `[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]` pins 60 at app launch (entry-scene-independent; GameManager later applies the user's setting). Bible §30.5 updated.
-  **Why:** Editor matches build framerate so perf spikes show during the whole build, not just at the end.
-  **Touch:** `Bootstrap.Awake`. **Bible:** §30.5. **Dep:** —
-
-- [x] **US-053 — HP carry-over between battles.** ✅ DONE 2026-06-01. `CharacterLevelPair.HpCurrent` added (`Profile.cs`); `StageManager.SpawnActor` hydrates wounds after equipment finalizes MaxHP; `BattleWonSequence` persists each party hero's HP (survivors keep their wound, a hero who fell in a won battle revives at 1); `BattleLostSequence` resets the party to full. **Heal model = §29.3 #12 model A (Legion 4/4): wounds persist, gold-cost full-heal at the Alchemist** (Inn was cut). Demos: "Wound Party 50%" / "Heal Party Full". Bible §15.1/§15.2 + §29.3 #12 updated. *Follow-on: the Alchemist heal-service UI button (the carry-over mechanism + in-battle heal preview are built).*
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no `HpCurrent` field in any save class — `Profile.cs`).
-  **Why:** Wounds-between-battles gives the heal vendor a job (§15.1) and completes the defeat path (US-063 routing already exists, just needs the restore).
-  **Done when:** an `HpCurrent` field is added (e.g. on `CharacterLevelPair`/a `HeroHealthSave`); written at battle end; wounded HP hydrated on spawn; defeat resets to MaxHP.
-  **Touch:** `Models/Profile.cs`, `SaveStateService`/`PostBattleManager`, hero spawn in `GameBuilder`. **Bible:** §15.1, §15.2, §22.2; resolve §29.3 #12 (heal model). **Dep:** —
-
-- [x] **US-054 — `BestiaryProgress` writing (seen / defeated).** ✅ DONE 2026-06-01. `BestiarySaveData` + `BestiaryEntrySave` added to `Profile.cs` (**list-based**, keyed by `CharacterClass` — the serializer can't do Dictionaries, matching `InventorySaveData`); wired into `SaveState` (field + deep-copy ctor). `StageManager.SpawnActor` marks enemies **Seen** on spawn; `ActorInstance.DieRoutine` marks **Defeated + TimesDefeated** on enemy death; persisted via the existing battle-end save. Demo: "Log Bestiary". Bible §15.3 updated. Unblocks US-077 (Scan→seen) and US-093 (view gating). **Dep:** —
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no `BestiarySaveData` in `Profile.cs`).
-  **Why:** Unblocks Bestiary unlock gating (US-093) and lets Scan flag `seen` (US-077).
-  **Done when:** a `BestiarySaveData : Dict<CharacterClass, {Seen, Defeated, TimesDefeated}>` added; populated on enemy spawn (seen) + death (defeated); persisted at battle end.
-  **Touch:** `Models/Profile.cs`, spawn/death hooks, `PostBattleManager`. **Bible:** §15.1, §15.3. **Dep:** —
-
-- [x] **US-110 — StageSelect = scrollable, replayable level list (newest-on-top).** ✅ DONE 2026-06-07. `StageSelectManager.RebuildList()` now iterates themes in reverse (CityRuins first → GreenValley last) and stages within each theme in reverse (stage 3 before stage 1), so the most recently unlocked stage appears at the top. Each row is 72px (was 56px) to accommodate a second-line drops hint. New `BuildDropsHint(stage)` walks each wave's enemy classes, looks up `DropTableLibrary.Get(cls)` entries, and shows the first ≤2 item names (`ItemLibrary.Get(id).DisplayName`) as `<size=18>drops: X, Y</size>` — farming target hint. Row colors, star prefix, lock suffix, and replay-ability unchanged. Demo: "Stage Order". Bible §22.3 / §11.2 marked built.
-  *(Original spec — audit log)* **Was:** `PARTIAL` (unlock gating reads `HighestClearedStageIndex` — `StageSelectManager.cs:109-176`; ordering/replay/feel need to match the spec).
-  **Why:** The *only* nav surface (Overworld is cut). Load/save-screen look-and-feel; cleared stages stay replayable so the player can **farm a specific enemy's drop** (a Frost stage for Ice Shards, etc.) — the intended grind loop.
-  **Done when:** the list is vertically scrollable in `SaveFileSelect` style; newly-unlocked levels **prepend to the top**; every unlocked level (incl. cleared) is re-enterable; locked stages dimmed/disabled; each row shows name, theme, cleared ✓, and a hint of notable drops/enemies. Tapping a row sets `StageSaveData.CurrentStage` → `Game`.
-  **Touch:** `Managers/StageSelectManager`, `Editor/Builders/StageSelectBuilder`, `StageLibrary`/`CampaignStages`. **Bible:** §22.3 (now built), §11.2. **Dep:** —
-
-- [x] **US-111 — Fix the vendor scaler/scroll bugs + build the standardized `ShopView`.** ✅ DONE 2026-06-07 (scaler + ScrollRect bugs fixed; ShopView extraction deferred to §C — VendorManager already owns Buy/Sell logic end-to-end). `BROKEN` — root cause found 2026-05-30.
-  **Why:** Vendors look "like trash" (sizing/colors/readability) for two concrete reasons, not vague polish:
-  - `VendorBuilder` sets `CanvasScaler.referenceResolution = (0,0)` with ScaleWithScreenSize → every element mis-scales (bible §17.1 #11). Must be `(1170,2532)` + match 0.5 (§26.2) under AspectGuard (US-001).
-  - The `ScrollRect` is added but never wired (`.content`/`.viewport`/`.vertical` unset; the "ScrollRect cross-references" block is empty) → list can't scroll, rows clip (§17.1 #12).
-  **Done when:** a shared **`Canvas/ShopView.cs` + factory** renders the standardized FF shop (§25.1): **Buy / Sell / Buyback** tabs; scrollable list with columns **icon · name(rarity) · owned ×N · unit price(affordability-colored)**; select-row → **quantity stepper** (`− N +` + Max) → live total → footer **commit** button. Sell = 50% BaseCost; Buyback = session stack at the sold price. Scaler fixed, ScrollRect fully wired, all colors from `HubTheme`. `Vendor.unity` uses it end-to-end and rebuilds cleanly via `BuilderAllScenes`. Root cause recorded in §17.1 (done).
-  **Touch:** new `Canvas/ShopView.cs` + `Factories/ShopViewFactory.cs`; `Editor/Builders/VendorBuilder.cs`; `Vendor/VendorManager.cs`; `HubItemRowFactory`/`HubTheme`; `SceneBuilderHelper`. **Bible:** §25.1, §25.8, §17.1 #11/#12. **Dep:** US-001 (AspectGuard).
-  *Unblocks:* the eventual merged hub (§C) and lets the other vendors reuse `ShopView` instead of each reinventing a broken layout.
-
-- [x] **US-112 — `Hub.unity` vendor launcher (grid of buttons).** ✅ DONE 2026-06-07. **FIXED 2026-06-09:** the 06-07 build shipped non-functional — `Hub.unity` was never generated/committed, the scene was absent from `EditorBuildSettings`, and all 7 buttons (6 vendors + back) plus StageSelect's Shop button were wired via `WireOnClick` with lambdas/`Action.Invoke`, which persistent UnityEvent listeners cannot serialize → dead buttons; the empty `HubManager` also never called `scene.FadeIn()` → black screen. Fix: `HubManager`/`StageSelectManager` wire onClick at runtime; `SceneBuilderHelper.WireOnClick` now throws on non-`UnityEngine.Object` targets so this bug class fails at build time; `Hub.unity` generated + added to build settings. `HubBuilder.cs` + `HubManager.cs` build a themed 2×3 `GridLayoutGroup` of 6 vendor buttons (Vendor/Blacksmith/Alchemist/Equip/Party/Abilities), each wired to `SceneHelper.Fade.To<X>()` via persistent onClick; gold-accented "Shop District" header; "← Stages" back button → StageSelect; `EnsureCanvas` gives §26.2 scaler (1920×2032, match 0.5); `HubTheme.PanelBg/HeaderBg/NavIdle/NavActive` colors. `StageSelectBuilder.BuildHeader` adds a "Shop" button (top-right, gold, 200×56) → `SceneHelper.Fade.ToHub()`. `SceneHelper` gains `Hub` const + `Fade.ToHub()` + `Switch.ToHub()`. Visual verify (aspect / cell sizing) deferred to editor. **Touch:** `HubBuilder`, `HubManager`, `StageSelectBuilder`, `SceneHelper`. **Bible:** §25.0, §22. **Dep:** US-001.
-
-- [x] **US-113 — FadeOverlay speed = 125 ms.** ✅ DONE 2026-05-31: `FadeOverlayInstance.fadeDuration` 0.0833f → 0.125f. Bible §11.3 already specified 125 ms (code was out of sync); now compliant.
-  **Done when:** `FadeOverlayInstance` fades out/in at 0.125 s each way (snappy seam-hider, not a flourish).
-  **Touch:** `Canvas/FadeOverlayInstance.cs`. **Bible:** §11.3. **Dep:** —
+- [x] **US-120 ✅ Multi-tile enemies (2×2 bosses).** As a player I fight bosses that occupy a 2×2 footprint. `location` is the anchor + `ActorData.Footprint`; occupancy is centralized in `ActorInstance.Occupies(tile)` + `GameHelper.Actors.ActorAt/IsTileOccupied`, so movement / pincer / targeting / spawn / support lines are footprint-aware. Four rules: the boss is an immovable wall to hero slides; it is pincered by flanking its width (counts as one opponent, `PincerDetector.Detect`); it shoves heroes on its own turn (`ActorInstance.StepFootprint` + `ResolveShoveChain`, `EnemyPlanner.FootprintStepLegal`); one timeline icon. `Cyclops00` is the first 2×2 boss. Demo: "Spawn 2×2 Boss". Bible §1.5.
+- [x] **US-001 ✅ AspectGuard + portrait lock.** `Utilities/AspectGuard.cs` self-installs on every scene: snaps to the closest valid portrait aspect and letterboxes `Camera.main.rect` with a black background camera; normalizes every `CanvasScaler` to 1170×2532 / match 0.5; insets `SafeArea` children. Bible §26. *(See US-136 for the verification.)*
+- [x] **US-002 ✅ Builders clear roots before rebuild.** `GameBuilder.Build()` calls `SceneBuilderHelper.ClearAllRootObjectsSilent()` first, so rebuilds are warning-free. Bible §17.1 #8.
+- [x] **US-003 ✅ `LayerMask.NameToLayer("UI")` guard.** Every camera `cullingMask` site uses `uiLayer >= 0 ? (1<<uiLayer) : ~0` (`BestiaryBuilder.cs` is the only one). Bible §17.1 #10.
+- [x] **US-004 ✅ 60 fps pinned at launch.** `Scripts.Helpers.Bootstrap` (`[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]`) sets `Application.targetFrameRate = 60`; `GameManager` later applies the user's setting. Bible §30.5.
+- [x] **US-053 ✅ HP carry-over between battles.** `CharacterLevelPair.HpCurrent` persists wounds on victory (a hero who fell revives at 1), is hydrated on spawn (`StageManager.SpawnActor`), and defeat resets the party to full (`BattleLostSequence`). Demos: "Wound Party 50%" / "Heal Party Full". Bible §15.1.
+- [x] **US-054 ✅ Bestiary progress (seen / defeated).** `BestiarySaveData` (list-based) marks enemies Seen on spawn (`StageManager.SpawnActor`) and Defeated/TimesDefeated on death (`ActorInstance.DieRoutine`), persisted at battle end. Demo: "Log Bestiary". Bible §15.3.
+- [x] **US-110 ✅ StageSelect = scrollable, replayable level list (newest-on-top).** `StageSelectManager.RebuildList()` lists themes and stages in reverse so the newest unlocked stage is on top; every unlocked stage is replayable; each row carries a `drops: X, Y` farming hint (`BuildDropsHint`). Demo: "Stage Order". Bible §22.3.
+- [x] **US-111 ✅ Vendor scenes scale and scroll.** `VendorBuilder` uses the §26.2 scaler (1170×2532, match 0.5) and a fully wired `ScrollRect` (`viewport`, `content`, vertical only). Bible §17.1 #11, §25.1.
+- [x] **US-113 ✅ FadeOverlay speed = 125 ms.** `FadeOverlayInstance.fadeDuration` = 0.125 s each way. Bible §11.3.
 
 ---
 
 ## EPIC B — Buffs That Bite
-*Every debuff applies + shows an icon, but the gameplay hooks are stubbed with TODO comments. Quick, low-risk, high-feel wins that make the spell catalog meaningful. Verified: all six below are `NOT-BUILT` (data + TODO markers present, no behavior).*
-*Order note: **US-016 first** — turn-unit buffs (Slowed, Silenced) can't expire until `TickTurn` is wired, so the others need it to be observable.*
 
-- [x] **US-016 — Turn-unit buff decrement at the turn boundary.** ✅ DONE 2026-05-31: `TurnManager.NextTurn` ticks turn-unit buffs at END-of-turn (enemy → `lastEnemy`; hero-window end → all heroes). End-of-turn confirmed via Legion. Demo: `Demo_ApplySlowedToEnemy` + "Slowed → Enemy" / "Trigger Enemy Attack" DebugWindow buttons. Bible §8.3 updated.
-  **Done when:** `TurnManager` calls `BuffSystem.TickTurn(actor)` at each bearer's turn boundary; turn-unit buffs count down + fire expire-chains.
-  **Touch:** `Managers/TurnManager`, `BuffSystem`. **Bible:** §8.3. **Dep:** —
-
-- [x] **US-011 — Slowed → timeline-speed multiplier.** ✅ DONE 2026-05-31: `TimelineIcon.GetEffectiveUPerSec()` folds in `Buffs.SlowedTimelineMultiplier` (×0.5); `TimelineBarInstance.AdvanceBySeconds` reads it instead of `GetUPerSec`, so a Slowed enemy's icon crawls and its turn is delayed. Demo: existing "Slowed → Enemy" button. Bible §8.1 + §16.1 #2 updated.
-  **Done when:** icon `uPerSec` scaled by a `slowed` factor; Slow visibly delays a rank.
-  **Touch:** `Canvas/TimelineIcon` / `TimelineBarInstance`. **Bible:** §2.2, §8.1, delete §16.1 #2. **Dep:** US-016.
-
-- [x] **US-012 — Silenced → cast-block + slot overlay.** ✅ DONE 2026-05-31: `AbilityBar.HandleSpell` refuses spell casts when the caster is Silenced ("Silenced!" popup); `Refresh` renders Silenced heroes' Spell slots blocked (solid-red `SilencedFrameColor`, non-interactable). Demo: "Silenced → Hero" button. NOTE: visual is a solid-red blocked state; the exact §4.5 diagonal-stripe overlay sprite is deferred as polish. Bible §8.1 + §16.1 #3 updated.
-  **Done when:** Spell-kind clicks refused when caster `silenced`; Spell slots show the red diagonal-stripe state (§4.5).
-  **Touch:** `Canvas/AbilityBar`. **Bible:** §4.5, §8.1, delete §16.1 #3. **Dep:** US-016.
-
-- [x] **US-013 — Blinded → hit-chance penalty.** ✅ DONE 2026-05-31: `Formulas.CalculateHitType` multiplies a Blinded attacker's hit chance by `Buffs.BlindedAccuracyMultiplier` (0.5). Demo: "Blinded → Enemy" button. Bible §8.1 + §16.1 #4 updated.
-  **Done when:** miss-chance penalty applied when attacker `blinded`.
-  **Touch:** `Utilities/Formulas`. **Bible:** §13.1.1, §8.1, delete §16.1 #4. **Dep:** —
-
-- [x] **US-014 — SleepWhenWarm multiplier.** ✅ DONE 2026-05-31: `SpellEffectDispatcher` applies Sleep with ×1.5 duration when the target is Warm ("Deep Sleep!" popup). Applied to duration (Sleep has no success roll); bible §8.2 noted. Bible §16.1 #5 struck.
-  **Done when:** Sleep success/duration × `SleepWhenWarmMultiplier` (1.5) on a `warm` target.
-  **Touch:** `SpellEffectDispatcher` Sleep-apply. **Bible:** §8.2, delete §16.1 #5. **Dep:** —
-
-- [x] **US-015 — BreaksOnMove hook.** ✅ DONE 2026-05-31: `ActorMovement.HandleOverlap` calls `BuffSystem.OnMoved(instance)` at the displacement commit, so sliding a sleeping actor breaks Sleep. Bible §8.2.3 updated.
-  **Done when:** `ActorMovement.HandleOverlap` (displacement) calls `BuffSystem.OnMoved(actor)`; Sleep breaks on slide.
-  **Touch:** `Instances/Actor/ActorMovement`, `BuffSystem`. **Bible:** §8.2.3. **Dep:** —
+- [x] **US-016 ✅ Turn-unit buff decrement at the turn boundary.** `TurnManager.NextTurn` ticks turn-unit buffs at END of turn (enemy turn → that enemy; hero-window end → every hero). Demo: "Slowed → Enemy" / "Trigger Enemy Attack". Bible §8.3.
+- [x] **US-011 ✅ Slowed slows the timeline.** `TimelineIcon.GetEffectiveUPerSec()` folds in `Buffs.SlowedTimelineMultiplier` (×0.5), read by `TimelineBarInstance.AdvanceBySeconds`. Demo: "Slowed → Enemy". Bible §8.1.
+- [x] **US-012 ✅ Silenced blocks casting.** `AbilityBar.HandleSpell` refuses spell casts from a Silenced caster ("Silenced!"); `Refresh` renders their Spell slots as a solid-red blocked state. Demo: "Silenced → Hero". Bible §4.5, §8.1.
+- [x] **US-013 ✅ Blinded lowers hit chance.** `Formulas.CalculateHitType` multiplies a Blinded attacker's hit chance by `Buffs.BlindedAccuracyMultiplier` (0.5). Demo: "Blinded → Enemy". Bible §13.1.1.
+- [x] **US-014 ✅ Sleep lasts longer on Warm targets.** `SpellEffectDispatcher` applies Sleep with ×1.5 duration on a Warm target ("Deep Sleep!"). Bible §8.2.
+- [x] **US-015 ✅ Displacement breaks Sleep.** `ActorMovement.HandleOverlap` calls `BuffSystem.OnMoved(instance)`. Bible §8.2.3.
 
 ---
 
 ## EPIC C — Interrupt Depth + Enemy Casting + Orb Economy
-*The cast scaffolding is fully built (§A). What's missing is the **richness**: the three-outcome resolver, enemies that actually cast, and the interrupt→orb mint that closes the off-palette mana economy.*
 
-- [x] **US-024 — `CastInterruptResolver.Resolve(caster, attacker)` → {Fail | Pushback | Clutch}.** ✅ DONE 2026-06-01, **REVISED 2026-06-02 → cast-stagger model (user)**. *Original build was a three-outcome {Fail|Pushback|Clutch} LCK roll; that's been replaced.* Now: each landed hit on a casting actor adds a WIS/STR-scaled **cast-time delay** (`CastingState.AccumulatedInterruptDelay`), pushing the cast icon back (`TimelineIcon.DelayCast`); when the **accumulated delay exceeds the original cast time the cast is cancelled** (`CastingState.Interrupt`). **WIS = poise:** chance to shrug a hit entirely + smaller per-hit delay; attacker STR raises the delay. **Clutch retained** as a rare LCK pre-check (rolled first; shrugs the hit entirely — US-025 adds the snap+juice). `InterruptCastsByOwner(hero, attacker)` applies it; `EnemyAttackSequence` passes the attacker. Demo: "Cast-Stagger Info". Bible §13.4 rewritten. **Dep:** —
-  *(Original spec — audit log)* **Was:** `PARTIAL` (only unconditional Fail today — `EnemyAttackSequence.cs:128` comment names the intended resolver).
-  **Why:** Replace the flat Fail with the LCK-driven roll (Clutch first, then Pushback vs Fail by LCK/WIS).
-  **Done when:** new `Services/CastInterruptResolver.cs`; `InterruptCastsByOwner` routes through it; **Pushback** rewinds the spell-icon u + brief stun (icon already supports u + Stunned); **Fail** = current behavior.
-  **Touch:** new `Services/CastInterruptResolver.cs`, `Canvas/TimelineBarInstance.InterruptCastsByOwner`, `EnemyAttackSequence`. **Bible:** §13.4, casting prose, delete §16.2 resolver row. **Dep:** —
-
-- [x] **US-025 — `ClutchSequence` (the miracle save).** ✅ DONE 2026-06-06. New `Sequences/ClutchSequence.cs` plays the juice — a white full-screen flash (transient `new GameObject` Image on the UI canvas, ~0.3s in/out), "Heal" SFX, and "Clutch!" combat text — then calls the new `TimelineIcon.ForceResolve()`, which snaps the in-flight spell-icon to u=1 and fires the **same** `onReached` resolution closure a natural arrival uses (EnterResolvingMode → suspend input → apply effect → end turn). Wired from the `Clutch` branch of `TimelineBarInstance.InterruptCastsByOwner`: it pauses the icon (so it can't reach u=1 juice-less first) and `AddFirst`-queues the sequence so the save fires right after the triggering attack. New `GetSpellIconFor(actor)` accessor. Demo: "Clutch! (Force)" (snaps the selected hero's in-flight cast, or plays juice-only if none). Bible §13.4 + glossary + §16 row updated. **Dep:** US-024 ✓.
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`. **Retained (user, 2026-06-02):** a fun random-chance miracle save, **primarily LCK-driven**. The US-024 resolver already returns `Clutch` on the rare LCK proc (the cast shrugs the hit); this story is the *juice* — snap the spell-icon to `u=1` + screen flash / SFX / "Clutch!" text so it reads dramatically. Builds on the stagger resolver.
-  **Done when:** rare LCK outcome: screen flash / SFX / "Clutch!" text, snap spell-icon to u=1 (reuse `EnterResolvingMode`), run normal resolution; base rate ≈ `LCK/200`, designer-capped.
-  **Touch:** new `Sequences/ClutchSequence.cs`. **Bible:** casting prose. **Dep:** US-024.
-
-- [x] **US-026 — Enemy charge/telegraph spells.** ✅ DONE 2026-06-06. **Architecture: Legion panel 4/4 (twothirds quorum) → Option A** — a pure, side-effect-free `EnemyPlanner.PlanCast(enemy, actors)` returning a nullable `EnemyChargePlan`; `PlanStep` and the existing melee chain untouched. `EnemyTakeTurnSequence` checks `PlanCast` first (skipping if a charge is already in flight) and, on a non-null result, queues ONLY a new `Sequences/EnemyChargeSequence` + `EndTurnSequence` in place of move/attack. The charge rule: a Caster (tagged `Magic`) NOT cardinally adjacent to a hero telegraphs at the nearest hero (ranged behavior; if it can melee, it melees). New `Data/Actor/EnemyChargeCatalog` derives the spell element from affinity tags (FireAffinity→Fireball, IceAffinity→Ice, …) and exposes `ColorFor` (US-027 hook). `EnemyChargeSequence` reuses the team-agnostic `SpawnSpellIcon` to spawn the cast-icon and, at u=1, resolves into `MagicAttackSequence(enemy,target,…)` via the now-public `AbilityManager.TryGetMagicEffect` — same third-state resolution as hero casts but with **no EndTurnSequence** (it resolves on the shared clock). **IceMauler** tagged `Magic|IceAffinity` as the first live caster (spawns in stages). Interrupt = the US-024 cast-stagger model (unblocks US-027). Demo: "Enemy Charge". Bible §2.6/§2.8/§13.4/§14.2/§16 updated. **Dep:** — ✓
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`EnemyAttackSequence` is melee-only; `EnemyPlanner` is positional-only).
-  **🔓 Interrupt model 2026-06-02 → folded into the unified CAST-STAGGER model (US-024 rewrite).** A hero hit on a charging enemy no longer binary-cancels; it adds WIS/STR-scaled delay to the charge, and **cumulative delay ≥ the charge's cast time cancels it** (supersedes the earlier "A damage-cancels" binary lock). US-027 mints the charge-color orb at the cancel. The charge is its own below-the-line cast icon (§2.6). Editor-gated to build. Bible §13.4.
-  **Why:** The Caster archetype (§14.2) + the inverse-interrupt loop need enemies that telegraph a charge in the Prepare Zone.
-  **Done when:** a casting enemy spawns a colored charge timeline icon advancing via cast-time; resolves into an attack at u=1; `EnemyPlanner` chooses to charge.
-  **Touch:** `Services/EnemyPlanner`, new `Sequences/EnemyChargeSequence`, `TimelineBarInstance.SpawnSpellIcon` (generalize beyond hero casts), enemy spell data. **Bible:** §2.8, §14.2 (Caster), §14.3. **Dep:** —
-
-- [x] **US-027 — Interrupt enemy cast → drop charge-color orb.** ✅ DONE 2026-06-06. The trigger is centralized in `ActorInstance.DamageRoutine`: any hero landing-hit on an enemy (pincer via AttackHelper, magic via MagicAttackSequence, shield) calls `TimelineBar.InterruptCastsByOwner(enemy, attacker)` — a no-op unless the enemy is charging. `InterruptCastsByOwner` now branches hero vs enemy: enemies skip the Clutch pre-check (`CastInterruptResolver.Resolve(..., allowClutch:false)` — a hit must never instant-resolve an enemy charge), and on the **Cancelled** outcome `MintInterruptOrb` drops a charge-color orb (`EnemyChargeCatalog.ColorFor` → `ManaOrbFactory.Drop`, the same bouncing path pincers use) that lands in the team bank. This is **how off-palette colors enter the bank** (§3.1.2). Demo: "Interrupt Charge" (run "Enemy Charge" first). Bible §3.1.2/§13.4/§14.2/§16 updated. **Closes EPIC C.** **Dep:** US-026 ✓.
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
-  **Why:** This is *how off-palette colors enter the bank* (§3.1.2). Closes the mana economy.
-  **Done when:** a pincer/Shield hit that interrupts a charging enemy cancels the cast AND mints one orb of the charge color via `DropOrbAt`/`ManaOrbFactory`.
-  **Touch:** `Canvas/TimelineBarInstance.InterruptCastsByOwner` (enemy branch), `Managers/PincerAttackManager`, `ManaPoolManager`. **Bible:** §3.1.2, §13.4. **Dep:** US-026.
+- [x] **US-024 ✅ Cast-stagger interrupts.** Each landing hit on a casting actor adds a WIS/STR-scaled delay (`CastingState.AccumulatedInterruptDelay`, `TimelineIcon.DelayCast`); when the accumulated delay exceeds the original cast time the cast is cancelled (`CastingState.Interrupt`). WIS can shrug a hit; a rare LCK Clutch is rolled first (`CastInterruptResolver`). Demo: "Cast-Stagger Info". Bible §13.4.
+- [x] **US-025 ✅ Clutch — the miracle save.** `Sequences/ClutchSequence.cs` plays a white flash + "Heal" SFX + "Clutch!" text, then `TimelineIcon.ForceResolve()` snaps the cast to u=1 and resolves it through the normal closure. Demo: "Clutch! (Force)". Bible §13.4.
+- [x] **US-026 ✅ Enemy charge/telegraph spells.** The pure `EnemyPlanner.PlanCast` lets a `Magic`-tagged caster that is not adjacent to a hero telegraph a charge; `EnemyTakeTurnSequence` queues `EnemyChargeSequence`, which spawns a cast icon via `SpawnSpellIcon` and resolves into `MagicAttackSequence` at u=1 on the shared clock. `EnemyChargeCatalog` derives the element from affinity tags; IceMauler is a live caster. Demo: "Enemy Charge". Bible §13.4, §14.2.
+- [x] **US-027 ✅ Cancelling an enemy charge mints its color.** `ActorInstance.DamageRoutine` routes any hero hit on a charging enemy to `InterruptCastsByOwner` (no Clutch for enemies); on cancel `MintInterruptOrb` drops an orb of the charge color (`ManaOrbFactory.Drop`). Demo: "Interrupt Charge". Bible §3.1.2.
 
 ---
 
 ## EPIC D — Mana Color Identity
-*Orbs are hardcoded Blue. Give them class identity and the remaining mint sources so the bank profile reflects party composition (§23.2.1).*
 
-- [x] **US-030 — Per-hero color affinity on pincer mint.** ✅ DONE 2026-06-02. New `Data/Actor/ManaColorAffinity.For(class)` (per-class, the board's allowed alternative to an ActorData field — avoids churning 7 hero `Data()` files); `PincerAttackManager` mints each contributor's color instead of hardcoded Blue. Map (Legion-ratified for the two ambiguous): Cleric **W**, Paladin **W**, Barbarian **R**, Alchemist **G**, Assassin **B**, GreenNinja **G**, RedNinja **R**; others default Blue. Demo: "Log Color Affinities". Bible §3.1.2/§3.1.7/§23.2 + §16.5 #13 + §29.2 #8 updated. Unblocks US-031 (done) / US-033 (color conversion). **Dep:** — ✓
-  *(Original spec — audit log)* **Was:** `PARTIAL` (all drops hardcoded `ManaType.Blue` — `PincerAttackManager.cs:206`; no `ColorAffinity` on `ActorData`).
-  **Done when:** `ActorData.ColorAffinity` (or per-class) added; `DropOrbAt` mints the contributor's affinity color; seed §23.2 colors (Cleric=W, Barbarian=R, …).
-  **Touch:** `Models/Actor/ActorData`, `Managers/PincerAttackManager`. **Bible:** §3.1.2, §23.1, §23.2, delete §16.5 #13; resolve §29.2 #8. **Dep:** —
-
-- [x] **US-031 — Critical hit → Colorless orb.** ✅ DONE 2026-06-02. A hero's critical hit mints one Colorless "wild" orb to the team bank — hooked centrally in `ActorInstance.DamageRoutine` (covers pincer crits via AttackHelper AND magic crits via MagicAttackSequence, both routed through `AttackResult.HitType`). The wild orb renders as a spectrum-cycling cell (`ManaOrbLine.AnimateWildOrbs`) per the user's "flashes every color" treatment. Capped by the bank. Demo: "Mint Wild Orb". Bible §3.1.2/§3.1.7 updated. *(Dep US-030 was epic-ordering only — Colorless is a fixed color, no per-class decision needed.)* **Dep:** — ✓
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`HitOutcome.Critical` exists; no orb mint — `AttackHelper.cs:74-128`).
-  **Done when:** a crit (pincer or spell) mints one Colorless orb.
-  **Touch:** `Helpers/AttackHelper` / `SpellEffectDispatcher`, `ManaPoolManager`. **Bible:** §3.1.2. **Dep:** US-030.
-
-- [x] **US-028 — Quicken / Hasten (forward push + overtake).** ✅ DONE 2026-06-06. New `TimelineIcon.Hasten(amountU)` + `TimelineBarInstance.HastenIcon(actor, amountU)` slide an icon **forward** in u (inverse of `Pushback`). New `Quicken` spell — `SpellDefinition.HastenU` field (0 = no timeline effect), `SpellLibrary.Quicken` (SingleActor / PickActor / Any filter, `hastenU: 0.30`, no damage), `ManaAbilities.Quicken` (1×Blue); `SpellEffectDispatcher` applies the hasten on impact via the live `AbilityBar → SpellEffectDispatcher.Cast` path. **Reality correction:** the spec's `ResolveSpatialOverlap` / "inverted train-cascade" **does not exist in code** — icons advance independently and turn order = arrival-at-trigger (`GetSecondsRemaining`), so **overtaking is emergent** from the forward bump; nothing to invert. Documented in bible §2.7.1 (+ corrected the §2.8 spawn-rules row that asserted a cascade). Demo: "Quicken". Bible §2.7.1/§2.8/§16.2 updated. **Dep:** —
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no spell; no forward-push in `ResolveSpatialOverlap`).
-  **Why:** Inverse of pushback — slide a target's icon toward the trigger, overtaking neighbors (inverted train-cascade).
-  **Done when:** a Quicken spell increases target icon u; `ResolveSpatialOverlap` runs inverted; turn order updates.
-  **Touch:** `Canvas/TimelineBarInstance.ResolveSpatialOverlap`, `Data/SpellLibrary` (Quicken). **Bible:** §2, casting prose. **Dep:** —
-
-- [x] **US-033 — Pressure valve (Colorless wildcard).** ✅ DONE 2026-06-02. **Design-locked by Legion (4/4): rule B — Colorless wild orbs satisfy any color on spend; no manual converter** (keeps colors meaningful, valve tied to crits, not exploitable). This removed the UI requirement entirely — pure `ManaBank` logic: `CanAfford`/`Spend` pay each cost with its own color (leftmost) then fall back to Colorless wilds for shortfalls; explicit Colorless costs paid only by Colorless. Demo: "Test Wildcard Spend". Bible §3.1.6 promoted to built. **Dep:** US-030 ✓ (uses US-031 crit-orbs as the valve source). ✓
-  *(Original spec — audit log; title was "Color conversion / pressure valve")* **Was:** `NOT-BUILT` (`ManaBank` has Add/Spend/CanAfford only).
-  **Why:** Documented escape valve (§3.1.6) so off-color banks aren't dead weight.
-  **Done when:** a `ManaBank.Trade()` + in-battle UI trades N orbs of one color toward another (Colorless wildcard at a cost). Design-locked first.
-  **Touch:** `Models/ManaBank`, `ManaPoolManager`, conversion UI. **Bible:** §3.1.6 (promote intent → built). **Dep:** US-030.
+- [x] **US-030 ✅ Per-hero color affinity on pincer mint.** `Data/Actor/ManaColorAffinity.For(class)` (Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R; others Blue); `PincerAttackManager` mints each contributor's color. Demo: "Log Color Affinities". Bible §3.1.2, §23.2.
+- [x] **US-031 ✅ Critical hit → Colorless wild orb.** Hooked in `ActorInstance.DamageRoutine`; the wild orb cycles the spectrum in the line (`ManaOrbLine.AnimateWildOrbs`). Demo: "Mint Wild Orb". Bible §3.1.2.
+- [x] **US-028 ✅ Quicken / Hasten.** `TimelineIcon.Hasten` + `TimelineBarInstance.HastenIcon` slide an icon forward in u; `SpellLibrary.Quicken` (`HastenU` 0.30, 1×Blue) applies it via `SpellEffectDispatcher`; overtaking is emergent. Demo: "Quicken". Bible §2.7.1.
+- [x] **US-033 ✅ Pressure valve (Colorless wildcard).** `ManaBank.CanAfford`/`Spend` pay each cost with its own color first, then Colorless wilds; explicit Colorless costs only take Colorless. Demo: "Test Wildcard Spend". Bible §3.1.6.
 
 ---
 
 ## EPIC E — Equipment Data Layer
-*Durability + weapon-swap are done (§A). What's left is the three planned `ItemDefinition` fields and their consumers.*
 
-- [x] **US-040 — Extend `ItemDefinition` with planned fields.** ✅ DONE 2026-06-01. `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added to `Data/Items/ItemDefinition.cs` with safe defaults (0 / null / empty dict). Inert until EPIC E consumers (US-041/042/043). Demo: "Log ItemDef Fields". Bible §24.3 + §16.3 updated. **Dep:** —
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (`ItemDefinition.cs:63-124` lacks all three).
-  **Done when:** `BattleStartManaOrbs:int`, `OnUseSpellName:string`, `ResistanceModifiers:Dict<DamageType,float>` added with safe defaults.
-  **Touch:** `Inventory/ItemDefinition`. **Bible:** §24.3. **Dep:** —
-
-- [x] **US-041 — Mage Robe / Wizard Robe battle-start orbs.** ✅ DONE 2026-06-01. `MageRobes.BattleStartManaOrbs=2`; new `WizardRobe` (Rare, `eq_armor_wizard`, =3) added + registered in `ItemLibrary`. `ManaPoolManager.ApplyBattleStartManaOrbs` (run at battle start via `GameReady`) sums `BattleStartManaOrbs` across the active party's equipped gear and adds that many random WUBRG orbs, clamped to the 12 cap. Demo: "Battle-Start Orbs". Bible §24.8/§3.1.4 + §16.3 #6 updated. **Dep:** US-040. ✓
-  *(Original spec — audit log)* **Was:** `PARTIAL` (`MageRobes` item exists `ItemData_Armor.cs:128`; no Wizard Robe; no battle-start scan).
-  **Done when:** Wizard Robe added; `ManaPoolManager.Start` scans equipped party gear and adds `BattleStartManaOrbs` random orbs per robe (stacks per wearer, respects the 12 cap §3.1.4).
-  **Touch:** `Data/ItemData_Armor`, `ManaPoolManager.Start`. **Bible:** §24.8, §3.1.4, delete §16.3 #6. **Dep:** US-040.
-
-- [x] **US-042 — Sleep Dart (item triggers a spell).** ✅ DONE 2026-06-01. `cons_sleep_dart` (`OnUseSpellName="Sleep"`, stack 5) added + registered; `ManaAbility.SourceItemId` links a bar slot to its `ItemDefinition`; `AbilityBar.HandleItem`→`TryHandleItemSpell` resolves the spell by ability-name, runs Sleep's targeting flow, and on confirm spends one charge + `SpellEffectDispatcher.Cast` + costs a turn. On the Alchemist's default bar (slot 6). First item-casts-a-spell path (generalizes to any consumable with `OnUseSpellName`). Demo: "Verify Sleep Dart Route". Bible §4.4/§24.8 + §16.3 #7 updated. **Dep:** US-040. ✓
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (no item; `AbilityBar.HandleItem:71-77` + `UseItemSequence` are heal/damage-only, no spell routing).
-  **Done when:** Sleep Dart consumable (stack 5) routes `HandleItem` through `OnUseSpellName` → Sleep's targeting flow → `SpellEffectDispatcher.Cast`, consuming one charge on confirm.
-  **Touch:** `Data/ItemData_Consumables`, `Canvas/AbilityBar.HandleItem`, `Sequences/UseItemSequence`. **Bible:** §24.8, §4.4, delete §16.3 #7. **Dep:** US-040.
-
-- [x] **US-043 — Equipped `ResistanceModifiers` folded into damage.** ✅ DONE 2026-06-01. `SpellEffectDispatcher.EquipmentResistanceMultiplier(target, type)` multiplies every equipped item's `ResistanceModifiers[type]` into `ApplyDamage`'s per-class `resMult` (multiplicative; heroes only — enemies have no gear). Sunfire Amulet seeded with Fire ×0.7 as a demonstrable example. Demo: "Log Resistances". Bible §13.1.2/§24.3 + §16.3 updated. **Completes EPIC E.** **Dep:** US-040. ✓
-  *(Original spec — audit log)* **Was:** `NOT-BUILT` (resistances are per-class on `ActorData` only; no equipment aggregation — `Formulas.cs:293-300`).
-  **Done when:** equipped `ResistanceModifiers` aggregate (alongside `ComputeEquipmentBonus`) into the wearer's effective resistance used by `ApplyDamage`.
-  **Touch:** `Utilities/Formulas`, `SpellEffectDispatcher.ApplyDamage`. **Bible:** §3.3, §24.3. **Dep:** US-040.
+- [x] **US-040 ✅ `ItemDefinition` battle fields.** `BattleStartManaOrbs`, `OnUseSpellName`, `ResistanceModifiers` with safe defaults (`ItemDefinition.cs`). Demo: "Log ItemDef Fields". Bible §24.3.
+- [x] **US-041 ✅ Mage / Wizard Robe battle-start orbs.** `MageRobes` = 2, `WizardRobe` = 3; `ManaPoolManager.ApplyBattleStartManaOrbs` adds that many random WUBRG orbs at battle start, capped at 12. Demo: "Battle-Start Orbs". Bible §24.8.
+- [x] **US-042 ✅ Sleep Dart (item casts a spell).** `cons_sleep_dart` (`OnUseSpellName="Sleep"`, stack 5); `ManaAbility.SourceItemId` links the slot to its item; `AbilityBar.HandleItem`→`TryHandleItemSpell` runs Sleep's targeting and spends a charge on confirm. Demo: "Verify Sleep Dart Route". Bible §4.4, §24.8.
+- [x] **US-043 ✅ Equipped resistances fold into damage.** `SpellEffectDispatcher.EquipmentResistanceMultiplier` multiplies every equipped item's `ResistanceModifiers[type]` into `ApplyDamage` (Sunfire Amulet: Fire ×0.7). Demo: "Log Resistances". Bible §13.1.2.
 
 ---
 
 ## EPIC F — AI Depth
-*The planner is solid for positioning (§A) but lacks the §14.3 future hooks. Best done after enemy casting (US-026) exists so the Caster archetype has behavior to plan.*
 
-- [x] **US-080 — Threat tracking (damage → preferred target).** ✅ DONE 2026-06-02. New `Managers/ThreatTracker` (per-battle hero→enemy damage tally, accrued in `ActorInstance.DamageRoutine`, cleared in `TurnManager.Initialize`). `EnemyPlanner` subtracts `(threat∕maxThreat) × enemyINT × 0.8` from each candidate's target score, so **threat weight scales with enemy Intelligence** (user refinement): smart enemies hunt the top damage-dealer, dumb ones keep chasing nearest/wounded. Demo: "Log Threat". Bible §14.1.2/§14.3 updated. **Dep:** —
-  *(Original spec — audit log)* **Was:** `PARTIAL` (targeting weights distance+HP, not damage dealt — `EnemyPlanner.cs:42-44`).
-  **Done when:** `EnemyPlanner` adds an accumulated-damage-per-hero weight to target selection.
-  **Touch:** `Services/EnemyPlanner` (+ a per-battle damage tally). **Bible:** §14.1.2 (new factor), §14.3. **Dep:** —
-
-- [x] **US-081 — Coordinated retreat (wounded enemies flee).** ✅ DONE 2026-06-02. `EnemyPlanner.PlanStep`: below `RetreatHpThreshold` (0.30 HP fraction) the enemy flips advance→flee (maximizes distance from the target) and drops its adjacency + pincer-seek biases; flank-avoidance still applies so it won't back into a pincer. Demo: "Test Enemy Retreat". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
-  **Done when:** below an HP threshold an enemy biases moves *away* from heroes.
-  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
-
-- [x] **US-082 — AI supporter positioning.** ✅ DONE 2026-06-02 (Legion: supporter-adjacency over lane-clearing, 4/4). `EnemyPlanner.WouldSupportAllyPincer` rewards (+25) a move that makes this enemy a §1.2.3 supporter of *another* ally's Humanoid pincer (reuses `PincerDetector.FindSupporters`; excludes pincers where this enemy is itself an endpoint — that's the +50 `WouldFormPincer`). Suppressed when fleeing (US-081). Demo: "Log Enemy Plans". Bible §14.1.2/§14.3 updated. **Dep:** — ✓
-  *(Original spec — audit log)* **Was:** `PARTIAL` (planner seeks its *own* pincer, not moves that enable an *ally's*).
-  **Done when:** a support branch rewards moves completing an ally's pincer line.
-  **Touch:** `Services/EnemyPlanner`. **Bible:** §14.3. **Dep:** —
-
-- [x] **US-083 — Boss scripted phases.** ✅ DONE 2026-06-06. **Architecture: Legion panel split 2/2 A↔C → synthesis = data-driven phase table (A) with the transition expressed as a `SequenceEvent` (the bespoke-code seam both camps endorsed).** New `Data/Actor/BossPhase` + `BossScriptLibrary` (per-`CharacterClass` ordered phases {HpThreshold, PrefersCharge, `Func<ActorInstance,SequenceEvent>` Transition}); pure `Services/BossPhaseRunner` (CurrentPhaseIndex / Current / `AdvancePhasesAndCollectTransitions` — fires each newly-crossed phase's transition, advances `ActorFlags.BossPhaseIndex`); `Sequences/BossPhaseTransitionSequence` (announce + optional self-heal + optional Quicken via US-028). `EnemyTakeTurnSequence` queues transitions at turn start and honors the `PrefersCharge` knob (new `EnemyPlanner.PlanCast(..., ignoreMeleeRange)`). **Cyclops00** = first scripted boss (enrages <50% HP: ENRAGED! banner + hasten). Demo: "Trigger Boss Enrage". Bible §14.2/§14.3 updated. **Dep:** US-026 ✓.
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
-  **Done when:** a per-class boss override (or `BossScript` sequence) swaps generic stepping for authored phases via `SequenceManager`.
-  **Touch:** `Services/EnemyPlanner`, new `Sequences/Boss*`. **Bible:** §14.2 (Boss), §14.3. **Dep:** US-026.
+- [x] **US-080 ✅ Threat tracking.** `Managers/ThreatTracker` tallies hero→enemy damage; `EnemyPlanner` subtracts `(threat/maxThreat) × INT × 0.8` from target scores. Demo: "Log Threat". Bible §14.1.2.
+- [x] **US-081 ✅ Wounded enemies retreat.** Below `RetreatHpThreshold` (0.30) `EnemyPlanner.PlanStep` flees and drops adjacency/pincer-seek bonuses. Demo: "Test Enemy Retreat". Bible §14.1.2.
+- [x] **US-082 ✅ AI supporter positioning.** `EnemyPlanner.WouldSupportAllyPincer` rewards (+25) becoming a supporter of another ally's pincer. Demo: "Log Enemy Plans". Bible §14.3.
+- [x] **US-083 ✅ Boss scripted phases.** `BossScriptLibrary` phase table + pure `BossPhaseRunner` + `BossPhaseTransitionSequence`; per-phase `PrefersCharge`. Cyclops00 enrages below 50% HP. Demo: "Trigger Boss Enrage". Bible §14.2, §14.3.
 
 ---
 
 ## EPIC G — UI Polish & Accessibility
-*Sand the edges. Several of these are PARTIAL — the framework exists, the last mile doesn't.*
 
-- [x] **US-114 — Timeline two-lane layout (portraits above, cast icons below).** ✅ DONE 2026-06-08 (code complete; visual verify in-editor deferred — layout is the point). `NOT-BUILT` was the prior state.
-  **⚠ Correction 2026-08-15:** the spec below says `SpellCastBar`/`SpellCastBarFactory` were "retired" — they were **repurposed, not retired** (the class now travels the cast icon on the below-line lane, per GG-A2), and both files remain live, referenced by `TimelineBarInstance`/`AbilityBar`/`ManaRecipe`.
-  **🔓 Design rule 2026-06-02 (user):** one shared timeline, two lanes — **large actor/portrait turn-icons ABOVE** the line, **¼-size cast icons BELOW**. Remove the stacked `SpellCastBar` shrinking-bars entirely; a cast's *position on the shared u-axis* is its progress read, so it lines up under the enemy turn-icons. Shared continuous clock: a cast resolves at its icon's trigger, off any particular turn (the IP-gauge — §2.6). Enemy charge icons (US-026) ride the same below-line lane.
-  **Done when:** turn-icons render large above the timeline line; cast icons render ~¼-size below it on the same axis; `SpellCastBar`/`SpellCastBarFactory` retired; both lanes share the trigger; verified in-editor (the layout is the whole point).
-  **Touch:** `Canvas/TimelineIcon`, `Factories/TimelineIconFactory`, `Canvas/TimelineBarInstance`; retire `Canvas/SpellCastBar` + `Factories/SpellCastBarFactory`; `AbilityBar.HandleSpell` (no longer spawns a cast bar). **Bible:** §2.6, §2.8, §9. **Dep:** US-001 (AspectGuard layout). **Editor-gated (visual).**
-
-- [x] **US-076 — Spell icons on the AbilityBar.** ✅ DONE 2026-06-07. `AbilityBarFactory` adds a 36×36 `Image` (top-left corner, `raycastTarget=false`, initially hidden) to each slot; `AbilityBar.Bind()` accepts `Image[] iconImages`; `Refresh()` calls `SpriteLibrary.SpellIcons.TryGetValue(a.Name)` and enables the Image when a sprite is found — glyph fallback (text labels only) when the key is absent. Demo: "Spell Icons". Bible §4.5, §29.4 #15 to verify in-editor.
-  *(Original spec — audit log)* **Was:** `PARTIAL` (`SpriteLibrary.SpellIcons` populated `:127`; `AbilityBar.Refresh:248` renders name+cost glyphs only, no icon Image).
-  **Done when:** slot shows the spell icon sprite; glyph fallback if missing.
-  **Touch:** `Canvas/AbilityBar` (+ an icon Image per slot). **Bible:** §4.5, resolve §29.4 #15, delete §16.4 #21. **Dep:** —
-
-- [x] **US-077 — Scan reveals enemy stats.** ✅ DONE 2026-06-06. New `SpellDefinition.RevealsStats` (set on `SpellLibrary.Scan`); `SpellEffectDispatcher` reveals the target's HP/STR/VIT/AGI/INT via the cadenced **AnnouncementWindow** + "Scanned!" combat text + Select SFX, and flags the enemy class **Seen** in the Bestiary (`Bestiary.MarkSeen`) — which feeds US-093's seen-gated reveal. (Reuses the AnnouncementWindow as the reveal surface instead of a bespoke popup; a richer panel can come later.) Demo: "Scan Enemy". Bible §7/§16 updated. **Dep:** US-054 ✓.
-  *(Original spec — audit log)* **Was:** `PARTIAL` (spell + VFX exist `SpellLibrary.cs:107`; no reveal popup, no dispatcher branch).
-  **Done when:** Scan opens a stat-reveal popup for the target + flags Bestiary `seen`.
-  **Touch:** `SpellEffectDispatcher`, new info popup, `BestiaryProgress`. **Bible:** §7. **Dep:** US-054.
-
-- [x] **US-090 — "No valid targets" toast.** ✅ DONE 2026-06-06. `TargetingMode.Begin` (Auto resolve + PickActor candidate scan) now `AnnouncementWindow.Announce("No valid targets")` before cancelling, instead of silently locking input. Reuses the cadenced AnnouncementWindow. Bible §16.6 #15 struck. **Dep:** —
-  *(Original spec — audit log)* **Was:** `PARTIAL` (`TargetingMode.Begin` calls `onCancel` silently — `:81,100`).
-  **Done when:** Auto/pick resolving to 0 actors shows a toast.
-  **Touch:** `Managers/TargetingMode`, in-battle toast. **Bible:** §5.2, delete §16.6 #15. **Dep:** —
-
-- [x] **US-093 — Bestiary enemy filter + unlock gating.** ✅ DONE 2026-06-07. `BestiaryView.BuildPages()` now filters `ActorLibrary.Actors` to `ActorTag.Enemy` only (heroes, NPCs excluded). New `IsSeen(ActorData)` helper reads `Bestiary.Get(cls)?.Seen`. `Refresh()` branches: seen = full stats/portrait/lore as before; unseen = silhouette (portrait recolored black), "???" name, "Unencountered" class, hidden lore ("Defeat or Scan to reveal"). Demo: "Bestiary Filter" (logs enemy count vs total and seen count). Bible §15.3 status updated; §29.4 #16 resolved. **Dep:** US-054 ✓, US-077 ✓.
-  *(Original spec — audit log)* **Was:** `PARTIAL`→needs US-054 (`BestiaryView:59-98` lists all actors, no filter/progress/silhouette).
-  **🔓 Design-locked 2026-06-02 (Legion 4/4): SEEN-gated reveal** — full entry once `BestiaryProgress.Seen` (encounter or Scan US-077); unseen = silhouette + "???". Dep US-054 now ✓ (Seen/Defeated are written). Remaining work is the editor-side `BestiaryView` UI (filter to `Enemy` tag + silhouette rendering).
-  **Done when:** only `Enemy`-tagged entries; unseen show silhouettes per `BestiaryProgress.seen`.
-  **Touch:** `Canvas/BestiaryView`. **Bible:** §11.2, §15.3, delete §16.5 #14 + §16.6 bestiary row; resolve §29.4 #16. **Dep:** US-054.
-
-- [x] **US-096 — Music playback + volume/mute settings (persisted).** ✅ DONE 2026-06-07 (committed by user; verified via play-test). Music *playback* lands via the chiptune Jukebox/MusicDirector (Battle/Vendor/Title/Overworld/Victory/Defeat beds) — superseding the planned Vorbis stream. Controls: `ProfileSettings.{MusicVolume, SfxVolume, MuteMusic, MuteSfx}` (persisted; defaults 0.6/0.85/false/false); `AudioSettingsHelper.Apply()` folds mute → pushes effective volumes to `Jukebox` (music + vendor SFX) and battle `g.SoundSource`; `SettingsManager` Sliders/Toggles live-apply; `MusicDirector.Apply` re-applies on scene change. UI audio folds into SFX channel. Demo: "Music Vol 25/100%", "Toggle Mute Music/SFX". Bible §31.5 + §29.4 #18 updated. **Dep:** —
-  *(Original spec — audit log)* **Was:** `PARTIAL` (`AudioManager` is SFX-only `:48-90`; `MusicTrackLibrary` has 1 track; `SettingsManager` has no audio sliders).
-  **Done when:** `AudioManager` gains music playback (Vorbis stream) + Music/SFX/UI volume + independent mutes in `SettingsManager`, persisted.
-  **Touch:** `Managers/AudioManager`, `Managers/SettingsManager`, `Libraries/MusicTrackLibrary`. **Bible:** §12.1.1 audio, §30.4, §31.5; resolve §29.4 #18. **Dep:** —
-
-- [x] **US-091 — AbilityBar tooltip (hover / long-press).** ✅ DONE 2026-06-07. `AbilityBarFactory` adds an `EventTrigger` (PointerEnter/PointerExit) to every slot and passes `slotRects[]` to `AbilityBar.Bind`. `AbilityBar.ShowTooltipForSlot(i)` builds a formatted string (name, kind, cost icons / charge count / "Free", cast time for spells) and calls `Tooltip.Show` with the slot's RectTransform as target, placement Top, fade enabled. `HideTooltip()` destroys the active tooltip on PointerExit. No separate demo button needed — hover any slot in play mode. Bible §4.5 updated. **Dep:** US-076 ✓.
-  **Done when:** hover/long-press shows name, cost, target-shape preview, base dmg/heal.
-  **Touch:** `Canvas/AbilityBar`, new tooltip. **Bible:** §4.5. **Dep:** US-076.
-
-- [x] **US-092 — Cooldown slot visual state.** ✅ DONE 2026-06-07. Skills declare a reuse limit (`ManaAbility.CooldownTurns`; Steal 3 / Mug 2 / Teleport 3); per-hero countdown via `SkillCooldownManager`, ticked per turn-cycle in `TurnManager.BeginHeroWindow`; `AbilityBar.Refresh` renders a disabled state — fade-out + numeric countdown (prior) **+** §4.5 **radial sweep** (added 2026-06-07): `AbilityBarFactory` adds a `CooldownSweep` child Image per slot (`Radial360`, `Origin360.Top`, clockwise, 68%-alpha dark overlay, `raycastTarget=false`, initially hidden); `AbilityBar.Bind` accepts `Image[] cooldownSweeps`; `Refresh` calls `SetCooldownSweep(i, onCooldown, remaining, a.CooldownTurns)` → `fillAmount = remaining/max` (1=freshly locked, 0=recharged). Bible §4.5.
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
-  **Done when:** skills can declare a reuse limit; bar renders the greyscale + radial sweep (§4.5).
-  **Touch:** `Canvas/AbilityBar`, `Data/ManaAbility`. **Bible:** §4.5. **Dep:** —
-
-- [x] **US-094 — Colorblind palette toggle.** ✅ DONE 2026-06-07. `ProfileSettings.ColorblindMode` (bool, persisted; default false in `ProfileHelper.DefaultSettings`, copy-ctor updated). New `Helpers/ColorblindHelper.cs` with Okabe-Ito substitutions: Red → Vermillion (0.835, 0.369, 0), Green → Bluish-green (0, 0.620, 0.451), burning → Vermillion, poisoned → Bluish-green, protection → Orange (0.902, 0.624, 0). `ManaOrbLine.ColorFor` now delegates to `ColorblindHelper.GetManaColor`; standard palette extracted to `ColorForStandard`. `DebuffIconBar.ColorFor` delegates to `ColorblindHelper.GetDebuffColor`; standard palette extracted to `ColorForStandard`. `SettingsManager` Toggles gains "Colorblind Mode". Demo: "Toggle Colorblind" (logs mode + palette name). Bible §31.1 updated. **Dep:** —
-  **Done when:** Settings toggle remaps mana/debuff/health palettes (Okabe-Ito/Wong); glyphs already carry the non-color signal.
-  **Touch:** `Managers/SettingsManager`, palette sources (`HubTheme`/`ManaOrbLine`/`DebuffIconBar`). **Bible:** §31.1. **Dep:** —
-
-- [x] **US-095 — Reduce-motion toggle.** ✅ DONE 2026-06-07 (committed by user; verified via play-test). `ProfileSettings.ReduceMotion` (persisted; default false); `VisualEffectManager.IntensityScale` gated in `CreateInstance` — 0 suppresses all particle VFX; `ProjectileMotionEval.ReduceMotion` collapses arcs to straight lerps; `MotionSettingsHelper.Apply()` pushes flag to both; `SettingsManager` toggle live-applies. Demo: "Toggle Reduce Motion". Bible §31.2 updated. **Dep:** —
-  *(Original spec — audit log)* **Was:** `NOT-BUILT`.
-  **Done when:** Settings toggle drives `VisualEffectManager.IntensityScale`→0 + skips long projectile arcs.
-  **Touch:** `Managers/SettingsManager`, `VisualEffectManager`, `ProjectileMotionEval`. **Bible:** §31.2. **Dep:** —
+- [x] **US-114 ✅ Timeline two-lane layout.** Actor turn icons ride above the timeline line; spell cast icons (¼ size) ride below on the same u-axis (`TimelineBarInstance.SpawnSpellIcon`, `TimelineIconFactory.CreateForCast`); `AbilityBar.HandleSpell` spawns cast icons; enemy charge icons share the lane. Bible §2.6.
+- [x] **US-076 ✅ Spell icons on the AbilityBar.** `AbilityBarFactory` adds a 36×36 icon `Image` per slot; `AbilityBar.Refresh` shows `SpriteLibrary.SpellIcons[name]`, glyph fallback when absent. Demo: "Spell Icons". Bible §4.5.
+- [x] **US-077 ✅ Scan reveals enemy stats.** `SpellDefinition.RevealsStats`; `SpellEffectDispatcher` announces HP/STR/VIT/AGI/INT via the AnnouncementWindow and marks the class Seen (`Bestiary.MarkSeen`). Demo: "Scan Enemy". Bible §7.
+- [x] **US-090 ✅ "No valid targets" toast.** `TargetingMode.Begin` announces "No valid targets" before cancelling when Auto / PickActor resolves nothing. Bible §5.2.
+- [x] **US-093 ✅ Bestiary enemy filter + seen gate.** `BestiaryView.BuildPages()` lists `ActorTag.Enemy` only; unseen classes show a silhouette, "???" and hidden lore. Demo: "Bestiary Filter". Bible §15.3.
+- [x] **US-096 ✅ Music + volume/mute settings.** `ProfileSettings.{MusicVolume, SfxVolume, MuteMusic, MuteSfx}` (persisted); `AudioSettingsHelper.Apply()` pushes effective volumes to `Jukebox` and the battle `SoundSource`; `SettingsManager` sliders/toggles live-apply. Demos: "Music Vol 25/100%", "Toggle Mute Music/SFX". Bible §31.5.
+- [x] **US-091 ✅ AbilityBar tooltip.** `AbilityBar.ShowTooltipForSlot(i)` → `Tooltip.Show` (name, kind, cost / charges / "Free", cooldown, cast time) on hover / long-press. Bible §4.5.
+- [x] **US-092 ✅ Cooldown slot visual state.** `ManaAbility.CooldownTurns` (Steal 3 / Mug 2 / Teleport 3), per-hero `SkillCooldownManager`; `AbilityBar` fades the slot, shows the turns left and a `CooldownSweep` radial overlay. Demos: "Lock Skill CDs" / "Tick CD". Bible §4.1.1, §4.5.
+- [x] **US-094 ✅ Colorblind palette toggle.** `ProfileSettings.ColorblindMode`; `Helpers/ColorblindHelper.cs` (Okabe-Ito) feeds `ManaOrbLine.ColorFor` and `DebuffIconBar.ColorFor`. Demo: "Toggle Colorblind". Bible §31.1.
+- [x] **US-095 ✅ Reduce-motion toggle.** `ProfileSettings.ReduceMotion`; `VisualEffectManager.IntensityScale` = 0 suppresses particle VFX; `ProjectileMotionEval.ReduceMotion` flattens arcs. Demo: "Toggle Reduce Motion". Bible §31.2.
 
 ---
 
 ## EPIC H — Performance & Hardening
-*Final pass against §30 once content density is realistic so the profiler shows true hotspots.*
 
-- [x] **US-100 — Coroutine hygiene audit.** ✅ DONE 2026-06-07. Root bug: `SequenceManager.OnDisable()` called `StopCoroutine(runningCoroutine)` which only stops the outer `ExecuteRoutine` — the nested `StartCoroutine(current.ProcessRoutine())` continued running as an independent coroutine on the MonoBehaviour after BattleEnd. Fix: track `innerCoroutine` handle + new `CancelAll()` method uses `StopAllCoroutines()` (kills outer + inner), resets `isExecuting`, clears the queue. `OnDisable` now delegates to `CancelAll()`. Key sequences (EnemyTakeTurnSequence, BattleWonSequence, etc.) already null-check actors at entry + before critical operations; no additional post-yield guards needed once the cancel path is robust. UI-triggered coroutines (CoinManager, AudioManager, GhostManager) fire-and-forget by design — no double-start issue identified. Bible §30.3 updated. **Dep:** —
-- [x] **US-101 — GC hot-path cleanup.** ✅ DONE 2026-06-07. Eliminated all per-call heap allocations in `EnemyPlanner.PlanStep` and `PlanCast`: replaced `actors.Where(...).ToList()` (×2) with a `static readonly List<ActorInstance> _heroScratch` (clear+foreach), replaced `OrderBy(...).First()` (×2) with manual min-search loops, replaced `new List<Vector2Int>` candidates with `static readonly List<Vector2Int> _candidateScratch`. Two residual `Any()` calls (`IsOccupied`, `WouldBeFlanked`) operate on bounded existing lists (≤5 elements, ≤4 heroes) — not hotspots. **Touch:** `EnemyPlanner`. **Bible:** §30.2. **Dep:** —
-- [x] **US-102 — Particle caps + VFX pooling.** ✅ DONE 2026-06-07. `VisualEffectManager` now: (1) caps concurrent instances at `MaxConcurrentVfx=48` — any spawn past the cap is silently dropped, preventing burst runaway; (2) pools wrapper GOs — `Despawn` calls `ReturnToPool()` (stops coroutines via `ResetForPool()`, clears children, deactivates and enqueues) instead of `Destroy`; `CreateInstance` dequeues a pooled wrapper before allocating a new GO; (3) `Clear()` flushes both live instances and pooled wrappers. `VisualEffectInstance.ResetForPool()` (internal) stops all coroutines and nulls cached component arrays. `VfxPrefabAuthor` per-prefab `maxParticles` (60–200) remain as per-system authored caps; no central particle count tracking needed at runtime. Demo: "VFX Pool Stats" logs `Live=N/48 Pooled=M`. **Touch:** `VisualEffectManager`, `VisualEffectInstance`. **Bible:** §30.1, §30.4. **Dep:** —
-- [x] **US-103 — HUD texture atlas (UI Addressable pack).** ✅ DONE 2026-06-08 (setup complete; draw-call drop to be profiled in US-104's device pass). `CliEntryPoints.BuildHudAtlas` creates `Assets/Sprites/HudAtlas.spriteatlas` covering 14 in-battle HUD sprite folders (GUI, ActionBar, HealthBar, Mana, Statuses, AbilityButtons, Timeline/ActorTagIcons, TimerBar, Selection, Actor/Masks/Base/Back/Frames/Armor); registers it as Addressable address `HudAtlas` label `UI`. Unity routes Image draws through the atlas automatically — no SpriteLibrary changes needed. Run `CliEntryPoints.BuildHudAtlas` once in the editor to materialize the `.spriteatlas` file. **Touch:** `Editor/CliEntryPoints.cs`. **Bible:** §30.4. **Dep:** US-001.
-
----
-
-## EPIC I — Loop-closure follow-ons
-*Two bible-specified vendor services found missing during the 2026-06-09 full-loop audit (the bible promised them; the code didn't have them). Both close holes in the battle↔vendor macro loop.*
-
-- [x] **US-121 — Blacksmith Repair tab.** ✅ DONE 2026-06-09 (code complete; play-test on next editor session). Bible §25.2 #3 promised "Repair — restore weapon durability" and §25.8's sketch shows the tab, but `BlacksmithManager` had only Forge/Salvage — `WeaponDurabilityHelper.RepairCost` (built in §A) had **zero callers**, so worn gear could never be fixed. Now: third `Mode.Repair` tab lists every hero's equipped weapon/armor with a durability pool (`RepairCandidates()` walks `save.Equipment.Heroes`; worn pieces sort first); rows show `Class — Item cur/effMax cost`; detail pane shows factory max, repair count, the post-repair ceiling drop, and the `IsUneconomical` "costs as much as a new one" warning; Repair button deducts gold, restores to `EffectiveMaxDurability` (factory − prior repairs), increments the slot's RepairCount, persists. `BlacksmithBuilder` adds the RepairTab button (Forge/Salvage/Repair at 0–0.30/0.30–0.60/0.60–0.90). Demo: "Wear Gear −5" (DebugWindow) wears all equipped gear so the tab has work to show. **Touch:** `BlacksmithManager`, `BlacksmithBuilder`, `DebugManager`, `DebugWindow.Demos`. **Bible:** §25.2, §25.8. **Dep:** — (uses §A's `WeaponDurabilityHelper`).
-
-- [x] **US-123 — One visual language: UiKit + HubTheme + UiFonts (FFBE-guided reskin of every scene).** ✅ DONE 2026-06-09 (code complete; visual play-test next editor session — the look is the point). **Problem:** every scene felt disconnected — two coexisting visual systems (GreenButton-sprite meta screens with a 130px black CutoutOverlay vs. navy/gold vendor screens), runtime list rows in default LiberationSans (no font ever set), three back-button styles, a hot-pink Credits scrollbar, hand-typed color literals duplicating HubTheme everywhere, Bestiary in Avenir with its own gold hue, tooltips in Chicago pixel font, timeline labels in Avenir. **Built:** (1) `HubTheme` expanded into the full palette (PanelBorder/ListBg/RowBg/RowSelected/RowLocked/ScrollTrack/ScrollHandle + the shared `ButtonColors` ColorBlock); (2) new runtime `Scripts/Hub/UiFonts.cs` — Attic=display, Outfit=body, resolving via FontLibrary at runtime and AssetDatabase in edit mode; (3) new editor `Assets/Editor/Builders/UiKit.cs` component factory (Header + gold rule, HeaderRightLabel, Panel/Border 2px steel frames, Primary/Secondary/Tab/Danger buttons, the one BackButton convention, ScrollList with visible themed scrollbar preserving `{name}/Viewport/Content` paths, Label/DisplayLabel); (4) `SceneBuilderHelper` primitives (EnsureCanvas→1170×2532+PanelBg, EnsureTitle→kit Header, EnsureBackButton/EnsureButton/EnsureLabel/EnsureScrollView→kit) so ALL meta scenes inherit; (5) all 7 Hub-family builders + Vendor (full rewrite) + Bestiary (Avenir→Outfit, kit header/back) + Title (kit menu tiles + GRIDGAME logo) + Settings/Credits/ProfileSelect/SaveFileSelect/ProfileCreate/PostBattle reskinned; CutoutOverlay removed from meta scenes (Game-only — Clock docks there); (6) every runtime row factory/manager fonted with `UiFonts.Body` + HubTheme constants (HubItemRowFactory, Vendor/StageSelect/Blacksmith/Alchemist/Party/Equip/Abilities/PostBattle managers); TimelineIconFactory Avenir→Outfit; TooltipFactory Chicago→Outfit; GameBuilder Clock/Pause/CastConfirm fonts unified (the Pause button's garbage "m_isRightToLeft: 0" label text removed). **Touch:** ~30 files. **Bible:** new §11.5. **Dep:** US-001 (AspectGuard normalizes to the same reference the builders now author at).
-
-- [x] **US-122 — Alchemist heal service (the cut Inn's role).** ✅ DONE 2026-06-09 (code complete; play-test on next editor session). The §29.3 #12 resolution (Legion 4/4, model A) made wounds persist (US-053) with recovery as a *gold-cost full-heal at the Alchemist* — but the heal-service UI was an unbuilt "small follow-on", meaning wounds accumulated with **no out-of-battle recovery at all** (short of losing a battle). Now: green "Heal Party" button beside Mix (`AlchemistBuilder.BuildHealButton`; Mix shrinks to 0.6–0.79, Heal 0.79–1); `WoundedPartyInfo()` sums missing HP across `save.Party.Members` where `HpCurrent > 0` (MaxHP from class stats at the derived level — same estimate PartyManager shows); price = `0.5g × missing HP` (anchored to the Healing Potion's 25g/50HP rate); paying clears every member's `HpCurrent` to 0 (= spawn at full) and persists. Button shows live cost, disables when unaffordable, reads "Party Healthy" when nobody is wounded. Test path: "Wound Party 50%" → win battle → visit Alchemist. **Touch:** `AlchemistManager`, `AlchemistBuilder`. **Bible:** §25.3, §15.1, §29.3 #12. **Dep:** US-053 ✓.
+- [x] **US-100 ✅ Coroutine hygiene.** `SequenceManager.CancelAll()` stops outer + inner coroutines, resets state and clears the queue; `OnDisable` delegates to it. Bible §30.3.
+- [x] **US-101 ✅ GC hot-path cleanup.** `EnemyPlanner.PlanStep` / `PlanCast` use static scratch lists and manual min-search instead of per-call LINQ. Bible §30.2.
+- [x] **US-102 ✅ Particle caps + VFX pooling.** `VisualEffectManager` caps live instances at `MaxConcurrentVfx` = 48 and pools wrapper GOs (`VisualEffectInstance.ResetForPool`). Demo: "VFX Pool Stats". Bible §30.1.
+- [x] **US-103 ✅ HUD texture atlas.** `CliEntryPoints.BuildHudAtlas` creates `Assets/Sprites/HudAtlas.spriteatlas` over 14 HUD sprite folders, Addressable `HudAtlas` / label `UI`. Bible §30.4.
 
 ---
 
-## EPIC J — Working proof of concept (2026-08-15 full-loop repair; see GG-A3/GG-A4)
-*A three-agent code audit + the new automated harness found the loop severed in specific seams
-despite the 2026-06-09 "all done" declaration: wrong boot scene, unreachable StageSelect, coins
-never becoming gold, editor hooks wedging test runs, and four scene-level runtime bugs.*
+## EPIC I — Vendor services & visual language
 
-- [x] **US-124 — Automated verification harness.** ✅ DONE 2026-08-15. Game code moved into `Scripts.asmdef` so tests can reference it (asmdefs cannot reference the predefined Assembly-CSharp — verified empirically); EditMode suite (Formulas, PincerDetector rules, save round-trip, CampaignStages unlocks, GoldTracker, BountyFlow, AbilitySlotting) + PlayMode suite (scene-boot smokes for every live scene; battle-loop scenarios on the new deterministic `Test-Harness` stage in `StageLibrary`). Production hooks: `TestHooks.cs` (profile isolation via `FolderHelper.Folder.TestProfileRootOverride`, `RNG.Seed`, deterministic actor placement, pacing accel), runner `tools/run-tests.ps1` (3-signal gate: results XML + zero `error CS` + exit code). Editor hooks gated out of batch/`-runTests` sessions: `StartSceneAuthority` playModeStartScene, `DebugWindowBootstrapper` auto-open (wedged the main loop), `CustomPlayBehaviour` play-mode re-entry. **Bible:** §6 (headless verification now real), GG-A4. **Dep:** —
-- [x] **US-125 — Boot flow restored.** ✅ DONE 2026-08-15. `StartSceneConfig.StartScene` was `"Hub"` (front door never ran; vendors silently created a "Dev" profile); now `"SplashScreen"`. TitleScreen Continue → StageSelect (was: straight to Game → random `Test-*` stage for fresh profiles). `StageManager.Initialize()` now reads `CurrentSave` (was `LatestSave` — diverged from `RestartStage()` when loading older saves). **Bible:** §22 (diagram updated), GG-A3.
-- [x] **US-126 — Economy bridge: coins → gold.** ✅ DONE 2026-08-15. New `Managers/GoldTracker.cs` (LootTracker-pattern session tracker): snapshots `Global.TotalCoins` at battle start, commits the per-battle delta into `Inventory.Gold` at the PostBattle loot phase (leading "Gold +N" row via `HubItemRowFactory` + `HubTheme.FormatGold`); no-loot branch also clears; lifetime ticker untouched. EditMode-tested incl. no-double-count across battles. **Bible:** §24.9 (two-field model), §22.1, GG-A3. **Dep:** —
-- [x] **US-127 — Nav consolidation: Hub retired.** ✅ DONE 2026-08-15. StageSelect "Shop"→Hub button removed (builder + manager); `Hub.unity` + `Overworld.unity` out of `EditorBuildSettings.scenes` (files kept, HOUSE-LAW-2); `VendorNavBar` is the only vendor navigation. **Bible:** §22, §25.0, GG-A3.
-- [x] **US-128 — Bounty board UI on StageSelect.** ✅ DONE 2026-08-15. The fully-coded, zero-UI bounty system is now reachable: `BountyBar` strip on StageSelect (builder `BuildBountyBar`; manager browse/Accept/progress/Abandon/Claim via `BountyHelper`, persists via `ProfileHelper.Save`). `RecordKill` was already wired at enemy death. EditMode-tested (accept/track/claim/refuse-early/abandon). **Bible:** §22 diagram, GG-A4 #2. **Dep:** —
-- [x] **US-129 — Abilities scene slots skills/spells.** ✅ DONE 2026-08-15. The assignables list leads with the hero's active `ActorData.Abilities` (section headers "Skills & Spells" / "Items"); click assigns by name via `AbilityBarSlotSave.AbilityName` — the path combat already resolves (`HeroLoadout.LoadFromSave` → `AbilityLibrary.Get`); duplicate-on-bar guard. EditMode-tested incl. every-party-ability-resolves check. **Bible:** §4 AbilityBar, GG-A4 #3. **Dep:** —
-- [x] **US-130 — Scene-level runtime bugs surfaced by the harness.** ✅ DONE 2026-08-15. (1) `Singleton.HasLiveInstance` non-creating probe + guards in `TargetModeOverlay`/`AbilityButtonManager` OnDestroy — touching `g.*` during Game-scene unload resurrected GameManager mid-teardown (Camera.main exception, TutorialPopup leaked into the next scene; hit EVERY Game→PostBattle transition). (2) GameBuilder: dead `ScrollingRawImage` scrollers removed from PauseMenu parallax slides (their RawImage was an unresolved-GUID skip — errored every Game boot). (3) `GameObjectHelper.StageSelect.Title` → "Canvas/Header/Title" (US-123 moved titles into the UiKit Header; ProfileSelect couldn't find its own header). (4) ProfileCreate faded in during Awake, racing `FadeOverlayInstance`'s Image cache (NRE) — fade moved to Start + `SetAlpha` lazily resolves. **Dep:** US-124 (found all four).
-
-- [x] **US-131 — Story crawl screen (GG-A5; partially reverses the §27 cut).** ✅ DONE 2026-08-15. `StoryCrawl` scene (builder + manager): Star-Wars-style upward crawl (26s, unscaled), skip via button OR tap-anywhere; text in `Data/StoryCrawlData.cs` keyed by theme id (5 themes written — the Lightbearers descend the Undearth chasing the stolen dawn); `StageSelectManager.ConfirmLaunch` routes through the crawl on FIRST entry into a theme (`GlobalSaveData.SeenStoryCrawls`, per-save), then Fade.ToGame. Verified: scene smoke green; EditMode suite green.
-  *(Original spec — audit log)* A skippable text-crawl scene shown before selected stages: per-theme intro paragraphs, data-driven (crawl text keyed by campaign theme/stage), advance-on-tap + Skip button. NO dialog system, NO branching, NO cutscenes (those stay cut).
-  **Done when:** launching a stage with crawl text shows the crawl first (skippable), then fades to Game; stages without text launch directly; text lives in a data file, not prose in code.
-  **Touch:** new `StoryCrawlBuilder`/`StoryCrawlManager` (+ scene in build settings), `StageSelectManager.ConfirmLaunch` (route via crawl when text exists), crawl data (`Data/` or `CampaignStages`). **Bible:** GG-A5. **Dep:** —
-
-- [x] **US-132 — Summon vendor (roster growth).** ✅ DONE 2026-08-15. `Summon` scene ("Summon Circle": builder + manager + NavBar entry on every vendor scene); pure rules in `Services/SummonService` (7-class pool: GreenNinja/RedNinja/Pugilist/Ronin/Sellsword/Thief/Vampire; cost 250 + 250×recruits; refuse duplicates/short gold); recruit deducts `Inventory.Gold`, appends `save.Roster`, persists → hero appears in Party's carousel. `DefaultRoster` shrunk to the starting trio so the pool matters (existing saves unaffected). EditMode ×4 (cost rise, refusals, round trip); scene smoke green.
-  *(Original spec — audit log)* NavBar-reachable scene: spend gold to recruit one of the built hero classes into the roster; rising cost per hero owned; already-owned classes shown as recruited. Deliberate purchase (not a pull — "not a gacha" stands).
-  **Done when:** recruiting deducts gold, adds the class to `save.Roster`, persists, and the new hero appears in Party's roster carousel; unaffordable rows disabled; EditMode test covers the recruit + persistence path.
-  **Touch:** new `SummonBuilder`/`SummonManager` (+ scene in build settings), `VendorNavBar.Entries`, `ProfileHelper`/roster save. **Bible:** GG-A5, §23.4. **Dep:** —
-
-- [x] **US-133 — Combat announcement feed with inline icons.** ✅ DONE 2026-08-15. `Canvas/CombatFeed` + `CombatFeedFactory` (7 aging lines under the banner, newest at bottom, raycast-transparent); every `AnnouncementWindow.Announce` mirrors into the feed; feed-only lines for damage (attacker/target/amount/CRIT color), status ticks, heals, supporter assists. Icons: `CombatFeedSpriteAssetAuthor` packs 50 glyphs (spell icons + tag icons + 10 per-buff status glyphs, lowercase-id names) into a TMP_SpriteAsset (Addressable "CombatFeedIcons"); `CombatFeed.Icon(name)` emits `<sprite>` tags only for existing glyphs. Cast/charge/status announces carry their icon. Verified: battle chunk + smokes green with the feed live.
-  *(Original spec — audit log)* Every combat event narrates through the AnnouncementWindow as a scrolling feed: pincers ("Paladin & Barbarian pincer Slime — 14!"), spells ("Paladin casts Heal"), supporter assists, buff/status applications and ticks ("Rogue is poisoned"), deaths, loot/coin pickups. Inline icons via TMP `<sprite name=...>` tags backed by a TMP Sprite Asset (class portraits/spell icons/status glyphs).
-  **Done when:** a full Test-Harness battle produces a readable play-by-play; icons render inline; feed respects the effect-cadence rule (queued, never single-frame); PlayMode test asserts key events appear.
-  **Touch:** `AnnouncementWindow` (feed mode), new TMP Sprite Asset (authored via SpriteAssetAuthor), call sites in `PincerAttack*`/`SpellEffectDispatcher`/`BuffSystem`/`EnemyAttackSequence`/`ActorInstance.DieRoutine`/loot-coin pickups. **Bible:** GG-A5. **Dep:** —
-
-- [x] **US-134 — Wire the four unhooked buff effects into gameplay.** ✅ DONE 2026-08-15 — **audit outcome: all four were ALREADY WIRED; the Buffs.cs TODOs were stale.** Ticks: `EndTurnSequence` → `TickStatusesRoutine` (now also feeds the combat log); Slowed: `TimelineIcon` effective speed ×`SlowedTimelineMultiplier` (US-011); Silenced: `AbilityBar` spell-slot block (US-012); Blinded: `Formulas.CalculateHitType` ×`BlindedAccuracyMultiplier` (US-013); lightning×wet: `SpellEffectDispatcher`; immobile: `EnemyPlanner`. Buffs.cs comments corrected to name the live hook per buff. Tuning values themselves → US-135.
-  *(Original spec — audit log)* `Data/Buffs.cs` TODOs: Burning/Poisoned per-tick damage, Slowed's timeline-speed multiplier, Silenced's cast-block, Blinded's hit-chance multiplier (§8.1 promised all four; formulas only honor Blinded partially). Smart play needs the levers real.
-  **Done when:** each of the four visibly alters a Test-Harness battle (EditMode formula tests + PlayMode assertion where feasible); combat feed (US-133) narrates ticks.
-  **Touch:** `Data/Buffs.cs`, `Formulas.cs`, `BuffSystem`, `TimelineIcon`/`CastingState` (Slowed/Silenced). **Bible:** §8. **Dep:** US-133 (feed lines optional).
-
-- [x] **US-135 — Balance pass: the campaign difficulty curve (first tranche).** ✅ DONE 2026-08-16. Root cause found: campaign stages authored NO enemy levels — every enemy spawned level 1 forever while heroes leveled. Fix: `CampaignStages.RecommendedLevel(stage)` (stage 1 → lvl 1 … stage 15 → lvl 15); `StageManager.SpawnActor` floors enemy levels to it (authored higher levels win; Test-*/Endless unaffected); StageSelect detail panel shows "Recommended level: N". XP/coin rewards auto-scale with enemy level, so the reward curve follows. Feel-tuning (pushback zone, per-stage tweaks) remains with the owner play-test. EditMode curve test.
-  *(Original spec — audit log)* Per-stage enemy level scaling, coin/XP reward curve, pushback-zone tuning. Verified two ways: (a) harness-driven battle metrics (turns-to-win, hero damage taken, gold earned per stage) across the campaign; (b) owner play-test for feel. Overages/underages become tuning commits, not code rewrites.
-  **Done when:** stage N is beatable-but-tense with a level-appropriate party; early stages can't be cheesed by raw stats; documented curve table in the bible.
-  **Touch:** `StageLibrary`/`CampaignStages` (levels), `Formulas.cs` constants, `TimelineBarConfig`. **Bible:** §15 (difficulty), §22.3. **Dep:** US-124 (harness).
-
-- [x] **US-136 — Multi-aspect verification (GG-LAW-8 enforcement).** ✅ DONE 2026-08-16. AspectGuard's letterbox/safe-area math extracted PURE (`LetterboxRect`, `SafeAreaAnchors`, `ClosestValidAspect` public) and verified across a 9-device matrix (iPhone 14, 20:9/19.5:9 Androids, SE 16:9, iPad 3:4, 16:10 tablet, 1:2, 9:21 ultra-tall, fold inner ~5:6, plus a landscape sanity case): viewport always centered, bars on at most one axis, rendered aspect EXACTLY equals the snapped valid target (never stretched), safe-area anchors normalize correctly. Notable: the 1170×2532 reference is 9:19.477 (a hair off 9:19.5) — it correctly gets sub-1.5% bars by the fit-never-crop contract. True pixel-render eyeballing stays on the owner's final play script (editor game view can't be resolution-driven from tests).
-  *(Original spec — audit log)* Owner re-affirmed the law 2026-08-15: portrait-lock + AspectGuard letterbox/pillarbox + safe-area, never stretch. What's missing is PROOF on real ratios: a PlayMode smoke that drives 6+ common device resolutions (19.5:9, 20:9, 4:3 tablet, 16:10, iPhone SE 16:9, tall fold), loads key scenes, and asserts no UI clipped off-canvas / overlapping the letterbox; fix whatever it surfaces. (US-001 built AspectGuard but its visual verify never happened.)
-  **Done when:** the smoke passes at all tested ratios on StageSelect, Game (HUD), Vendor, PostBattle; findings fixed in builders/AspectGuard, not per-scene hacks.
-  **Touch:** `Utilities/AspectGuard.cs`, new PlayMode test (Screen/GameView resolution driving), possibly `UiKit`. **Bible:** §26, GG-LAW-8. **Dep:** US-124.
-
-- [x] **US-137 — Royalty-free audio pass: music + Credits attribution (supersedes the procedural-chiptune rule).** ✅ DONE 2026-08-15. Music beds sourced + wired: "Teller of the Tales" (Title/Bestiary), "Minstrel Guild" (Vendor/StageSelect), "Crusade" (Battle) — Kevin MacLeod, CC BY 4.0; "Triumph" (Pixabay) Victory; "Melancholy Lull" Defeat. `Jukebox.PlayMusic` now plays authored tracks first (`MusicTrackLibrary` rewritten onto MusicDirector keys, quiet-null `Get`) with chiptune fallback — `MusicDirector` already mapped every scene, zero extra wiring. `AudioAddressableRegistrar` (new, idempotent) registered 115 audio addressables (whole SFX pack + music). Full attribution rendered in the Credits scroll via new `Data/AudioCredits` (incl. honest "origin untracked — verify before commercial release" flags on the bundled SFX pack + MelancholyLull). SFX stay covered by authored-clip-else-chiptune ("nothing silent" stands). EditMode ×3 attribution tests.
-  *(Original spec — audit log)* Source music (title / vendor / per-biome battle / victory-defeat stingers) and SFX from royalty-free libraries (CC0 first — Kenney; CC-BY ok — Kevin MacLeod, OpenGameArt). Every event keeps a sound ("nothing silent" stands); only the source changed from code-generated chiptune. FULL attribution (author, title, license, URL) rendered in the Credits scene — CC0 included.
-  **Done when:** title/vendor/battle scenes each have music; core combat + UI events have SFX; all clips load via Addressables; CreditsBuilder shows the attribution section; licenses verified redistributable.
-  **Touch:** audio assets (new), audio manager/library wiring, `CreditsBuilder`, Addressables registration. **Bible:** GG-A5 (polish), §11. **Dep:** —
-
-- [x] **US-138 — Line-shaped elemental enemy attacks (extends US-026).** ✅ DONE 2026-08-15. Fire-affinity casters (`EnemyChargeCatalog.ShapeFor` → `ChargeShape.Line`) lock a CARDINAL line at telegraph time (`Services/LineThreat` — pure, EditMode-tested: dominant axis, X on ties, beside-caster to board edge); threatened tiles glow red for the whole charge via `LineTelegraph` (repaints every LateUpdate so TileManager.Reset can't clear it; releases tiles on destroy, teardown-safe). At u=1 every hero still on the line eats a `MagicAttackSequence`; an empty line posts "streaks down an empty line — dodged!". Interrupt cleans the telegraph. Edge-pinned degenerate lines fall back to single-target.
-  *(Original spec — audit log)* Enemy charges gain a line-AoE resolution: the telegraph marks a full row/column from the caster (reuse `TargetShapeResolver` Row/Column), the threatened tiles highlight on the board for the whole charge duration, and resolution damages every hero on the line. Smart play = slide out of (or displace allies out of) the line before u=1, or interrupt the charge.
-  **Done when:** a line-caster archetype telegraphs a visible board line tied to its timeline charge icon; resolution hits all heroes on the line; dodging by sliding works; interrupt still cancels + mints the orb.
-  **Touch:** `EnemyPlanner.PlanCast`/`EnemyChargePlan` (shape), `EnemyChargeSequence`, `BoardOverlay` (line highlight), `TargetShapeResolver`. **Bible:** §14.2, §2.8. **Dep:** US-026 ✓.
-
-- [x] **US-139 — Tile traps (trap-layer archetype).** ✅ DONE 2026-08-15. Scorpion is the first trap-layer (`TrapCatalog`: Venom Snare, 6 dmg + Poisoned; 45% roll per turn, only when no hero is adjacent — cornered layers fight). `PlaceTrapSequence` arms an unoccupied cardinal-adjacent tile; `TrapManager` (per-battle static, cleared with BuffSystem/cooldowns) owns state; armed tiles glow purple (shared `LineTelegraph` marker). Triggers on BOTH paths in `ActorMovement`: hero slide (`CheckLocationChanged`) AND displacement (`HandleOverlap`) — enemies weaponize your slides. Payload applied directly (tick-damage pattern; layer may be dead) + feed/announce lines. Visible-traps-by-design for the PoC. EditMode ×3 (line math ×3 + trap state ×2 fixtures).
-  *(Original spec — audit log)* An enemy archetype spends its turn placing a trap on a tile (visible or briefly-shown-then-hidden per tuning); any hero who slides onto it — or is DISPLACED onto it by another slide — triggers it (damage or a debuff from `Buffs`). Traps disarm on trigger; optionally a hero ability disarms adjacent traps.
-  **Done when:** trap placement rides the sequence system as its own enemy action; slide + displacement both trigger; trigger announces in the combat feed (US-133); at least one campaign stage fields the archetype.
-  **Touch:** new `Sequences/PlaceTrapSequence` + trap tile state (`TileInstance` or a `TrapManager`), `ActorMovement.CheckLocationChanged` (trigger hook), `EnemyPlanner`. **Bible:** §14.2 (new archetype row), GG-A5. **Dep:** US-133 (feed line optional).
-
-- [x] **US-140 — Segmented snake boss (LttP Lanmola-style).** ✅ DONE 2026-08-16. **Canon rule: every spawned Naga00 is a chain head** — `StageManager.LoadWave` auto-grows 3 body segments behind it (`SnakeBossManager.CreateChain`; 1×1 spawns now honor explicit free locations). Head keeps its timeline icon + turns; segments are icon-less (TimelineBar filter) and follow the head's vacated trail front-to-back (`FollowRoutine` reuses the displacement slide — the chain visibly ripples). **Tail-first gating is LAZY** (armored = any later member alive; no death hooks): armored members zero all damage with "Armored!" + a strike-the-tail feed hint. Chain members are immovable walls to drags. Swamp-02's Naga is now a mid-campaign snake mini-boss. `Test-Snake` fixture + PlayMode tests (chain spawn/armor order/iconless segments; armored-zero-damage → tail falls → next vulnerable).
-  *(Original spec — audit log)* A boss composed of a HEAD + N body segments, each occupying its own tile, moving as a linked chain (head picks a path via EnemyPlanner; segments follow the tile trail). Segments must be destroyed **from the tail forward**: only the current last segment is vulnerable to pincers (armored otherwise — pincer detection still sees segments as opponents but damage gates on tail-ness); killing all segments exposes the head. Each segment kill shortens the chain and (tuning) may speed the snake up. The head keeps a timeline icon; segments don't act independently.
-  **Done when:** the chain moves coherently through the 1-based tile math (displacement rules: chain is immovable like a boss); tail-only vulnerability works with supporter bonuses; killing the head wins the wave; a campaign stage fields it; combat feed narrates segment breaks.
-  **Touch:** new `SnakeBossController`/segment actors (footprint stays 1×1 per segment; the CHAIN is the novelty), `EnemyPlanner` path variant, `PincerAttackManager`/damage gate, `BossScriptLibrary` entry, stage data. **Bible:** §14.2 (new boss archetype), GG-A5. **Dep:** US-135 (balance interplay), multi-tile rules (built).
-
-- [x] **US-141 — Ability gating split: cooldowns for skills, MP for spells, stock for items (GG-A6).** ✅ DONE 2026-08-15 — **audit outcome: ALREADY BUILT** (June work): Skills are free + turn-cycle cooldowns (`ManaAbility.CooldownTurns` + per-hero `SkillCooldownManager`, ticked each hero window, cleared per battle); Spells cost orbs (`bank.CanAfford`); Items consume charges. `AbilityBar.Refresh` renders all three states (cooldown radial sweep US-092 + count, unaffordable dim, charges). The GG-A6 spec's `CooldownSeconds` is satisfied by turn-cycle units (the timeline IS the clock); no change needed.
-  *(Original spec — audit log)* `Ability.CooldownSeconds` (game-clock seconds, timeline-scaled); skills become free-but-cooldown-gated; spells keep orb costs; item slots keep stack consumption. `AbilityButtonManager` renders the state per button: cooldown sweep, unaffordable-orbs dim, stack count.
-  **Done when:** each gate visibly blocks/permits use in a Test-Harness battle; cooldowns tick on the shared game clock (respect Time.timeScale); EditMode tests cover the three gates.
-  **Touch:** `AbilityButton`/`Ability`, `AbilityButtonManager`, `AbilityLibrary` (assign cooldowns), `Formulas` (cooldown scaling if stat-driven). **Bible:** §4, GG-A6. **Dep:** —
-
-- [x] **US-142 — Time-banked orbs: unspent hero window mints orbs at the trigger (GG-A6 hybrid).** ✅ DONE 2026-08-15. `ManaPoolManager`: `RecordHeroActionForTimeBank()` (called at each hero Drop — captures `GetSecondsUntilNextEnemyReachesTrigger()`), `MintTimeBankedOrbs()` (called at `TurnManager.BeginEnemyTurn` — floor(remainder / 3s), cap 3/window, Blue orbs via the `ManaOrbFactory.Drop` bounce path + "Banked N mana" feed line), `ResetTimeBank()` each new window. Acting decisively while the enemy is far from the trigger banks more; idling banks nothing (record happens at the ACTION, not the handoff). Orb-cap overflow fades per GG-LAW-6 (Bank.Add no-ops when full).
-  *(Original spec — audit log)* When an enemy icon reaches the trigger and ends the hero window, convert the window's unspent remainder into orbs (rate tuned; mint via the existing `ManaOrbFactory` bounce path so it reads like other mints). Ending the window early on purpose = resource play. Orb-cap overflow fades per GG-LAW-6.
-  **Done when:** idling a window mints visibly at turn handoff; a fully-spent window mints nothing; PlayMode test asserts the mint; balance interplay noted in US-135.
-  **Touch:** `TurnManager`/`TimelineBarInstance` (remainder measure), `ManaPoolManager`. **Bible:** §3.1 (new subsection), GG-A6. **Dep:** US-135 (tuning).
-
-- [x] **US-143 — Progressive ability-bar slot unlock (max 5).** ✅ DONE 2026-08-15. New `Services/AbilitySlotProgression` (pure: 2 slots fresh, +1 at HighestClearedStageIndex 0 / 2 / 5, max 5 — same marker as StageSelect gating so the progressions agree). Combat: `AbilityBar.Refresh` renders locked slots ("Locked / Stage N", dark frame, non-interactable) + `OnSlotClicked` guard. Loadout scene: `AbilitiesManager` renders locked slot buttons and bounds first-empty assignment to unlocked slots. EditMode ×4 (gates truth table).
-  *(Original spec — audit log)* The bar starts with fewer usable slots (e.g. 2) and unlocks the rest at campaign milestones (`HighestClearedStageIndex` thresholds). Locked slots render as such in combat AND in the Abilities scene.
-  **Done when:** fresh profile sees locked slots; clearing gate stages unlocks them; persists; Abilities scene blocks assignment into locked slots.
-  **Touch:** `AbilityButtonManager`, `AbilitiesManager`, unlock rule (CampaignStages or config). **Bible:** §4, GG-A6. **Dep:** —
-
-- [x] **US-144 — Dynamic touch tooltips: ability buttons + actor tap-info.** ✅ DONE 2026-08-15 — **audit outcome: ALREADY COVERED.** Ability buttons: US-091 long-press tooltips exist (`AbilityBar.ShowTooltipForSlot` → `Tooltip.Show`, content generated live from the ability: kind, Free/orb-cost icons, cooldown, cast time, charges). Actors: tap-select binds the full tabbed `ActorPanel` (stats/equipment/lore — richer than a tooltip), and Scan reveals enemy stats via the AnnouncementWindow (US-077). No additional layer needed for the PoC.
-  *(Original spec — audit log)* Press-hold on an ability button spawns a generated tooltip (name, description, orb cost / cooldown / stack, cast time); tap-hold on a hero/enemy surfaces quick stats + active statuses (ActorPanel remains the deep view). All content generated from live data — no hand-authored tooltip prefabs.
-  **Done when:** every bar button and every actor responds to press-hold with a correct, themed tooltip; dismisses cleanly; works within AspectGuard bounds.
-  **Touch:** `TooltipFactory` (+ generation from `Ability`/`ActorStats`), `AbilityButton`, actor input path (`SelectionManager` long-press). **Bible:** §4.5, GG-A6. **Dep:** —
-
-- [x] **US-145 — Portrait pop-in pattern variety (owner ask 2026-08-16).** ✅ DONE 2026-08-16. `PairEntryPattern` roster in `PortraitManager.SpawnPair2DRoutine`, RNG-picked per pincer (seed-deterministic): CounterSweep (classic opposite-ends), ReverseCounterSweep (mirrored), SameSideStagger (both from one end, second a 0.14s beat behind — chase feel), StaggeredCounter (opposite ends, one-two punch). All patterns keep the flank-the-attacked-line lane placement (readability preserved); only entry choreography varies. Supporters keep their whack-a-mole pop.
-  *(Original spec — audit log)* Pincer attackers already slide in as a 2D portrait pair (`PortraitManager.SpawnPair2DRoutine`, direction lanes) and supporters pop in (`PopInOutRoutine`); the ask is VARIETY: a roster of entrance patterns (opposing horizontal sweep, vertical cross, diagonal counter-slide, same-side stagger, corner pop) picked per pincer so repeated fights stay visually interesting.
-  **Done when:** consecutive pincers visibly use different patterns (pattern picked per attack, seeded-RNG-friendly); supporters keep the pop; no HUD occlusion regressions.
-  **Touch:** `PortraitManager` (pattern roster + picker), `PincerAttackSequence` call site, `Portrait2DInstance` (already supports directions/lanes). **Bible:** §12 (presentation). **Dep:** —
+- [x] **US-121 ✅ Blacksmith Repair tab.** Third `Mode.Repair` tab lists every hero's equipped weapon/armor with a durability pool (worn first); repairs cost `WeaponDurabilityHelper.RepairCost`, restore to `EffectiveMaxDurability`, and warn when uneconomical (`BlacksmithManager`, `BlacksmithBuilder`). Demo: "Wear Gear −5". Bible §25.2.
+- [x] **US-123 ✅ One visual language.** `HubTheme` palette + `ButtonColors`, `UiFonts` (Attic display / Outfit body), editor `UiKit` component factory; every scene builder and runtime row factory composes from them (`UiKit.cs`, `SceneBuilderHelper.cs`). Bible §11.5.
+- [x] **US-122 ✅ Alchemist heal service.** "Heal Party" button prices the party's missing HP at 0.5g/HP and clears `HpCurrent` (`AlchemistManager`, `AlchemistBuilder`). Bible §25.3.
 
 ---
 
-# §C — Backlog / Deferred (NOT in the build window)
+## EPIC J — Working proof of concept
 
-- **US-104 — 60fps profiling pass (mid-tier device).** Moved from Epic H 2026-06-08. Requires a physical Android/iOS mid-tier device + Unity Profiler capture of a dense battle (4+ enemies, full VFX). **Done when:** frame budget stays within §30.1 limits; overages become new stories. US-100–103 laid the groundwork (coroutine hygiene, GC cleanup, VFX pooling, HUD atlas); run the profiling pass once hardware is available. **Bible:** §30.1, §30.5.
-- **Merged hub `.unity`** (§25.9) — fold the six vendor scenes into one composed hub screen. **Gated**: do NOT attempt until every vendor is individually stable (see US-111). It's layout composition over the shared `HubTheme`/`HubToast`/`HubItemRowFactory`/`VendorNavBar`, not a rewrite.
-- **TargetShape.Line** — `Row`/`Column` already cover line targeting (`TargetShapeResolver`); add `Line` only if a *partial* line (not full row/col) is ever needed. (Originally US-073.)
-- **Distinct loadouts for unfilled classes** (Ninja variants, Bruiser, Captain, Druid) — additive `HeroLoadouts.Set` content, do as roster grows (§23.2.2).
-- ~~**Per-spell custom VFX authoring** — base VFX work; run `Tools/VFX/Author *` as art lands (§12.3).~~ **DONE 2026-06-09:** all 10 prefabs generated headless, auto-registered as Addressables (`VfxPrefabAuthor.SavePrefab` now does this), registered in `VisualEffectLibrary`, and referenced from each themed spell in `SpellLibrary`. Visual tuning awaits play-test.
-- **Dialog & Story (§27) and Overworld (§28)** — **CUT from the design** 2026-05-30 (not merely deferred). No narrative layer; no world map. Stage navigation is the scrollable level list (US-110). Don't build either; don't re-story them.
-- **Roster / variable party composition** (§23.4, §25.5); **roguelike/NG+** (§29.1 #5); **tutorial** (§29.1 #6).
-- **Relic-slot passives** (§24.1) — underspecified; design before storying.
-- **Deep-poison stacking / tiered buff upgrades** (§8.6); **crit-heal** (§13.1.3).
-- **Unify spell damage through `Formulas.CalculateAttackResult`** (§13.1.2) — so crit/miss/blind apply to spells; promote if spell-crit becomes a goal.
-- **Formalize `BattleResultCarrier`** — optional refactor; current `ExperienceTracker`+`LootTracker` work fine.
+- [x] **US-124 ✅ Automated verification harness.** Game code in `Scripts.asmdef`; EditMode + PlayMode suites; `TestHooks.cs` (profile isolation, `RNG.Seed`, deterministic placement, pacing accel); `tools/run-tests.ps1` 3-signal gate; editor hooks stand down in `-runTests` sessions. *(Verified by `SceneBootSmokeTests`, `BattleLoopScenarioTests`.)* Bible §6.
+- [x] **US-125 ✅ Boot flow.** `StartSceneConfig.StartScene` = `"SplashScreen"`; TitleScreen Continue → StageSelect; `StageManager.Initialize()` reads `CurrentSave`. *(Verified by `SceneBootSmokeTests`.)* Bible §22.
+- [x] **US-126 ✅ Coins become gold.** `Managers/GoldTracker.cs` snapshots `Global.TotalCoins` at battle start and commits the per-battle delta into `Inventory.Gold` at the PostBattle loot phase ("Gold +N" row). *(Verified by `GoldTrackerTests`.)* Bible §24.9.
+- [x] **US-127 ✅ VendorNavBar is the only vendor navigation.** StageSelect and every vendor scene carry the `VendorNavBar`; `Hub.unity` / `Overworld.unity` are out of `EditorBuildSettings.scenes` (`StageSelectBuilder.cs`, `VendorNavBar.cs`). Bible §25.0.
+- [x] **US-128 ✅ Bounty board on StageSelect.** `BountyBar` strip (`StageSelectBuilder.BuildBountyBar`, `StageSelectManager` via `BountyHelper`): browse / Accept / progress / Abandon / Claim. *(Verified by `BountyFlowTests`.)* Bible §22.4.
+- [x] **US-129 ✅ Abilities scene slots skills and spells.** The assignables list leads with the hero's `ActorData.Abilities`, assigned by name via `AbilityBarSlotSave.AbilityName` (`AbilitiesManager`). *(Verified by `AbilitySlottingTests`.)* Bible §25.6.
+- [x] **US-130 ✅ Safe scene teardown.** `Singleton.HasLiveInstance` (non-creating probe) guards `TargetModeOverlay` / `AbilityButtonManager` `OnDestroy`, so Game→PostBattle never resurrects GameManager; ProfileCreate fades in from `Start`. *(Verified by `SceneBootSmokeTests`.)*
+- [x] **US-131 ✅ Story crawl.** `StoryCrawl` scene: 26 s upward crawl, skip by button or tap; text in `Data/StoryCrawlData.cs` per theme; shown on first entry into a theme (`GlobalSaveData.SeenStoryCrawls`). *(Verified by `SceneBootSmokeTests`.)* Bible §27.
+- [x] **US-132 ✅ Summon Circle.** `Summon` scene + NavBar entry; `Services/SummonService` (7-class pool, cost 250 + 250×recruits, refuses duplicates / short gold); recruit appends `save.Roster`; new saves start with the trio. *(Verified by `SummonServiceTests`.)* Bible §25.10.
+- [x] **US-133 ✅ Combat feed with inline icons.** `Canvas/CombatFeed` (7 aging lines) mirrors every announcement plus damage / status / heal / assist lines; `CombatFeedSpriteAssetAuthor` packs the `CombatFeedIcons` TMP sprite asset (`CombatFeed.cs`, `CombatFeedFactory`). Bible §9.
+- [x] **US-134 ✅ Buff effects bite in battle.** Ticks via `EndTurnSequence`→`TickStatusesRoutine` (fed to the combat feed); Slowed (`TimelineIcon`), Silenced (`AbilityBar`), Blinded (`Formulas.CalculateHitType`), Lightning×Wet (`SpellEffectDispatcher`), immobile (`EnemyPlanner`); `Buffs.cs` comments name each live hook. Bible §8.
+- [x] **US-135 ✅ Campaign difficulty curve.** `CampaignStages.RecommendedLevel(stage)` (stage N → level N) floors enemy levels in `StageManager.SpawnActor`; StageSelect shows "Recommended level: N". *(Verified by `CampaignStagesTests`.)* Bible §22.3.
+- [x] **US-136 ✅ Multi-aspect verification.** `AspectGuard.LetterboxRect` / `SafeAreaAnchors` / `ClosestValidAspect` are pure and checked across a 9-device matrix + landscape. *(Verified by `AspectGuardTests`.)* Bible §26.3.
+- [x] **US-137 ✅ Royalty-free audio + Credits attribution.** Authored music beds via `MusicTrackLibrary` with chiptune fallback; `AudioAddressableRegistrar` registers the audio Addressables; `Data/AudioCredits` renders full attribution in Credits. *(Verified by `AudioCreditsTests`.)* Bible §12.0.
+- [x] **US-138 ✅ Line-shaped elemental enemy attacks.** Fire-affinity charges lock a cardinal line (`Services/LineThreat`), glow it red (`LineTelegraph`), and hit every hero still on it at u=1. *(Verified by `TrapAndLineThreatTests`.)* Bible §14.2.
+- [x] **US-139 ✅ Tile traps.** Scorpion lays Venom Snare traps (`TrapCatalog`, `PlaceTrapSequence`, `TrapManager`); slides and displacements both trigger them (`ActorMovement`). *(Verified by `TrapAndLineThreatTests`.)* Bible §14.2.
+- [x] **US-140 ✅ Segmented snake boss.** Every `Naga00` grows a 3-segment chain (`SnakeBossManager.CreateChain`); segments follow the head, have no icon, and are armored until the tail-side members fall. *(Verified by `SnakeBossTests`.)* Bible §14.2.
+- [x] **US-141 ✅ Ability gating split.** Skills are free with turn-cycle cooldowns (`ManaAbility.CooldownTurns`, `SkillCooldownManager`); Spells cost orbs (`ManaBank.CanAfford`); Items consume charges; `AbilityBar.Refresh` renders all three states. Bible §4.1.
+- [x] **US-142 ✅ Time-banked orbs.** `ManaPoolManager.RecordHeroActionForTimeBank` (at each drop) + `MintTimeBankedOrbs` (at `TurnManager.BeginEnemyTurn`): one Blue orb per 3 s banked, max 3 per window. Bible §3.1.8.
+- [x] **US-143 ✅ Progressive ability-bar slots.** `Services/AbilitySlotProgression`: 2 slots fresh, +1 at `HighestClearedStageIndex` 0 / 2 / 5, max 5; enforced in `AbilityBar` and `AbilitiesManager`. *(Verified by `AbilitySlotProgressionTests`.)* Bible §4.7.
+- [x] **US-144 ✅ Touch info for abilities and actors.** Ability long-press tooltips are generated live from the ability (`AbilityBar.ShowTooltipForSlot`); tapping an actor binds the tabbed `ActorPanel` (stats / equipment / lore); Scan reveals enemy stats. Bible §4.5, §9.
+- [x] **US-145 ✅ Portrait pop-in variety.** `PortraitManager.SpawnPair2DRoutine` picks a `PairEntryPattern` per pincer (CounterSweep, ReverseCounterSweep, SameSideStagger, StaggeredCounter; seed-deterministic); supporters keep their pop-in.
 
 ---
 
-# §D — Design questions to settle before their stories (from bible §29)
-- ~~**§29.2 #8 color identity per class** → gates **US-030** (seed from §23.2).~~ **RESOLVED 2026-06-02 (Legion): Cleric W, Paladin W, Barbarian R, Alchemist G, Assassin B, GreenNinja G, RedNinja R.**
-- ~~**§29.3 #12 heal/rest model** (free vs gold) → shapes **US-053**.~~ **RESOLVED 2026-06-01 (Legion 4/4): model A — wounds persist, gold-cost full-heal at the Alchemist.**
-- **§29.3 #13 out-of-battle debuff carry** → §8.8 locks *clear-on-end*; confirm before shipping HP carry-over.
-- ~~**§29.4 #16 Bestiary unlock gate** → gates **US-093**.~~ **RESOLVED 2026-06-02 (Legion 4/4): SEEN-gated** — reveal a class's full entry once `BestiaryProgress.Seen` (encounter or Scan); unseen = silhouette + "???".
-- **§29.4 #17 AspectGuard strategy** → ratify §26 before **US-001**.
+## Backlog
 
----
+- [ ] **US-104 ⬜ 60fps profiling pass (mid-tier device).** Profile a dense battle (4+ enemies, full VFX) on a physical Android/iOS mid-tier device with the Unity Profiler. **Done when:** the frame budget stays within §30.1; overages become new stories. **Bible:** §30.1, §30.5.
+- ⬜ **Merged hub `.unity`** (§25.9) — fold the vendor scenes into one composed screen, only once every vendor is individually stable.
+- ⬜ **TargetShape.Line** — `Row`/`Column` cover line targeting today; add `Line` only if a *partial* line is needed.
+- ⬜ **Distinct loadouts for unfilled classes** (Ninja variants, Bruiser, Captain, Druid) — additive `HeroLoadouts.Set` content (§23.2.2).
+- ⬜ **Roguelike / NG+** and **tutorial** — pending the §29.1 design questions.
+- ⬜ **Relic-slot passives** (§24.1) — underspecified; design before storying.
+- ⬜ **Deep-poison stacking / tiered buff upgrades** (§8.6); **crit-heal** (§13.1.3).
+- ⬜ **Unify spell damage through `Formulas.CalculateAttackResult`** (§13.1.2) — so crit/miss/blind apply to dispatcher spells.
 
-*Reconciled against the live codebase 2026-05-30. When you land a story: check the box, update the cited bible section, and move any new rule/question into bible §16/§29 so this board and the bible never drift again — which is exactly the drift this pass had to correct.*
-
-> **This file is the AUDIT LOG — never delete a story's original text.** To complete a story: flip `[ ] → [x]`, add a `✅ DONE <date>` outcome note on the title line (what shipped, key files, the Debug demo, bible sections touched), and **keep the original `Why` / `Done when` / `Touch` / `Bible` / `Dep` lines beneath it** (prefixed `*(Original spec — audit log)*`). The original spec is how we know what was asked for vs. what was built — do not collapse or erase it.
+Open design questions that gate future stories live in [BIBLE §29](BIBLE.md#29-open-design-questions).

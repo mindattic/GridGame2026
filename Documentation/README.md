@@ -57,9 +57,9 @@ Design and rules documentation lives under `docs/` (not here):
 | File | Purpose |
 |---|---|
 | `docs/BIBLE.md` | L0 — source of truth for what GridGame2026 is and the Laws |
-| `docs/AMENDMENTS.md` | L1 — append-only change log; amendments override the bible |
-| `docs/USER_STORIES.md` | L2 — dependency-ordered build board |
-| `docs/rfc/` | Design notes that graduate into the bible + stories |
-| `docs/data/*.json` | Canon-as-data (spells, buffs, classes, enemy archetypes) |
+| `docs/AMENDMENTS.md` | L1 — pending decisions not yet folded into the bible (normally empty) |
+| `docs/USER_STORIES.md` | L2 — user stories (done + backlog), each ✅ citing its evidence |
+| `docs/rfc/` | Open design notes; once decided they are folded into the bible + stories and deleted |
+| `docs/data/*.json` | Canon-as-data (spells, buffs, classes, enemy archetypes, item rarities) |
 
-Do not edit Codex files (`BIBLE.md`, `AMENDMENTS.md`, `USER_STORIES.md`, `rfc-*.md`) or `*.digest.md` files directly — use `tools/codex.ps1` to validate and regenerate digests.
+The Codex files describe current truth only — rewrite or delete stale text rather than keeping history. Never hand-edit `docs/BIBLE.digest.md`; regenerate it with `tools/codex.ps1 digest` and validate with `tools/codex.ps1 doctor`.

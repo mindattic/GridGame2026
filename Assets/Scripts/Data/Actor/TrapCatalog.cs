@@ -18,7 +18,7 @@ namespace Scripts.Data.Actor
     }
 
     /// <summary>
-    /// TRAPCATALOG - Which enemies lay traps, and what those traps do (US-139 / GG-A5).
+    /// TRAPCATALOG - Which enemies lay traps, and what those traps do (US-139).
     ///
     /// <para>PURPOSE: pure data + rules (no scene access) so EnemyTakeTurnSequence can branch and
     /// tests can assert. The first trap-layer archetype is the SCORPION (desert stages): a

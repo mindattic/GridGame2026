@@ -26,7 +26,7 @@ using Scripts.Utilities;
 namespace Scripts.Sequences
 {
     /// <summary>
-    /// PLACETRAPSEQUENCE - A trap-layer enemy spends its turn arming a tile (US-139 / GG-A5).
+    /// PLACETRAPSEQUENCE - A trap-layer enemy spends its turn arming a tile (US-139).
     ///
     /// <para>PURPOSE: The enemy picks an unoccupied, untrapped tile CARDINALLY ADJACENT to
     /// itself (the snare is laid at its feet, not teleported across the board), registers the

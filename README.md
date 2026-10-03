@@ -216,11 +216,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\build-readme.ps1
 - `Backup.ps1` is left over from the previous project; the real backup logic is inline in the console (option 3).
 - `COMMIT.cmd` is an empty, dead file.
 - `Tools/SceneHierarchies.txt` appears to be a stray duplicate of the authoritative `Documentation/Builders/SceneHierarchies.txt`.
-- The root `package.json` describes an old Node landing-page build (`scripts/cli/build-html.js`, `scripts/cli/deploy.ps1`) whose scripts no longer exist. README.htm is now built by `Tools/build-readme.ps1`.
+- The root `package.json` describes an old Node landing-page build (`scripts/cli/build-html.js`, `scripts/cli/deploy.ps1`) whose scripts are not in the repo. README.htm is built by `Tools/build-readme.ps1`.
 
 ## Status
 
-Single-developer project. The bible records all V1 stories as verified done as of 2026-06-09, including Epic G (UI polish and accessibility) and Epic H (performance and hardening). Deferred or cut: a 60 fps profiling pass on a physical device, a merged hub, roster composition, roguelike and new-game-plus modes, a tutorial, relic passives, and the dialog and overworld layers. See the active frontier in [docs/BIBLE.md](docs/BIBLE.md).
+Single-developer project. Every V1 user story is done except US-104, the 60 fps profiling pass on a physical device. The backlog also holds a merged vendor hub, roguelike and new-game-plus modes, a tutorial and relic passives. There is no dialog system and no overworld. See the active frontier in [docs/BIBLE.md](docs/BIBLE.md).
 
 ## Documentation
 
@@ -228,14 +228,13 @@ Docs are split between two folders with different roles.
 
 | Folder | Role |
 | --- | --- |
-| [docs](docs) | The MindAttic Codex canon, the source of truth for what the game is: [BIBLE.md](docs/BIBLE.md) (the laws and full design), [AMENDMENTS.md](docs/AMENDMENTS.md) (append-only, wins over the bible), [User stories](docs/USER_STORIES.md) (the build board), `data/` (spells, buffs, classes, enemy archetypes and item rarities as schema-validated JSON), `rfc/` (design notes) and `BIBLE.digest.md` (generated). |
+| [docs](docs) | The MindAttic Codex canon, the source of truth for what the game is: [BIBLE.md](docs/BIBLE.md) (the laws and full design), [AMENDMENTS.md](docs/AMENDMENTS.md) (pending decisions not yet folded into the bible; normally empty), [User stories](docs/USER_STORIES.md) (the build board), `data/` (spells, buffs, classes, enemy archetypes and item rarities as schema-validated JSON), `rfc/` (design notes) and `BIBLE.digest.md` (generated). |
 | [Documentation](Documentation) | Technical docs, not canon: style guide, Addressables, AltTester setup, project settings, playtest script, builder notes, scene hierarchies and per-scene hierarchy files. |
 
 - [Assets/Scripts/ARCHITECTURE.md](Assets/Scripts/ARCHITECTURE.md): architecture reference for AI-assisted development, including the global access pattern
 - [AGENTS.md](AGENTS.md): instructions for AI agents working in this repo
-- The root `game_bible.md` and `user_stories.md` are one-line redirects to `docs/`, kept so old links still work.
 
-This README on GitHub is the project page; the old mindattic.com landing page was retired.
+This README on GitHub is the project page; there is no mindattic.com landing page.
 
 ## License
 
