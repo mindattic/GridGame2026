@@ -216,7 +216,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\build-readme.ps1
 - `Backup.ps1` is left over from the previous project; the real backup logic is inline in the console (option 3).
 - `COMMIT.cmd` is an empty, dead file.
 - `Tools/SceneHierarchies.txt` appears to be a stray duplicate of the authoritative `Documentation/Builders/SceneHierarchies.txt`.
-- The root `package.json` describes an old Node landing-page build (`scripts/cli/build-html.js`, `scripts/cli/deploy.ps1`) whose scripts are not in the repo. README.htm is built by `Tools/build-readme.ps1`.
 
 ## Status
 

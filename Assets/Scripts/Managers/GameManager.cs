@@ -112,7 +112,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public PincerAttackManager pincerAttackManager;
     [HideInInspector] public SortingManager sortingManager;
     [HideInInspector] public TargetLineManager targetLineManager;
-    [HideInInspector] public AbilityButtonManager abilityButtonManager;
     [HideInInspector] public AbilityManager abilityManager;
     [HideInInspector] public SynergyLineManager synergyLineManager;
     [HideInInspector] public ManaPoolManager manaPoolManager;
@@ -332,7 +331,6 @@ public class GameManager : Singleton<GameManager>
             pincerAttackManager = gameRoot.GetComponent<PincerAttackManager>();
             sortingManager = gameRoot.GetComponent<SortingManager>();
             targetLineManager = gameRoot.GetComponent<TargetLineManager>();
-            abilityButtonManager = gameRoot.GetComponent<AbilityButtonManager>();
             abilityManager = gameRoot.GetComponent<AbilityManager>();
             synergyLineManager = gameRoot.GetComponent<SynergyLineManager>();
             manaPoolManager = gameRoot.GetComponent<ManaPoolManager>();

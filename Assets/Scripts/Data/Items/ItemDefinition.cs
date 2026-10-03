@@ -54,7 +54,7 @@ namespace Scripts.Data.Items
 /// - PlayerInventory.cs: Item ownership
 /// - ShopSectionController.cs: Shop transactions
 /// - RecipeLibrary.cs: Crafting recipes
-/// - AbilityButton.cs: Renders consumables as ability buttons in battle
+/// - CombatLoadouts.cs: Maps slotted consumables onto the combat AbilityBar
 /// - HeroLoadout.cs: Equips consumables to ability slots
 /// </summary>
 [System.Serializable]

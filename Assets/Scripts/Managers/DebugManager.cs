@@ -721,17 +721,16 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] ManaBank.AllowAnyColor = {bank.AllowAnyColor}");
         }
 
-        /// <summary>Randomize the selected hero's ability bar by writing a runtime override into
-        /// <see cref="Scripts.Data.HeroLoadouts.perClass"/>. The bar re-binds on the next selection
-        /// change (or already shows the new set if this hero is currently selected and the bar
-        /// polls via Update). Fix #9: was log-only; now actually swaps.</summary>
+        /// <summary>Randomize the first playing hero's ability bar for the rest of this battle
+        /// (<see cref="Scripts.Services.CombatLoadouts.SetBattleOverride"/>). The bar polls its
+        /// loadout every frame, so the new set shows immediately.</summary>
         public void Demo_RandomHeroAbilities()
         {
             ActorInstance hero = null;
             try { hero = System.Linq.Enumerable.FirstOrDefault(g.Actors.Heroes, h => h.IsPlaying); } catch { }
             if (hero == null) { Debug.LogWarning("[Demo] No hero on board."); return; }
 
-            // Build a random 6-entry list from castable spells + one Potion slot.
+            // Build a random 5-entry list from castable spells + one Potion slot.
             var spellPool = new System.Collections.Generic.List<ManaAbility>();
             foreach (var a in Scripts.Data.ManaAbilities.Slots)
                 if (a != null && a.Kind == AbilityKind.Spell) spellPool.Add(a);
@@ -743,20 +742,13 @@ namespace Scripts.Managers
                 (spellPool[i], spellPool[j]) = (spellPool[j], spellPool[i]);
             }
 
-            var loadout = new ManaAbility[6];
-            for (int s = 0; s < 6; s++) loadout[s] = (s < spellPool.Count) ? spellPool[s] : null;
-            // Override slot 5 with the Potion item so the random loadout still has a consumable.
-            loadout[5] = Scripts.Data.ManaAbilities.Potion;
+            int slots = Scripts.Services.CombatLoadouts.SlotCount;
+            var loadout = new ManaAbility[slots];
+            for (int s = 0; s < slots; s++) loadout[s] = (s < spellPool.Count) ? spellPool[s] : null;
+            // Last slot holds a Potion so the random loadout still has a consumable.
+            loadout[slots - 1] = Scripts.Data.ManaAbilities.NewPotion(3);
 
-            Scripts.Data.HeroLoadouts.Set(hero.characterClass, loadout);
-
-            // Force a re-bind by clearing then restoring the selected actor (cheap kick).
-            var prev = g.Actors.SelectedActor;
-            if (prev != null)
-            {
-                g.Actors.SelectedActor = null;
-                g.Actors.SelectedActor = prev;
-            }
+            Scripts.Services.CombatLoadouts.SetBattleOverride(hero.characterClass, loadout);
 
             var sb = new System.Text.StringBuilder($"[Demo] Set random loadout for {hero.characterClass}: ");
             foreach (var a in loadout) sb.Append(a == null ? "[—] " : $"{a.Name}{Scripts.Data.ManaAbilities.CostIcons(a)} ");
@@ -1630,7 +1622,7 @@ namespace Scripts.Managers
             Debug.Log($"[Demo] SpellIcons: {icons?.Count ?? 0} sprites loaded in SpriteLibrary.");
             var hero = g.Actors.SelectedActor;
             if (hero == null) { Debug.Log("[Demo] No selected hero — click one first."); return; }
-            var loadout = Scripts.Data.HeroLoadouts.For(hero.characterClass);
+            var loadout = Scripts.Services.CombatLoadouts.For(hero.characterClass);
             if (loadout == null) { Debug.Log("[Demo] No loadout found for selected hero."); return; }
             foreach (var a in loadout)
             {

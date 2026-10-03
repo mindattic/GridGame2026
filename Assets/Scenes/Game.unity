@@ -1802,7 +1802,6 @@ GameObject:
   - component: {fileID: 375778802}
   - component: {fileID: 375778801}
   - component: {fileID: 375778800}
-  - component: {fileID: 375778799}
   - component: {fileID: 375778798}
   - component: {fileID: 375778797}
   - component: {fileID: 375778796}
@@ -1864,18 +1863,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa96c96cfc0500c42b273f17538135fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Scripts::Scripts.Managers.SynergyLineManager
---- !u!114 &375778799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 375778794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0cf005ca6f3c84418cbf6ca583ed8f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Scripts::Scripts.Managers.AbilityButtonManager
 --- !u!114 &375778800
 MonoBehaviour:
   m_ObjectHideFlags: 0

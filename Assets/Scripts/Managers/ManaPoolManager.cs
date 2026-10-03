@@ -29,7 +29,7 @@ namespace Scripts.Managers
     ///
     /// <para>PURPOSE: owns the team's <see cref="ManaBank"/> (a capped line of colored orbs) and
     /// translates between the legacy float-mana API and orb spends/grants so existing callers
-    /// (AbilityManager, AbilityButtonManager, FX/pickups) keep working unchanged.</para>
+    /// (AbilityManager, FX/pickups) keep working unchanged.</para>
     ///
     /// <para>PHASE B CHANGES:</para>
     /// <list type="bullet">
@@ -112,7 +112,7 @@ namespace Scripts.Managers
         }
 
         /// <summary>PHASE B: spawn the new HUD pieces under the main Canvas — orb line (Row 14),
-        /// shield button (Row 2 right), and the 6-slot mana ability bar (Row 13, inside the
+        /// shield button (Row 2 right), and the 5-slot mana ability bar (Row 13, inside the
         /// existing AbilityButtonContainer that GameBuilder placed). After actors are ready,
         /// attach a debuff icon strip above each. <b>Game-scene-only</b> — silently no-ops in
         /// Bestiary / Overworld / vendor scenes that also happen to host this component.</summary>
@@ -235,7 +235,6 @@ namespace Scripts.Managers
                 enemyMana -= cost;
             }
 
-            g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
             return true;
         }
 
@@ -256,8 +255,6 @@ namespace Scripts.Managers
             {
                 enemyMana = Mathf.Clamp(enemyMana + amount, 0f, maxMana);
             }
-
-            g.AbilityButtonManager?.UpdateAllInteractables(heroMana);
         }
 
         // ── PHASE B no-op shims (kept because live callers still reference them) ──

@@ -221,7 +221,7 @@ namespace Scripts.Helpers
                 public static Scripts.Canvas.ActorPanel Instance => GameObject.Find("Canvas/ActorPanel")?.GetComponent<Scripts.Canvas.ActorPanel>();
                 // The tab bar + Stats/Equipment/Lore content panels are built at runtime by the
                 // ActorPanel component, so they aren't looked up here (the component owns them).
-                // The 6-slot ability bar is a separate Canvas child on Row 13.
+                // The 5-slot ability bar is a separate Canvas child on Row 13.
                 public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/AbilityButtonContainer")?.GetComponent<RectTransform>();
             }
 

@@ -224,7 +224,7 @@ public partial class DebugWindow
             ("Log Enemy Plans", () => g.DebugManager.Demo_LogEnemyPlans())
         );
 
-        // Mana economy — the 6 ability slots, all on one row, sized to read like icons.
+        // Mana economy — the 5 default ability slots, all on one row, sized to read like icons.
         // The shared RenderButtonRow hardcodes 25% width (only fits 4), so size per-slot here.
         // Labels regenerate from the actual ManaAbility data so cost icons match the recipe.
         var abilities = Scripts.Data.ManaAbilities.Slots;
@@ -235,13 +235,12 @@ public partial class DebugWindow
             () => g.DebugManager.Demo_Cast_Frost(),
             () => g.DebugManager.Demo_Cast_Bolt(),
             () => g.DebugManager.Demo_Cast_Potion(),
-            null, // slot 6: reserved
         };
         GUILayout.BeginHorizontal();
-        float slotW = Mathf.Max(56f, (Screen.width - 24f) / 6f);
+        float slotW = Mathf.Max(56f, (Screen.width - 24f) / abilities.Count);
         var w = GUILayout.Width(slotW);
         var h = GUILayout.Height(36f);
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < abilities.Count; i++)
         {
             var a = abilities[i];
             if (a == null)
@@ -252,7 +251,7 @@ public partial class DebugWindow
                 continue;
             }
             string label = $"{a.Name}\n{Scripts.Data.ManaAbilities.CostIcons(a)}";
-            if (GUILayout.Button(label, w, h)) castActions[i]?.Invoke();
+            if (GUILayout.Button(label, w, h) && i < castActions.Length) castActions[i]?.Invoke();
         }
         GUILayout.EndHorizontal();
     }

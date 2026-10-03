@@ -685,6 +685,21 @@ namespace Scripts.Canvas
             activeIcons.Add(tag);
         }
 
+        /// <summary>Hero spell casts currently loading on the timeline (not yet resolved or
+        /// interrupted). Gated by <see cref="Scripts.Services.SpellCastCapacity"/>.</summary>
+        public int HeroCastsInFlight
+        {
+            get
+            {
+                int n = 0;
+                foreach (var ai in activeIcons)
+                    if (ai != null && ai.IsSpellIcon && ai.Owner != null && ai.Owner.IsHero
+                        && ai.ActiveCast != null && !ai.ActiveCast.IsInterrupted && !ai.ActiveCast.IsComplete)
+                        n++;
+                return n;
+            }
+        }
+
         /// <summary>
         /// Spawns a spell-cast icon on the timeline. The icon spawns "N seconds out from
         /// the right" (where N = state.TotalCastTime) using the bar's canonical pace

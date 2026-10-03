@@ -30,7 +30,7 @@ public static class GameBuilder
     // ── 15-row HUD layout grid (canvas 1170×2532; each row ~169px tall) ──
     // Row 1: Money (right) | Row 2: Timeline | Row 3: ActionTitle
     // Rows 4–12: 6×8 Board (world-space, camera-framed, not a canvas element)
-    // Row 13: 6-slot ability bar | Row 14: 12-orb mana line | Row 15: Character card
+    // Row 13: 5-slot ability bar | Row 14: 12-orb mana line | Row 15: Character card
     private const float Hud_CanvasHeight    = 2532f;
     private const float Hud_RowHeight       = Hud_CanvasHeight / 15f;  // ≈168.8
     private const float Hud_Row1Y_FromTop   = -Hud_RowHeight * 0.5f;   // ≈-84
@@ -499,7 +499,7 @@ public static class GameBuilder
         go_ActorPanel.AddComponent<Scripts.Canvas.ActorPanel>();
         Undo.RegisterCreatedObjectUndo(go_ActorPanel, "Create ActorPanel");
 
-        // --- AbilityButtonContainer (Row 13: 6-slot ability bar, pulled out of Card) ---
+        // --- AbilityButtonContainer (Row 13: 5-slot ability bar, pulled out of Card) ---
         // Pre-Phase-B this lived inside the Card; now it's a direct Canvas child sitting on Row 13
         // (above the orb line, above the character card).
         var go_AbilityButtonContainer = new GameObject("AbilityButtonContainer");
@@ -1511,7 +1511,6 @@ public static class GameBuilder
         go_Game.AddComponent<Scripts.Managers.PincerAttackManager>();
         go_Game.AddComponent<Scripts.Managers.SortingManager>();
         go_Game.AddComponent<Scripts.Managers.TargetLineManager>();
-        go_Game.AddComponent<Scripts.Managers.AbilityButtonManager>();
         go_Game.AddComponent<Scripts.Managers.SynergyLineManager>();
         go_Game.AddComponent<Scripts.Managers.AbilityManager>();
         go_Game.AddComponent<Scripts.Managers.ManaPoolManager>();

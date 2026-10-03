@@ -56,7 +56,7 @@ namespace Scripts.Canvas
     /// via <see cref="FontLibrary"/>), so layout iteration needs no scene rebuild.</para>
     ///
     /// <para>ACCESS: g.ActorPanel</para>
-    /// <para>RELATED FILES: ActorInstance.cs, SelectionManager.cs, AbilityButtonManager.cs</para>
+    /// <para>RELATED FILES: ActorInstance.cs, SelectionManager.cs, AbilityBar.cs</para>
     /// </summary>
     public class ActorPanel : MonoBehaviour
     {

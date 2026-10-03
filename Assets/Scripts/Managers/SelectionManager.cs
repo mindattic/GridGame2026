@@ -137,12 +137,6 @@ public class SelectionManager : MonoBehaviour
         g.Actors.SelectedActor = target;
         g.SortingManager.OnActorFocus();
 
-        // Show abilities only when a hero is focused
-        if (g.Actors.SelectedActor.IsHero)
-            g.AbilityButtonManager.Show(g.Actors.SelectedActor);
-        else
-            g.AbilityButtonManager.Hide();
-
         // Enemy-select arc: red curve from the enemy's TimelineIcon (canvas) → enemy
         // actor (world). Switches off cleanly when selection moves to a hero / null.
         UpdateEnemySelectArc(g.Actors.SelectedActor);

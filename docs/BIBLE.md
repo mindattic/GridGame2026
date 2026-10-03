@@ -102,8 +102,7 @@ Full rationale: [§0.2 Non-goals](#02-non-goals-what-this-game-is-not).
 - `Assembly-CSharp-Editor.csproj` — editor code: builders, `CliEntryPoints`, guardrails.
 - `Tests.EditMode.csproj` / `Tests.PlayMode.csproj` — Unity Test Framework suites
   (`Assets/Tests/EditMode/`, `Assets/Tests/PlayMode/`).
-- `package.json` (`gridgame2026-landing`) names a Node landing-page build whose scripts
-  (`scripts/cli/`) are not in the repo; `README.htm` is built by `Tools/build-readme.ps1` (not game code).
+- `README.htm` is built from `README.md` by `Tools/build-readme.ps1` (not game code).
 
 ### 4.2 Domain model — the NOUNS
 
@@ -199,8 +198,9 @@ pillarbox via `AspectGuard` — the game never stretches or squashes. *(Source: 
   `error CS` lines, and Unity's exit code.
 - **EditMode suite** (`Assets/Tests/EditMode/`, pure logic): `FormulasTests`, `PincerDetectorTests`,
   `SaveRoundTripTests`, `ProfilePersistenceTests`, `CampaignStagesTests`, `GoldTrackerTests`,
-  `BountyFlowTests`, `AbilitySlottingTests`, `AbilitySlotProgressionTests`, `SummonServiceTests`,
-  `AspectGuardTests`, `AudioCreditsTests`, `TrapAndLineThreatTests`.
+  `BountyFlowTests`, `AbilitySlottingTests`, `AbilitySlotProgressionTests`, `AbilityBarSlotCountTests`,
+  `CombatLoadoutTests`, `SpellCastCapacityTests`, `SummonServiceTests`, `AspectGuardTests`,
+  `AudioCreditsTests`, `TrapAndLineThreatTests`.
 - **PlayMode suite** (`Assets/Tests/PlayMode/`): `SceneBootSmokeTests` (every live scene boots),
   `BattleLoopScenarioTests` (battle loop on the deterministic `Test-Harness` stage), `SnakeBossTests`
   (`Test-Snake` fixture), `PincerScenarioTest` (`Game_scene_boots_with_core_managers`; the
@@ -565,7 +565,7 @@ A cast's **position is its progress read**, lining up directly under the enemy t
 
 **Shared continuous clock — does a cast fire "off-turn"? Yes, and that's the point.** This is the Grandia IP-gauge model (§0): there is *one* clock, not alternating turns. Both lanes advance together as the timeline progresses, and **whatever icon reaches the trigger first resolves** — an enemy icon at `u = 1` takes its turn; a cast icon at `u = 1` fires its spell, even if that lands *between* enemy turns. Resolution runs through the input-suspending **`Resolving` third state** (§2.2) and then hands control back to wherever the clock was. The two-lane layout is exactly what keeps this legible rather than confusing: you literally *see* your Fireball's small icon racing the Goblin's portrait toward the trigger and read "my spell lands just before it acts." So casting time and enemy turns are **related — same axis, same clock** — and a cast resolving off any particular turn is intended, not a bug. *(If we ever wanted casts gated to a turn boundary instead, that would be a departure from the IP-gauge pillar — flagged, not assumed.)*
 
-Lifecycle: orbs are spent when the target is confirmed; the icon spawns at `u = 1 − castTime × pace` (the bar's canonical Speed-10 pace, so "3 s left" reads the same as on any actor icon) and advances only while the timeline advances. On reaching `u = 1` it parks in `Resolving`, `TurnManager.BeginCastResolution` suspends input, the effect resolves, and control returns. A spell with no cast time resolves immediately with no icon. Interrupts (hero casts and enemy charges alike) follow the cast-stagger rule, §13.4.
+Lifecycle: up to 4 hero casts load at once — a further cast-time spell is refused before any orbs are spent (§4.4); orbs are spent when the target is confirmed; the icon spawns at `u = 1 − castTime × pace` (the bar's canonical Speed-10 pace, so "3 s left" reads the same as on any actor icon) and advances only while the timeline advances. On reaching `u = 1` it parks in `Resolving`, `TurnManager.BeginCastResolution` suspends input, the effect resolves, and control returns. A spell with no cast time resolves immediately with no icon. Interrupts (hero casts and enemy charges alike) follow the cast-stagger rule, §13.4.
 
 ```
         ╭─────╮       ╭─────╮                      ← ABOVE: large actor turn icons
@@ -747,7 +747,7 @@ Then rounds + floors-at-1 (per §3.2).
 
 ## 4. The AbilityBar
 
-Row 13 of the HUD. The bar renders **6 slot buttons** (`AbilityBarFactory.Slots`); campaign progress makes **2 to 5** of them usable (§4.7), so the sixth always renders Locked. Each slot holds one `ManaAbility` (which is one of three kinds).
+Row 13 of the HUD. The bar renders **5 slot buttons** (`AbilityBarFactory.Slots` = `AbilitySlotProgression.MaxSlots`); campaign progress makes **2 to 5** of them usable (§4.7), so a fully progressed save can use every slot. *(Verified by `AbilityBarSlotCountTests`.)* Each slot holds one `ManaAbility` (which is one of three kinds).
 
 > **Invariant — one `ManaAbility` per spell.** For Spell-kind abilities, `AbilityBar.ResolveSpell` looks the `SpellDefinition` up by *ability reference* and returns the first match in `SpellLibrary.All`. A `ManaAbility` must therefore back exactly one `SpellDefinition` — reusing a single instance across spells silently resolves to whichever is declared first (this caused the Heal→Sleep bug). Every entry in the §7 catalog has its own dedicated ability.
 
@@ -772,11 +772,16 @@ A Skill is free to use but, once cast, is **locked for `ManaAbility.CooldownTurn
 
 ### 4.2 Per-hero loadouts
 
-The bar **follows the selected hero**. `HeroLoadouts.For(characterClass)` returns the per-class loadout list (up to 6 entries) for the active hero; `AbilityBar.Update` polls the selection and rebinds the slots when the class changes. When no hero is selected, slots hide.
+The bar **follows the selected hero**. `AbilityBar.Update` binds `Services/CombatLoadouts.For(characterClass)` for the selected hero each frame. When no hero is selected, slots hide.
 
-Add per-class entries to `HeroLoadouts.perClass` via `HeroLoadouts.Set(class, loadout)`. Classes without an explicit override fall through to `ManaAbilities.Slots`.
+`CombatLoadouts.For` picks the bar in this order:
 
-The per-hero bar the player edits in the Abilities scene (§25.6) is saved as `HeroEquipmentSave.AbilityBarSlots` and hydrated into `HeroLoadout` (`HeroLoadout.LoadFromSave`), which feeds `AbilityButtonManager`; the Row-13 `AbilityBar` binds the per-class `HeroLoadouts.For` list.
+1. **The player's saved bar** — `HeroEquipmentSave.AbilityBarSlots`, edited in the Abilities scene (§25.6) — when it has at least one filled slot. Positions are kept. An item slot becomes a per-slot consumable stack linked to its item (`ManaAbilities.NewConsumable`, so `OnUseSpellName` items still cast their spell) with charges = owned count capped at the item's `MaxStack`; a named slot resolves to the `ManaAbilities` entry of that name; a weapon slot, or a name/item with no combat-bar entry, shows empty.
+2. **The class preset** — `HeroLoadouts.For(characterClass)` (table below); classes without one fall through to `ManaAbilities.Slots` (Heal, Fireball, Frost, Bolt, Potion).
+
+Resolved bars are cached per class for the battle (so item charges survive re-selecting a hero); `AbilityBar.Awake` clears the cache. The Debug Window's random-abilities button replaces a hero's bar for the current battle (`CombatLoadouts.SetBattleOverride`). *(Verified by `CombatLoadoutTests`.)*
+
+Add per-class presets to `HeroLoadouts.perClass` via `HeroLoadouts.Set(class, loadout)`; a preset has at most 5 entries.
 
 Seeded loadouts:
 
@@ -785,7 +790,7 @@ Seeded loadouts:
 | Cleric | Heal, Heal, Frost, NewPotion(3) |
 | Paladin | Heal, Fireball, NewPotion(3) |
 | Barbarian | Fireball, Bolt, NewPotion(3) |
-| Alchemist | Frost, NewPotion(5), Steal, Heal, NewPotion(5), Sleep Dart (×5) |
+| Alchemist | Frost, NewPotion(5), Steal, NewPotion(5), Sleep Dart (×5) |
 | Assassain | Steal, Mug, Bolt, NewPotion(3) |
 | GreenNinja | Teleport, Steal, Fireball, NewPotion(3) |
 | RedNinja | Teleport, Mug, Bolt, NewPotion(3) |
@@ -803,9 +808,9 @@ Items are **per-slot instances** — each call to `ManaAbilities.NewPotion(stack
 **Skill**: `TargetingMode.Begin` → on confirm, dispatch (or run the Skill's bespoke flow), then call `ManaPoolManager.OnBankButtonClicked()` to advance the timeline ("costs a turn"). Free.
 
 **Spell**:
-1. `Bank.CanAfford(cost)` precheck — no deduction yet.
+1. `Bank.CanAfford(cost)` precheck — no deduction yet. A spell with a cast time is also refused when **4** hero casts are already loading on the timeline (`Services/SpellCastCapacity.MaxHeroCastsInFlight`, counted by `TimelineBarInstance.HeroCastsInFlight`; enemy charges don't count): "Too many spells!" pops over the caster and no orbs are spent. Instant spells are never refused.
 2. `TargetingMode.Begin` → user picks (or auto-resolves for Mode=Auto).
-3. On **confirm**, `Bank.Spend(cost)` (orbs deducted). A spell with a cast time spawns its cast icon (`TimelineBarInstance.SpawnSpellIcon`, §2.6) and dispatches per target when the icon resolves; an instant spell dispatches immediately.
+3. On **confirm**, the cast cap is re-checked (another cast may have started while targeting was open), then `Bank.Spend(cost)` (orbs deducted). A spell with a cast time spawns its cast icon (`TimelineBarInstance.SpawnSpellIcon`, §2.6) and dispatches per target when the icon resolves; an instant spell dispatches immediately.
 4. On **cancel**, zero orbs spent.
 
 This means **mana is consumed AT CAST START** (after target chosen, before the icon), per the project rule "MP consumed upfront; interruption refunds nothing." Cancel during targeting is free.
@@ -1236,7 +1241,7 @@ The full HUD layout lives in `Utilities/HudLayout.cs` (constants `Row{N}Y_FromTo
 | 2 | Timeline bar + Shield button at right edge | `GameBuilder` + `ShieldButtonFactory` (runtime) |
 | 3 | ActionTitle banner | `GameBuilder` |
 | 4–12 | 6×8 Board (world-space, camera-framed) | `GameBuilder` (BoardInstance) + ActorFactory (runtime spawn) |
-| 13 | AbilityBar — 6 slot buttons, 2–5 usable by campaign progress (§4.7) | `AbilityBarFactory` (runtime, parented to `Canvas/AbilityButtonContainer` placed by `GameBuilder`) |
+| 13 | AbilityBar — 5 slot buttons, 2–5 usable by campaign progress (§4.7) | `AbilityBarFactory` (runtime, parented to `Canvas/AbilityButtonContainer` placed by `GameBuilder`) |
 | 14 | 12-slot mana orb belt — screen-wide "tray", sits just **above** the ability bar | `ManaOrbLineFactory` (runtime) |
 | 15 | `ActorPanel` — tabbed **Stats / Equipment / Lore** (contextual: selected hero or scanned enemy). Hero ◀▶ cycle arrows in the tab bar. | root in `GameBuilder`; tab UI built at runtime by `ActorPanel` |
 
@@ -1670,7 +1675,7 @@ XP is stored as `TotalXP`; level + currentXP are **derived** via `ExperienceHelp
 
 ### 15.3 Per-hero ability bar and Bestiary
 
-- `HeroEquipmentSave.AbilityBarSlots` holds the per-hero bar edited in the Abilities scene, with a full hydrate/persist round-trip through `HeroLoadout.LoadFromSave` / the save path (`HeroLoadout.cs`). Slots resolve by ability name (`AbilityLibrary.Get`), item id or weapon id. *(Verified by `AbilitySlottingTests`, `SaveRoundTripTests`.)*
+- `HeroEquipmentSave.AbilityBarSlots` holds the per-hero bar edited in the Abilities scene, with a full hydrate/persist round-trip through `HeroLoadout.LoadFromSave` / the save path (`HeroLoadout.cs`). Slots resolve by ability name (`AbilityLibrary.Get`), item id or weapon id. The combat bar reads the same slots through `CombatLoadouts` (§4.2). *(Verified by `AbilitySlottingTests`, `SaveRoundTripTests`, `CombatLoadoutTests`.)*
 - `SaveState.Bestiary` records each enemy class **Seen** on spawn (`StageManager.SpawnActor`) or Scan, and **Defeated/TimesDefeated** on death (`ActorInstance.DieRoutine`), persisted at battle end. The Bestiary view reveals seen classes and shows the rest as silhouettes (US-093).
 
 ---
@@ -1874,7 +1879,7 @@ public static readonly SpellDefinition Quake = new SpellDefinition(
 // 3. Data/HeroLoadouts.cs — give it to the Barbarian
 HeroLoadouts.Set(CharacterClass.Barbarian, new[] {
     ManaAbilities.Quake, ManaAbilities.Fireball, ManaAbilities.Bolt,
-    ManaAbilities.NewPotion(3), null, null
+    ManaAbilities.NewPotion(3), null
 });
 
 // 4. (no new debuff needed)
@@ -2041,7 +2046,7 @@ Heroes and enemies share the `CharacterClass` enum in `Helpers/CharacterClass.cs
 | **Cleric** | white-magic healer; sustain-focused; reads enemy intentions | INT/WIS high, STR low | White | Heal, Heal, Frost, Potion(3) |
 | **Paladin** | front-line tank with healing on the side | VIT/STR high, mid WIS | **White** (US-030) | Heal, Fireball, Potion(3) |
 | **Barbarian** | high-damage front line; brute force | STR/VIT high, low INT/WIS | Red | Fireball, Bolt, Potion(3) |
-| **Alchemist** | utility / consumable stacks / non-magical control | INT/AGI mid, high LCK | **Green** (US-030) | Frost, Potion(5), Steal, Heal, Potion(5) |
+| **Alchemist** | utility / consumable stacks / non-magical control | INT/AGI mid, high LCK | **Green** (US-030) | Frost, Potion(5), Steal, Potion(5), Sleep Dart(5) |
 | **Assassain** | high-damage flanker; rogue toolkit | AGI/LCK high | Black | Steal, Mug, Bolt, Potion(3) |
 | **GreenNinja** | mobility specialist; thief variant | AGI/LCK high | Green | Teleport, Steal, Fireball, Potion(3) |
 | **RedNinja** | mobility + striker | AGI/STR high | Red | Teleport, Mug, Bolt, Potion(3) |
@@ -2073,7 +2078,7 @@ Each hero should have ONE thing that's distinctly theirs, and a small kit that t
 
 #### 23.2.2 Classes not yet in `HeroLoadouts.perClass`
 
-Every other entry in the `CharacterClass` enum falls through to the default `ManaAbilities.Slots` (Heal/Fireball/Frost/Bolt/Potion/—). Add entries via `HeroLoadouts.Set(class, list)` to give them distinct kits. Candidates:
+Every other entry in the `CharacterClass` enum falls through to the default `ManaAbilities.Slots` (Heal/Fireball/Frost/Bolt/Potion). Add entries via `HeroLoadouts.Set(class, list)` to give them distinct kits. Candidates:
 
 - **BlackNinja / BlueNinja / WhiteNinja / YellowNinja / ChromaNinja** — variants of the Ninja archetype; each should feel different (poison-specialist, ice-specialist, etc.).
 - **Bruiser** — slow brute, even more lopsided than Barbarian; STR/VIT maxed.
@@ -2202,7 +2207,7 @@ Materials don't directly enter combat — they're the bridge between battle outp
 - **Wizard Robe** — armor, Rare (`eq_armor_wizard`). `BattleStartManaOrbs = 3`. Stacks per hero wearing (US-041).
 
 Battle-start grant: `ManaPoolManager.ApplyBattleStartManaOrbs` (run once at battle start via `GameReady`) sums `BattleStartManaOrbs` across every equipped item on the active party and adds that many **random-color** orbs (WUBRG, not Colorless) to the team bank, clamped to the 12-orb cap (§3.1.4).
-- **Sleep Dart** — consumable, per-slot stack (`MaxStack = 5`, `cons_sleep_dart`). `OnUseSpellName = "Sleep"` — on use, opens the Sleep spell's targeting flow and consumes one charge (US-042). It is seeded in slot 6 of the Alchemist's per-class bar. The bar slot carries `ManaAbility.SourceItemId` so `HandleItem` recovers the item and routes the cast (first item-casts-a-spell path; generalizes to any consumable with `OnUseSpellName`).
+- **Sleep Dart** — consumable, per-slot stack (`MaxStack = 5`, `cons_sleep_dart`). `OnUseSpellName = "Sleep"` — on use, opens the Sleep spell's targeting flow and consumes one charge (US-042). It is seeded in slot 5 of the Alchemist's per-class bar. The bar slot carries `ManaAbility.SourceItemId` so `HandleItem` recovers the item and routes the cast (first item-casts-a-spell path; generalizes to any consumable with `OnUseSpellName`).
 
 ### 24.9 Currency
 

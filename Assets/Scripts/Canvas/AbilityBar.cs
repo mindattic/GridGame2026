@@ -12,9 +12,10 @@ using g = Scripts.Helpers.GameHelper;
 namespace Scripts.Canvas
 {
     /// <summary>
-    /// ABILITYBAR - The Row-13 6-slot ability bar.
+    /// ABILITYBAR - The Row-13 5-slot ability bar.
     ///
-    /// <para>Holds <b>up to 6 abilities</b> for the currently selected hero. Each slot can be one
+    /// <para>Holds <b>up to 5 abilities</b> for the currently selected hero (campaign progress
+    /// unlocks 2..5 of them, §4.7). Each slot can be one
     /// of three kinds (<see cref="AbilityKind"/>):</para>
     ///
     /// <list type="bullet">
@@ -28,7 +29,8 @@ namespace Scripts.Canvas
     /// </list>
     ///
     /// <para>The bar <b>follows the selected hero</b> — when selection changes, slots re-bind to
-    /// that hero's loadout via <see cref="HeroLoadouts.For"/>. All heroes share one
+    /// that hero's loadout via <see cref="Scripts.Services.CombatLoadouts.For"/> (the bar saved in
+    /// the Abilities scene, else the class preset in <see cref="HeroLoadouts"/>). All heroes share one
     /// <see cref="ManaBank"/> (the party-wide orb line), but each hero has their own Skills and
     /// Items.</para>
     ///
@@ -48,7 +50,9 @@ namespace Scripts.Canvas
         private TooltipInstance activeTooltip;
 
         private IReadOnlyList<ManaAbility> currentLoadout;
-        private CharacterClass currentClass = CharacterClass.None;
+
+        // A new bar means a new battle: drop last battle's resolved loadouts (and their charges).
+        private void Awake() => Scripts.Services.CombatLoadouts.ResetForBattle();
 
         public void Bind(ManaBank bank, Button[] buttons, TMP_Text[] nameLabels, TMP_Text[] costLabels, Image[] frames, Image[] iconImages = null, RectTransform[] slotRects = null, Image[] cooldownSweeps = null)
         {
@@ -301,6 +305,9 @@ namespace Scripts.Canvas
             if (spell == null) { Debug.LogWarning($"[AbilityBar] Spell '{a.Name}' has no SpellDefinition wired."); return; }
             var caster = g.Actors.SelectedActor;
 
+            // Cast cap: at most SpellCastCapacity.MaxHeroCastsInFlight hero spells loading at once.
+            if (RefuseIfTooManyCasts(a, caster)) return;
+
             // US-012: a Silenced caster cannot cast Spells. Refuse the click (Skills/Items unaffected).
             if (caster != null && Scripts.Managers.BuffSystem.Has(caster, Scripts.Data.Buffs.Silenced.Id))
             {
@@ -312,6 +319,8 @@ namespace Scripts.Canvas
             Scripts.Managers.TargetingMode.Begin(spell, caster,
                 onConfirm: targets =>
                 {
+                    // Re-check the cap: another cast may have started while targeting was open.
+                    if (RefuseIfTooManyCasts(a, caster)) return;
                     if (!bank.Spend(a.Cost))
                     {
                         Debug.LogWarning($"[AbilityBar] Orbs changed mid-pick — couldn't afford '{a.Name}'.");
@@ -346,6 +355,16 @@ namespace Scripts.Canvas
                 onCancel: () => Debug.Log($"[AbilityBar] Cast of '{a.Name}' cancelled — no orbs spent."));
         }
 
+        /// <summary>Refuse a cast-time spell when the hero cast lane is full (no orbs spent).</summary>
+        private static bool RefuseIfTooManyCasts(ManaAbility a, Scripts.Instances.Actor.ActorInstance caster)
+        {
+            int inFlight = g.TimelineBar != null ? g.TimelineBar.HeroCastsInFlight : 0;
+            if (Scripts.Services.SpellCastCapacity.CanStart(a.CastTimeSeconds, inFlight)) return false;
+            Debug.LogWarning($"[AbilityBar] '{a.Name}' refused — {inFlight} spells already loading (max {Scripts.Services.SpellCastCapacity.MaxHeroCastsInFlight}).");
+            if (caster != null) g.CombatTextManager?.Spawn("Too many spells!", caster.transform.position, "Miss");
+            return true;
+        }
+
         private static SpellDefinition ResolveSpell(ManaAbility a)
         {
             foreach (var s in SpellLibrary.All)
@@ -355,14 +374,10 @@ namespace Scripts.Canvas
 
         private void Update()
         {
-            // Re-bind on selection change.
+            // Bind the selected hero's bar (cached per battle in CombatLoadouts, so this is a lookup).
             var sel = g.Actors.SelectedActor;
             var cls = (sel != null && sel.IsHero && sel.IsPlaying) ? sel.characterClass : CharacterClass.None;
-            if (cls != currentClass)
-            {
-                currentClass = cls;
-                currentLoadout = (cls == CharacterClass.None) ? null : HeroLoadouts.For(cls);
-            }
+            currentLoadout = (cls == CharacterClass.None) ? null : Scripts.Services.CombatLoadouts.For(cls);
             Refresh();
         }
 
@@ -375,6 +390,7 @@ namespace Scripts.Canvas
             bool silenced = active && owner != null
                 && Scripts.Managers.BuffSystem.Has(owner, Scripts.Data.Buffs.Silenced.Id);
             // US-143: campaign progress opens slots 3..5 (AbilitySlotProgression gates).
+            // The bar has exactly AbilitySlotProgression.MaxSlots buttons, so every slot can unlock.
             int unlockedSlots = Scripts.Services.AbilitySlotProgression.UnlockedSlotsForCurrentSave();
             for (int i = 0; i < buttons.Length; i++)
             {

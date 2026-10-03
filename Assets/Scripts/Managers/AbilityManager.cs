@@ -32,7 +32,7 @@ namespace Scripts.Managers
     /// validation, casting, and ability effects.
     /// 
     /// ABILITY FLOW:
-    /// 1. Player taps ability button → AbilityButtonManager calls BeginTargeting()
+    /// 1. BeginTargeting() (no live caller: the combat AbilityBar targets via TargetingMode)
     /// 2. InputMode changes to AnyTarget or LinearTarget
     /// 3. Player taps valid targets → ToggleTarget() adds/removes from targetList
     /// 4. Player confirms → Cast() executes ability
@@ -63,9 +63,7 @@ namespace Scripts.Managers
     /// 
     /// RELATED FILES:
     /// - Ability.cs: Ability data definition
-    /// - AbilityButtonManager.cs: UI buttons for abilities
     /// - AbilityCastConfirm.cs: Confirmation dialog
-    /// - AbilityButtonFactory.cs: Creates ability button UI
     /// - InputManager.cs: Handles targeting input mode
     /// 
     /// ACCESS: g.AbilityManager
@@ -451,7 +449,6 @@ namespace Scripts.Managers
             g.Actors.SelectedActor = null;
             foreach (var a in g.Actors.All)
                 a.Render.SetFocusIndicatorEnabled(false);
-            g.AbilityButtonManager.Hide();
             g.ActorPanel.Clear();
             // Selection has been wiped — drop the red enemy-select arc with it.
             g.SelectionManager?.HideEnemySelectArc();

@@ -9,7 +9,7 @@ using Scripts.Models;
 namespace Scripts.Factories
 {
     /// <summary>
-    /// ABILITYBARFACTORY - Builds the Row-13 6-slot <see cref="AbilityBar"/> inside the existing
+    /// ABILITYBARFACTORY - Builds the Row-13 5-slot <see cref="AbilityBar"/> inside the existing
     /// AbilityButtonContainer (canvas child placed by GameBuilder at Row 13).
     ///
     /// <para>Each slot has a frame Image + Name (top) + Cost icons (bottom). The TMP font is
@@ -21,7 +21,8 @@ namespace Scripts.Factories
     /// </summary>
     public static class AbilityBarFactory
     {
-        public const int Slots = 6;
+        /// <summary>One button per unlockable slot (§4.7) — no permanently-locked extra slot.</summary>
+        public const int Slots = Scripts.Services.AbilitySlotProgression.MaxSlots;
         public const float SlotWidth = 168f;
         public const float SlotHeight = 130f;
         public const float Spacing = 8f;
@@ -30,8 +31,7 @@ namespace Scripts.Factories
         {
             if (container == null) return null;
 
-            // Ensure the container's HorizontalLayoutGroup is in our desired config (replaces
-            // the per-hero MiddleLeft layout the legacy AbilityButtonManager set up).
+            // Ensure the container's HorizontalLayoutGroup is in our desired config.
             var hlg = container.GetComponent<HorizontalLayoutGroup>();
             if (hlg == null) hlg = container.gameObject.AddComponent<HorizontalLayoutGroup>();
             hlg.childAlignment = TextAnchor.MiddleCenter;
@@ -43,7 +43,7 @@ namespace Scripts.Factories
             hlg.padding = new RectOffset(8, 8, 8, 8);
 
             // Fix #10: GameBuilder leaves the legacy `action-bar-1` Image on this container — it
-            // shows up faintly behind the new 6-slot bar. Make it transparent so the new bar reads
+            // shows up faintly behind the new slot bar. Make it transparent so the new bar reads
             // cleanly (we can't easily delete the component from a builder-spawned scene).
             var legacyImg = container.GetComponent<Image>();
             if (legacyImg != null) legacyImg.color = new Color(0f, 0f, 0f, 0f);

@@ -247,7 +247,6 @@ namespace Scripts.Helpers
         public static TargetLineManager TargetLineManager => gm != null ? gm.targetLineManager : null;
 
         /// <summary>Manages ability button UI elements.</summary>
-        public static AbilityButtonManager AbilityButtonManager => gm != null ? gm.abilityButtonManager : null;
 
         /// <summary>Handles ability execution and targeting.</summary>
         public static AbilityManager AbilityManager => gm != null ? gm.abilityManager : null;

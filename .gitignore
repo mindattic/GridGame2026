@@ -93,11 +93,6 @@ hidden_changes.conf
 /Documentation/Builders/Drift/*.actual.txt
 /Documentation/Builders/Drift/*.diff.txt
 
-# Landing-page renderer (README -> index.htm) -- credentials and Node deps
-scripts/cli/deploy.settings.json
-node_modules/
-package-lock.json
-
 # Unity Test Framework init scenes leak into Assets/ when a test run is force-killed
 Assets/InitTestScene*
 .claude/quicksave.md

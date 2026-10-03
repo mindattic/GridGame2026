@@ -74,12 +74,11 @@ namespace Scripts.Data
         // ── SIDE-NOTE: deferred ──
         // Ether — design idea: consumable that auto-grants mana orbs. Parked.
 
-        /// <summary>The 6 bar slots in display order (slot 6 reserved — Ether candidate). Used as
-        /// the default loadout for any character class without a per-class override in
-        /// <see cref="HeroLoadouts"/>.</summary>
+        /// <summary>The 5 bar slots in display order. Used as the default loadout for any
+        /// character class without a per-class override in <see cref="HeroLoadouts"/>.</summary>
         public static readonly IReadOnlyList<ManaAbility> Slots = new[]
         {
-            Heal, Fireball, Frost, Bolt, Potion, /* slot 6: reserved */ null
+            Heal, Fireball, Frost, Bolt, Potion
         };
 
         /// <summary>
