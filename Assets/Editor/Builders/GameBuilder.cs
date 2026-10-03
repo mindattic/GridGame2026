@@ -20,8 +20,6 @@ public static class GameBuilder
     private const string Sprite_Back_1024x256 = "Assets/Sprites/GUI/Back.1024x256.png";
     private const string Sprite_Back_512x128 = "Assets/Sprites/GUI/Back.512x128.png";
     private const string Sprite_Button_128x64 = "Assets/Sprites/GUI/Button.128x64.png";
-    private const string Sprite_Cancel = "Assets/Sprites/GUI/Cancel.png";
-    private const string Sprite_Confirm = "Assets/Sprites/GUI/Confirm.png";
     private const string Sprite_Button_Bottom = "Assets/Sprites/GUI/ScalableButton/Button.Bottom.png";
     private const string Sprite_Pause = "Assets/Sprites/Pause.png";
     private const string Sprite_TitleBar = "Assets/Sprites/TitleBar.png";
