@@ -100,24 +100,6 @@ Root Object Count: 11
         Image: sprite=action-bar-back-1
       [Fill]
         Image: sprite=action-bar-1
-  [AbilityCastConfirm]
-    AbilityCastConfirm
-    Image: sprite=Back.512x128
-    [Label]
-      Transform: pos=(-192.00,0.00,0.00), scale=(1,1,1)
-      TextMeshProUGUI: "Cast Heal"
-    [CancelButton]
-      Transform: pos=(135.36,0.00,0.00), scale=(1,1,1)
-      Image: sprite=Cancel
-      Button: interactable=True
-      [Label]
-        TextMeshProUGUI: "X"
-    [CastButton]
-      Transform: pos=(198.90,0.00,0.00), scale=(1,1,1)
-      Image: sprite=Confirm
-      Button: interactable=True
-      [Label]
-        TextMeshProUGUI: "Ok"
   [Card]
     Transform: pos=(540.00,-1170.69,0.00), scale=(1,1,1)
     [AbilityButtonContainer]
@@ -271,9 +253,6 @@ Root Object Count: 11
   [FocusIndicator]
     Transform: pos=(-1000.00,-1000.00,0.00), scale=(1,1,1)
     SpriteRenderer: sprite=focus-indicator, order=100
-  [TargetModeOverlay]
-    Transform: pos=(0,0,0), scale=(0.40,0.40,1.00)
-    SpriteRenderer: sprite=TargetOverlay-v1, order=50
 [Game]
   AudioSource: clip=null
   AudioSource: clip=null

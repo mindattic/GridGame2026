@@ -65,8 +65,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Vector3 tileScale;
     [HideInInspector] public UnityEngine.Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
-    [HideInInspector] public TargetModeOverlay targetModeOverlay;
-        [HideInInspector] public AbilityCastConfirm abilityCastConfirm;
 
     // NEW: Victory/Defeat Announcement references
     [HideInInspector] public VictoryAnnouncement victoryAnnouncement;
@@ -284,7 +282,6 @@ public class GameManager : Singleton<GameManager>
         // Board
         board = GameObjectHelper.Game.Board.Instance;
         boardOverlay = GameObjectHelper.Game.Board.BoardOverlay;
-        targetModeOverlay = GameObjectHelper.Game.Board.TargetModeOverlay;
 
         var gameRoot = GameObject.Find("Game");
 
@@ -346,11 +343,6 @@ public class GameManager : Singleton<GameManager>
         if (actionTitleGO != null)
             actionTitle = actionTitleGO.GetComponent<ActionTitle>();
         
-        // Find AbilityCastConfirm UI
-        var abilityCastConfirmGO = GameObject.Find("Canvas/AbilityCastConfirm");
-        if (abilityCastConfirmGO != null)
-            abilityCastConfirm = abilityCastConfirmGO.GetComponent<AbilityCastConfirm>();
-
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN
         deviceType = "UNITY_STANDALONE_WIN";
@@ -386,7 +378,6 @@ public class GameManager : Singleton<GameManager>
         // Show in specific order
         if (board != null) board.Initialize();
         if (stageManager != null) stageManager.Initialize();
-        if (targetModeOverlay != null) targetModeOverlay.Initialize();
         if (turnManager != null) turnManager.Initialize();
 
         // Spawn initial tags for existing enemies

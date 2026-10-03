@@ -544,128 +544,6 @@ public static class GameBuilder
         go_Pointer.AddComponent<Scripts.Managers.PointerManager>();
         Undo.RegisterCreatedObjectUndo(go_Pointer, "Create Pointer");
 
-        // --- AbilityCastConfirm ---
-        var go_AbilityCastConfirm = new GameObject("AbilityCastConfirm");
-        go_AbilityCastConfirm.layer = 5;
-        var rt_AbilityCastConfirm = go_AbilityCastConfirm.AddComponent<RectTransform>();
-        rt_AbilityCastConfirm.SetParent(go_Canvas.GetComponent<RectTransform>(), false);
-        rt_AbilityCastConfirm.anchorMin = new Vector2(0.5f, 0.5f);
-        rt_AbilityCastConfirm.anchorMax = new Vector2(0.5f, 0.5f);
-        rt_AbilityCastConfirm.pivot = new Vector2(0.5f, 0.5f);
-        rt_AbilityCastConfirm.sizeDelta = new Vector2(512f, 128f);
-        rt_AbilityCastConfirm.anchoredPosition = new Vector2(0f, 0f);
-        go_AbilityCastConfirm.AddComponent<CanvasRenderer>();
-        go_AbilityCastConfirm.AddComponent<Scripts.Canvas.AbilityCastConfirm>();
-        var canvasGroup_AbilityCastConfirm = go_AbilityCastConfirm.AddComponent<CanvasGroup>();
-        var img_AbilityCastConfirm = go_AbilityCastConfirm.AddComponent<Image>();
-        img_AbilityCastConfirm.sprite = SceneBuilderHelper.LoadSprite(Sprite_Back_512x128);
-        img_AbilityCastConfirm.color = new Color(1f, 1f, 1f, 1f);
-        img_AbilityCastConfirm.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_AbilityCastConfirm, "Create AbilityCastConfirm");
-
-        // --- CancelButton ---
-        var go_CancelButton = new GameObject("CancelButton");
-        go_CancelButton.layer = 5;
-        var rt_CancelButton = go_CancelButton.AddComponent<RectTransform>();
-        rt_CancelButton.SetParent(go_AbilityCastConfirm.GetComponent<RectTransform>(), false);
-        rt_CancelButton.anchorMin = new Vector2(0f, 0.5f);
-        rt_CancelButton.anchorMax = new Vector2(0f, 0.5f);
-        rt_CancelButton.pivot = new Vector2(0.5f, 0.5f);
-        rt_CancelButton.sizeDelta = new Vector2(64f, 64f);
-        rt_CancelButton.anchoredPosition = new Vector2(391.36f, 0f);
-        go_CancelButton.AddComponent<CanvasRenderer>();
-        var img_CancelButton = go_CancelButton.AddComponent<Image>();
-        img_CancelButton.sprite = SceneBuilderHelper.LoadSprite(Sprite_Cancel);
-        img_CancelButton.color = new Color(1f, 1f, 1f, 1f);
-        img_CancelButton.raycastTarget = true;
-        var btn_CancelButton = go_CancelButton.AddComponent<Button>();
-        btn_CancelButton.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_CancelButton.targetGraphic = go_CancelButton.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_CancelButton, "Create CancelButton");
-
-        // --- Label ---
-        var go_Label3 = new GameObject("Label");
-        go_Label3.layer = 5;
-        var rt_Label3 = go_Label3.AddComponent<RectTransform>();
-        rt_Label3.SetParent(go_CancelButton.GetComponent<RectTransform>(), false);
-        rt_Label3.anchorMin = new Vector2(0f, 0f);
-        rt_Label3.anchorMax = new Vector2(1f, 1f);
-        rt_Label3.pivot = new Vector2(0.5f, 0.5f);
-        rt_Label3.sizeDelta = new Vector2(0f, 0f);
-        rt_Label3.anchoredPosition = new Vector2(0f, 0f);
-        go_Label3.AddComponent<CanvasRenderer>();
-        var tmp_Label3 = go_Label3.AddComponent<TextMeshProUGUI>();
-        tmp_Label3.font = SceneBuilderHelper.LoadFont(Font_Body);
-        tmp_Label3.text = "X";
-        tmp_Label3.fontSize = 24f;
-        tmp_Label3.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Label3.alignment = (TextAlignmentOptions)514;
-        tmp_Label3.enableWordWrapping = true;
-        tmp_Label3.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Label3, "Create Label");
-
-        // --- CastButton ---
-        var go_CastButton = new GameObject("CastButton");
-        go_CastButton.layer = 5;
-        var rt_CastButton = go_CastButton.AddComponent<RectTransform>();
-        rt_CastButton.SetParent(go_AbilityCastConfirm.GetComponent<RectTransform>(), false);
-        rt_CastButton.anchorMin = new Vector2(0f, 0.5f);
-        rt_CastButton.anchorMax = new Vector2(0f, 0.5f);
-        rt_CastButton.pivot = new Vector2(0.5f, 0.5f);
-        rt_CastButton.sizeDelta = new Vector2(64f, 64f);
-        rt_CastButton.anchoredPosition = new Vector2(454.9f, 0f);
-        go_CastButton.AddComponent<CanvasRenderer>();
-        var img_CastButton = go_CastButton.AddComponent<Image>();
-        img_CastButton.sprite = SceneBuilderHelper.LoadSprite(Sprite_Confirm);
-        img_CastButton.color = new Color(1f, 1f, 1f, 1f);
-        img_CastButton.raycastTarget = true;
-        var btn_CastButton = go_CastButton.AddComponent<Button>();
-        btn_CastButton.navigation = new Navigation { mode = (Navigation.Mode)3 };
-        btn_CastButton.targetGraphic = go_CastButton.GetComponent<Image>();
-        Undo.RegisterCreatedObjectUndo(go_CastButton, "Create CastButton");
-
-        // --- Label ---
-        var go_Label6 = new GameObject("Label");
-        go_Label6.layer = 5;
-        var rt_Label6 = go_Label6.AddComponent<RectTransform>();
-        rt_Label6.SetParent(go_CastButton.GetComponent<RectTransform>(), false);
-        rt_Label6.anchorMin = new Vector2(0f, 0f);
-        rt_Label6.anchorMax = new Vector2(1f, 1f);
-        rt_Label6.pivot = new Vector2(0.5f, 0.5f);
-        rt_Label6.sizeDelta = new Vector2(0f, 0f);
-        rt_Label6.anchoredPosition = new Vector2(0f, 0f);
-        go_Label6.AddComponent<CanvasRenderer>();
-        var tmp_Label6 = go_Label6.AddComponent<TextMeshProUGUI>();
-        tmp_Label6.font = SceneBuilderHelper.LoadFont(Font_Body);
-        tmp_Label6.text = "Ok";
-        tmp_Label6.fontSize = 24f;
-        tmp_Label6.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Label6.alignment = (TextAlignmentOptions)514;
-        tmp_Label6.enableWordWrapping = true;
-        tmp_Label6.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Label6, "Create Label");
-
-        // --- Label ---
-        var go_Label4 = new GameObject("Label");
-        go_Label4.layer = 5;
-        var rt_Label4 = go_Label4.AddComponent<RectTransform>();
-        rt_Label4.SetParent(go_AbilityCastConfirm.GetComponent<RectTransform>(), false);
-        rt_Label4.anchorMin = new Vector2(0f, 0.5f);
-        rt_Label4.anchorMax = new Vector2(0f, 0.5f);
-        rt_Label4.pivot = new Vector2(0.5f, 0.5f);
-        rt_Label4.sizeDelta = new Vector2(0f, 64f);
-        rt_Label4.anchoredPosition = new Vector2(64f, 0f);
-        go_Label4.AddComponent<CanvasRenderer>();
-        var tmp_Label4 = go_Label4.AddComponent<TextMeshProUGUI>();
-        tmp_Label4.font = SceneBuilderHelper.LoadFont(Font_Attic);
-        tmp_Label4.text = "Cast Heal";
-        tmp_Label4.fontSize = 32f;
-        tmp_Label4.color = new Color(1f, 1f, 1f, 1f);
-        tmp_Label4.alignment = (TextAlignmentOptions)513;
-        tmp_Label4.enableWordWrapping = false;
-        tmp_Label4.raycastTarget = true;
-        Undo.RegisterCreatedObjectUndo(go_Label4, "Create Label");
-
         // --- ActionTitle (Row 3: dedicated action banner under timeline, FF6-style) ---
         var go_ActionTitle = new GameObject("ActionTitle");
         go_ActionTitle.layer = 5;
@@ -1552,17 +1430,7 @@ public static class GameBuilder
         // TODO: unresolved script GUID=172515602e62fb746b5d573b38a5fe58 — component skipped.
         Undo.RegisterCreatedObjectUndo(go_PostProcessing, "Create PostProcessing");
 
-        // --- TargetModeOverlay ---
-        var go_TargetModeOverlay = new GameObject("TargetModeOverlay");
-        go_TargetModeOverlay.transform.SetParent(go_Board.transform, false);
-        go_TargetModeOverlay.AddComponent<CanvasRenderer>();
-        go_TargetModeOverlay.AddComponent<Scripts.Canvas.TargetModeOverlay>();
-        Undo.RegisterCreatedObjectUndo(go_TargetModeOverlay, "Create TargetModeOverlay");
-
         // --- onClick event wiring ---
-        SceneBuilderHelper.WireOnClick(
-            go_CancelButton.GetComponent<Button>(),
-            new UnityAction(go_Game.GetComponent<Scripts.Managers.InputManager>().OnCancelButtonClickedEvent));
         // (Hero-cycle arrows + tab buttons now live inside ActorPanel and wire their own onClick
         //  in ActorPanel.BuildUi — no scene-side wiring needed.)
         // PHASE B: BankButton onClick removed — the legacy button is gone (see ManaPool removal

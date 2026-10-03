@@ -427,8 +427,6 @@ public enum InputMode
     None,
     PlayerTurn,
     EnemyTurn,
-    AnyTarget,
-    LinearTarget,
 }
 
 public enum LogLevel

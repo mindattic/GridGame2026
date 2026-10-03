@@ -111,11 +111,6 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void Select(ActorInstance actor = null)
     {
-        // Guard: During ability targeting modes, don't change selection
-        var mode = g.InputManager?.InputMode ?? InputMode.PlayerTurn;
-        if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget)
-            return;
-
         var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
         // Don't unselect when clicking outside of an actor

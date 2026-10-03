@@ -38,8 +38,6 @@ public partial class DebugWindow
         // World-space UI render checks.
         RenderButtonRow(
             ("Show ActionTitle", () => g.DebugManager.Demo_ShowActionTitle()),
-            ("Show CastConfirm", () => g.DebugManager.Demo_ShowCastConfirm()),
-            ("Hide CastConfirm", () => g.DebugManager.Demo_HideCastConfirm()),
             ("Log Mana Line", () => g.DebugManager.Demo_LogManaBank())
         );
 

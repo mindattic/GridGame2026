@@ -370,8 +370,6 @@ namespace Scripts.Canvas
         {
             if (g.InputManager != null)
             {
-                var mode = g.InputManager.InputMode;
-                if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget) return;
                 if (g.InputManager.isDragging) return;
             }
 

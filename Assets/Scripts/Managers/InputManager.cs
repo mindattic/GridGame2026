@@ -149,15 +149,6 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Bound to the cast-confirm modal's CancelButton OnClick: clears and closes the modal.
-    /// </summary>
-    public void OnCancelButtonClickedEvent()
-    {
-        g.AbilityCastConfirm?.ClearTitle();
-        g.AbilityCastConfirm?.FadeOut();
-    }
-
-    /// <summary>
     /// Player turn flow. Focus on touch, drag past threshold, drop on release.
     /// </summary>
     private void UpdatePlayerTurn(Touch touch)

@@ -106,19 +106,6 @@ namespace Scripts.Managers
             Debug.Log("[Demo] ActionTitle shown (world-space top band).");
         }
 
-        /// <summary>Demo: pop the world-space cast-confirm modal.</summary>
-        public void Demo_ShowCastConfirm()
-        {
-            var m = AbilityCastConfirm.instance;
-            if (m == null) { Debug.LogWarning("[Demo] AbilityCastConfirm.instance is null."); return; }
-            m.SetTitle("Cast Meteor Slam?");
-            m.SetDescription("Fire + Physical + Physical — a devastating combo strike.");
-            m.Toggle(true);
-        }
-
-        /// <summary>Demo: hide the cast-confirm modal.</summary>
-        public void Demo_HideCastConfirm() => AbilityCastConfirm.instance?.FadeOut();
-
         /// <summary>Demo: harvest one Blue orb (as if one hero contributed via a pincer), then log the line.</summary>
         public void Demo_HarvestBlue()
         {

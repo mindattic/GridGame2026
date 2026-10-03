@@ -292,7 +292,6 @@ namespace Scripts.Helpers
         public static DefeatAnnouncement DefeatAnnouncement => gm != null ? gm.defeatAnnouncement : null;
 
         /// <summary>Target mode overlay for ability targeting.</summary>
-        public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
 
         /// <summary>Actor info panel UI (tabbed: Stats / Equipment / Lore).</summary>
         public static Scripts.Canvas.ActorPanel ActorPanel => gm != null ? gm.actorPanel : null;
@@ -305,7 +304,6 @@ namespace Scripts.Helpers
 
         /// <summary>Ability display bar UI.</summary>
         public static ActionTitle ActionTitle => gm != null ? gm.actionTitle : null;
-        public static Scripts.Canvas.AbilityCastConfirm AbilityCastConfirm => gm != null ? gm.abilityCastConfirm : null;
 
         #endregion
 

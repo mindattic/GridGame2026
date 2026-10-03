@@ -49,7 +49,6 @@ namespace Scripts.Instances.Board
 /// 
 /// RELATED FILES:
 /// - FocusIndicator.cs: Similar indicator for selection
-/// - TargetModeOverlay.cs: Board dimming during targeting
 /// </summary>
 public class TargetIndicator : MonoBehaviour
 {

@@ -346,7 +346,7 @@ If a battle creeps past 5 minutes, the timeline or stage design needs tuning —
 
 - **6 columns × 8 rows.** Tiles are 1×1 world units. Origin at top-center per `BoardInstance.offset`.
 - Each tile holds at most **one actor** (hero or enemy). Tile-coordinate space is `Vector2Int`; world conversion via `Geometry.CalculatePositionByLocation(loc)`.
-- The board's `BoardInstance` lives in `Game.unity` with children `BoardOverlay`, `FocusIndicator`, `TargetModeOverlay`.
+- The board's `BoardInstance` lives in `Game.unity` with children `BoardOverlay`, `FocusIndicator`.
 
 ### 1.1 Sliding and displacement
 
@@ -2487,7 +2487,7 @@ restart, which intentionally does NOT call `Initialize()` — `BeginHeroWindow` 
 idempotent). When adding a new per-battle static store, wire its `Clear()` into both sites.
 Related teardown rule: any `g.TimelineBar` (or similar scene-bound singleton) use that can run
 during scene unload needs a null-guard, and event subscribers on cross-scene singletons must
-unsubscribe in `OnDestroy` (see `TargetModeOverlay`).
+unsubscribe in `OnDestroy`, guarded by `GameManager.HasLiveInstance` (see `LineTelegraph`).
 
 ### 30.4 Mobile-specific constraints
 

@@ -51,7 +51,6 @@ namespace Scripts.Instances.Board
 /// 
 /// RELATED FILES:
 /// - BoardManager.cs: Uses for board dimming
-/// - TargetModeOverlay.cs: Similar targeting overlay
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class BoardOverlay : MonoBehaviour
